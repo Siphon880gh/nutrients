@@ -32,6 +32,15 @@
   var dashboardMicroToggleEl = document.getElementById("dashboard-micro-toggle");
   var dashboardMicroPanelEl = document.getElementById("dashboard-micro-panel");
   var dashboardMicroListEl = document.getElementById("dashboard-micro-list");
+  var microGapsAiOpenBtn = document.getElementById("micro-gaps-ai-open");
+  var microGapsModalEl = document.getElementById("micro-gaps-modal");
+  var microGapsPreferenceEl = document.getElementById("micro-gaps-preference");
+  var microGapsAdditionalEl = document.getElementById("micro-gaps-additional");
+  var microGapsAiPreviewEl = document.getElementById("micro-gaps-ai-preview");
+  var microGapsAiCopyBtn = document.getElementById("micro-gaps-ai-copy");
+  var microGapsOpenChatgptEl = document.getElementById("micro-gaps-open-chatgpt");
+  var microGapsOpenClaudeEl = document.getElementById("micro-gaps-open-claude");
+  var microGapsModalDoneBtn = document.getElementById("micro-gaps-modal-done");
   var demographicBadgeEl = document.getElementById("demographic-badge");
   var demographicOptionsEl = document.getElementById("demographic-options");
   var microModalEl = document.getElementById("micro-modal");
@@ -516,6 +525,147 @@
     });
   }
 
+  var MICRO_GAPS_PREF_LABELS = {
+    none: "No preferences",
+    gluten_free: "Gluten free",
+    dairy_free: "Free of dairy ingredients",
+    nut_free: "Free of nuts",
+    vegan: "Vegan",
+    infrequent: "Only a few times per week at most",
+    easy_prep: "Easy to prepare",
+    portable: "Portable finger food I can bring to work",
+  };
+
+  function demographicLabelForPrompt() {
+    var metaMap = demographicDv ? demographicDv.META : {};
+    var meta = metaMap[demographic] || metaMap[DEFAULT_DEMOGRAPHIC];
+    return meta ? meta.label : demographic;
+  }
+
+  function microGapsPreferenceText() {
+    if (!microGapsPreferenceEl) return MICRO_GAPS_PREF_LABELS.none;
+    var id = microGapsPreferenceEl.value;
+    return MICRO_GAPS_PREF_LABELS[id] || MICRO_GAPS_PREF_LABELS.none;
+  }
+
+  function buildMicroGapsSnapshotLines() {
+    var week = weekMicroTotals();
+    var lines = [];
+    var deficiencies = [];
+
+    MICRO_FIELDS.forEach(function (field) {
+      var total = week[field.key];
+      var pct = avgDailyMicroPct(field.key, total);
+      var avgDaily = total / DAYS.length;
+      var amtText =
+        total > 0
+          ? fmtNum(avgDaily) + " " + field.unit + "/day avg"
+          : "0 " + field.unit + "/day avg";
+      var pctText =
+        pct == null || isNaN(pct) ? "—" : fmtNum(pct) + "% DV";
+
+      lines.push(field.label);
+      lines.push(amtText);
+      lines.push(pctText);
+
+      if (pct != null && !isNaN(pct) && pct < 100) {
+        deficiencies.push(field.label + " (" + fmtNum(pct) + "% DV)");
+      }
+    });
+
+    return { lines: lines, deficiencies: deficiencies };
+  }
+
+  function buildMicroGapsAiPrompt() {
+    var snapshot = buildMicroGapsSnapshotLines();
+    var pref = microGapsPreferenceText();
+    var additional =
+      microGapsAdditionalEl && microGapsAdditionalEl.value.trim();
+    var demo = demographicLabelForPrompt();
+
+    var parts = [
+      "I track meals Mon–Sun in a weekly log. The numbers below are my average daily intake compared to daily values for a " +
+        demo +
+        " profile.",
+      "",
+      "Average daily intake vs demographic daily values (Mon–Sun):",
+      "",
+      snapshot.lines.join("\n"),
+      "",
+    ];
+
+    if (snapshot.deficiencies.length) {
+      parts.push(
+        "Nutrients below 100% DV (focus suggestions here): " +
+          snapshot.deficiencies.join(", ") +
+          "."
+      );
+      parts.push("");
+    }
+
+    parts.push(
+      "How can I meet these gaps? This is the average over the week, not a single day. Suggest specific foods I can add to my week. For each food, include how many times per week, a typical serving size, and which nutrients it mainly helps. Keep suggestions practical for my preferences."
+    );
+    parts.push("");
+    parts.push("Dietary preferences: " + pref + ".");
+    if (additional) {
+      parts.push(additional);
+    }
+    parts.push("");
+    parts.push(
+      "Reply in plain language (no JSON). Use short sections or a simple list."
+    );
+
+    return parts.join("\n");
+  }
+
+  function renderMicroGapsAiPreview() {
+    if (!microGapsAiPreviewEl) return;
+    microGapsAiPreviewEl.textContent = buildMicroGapsAiPrompt();
+  }
+
+  function copyMicroGapsPromptToClipboard(done) {
+    var text = buildMicroGapsAiPrompt();
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(done).catch(done);
+    } else if (done) {
+      done();
+    }
+  }
+
+  function openMicroGapsAiService(url) {
+    copyMicroGapsPromptToClipboard(function () {
+      window.open(url, "_blank", "noopener,noreferrer");
+    });
+  }
+
+  function closeMicroGapsModal() {
+    if (!microGapsModalEl) return;
+    microGapsModalEl.hidden = true;
+    updateBodyModalOpen();
+  }
+
+  function openMicroGapsModal() {
+    if (!microGapsModalEl) return;
+
+    if (activeImportId) closeImportModal();
+    if (importAllModalEl && !importAllModalEl.hidden) closeImportAllModal();
+    if (importAllMealsModalEl && !importAllMealsModalEl.hidden) {
+      closeImportAllMealsModal();
+    }
+    if (activeMicroId) {
+      saveMicrosFromForm();
+      closeMicroModal();
+    }
+
+    renderMicroGapsAiPreview();
+    microGapsModalEl.hidden = false;
+    updateBodyModalOpen();
+    if (microGapsPreferenceEl) {
+      microGapsPreferenceEl.focus();
+    }
+  }
+
   function setImportAiPanelOpen(open) {
     if (!importAiPanelEl || !importAiToggleBtn) return;
     importAiPanelEl.hidden = !open;
@@ -567,6 +717,7 @@
     var open =
       (importAllMealsModalEl && !importAllMealsModalEl.hidden) ||
       (importAllModalEl && !importAllModalEl.hidden) ||
+      (microGapsModalEl && !microGapsModalEl.hidden) ||
       !!activeImportId ||
       !!activeMicroId;
     document.body.classList.toggle("modal-open", open);
@@ -733,6 +884,14 @@
   function fmtNum(n) {
     var rounded = Math.round(n * 10) / 10;
     return rounded % 1 === 0 ? String(rounded) : rounded.toFixed(1);
+  }
+
+  function fmtNumGrouped(n) {
+    var s = fmtNum(n);
+    var dot = s.indexOf(".");
+    var whole = dot === -1 ? s : s.slice(0, dot);
+    var frac = dot === -1 ? "" : s.slice(dot);
+    return Number(whole).toLocaleString("en-US") + frac;
   }
 
   function keywordNames() {
@@ -996,6 +1155,10 @@
     });
 
     dashboardMicroListEl.innerHTML = html;
+
+    if (microGapsModalEl && !microGapsModalEl.hidden) {
+      renderMicroGapsAiPreview();
+    }
   }
 
   function setWeekTotalOpen(open) {
@@ -1134,7 +1297,7 @@
     weekSummaryEl.innerHTML =
       '<span class="week-summary__label">Week total</span>' +
       '<span class="week-summary__calories">' +
-      fmtNum(week.totalCal) +
+      fmtNumGrouped(week.totalCal) +
       " cal</span>" +
       '<div class="week-summary__extras" data-week-extras></div>';
   }
@@ -1814,6 +1977,56 @@
     });
   }
 
+  if (microGapsAiOpenBtn) {
+    microGapsAiOpenBtn.addEventListener("click", openMicroGapsModal);
+  }
+
+  if (microGapsModalDoneBtn) {
+    microGapsModalDoneBtn.addEventListener("click", closeMicroGapsModal);
+  }
+
+  if (microGapsModalEl) {
+    microGapsModalEl.addEventListener("click", function (e) {
+      if (e.target.closest('[data-action="close-micro-gaps-modal"]')) {
+        closeMicroGapsModal();
+      }
+    });
+  }
+
+  if (microGapsPreferenceEl) {
+    microGapsPreferenceEl.addEventListener("change", renderMicroGapsAiPreview);
+  }
+
+  if (microGapsAdditionalEl) {
+    microGapsAdditionalEl.addEventListener("input", renderMicroGapsAiPreview);
+  }
+
+  if (microGapsAiCopyBtn) {
+    microGapsAiCopyBtn.addEventListener("click", function () {
+      copyMicroGapsPromptToClipboard(function () {
+        var prev = microGapsAiCopyBtn.textContent;
+        microGapsAiCopyBtn.textContent = "Copied!";
+        setTimeout(function () {
+          microGapsAiCopyBtn.textContent = prev;
+        }, 1600);
+      });
+    });
+  }
+
+  if (microGapsOpenChatgptEl) {
+    microGapsOpenChatgptEl.addEventListener("click", function (e) {
+      e.preventDefault();
+      openMicroGapsAiService(CHATGPT_URL);
+    });
+  }
+
+  if (microGapsOpenClaudeEl) {
+    microGapsOpenClaudeEl.addEventListener("click", function (e) {
+      e.preventDefault();
+      openMicroGapsAiService(CLAUDE_URL);
+    });
+  }
+
   document.addEventListener("keydown", function (e) {
     if (e.key !== "Escape") return;
     if (importAllMealsModalEl && !importAllMealsModalEl.hidden) {
@@ -1822,6 +2035,10 @@
     }
     if (importAllModalEl && !importAllModalEl.hidden) {
       closeImportAllModal();
+      return;
+    }
+    if (microGapsModalEl && !microGapsModalEl.hidden) {
+      closeMicroGapsModal();
       return;
     }
     if (activeImportId) {

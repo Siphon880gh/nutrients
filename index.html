@@ -27,6 +27,9 @@
       <div id="dashboard-grid" class="dashboard__grid"></div>
       <div id="dashboard-micro-panel" class="dashboard__micro-panel" hidden>
         <p class="dashboard__micro-hint">Average daily intake vs your demographic daily values (Mon–Sun). DV's will be low if you dont fill up all days.</p>
+        <p class="dashboard__micro-tools">
+          <button type="button" id="micro-gaps-ai-open" class="import-modal__ai-link">Ask AI to help fill in the gaps</button>
+        </p>
         <div id="dashboard-micro-list" class="dashboard__micro-list" role="list"></div>
       </div>
       <div id="week-summary" class="week-summary" hidden aria-label="Week summary"></div>
@@ -282,6 +285,45 @@
       <footer class="modal__footer modal__footer--split">
         <button type="button" id="import-cancel" class="modal__secondary">Cancel</button>
         <button type="button" id="import-apply" class="modal__done">Import</button>
+      </footer>
+    </div>
+  </div>
+
+  <div id="micro-gaps-modal" class="modal" hidden>
+    <div class="modal__backdrop" data-action="close-micro-gaps-modal"></div>
+    <div class="modal__panel modal__panel--wide" role="dialog" aria-modal="true" aria-labelledby="micro-gaps-modal-title">
+      <header class="modal__header">
+        <h3 id="micro-gaps-modal-title" class="modal__title">Fill micronutrient gaps</h3>
+        <p class="modal__subtitle">Suggestions for your week (Mon–Sun)</p>
+      </header>
+      <div class="import-modal__body">
+        <p class="import-modal__hint">Builds a prompt from your current week averages and % DV. Copy it, then use ChatGPT or Claude for food ideas you can add to your day notes.</p>
+        <label class="import-ai-panel__label" for="micro-gaps-preference">Dietary preferences</label>
+        <select id="micro-gaps-preference" class="import-ai-panel__portion micro-gaps-modal__select">
+          <option value="none" selected>No preferences</option>
+          <option value="gluten_free">Gluten free</option>
+          <option value="dairy_free">Free of dairy ingredients</option>
+          <option value="nut_free">Free of nuts</option>
+          <option value="vegan">Vegan</option>
+          <option value="infrequent">Only a few times per week at most</option>
+          <option value="easy_prep">Easy to prepare</option>
+          <option value="portable">Portable finger food I can bring to work</option>
+        </select>
+        <label class="import-ai-panel__label micro-gaps-modal__additional-label" for="micro-gaps-additional">Additional dietary preferences</label>
+        <textarea id="micro-gaps-additional" class="import-ai-panel__portion micro-gaps-modal__additional" rows="2" placeholder="I prefer whole foods and easy breakfasts I can pack for work." autocomplete="off" spellcheck="true"></textarea>
+        <div class="import-ai-panel micro-gaps-modal__panel">
+          <p class="import-ai-panel__preview-label">Prompt preview</p>
+          <pre id="micro-gaps-ai-preview" class="import-ai-panel__preview import-ai-panel__preview--tall"></pre>
+          <div class="import-ai-panel__actions">
+            <button type="button" id="micro-gaps-ai-copy" class="import-ai-panel__copy">Copy prompt</button>
+            <span class="import-ai-panel__open-label">Open in</span>
+            <a href="https://chatgpt.com/" target="_blank" rel="noopener noreferrer" id="micro-gaps-open-chatgpt" class="import-ai-panel__service">ChatGPT</a>
+            <a href="https://claude.ai/new" target="_blank" rel="noopener noreferrer" id="micro-gaps-open-claude" class="import-ai-panel__service">Claude</a>
+          </div>
+        </div>
+      </div>
+      <footer class="modal__footer">
+        <button type="button" id="micro-gaps-modal-done" class="modal__done">Done</button>
       </footer>
     </div>
   </div>

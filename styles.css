@@ -89,9 +89,13 @@ body {
 }
 
 .dashboard__micro-hint {
-  margin: 0 0 0.6rem;
+  margin: 0 0 0.35rem;
   font-size: 0.78rem;
   color: #5c5c5c;
+}
+
+.dashboard__micro-tools {
+  margin: 0 0 0.6rem;
 }
 
 .dashboard__micro-list {
@@ -900,6 +904,28 @@ body.modal-open {
   font-size: 0.72rem;
   font-weight: 600;
   color: #5c5c5c;
+}
+
+.import-ai-panel__preview--tall {
+  max-height: 14rem;
+}
+
+.micro-gaps-modal__select {
+  margin-bottom: 0.55rem;
+}
+
+.micro-gaps-modal__additional-label {
+  margin-top: 0.15rem;
+}
+
+.micro-gaps-modal__additional {
+  min-height: 3rem;
+  resize: vertical;
+  margin-bottom: 0.55rem;
+}
+
+.micro-gaps-modal__panel {
+  margin-top: 0.35rem;
 }
 
 .import-ai-panel__preview {
