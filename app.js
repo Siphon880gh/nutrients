@@ -124,6 +124,14 @@
     return text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
   }
 
+  /** Whole-phrase boundaries; \\b fails when the name starts/ends with punctuation e.g. (a). */
+  var KEYWORD_BOUNDARY_BEFORE = "(?<![A-Za-z0-9_])";
+  var KEYWORD_BOUNDARY_AFTER = "(?![A-Za-z0-9_])";
+
+  function keywordMatchPattern(escapedName) {
+    return KEYWORD_BOUNDARY_BEFORE + escapedName + KEYWORD_BOUNDARY_AFTER;
+  }
+
   function makeId() {
     return "kw-" + nextId++ + "-" + Date.now();
   }
@@ -1160,7 +1168,10 @@
       return b.length - a.length;
     });
     var body = sorted.map(escapeRegex).join("|");
-    return new RegExp("\\b(" + body + ")\\b", "gi");
+    return new RegExp(
+      KEYWORD_BOUNDARY_BEFORE + "(" + body + ")" + KEYWORD_BOUNDARY_AFTER,
+      "gi"
+    );
   }
 
   function highlightedHtml(text, regex) {
@@ -1184,7 +1195,7 @@
   }
 
   function countKeyword(text, name) {
-    var re = new RegExp("\\b" + escapeRegex(name) + "\\b", "gi");
+    var re = new RegExp(keywordMatchPattern(escapeRegex(name)), "gi");
     var count = 0;
     var match;
     while ((match = re.exec(text)) !== null) {
