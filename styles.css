@@ -249,6 +249,33 @@ body {
   color: #5c5c5c;
 }
 
+.week__days-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem 0.5rem;
+}
+
+.toolbar-bulk-btn,
+.week__meals-bulk {
+  padding: 0.1rem 0.25rem;
+  font: inherit;
+  font-size: 0.65rem;
+  font-weight: 400;
+  line-height: 1.2;
+  cursor: pointer;
+  border: none;
+  border-radius: 3px;
+  background: transparent;
+  color: #9a9a96;
+}
+
+.toolbar-bulk-btn:hover,
+.week__meals-bulk:hover {
+  color: #5c5c5c;
+  background: rgba(0, 0, 0, 0.04);
+}
+
 .week__clear-all,
 .day__clear {
   padding: 0.1rem 0.25rem;
@@ -1044,22 +1071,6 @@ body.modal-open {
   display: flex;
   flex-wrap: wrap;
   gap: 0.4rem;
-}
-
-.keywords__bulk-btn {
-  padding: 0.35rem 0.65rem;
-  font: inherit;
-  font-size: 0.78rem;
-  font-weight: 500;
-  cursor: pointer;
-  border-radius: 4px;
-  border: 1px solid #9eb4cc;
-  background: #fff;
-  color: #2a4a6e;
-}
-
-.keywords__bulk-btn:hover {
-  background: #e8eef4;
 }
 
 .keywords__move,

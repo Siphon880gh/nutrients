@@ -6,7 +6,7 @@ AI-oriented codebase map for safe modification, feature tracing, and implementat
 
 ## Purpose
 
-**Week notes + food definitions** — a client-only nutrition tracker. Users type foods in Mon–Sun notes; **food definitions** supply macros/micros per match; a **dashboard** totals grams and calories; a **week bar** shows total calories.
+**Week meals + food definitions** — a client-only nutrition tracker. Users type foods in Mon–Sun notes; **food definitions** supply macros/micros per match; a **dashboard** totals grams and calories; a **week bar** shows total calories.
 
 No backend, no bundler, no framework.
 
@@ -27,7 +27,7 @@ When context is tight: read **this file** first, then open the one feature file 
 | Markup | Static HTML5 |
 | Style | Plain CSS (`styles.css`, ~869 lines) |
 | Logic | Single IIFE in `app.js` (~1066 lines) |
-| Persistence | `localStorage` for **food definitions**, **day notes**, and **demographic** |
+| Persistence | `localStorage` for **food definitions**, **day meals**, and **demographic** |
 | Run | Open `index.html` or any static file server |
 
 ## Architecture (high level)
@@ -46,7 +46,7 @@ When context is tight: read **this file** first, then open the one feature file 
 └─────────────────────────────────────────────────────────┘
 ```
 
-**Persisted:** day notes (`nutrients-day-notes`), food definitions, demographic. Clear per day or all days (with `confirm`).
+**Persisted:** day meals (`nutrients-day-notes`), food definitions, demographic. Bulk export/import for meals and foods; clear per day with `confirm`.
 
 ## File tree
 
@@ -114,7 +114,7 @@ Outside main: `#import-modal`, `#micro-modal`.
 - **New persisted field:** extend `blankKeyword`, `loadFoodDefinitions` map, `renderKeywords` row HTML, `syncFieldFromDom`, `exportFoodJson` / `applyImportJson`.
 - **Dashboard metric:** extend `totalsFromText` / `dashboardCardHtml` / `renderWeekSummary`; micro % DV uses `microTotalsFromText` / `renderMicroRequirements` ([core doc](./AGENTS_CODE_REFERENCE-core.md)).
 - **Demographic / DV:** extend `DV_BY_DEMOGRAPHIC` and `loadDemographic` / `setDemographic` ([core doc](./AGENTS_CODE_REFERENCE-core.md)).
-- **Day notes:** `loadDayNotes` / `saveDayNotes`; clear via `clearDayNotes` / `clearAllDayNotes` ([core doc](./AGENTS_CODE_REFERENCE-core.md)).
+- **Day meals:** `loadDayNotes` / `saveDayNotes`; bulk `exportAllDayMeals` / `applyImportAllDayMealsReplace` (missing days: empty out or leave alone); clear via `clearDayNotes` / `clearAllDayNotes` ([core doc](./AGENTS_CODE_REFERENCE-core.md)).
 - **Highlighting** requires mirror DOM; do not style matches only in textarea ([ui doc](./AGENTS_CODE_REFERENCE-ui.md)).
 - Preserve HTML-escape paths: `escapeHtml`, `escapeAttr` for injected strings.
 

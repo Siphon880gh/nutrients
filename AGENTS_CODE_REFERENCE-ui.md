@@ -15,7 +15,7 @@ Parent: [AGENTS_CODE_REFERENCE.md](./AGENTS_CODE_REFERENCE.md)
 │   ├── #dashboard-grid           (7 cards, JS)
 │   ├── #week-summary             (hidden by default; week calories toggle)
 │   └── #dashboard-micro-panel    (hidden until toggle; % DV list, JS)
-├── .week__days-toolbar     (hint + `#clear-all-days`)
+├── .week__days-toolbar     (hint + export/import all meals + clear all)
 ├── .week__grid             (7 columns Mon–Sun, 45vh height desktop)
 │   └── .day × 7
 │       ├── .day__head (label + Clear)
@@ -110,7 +110,7 @@ JS does not depend on BEM beyond stable IDs (`#mon`, `#keywords-list`, etc.).
 
 Critical hooks (do not rename without updating `app.js` top):
 
-- Day: `mon` … `sun`, `clear-all-days`
+- Day: `mon` … `sun`, `export-all-meals`, `import-all-meals`, `import-all-meals-modal`, `clear-all-days`
 - `dashboard-grid`, `week-summary`, `dashboard-week-toggle`, `dashboard-micro-toggle`, `dashboard-micro-panel`, `dashboard-micro-list`
 - `demographic-panel`, `demographic-badge`, `demographic-options`
 - `keywords-list`, `keywords-empty`, `add-keyword`

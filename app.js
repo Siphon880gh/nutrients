@@ -62,6 +62,13 @@
   var importAllCancelBtn = document.getElementById("import-all-cancel");
   var exportAllFoodsBtn = document.getElementById("export-all-foods");
   var importAllFoodsBtn = document.getElementById("import-all-foods");
+  var importAllMealsModalEl = document.getElementById("import-all-meals-modal");
+  var importAllMealsJsonEl = document.getElementById("import-all-meals-json");
+  var importAllMealsErrorEl = document.getElementById("import-all-meals-error");
+  var importAllMealsApplyBtn = document.getElementById("import-all-meals-apply");
+  var importAllMealsCancelBtn = document.getElementById("import-all-meals-cancel");
+  var exportAllMealsBtn = document.getElementById("export-all-meals");
+  var importAllMealsBtn = document.getElementById("import-all-meals");
   var activeMicroId = null;
   var activeImportId = null;
   var microSaveTimer;
@@ -556,6 +563,15 @@
     importErrorEl.textContent = message;
   }
 
+  function updateBodyModalOpen() {
+    var open =
+      (importAllMealsModalEl && !importAllMealsModalEl.hidden) ||
+      (importAllModalEl && !importAllModalEl.hidden) ||
+      !!activeImportId ||
+      !!activeMicroId;
+    document.body.classList.toggle("modal-open", open);
+  }
+
   function showImportAllError(message) {
     if (!importAllErrorEl) return;
     if (!message) {
@@ -571,9 +587,7 @@
     if (!importAllModalEl) return;
     importAllModalEl.hidden = true;
     showImportAllError("");
-    if (!activeImportId && !activeMicroId) {
-      document.body.classList.remove("modal-open");
-    }
+    updateBodyModalOpen();
   }
 
   function openImportAllModal() {
@@ -584,11 +598,14 @@
       saveMicrosFromForm();
       closeMicroModal();
     }
+    if (importAllMealsModalEl && !importAllMealsModalEl.hidden) {
+      closeImportAllMealsModal();
+    }
 
     importAllJsonEl.value = exportAllFoodJson();
     showImportAllError("");
     importAllModalEl.hidden = false;
-    document.body.classList.add("modal-open");
+    updateBodyModalOpen();
     importAllJsonEl.focus();
     importAllJsonEl.select();
   }
@@ -612,9 +629,7 @@
     importModalEl.hidden = true;
     showImportError("");
     setImportAiPanelOpen(false);
-    if (!activeMicroId && (!importAllModalEl || importAllModalEl.hidden)) {
-      document.body.classList.remove("modal-open");
-    }
+    updateBodyModalOpen();
   }
 
   function applyImportJson(id, raw) {
@@ -705,9 +720,12 @@
     if (importAllModalEl && !importAllModalEl.hidden) {
       closeImportAllModal();
     }
+    if (importAllMealsModalEl && !importAllMealsModalEl.hidden) {
+      closeImportAllMealsModal();
+    }
 
     importModalEl.hidden = false;
-    document.body.classList.add("modal-open");
+    updateBodyModalOpen();
     importJsonEl.focus();
     importJsonEl.select();
   }
@@ -1223,12 +1241,7 @@
     if (!microModalEl) return;
     activeMicroId = null;
     microModalEl.hidden = true;
-    if (
-      !activeImportId &&
-      (!importAllModalEl || importAllModalEl.hidden)
-    ) {
-      document.body.classList.remove("modal-open");
-    }
+    updateBodyModalOpen();
   }
 
   function updateMicroButton(id) {
@@ -1295,8 +1308,15 @@
     }
 
     populateMicroForm(kw);
+    if (importAllMealsModalEl && !importAllMealsModalEl.hidden) {
+      closeImportAllMealsModal();
+    }
+    if (importAllModalEl && !importAllModalEl.hidden) {
+      closeImportAllModal();
+    }
+
     microModalEl.hidden = false;
-    document.body.classList.add("modal-open");
+    updateBodyModalOpen();
 
     var first = microFormEl.querySelector("input");
     if (first) first.focus();
@@ -1483,6 +1503,133 @@
     }
   }
 
+  function exportAllDayMealsJson() {
+    return JSON.stringify(dayNotesPayload(), null, 2);
+  }
+
+  function exportAllDayMeals() {
+    var json = exportAllDayMealsJson();
+    var blob = new Blob([json], { type: "application/json" });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement("a");
+    a.href = url;
+    a.download = "nutrients-day-meals.json";
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  function getImportAllMealsMissingMode() {
+    var checked = document.querySelector(
+      'input[name="import-all-meals-missing"]:checked'
+    );
+    return checked && checked.value === "keep" ? "keep" : "empty";
+  }
+
+  function parseImportAllDayMealsObject(raw) {
+    var data;
+    try {
+      data = JSON.parse(raw);
+    } catch (e) {
+      throw new Error("Invalid JSON");
+    }
+
+    if (!data || typeof data !== "object" || Array.isArray(data)) {
+      throw new Error(
+        "JSON must be an object with day ids (mon, tue, wed, thu, fri, sat, sun)"
+      );
+    }
+
+    return data;
+  }
+
+  function confirmImportAllDayMealsApply(missingMode) {
+    var suffix =
+      missingMode === "keep"
+        ? " Days not in the JSON will be left unchanged."
+        : " Days not in the JSON will be cleared.";
+    if (!anyDayHasNotes()) return true;
+    return window.confirm(
+      "Apply imported day meals? Listed days will be updated." +
+        suffix +
+        " This cannot be undone."
+    );
+  }
+
+  function applyImportAllDayMealsReplace(raw) {
+    var missingMode = getImportAllMealsMissingMode();
+    if (!confirmImportAllDayMealsApply(missingMode)) {
+      throw new Error("cancelled");
+    }
+
+    var data = parseImportAllDayMealsObject(raw);
+
+    DAYS.forEach(function (day) {
+      var el = document.getElementById(day.id);
+      if (!el) return;
+
+      if (day.id in data) {
+        if (typeof data[day.id] !== "string") {
+          throw new Error(day.label + " must be a string");
+        }
+        el.value = data[day.id];
+      } else if (missingMode === "empty") {
+        el.value = "";
+      }
+    });
+    saveDayNotes();
+  }
+
+  function showImportAllMealsError(message) {
+    if (!importAllMealsErrorEl) return;
+    if (!message) {
+      importAllMealsErrorEl.hidden = true;
+      importAllMealsErrorEl.textContent = "";
+      return;
+    }
+    importAllMealsErrorEl.hidden = false;
+    importAllMealsErrorEl.textContent = message;
+  }
+
+  function closeImportAllMealsModal() {
+    if (!importAllMealsModalEl) return;
+    importAllMealsModalEl.hidden = true;
+    showImportAllMealsError("");
+    updateBodyModalOpen();
+  }
+
+  function openImportAllMealsModal() {
+    if (!importAllMealsModalEl || !importAllMealsJsonEl) return;
+
+    if (activeImportId) closeImportModal();
+    if (activeMicroId) {
+      saveMicrosFromForm();
+      closeMicroModal();
+    }
+    if (importAllModalEl && !importAllModalEl.hidden) {
+      closeImportAllModal();
+    }
+
+    importAllMealsJsonEl.value = exportAllDayMealsJson();
+    showImportAllMealsError("");
+    importAllMealsModalEl.hidden = false;
+    updateBodyModalOpen();
+    importAllMealsJsonEl.focus();
+    importAllMealsJsonEl.select();
+  }
+
+  function runImportAllMeals() {
+    if (!importAllMealsJsonEl) return;
+    try {
+      applyImportAllDayMealsReplace(importAllMealsJsonEl.value);
+      closeImportAllMealsModal();
+      refreshAll();
+      updateDayClearButtons();
+    } catch (e) {
+      if (e.message === "cancelled") return;
+      showImportAllMealsError(e.message || "Import failed");
+    }
+  }
+
   function dayHasNotes(dayId) {
     var el = document.getElementById(dayId);
     return !!(el && el.value.trim());
@@ -1517,7 +1664,7 @@
     var day = dayById(dayId);
     var label = day ? day.label : dayId;
     return window.confirm(
-      "Clear all notes for " +
+      "Clear all meals for " +
         label +
         "? This cannot be undone."
     );
@@ -1525,7 +1672,7 @@
 
   function confirmClearAllDays() {
     return window.confirm(
-      "Clear notes for all " +
+      "Clear meals for all " +
         DAYS.length +
         " days (Mon–Sun)? This cannot be undone."
     );
@@ -1669,6 +1816,10 @@
 
   document.addEventListener("keydown", function (e) {
     if (e.key !== "Escape") return;
+    if (importAllMealsModalEl && !importAllMealsModalEl.hidden) {
+      closeImportAllMealsModal();
+      return;
+    }
     if (importAllModalEl && !importAllModalEl.hidden) {
       closeImportAllModal();
       return;
@@ -1738,6 +1889,36 @@
 
   if (clearAllDaysBtn) {
     clearAllDaysBtn.addEventListener("click", clearAllDayNotes);
+  }
+
+  if (exportAllMealsBtn) {
+    exportAllMealsBtn.addEventListener("click", exportAllDayMeals);
+  }
+
+  if (importAllMealsBtn) {
+    importAllMealsBtn.addEventListener("click", openImportAllMealsModal);
+  }
+
+  if (importAllMealsApplyBtn) {
+    importAllMealsApplyBtn.addEventListener("click", runImportAllMeals);
+  }
+
+  if (importAllMealsCancelBtn) {
+    importAllMealsCancelBtn.addEventListener("click", closeImportAllMealsModal);
+  }
+
+  if (importAllMealsModalEl) {
+    importAllMealsModalEl.addEventListener("click", function (e) {
+      if (e.target.closest('[data-action="close-import-all-meals-modal"]')) {
+        closeImportAllMealsModal();
+      }
+    });
+  }
+
+  if (importAllMealsJsonEl) {
+    importAllMealsJsonEl.addEventListener("input", function () {
+      showImportAllMealsError("");
+    });
   }
 
   window.addEventListener("beforeunload", function () {

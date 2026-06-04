@@ -19,7 +19,7 @@ Parent overview: [AGENTS_CODE_REFERENCE.md](./AGENTS_CODE_REFERENCE.md)
 | Demographic | `loadDemographic`, `saveDemographic`, `setDemographic`, `renderDemographicUi`; targets in `demographic-dv.js` |
 | Highlights | `updateDayHighlights`, `highlightedHtml`, `refreshAll` |
 | Persistence | `saveFoodDefinitions`, `loadFoodDefinitions`, `saveDayNotes`, `loadDayNotes` |
-| Day notes clear | `clearDayNotes`, `clearAllDayNotes`, `confirmClearDay`, `confirmClearAllDays` |
+| Day meals | `exportAllDayMeals`, `applyImportAllDayMealsReplace`, `getImportAllMealsMissingMode` (`empty` \| `keep`), `clearDayNotes`, `clearAllDayNotes` |
 
 ## Data lifecycle
 
