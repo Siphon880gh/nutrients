@@ -110,7 +110,25 @@
       </header>
       <div class="import-modal__body">
         <p class="import-modal__hint">JSON with at least <code>name</code>. Omitted fields are left unchanged; micronutrients not listed are skipped.</p>
-        <textarea id="import-json" class="import-modal__json" rows="14" spellcheck="false"></textarea>
+        <p class="import-modal__tools">
+          <button type="button" id="import-ai-toggle" class="import-modal__ai-link" aria-expanded="false" aria-controls="import-ai-panel">Have AI help me</button>
+        </p>
+        <div id="import-ai-panel" class="import-ai-panel" hidden>
+          <label class="import-ai-panel__label" for="import-ai-portion">Serving &amp; food</label>
+          <input type="text" id="import-ai-portion" class="import-ai-panel__portion" placeholder="1 cup of peanuts" autocomplete="off" spellcheck="false">
+          <p class="import-ai-panel__preview-label">Prompt preview</p>
+          <pre id="import-ai-preview" class="import-ai-panel__preview"></pre>
+          <div class="import-ai-panel__actions">
+            <button type="button" id="import-ai-copy" class="import-ai-panel__copy">Copy prompt</button>
+            <span class="import-ai-panel__open-label">Open in</span>
+            <a href="https://chatgpt.com/" target="_blank" rel="noopener noreferrer" id="import-open-chatgpt" class="import-ai-panel__service">ChatGPT</a>
+            <a href="https://claude.ai/new" target="_blank" rel="noopener noreferrer" id="import-open-claude" class="import-ai-panel__service">Claude</a>
+          </div>
+        </div>
+        <div id="import-json-wrap" class="import-json-wrap">
+          <label id="import-json-label" class="import-json-wrap__label" for="import-json">JSON</label>
+          <textarea id="import-json" class="import-modal__json" rows="10" spellcheck="false"></textarea>
+        </div>
         <p id="import-error" class="import-modal__error" hidden></p>
       </div>
       <footer class="modal__footer modal__footer--split">

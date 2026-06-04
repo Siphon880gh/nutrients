@@ -30,6 +30,17 @@
   var importErrorEl = document.getElementById("import-error");
   var importApplyBtn = document.getElementById("import-apply");
   var importCancelBtn = document.getElementById("import-cancel");
+  var importAiToggleBtn = document.getElementById("import-ai-toggle");
+  var importAiPanelEl = document.getElementById("import-ai-panel");
+  var importAiPortionEl = document.getElementById("import-ai-portion");
+  var importAiPreviewEl = document.getElementById("import-ai-preview");
+  var importAiCopyBtn = document.getElementById("import-ai-copy");
+  var importOpenChatgptEl = document.getElementById("import-open-chatgpt");
+  var importOpenClaudeEl = document.getElementById("import-open-claude");
+  var CHATGPT_URL = "https://chatgpt.com/";
+  var CLAUDE_URL = "https://claude.ai/new";
+  var importJsonWrapEl = document.getElementById("import-json-wrap");
+  var importJsonLabelEl = document.getElementById("import-json-label");
   var activeMicroId = null;
   var activeImportId = null;
   var microSaveTimer;
@@ -200,6 +211,130 @@
     return JSON.stringify(obj, null, 2);
   }
 
+  function jsonSchemaExample() {
+    var micros = {};
+    MICRO_FIELDS.forEach(function (field) {
+      micros[field.key] = 0;
+    });
+    return JSON.stringify(
+      {
+        name: "1 cup of peanuts",
+        protein: 0,
+        carbs: 0,
+        fats: 0,
+        micros: micros,
+      },
+      null,
+      2
+    );
+  }
+
+  function nutrientListForPrompt() {
+    var lines = [
+      "Macronutrients (grams): protein, carbs, fats",
+      "Micronutrients — include only those you can estimate; omit unknown keys:",
+    ];
+    MICRO_FIELDS.forEach(function (field) {
+      lines.push("  - " + field.key + ": " + field.label + " (" + field.unit + ")");
+    });
+    return lines.join("\n");
+  }
+
+  function portionFromField(portion) {
+    var p = portion.trim();
+    return p || "___";
+  }
+
+  function buildAiPromptFromPortion(portion) {
+    var phrase = portionFromField(portion);
+    var nameExample = phrase === "___" ? "1 cup of peanuts" : phrase;
+    return (
+      "Please fill in the nutrient data for " +
+      phrase +
+      ".\n\n" +
+      "Return only valid JSON (no markdown fences or commentary) matching this structure. " +
+      'Use the portion in the name field (e.g. "' +
+      nameExample +
+      '"). Omit any nutrient keys you cannot estimate.\n\n' +
+      jsonSchemaExample() +
+      "\n\n" +
+      nutrientListForPrompt()
+    );
+  }
+
+  function getImportPortionValue() {
+    return importAiPortionEl ? importAiPortionEl.value : "";
+  }
+
+  function renderImportAiPreview() {
+    if (!importAiPreviewEl) return;
+    importAiPreviewEl.textContent = buildAiPromptFromPortion(
+      getImportPortionValue()
+    );
+  }
+
+  function syncImportAiInputs() {
+    if (!activeImportId || !importAiPortionEl) return;
+    var i = findIndex(activeImportId);
+    if (i < 0) return;
+    var name = keywords[i].name.trim();
+    if (name && !importAiPortionEl.value.trim()) {
+      importAiPortionEl.value = name;
+    }
+    renderImportAiPreview();
+  }
+
+  function copyAiPromptToClipboard(done) {
+    var text = buildAiPromptFromPortion(getImportPortionValue());
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(done).catch(done);
+    } else if (done) {
+      done();
+    }
+  }
+
+  function openAiService(url) {
+    copyAiPromptToClipboard(function () {
+      window.open(url, "_blank", "noopener,noreferrer");
+    });
+  }
+
+  function setImportAiPanelOpen(open) {
+    if (!importAiPanelEl || !importAiToggleBtn) return;
+    importAiPanelEl.hidden = !open;
+    importAiToggleBtn.setAttribute("aria-expanded", open ? "true" : "false");
+    importAiToggleBtn.textContent = open ? "Hide AI help" : "Have AI help me";
+
+    if (importJsonLabelEl) {
+      importJsonLabelEl.textContent = open
+        ? "Paste AI response (JSON)"
+        : "JSON";
+    }
+
+    if (importJsonWrapEl) {
+      importJsonWrapEl.classList.toggle("import-json-wrap--ai", open);
+    }
+
+    if (importJsonEl && activeImportId) {
+      var i = findIndex(activeImportId);
+      if (i >= 0) {
+        if (open) {
+          importJsonEl.value = "";
+          importJsonEl.placeholder =
+            '{\n  "name": "1 cup of peanuts",\n  "protein": 0\n}';
+        } else {
+          importJsonEl.placeholder = "";
+          importJsonEl.value = exportFoodJson(keywords[i]);
+        }
+      }
+    }
+
+    if (open) {
+      syncImportAiInputs();
+      if (importAiPortionEl) importAiPortionEl.focus();
+    }
+  }
+
   function showImportError(message) {
     if (!importErrorEl) return;
     if (!message) {
@@ -216,6 +351,7 @@
     activeImportId = null;
     importModalEl.hidden = true;
     showImportError("");
+    setImportAiPanelOpen(false);
     if (!activeMicroId) {
       document.body.classList.remove("modal-open");
     }
@@ -304,6 +440,8 @@
 
     importJsonEl.value = exportFoodJson(kw);
     showImportError("");
+    setImportAiPanelOpen(false);
+    syncImportAiInputs();
     importModalEl.hidden = false;
     document.body.classList.add("modal-open");
     importJsonEl.focus();
@@ -837,6 +975,43 @@
   if (importJsonEl) {
     importJsonEl.addEventListener("input", function () {
       showImportError("");
+    });
+  }
+
+  if (importAiToggleBtn) {
+    importAiToggleBtn.addEventListener("click", function () {
+      var open = importAiPanelEl && importAiPanelEl.hidden;
+      setImportAiPanelOpen(open);
+    });
+  }
+
+  if (importAiPortionEl) {
+    importAiPortionEl.addEventListener("input", renderImportAiPreview);
+  }
+
+  if (importAiCopyBtn) {
+    importAiCopyBtn.addEventListener("click", function () {
+      copyAiPromptToClipboard(function () {
+        var prev = importAiCopyBtn.textContent;
+        importAiCopyBtn.textContent = "Copied!";
+        setTimeout(function () {
+          importAiCopyBtn.textContent = prev;
+        }, 1600);
+      });
+    });
+  }
+
+  if (importOpenChatgptEl) {
+    importOpenChatgptEl.addEventListener("click", function (e) {
+      e.preventDefault();
+      openAiService(CHATGPT_URL);
+    });
+  }
+
+  if (importOpenClaudeEl) {
+    importOpenClaudeEl.addEventListener("click", function (e) {
+      e.preventDefault();
+      openAiService(CLAUDE_URL);
     });
   }
 
