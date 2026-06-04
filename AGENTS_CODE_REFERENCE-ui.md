@@ -12,15 +12,17 @@ Parent: [AGENTS_CODE_REFERENCE.md](./AGENTS_CODE_REFERENCE.md)
 .week (main, max-width ~1400px)
 ├── .week__header
 ├── .dashboard
-│   ├── #dashboard-grid     (6 cards, JS)
-│   └── #week-summary       (full-width week calories, JS)
+│   ├── #dashboard-grid           (6 cards, JS)
+│   ├── #week-summary             (full-width week calories, JS)
+│   └── #dashboard-micro-panel    (hidden until toggle; % DV list, JS)
 ├── .week__grid             (6 columns Mon–Sat, 45vh height desktop)
 │   └── .day × 6
 │       ├── .day__label
 │       └── .day__editor
 │           ├── .day__backdrop   (highlight layer)
 │           └── textarea.day__input (transparent text)
-└── .keywords               (food definitions table)
+├── .keywords               (food definitions table)
+└── .demographic            (collapsed `<details>`; ♂/♀ badge on summary)
 ```
 
 Modals are **siblings** of `main`, not inside it.
@@ -49,6 +51,8 @@ Native `<textarea>` cannot color individual words. Pattern:
 
 **`.week-summary`** — below grid, full width, distinct background; week total calories prominent.
 
+**Micro requirements** — `#dashboard-micro-toggle` in `.dashboard__header-row`; panel `.dashboard__micro-panel` with responsive grid `.dashboard__micro-list`. **% DV** text color and `font-weight` are inline from `config.json` tiers (`data-dv-tier` on row).
+
 **Responsive** (bottom of `styles.css`):
 
 - ≤900px: dashboard + week grid → 3 columns; week summary spans full width.
@@ -64,6 +68,16 @@ Notable columns:
 - **Actions** — `.keywords__import`, `.keywords__delete` flex row.
 
 Horizontal scroll on narrow screens: `.keywords__panel { overflow-x: auto }`, `min-width` on table.
+
+## Demographic panel
+
+**`.demographic__details`** — native `<details>`; **closed by default** (no `open` attribute).
+
+**Summary** — `.demographic__summary` with title + `#demographic-badge` (♂/♀) in the corner.
+
+**Body** — radio-style `.demographic__option` buttons; selected `.demographic__option--selected`.
+
+Placed **below** `.keywords` in `index.html`.
 
 ## Modals (shared)
 
@@ -96,7 +110,8 @@ JS does not depend on BEM beyond stable IDs (`#mon`, `#keywords-list`, etc.).
 Critical hooks (do not rename without updating `app.js` top):
 
 - Day: `mon` … `sat`
-- `dashboard-grid`, `week-summary`
+- `dashboard-grid`, `week-summary`, `dashboard-micro-toggle`, `dashboard-micro-panel`, `dashboard-micro-list`
+- `demographic-panel`, `demographic-badge`, `demographic-options`
 - `keywords-list`, `keywords-empty`, `add-keyword`
 - `import-modal`, `import-json`, `import-ai-*`, `micro-modal`, `micro-form`
 

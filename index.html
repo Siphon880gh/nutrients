@@ -15,11 +15,18 @@
 
     <section class="dashboard" aria-labelledby="dashboard-heading">
       <div class="dashboard__header">
-        <h2 id="dashboard-heading" class="dashboard__title">Dashboard</h2>
+        <div class="dashboard__header-row">
+          <h2 id="dashboard-heading" class="dashboard__title">Dashboard</h2>
+          <button type="button" id="dashboard-micro-toggle" class="dashboard__micro-toggle" aria-expanded="false" aria-controls="dashboard-micro-panel">Micro requirements</button>
+        </div>
         <p class="dashboard__hint">Each food match in a day adds that food's macros (4 cal/g protein &amp; carbs, 9 cal/g fat)</p>
       </div>
       <div id="dashboard-grid" class="dashboard__grid"></div>
       <div id="week-summary" class="week-summary" aria-label="Week summary"></div>
+      <div id="dashboard-micro-panel" class="dashboard__micro-panel" hidden>
+        <p class="dashboard__micro-hint">Average daily intake vs your demographic daily values (Mon–Sat).</p>
+        <div id="dashboard-micro-list" class="dashboard__micro-list" role="list"></div>
+      </div>
     </section>
 
     <div class="week__grid" role="group" aria-label="Monday through Saturday notes">
@@ -98,6 +105,28 @@
 
         <button type="button" id="add-keyword" class="keywords__add">Add food definition</button>
       </div>
+    </section>
+
+    <section class="demographic" aria-labelledby="demographic-heading">
+      <details id="demographic-panel" class="demographic__details">
+        <summary class="demographic__summary">
+          <span id="demographic-heading" class="demographic__summary-text">Demographic</span>
+          <span id="demographic-badge" class="demographic__badge" aria-hidden="true" title="Male">♂</span>
+        </summary>
+        <div class="demographic__body">
+          <p class="demographic__hint">Daily values for micro requirements (% DV). Saved in this browser.</p>
+          <div id="demographic-options" class="demographic__options" role="radiogroup" aria-label="Demographic">
+            <button type="button" class="demographic__option demographic__option--selected" data-demographic="male" role="radio" aria-checked="true">
+              <span class="demographic__option-icon" aria-hidden="true">♂</span>
+              <span class="demographic__option-label">Male</span>
+            </button>
+            <button type="button" class="demographic__option" data-demographic="female" role="radio" aria-checked="false">
+              <span class="demographic__option-icon" aria-hidden="true">♀</span>
+              <span class="demographic__option-label">Female</span>
+            </button>
+          </div>
+        </div>
+      </details>
     </section>
   </main>
 

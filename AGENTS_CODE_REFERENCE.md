@@ -27,7 +27,7 @@ When context is tight: read **this file** first, then open the one feature file 
 | Markup | Static HTML5 |
 | Style | Plain CSS (`styles.css`, ~869 lines) |
 | Logic | Single IIFE in `app.js` (~1066 lines) |
-| Persistence | `localStorage` for **food definitions only** |
+| Persistence | `localStorage` for **food definitions** and **demographic** |
 | Run | Open `index.html` or any static file server |
 
 ## Architecture (high level)
@@ -41,6 +41,8 @@ When context is tight: read **this file** first, then open the one feature file 
 ├─────────────────────────────────────────────────────────┤
 │  Food definitions table (CRUD, micros modal, import)    │
 │  ← persisted: localStorage `nutrients-food-definitions` │
+│  Demographic panel (male/female DV profile, collapsed)  │
+│  ← persisted: localStorage `nutrients-demographic`      │
 └─────────────────────────────────────────────────────────┘
 ```
 
@@ -52,7 +54,8 @@ When context is tight: read **this file** first, then open the one feature file 
 nutrients/
 ├── index.html          (~157 lines)  Page structure, modals, static day editors
 ├── styles.css          (~869 lines)  Layout, dashboard, table, modals, responsive
-├── app.js              (~1066 lines) All application logic (IIFE)
+├── app.js              All application logic (IIFE)
+├── config.json         Micro % DV tier colors & font weights (fetched at boot)
 └── AGENTS_CODE_REFERENCE*.md         AI docs (this set)
 ```
 
@@ -81,13 +84,15 @@ In-memory array `keywords` (legacy name; UI label is **Food definitions**). Each
 }
 ```
 
-Micronutrients affect **storage and UI** (micros button codes, import JSON); they are **not** rolled into dashboard totals yet.
+Micronutrients affect **storage and UI** (micros button codes, import JSON) and **dashboard micro requirements** (% DV vs demographic daily values). Macros-only cards still omit micros; expand **Micro requirements** on the dashboard for average daily % DV (Mon–Sat).
 
 ## Key constants (near top of `app.js`)
 
 - `DAYS` — six entries `{ id, label }` (`mon`…`sat`).
 - `MICRO_FIELDS` — `{ key, label, unit, code }` for 12 micros; `code` drives button label (`f`, `na`, `b12`, …).
 - `STORAGE_KEY` — `nutrients-food-definitions`; migrates from `nutrients-keywords`.
+- `STORAGE_KEY_DEMOGRAPHIC` — `nutrients-demographic`; `male` | `female`, default `male`.
+- `DV_BY_DEMOGRAPHIC` — daily reference amounts per micro key for % DV.
 - `CAL_PROTEIN|CARBS|FATS` — 4, 4, 9.
 
 ## UI regions (`index.html`)
@@ -95,9 +100,10 @@ Micronutrients affect **storage and UI** (micros button codes, import JSON); the
 Top to bottom inside `<main class="week">`:
 
 1. Header  
-2. `.dashboard` — `#dashboard-grid`, `#week-summary` (filled by JS)  
+2. `.dashboard` — `#dashboard-grid`, `#week-summary`, optional `#dashboard-micro-panel` (toggle `#dashboard-micro-toggle`)  
 3. `.week__grid` — six `.day__editor` (backdrop + transparent textarea)  
 4. `.keywords` — food definitions table; `#keywords-list` body rendered in JS  
+5. `.demographic` — collapsible `#demographic-panel` below food definitions; badge `#demographic-badge`  
 
 Outside main: `#import-modal`, `#micro-modal`.
 
@@ -105,7 +111,8 @@ Outside main: `#import-modal`, `#micro-modal`.
 
 - **New micronutrient:** add to `MICRO_FIELDS` in `app.js`; `initMicroForm` / `normalizeMicros` / import export follow automatically; update AI prompt helpers if needed ([import doc](./AGENTS_CODE_REFERENCE-import.md)).
 - **New persisted field:** extend `blankKeyword`, `loadFoodDefinitions` map, `renderKeywords` row HTML, `syncFieldFromDom`, `exportFoodJson` / `applyImportJson`.
-- **Dashboard metric:** extend `totalsFromText` / `dashboardCardHtml` / `renderWeekSummary` ([core doc](./AGENTS_CODE_REFERENCE-core.md)).
+- **Dashboard metric:** extend `totalsFromText` / `dashboardCardHtml` / `renderWeekSummary`; micro % DV uses `microTotalsFromText` / `renderMicroRequirements` ([core doc](./AGENTS_CODE_REFERENCE-core.md)).
+- **Demographic / DV:** extend `DV_BY_DEMOGRAPHIC` and `loadDemographic` / `setDemographic` ([core doc](./AGENTS_CODE_REFERENCE-core.md)).
 - **Do not** assume day notes are saved — only definitions are.
 - **Highlighting** requires mirror DOM; do not style matches only in textarea ([ui doc](./AGENTS_CODE_REFERENCE-ui.md)).
 - Preserve HTML-escape paths: `escapeHtml`, `escapeAttr` for injected strings.

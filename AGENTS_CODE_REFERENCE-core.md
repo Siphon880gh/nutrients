@@ -10,11 +10,13 @@ Parent overview: [AGENTS_CODE_REFERENCE.md](./AGENTS_CODE_REFERENCE.md)
 
 | Concern | Primary symbols |
 |---------|-----------------|
-| In-memory state | `keywords[]`, `activeMicroId`, `activeImportId` |
+| In-memory state | `keywords[]`, `demographic`, `microRequirementsOpen`, `activeMicroId`, `activeImportId` |
 | IDs | `makeId()`, `findIndex(id)` |
 | Table UI | `renderKeywords`, `syncFieldFromDom`, `moveKeyword`, `removeKeyword`, `addKeyword` |
 | Matching | `countKeyword`, `keywordNames`, `buildHighlightRegex` |
 | Totals | `totalsFromText`, `addTotals`, `renderDashboard`, `renderWeekSummary` |
+| Micro totals / DV | `microTotalsFromText`, `weekMicroTotals`, `renderMicroRequirements`, `setMicroRequirementsOpen` |
+| Demographic | `loadDemographic`, `saveDemographic`, `setDemographic`, `renderDemographicUi`, `DV_BY_DEMOGRAPHIC` |
 | Highlights | `updateDayHighlights`, `highlightedHtml`, `refreshAll` |
 | Persistence | `saveFoodDefinitions`, `loadFoodDefinitions` |
 
@@ -73,6 +75,9 @@ new RegExp("\\b" + escapeRegex(name) + "\\b", "gi")
 - Accumulates `week` via `addTotals`.
 - Sets `#dashboard-grid` HTML from `dashboardCardHtml` (per-macro g + cal, total cal).
 - Calls `renderWeekSummary(week)` → `#week-summary` shows **Week total** + `data-week-extras` (empty hook for future EOW stats).
+- If **Micro requirements** is expanded (`#dashboard-micro-toggle`), `renderMicroRequirements` fills `#dashboard-micro-list`.
+
+**Micro requirements** — `microTotalsFromText` mirrors macro matching (hits × per-food micros). Week sum ÷ `MICRO_AVG_DAYS` (6) vs `dailyDv(key)` from `DV_BY_DEMOGRAPHIC[demographic]` → average daily **% DV**. **% DV color/weight** comes from `config.json` → `microDvStatus.tiers` (loaded by `loadAppConfig`; fallback `DEFAULT_MICRO_DV_STATUS` in `app.js`). `tierForMicroPct` picks the tier with the highest `minPercent` still ≤ value. Toggle state is session-only; demographic is persisted.
 
 **Calorie constants** — `CAL_PROTEIN`, `CAL_CARBS`, `CAL_FATS` at file top.
 
@@ -95,18 +100,19 @@ UI mirror pattern: [AGENTS_CODE_REFERENCE-ui.md](./AGENTS_CODE_REFERENCE-ui.md)
 - **`openMicroModal` / `saveMicrosFromForm` / `closeMicroModal`** — mid-file; debounced save on `input` (`scheduleMicroSave`, 250ms).
 - **Button label** — `filledMicroCodes` → comma-separated `code`s; `keywords__micros--filled` class; tooltip `data-tooltip` on hover ([ui doc](./AGENTS_CODE_REFERENCE-ui.md)).
 
-Micros are **not** included in `totalsFromText` today.
+Micros are **not** in macro `totalsFromText`; use `microTotalsFromText` / `weekMicroTotals` for the micro panel.
 
 ## localStorage
 
 | Key | Content |
 |-----|---------|
 | `nutrients-food-definitions` | `JSON.stringify(keywords)` |
+| `nutrients-demographic` | `"male"` or `"female"` (default `male` if missing) |
 | `nutrients-keywords` (legacy) | Migrated once on load, then removed |
 
 **Load** — `loadFoodDefinitions`: maps array, `normalizeMicros(item.micros)`, bumps `nextId` from existing ids.
 
-**Save triggers** — row input, add/delete/reorder, micros save, import apply, `beforeunload`.
+**Save triggers** — row input, add/delete/reorder, micros save, import apply, demographic change, `beforeunload` (definitions + demographic).
 
 ## Internal naming vs UI
 
@@ -116,7 +122,9 @@ Micros are **not** included in `totalsFromText` today.
 
 | Goal | Where to edit |
 |------|----------------|
-| Sum micros into dashboard | `totalsFromText`, `dashboardCardHtml`, maybe week summary |
+| Sum micros into per-day cards | `dashboardCardHtml` + `microTotalsFromText` per day |
+| Change DV profile | `DV_BY_DEMOGRAPHIC`, `MICRO_FIELDS` keys must align |
+| New demographic option | `DEMOGRAPHIC_META`, HTML options, `normalizeDemographic`, DV table |
 | Persist day notes | New `STORAGE_KEY`, load/save in `bindDay`, boot |
 | Sunday column | `DAYS`, HTML day column, CSS grid columns |
 | Stricter matching | `countKeyword` / regex builder |

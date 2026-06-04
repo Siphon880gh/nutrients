@@ -9,6 +9,9 @@
   ];
   var STORAGE_KEY = "nutrients-food-definitions";
   var STORAGE_KEY_LEGACY = "nutrients-keywords";
+  var STORAGE_KEY_DEMOGRAPHIC = "nutrients-demographic";
+  var DEFAULT_DEMOGRAPHIC = "male";
+  var MICRO_AVG_DAYS = 6;
   var CAL_PROTEIN = 4;
   var CAL_CARBS = 4;
   var CAL_FATS = 9;
@@ -20,6 +23,11 @@
   var addKeywordBtn = document.getElementById("add-keyword");
   var dashboardGridEl = document.getElementById("dashboard-grid");
   var weekSummaryEl = document.getElementById("week-summary");
+  var dashboardMicroToggleEl = document.getElementById("dashboard-micro-toggle");
+  var dashboardMicroPanelEl = document.getElementById("dashboard-micro-panel");
+  var dashboardMicroListEl = document.getElementById("dashboard-micro-list");
+  var demographicBadgeEl = document.getElementById("demographic-badge");
+  var demographicOptionsEl = document.getElementById("demographic-options");
   var microModalEl = document.getElementById("micro-modal");
   var microFormEl = document.getElementById("micro-form");
   var microModalFoodEl = document.getElementById("micro-modal-food");
@@ -44,6 +52,8 @@
   var activeMicroId = null;
   var activeImportId = null;
   var microSaveTimer;
+  var demographic = DEFAULT_DEMOGRAPHIC;
+  var microRequirementsOpen = false;
 
   var MICRO_FIELDS = [
     { key: "fiber", label: "Fiber", unit: "g", code: "f" },
@@ -59,6 +69,42 @@
     { key: "vitaminC", label: "Vitamin C", unit: "mg", code: "c" },
     { key: "folate", label: "Folate", unit: "mcg", code: "fol" },
   ];
+
+  var DV_BY_DEMOGRAPHIC = {
+    male: {
+      fiber: 38,
+      sodium: 2300,
+      potassium: 3400,
+      calcium: 1000,
+      iron: 8,
+      magnesium: 420,
+      zinc: 11,
+      vitaminA: 900,
+      vitaminD: 15,
+      vitaminB12: 2.4,
+      vitaminC: 90,
+      folate: 400,
+    },
+    female: {
+      fiber: 25,
+      sodium: 2300,
+      potassium: 2600,
+      calcium: 1000,
+      iron: 18,
+      magnesium: 320,
+      zinc: 8,
+      vitaminA: 700,
+      vitaminD: 15,
+      vitaminB12: 2.4,
+      vitaminC: 75,
+      folate: 400,
+    },
+  };
+
+  var DEMOGRAPHIC_META = {
+    male: { icon: "♂", label: "Male" },
+    female: { icon: "♀", label: "Female" },
+  };
 
   function escapeHtml(text) {
     return String(text)
@@ -545,6 +591,234 @@
     };
   }
 
+  function emptyMicroTotals() {
+    var totals = {};
+    MICRO_FIELDS.forEach(function (field) {
+      totals[field.key] = 0;
+    });
+    return totals;
+  }
+
+  function microTotalsFromText(text) {
+    var totals = emptyMicroTotals();
+    var seen = {};
+
+    keywords.forEach(function (kw) {
+      var name = kw.name.trim();
+      if (!name) return;
+      var key = name.toLowerCase();
+      if (seen[key]) return;
+      seen[key] = true;
+
+      var hits = countKeyword(text, name);
+      if (!hits) return;
+
+      MICRO_FIELDS.forEach(function (field) {
+        var v = kw.micros[field.key];
+        if (v === "" || v == null) return;
+        totals[field.key] += hits * parseFloat(v);
+      });
+    });
+
+    return totals;
+  }
+
+  function addMicroTotals(a, b) {
+    var out = emptyMicroTotals();
+    MICRO_FIELDS.forEach(function (field) {
+      out[field.key] = a[field.key] + b[field.key];
+    });
+    return out;
+  }
+
+  function weekMicroTotals() {
+    var week = emptyMicroTotals();
+    DAYS.forEach(function (day) {
+      var el = document.getElementById(day.id);
+      var text = el ? el.value : "";
+      week = addMicroTotals(week, microTotalsFromText(text));
+    });
+    return week;
+  }
+
+  function dailyDv(key) {
+    var profile = DV_BY_DEMOGRAPHIC[demographic] || DV_BY_DEMOGRAPHIC[DEFAULT_DEMOGRAPHIC];
+    return profile[key] || 0;
+  }
+
+  function avgDailyMicroPct(key, weekTotal) {
+    var dv = dailyDv(key);
+    if (!dv) return null;
+    var avgDaily = weekTotal / MICRO_AVG_DAYS;
+    return (avgDaily / dv) * 100;
+  }
+
+  var DEFAULT_MICRO_DV_STATUS = {
+    tiers: [
+      { id: "green", minPercent: 100, color: "#1a7a36", fontWeight: 400 },
+      { id: "blue", minPercent: 70, color: "#2a5f9e", fontWeight: 600 },
+      { id: "orange", minPercent: 40, color: "#c45c00", fontWeight: 800 },
+      { id: "red", minPercent: 0, color: "#b42318", fontWeight: 800 },
+    ],
+  };
+
+  var microDvStatus = DEFAULT_MICRO_DV_STATUS;
+
+  function normalizeMicroDvTiers(raw) {
+    if (!raw || !Array.isArray(raw.tiers)) return DEFAULT_MICRO_DV_STATUS;
+    var tiers = raw.tiers
+      .map(function (tier) {
+        var minPercent = parseFloat(tier.minPercent);
+        if (isNaN(minPercent)) return null;
+        var fontWeight = parseInt(tier.fontWeight, 10);
+        return {
+          id: typeof tier.id === "string" ? tier.id : "",
+          minPercent: minPercent,
+          color: typeof tier.color === "string" ? tier.color : "#1a1a1a",
+          fontWeight: isNaN(fontWeight) ? 400 : fontWeight,
+        };
+      })
+      .filter(Boolean)
+      .sort(function (a, b) {
+        return b.minPercent - a.minPercent;
+      });
+    if (!tiers.length) return DEFAULT_MICRO_DV_STATUS;
+    return { tiers: tiers };
+  }
+
+  function loadAppConfig(done) {
+    fetch("config.json")
+      .then(function (res) {
+        if (!res.ok) throw new Error("config fetch failed");
+        return res.json();
+      })
+      .then(function (data) {
+        microDvStatus = normalizeMicroDvTiers(data.microDvStatus);
+        done();
+      })
+      .catch(function () {
+        microDvStatus = DEFAULT_MICRO_DV_STATUS;
+        done();
+      });
+  }
+
+  function tierForMicroPct(pct) {
+    if (pct == null || isNaN(pct)) return null;
+    var tiers = microDvStatus.tiers;
+    for (var i = 0; i < tiers.length; i++) {
+      if (pct >= tiers[i].minPercent) return tiers[i];
+    }
+    return tiers[tiers.length - 1] || null;
+  }
+
+  function microPctInlineStyle(pct) {
+    var tier = tierForMicroPct(pct);
+    if (!tier) return "";
+    return (
+      ' style="color:' +
+      escapeAttr(tier.color) +
+      ";font-weight:" +
+      tier.fontWeight +
+      ';"'
+    );
+  }
+
+  function renderMicroRequirements() {
+    if (!dashboardMicroListEl) return;
+
+    var week = weekMicroTotals();
+    var html = "";
+
+    MICRO_FIELDS.forEach(function (field) {
+      var total = week[field.key];
+      var pct = avgDailyMicroPct(field.key, total);
+      var pctText =
+        pct == null || isNaN(pct) ? "—" : fmtNum(pct) + "% DV";
+      var amtText = total > 0 ? fmtNum(total / MICRO_AVG_DAYS) + " " + field.unit + "/day avg" : "—";
+      var tier = tierForMicroPct(pct);
+      var tierAttr = tier ? ' data-dv-tier="' + escapeAttr(tier.id) + '"' : "";
+
+      html +=
+        '<div class="dashboard__micro-row"' +
+        tierAttr +
+        ' role="listitem">' +
+        '<span class="dashboard__micro-name">' +
+        escapeHtml(field.label) +
+        "</span>" +
+        '<span class="dashboard__micro-amt">' +
+        escapeHtml(amtText) +
+        "</span>" +
+        '<span class="dashboard__micro-pct"' +
+        microPctInlineStyle(pct) +
+        ">" +
+        escapeHtml(pctText) +
+        "</span>" +
+        "</div>";
+    });
+
+    dashboardMicroListEl.innerHTML = html;
+  }
+
+  function setMicroRequirementsOpen(open) {
+    microRequirementsOpen = !!open;
+    if (dashboardMicroToggleEl) {
+      dashboardMicroToggleEl.setAttribute("aria-expanded", microRequirementsOpen ? "true" : "false");
+      dashboardMicroToggleEl.classList.toggle("dashboard__micro-toggle--open", microRequirementsOpen);
+    }
+    if (dashboardMicroPanelEl) {
+      dashboardMicroPanelEl.hidden = !microRequirementsOpen;
+    }
+    if (microRequirementsOpen) {
+      renderMicroRequirements();
+    }
+  }
+
+  function normalizeDemographic(value) {
+    return value === "female" ? "female" : "male";
+  }
+
+  function saveDemographic() {
+    try {
+      localStorage.setItem(STORAGE_KEY_DEMOGRAPHIC, demographic);
+    } catch (e) {
+      /* ignore */
+    }
+  }
+
+  function loadDemographic() {
+    try {
+      var raw = localStorage.getItem(STORAGE_KEY_DEMOGRAPHIC);
+      if (raw) {
+        demographic = normalizeDemographic(raw);
+      }
+    } catch (e) {
+      demographic = DEFAULT_DEMOGRAPHIC;
+    }
+  }
+
+  function renderDemographicUi() {
+    var meta = DEMOGRAPHIC_META[demographic] || DEMOGRAPHIC_META[DEFAULT_DEMOGRAPHIC];
+    if (demographicBadgeEl) {
+      demographicBadgeEl.textContent = meta.icon;
+      demographicBadgeEl.setAttribute("title", meta.label);
+    }
+    if (!demographicOptionsEl) return;
+    var buttons = demographicOptionsEl.querySelectorAll("[data-demographic]");
+    buttons.forEach(function (btn) {
+      var id = btn.getAttribute("data-demographic");
+      var selected = id === demographic;
+      btn.classList.toggle("demographic__option--selected", selected);
+      btn.setAttribute("aria-checked", selected ? "true" : "false");
+    });
+  }
+
+  function setDemographic(id) {
+    demographic = normalizeDemographic(id);
+    saveDemographic();
+    renderDemographicUi();
+    renderMicroRequirements();
+  }
+
   function addTotals(a, b) {
     return {
       protein: a.protein + b.protein,
@@ -624,6 +898,9 @@
 
     dashboardGridEl.innerHTML = html;
     renderWeekSummary(week);
+    if (microRequirementsOpen) {
+      renderMicroRequirements();
+    }
   }
 
   function syncScroll(textarea, backdrop) {
@@ -1058,9 +1335,32 @@
     if (el) bindDay(el);
   });
 
-  window.addEventListener("beforeunload", saveFoodDefinitions);
+  window.addEventListener("beforeunload", function () {
+    saveFoodDefinitions();
+    saveDemographic();
+  });
 
-  loadFoodDefinitions();
-  renderKeywords();
-  refreshAll();
+  if (dashboardMicroToggleEl) {
+    dashboardMicroToggleEl.addEventListener("click", function () {
+      setMicroRequirementsOpen(!microRequirementsOpen);
+    });
+  }
+
+  if (demographicOptionsEl) {
+    demographicOptionsEl.addEventListener("click", function (e) {
+      var btn = e.target.closest("[data-demographic]");
+      if (!btn) return;
+      setDemographic(btn.getAttribute("data-demographic"));
+    });
+  }
+
+  function boot() {
+    loadFoodDefinitions();
+    loadDemographic();
+    renderDemographicUi();
+    renderKeywords();
+    refreshAll();
+  }
+
+  loadAppConfig(boot);
 })();
