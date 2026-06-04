@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Week notes</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="week">
+    <header class="week__header">
+      <h1>Week notes</h1>
+      <p class="week__hint">Mon–Sat · multiple lines per day</p>
+    </header>
+
+    <div class="week__grid" role="group" aria-label="Monday through Saturday notes">
+      <div class="day">
+        <label class="day__label" for="mon">Mon</label>
+        <div class="day__editor">
+          <div class="day__backdrop" aria-hidden="true"></div>
+          <textarea id="mon" name="mon" class="day__input" rows="8" placeholder="Monday…" spellcheck="true"></textarea>
+        </div>
+      </div>
+
+      <div class="day">
+        <label class="day__label" for="tue">Tue</label>
+        <div class="day__editor">
+          <div class="day__backdrop" aria-hidden="true"></div>
+          <textarea id="tue" name="tue" class="day__input" rows="8" placeholder="Tuesday…" spellcheck="true"></textarea>
+        </div>
+      </div>
+
+      <div class="day">
+        <label class="day__label" for="wed">Wed</label>
+        <div class="day__editor">
+          <div class="day__backdrop" aria-hidden="true"></div>
+          <textarea id="wed" name="wed" class="day__input" rows="8" placeholder="Wednesday…" spellcheck="true"></textarea>
+        </div>
+      </div>
+
+      <div class="day">
+        <label class="day__label" for="thu">Thu</label>
+        <div class="day__editor">
+          <div class="day__backdrop" aria-hidden="true"></div>
+          <textarea id="thu" name="thu" class="day__input" rows="8" placeholder="Thursday…" spellcheck="true"></textarea>
+        </div>
+      </div>
+
+      <div class="day">
+        <label class="day__label" for="fri">Fri</label>
+        <div class="day__editor">
+          <div class="day__backdrop" aria-hidden="true"></div>
+          <textarea id="fri" name="fri" class="day__input" rows="8" placeholder="Friday…" spellcheck="true"></textarea>
+        </div>
+      </div>
+
+      <div class="day">
+        <label class="day__label" for="sat">Sat</label>
+        <div class="day__editor">
+          <div class="day__backdrop" aria-hidden="true"></div>
+          <textarea id="sat" name="sat" class="day__input" rows="8" placeholder="Saturday…" spellcheck="true"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <section class="keywords" aria-labelledby="keywords-heading">
+      <div class="keywords__header">
+        <h2 id="keywords-heading" class="keywords__title">Keywords</h2>
+        <p class="keywords__hint">Add foods or terms with macros (g). Matching words in the week above are highlighted.</p>
+      </div>
+
+      <div class="keywords__panel">
+        <table class="keywords__table">
+          <thead>
+            <tr>
+              <th class="keywords__th-order" scope="col"><span class="visually-hidden">Order</span></th>
+              <th class="keywords__th-name" scope="col">Keyword</th>
+              <th class="keywords__th-macro" scope="col">Protein (g)</th>
+              <th class="keywords__th-macro" scope="col">Carbs (g)</th>
+              <th class="keywords__th-macro" scope="col">Fats (g)</th>
+              <th class="keywords__th-actions" scope="col"><span class="visually-hidden">Actions</span></th>
+            </tr>
+          </thead>
+          <tbody id="keywords-list"></tbody>
+        </table>
+
+        <p id="keywords-empty" class="keywords__empty" hidden>No keywords yet.</p>
+
+        <button type="button" id="add-keyword" class="keywords__add">Add keyword</button>
+      </div>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
