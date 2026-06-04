@@ -12,12 +12,13 @@ Parent: [AGENTS_CODE_REFERENCE.md](./AGENTS_CODE_REFERENCE.md)
 .week (main, max-width ~1400px)
 ├── .week__header
 ├── .dashboard
-│   ├── #dashboard-grid           (6 cards, JS)
+│   ├── #dashboard-grid           (7 cards, JS)
 │   ├── #week-summary             (hidden by default; week calories toggle)
 │   └── #dashboard-micro-panel    (hidden until toggle; % DV list, JS)
-├── .week__grid             (6 columns Mon–Sat, 45vh height desktop)
-│   └── .day × 6
-│       ├── .day__label
+├── .week__days-toolbar     (hint + `#clear-all-days`)
+├── .week__grid             (7 columns Mon–Sun, 45vh height desktop)
+│   └── .day × 7
+│       ├── .day__head (label + Clear)
 │       └── .day__editor
 │           ├── .day__backdrop   (highlight layer)
 │           └── textarea.day__input (transparent text)
@@ -47,7 +48,7 @@ Native `<textarea>` cannot color individual words. Pattern:
 
 ## Dashboard & week bar
 
-**`.dashboard__grid`** — 6 equal columns; cards `.dashboard__card` with rows for P/C/F g·cal and total.
+**`.dashboard__grid`** — 7 equal columns (4 at ≤1100px, 3 at ≤900px); cards `.dashboard__card` with rows for P/C/F g·cal and total.
 
 **`.week-summary`** — below grid, full width, distinct background; hidden until **Week total** toggle (`#dashboard-week-toggle`). Header toggles grouped in `.dashboard__toggles` (shared `.dashboard__toggle` / `--open`).
 
@@ -109,7 +110,7 @@ JS does not depend on BEM beyond stable IDs (`#mon`, `#keywords-list`, etc.).
 
 Critical hooks (do not rename without updating `app.js` top):
 
-- Day: `mon` … `sat`
+- Day: `mon` … `sun`, `clear-all-days`
 - `dashboard-grid`, `week-summary`, `dashboard-week-toggle`, `dashboard-micro-toggle`, `dashboard-micro-panel`, `dashboard-micro-list`
 - `demographic-panel`, `demographic-badge`, `demographic-options`
 - `keywords-list`, `keywords-empty`, `add-keyword`

@@ -2,7 +2,7 @@
 
 > **Approximate locations only** — navigate by function name and region within `app.js` / `index.html`, not line numbers.
 
-JSON import modal and AI-assisted prompt flow for a **single** food definition row.
+JSON import modal and AI-assisted prompt flow for a **single** food definition row, plus **bulk** export/import for the full list.
 
 Parent: [AGENTS_CODE_REFERENCE.md](./AGENTS_CODE_REFERENCE.md) · Table/macros: [AGENTS_CODE_REFERENCE-core.md](./AGENTS_CODE_REFERENCE-core.md)
 
@@ -75,13 +75,31 @@ Used when opening import with AI panel **closed** (`setImportAiPanelOpen(false)`
 
 **Prefill** — `syncImportAiInputs`: if portion empty and row has `name`, sets portion input to name (user can edit to e.g. `1 cup of peanuts`).
 
+## Bulk export / import (all foods)
+
+**UI** — `#export-all-foods` / `#import-all-foods` in `.keywords__footer` under the table; modal `#import-all-modal`.
+
+| Function | Role |
+|----------|------|
+| `exportFoodObject` / `exportAllFoodJson` | Array of per-food objects (same shape as single export) |
+| `exportAllFoods` | Download `nutrients-food-definitions.json` |
+| `openImportAllModal` | Prefills textarea with `exportAllFoodJson()` |
+| `getImportAllMode` | Radio `import-all-mode`: `amend` (default) or `replace` |
+| `applyImportAllJson(raw, mode)` | Dispatches to amend or replace |
+| `applyImportAllAmend` | Match by lowercase name; `applyImportItemToKeyword` on hit, else append |
+| `applyImportAllReplace` | Rebuild `keywords[]` from import (prior behavior) |
+| `applyImportItemToKeyword` | Merge one import object into an existing row (omitted fields unchanged on amend) |
+| `keywordFromImportItem` | New row: `blankKeyword()` + `applyImportItemToKeyword` |
+
+**Amend** — confirm summarizes how many updated vs added. **Replace** — confirm replaces entire list. Empty array errors on amend; replace with confirm can clear all.
+
 ## Open / close
 
 **`openImportModal(id)`** — closes micro modal if open; sets JSON from export; AI panel closed by default.
 
 **`closeImportModal`** — clears `activeImportId`, hides modal, resets AI panel, clears error.
 
-**Escape** — global keydown at end of `app.js`: import closes first, else micro.
+**Escape** — global keydown at end of `app.js`: import-all, then single import, then micro.
 
 ## Example JSON (for AI / users)
 
@@ -99,6 +117,15 @@ Used when opening import with AI panel **closed** (`setImportAiPanelOpen(false)`
 ```
 
 Omitted `micros` keys on import → leave existing values untouched.
+
+Bulk array example:
+
+```json
+[
+  { "name": "egg", "protein": 6, "fats": 5 },
+  { "name": "1 cup rice", "carbs": 45 }
+]
+```
 
 ## Safe-change notes
 

@@ -6,7 +6,7 @@ AI-oriented codebase map for safe modification, feature tracing, and implementat
 
 ## Purpose
 
-**Week notes + food definitions** — a client-only nutrition tracker. Users type foods in Mon–Sat notes; **food definitions** supply macros/micros per match; a **dashboard** totals grams and calories; a **week bar** shows total calories.
+**Week notes + food definitions** — a client-only nutrition tracker. Users type foods in Mon–Sun notes; **food definitions** supply macros/micros per match; a **dashboard** totals grams and calories; a **week bar** shows total calories.
 
 No backend, no bundler, no framework.
 
@@ -27,7 +27,7 @@ When context is tight: read **this file** first, then open the one feature file 
 | Markup | Static HTML5 |
 | Style | Plain CSS (`styles.css`, ~869 lines) |
 | Logic | Single IIFE in `app.js` (~1066 lines) |
-| Persistence | `localStorage` for **food definitions** and **demographic** |
+| Persistence | `localStorage` for **food definitions**, **day notes**, and **demographic** |
 | Run | Open `index.html` or any static file server |
 
 ## Architecture (high level)
@@ -37,7 +37,7 @@ When context is tight: read **this file** first, then open the one feature file 
 │  Dashboard (per-day cards + week total bar)             │
 │  ← computed from day text × food-definition macros      │
 ├─────────────────────────────────────────────────────────┤
-│  Mon–Sat textareas (mirror backdrop = highlights)       │
+│  Mon–Sun textareas (mirror backdrop = highlights)       │
 ├─────────────────────────────────────────────────────────┤
 │  Food definitions table (CRUD, micros modal, import)    │
 │  ← persisted: localStorage `nutrients-food-definitions` │
@@ -46,7 +46,7 @@ When context is tight: read **this file** first, then open the one feature file 
 └─────────────────────────────────────────────────────────┘
 ```
 
-**Not persisted:** day note textarea content (lost on refresh unless you add storage later).
+**Persisted:** day notes (`nutrients-day-notes`), food definitions, demographic. Clear per day or all days (with `confirm`).
 
 ## File tree
 
@@ -66,7 +66,7 @@ nutrients/
 2. **User types in a day note** → `updateDayHighlights` + `renderDashboard` (each `input` on day textareas).
 3. **User edits food row** → sync row to `keywords[]` → `saveFoodDefinitions()` → `refreshAll()`.
 4. **Match rule:** whole-word, case-insensitive `\b(name)\b`; each occurrence adds that definition’s protein/carbs/fats once.
-5. **Calories:** protein×4 + carbs×4 + fats×9 per day; week bar sums six days.
+5. **Calories:** protein×4 + carbs×4 + fats×9 per day; week bar sums seven days.
 
 ## Domain model (food definition)
 
@@ -85,11 +85,11 @@ In-memory array `keywords` (legacy name; UI label is **Food definitions**). Each
 }
 ```
 
-Micronutrients affect **storage and UI** (micros button codes, import JSON) and **dashboard micro requirements** (% DV vs demographic daily values). Macros-only cards still omit micros; expand **Micro requirements** on the dashboard for average daily % DV (Mon–Sat).
+Micronutrients affect **storage and UI** (micros button codes, import JSON) and **dashboard micro requirements** (% DV vs demographic daily values). Macros-only cards still omit micros; expand **Micro requirements** on the dashboard for average daily % DV (Mon–Sun).
 
 ## Key constants (near top of `app.js`)
 
-- `DAYS` — six entries `{ id, label }` (`mon`…`sat`).
+- `DAYS` — seven entries `{ id, label }` (`mon`…`sun`).
 - `MICRO_FIELDS` — `{ key, label, unit, code }` for 12 micros; `code` drives button label (`f`, `na`, `b12`, …).
 - `STORAGE_KEY` — `nutrients-food-definitions`; migrates from `nutrients-keywords`.
 - `STORAGE_KEY_DEMOGRAPHIC` — `nutrients-demographic`; `male` | `female`, default `male`.
@@ -102,7 +102,7 @@ Top to bottom inside `<main class="week">`:
 
 1. Header  
 2. `.dashboard` — `#dashboard-grid`; optional `#week-summary` (`#dashboard-week-toggle`) and `#dashboard-micro-panel` (`#dashboard-micro-toggle`)  
-3. `.week__grid` — six `.day__editor` (backdrop + transparent textarea)  
+3. `.week__grid` — seven `.day__editor` (backdrop + transparent textarea)  
 4. `.keywords` — food definitions table; `#keywords-list` body rendered in JS  
 5. `.demographic` — collapsible `#demographic-panel` below food definitions; badge `#demographic-badge`  
 
@@ -114,7 +114,7 @@ Outside main: `#import-modal`, `#micro-modal`.
 - **New persisted field:** extend `blankKeyword`, `loadFoodDefinitions` map, `renderKeywords` row HTML, `syncFieldFromDom`, `exportFoodJson` / `applyImportJson`.
 - **Dashboard metric:** extend `totalsFromText` / `dashboardCardHtml` / `renderWeekSummary`; micro % DV uses `microTotalsFromText` / `renderMicroRequirements` ([core doc](./AGENTS_CODE_REFERENCE-core.md)).
 - **Demographic / DV:** extend `DV_BY_DEMOGRAPHIC` and `loadDemographic` / `setDemographic` ([core doc](./AGENTS_CODE_REFERENCE-core.md)).
-- **Do not** assume day notes are saved — only definitions are.
+- **Day notes:** `loadDayNotes` / `saveDayNotes`; clear via `clearDayNotes` / `clearAllDayNotes` ([core doc](./AGENTS_CODE_REFERENCE-core.md)).
 - **Highlighting** requires mirror DOM; do not style matches only in textarea ([ui doc](./AGENTS_CODE_REFERENCE-ui.md)).
 - Preserve HTML-escape paths: `escapeHtml`, `escapeAttr` for injected strings.
 

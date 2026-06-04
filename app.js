@@ -6,16 +6,17 @@
     { id: "thu", label: "Thu" },
     { id: "fri", label: "Fri" },
     { id: "sat", label: "Sat" },
+    { id: "sun", label: "Sun" },
   ];
   var STORAGE_KEY = "nutrients-food-definitions";
   var STORAGE_KEY_LEGACY = "nutrients-keywords";
   var STORAGE_KEY_DEMOGRAPHIC = "nutrients-demographic";
+  var STORAGE_KEY_DAYS = "nutrients-day-notes";
   var demographicDv =
     typeof NutrientsDemographicDv !== "undefined" ? NutrientsDemographicDv : null;
   var DEFAULT_DEMOGRAPHIC = demographicDv
     ? demographicDv.DEFAULT_DEMOGRAPHIC
     : "male";
-  var MICRO_AVG_DAYS = 6;
   var CAL_PROTEIN = 4;
   var CAL_CARBS = 4;
   var CAL_FATS = 9;
@@ -54,6 +55,13 @@
   var CLAUDE_URL = "https://claude.ai/new";
   var importJsonWrapEl = document.getElementById("import-json-wrap");
   var importJsonLabelEl = document.getElementById("import-json-label");
+  var importAllModalEl = document.getElementById("import-all-modal");
+  var importAllJsonEl = document.getElementById("import-all-json");
+  var importAllErrorEl = document.getElementById("import-all-error");
+  var importAllApplyBtn = document.getElementById("import-all-apply");
+  var importAllCancelBtn = document.getElementById("import-all-cancel");
+  var exportAllFoodsBtn = document.getElementById("export-all-foods");
+  var importAllFoodsBtn = document.getElementById("import-all-foods");
   var activeMicroId = null;
   var activeImportId = null;
   var microSaveTimer;
@@ -208,7 +216,7 @@
     return isNaN(n) ? "" : n;
   }
 
-  function exportFoodJson(kw) {
+  function exportFoodObject(kw) {
     var obj = { name: kw.name };
     if (kw.protein !== "" && kw.protein != null) obj.protein = kw.protein;
     if (kw.carbs !== "" && kw.carbs != null) obj.carbs = kw.carbs;
@@ -225,7 +233,192 @@
       obj.micros = micros;
     }
 
-    return JSON.stringify(obj, null, 2);
+    return obj;
+  }
+
+  function exportFoodJson(kw) {
+    return JSON.stringify(exportFoodObject(kw), null, 2);
+  }
+
+  function exportAllFoodJson() {
+    return JSON.stringify(
+      keywords.map(function (kw) {
+        return exportFoodObject(kw);
+      }),
+      null,
+      2
+    );
+  }
+
+  function exportAllFoods() {
+    var json = exportAllFoodJson();
+    var blob = new Blob([json], { type: "application/json" });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement("a");
+    a.href = url;
+    a.download = "nutrients-food-definitions.json";
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  function keywordFromImportItem(data, index) {
+    if (!data || typeof data !== "object" || Array.isArray(data)) {
+      throw new Error("Item " + (index + 1) + " must be an object");
+    }
+    if (data.name == null || String(data.name).trim() === "") {
+      throw new Error("Item " + (index + 1) + " is missing a name");
+    }
+
+    var kw = blankKeyword();
+    applyImportItemToKeyword(kw, data);
+    return kw;
+  }
+
+  function applyImportItemToKeyword(kw, data) {
+    kw.name = String(data.name).trim();
+
+    if ("protein" in data) {
+      kw.protein = storedMacroValue(data.protein);
+    }
+    if ("carbs" in data) {
+      kw.carbs = storedMacroValue(data.carbs);
+    }
+    if ("fats" in data) {
+      kw.fats = storedMacroValue(data.fats);
+    }
+
+    if (
+      data.micros &&
+      typeof data.micros === "object" &&
+      !Array.isArray(data.micros)
+    ) {
+      MICRO_FIELDS.forEach(function (field) {
+        if (field.key in data.micros) {
+          kw.micros[field.key] = storedMacroValue(data.micros[field.key]);
+        }
+      });
+    }
+  }
+
+  function findKeywordIndexByName(name) {
+    var key = String(name).trim().toLowerCase();
+    if (!key) return -1;
+    for (var i = 0; i < keywords.length; i++) {
+      if (keywords[i].name.trim().toLowerCase() === key) return i;
+    }
+    return -1;
+  }
+
+  function parseImportAllItems(raw) {
+    var data;
+    try {
+      data = JSON.parse(raw);
+    } catch (e) {
+      throw new Error("Invalid JSON");
+    }
+
+    var items;
+    if (Array.isArray(data)) {
+      items = data;
+    } else if (
+      data &&
+      typeof data === "object" &&
+      Array.isArray(data.foods)
+    ) {
+      items = data.foods;
+    } else {
+      throw new Error("JSON must be an array of food definitions");
+    }
+
+    return items;
+  }
+
+  function getImportAllMode() {
+    var checked = document.querySelector(
+      'input[name="import-all-mode"]:checked'
+    );
+    return checked && checked.value === "replace" ? "replace" : "amend";
+  }
+
+  function confirmImportAllReplace(importCount) {
+    if (keywords.length === 0) return true;
+    return window.confirm(
+      "Replace all " +
+        keywords.length +
+        " food definition(s) with " +
+        importCount +
+        " from the import? This cannot be undone."
+    );
+  }
+
+  function confirmImportAllAmend(plan) {
+    if (plan.updated === 0 && plan.added === 0) {
+      throw new Error("Import array is empty");
+    }
+    if (keywords.length === 0) return true;
+    var parts = [];
+    if (plan.updated > 0) {
+      parts.push(
+        plan.updated +
+          " existing food(s) will be updated (matched by name, case-insensitive)"
+      );
+    }
+    if (plan.added > 0) {
+      parts.push(plan.added + " new food(s) will be added");
+    }
+    return window.confirm("Amend food definitions? " + parts.join("; ") + ".");
+  }
+
+  function planImportAllAmend(items) {
+    var plan = { updated: 0, added: 0 };
+    for (var i = 0; i < items.length; i++) {
+      var name = String(items[i].name).trim();
+      if (findKeywordIndexByName(name) >= 0) {
+        plan.updated += 1;
+      } else {
+        plan.added += 1;
+      }
+    }
+    return plan;
+  }
+
+  function applyImportAllReplace(items) {
+    if (!confirmImportAllReplace(items.length)) {
+      throw new Error("cancelled");
+    }
+
+    var next = [];
+    for (var i = 0; i < items.length; i++) {
+      next.push(keywordFromImportItem(items[i], i));
+    }
+    keywords = next;
+    saveFoodDefinitions();
+  }
+
+  function applyImportAllAmend(items) {
+    var plan = planImportAllAmend(items);
+    if (!confirmImportAllAmend(plan)) {
+      throw new Error("cancelled");
+    }
+
+    for (var i = 0; i < items.length; i++) {
+      var idx = findKeywordIndexByName(items[i].name);
+      if (idx >= 0) {
+        applyImportItemToKeyword(keywords[idx], items[i]);
+      } else {
+        keywords.push(keywordFromImportItem(items[i], i));
+      }
+    }
+    saveFoodDefinitions();
+  }
+
+  function applyImportAllJson(raw, mode) {
+    var items = parseImportAllItems(raw);
+    if (mode === "replace") {
+      applyImportAllReplace(items);
+    } else {
+      applyImportAllAmend(items);
+    }
   }
 
   function jsonSchemaExample() {
@@ -363,13 +556,63 @@
     importErrorEl.textContent = message;
   }
 
+  function showImportAllError(message) {
+    if (!importAllErrorEl) return;
+    if (!message) {
+      importAllErrorEl.hidden = true;
+      importAllErrorEl.textContent = "";
+      return;
+    }
+    importAllErrorEl.hidden = false;
+    importAllErrorEl.textContent = message;
+  }
+
+  function closeImportAllModal() {
+    if (!importAllModalEl) return;
+    importAllModalEl.hidden = true;
+    showImportAllError("");
+    if (!activeImportId && !activeMicroId) {
+      document.body.classList.remove("modal-open");
+    }
+  }
+
+  function openImportAllModal() {
+    if (!importAllModalEl || !importAllJsonEl) return;
+
+    if (activeImportId) closeImportModal();
+    if (activeMicroId) {
+      saveMicrosFromForm();
+      closeMicroModal();
+    }
+
+    importAllJsonEl.value = exportAllFoodJson();
+    showImportAllError("");
+    importAllModalEl.hidden = false;
+    document.body.classList.add("modal-open");
+    importAllJsonEl.focus();
+    importAllJsonEl.select();
+  }
+
+  function runImportAll() {
+    if (!importAllJsonEl) return;
+    try {
+      applyImportAllJson(importAllJsonEl.value, getImportAllMode());
+      closeImportAllModal();
+      renderKeywords();
+      refreshAll();
+    } catch (e) {
+      if (e.message === "cancelled") return;
+      showImportAllError(e.message || "Import failed");
+    }
+  }
+
   function closeImportModal() {
     if (!importModalEl) return;
     activeImportId = null;
     importModalEl.hidden = true;
     showImportError("");
     setImportAiPanelOpen(false);
-    if (!activeMicroId) {
+    if (!activeMicroId && (!importAllModalEl || importAllModalEl.hidden)) {
       document.body.classList.remove("modal-open");
     }
   }
@@ -459,6 +702,10 @@
     showImportError("");
     setImportAiPanelOpen(false);
     syncImportAiInputs();
+    if (importAllModalEl && !importAllModalEl.hidden) {
+      closeImportAllModal();
+    }
+
     importModalEl.hidden = false;
     document.body.classList.add("modal-open");
     importJsonEl.focus();
@@ -622,7 +869,7 @@
   function avgDailyMicroPct(key, weekTotal) {
     var dv = dailyDv(key);
     if (!dv) return null;
-    var avgDaily = weekTotal / MICRO_AVG_DAYS;
+    var avgDaily = weekTotal / DAYS.length;
     return (avgDaily / dv) * 100;
   }
 
@@ -707,7 +954,8 @@
       var pct = avgDailyMicroPct(field.key, total);
       var pctText =
         pct == null || isNaN(pct) ? "—" : fmtNum(pct) + "% DV";
-      var amtText = total > 0 ? fmtNum(total / MICRO_AVG_DAYS) + " " + field.unit + "/day avg" : "—";
+      var amtText =
+        total > 0 ? fmtNum(total / DAYS.length) + " " + field.unit + "/day avg" : "—";
       var tier = tierForMicroPct(pct);
       var tierAttr = tier ? ' data-dv-tier="' + escapeAttr(tier.id) + '"' : "";
 
@@ -919,6 +1167,7 @@
       if (el) updateDayHighlights(el);
     });
     renderDashboard();
+    updateDayClearButtons();
   }
 
   function saveFoodDefinitions() {
@@ -974,7 +1223,10 @@
     if (!microModalEl) return;
     activeMicroId = null;
     microModalEl.hidden = true;
-    if (!activeImportId) {
+    if (
+      !activeImportId &&
+      (!importAllModalEl || importAllModalEl.hidden)
+    ) {
       document.body.classList.remove("modal-open");
     }
   }
@@ -1190,12 +1442,121 @@
     }
   }
 
+  function dayById(id) {
+    for (var i = 0; i < DAYS.length; i++) {
+      if (DAYS[i].id === id) return DAYS[i];
+    }
+    return null;
+  }
+
+  function dayNotesPayload() {
+    var out = {};
+    DAYS.forEach(function (day) {
+      var el = document.getElementById(day.id);
+      out[day.id] = el ? el.value : "";
+    });
+    return out;
+  }
+
+  function saveDayNotes() {
+    try {
+      localStorage.setItem(STORAGE_KEY_DAYS, JSON.stringify(dayNotesPayload()));
+    } catch (e) {
+      /* ignore */
+    }
+  }
+
+  function loadDayNotes() {
+    try {
+      var raw = localStorage.getItem(STORAGE_KEY_DAYS);
+      if (!raw) return;
+      var data = JSON.parse(raw);
+      if (!data || typeof data !== "object") return;
+      DAYS.forEach(function (day) {
+        var el = document.getElementById(day.id);
+        if (el && typeof data[day.id] === "string") {
+          el.value = data[day.id];
+        }
+      });
+    } catch (e) {
+      /* ignore */
+    }
+  }
+
+  function dayHasNotes(dayId) {
+    var el = document.getElementById(dayId);
+    return !!(el && el.value.trim());
+  }
+
+  function anyDayHasNotes() {
+    for (var i = 0; i < DAYS.length; i++) {
+      if (dayHasNotes(DAYS[i].id)) return true;
+    }
+    return false;
+  }
+
+  function updateDayClearButtons() {
+    DAYS.forEach(function (day) {
+      var btn = document.querySelector(
+        '[data-action="clear-day"][data-day-id="' + day.id + '"]'
+      );
+      if (btn) btn.disabled = !dayHasNotes(day.id);
+    });
+    var clearAllBtn = document.getElementById("clear-all-days");
+    if (clearAllBtn) clearAllBtn.disabled = !anyDayHasNotes();
+  }
+
+  function applyDayNoteChange(textarea) {
+    updateDayHighlights(textarea);
+    renderDashboard();
+    saveDayNotes();
+    updateDayClearButtons();
+  }
+
+  function confirmClearDay(dayId) {
+    var day = dayById(dayId);
+    var label = day ? day.label : dayId;
+    return window.confirm(
+      "Clear all notes for " +
+        label +
+        "? This cannot be undone."
+    );
+  }
+
+  function confirmClearAllDays() {
+    return window.confirm(
+      "Clear notes for all " +
+        DAYS.length +
+        " days (Mon–Sun)? This cannot be undone."
+    );
+  }
+
+  function clearDayNotes(dayId) {
+    if (!dayHasNotes(dayId)) return;
+    if (!confirmClearDay(dayId)) return;
+    var el = document.getElementById(dayId);
+    if (!el) return;
+    el.value = "";
+    saveDayNotes();
+    applyDayNoteChange(el);
+  }
+
+  function clearAllDayNotes() {
+    if (!anyDayHasNotes()) return;
+    if (!confirmClearAllDays()) return;
+    DAYS.forEach(function (day) {
+      var el = document.getElementById(day.id);
+      if (el) el.value = "";
+    });
+    saveDayNotes();
+    refreshAll();
+  }
+
   function bindDay(textarea) {
     var backdrop = textarea.closest(".day__editor").querySelector(".day__backdrop");
 
     textarea.addEventListener("input", function () {
-      updateDayHighlights(textarea);
-      renderDashboard();
+      applyDayNoteChange(textarea);
     });
     textarea.addEventListener("scroll", function () {
       syncScroll(textarea, backdrop);
@@ -1308,6 +1669,10 @@
 
   document.addEventListener("keydown", function (e) {
     if (e.key !== "Escape") return;
+    if (importAllModalEl && !importAllModalEl.hidden) {
+      closeImportAllModal();
+      return;
+    }
     if (activeImportId) {
       closeImportModal();
       return;
@@ -1324,14 +1689,61 @@
     addKeywordBtn.addEventListener("click", addKeyword);
   }
 
+  if (exportAllFoodsBtn) {
+    exportAllFoodsBtn.addEventListener("click", exportAllFoods);
+  }
+
+  if (importAllFoodsBtn) {
+    importAllFoodsBtn.addEventListener("click", openImportAllModal);
+  }
+
+  if (importAllApplyBtn) {
+    importAllApplyBtn.addEventListener("click", runImportAll);
+  }
+
+  if (importAllCancelBtn) {
+    importAllCancelBtn.addEventListener("click", closeImportAllModal);
+  }
+
+  if (importAllModalEl) {
+    importAllModalEl.addEventListener("click", function (e) {
+      if (e.target.closest('[data-action="close-import-all-modal"]')) {
+        closeImportAllModal();
+      }
+    });
+  }
+
+  if (importAllJsonEl) {
+    importAllJsonEl.addEventListener("input", function () {
+      showImportAllError("");
+    });
+  }
+
+  var weekGridEl = document.querySelector(".week__grid");
+  var clearAllDaysBtn = document.getElementById("clear-all-days");
+
   DAYS.forEach(function (day) {
     var el = document.getElementById(day.id);
     if (el) bindDay(el);
   });
 
+  if (weekGridEl) {
+    weekGridEl.addEventListener("click", function (e) {
+      var btn = e.target.closest('[data-action="clear-day"]');
+      if (!btn) return;
+      var dayId = btn.getAttribute("data-day-id");
+      if (dayId) clearDayNotes(dayId);
+    });
+  }
+
+  if (clearAllDaysBtn) {
+    clearAllDaysBtn.addEventListener("click", clearAllDayNotes);
+  }
+
   window.addEventListener("beforeunload", function () {
     saveFoodDefinitions();
     saveDemographic();
+    saveDayNotes();
   });
 
   if (dashboardWeekToggleEl) {
@@ -1356,6 +1768,7 @@
 
   function boot() {
     loadFoodDefinitions();
+    loadDayNotes();
     loadDemographic();
     renderDemographicUi();
     renderKeywords();

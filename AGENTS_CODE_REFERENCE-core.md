@@ -18,7 +18,8 @@ Parent overview: [AGENTS_CODE_REFERENCE.md](./AGENTS_CODE_REFERENCE.md)
 | Micro totals / DV | `microTotalsFromText`, `weekMicroTotals`, `renderMicroRequirements`, `setMicroRequirementsOpen` |
 | Demographic | `loadDemographic`, `saveDemographic`, `setDemographic`, `renderDemographicUi`; targets in `demographic-dv.js` |
 | Highlights | `updateDayHighlights`, `highlightedHtml`, `refreshAll` |
-| Persistence | `saveFoodDefinitions`, `loadFoodDefinitions` |
+| Persistence | `saveFoodDefinitions`, `loadFoodDefinitions`, `saveDayNotes`, `loadDayNotes` |
+| Day notes clear | `clearDayNotes`, `clearAllDayNotes`, `confirmClearDay`, `confirmClearAllDays` |
 
 ## Data lifecycle
 
@@ -77,7 +78,7 @@ new RegExp("\\b" + escapeRegex(name) + "\\b", "gi")
 - **`#week-summary`** hidden by default; **Week total** toggle (`#dashboard-week-toggle`, `setWeekTotalOpen`) shows bar with `renderWeekSummary(week)` when open. `lastWeekTotals` cached on each `renderDashboard`.
 - If **Micro requirements** is expanded (`#dashboard-micro-toggle`), `renderMicroRequirements` fills `#dashboard-micro-list`.
 
-**Micro requirements** — `microTotalsFromText` mirrors macro matching (hits × per-food micros). Average daily amount = week sum ÷ `MICRO_AVG_DAYS` (6). **% DV** = `(avgDaily / dailyDv(key)) × 100` where `dailyDv` calls `NutrientsDemographicDv.getDailyMicroDv(demographic, key)` from `demographic-dv.js` (e.g. female iron 18&nbsp;mg, male 8&nbsp;mg). **% DV color/weight** from `config.json` tiers. Toggle state is session-only; demographic choice is persisted.
+**Micro requirements** — `microTotalsFromText` mirrors macro matching (hits × per-food micros). Average daily amount = week sum ÷ `DAYS.length` (7). **% DV** = `(avgDaily / dailyDv(key)) × 100` where `dailyDv` calls `NutrientsDemographicDv.getDailyMicroDv(demographic, key)` from `demographic-dv.js` (e.g. female iron 18&nbsp;mg, male 8&nbsp;mg). **% DV color/weight** from `config.json` tiers. Toggle state is session-only; demographic choice is persisted.
 
 **Calorie constants** — `CAL_PROTEIN`, `CAL_CARBS`, `CAL_FATS` at file top.
 
@@ -108,11 +109,12 @@ Micros are **not** in macro `totalsFromText`; use `microTotalsFromText` / `weekM
 |-----|---------|
 | `nutrients-food-definitions` | `JSON.stringify(keywords)` |
 | `nutrients-demographic` | `"male"` or `"female"` (default `male` if missing) |
+| `nutrients-day-notes` | `{ mon … sun }` string values per day id |
 | `nutrients-keywords` (legacy) | Migrated once on load, then removed |
 
 **Load** — `loadFoodDefinitions`: maps array, `normalizeMicros(item.micros)`, bumps `nextId` from existing ids.
 
-**Save triggers** — row input, add/delete/reorder, micros save, import apply, demographic change, `beforeunload` (definitions + demographic).
+**Save triggers** — day textarea `input`, row input, add/delete/reorder, micros save, import apply, demographic change, `beforeunload` (definitions + demographic + day notes).
 
 ## Internal naming vs UI
 
@@ -125,8 +127,8 @@ Micros are **not** in macro `totalsFromText`; use `microTotalsFromText` / `weekM
 | Sum micros into per-day cards | `dashboardCardHtml` + `microTotalsFromText` per day |
 | Change DV profile | `demographic-dv.js` → `DAILY_MICRO_DV`; keys must match `MICRO_FIELDS` |
 | New demographic option | `META`, `DAILY_MICRO_DV`, HTML options, `normalizeDemographic` in `demographic-dv.js` |
-| Persist day notes | New `STORAGE_KEY`, load/save in `bindDay`, boot |
-| Sunday column | `DAYS`, HTML day column, CSS grid columns |
+| Change day clear copy | `confirmClearDay`, `confirmClearAllDays` |
+| Eighth column | extend `DAYS`, HTML, CSS `repeat(n)` for dashboard + week grid |
 | Stricter matching | `countKeyword` / regex builder |
 | Partial-word match | Conflicts with whole-word design — change both match and highlight |
 
