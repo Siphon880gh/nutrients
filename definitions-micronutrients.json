@@ -1,0 +1,329 @@
+{
+  "fiber": {
+    "tooLow": [
+      "Very low fiber often means harder, less frequent bowel movements and more bloating or swings in blood sugar after meals.",
+      "Over time, chronically low fiber is linked with higher LDL cholesterol and less support for the gut bacteria that help immunity and mood."
+    ],
+    "enough": [
+      "Adequate fiber feeds beneficial gut microbes, steadies digestion, and helps you feel full on fewer calories.",
+      "Soluble fiber (oats, beans, fruit) can lower LDL cholesterol; insoluble fiber (whole grains, vegetables) adds bulk and regularity."
+    ],
+    "foodSources": [
+      "Beans & lentils",
+      "Oats & barley",
+      "Berries & apples",
+      "Broccoli & carrots",
+      "Whole-grain bread",
+      "Chia & flax seeds",
+      "Popcorn (air-popped)"
+    ],
+    "male": [
+      "Higher targets (about 38 g/day) match larger average calorie needs and support heart health and weight management.",
+      "Helps reduce diverticular disease risk and supports stable energy when eating higher-protein or higher-fat meals."
+    ],
+    "female": [
+      "Adequate fiber supports hormone clearance via the gut and can ease constipation common with cycle shifts or pregnancy.",
+      "Helps fullness and blood-sugar stability, which many women find useful for energy and cravings across the month."
+    ]
+  },
+  "sodium": {
+    "tooLow": [
+      "Too little sodium is uncommon from food alone but can happen with heavy sweating, illness, or very restrictive diets—leading to headache, fatigue, muscle cramps, and dizziness.",
+      "Severe hyponatremia affects fluid balance and, in extreme cases, confusion or seizures (usually a medical issue, not mild under-eating)."
+    ],
+    "enough": [
+      "Enough sodium maintains fluid balance, nerve signals, and muscle contraction—especially when you sweat or train hard.",
+      "Staying near guideline levels (about 2,300 mg/day for most adults) supports blood pressure without unnecessary restriction for active people."
+    ],
+    "foodSources": [
+      "Table salt & sea salt",
+      "Soy sauce & tamari",
+      "Pickles & olives",
+      "Broth & soup",
+      "Cheese",
+      "Bread & crackers",
+      "Cured meats (in moderation)"
+    ],
+    "male": [
+      "Men often eat more sodium through larger portions and processed foods; tracking helps if blood pressure runs high.",
+      "Athletes and heavy sweaters may need more sodium around workouts without blowing daily averages every other day."
+    ],
+    "female": [
+      "Some women are more salt-sensitive for blood pressure; pairing adequate potassium and whole foods helps balance intake.",
+      "Pregnancy, hot flashes, or intense training can change sweat losses—awareness matters more than blanket ultra-low-salt rules."
+    ]
+  },
+  "potassium": {
+    "tooLow": [
+      "Low potassium can cause muscle weakness, cramps, constipation, and palpitations; severe deficiency is dangerous and needs medical care.",
+      "Diuretics, heavy sweating, vomiting, or very low fruit/vegetable intake are common contributors."
+    ],
+    "enough": [
+      "Potassium helps nerves and muscles work, supports normal blood pressure, and balances sodium in cells.",
+      "Food sources are preferable to supplements unless a clinician directs otherwise."
+    ],
+    "foodSources": [
+      "Potatoes (with skin)",
+      "Bananas",
+      "Beans & lentils",
+      "Spinach & leafy greens",
+      "Yogurt & milk",
+      "Avocado",
+      "Tomatoes & tomato sauce",
+      "Salmon"
+    ],
+    "male": [
+      "Higher targets (about 3,400 mg/day) reflect larger body size and typical needs for blood-pressure and workout recovery support.",
+      "Useful for men on higher-protein diets who may under-eat produce unless they plan vegetables and legumes."
+    ],
+    "female": [
+      "Adequate potassium supports blood pressure and may reduce bloating when sodium is high.",
+      "Important across the lifespan; needs stay meaningful even with smaller calorie targets than men."
+    ]
+  },
+  "calcium": {
+    "tooLow": [
+      "Chronic low calcium can weaken bones over time (osteopenia/osteoporosis), raise fracture risk, and contribute to muscle cramps or tingling in severe cases.",
+      "Very low intake plus low vitamin D magnifies bone loss; some people also notice sleep or dental issues when severely deficient."
+    ],
+    "enough": [
+      "Enough calcium builds and maintains bone structure, supports muscle contraction, blood clotting, and nerve signaling.",
+      "Spread intake through the day with vitamin D and weight-bearing activity for best bone outcomes."
+    ],
+    "foodSources": [
+      "Milk & yogurt",
+      "Cheese",
+      "Fortified plant milks",
+      "Sardines & canned salmon (with bones)",
+      "Tofu (calcium-set)",
+      "Kale & collard greens",
+      "Almonds"
+    ],
+    "male": [
+      "Supports bone density for lifelong strength training and aging; peak bone mass in youth depends on adequate calcium and D.",
+      "May modestly support normal testosterone signaling indirectly via overall hormonal health, though D and sleep matter more."
+    ],
+    "female": [
+      "Critical before menopause to bank bone mass; after menopause, adequate calcium + D slows bone loss.",
+      "Helps reduce risk of stress fractures and supports muscle function during pregnancy and breastfeeding (needs often rise)."
+    ]
+  },
+  "iron": {
+    "tooLow": [
+      "Low iron depletes ferritin first, then causes fatigue, weakness, pale skin, brittle nails, restless legs, and poor exercise tolerance.",
+      "In women, heavy periods, pregnancy, or low red-meat/legume intake are frequent causes; men should investigate unexplained low iron with a clinician."
+    ],
+    "enough": [
+      "Adequate iron carries oxygen in hemoglobin, supports energy metabolism, immune function, and cognitive focus.",
+      "Pair plant iron with vitamin C; separate coffee/tea/calcium from iron-rich meals by an hour when optimizing absorption."
+    ],
+    "foodSources": [
+      "Beef & liver",
+      "Shellfish",
+      "Beans & lentils",
+      "Spinach & Swiss chard",
+      "Fortified cereals",
+      "Pumpkin seeds",
+      "Tofu",
+      "Pair with citrus or peppers for plant sources"
+    ],
+    "male": [
+      "Lower daily target (about 8 mg) still supports training, thyroid hormones, and dopamine-related energy pathways.",
+      "Helps prevent the “always tired despite sleep” pattern when ferritin is borderline low."
+    ],
+    "female": [
+      "Higher need (about 18 mg/day premenopause) replaces menstrual losses and supports fertility and pregnancy.",
+      "Adequate iron reduces hair shedding, cold intolerance, and brain fog that many women blame on stress alone."
+    ]
+  },
+  "magnesium": {
+    "tooLow": [
+      "Low magnesium shows up as muscle twitches, cramps, poor sleep, anxiety, headaches, and insulin resistance over time.",
+      "Chronic stress, alcohol, PPI use, and refined diets low in greens/nuts/seeds increase risk."
+    ],
+    "enough": [
+      "Magnesium supports 300+ enzyme reactions: energy (ATP), muscle relaxation, sleep quality, blood sugar control, and blood pressure.",
+      "Food sources are first-line; supplements only if diet falls short."
+    ],
+    "foodSources": [
+      "Pumpkin seeds",
+      "Almonds & cashews",
+      "Spinach & Swiss chard",
+      "Black beans",
+      "Dark chocolate (70%+)",
+      "Avocado",
+      "Whole grains",
+      "Edamame"
+    ],
+    "male": [
+      "Higher targets (about 420 mg/day) support testosterone production indirectly via sleep, training recovery, and stress resilience.",
+      "Often helps gym performance and nighttime leg cramps when diet is magnesium-poor."
+    ],
+    "female": [
+      "Useful for PMS cramps, migraine prevention, and sleep in perimenopause; needs (about 320 mg/day) stay high despite smaller body size.",
+      "Supports bone health alongside calcium and vitamin D, especially after 40."
+    ]
+  },
+  "zinc": {
+    "tooLow": [
+      "Low zinc weakens taste/smell, slows wound healing, increases infections, and can cause hair thinning and skin issues.",
+      "Plant-heavy diets without legumes/nuts/seeds, or high phytate intake without soaking, raise deficiency risk."
+    ],
+    "enough": [
+      "Zinc supports immune defense, protein synthesis, DNA repair, and hundreds of enzymes including those for testosterone and thyroid.",
+      "Oysters and varied animal/plant foods usually cover needs without megadoses."
+    ],
+    "foodSources": [
+      "Oysters",
+      "Beef & crab",
+      "Pumpkin seeds",
+      "Chickpeas & lentils",
+      "Yogurt & cheese",
+      "Cashews",
+      "Chicken & turkey"
+    ],
+    "male": [
+      "Important for sperm quality, libido, and testosterone conversion; athletes lose zinc in sweat.",
+      "Shortfalls sometimes show up as poor recovery or frequent colds during heavy training blocks."
+    ],
+    "female": [
+      "Supports skin, cycle regularity, and immunity; needs are lower (about 8 mg/day) but still essential in pregnancy.",
+      "Helps collagen repair and may reduce acne flares when intake and absorption are adequate."
+    ]
+  },
+  "vitaminA": {
+    "tooLow": [
+      "Low vitamin A causes night blindness, dry eyes, poor skin healing, and greater infection risk; severe deficiency is rare in developed countries.",
+      "Fat malabsorption or very low animal/vegetable intake (preformed A or beta-carotene) are typical causes."
+    ],
+    "enough": [
+      "Vitamin A (retinol and carotenoids) supports vision, immune barriers in gut/lungs/skin, and cell growth.",
+      "Beta-carotene from colorful plants converts as needed; preformed A from liver/dairy/eggs is more potent—avoid megadoses."
+    ],
+    "foodSources": [
+      "Sweet potato & carrot",
+      "Spinach & kale",
+      "Eggs",
+      "Liver (small portions)",
+      "Milk & cheese",
+      "Mango & cantaloupe",
+      "Red bell pepper"
+    ],
+    "male": [
+      "Supports immune resilience during heavy work or travel and skin recovery after sun or shaving irritation.",
+      "Carotenoids act as antioxidants that may help exercise recovery when eaten with fats."
+    ],
+    "female": [
+      "Critical for fertility, fetal development, and breastfeeding—too much preformed A in pregnancy is harmful, so food balance matters.",
+      "Helps mucous membranes stay healthy, reducing dry-eye and vaginal dryness when overall nutrition is sound."
+    ]
+  },
+  "vitaminD": {
+    "tooLow": [
+      "Low vitamin D is linked with fatigue, bone pain, frequent illness, low mood, poor sleep, and muscle weakness.",
+      "Limited sun, dark skin at high latitudes, obesity, and aging reduce production; food alone rarely fixes severe deficiency."
+    ],
+    "enough": [
+      "Adequate vitamin D helps absorb calcium, regulates immunity, and supports muscle function and mood.",
+      "Sun exposure when safe, fatty fish, fortified dairy, and supplements per labs are common ways to reach targets (~15 mcg / 600 IU daily for many adults)."
+    ],
+    "foodSources": [
+      "Salmon & sardines",
+      "Egg yolks",
+      "Fortified milk & OJ",
+      "Fortified cereals",
+      "Mushrooms (UV-exposed)",
+      "Cod liver oil",
+      "Safe sun exposure"
+    ],
+    "male": [
+      "Associated with healthier testosterone levels, strength, and sperm quality when deficiency is corrected.",
+      "Supports sleep depth and daytime energy, which cascade into training consistency and libido."
+    ],
+    "female": [
+      "Supports bone density, mood, and immune health; deficiency is common in pregnancy and breastfeeding without supplementation.",
+      "May ease cycle-related aches and winter fatigue when levels are brought into range."
+    ]
+  },
+  "vitaminB12": {
+    "tooLow": [
+      "B12 deficiency causes fatigue, numbness/tingling, balance problems, memory issues, and megaloblastic anemia—can mimic neuropathy or dementia.",
+      "Vegans, older adults with low stomach acid, and people on metformin or long-term PPIs are high-risk groups."
+    ],
+    "enough": [
+      "B12 is required for red blood cells, nerve myelination, DNA synthesis, and homocysteine control.",
+      "Animal foods or fortified foods/supplements maintain levels; absorption matters more than huge single doses."
+    ],
+    "foodSources": [
+      "Clams & nutritional yeast (fortified)",
+      "Salmon & tuna",
+      "Beef & liver",
+      "Eggs & milk",
+      "Fortified plant milks",
+      "Fortified cereals",
+      "Yogurt"
+    ],
+    "male": [
+      "Supports energy, focus, and exercise performance via oxygen delivery and nerve speed.",
+      "Helps keep homocysteine in check, which matters for cardiovascular risk alongside folate."
+    ],
+    "female": [
+      "Critical before and during pregnancy to prevent neural tube and developmental issues (with folate).",
+      "Low B12 can drive anemia that feels like “burnout” and hair loss, often overlooked in busy women."
+    ]
+  },
+  "vitaminC": {
+    "tooLow": [
+      "Low vitamin C leads to bleeding gums, slow wound healing, bruising, and in extreme cases scurvy.",
+      "Smokers need more; very low fruit/vegetable intake or heat/light-degraded foods increase risk."
+    ],
+    "enough": [
+      "Vitamin C builds collagen, supports immunity, improves plant-iron absorption, and acts as an antioxidant.",
+      "Regular produce intake easily covers daily needs for most people."
+    ],
+    "foodSources": [
+      "Oranges & grapefruit",
+      "Bell peppers",
+      "Kiwi & strawberries",
+      "Broccoli & Brussels sprouts",
+      "Tomatoes",
+      "Papaya",
+      "Potato (with skin)"
+    ],
+    "male": [
+      "Higher target (about 90 mg/day) supports collagen for joints/tendons under heavy training loads.",
+      "Antioxidant role may reduce oxidative stress from intense exercise and pollution exposure."
+    ],
+    "female": [
+      "Supports skin elasticity, iron absorption during higher iron needs, and immune defense.",
+      "Useful for collagen during pregnancy and for healing after procedures or injury."
+    ]
+  },
+  "folate": {
+    "tooLow": [
+      "Low folate causes megaloblastic anemia, mouth sores, poor growth, and raises homocysteine; severe deficiency in pregnancy risks neural tube defects.",
+      "Heavy alcohol use, certain medications, and diets without greens/legumes are common causes."
+    ],
+    "enough": [
+      "Folate (B9) supports DNA synthesis, red blood cell formation, and methylation reactions that affect mood and cardiovascular markers.",
+      "Leafy greens, legumes, and fortified grains are reliable sources; works with B12."
+    ],
+    "foodSources": [
+      "Spinach & romaine",
+      "Asparagus",
+      "Black-eyed peas & lentils",
+      "Avocado",
+      "Broccoli",
+      "Fortified grains & pasta",
+      "Orange juice (fortified)"
+    ],
+    "male": [
+      "Helps cardiovascular health via homocysteine control and supports energy through healthy red blood cell production.",
+      "Adequate folate supports sperm DNA integrity, which matters for fertility."
+    ],
+    "female": [
+      "Essential before conception and in early pregnancy for neural tube development (often supplemented as folic acid).",
+      "Supports energy and mood when paired with B12; needs stay at 400 mcg DFE for many adult women not pregnant."
+    ]
+  }
+}

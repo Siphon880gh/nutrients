@@ -41,6 +41,10 @@
   var microGapsOpenChatgptEl = document.getElementById("micro-gaps-open-chatgpt");
   var microGapsOpenClaudeEl = document.getElementById("micro-gaps-open-claude");
   var microGapsModalDoneBtn = document.getElementById("micro-gaps-modal-done");
+  var microDefModalEl = document.getElementById("micro-def-modal");
+  var microDefModalTitleEl = document.getElementById("micro-def-modal-title");
+  var microDefBodyEl = document.getElementById("micro-def-body");
+  var microDefModalDoneBtn = document.getElementById("micro-def-modal-done");
   var demographicBadgeEl = document.getElementById("demographic-badge");
   var demographicOptionsEl = document.getElementById("demographic-options");
   var microModalEl = document.getElementById("micro-modal");
@@ -71,6 +75,8 @@
   var importAllCancelBtn = document.getElementById("import-all-cancel");
   var exportAllFoodsBtn = document.getElementById("export-all-foods");
   var importAllFoodsBtn = document.getElementById("import-all-foods");
+  var importSampleFoodsBtn = document.getElementById("import-sample-foods");
+  var IMPORT_SAMPLE_FOODS_URL = "samples/definitions-food.json";
   var importAllMealsModalEl = document.getElementById("import-all-meals-modal");
   var importAllMealsJsonEl = document.getElementById("import-all-meals-json");
   var importAllMealsErrorEl = document.getElementById("import-all-meals-error");
@@ -85,6 +91,8 @@
   var weekTotalOpen = false;
   var microRequirementsOpen = false;
   var lastWeekTotals = null;
+  var microDefinitions = {};
+  var activeMicroDefKey = null;
 
   var MICRO_FIELDS = [
     { key: "fiber", label: "Fiber", unit: "g", code: "f" },
@@ -398,8 +406,8 @@
     return plan;
   }
 
-  function applyImportAllReplace(items) {
-    if (!confirmImportAllReplace(items.length)) {
+  function applyImportAllReplace(items, skipConfirm) {
+    if (!skipConfirm && !confirmImportAllReplace(items.length)) {
       throw new Error("cancelled");
     }
 
@@ -645,6 +653,200 @@
     updateBodyModalOpen();
   }
 
+  function stringArray(val) {
+    if (!Array.isArray(val)) return [];
+    return val.filter(function (s) {
+      return typeof s === "string" && s.trim();
+    });
+  }
+
+  function normalizeMicroDefinitions(data) {
+    var out = {};
+    if (!data || typeof data !== "object") return out;
+    MICRO_FIELDS.forEach(function (field) {
+      var raw = data[field.key];
+      if (!raw || typeof raw !== "object") return;
+      var entry = {
+        tooLow: stringArray(raw.tooLow),
+        enough: stringArray(raw.enough),
+        foodSources: stringArray(raw.foodSources),
+        male: stringArray(raw.male),
+        female: stringArray(raw.female),
+      };
+      if (
+        entry.tooLow.length ||
+        entry.enough.length ||
+        entry.foodSources.length ||
+        entry.male.length ||
+        entry.female.length
+      ) {
+        out[field.key] = entry;
+      }
+    });
+    return out;
+  }
+
+  function loadMicroDefinitions(done) {
+    fetch("definitions-micronutrients.json")
+      .then(function (res) {
+        if (!res.ok) throw new Error("definitions fetch failed");
+        return res.json();
+      })
+      .then(function (data) {
+        microDefinitions = normalizeMicroDefinitions(data);
+        if (done) done();
+      })
+      .catch(function () {
+        microDefinitions = {};
+        if (done) done();
+      });
+  }
+
+  function microFieldByKey(key) {
+    for (var i = 0; i < MICRO_FIELDS.length; i++) {
+      if (MICRO_FIELDS[i].key === key) return MICRO_FIELDS[i];
+    }
+    return null;
+  }
+
+  function microDefParagraphsHtml(paragraphs) {
+    return paragraphs
+      .map(function (p) {
+        return '<p class="micro-def__p">' + escapeHtml(p) + "</p>";
+      })
+      .join("");
+  }
+
+  function microDefSexMeta(sexId) {
+    var metaMap = demographicDv ? demographicDv.META : {};
+    var fallback =
+      sexId === "female"
+        ? { icon: "♀", label: "Female" }
+        : { icon: "♂", label: "Male" };
+    return metaMap[sexId] || fallback;
+  }
+
+  function microDefFoodSourcesHtml(sources) {
+    if (!sources.length) return "";
+    return (
+      '<section class="micro-def__sources">' +
+      '<h4 class="micro-def__sources-heading">Food sources</h4>' +
+      '<ul class="micro-def__sources-list">' +
+      sources
+        .map(function (item) {
+          return "<li>" + escapeHtml(item) + "</li>";
+        })
+        .join("") +
+      "</ul>" +
+      "</section>"
+    );
+  }
+
+  function microDefListHtml(items, sexId) {
+    if (!items.length) return "";
+    var meta = microDefSexMeta(sexId);
+    return (
+      '<p class="micro-def__sex-label">' +
+      '<span class="micro-def__sex-icon" aria-hidden="true">' +
+      escapeHtml(meta.icon) +
+      "</span>" +
+      '<span class="micro-def__sex-text">' +
+      escapeHtml(meta.label) +
+      "</span>" +
+      "</p>" +
+      '<ul class="micro-def__list">' +
+      items
+        .map(function (item) {
+          return "<li>" + escapeHtml(item) + "</li>";
+        })
+        .join("") +
+      "</ul>"
+    );
+  }
+
+  function renderMicroDefBody(key) {
+    if (!microDefBodyEl) return;
+    var field = microFieldByKey(key);
+    var def = microDefinitions[key];
+    if (!def) {
+      microDefBodyEl.innerHTML =
+        '<p class="micro-def__empty">No description is available for ' +
+        escapeHtml(field ? field.label : key) +
+        " yet.</p>";
+      return;
+    }
+
+    var html = "";
+
+    if (def.foodSources.length) {
+      html += microDefFoodSourcesHtml(def.foodSources);
+    }
+
+    if (def.tooLow.length) {
+      html +=
+        '<section class="micro-def__section">' +
+        '<h4 class="micro-def__heading">If intake is too low</h4>' +
+        microDefParagraphsHtml(def.tooLow) +
+        "</section>";
+    }
+
+    if (def.enough.length) {
+      html +=
+        '<section class="micro-def__section">' +
+        '<h4 class="micro-def__heading">When you get enough</h4>' +
+        microDefParagraphsHtml(def.enough) +
+        "</section>";
+    }
+
+    if (def.male.length || def.female.length) {
+      html += '<section class="micro-def__section">';
+      html += '<h4 class="micro-def__heading">Sex-specific benefits</h4>';
+      if (def.male.length) {
+        html += microDefListHtml(def.male, "male");
+      }
+      if (def.female.length) {
+        html += microDefListHtml(def.female, "female");
+      }
+      html += "</section>";
+    }
+
+    microDefBodyEl.innerHTML =
+      html || '<p class="micro-def__empty">No description content yet.</p>';
+  }
+
+  function closeMicroDefModal() {
+    if (!microDefModalEl) return;
+    activeMicroDefKey = null;
+    microDefModalEl.hidden = true;
+    updateBodyModalOpen();
+  }
+
+  function openMicroDefModal(key) {
+    if (!microDefModalEl || !key) return;
+    var field = microFieldByKey(key);
+    if (!field) return;
+
+    if (activeImportId) closeImportModal();
+    if (importAllModalEl && !importAllModalEl.hidden) closeImportAllModal();
+    if (importAllMealsModalEl && !importAllMealsModalEl.hidden) {
+      closeImportAllMealsModal();
+    }
+    if (microGapsModalEl && !microGapsModalEl.hidden) closeMicroGapsModal();
+    if (activeMicroId) {
+      saveMicrosFromForm();
+      closeMicroModal();
+    }
+
+    activeMicroDefKey = key;
+    if (microDefModalTitleEl) {
+      microDefModalTitleEl.textContent = field.label;
+    }
+    renderMicroDefBody(key);
+    microDefModalEl.hidden = false;
+    updateBodyModalOpen();
+    if (microDefModalDoneBtn) microDefModalDoneBtn.focus();
+  }
+
   function openMicroGapsModal() {
     if (!microGapsModalEl) return;
 
@@ -653,6 +855,7 @@
     if (importAllMealsModalEl && !importAllMealsModalEl.hidden) {
       closeImportAllMealsModal();
     }
+    if (microDefModalEl && !microDefModalEl.hidden) closeMicroDefModal();
     if (activeMicroId) {
       saveMicrosFromForm();
       closeMicroModal();
@@ -670,7 +873,7 @@
     if (!importAiPanelEl || !importAiToggleBtn) return;
     importAiPanelEl.hidden = !open;
     importAiToggleBtn.setAttribute("aria-expanded", open ? "true" : "false");
-    importAiToggleBtn.textContent = open ? "Hide AI help" : "Have AI help me";
+    importAiToggleBtn.textContent = open ? "✨ Hide AI help" : "✨ Have AI help me";
 
     if (importJsonLabelEl) {
       importJsonLabelEl.textContent = open
@@ -718,6 +921,7 @@
       (importAllMealsModalEl && !importAllMealsModalEl.hidden) ||
       (importAllModalEl && !importAllModalEl.hidden) ||
       (microGapsModalEl && !microGapsModalEl.hidden) ||
+      (microDefModalEl && !microDefModalEl.hidden) ||
       !!activeImportId ||
       !!activeMicroId;
     document.body.classList.toggle("modal-open", open);
@@ -739,6 +943,48 @@
     importAllModalEl.hidden = true;
     showImportAllError("");
     updateBodyModalOpen();
+  }
+
+  function confirmImportSampleReplace(importCount) {
+    if (keywords.length === 0) return true;
+    return window.confirm(
+      "Replace all " +
+        keywords.length +
+        " food definition(s) with " +
+        importCount +
+        " from the sample? This cannot be undone."
+    );
+  }
+
+  function importSampleFoods() {
+    if (activeImportId) closeImportModal();
+    if (activeMicroId) {
+      saveMicrosFromForm();
+      closeMicroModal();
+    }
+    if (importAllModalEl && !importAllModalEl.hidden) closeImportAllModal();
+    if (importAllMealsModalEl && !importAllMealsModalEl.hidden) {
+      closeImportAllMealsModal();
+    }
+    if (microDefModalEl && !microDefModalEl.hidden) closeMicroDefModal();
+    if (microGapsModalEl && !microGapsModalEl.hidden) closeMicroGapsModal();
+
+    fetch(IMPORT_SAMPLE_FOODS_URL)
+      .then(function (res) {
+        if (!res.ok) throw new Error("Could not load sample food definitions");
+        return res.text();
+      })
+      .then(function (raw) {
+        var items = parseImportAllItems(raw);
+        if (!confirmImportSampleReplace(items.length)) return;
+        applyImportAllReplace(items, true);
+        renderKeywords();
+        refreshAll();
+      })
+      .catch(function (e) {
+        if (e.message === "cancelled") return;
+        window.alert(e.message || "Import sample failed");
+      });
   }
 
   function openImportAllModal() {
@@ -1137,12 +1383,14 @@
       var tierAttr = tier ? ' data-dv-tier="' + escapeAttr(tier.id) + '"' : "";
 
       html +=
-        '<div class="dashboard__micro-row"' +
+        '<div class="dashboard__micro-row dashboard__micro-row--clickable"' +
         tierAttr +
         ' role="listitem">' +
-        '<span class="dashboard__micro-name">' +
+        '<button type="button" class="dashboard__micro-name" data-micro-def="' +
+        escapeAttr(field.key) +
+        '" aria-haspopup="dialog">' +
         escapeHtml(field.label) +
-        "</span>" +
+        "</button>" +
         '<span class="dashboard__micro-amt">' +
         escapeHtml(amtText) +
         "</span>" +
@@ -1456,6 +1704,7 @@
     if (activeImportId) {
       closeImportModal();
     }
+    if (microDefModalEl && !microDefModalEl.hidden) closeMicroDefModal();
 
     if (activeMicroId && activeMicroId !== id) {
       saveMicrosFromForm();
@@ -2041,6 +2290,10 @@
       closeMicroGapsModal();
       return;
     }
+    if (microDefModalEl && !microDefModalEl.hidden) {
+      closeMicroDefModal();
+      return;
+    }
     if (activeImportId) {
       closeImportModal();
       return;
@@ -2063,6 +2316,10 @@
 
   if (importAllFoodsBtn) {
     importAllFoodsBtn.addEventListener("click", openImportAllModal);
+  }
+
+  if (importSampleFoodsBtn) {
+    importSampleFoodsBtn.addEventListener("click", importSampleFoods);
   }
 
   if (importAllApplyBtn) {
@@ -2156,6 +2413,26 @@
     });
   }
 
+  if (dashboardMicroListEl) {
+    dashboardMicroListEl.addEventListener("click", function (e) {
+      var btn = e.target.closest("[data-micro-def]");
+      if (!btn) return;
+      openMicroDefModal(btn.getAttribute("data-micro-def"));
+    });
+  }
+
+  if (microDefModalDoneBtn) {
+    microDefModalDoneBtn.addEventListener("click", closeMicroDefModal);
+  }
+
+  if (microDefModalEl) {
+    microDefModalEl.addEventListener("click", function (e) {
+      if (e.target.closest('[data-action="close-micro-def-modal"]')) {
+        closeMicroDefModal();
+      }
+    });
+  }
+
   if (demographicOptionsEl) {
     demographicOptionsEl.addEventListener("click", function (e) {
       var btn = e.target.closest("[data-demographic]");
@@ -2173,5 +2450,7 @@
     refreshAll();
   }
 
-  loadAppConfig(boot);
+  loadAppConfig(function () {
+    loadMicroDefinitions(boot);
+  });
 })();

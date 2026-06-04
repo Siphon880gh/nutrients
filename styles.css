@@ -122,6 +122,142 @@ body {
   color: #333;
 }
 
+button.dashboard__micro-name {
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-weight: 600;
+  color: #333;
+  text-align: left;
+  cursor: pointer;
+}
+
+button.dashboard__micro-name:hover {
+  color: #333;
+}
+
+button.dashboard__micro-name:focus-visible {
+  outline: 2px solid #3d6b9e;
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+.dashboard__micro-row--clickable:hover {
+  background: #f3f3f0;
+}
+
+.micro-def__body {
+  padding: 0.75rem 1rem 1rem;
+  overflow-y: auto;
+  flex: 1 1 auto;
+  min-height: 0;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: #333;
+}
+
+.micro-def__section {
+  margin: 0 0 1rem;
+}
+
+.micro-def__section:last-child {
+  margin-bottom: 0;
+}
+
+.micro-def__heading {
+  margin: 0 0 0.4rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #2a4a6e;
+}
+
+.micro-def__p {
+  margin: 0 0 0.5rem;
+}
+
+.micro-def__p:last-child {
+  margin-bottom: 0;
+}
+
+.micro-def__list {
+  margin: 0;
+  padding-left: 1.15rem;
+}
+
+.micro-def__list li {
+  margin-bottom: 0.35rem;
+}
+
+.micro-def__list li:last-child {
+  margin-bottom: 0;
+}
+
+.micro-def__sources {
+  margin: 0 0 1.1rem;
+  padding: 0.85rem 0.9rem;
+  border: 1px solid #9eb4cc;
+  border-radius: 6px;
+  background: #e8eef4;
+}
+
+.micro-def__sources-heading {
+  margin: 0 0 0.55rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #2a4a6e;
+}
+
+.micro-def__sources-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.micro-def__sources-list li {
+  margin: 0;
+  padding: 0.3rem 0.55rem;
+  border-radius: 4px;
+  border: 1px solid #b8c8d8;
+  background: #fff;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: #1a3a5c;
+  line-height: 1.35;
+}
+
+.micro-def__sex-label {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin: 0.65rem 0 0.25rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #444;
+}
+
+.micro-def__sex-label:first-of-type {
+  margin-top: 0;
+}
+
+.micro-def__sex-icon {
+  font-size: 1rem;
+  line-height: 1;
+  color: #2a4a6e;
+}
+
+.micro-def__empty {
+  margin: 0;
+  color: #5c5c5c;
+}
+
 .dashboard__micro-amt {
   grid-column: 2;
   grid-row: 1 / span 2;
@@ -821,14 +957,17 @@ body.modal-open {
   border: none;
   background: none;
   font: inherit;
-  font-size: 0.875rem;
-  color: #3d6b9e;
-  text-decoration: underline;
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: #5c5c5c;
+  text-decoration: none;
   cursor: pointer;
 }
 
 .import-modal__ai-link:hover {
-  color: #325a85;
+  color: #333;
+  text-decoration: underline;
+  text-decoration-color: rgba(92, 92, 92, 0.4);
 }
 
 .import-all-mode {
@@ -869,9 +1008,9 @@ body.modal-open {
 
 .import-ai-panel {
   padding: 0.65rem 0.75rem;
-  border: 1px solid #d0dce8;
+  border: 1px solid #e8e8e4;
   border-radius: 6px;
-  background: #f6f9fc;
+  background: #fafaf8;
 }
 
 .import-ai-panel__label {
@@ -954,16 +1093,17 @@ body.modal-open {
 .import-ai-panel__copy {
   padding: 0.35rem 0.65rem;
   font: inherit;
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   cursor: pointer;
   border-radius: 4px;
-  border: 1px solid #a8c4e0;
+  border: 1px solid #d8d8d4;
   background: #fff;
-  color: #2a4a6e;
+  color: #5c5c5c;
 }
 
 .import-ai-panel__copy:hover {
-  background: #eef4fa;
+  background: #f3f3f0;
+  color: #333;
 }
 
 .import-ai-panel__open-label {
@@ -972,14 +1112,16 @@ body.modal-open {
 }
 
 .import-ai-panel__service {
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   font-weight: 500;
-  color: #3d6b9e;
-  text-decoration: underline;
+  color: #5c5c5c;
+  text-decoration: none;
 }
 
 .import-ai-panel__service:hover {
-  color: #325a85;
+  color: #333;
+  text-decoration: underline;
+  text-decoration-color: rgba(92, 92, 92, 0.4);
 }
 
 .import-json-wrap {
