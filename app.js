@@ -45,6 +45,10 @@
   var microDefModalTitleEl = document.getElementById("micro-def-modal-title");
   var microDefBodyEl = document.getElementById("micro-def-body");
   var microDefModalDoneBtn = document.getElementById("micro-def-modal-done");
+  var microDefFullscreenToggleBtn = document.getElementById(
+    "micro-def-fullscreen-toggle"
+  );
+  var microDefFullscreen = false;
   var demographicBadgeEl = document.getElementById("demographic-badge");
   var demographicOptionsEl = document.getElementById("demographic-options");
   var microModalEl = document.getElementById("micro-modal");
@@ -822,9 +826,30 @@
       html || '<p class="micro-def__empty">No description content yet.</p>';
   }
 
+  function setMicroDefFullscreen(on) {
+    microDefFullscreen = !!on;
+    if (microDefModalEl) {
+      microDefModalEl.classList.toggle("modal--fullscreen", microDefFullscreen);
+    }
+    if (microDefFullscreenToggleBtn) {
+      microDefFullscreenToggleBtn.setAttribute(
+        "aria-pressed",
+        microDefFullscreen ? "true" : "false"
+      );
+      microDefFullscreenToggleBtn.textContent = microDefFullscreen
+        ? "Exit full screen"
+        : "Full screen";
+      microDefFullscreenToggleBtn.setAttribute(
+        "aria-label",
+        microDefFullscreen ? "Exit full screen" : "Read in full screen"
+      );
+    }
+  }
+
   function closeMicroDefModal() {
     if (!microDefModalEl) return;
     activeMicroDefKey = null;
+    setMicroDefFullscreen(false);
     microDefModalEl.hidden = true;
     updateBodyModalOpen();
   }
@@ -846,6 +871,7 @@
     }
 
     activeMicroDefKey = key;
+    setMicroDefFullscreen(false);
     if (microDefModalTitleEl) {
       microDefModalTitleEl.textContent = field.label;
     }
@@ -2302,6 +2328,10 @@
       return;
     }
     if (microDefModalEl && !microDefModalEl.hidden) {
+      if (microDefFullscreen) {
+        setMicroDefFullscreen(false);
+        return;
+      }
       closeMicroDefModal();
       return;
     }
@@ -2434,6 +2464,12 @@
 
   if (microDefModalDoneBtn) {
     microDefModalDoneBtn.addEventListener("click", closeMicroDefModal);
+  }
+
+  if (microDefFullscreenToggleBtn) {
+    microDefFullscreenToggleBtn.addEventListener("click", function () {
+      setMicroDefFullscreen(!microDefFullscreen);
+    });
   }
 
   if (microDefModalEl) {

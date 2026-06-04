@@ -1,9 +1,9 @@
 [
 	{
-	  "name": "10 tablespoons of 1st Street Mixed Nuts",
-	  "protein": 15,
-	  "carbs": 12.5,
-	  "fats": 37.5,
+	  "name": "Costco Rotisserie Chicken 1 cup (of 4)",
+	  "protein": 31.3,
+	  "carbs": 0,
+	  "fats": 11.5,
 	  "micros": {
 		"fiber": 5,
 		"sodium": 225,
@@ -164,6 +164,66 @@
 		"vitaminB12": 1.2,
 		"vitaminC": 0,
 		"folate": 12
+	  }
+	},
+	{
+	  "name": "Egg md",
+	  "protein": 5.5,
+	  "carbs": 0.3,
+	  "fats": 4.2,
+	  "micros": {
+		"fiber": 0,
+		"sodium": 62,
+		"potassium": 60,
+		"calcium": 25,
+		"iron": 0.8,
+		"magnesium": 5,
+		"zinc": 0.6,
+		"vitaminA": 70,
+		"vitaminD": 1.1,
+		"vitaminB12": 0.5,
+		"vitaminC": 0,
+		"folate": 21
+	  }
+	},
+	{
+	  "name": "Kiwi",
+	  "protein": 0.8,
+	  "carbs": 10.1,
+	  "fats": 0.4,
+	  "micros": {
+		"fiber": 2.1,
+		"sodium": 2,
+		"potassium": 215,
+		"calcium": 23,
+		"iron": 0.2,
+		"magnesium": 12,
+		"zinc": 0.1,
+		"vitaminA": 4,
+		"vitaminD": 0,
+		"vitaminB12": 0,
+		"vitaminC": 64,
+		"folate": 17
+	  }
+	},
+	{
+	  "name": "General Mills Total Whole Grain Cereal 1 cup",
+	  "protein": 3,
+	  "carbs": 33,
+	  "fats": 1,
+	  "micros": {
+		"fiber": 4,
+		"sodium": 190,
+		"potassium": 150,
+		"calcium": 40,
+		"iron": 18,
+		"magnesium": 42,
+		"zinc": 11,
+		"vitaminA": 90,
+		"vitaminD": 4,
+		"vitaminB12": 2.4,
+		"vitaminC": 90,
+		"folate": 400
 	  }
 	}
   ]
