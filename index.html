@@ -17,16 +17,19 @@
       <div class="dashboard__header">
         <div class="dashboard__header-row">
           <h2 id="dashboard-heading" class="dashboard__title">Dashboard</h2>
-          <button type="button" id="dashboard-micro-toggle" class="dashboard__micro-toggle" aria-expanded="false" aria-controls="dashboard-micro-panel">Micro requirements</button>
+          <div class="dashboard__toggles">
+            <button type="button" id="dashboard-week-toggle" class="dashboard__toggle" aria-expanded="false" aria-controls="week-summary">Week total</button>
+            <button type="button" id="dashboard-micro-toggle" class="dashboard__toggle" aria-expanded="false" aria-controls="dashboard-micro-panel">Micro requirements</button>
+          </div>
         </div>
         <p class="dashboard__hint">Each food match in a day adds that food's macros (4 cal/g protein &amp; carbs, 9 cal/g fat)</p>
       </div>
       <div id="dashboard-grid" class="dashboard__grid"></div>
-      <div id="week-summary" class="week-summary" aria-label="Week summary"></div>
       <div id="dashboard-micro-panel" class="dashboard__micro-panel" hidden>
         <p class="dashboard__micro-hint">Average daily intake vs your demographic daily values (Mon–Sat).</p>
         <div id="dashboard-micro-list" class="dashboard__micro-list" role="list"></div>
       </div>
+      <div id="week-summary" class="week-summary" hidden aria-label="Week summary"></div>
     </section>
 
     <div class="week__grid" role="group" aria-label="Monday through Saturday notes">
@@ -114,7 +117,15 @@
           <span id="demographic-badge" class="demographic__badge" aria-hidden="true" title="Male">♂</span>
         </summary>
         <div class="demographic__body">
-          <p class="demographic__hint">Daily values for micro requirements (% DV). Saved in this browser.</p>
+          <p class="demographic__hint">Daily values for micro requirements (% DV). Saved in this browser. Percentages use the targets in <code>demographic-dv.js</code> for your selection.</p>
+          <div class="demographic__note">
+            <p class="demographic__note-lead">Nutrition labels often show one genderless % DV, but needs differ in practice:</p>
+            <ul class="demographic__note-list">
+              <li><strong>Iron:</strong> Women typically need more iron (about 18&nbsp;mg/day) than men (about 8&nbsp;mg/day), largely due to menstruation.</li>
+              <li><strong>Vitamins &amp; fiber:</strong> Men generally need higher daily intakes of some vitamins (e.g. vitamin&nbsp;C, zinc) and fiber because of higher average body mass and calorie needs.</li>
+              <li><strong>Calories:</strong> A common maintenance baseline is roughly 2,400–2,600&nbsp;cal/day for men and 1,800–2,000&nbsp;cal/day for women (this app’s week calories still come from your food definitions, not these baselines).</li>
+            </ul>
+          </div>
           <div id="demographic-options" class="demographic__options" role="radiogroup" aria-label="Demographic">
             <button type="button" class="demographic__option demographic__option--selected" data-demographic="male" role="radio" aria-checked="true">
               <span class="demographic__option-icon" aria-hidden="true">♂</span>
@@ -181,6 +192,7 @@
     </div>
   </div>
 
+  <script src="demographic-dv.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

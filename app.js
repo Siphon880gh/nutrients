@@ -10,7 +10,11 @@
   var STORAGE_KEY = "nutrients-food-definitions";
   var STORAGE_KEY_LEGACY = "nutrients-keywords";
   var STORAGE_KEY_DEMOGRAPHIC = "nutrients-demographic";
-  var DEFAULT_DEMOGRAPHIC = "male";
+  var demographicDv =
+    typeof NutrientsDemographicDv !== "undefined" ? NutrientsDemographicDv : null;
+  var DEFAULT_DEMOGRAPHIC = demographicDv
+    ? demographicDv.DEFAULT_DEMOGRAPHIC
+    : "male";
   var MICRO_AVG_DAYS = 6;
   var CAL_PROTEIN = 4;
   var CAL_CARBS = 4;
@@ -23,6 +27,7 @@
   var addKeywordBtn = document.getElementById("add-keyword");
   var dashboardGridEl = document.getElementById("dashboard-grid");
   var weekSummaryEl = document.getElementById("week-summary");
+  var dashboardWeekToggleEl = document.getElementById("dashboard-week-toggle");
   var dashboardMicroToggleEl = document.getElementById("dashboard-micro-toggle");
   var dashboardMicroPanelEl = document.getElementById("dashboard-micro-panel");
   var dashboardMicroListEl = document.getElementById("dashboard-micro-list");
@@ -53,7 +58,9 @@
   var activeImportId = null;
   var microSaveTimer;
   var demographic = DEFAULT_DEMOGRAPHIC;
+  var weekTotalOpen = false;
   var microRequirementsOpen = false;
+  var lastWeekTotals = null;
 
   var MICRO_FIELDS = [
     { key: "fiber", label: "Fiber", unit: "g", code: "f" },
@@ -69,42 +76,6 @@
     { key: "vitaminC", label: "Vitamin C", unit: "mg", code: "c" },
     { key: "folate", label: "Folate", unit: "mcg", code: "fol" },
   ];
-
-  var DV_BY_DEMOGRAPHIC = {
-    male: {
-      fiber: 38,
-      sodium: 2300,
-      potassium: 3400,
-      calcium: 1000,
-      iron: 8,
-      magnesium: 420,
-      zinc: 11,
-      vitaminA: 900,
-      vitaminD: 15,
-      vitaminB12: 2.4,
-      vitaminC: 90,
-      folate: 400,
-    },
-    female: {
-      fiber: 25,
-      sodium: 2300,
-      potassium: 2600,
-      calcium: 1000,
-      iron: 18,
-      magnesium: 320,
-      zinc: 8,
-      vitaminA: 700,
-      vitaminD: 15,
-      vitaminB12: 2.4,
-      vitaminC: 75,
-      folate: 400,
-    },
-  };
-
-  var DEMOGRAPHIC_META = {
-    male: { icon: "♂", label: "Male" },
-    female: { icon: "♀", label: "Female" },
-  };
 
   function escapeHtml(text) {
     return String(text)
@@ -642,8 +613,10 @@
   }
 
   function dailyDv(key) {
-    var profile = DV_BY_DEMOGRAPHIC[demographic] || DV_BY_DEMOGRAPHIC[DEFAULT_DEMOGRAPHIC];
-    return profile[key] || 0;
+    if (demographicDv && demographicDv.getDailyMicroDv) {
+      return demographicDv.getDailyMicroDv(demographic, key);
+    }
+    return 0;
   }
 
   function avgDailyMicroPct(key, weekTotal) {
@@ -759,11 +732,25 @@
     dashboardMicroListEl.innerHTML = html;
   }
 
+  function setWeekTotalOpen(open) {
+    weekTotalOpen = !!open;
+    if (dashboardWeekToggleEl) {
+      dashboardWeekToggleEl.setAttribute("aria-expanded", weekTotalOpen ? "true" : "false");
+      dashboardWeekToggleEl.classList.toggle("dashboard__toggle--open", weekTotalOpen);
+    }
+    if (weekSummaryEl) {
+      weekSummaryEl.hidden = !weekTotalOpen;
+    }
+    if (weekTotalOpen && lastWeekTotals) {
+      renderWeekSummary(lastWeekTotals);
+    }
+  }
+
   function setMicroRequirementsOpen(open) {
     microRequirementsOpen = !!open;
     if (dashboardMicroToggleEl) {
       dashboardMicroToggleEl.setAttribute("aria-expanded", microRequirementsOpen ? "true" : "false");
-      dashboardMicroToggleEl.classList.toggle("dashboard__micro-toggle--open", microRequirementsOpen);
+      dashboardMicroToggleEl.classList.toggle("dashboard__toggle--open", microRequirementsOpen);
     }
     if (dashboardMicroPanelEl) {
       dashboardMicroPanelEl.hidden = !microRequirementsOpen;
@@ -774,6 +761,9 @@
   }
 
   function normalizeDemographic(value) {
+    if (demographicDv && demographicDv.normalizeDemographic) {
+      return demographicDv.normalizeDemographic(value);
+    }
     return value === "female" ? "female" : "male";
   }
 
@@ -797,7 +787,8 @@
   }
 
   function renderDemographicUi() {
-    var meta = DEMOGRAPHIC_META[demographic] || DEMOGRAPHIC_META[DEFAULT_DEMOGRAPHIC];
+    var metaMap = demographicDv ? demographicDv.META : {};
+    var meta = metaMap[demographic] || metaMap[DEFAULT_DEMOGRAPHIC] || { icon: "♂", label: "Male" };
     if (demographicBadgeEl) {
       demographicBadgeEl.textContent = meta.icon;
       demographicBadgeEl.setAttribute("title", meta.label);
@@ -897,7 +888,10 @@
     });
 
     dashboardGridEl.innerHTML = html;
-    renderWeekSummary(week);
+    lastWeekTotals = week;
+    if (weekTotalOpen) {
+      renderWeekSummary(week);
+    }
     if (microRequirementsOpen) {
       renderMicroRequirements();
     }
@@ -1339,6 +1333,12 @@
     saveFoodDefinitions();
     saveDemographic();
   });
+
+  if (dashboardWeekToggleEl) {
+    dashboardWeekToggleEl.addEventListener("click", function () {
+      setWeekTotalOpen(!weekTotalOpen);
+    });
+  }
 
   if (dashboardMicroToggleEl) {
     dashboardMicroToggleEl.addEventListener("click", function () {

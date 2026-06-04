@@ -56,6 +56,7 @@ nutrients/
 ├── styles.css          (~869 lines)  Layout, dashboard, table, modals, responsive
 ├── app.js              All application logic (IIFE)
 ├── config.json         Micro % DV tier colors & font weights (fetched at boot)
+├── demographic-dv.js   Gender-specific daily micro targets (% DV denominators)
 └── AGENTS_CODE_REFERENCE*.md         AI docs (this set)
 ```
 
@@ -92,7 +93,7 @@ Micronutrients affect **storage and UI** (micros button codes, import JSON) and 
 - `MICRO_FIELDS` — `{ key, label, unit, code }` for 12 micros; `code` drives button label (`f`, `na`, `b12`, …).
 - `STORAGE_KEY` — `nutrients-food-definitions`; migrates from `nutrients-keywords`.
 - `STORAGE_KEY_DEMOGRAPHIC` — `nutrients-demographic`; `male` | `female`, default `male`.
-- `DV_BY_DEMOGRAPHIC` — daily reference amounts per micro key for % DV.
+- `demographic-dv.js` — `NutrientsDemographicDv.getDailyMicroDv(demographic, microKey)` for % DV denominators (must load before `app.js`).
 - `CAL_PROTEIN|CARBS|FATS` — 4, 4, 9.
 
 ## UI regions (`index.html`)
@@ -100,7 +101,7 @@ Micronutrients affect **storage and UI** (micros button codes, import JSON) and 
 Top to bottom inside `<main class="week">`:
 
 1. Header  
-2. `.dashboard` — `#dashboard-grid`, `#week-summary`, optional `#dashboard-micro-panel` (toggle `#dashboard-micro-toggle`)  
+2. `.dashboard` — `#dashboard-grid`; optional `#week-summary` (`#dashboard-week-toggle`) and `#dashboard-micro-panel` (`#dashboard-micro-toggle`)  
 3. `.week__grid` — six `.day__editor` (backdrop + transparent textarea)  
 4. `.keywords` — food definitions table; `#keywords-list` body rendered in JS  
 5. `.demographic` — collapsible `#demographic-panel` below food definitions; badge `#demographic-badge`  

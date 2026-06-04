@@ -13,7 +13,7 @@ Parent: [AGENTS_CODE_REFERENCE.md](./AGENTS_CODE_REFERENCE.md)
 ├── .week__header
 ├── .dashboard
 │   ├── #dashboard-grid           (6 cards, JS)
-│   ├── #week-summary             (full-width week calories, JS)
+│   ├── #week-summary             (hidden by default; week calories toggle)
 │   └── #dashboard-micro-panel    (hidden until toggle; % DV list, JS)
 ├── .week__grid             (6 columns Mon–Sat, 45vh height desktop)
 │   └── .day × 6
@@ -49,7 +49,7 @@ Native `<textarea>` cannot color individual words. Pattern:
 
 **`.dashboard__grid`** — 6 equal columns; cards `.dashboard__card` with rows for P/C/F g·cal and total.
 
-**`.week-summary`** — below grid, full width, distinct background; week total calories prominent.
+**`.week-summary`** — below grid, full width, distinct background; hidden until **Week total** toggle (`#dashboard-week-toggle`). Header toggles grouped in `.dashboard__toggles` (shared `.dashboard__toggle` / `--open`).
 
 **Micro requirements** — `#dashboard-micro-toggle` in `.dashboard__header-row`; panel `.dashboard__micro-panel` with responsive grid `.dashboard__micro-list`. **% DV** text color and `font-weight` are inline from `config.json` tiers (`data-dv-tier` on row).
 
@@ -75,9 +75,9 @@ Horizontal scroll on narrow screens: `.keywords__panel { overflow-x: auto }`, `m
 
 **Summary** — `.demographic__summary` with title + `#demographic-badge` (♂/♀) in the corner.
 
-**Body** — radio-style `.demographic__option` buttons; selected `.demographic__option--selected`.
+**Body** — `.demographic__note` explains genderless labels vs real differences; radio-style `.demographic__option` buttons; selected `.demographic__option--selected`.
 
-Placed **below** `.keywords` in `index.html`.
+Placed **below** `.keywords` in `index.html`. Script **`demographic-dv.js`** must load before `app.js`.
 
 ## Modals (shared)
 
@@ -110,7 +110,7 @@ JS does not depend on BEM beyond stable IDs (`#mon`, `#keywords-list`, etc.).
 Critical hooks (do not rename without updating `app.js` top):
 
 - Day: `mon` … `sat`
-- `dashboard-grid`, `week-summary`, `dashboard-micro-toggle`, `dashboard-micro-panel`, `dashboard-micro-list`
+- `dashboard-grid`, `week-summary`, `dashboard-week-toggle`, `dashboard-micro-toggle`, `dashboard-micro-panel`, `dashboard-micro-list`
 - `demographic-panel`, `demographic-badge`, `demographic-options`
 - `keywords-list`, `keywords-empty`, `add-keyword`
 - `import-modal`, `import-json`, `import-ai-*`, `micro-modal`, `micro-form`

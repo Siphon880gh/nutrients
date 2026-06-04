@@ -52,8 +52,14 @@ body {
   flex-wrap: wrap;
 }
 
-.dashboard__micro-toggle {
+.dashboard__toggles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
   flex-shrink: 0;
+}
+
+.dashboard__toggle {
   padding: 0.35rem 0.65rem;
   font: inherit;
   font-size: 0.78rem;
@@ -65,11 +71,11 @@ body {
   cursor: pointer;
 }
 
-.dashboard__micro-toggle:hover {
+.dashboard__toggle:hover {
   background: #e8eef4;
 }
 
-.dashboard__micro-toggle--open {
+.dashboard__toggle--open {
   background: #e8eef4;
   border-color: #3d6b9e;
 }
@@ -145,7 +151,11 @@ body {
   gap: 0.6rem;
 }
 
-.week-summary {
+.week-summary[hidden] {
+  display: none;
+}
+
+.week-summary:not([hidden]) {
   margin-top: 0.6rem;
   padding: 0.65rem 0.85rem;
   border: 1px solid #9eb4cc;
@@ -380,6 +390,34 @@ body {
   margin: 0.6rem 0 0.65rem;
   font-size: 0.8rem;
   color: #5c5c5c;
+}
+
+.demographic__note {
+  margin: 0 0 0.85rem;
+  padding: 0.65rem 0.75rem;
+  font-size: 0.78rem;
+  line-height: 1.45;
+  color: #444;
+  background: #f6f8fa;
+  border-left: 3px solid #9eb4cc;
+  border-radius: 0 4px 4px 0;
+}
+
+.demographic__note-lead {
+  margin: 0 0 0.45rem;
+}
+
+.demographic__note-list {
+  margin: 0;
+  padding-left: 1.15rem;
+}
+
+.demographic__note-list li {
+  margin-bottom: 0.35rem;
+}
+
+.demographic__note-list li:last-child {
+  margin-bottom: 0;
 }
 
 .demographic__options {

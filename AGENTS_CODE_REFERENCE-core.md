@@ -16,7 +16,7 @@ Parent overview: [AGENTS_CODE_REFERENCE.md](./AGENTS_CODE_REFERENCE.md)
 | Matching | `countKeyword`, `keywordNames`, `buildHighlightRegex` |
 | Totals | `totalsFromText`, `addTotals`, `renderDashboard`, `renderWeekSummary` |
 | Micro totals / DV | `microTotalsFromText`, `weekMicroTotals`, `renderMicroRequirements`, `setMicroRequirementsOpen` |
-| Demographic | `loadDemographic`, `saveDemographic`, `setDemographic`, `renderDemographicUi`, `DV_BY_DEMOGRAPHIC` |
+| Demographic | `loadDemographic`, `saveDemographic`, `setDemographic`, `renderDemographicUi`; targets in `demographic-dv.js` |
 | Highlights | `updateDayHighlights`, `highlightedHtml`, `refreshAll` |
 | Persistence | `saveFoodDefinitions`, `loadFoodDefinitions` |
 
@@ -74,10 +74,10 @@ new RegExp("\\b" + escapeRegex(name) + "\\b", "gi")
 - Loops `DAYS`, reads `document.getElementById(day.id).value`.
 - Accumulates `week` via `addTotals`.
 - Sets `#dashboard-grid` HTML from `dashboardCardHtml` (per-macro g + cal, total cal).
-- Calls `renderWeekSummary(week)` → `#week-summary` shows **Week total** + `data-week-extras` (empty hook for future EOW stats).
+- **`#week-summary`** hidden by default; **Week total** toggle (`#dashboard-week-toggle`, `setWeekTotalOpen`) shows bar with `renderWeekSummary(week)` when open. `lastWeekTotals` cached on each `renderDashboard`.
 - If **Micro requirements** is expanded (`#dashboard-micro-toggle`), `renderMicroRequirements` fills `#dashboard-micro-list`.
 
-**Micro requirements** — `microTotalsFromText` mirrors macro matching (hits × per-food micros). Week sum ÷ `MICRO_AVG_DAYS` (6) vs `dailyDv(key)` from `DV_BY_DEMOGRAPHIC[demographic]` → average daily **% DV**. **% DV color/weight** comes from `config.json` → `microDvStatus.tiers` (loaded by `loadAppConfig`; fallback `DEFAULT_MICRO_DV_STATUS` in `app.js`). `tierForMicroPct` picks the tier with the highest `minPercent` still ≤ value. Toggle state is session-only; demographic is persisted.
+**Micro requirements** — `microTotalsFromText` mirrors macro matching (hits × per-food micros). Average daily amount = week sum ÷ `MICRO_AVG_DAYS` (6). **% DV** = `(avgDaily / dailyDv(key)) × 100` where `dailyDv` calls `NutrientsDemographicDv.getDailyMicroDv(demographic, key)` from `demographic-dv.js` (e.g. female iron 18&nbsp;mg, male 8&nbsp;mg). **% DV color/weight** from `config.json` tiers. Toggle state is session-only; demographic choice is persisted.
 
 **Calorie constants** — `CAL_PROTEIN`, `CAL_CARBS`, `CAL_FATS` at file top.
 
@@ -123,8 +123,8 @@ Micros are **not** in macro `totalsFromText`; use `microTotalsFromText` / `weekM
 | Goal | Where to edit |
 |------|----------------|
 | Sum micros into per-day cards | `dashboardCardHtml` + `microTotalsFromText` per day |
-| Change DV profile | `DV_BY_DEMOGRAPHIC`, `MICRO_FIELDS` keys must align |
-| New demographic option | `DEMOGRAPHIC_META`, HTML options, `normalizeDemographic`, DV table |
+| Change DV profile | `demographic-dv.js` → `DAILY_MICRO_DV`; keys must match `MICRO_FIELDS` |
+| New demographic option | `META`, `DAILY_MICRO_DV`, HTML options, `normalizeDemographic` in `demographic-dv.js` |
 | Persist day notes | New `STORAGE_KEY`, load/save in `bindDay`, boot |
 | Sunday column | `DAYS`, HTML day column, CSS grid columns |
 | Stricter matching | `countKeyword` / regex builder |
