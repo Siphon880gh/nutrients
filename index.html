@@ -16,7 +16,7 @@
     <section class="dashboard" aria-labelledby="dashboard-heading">
       <div class="dashboard__header">
         <h2 id="dashboard-heading" class="dashboard__title">Dashboard</h2>
-        <p class="dashboard__hint">Each keyword match in a day adds that keyword's macros (4 cal/g protein &amp; carbs, 9 cal/g fat)</p>
+        <p class="dashboard__hint">Each food match in a day adds that food's macros (4 cal/g protein &amp; carbs, 9 cal/g fat)</p>
       </div>
       <div id="dashboard-grid" class="dashboard__grid"></div>
       <div id="week-summary" class="week-summary" aria-label="Week summary"></div>
@@ -72,10 +72,10 @@
       </div>
     </div>
 
-    <section class="keywords" aria-labelledby="keywords-heading">
+    <section class="keywords" aria-labelledby="food-definitions-heading">
       <div class="keywords__header">
-        <h2 id="keywords-heading" class="keywords__title">Keywords</h2>
-        <p class="keywords__hint">Add foods or terms with macros (g). Matching words in the week notes are highlighted.</p>
+        <h2 id="food-definitions-heading" class="keywords__title">Food definitions</h2>
+        <p class="keywords__hint">Define foods with macros (g). Saved in this browser. Matching names in the week notes are highlighted.</p>
       </div>
 
       <div class="keywords__panel">
@@ -83,22 +83,56 @@
           <thead>
             <tr>
               <th class="keywords__th-order" scope="col"><span class="visually-hidden">Order</span></th>
-              <th class="keywords__th-name" scope="col">Keyword</th>
+              <th class="keywords__th-name" scope="col">Food</th>
               <th class="keywords__th-macro" scope="col">Protein (g)</th>
               <th class="keywords__th-macro" scope="col">Carbs (g)</th>
               <th class="keywords__th-macro" scope="col">Fats (g)</th>
+              <th class="keywords__th-micros" scope="col">Micros</th>
               <th class="keywords__th-actions" scope="col"><span class="visually-hidden">Actions</span></th>
             </tr>
           </thead>
           <tbody id="keywords-list"></tbody>
         </table>
 
-        <p id="keywords-empty" class="keywords__empty" hidden>No keywords yet.</p>
+        <p id="keywords-empty" class="keywords__empty" hidden>No food definitions yet.</p>
 
-        <button type="button" id="add-keyword" class="keywords__add">Add keyword</button>
+        <button type="button" id="add-keyword" class="keywords__add">Add food definition</button>
       </div>
     </section>
   </main>
+
+  <div id="import-modal" class="modal" hidden>
+    <div class="modal__backdrop" data-action="close-import-modal"></div>
+    <div class="modal__panel modal__panel--wide" role="dialog" aria-modal="true" aria-labelledby="import-modal-title">
+      <header class="modal__header">
+        <h3 id="import-modal-title" class="modal__title">Import food definition</h3>
+        <p id="import-modal-food" class="modal__subtitle"></p>
+      </header>
+      <div class="import-modal__body">
+        <p class="import-modal__hint">JSON with at least <code>name</code>. Omitted fields are left unchanged; micronutrients not listed are skipped.</p>
+        <textarea id="import-json" class="import-modal__json" rows="14" spellcheck="false"></textarea>
+        <p id="import-error" class="import-modal__error" hidden></p>
+      </div>
+      <footer class="modal__footer modal__footer--split">
+        <button type="button" id="import-cancel" class="modal__secondary">Cancel</button>
+        <button type="button" id="import-apply" class="modal__done">Import</button>
+      </footer>
+    </div>
+  </div>
+
+  <div id="micro-modal" class="modal" hidden>
+    <div class="modal__backdrop" data-action="close-micro-modal"></div>
+    <div class="modal__panel" role="dialog" aria-modal="true" aria-labelledby="micro-modal-title">
+      <header class="modal__header">
+        <h3 id="micro-modal-title" class="modal__title">Micronutrients</h3>
+        <p id="micro-modal-food" class="modal__subtitle"></p>
+      </header>
+      <form id="micro-form" class="micro-form"></form>
+      <footer class="modal__footer">
+        <button type="button" id="micro-modal-done" class="modal__done">Done</button>
+      </footer>
+    </div>
+  </div>
 
   <script src="app.js"></script>
 </body>

@@ -7,7 +7,8 @@
     { id: "fri", label: "Fri" },
     { id: "sat", label: "Sat" },
   ];
-  var STORAGE_KEY = "nutrients-keywords";
+  var STORAGE_KEY = "nutrients-food-definitions";
+  var STORAGE_KEY_LEGACY = "nutrients-keywords";
   var CAL_PROTEIN = 4;
   var CAL_CARBS = 4;
   var CAL_FATS = 9;
@@ -19,6 +20,34 @@
   var addKeywordBtn = document.getElementById("add-keyword");
   var dashboardGridEl = document.getElementById("dashboard-grid");
   var weekSummaryEl = document.getElementById("week-summary");
+  var microModalEl = document.getElementById("micro-modal");
+  var microFormEl = document.getElementById("micro-form");
+  var microModalFoodEl = document.getElementById("micro-modal-food");
+  var microModalDoneBtn = document.getElementById("micro-modal-done");
+  var importModalEl = document.getElementById("import-modal");
+  var importModalFoodEl = document.getElementById("import-modal-food");
+  var importJsonEl = document.getElementById("import-json");
+  var importErrorEl = document.getElementById("import-error");
+  var importApplyBtn = document.getElementById("import-apply");
+  var importCancelBtn = document.getElementById("import-cancel");
+  var activeMicroId = null;
+  var activeImportId = null;
+  var microSaveTimer;
+
+  var MICRO_FIELDS = [
+    { key: "fiber", label: "Fiber", unit: "g", code: "f" },
+    { key: "sodium", label: "Sodium", unit: "mg", code: "na" },
+    { key: "potassium", label: "Potassium", unit: "mg", code: "k" },
+    { key: "calcium", label: "Calcium", unit: "mg", code: "ca" },
+    { key: "iron", label: "Iron", unit: "mg", code: "fe" },
+    { key: "magnesium", label: "Magnesium", unit: "mg", code: "mg" },
+    { key: "zinc", label: "Zinc", unit: "mg", code: "zn" },
+    { key: "vitaminA", label: "Vitamin A", unit: "mcg", code: "a" },
+    { key: "vitaminD", label: "Vitamin D", unit: "mcg", code: "d" },
+    { key: "vitaminB12", label: "Vitamin B12", unit: "mcg", code: "b12" },
+    { key: "vitaminC", label: "Vitamin C", unit: "mg", code: "c" },
+    { key: "folate", label: "Folate", unit: "mcg", code: "fol" },
+  ];
 
   function escapeHtml(text) {
     return String(text)
@@ -39,6 +68,37 @@
     return "kw-" + nextId++ + "-" + Date.now();
   }
 
+  function blankMicros() {
+    var micros = {};
+    MICRO_FIELDS.forEach(function (field) {
+      micros[field.key] = "";
+    });
+    return micros;
+  }
+
+  function normalizeMicros(raw) {
+    var micros = blankMicros();
+    if (!raw || typeof raw !== "object") return micros;
+    MICRO_FIELDS.forEach(function (field) {
+      var v = raw[field.key];
+      if (v === "" || v == null) {
+        micros[field.key] = "";
+      } else {
+        var n = parseFloat(v);
+        micros[field.key] = isNaN(n) ? "" : n;
+      }
+    });
+    return micros;
+  }
+
+  function hasMicrosFilled(micros) {
+    if (!micros) return false;
+    return MICRO_FIELDS.some(function (field) {
+      var v = micros[field.key];
+      return v !== "" && v != null;
+    });
+  }
+
   function blankKeyword() {
     return {
       id: makeId(),
@@ -46,13 +106,208 @@
       protein: "",
       carbs: "",
       fats: "",
+      micros: blankMicros(),
     };
+  }
+
+  function microInputValue(value) {
+    return value === "" || value == null ? "" : value;
+  }
+
+  function filledMicroCodes(micros) {
+    var codes = [];
+    MICRO_FIELDS.forEach(function (field) {
+      var v = micros[field.key];
+      if (v !== "" && v != null) {
+        codes.push(field.code);
+      }
+    });
+    return codes;
+  }
+
+  function microsButtonText(kw) {
+    var codes = filledMicroCodes(kw.micros);
+    return codes.length ? codes.join(",") : "Micros";
+  }
+
+  function microsButtonAria(kw) {
+    var codes = filledMicroCodes(kw.micros);
+    if (!codes.length) return "Add micronutrients";
+    return "Edit micronutrients: " + codes.join(", ");
+  }
+
+  function applyMicroButtonContent(btn, kw) {
+    var filled = hasMicrosFilled(kw.micros);
+    var text = microsButtonText(kw);
+    btn.classList.toggle("keywords__micros--filled", filled);
+    btn.setAttribute("aria-label", microsButtonAria(kw));
+    if (filled) {
+      btn.setAttribute("data-tooltip", text);
+    } else {
+      btn.removeAttribute("data-tooltip");
+    }
+    btn.innerHTML =
+      '<span class="keywords__micros-text">' + escapeHtml(text) + "</span>";
+  }
+
+  function microsButtonHtml(kw) {
+    var filled = hasMicrosFilled(kw.micros);
+    var cls = "keywords__micros" + (filled ? " keywords__micros--filled" : "");
+    var text = microsButtonText(kw);
+    var tooltipAttr = filled ? ' data-tooltip="' + escapeAttr(text) + '"' : "";
+    return (
+      '<button type="button" class="' +
+      cls +
+      '" data-action="micros"' +
+      tooltipAttr +
+      ' aria-label="' +
+      escapeAttr(microsButtonAria(kw)) +
+      '"><span class="keywords__micros-text">' +
+      escapeHtml(text) +
+      "</span></button>"
+    );
   }
 
   function parseMacro(value) {
     if (value === "" || value == null) return 0;
     var n = parseFloat(value);
     return isNaN(n) ? 0 : n;
+  }
+
+  function storedMacroValue(val) {
+    if (val === "" || val == null) return "";
+    var n = parseFloat(val);
+    return isNaN(n) ? "" : n;
+  }
+
+  function exportFoodJson(kw) {
+    var obj = { name: kw.name };
+    if (kw.protein !== "" && kw.protein != null) obj.protein = kw.protein;
+    if (kw.carbs !== "" && kw.carbs != null) obj.carbs = kw.carbs;
+    if (kw.fats !== "" && kw.fats != null) obj.fats = kw.fats;
+
+    var micros = {};
+    MICRO_FIELDS.forEach(function (field) {
+      var v = kw.micros[field.key];
+      if (v !== "" && v != null) {
+        micros[field.key] = v;
+      }
+    });
+    if (Object.keys(micros).length > 0) {
+      obj.micros = micros;
+    }
+
+    return JSON.stringify(obj, null, 2);
+  }
+
+  function showImportError(message) {
+    if (!importErrorEl) return;
+    if (!message) {
+      importErrorEl.hidden = true;
+      importErrorEl.textContent = "";
+      return;
+    }
+    importErrorEl.hidden = false;
+    importErrorEl.textContent = message;
+  }
+
+  function closeImportModal() {
+    if (!importModalEl) return;
+    activeImportId = null;
+    importModalEl.hidden = true;
+    showImportError("");
+    if (!activeMicroId) {
+      document.body.classList.remove("modal-open");
+    }
+  }
+
+  function applyImportJson(id, raw) {
+    var data;
+    try {
+      data = JSON.parse(raw);
+    } catch (e) {
+      throw new Error("Invalid JSON");
+    }
+
+    if (!data || typeof data !== "object" || Array.isArray(data)) {
+      throw new Error("JSON must be an object");
+    }
+
+    if (data.name == null || String(data.name).trim() === "") {
+      throw new Error("Name is required");
+    }
+
+    var i = findIndex(id);
+    if (i < 0) {
+      throw new Error("Food definition not found");
+    }
+
+    keywords[i].name = String(data.name).trim();
+
+    if ("protein" in data) {
+      keywords[i].protein = storedMacroValue(data.protein);
+    }
+    if ("carbs" in data) {
+      keywords[i].carbs = storedMacroValue(data.carbs);
+    }
+    if ("fats" in data) {
+      keywords[i].fats = storedMacroValue(data.fats);
+    }
+
+    if (
+      data.micros &&
+      typeof data.micros === "object" &&
+      !Array.isArray(data.micros)
+    ) {
+      MICRO_FIELDS.forEach(function (field) {
+        if (field.key in data.micros) {
+          keywords[i].micros[field.key] = storedMacroValue(
+            data.micros[field.key]
+          );
+        }
+      });
+    }
+
+    saveFoodDefinitions();
+  }
+
+  function runImport() {
+    if (!activeImportId || !importJsonEl) return;
+    try {
+      applyImportJson(activeImportId, importJsonEl.value);
+      closeImportModal();
+      renderKeywords();
+      refreshAll();
+    } catch (e) {
+      showImportError(e.message || "Import failed");
+    }
+  }
+
+  function openImportModal(id) {
+    if (!importModalEl || !importJsonEl) return;
+    var i = findIndex(id);
+    if (i < 0) return;
+
+    if (activeMicroId) {
+      saveMicrosFromForm();
+      closeMicroModal();
+    }
+
+    activeImportId = id;
+    var kw = keywords[i];
+
+    if (importModalFoodEl) {
+      importModalFoodEl.textContent = kw.name.trim()
+        ? kw.name.trim()
+        : "Untitled food";
+    }
+
+    importJsonEl.value = exportFoodJson(kw);
+    showImportError("");
+    importModalEl.hidden = false;
+    document.body.classList.add("modal-open");
+    importJsonEl.focus();
+    importJsonEl.select();
   }
 
   function fmtNum(n) {
@@ -257,7 +512,7 @@
     renderDashboard();
   }
 
-  function saveKeywords() {
+  function saveFoodDefinitions() {
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(keywords));
     } catch (e) {
@@ -265,9 +520,16 @@
     }
   }
 
-  function loadKeywords() {
+  function loadFoodDefinitions() {
     try {
       var raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) {
+        raw = localStorage.getItem(STORAGE_KEY_LEGACY);
+        if (raw) {
+          localStorage.setItem(STORAGE_KEY, raw);
+          localStorage.removeItem(STORAGE_KEY_LEGACY);
+        }
+      }
       if (!raw) return;
       var data = JSON.parse(raw);
       if (!Array.isArray(data)) return;
@@ -278,6 +540,7 @@
           protein: item.protein === "" || item.protein == null ? "" : item.protein,
           carbs: item.carbs === "" || item.carbs == null ? "" : item.carbs,
           fats: item.fats === "" || item.fats == null ? "" : item.fats,
+          micros: normalizeMicros(item.micros),
         };
       });
       data.forEach(function (item) {
@@ -298,14 +561,123 @@
     return -1;
   }
 
+  function closeMicroModal() {
+    if (!microModalEl) return;
+    activeMicroId = null;
+    microModalEl.hidden = true;
+    if (!activeImportId) {
+      document.body.classList.remove("modal-open");
+    }
+  }
+
+  function updateMicroButton(id) {
+    if (!keywordsListEl) return;
+    var i = findIndex(id);
+    if (i < 0) return;
+    var row = keywordsListEl.querySelector('[data-id="' + id + '"]');
+    if (!row) return;
+    var btn = row.querySelector('[data-action="micros"]');
+    if (!btn) return;
+    applyMicroButtonContent(btn, keywords[i]);
+  }
+
+  function saveMicrosFromForm() {
+    if (!activeMicroId || !microFormEl) return;
+    var i = findIndex(activeMicroId);
+    if (i < 0) return;
+
+    var micros = blankMicros();
+    var inputs = microFormEl.querySelectorAll("[data-micro-key]");
+    inputs.forEach(function (input) {
+      var key = input.getAttribute("data-micro-key");
+      micros[key] = parseMacro(input.value);
+      if (input.value.trim() === "") {
+        micros[key] = "";
+      }
+    });
+
+    keywords[i].micros = micros;
+    saveFoodDefinitions();
+    updateMicroButton(activeMicroId);
+  }
+
+  function populateMicroForm(kw) {
+    if (!microFormEl || !kw) return;
+    MICRO_FIELDS.forEach(function (field) {
+      var input = microFormEl.querySelector('[data-micro-key="' + field.key + '"]');
+      if (input) {
+        input.value = microInputValue(kw.micros[field.key]);
+      }
+    });
+  }
+
+  function openMicroModal(id) {
+    if (!microModalEl || !microFormEl) return;
+    var i = findIndex(id);
+    if (i < 0) return;
+
+    if (activeImportId) {
+      closeImportModal();
+    }
+
+    if (activeMicroId && activeMicroId !== id) {
+      saveMicrosFromForm();
+    }
+
+    activeMicroId = id;
+    var kw = keywords[i];
+
+    if (microModalFoodEl) {
+      microModalFoodEl.textContent = kw.name.trim()
+        ? kw.name.trim()
+        : "Untitled food";
+    }
+
+    populateMicroForm(kw);
+    microModalEl.hidden = false;
+    document.body.classList.add("modal-open");
+
+    var first = microFormEl.querySelector("input");
+    if (first) first.focus();
+  }
+
+  function initMicroForm() {
+    if (!microFormEl) return;
+
+    microFormEl.innerHTML = MICRO_FIELDS.map(function (field) {
+      return (
+        '<label class="micro-form__field">' +
+        '<span class="micro-form__label">' +
+        escapeHtml(field.label) +
+        " (" +
+        escapeHtml(field.code) +
+        ')</span><span class="micro-form__unit">' +
+        escapeHtml(field.unit) +
+        "</span>" +
+        '<input type="number" class="micro-form__input" min="0" step="0.1" inputmode="decimal" ' +
+        'data-micro-key="' +
+        escapeAttr(field.key) +
+        '" placeholder="0">' +
+        "</label>"
+      );
+    }).join("");
+  }
+
+  function scheduleMicroSave() {
+    clearTimeout(microSaveTimer);
+    microSaveTimer = setTimeout(saveMicrosFromForm, 250);
+  }
+
   function moveKeyword(id, delta) {
     var i = findIndex(id);
     var j = i + delta;
     if (i < 0 || j < 0 || j >= keywords.length) return;
+    if (activeMicroId === id) closeMicroModal();
+    if (activeImportId === id) closeImportModal();
     var tmp = keywords[i];
     keywords[i] = keywords[j];
     keywords[j] = tmp;
-    saveKeywords();
+    saveFoodDefinitions();
     renderKeywords();
     refreshAll();
   }
@@ -313,15 +685,17 @@
   function removeKeyword(id) {
     var i = findIndex(id);
     if (i < 0) return;
+    if (activeMicroId === id) closeMicroModal();
+    if (activeImportId === id) closeImportModal();
     keywords.splice(i, 1);
-    saveKeywords();
+    saveFoodDefinitions();
     renderKeywords();
     refreshAll();
   }
 
   function addKeyword() {
     keywords.push(blankKeyword());
-    saveKeywords();
+    saveFoodDefinitions();
     renderKeywords();
     refreshAll();
     var lastRow = keywordsListEl.lastElementChild;
@@ -391,8 +765,12 @@
         escapeAttr(fatsVal) +
         '">' +
         "</td>" +
+        '<td class="keywords__micros-cell">' +
+        microsButtonHtml(kw) +
+        "</td>" +
         '<td class="keywords__actions">' +
-        '<button type="button" class="keywords__delete" data-action="delete" aria-label="Delete keyword">Delete</button>' +
+        '<button type="button" class="keywords__import" data-action="import" aria-label="Import food definition as JSON">Import</button>' +
+        '<button type="button" class="keywords__delete" data-action="delete" aria-label="Delete food definition">Delete</button>' +
         "</td>";
 
       keywordsListEl.appendChild(tr);
@@ -420,7 +798,7 @@
       var row = e.target.closest(".keywords__row");
       if (!row) return;
       syncFieldFromDom(row);
-      saveKeywords();
+      saveFoodDefinitions();
       refreshAll();
     });
 
@@ -435,8 +813,66 @@
       if (action === "up") moveKeyword(id, -1);
       else if (action === "down") moveKeyword(id, 1);
       else if (action === "delete") removeKeyword(id);
+      else if (action === "micros") openMicroModal(id);
+      else if (action === "import") openImportModal(id);
     });
   }
+
+  if (importApplyBtn) {
+    importApplyBtn.addEventListener("click", runImport);
+  }
+
+  if (importCancelBtn) {
+    importCancelBtn.addEventListener("click", closeImportModal);
+  }
+
+  if (importModalEl) {
+    importModalEl.addEventListener("click", function (e) {
+      if (e.target.closest('[data-action="close-import-modal"]')) {
+        closeImportModal();
+      }
+    });
+  }
+
+  if (importJsonEl) {
+    importJsonEl.addEventListener("input", function () {
+      showImportError("");
+    });
+  }
+
+  if (microFormEl) {
+    microFormEl.addEventListener("input", scheduleMicroSave);
+  }
+
+  if (microModalDoneBtn) {
+    microModalDoneBtn.addEventListener("click", function () {
+      saveMicrosFromForm();
+      closeMicroModal();
+    });
+  }
+
+  if (microModalEl) {
+    microModalEl.addEventListener("click", function (e) {
+      if (e.target.closest('[data-action="close-micro-modal"]')) {
+        saveMicrosFromForm();
+        closeMicroModal();
+      }
+    });
+  }
+
+  document.addEventListener("keydown", function (e) {
+    if (e.key !== "Escape") return;
+    if (activeImportId) {
+      closeImportModal();
+      return;
+    }
+    if (activeMicroId) {
+      saveMicrosFromForm();
+      closeMicroModal();
+    }
+  });
+
+  initMicroForm();
 
   if (addKeywordBtn) {
     addKeywordBtn.addEventListener("click", addKeyword);
@@ -447,7 +883,9 @@
     if (el) bindDay(el);
   });
 
-  loadKeywords();
+  window.addEventListener("beforeunload", saveFoodDefinitions);
+
+  loadFoodDefinitions();
   renderKeywords();
   refreshAll();
 })();
