@@ -273,6 +273,182 @@ button.dashboard__micro-name:focus-visible {
   font-variant-numeric: tabular-nums;
 }
 
+.dashboard__longevity-panel {
+  margin-top: 0.6rem;
+  padding: 0.75rem 0.85rem;
+  border: 1px solid #c8c8c4;
+  border-radius: 6px;
+  background: #fff;
+}
+
+.dashboard__longevity-hint {
+  margin: 0 0 0.6rem;
+  font-size: 0.78rem;
+  color: #5c5c5c;
+}
+
+.dashboard__longevity-section {
+  margin-bottom: 0.85rem;
+}
+
+.dashboard__longevity-section:last-child {
+  margin-bottom: 0;
+}
+
+.dashboard__longevity-section-title {
+  margin: 0 0 0.35rem;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #333;
+}
+
+.dashboard__longevity-note {
+  margin: 0 0 0.35rem;
+  font-size: 0.72rem;
+  color: #5c5c5c;
+}
+
+.dashboard__longevity-processed-note {
+  margin: 0 0 0.75rem;
+  padding: 0.65rem 0.75rem;
+  font-size: 0.78rem;
+  line-height: 1.45;
+  color: #444;
+  background: #f6f8fa;
+  border-left: 3px solid #9eb4cc;
+  border-radius: 0 4px 4px 0;
+}
+
+.dashboard__longevity-processed-note-text {
+  margin: 0;
+}
+
+.dashboard__longevity-processed-note a {
+  color: #2a5f9e;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.dashboard__longevity-processed-note a:hover {
+  color: #1a4078;
+}
+
+.dashboard__longevity-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
+  gap: 0.35rem 1rem;
+}
+
+.dashboard__longevity-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-rows: auto auto;
+  gap: 0.1rem 0.5rem;
+  padding: 0.35rem 0.45rem;
+  border-radius: 4px;
+  font-size: 0.78rem;
+  background: #fafaf8;
+  border: 1px solid #e8e8e4;
+}
+
+.dashboard__longevity-row--computed {
+  background: #f5f7fa;
+  border-color: #d8e0ea;
+}
+
+.dashboard__longevity-row--from-micro {
+  border-style: dashed;
+}
+
+.dashboard__longevity-name {
+  grid-column: 1;
+  font-weight: 600;
+  color: #333;
+}
+
+button.dashboard__longevity-name {
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-weight: 600;
+  color: #333;
+  text-align: left;
+  cursor: pointer;
+}
+
+button.dashboard__longevity-name:hover {
+  color: #333;
+}
+
+button.dashboard__longevity-name:focus-visible {
+  outline: 2px solid #3d6b9e;
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+.dashboard__longevity-row--clickable:hover {
+  background: #f3f3f0;
+}
+
+.dashboard__longevity-amt {
+  grid-column: 1;
+  color: #5c5c5c;
+  font-size: 0.72rem;
+}
+
+.dashboard__longevity-pct {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  align-self: center;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.dashboard__gi-buckets {
+  display: flex;
+  gap: 0.35rem;
+  align-items: flex-end;
+  height: 3.5rem;
+  margin-top: 0.35rem;
+}
+
+.dashboard__gi-bucket {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+}
+
+.dashboard__gi-bucket-bar {
+  width: 100%;
+  max-width: 4rem;
+  border-radius: 3px 3px 0 0;
+  background: #7a9ec8;
+  min-height: 2px;
+}
+
+.dashboard__gi-bucket-bar--low {
+  background: #4a8f5a;
+}
+
+.dashboard__gi-bucket-bar--med {
+  background: #c9a227;
+}
+
+.dashboard__gi-bucket-bar--high {
+  background: #b45309;
+}
+
+.dashboard__gi-bucket-label {
+  font-size: 0.68rem;
+  color: #5c5c5c;
+  text-align: center;
+}
+
 .dashboard__title {
   margin: 0 0 0.25rem;
   font-size: 1rem;
@@ -724,6 +900,96 @@ button.dashboard__micro-name:focus-visible {
   width: 7.5rem;
 }
 
+.keywords__th-longevity {
+  width: 7.5rem;
+}
+
+.keywords__longevity-cell {
+  white-space: nowrap;
+  overflow: visible;
+}
+
+.keywords__longevity-cell .keywords__longevity {
+  max-width: 6.5rem;
+}
+
+.keywords__longevity {
+  position: relative;
+  display: inline-block;
+  max-width: 6.5rem;
+  padding: 0.35rem 0.45rem;
+  font: inherit;
+  font-size: 0.75rem;
+  cursor: pointer;
+  border-radius: 4px;
+  border: 1px dashed #b8b8b4;
+  background: #fafaf8;
+  color: #5c5c5c;
+}
+
+.keywords__longevity-text {
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.keywords__longevity--filled {
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: thin;
+  text-align: left;
+  border-style: solid;
+  border-color: #7a6a9e;
+  background: #f0eef6;
+  color: #3d2d5a;
+  font-weight: 500;
+}
+
+.keywords__longevity--filled .keywords__longevity-text {
+  min-width: min-content;
+}
+
+.keywords__longevity:hover {
+  background: #f0f0ec;
+  border-color: #989894;
+  color: #1a1a1a;
+}
+
+.keywords__longevity--filled:hover {
+  background: #e6e2ef;
+  border-color: #5a4a80;
+}
+
+.keywords__longevity[data-tooltip]:hover::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 50%;
+  z-index: 60;
+  padding: 0.4rem 0.55rem;
+  font-size: 0.72rem;
+  font-weight: 500;
+  line-height: 1.3;
+  white-space: nowrap;
+  color: #fff;
+  background: #1a1a1a;
+  border-radius: 4px;
+  transform: translateX(-50%);
+  pointer-events: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+}
+
+.keywords__longevity[data-tooltip]:hover::before {
+  content: "";
+  position: absolute;
+  bottom: calc(100% + 2px);
+  left: 50%;
+  z-index: 61;
+  border: 5px solid transparent;
+  border-top-color: #1a1a1a;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
 .keywords__th-actions {
   width: 8.5rem;
 }
@@ -991,6 +1257,66 @@ body.modal-open {
 }
 
 .micro-form__input:focus {
+  outline: 2px solid #3d6b9e;
+  outline-offset: 0;
+  border-color: #3d6b9e;
+}
+
+.longevity-form {
+  padding: 0.5rem 1rem 0.75rem;
+  overflow-y: auto;
+  flex: 1 1 auto;
+  min-height: 0;
+  max-height: min(70vh, 32rem);
+}
+
+.longevity-form__group {
+  margin: 0 0 1rem;
+  padding: 0;
+  border: 0;
+}
+
+.longevity-form__legend {
+  margin: 0 0 0.5rem;
+  padding: 0;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #333;
+}
+
+.longevity-form__grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.5rem 0.75rem;
+}
+
+.longevity-form__field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.longevity-form__label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.longevity-form__unit {
+  font-size: 0.72rem;
+  color: #5c5c5c;
+}
+
+.longevity-form__input {
+  width: 100%;
+  padding: 0.35rem 0.45rem;
+  font: inherit;
+  font-size: 0.85rem;
+  border: 1px solid #c8c8c4;
+  border-radius: 4px;
+}
+
+.longevity-form__input:focus {
   outline: 2px solid #3d6b9e;
   outline-offset: 0;
   border-color: #3d6b9e;
@@ -1292,6 +1618,10 @@ body.modal-open {
 
 @media (max-width: 400px) {
   .micro-form {
+    grid-template-columns: 1fr;
+  }
+
+  .longevity-form__grid {
     grid-template-columns: 1fr;
   }
 }

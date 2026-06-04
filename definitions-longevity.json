@@ -1,0 +1,681 @@
+{
+  "saturatedFat": {
+    "tooHigh": [
+      "Diets high in saturated fat tend to raise LDL cholesterol and are linked with higher cardiovascular risk when they displace unsaturated fats.",
+      "Major health groups recommend keeping saturated fat moderate and swapping toward mono- and polyunsaturated sources."
+    ],
+    "enough": [
+      "Some saturated fat is normal in whole foods (dairy, meat, coconut); balance matters more than zero intake.",
+      "Pairing saturated fat with fiber-rich plants and unsaturated oils supports a heart-healthier overall pattern."
+    ],
+    "foodSources": [
+      "Beef & lamb",
+      "Butter & cheese",
+      "Coconut oil",
+      "Palm oil",
+      "Bacon & sausage",
+      "Dark chocolate",
+      "Whole milk"
+    ]
+  },
+  "monounsaturatedFat": {
+    "tooLow": [
+      "Very low monounsaturated intake often means relying on refined carbs or saturated fats instead of olive- or avocado-style fats.",
+      "Mediterranean-style eating patterns linked to heart health emphasize this fat class."
+    ],
+    "enough": [
+      "Monounsaturated fats support HDL, help replace saturated and trans fats, and fit well in stable cooking oils.",
+      "They add satiety without the inflammatory profile of some refined seed-oil-heavy processed foods."
+    ],
+    "foodSources": [
+      "Extra-virgin olive oil",
+      "Avocado",
+      "Almonds & cashews",
+      "Hazelnuts",
+      "Olives",
+      "Chicken & turkey",
+      "Peanut butter (natural)"
+    ]
+  },
+  "polyunsaturatedFat": {
+    "tooLow": [
+      "Too little polyunsaturated fat can mean inadequate essential omega-3 and omega-6 from food.",
+      "Very low-fat diets sometimes reduce absorption of fat-soluble vitamins."
+    ],
+    "enough": [
+      "Polyunsaturated fats include essential fatty acids the body cannot make in needed amounts.",
+      "Balance between omega-3 and omega-6 matters more than total PUFA alone."
+    ],
+    "foodSources": [
+      "Walnuts & flax",
+      "Fatty fish",
+      "Sunflower & safflower oil",
+      "Soybean oil",
+      "Chia & hemp seeds",
+      "Tofu & edamame",
+      "Eggs (omega-enriched)"
+    ]
+  },
+  "transFat": {
+    "tooHigh": [
+      "Industrial trans fats raise LDL, lower HDL, and increase heart disease risk; there is no safe intake level recommended.",
+      "Partially hydrogenated oils in older packaged foods were the main source; still check labels for \"partially hydrogenated.\""
+    ],
+    "enough": [
+      "Near-zero industrial trans fat is the goal; tiny amounts can occur naturally in dairy and meat.",
+      "Avoiding deep-fried and highly processed baked goods keeps intake minimal."
+    ],
+    "foodSources": [
+      "Margarine (check labels)",
+      "Some fried fast food",
+      "Non-dairy creamers (older formulas)",
+      "Packaged frosting & biscuits",
+      "Microwave popcorn (some brands)",
+      "Naturally tiny amounts in dairy"
+    ]
+  },
+  "cholesterol": {
+    "tooHigh": [
+      "High dietary cholesterol may raise LDL in some people, especially with low fiber and high saturated fat overall.",
+      "For many, saturated and trans fats affect blood lipids more than cholesterol from eggs and shellfish alone."
+    ],
+    "enough": [
+      "Dietary cholesterol supports cell membranes and hormone synthesis; needs are partly met by the body.",
+      "Whole-food sources (eggs, shellfish) differ from cholesterol paired with processed meats."
+    ],
+    "foodSources": [
+      "Eggs",
+      "Shrimp & shellfish",
+      "Liver",
+      "Cheese & butter",
+      "Sausage & bacon",
+      "Chicken (with skin)",
+      "Squid"
+    ]
+  },
+  "omega3": {
+    "tooLow": [
+      "Low omega-3 intake is linked with higher inflammation markers and weaker cardiovascular support.",
+      "Plant ALA converts poorly to EPA/DHA; fish or algae sources matter for direct EPA/DHA."
+    ],
+    "enough": [
+      "Omega-3 fats support heart rhythm, triglycerides, brain structure, and resolution of inflammation.",
+      "Combine fatty fish, walnuts, flax, or algae oil based on diet preference."
+    ],
+    "foodSources": [
+      "Salmon & sardines",
+      "Mackerel & herring",
+      "Walnuts",
+      "Flax & chia",
+      "Algae oil (supplement)",
+      "Fortified eggs",
+      "Hemp seeds"
+    ]
+  },
+  "omega6": {
+    "tooHigh": [
+      "Modern diets often oversupply omega-6 from refined seed oils, skewing the omega-6 : omega-3 ratio.",
+      "High omega-6 relative to omega-3 may favor pro-inflammatory eicosanoids when not balanced."
+    ],
+    "enough": [
+      "Linoleic acid is essential; the issue is usually excess processed oils, not whole nuts and seeds.",
+      "Lowering omega-6-heavy oils while raising omega-3 improves the ratio without eliminating omega-6."
+    ],
+    "foodSources": [
+      "Soybean & corn oil",
+      "Sunflower oil (high-linoleic)",
+      "Mayonnaise",
+      "Processed snacks",
+      "Chicken fat (variable)",
+      "Peanuts & pine nuts",
+      "Whole grains"
+    ]
+  },
+  "omega9": {
+    "tooLow": [
+      "Low omega-9 is uncommon; the body can make oleic acid, but food sources add easy unsaturated fat.",
+      "Diets very low in all fats may lack oleic-rich staples like olive oil."
+    ],
+    "enough": [
+      "Omega-9 (oleic acid) is non-essential but supports replacing saturated fat in cooking.",
+      "Olive-oil-forward patterns align with Mediterranean cardiometabolic benefits."
+    ],
+    "foodSources": [
+      "Olive oil",
+      "Avocado oil",
+      "Almonds",
+      "Cashews",
+      "Avocado",
+      "Hazelnut oil",
+      "Macadamia nuts"
+    ]
+  },
+  "ala": {
+    "tooLow": [
+      "Low ALA means fewer plant-based omega-3 building blocks; conversion to EPA/DHA is limited.",
+      "Vegans and low-nut/seed diets should plan ALA or direct EPA/DHA from algae."
+    ],
+    "enough": [
+      "ALA from flax, chia, and walnuts contributes to omega-3 status alongside or instead of fish.",
+      "A few grams daily of ALA-rich foods supports essential fatty acid intake."
+    ],
+    "foodSources": [
+      "Flaxseed & flax oil",
+      "Chia seeds",
+      "Walnuts",
+      "Canola oil",
+      "Hemp seeds",
+      "Soybeans",
+      "Perilla oil"
+    ]
+  },
+  "epa": {
+    "tooLow": [
+      "Low EPA limits anti-inflammatory marine omega-3 effects and may leave triglycerides and mood support under-addressed.",
+      "Fish-oil and fatty-fish intake are the main food sources."
+    ],
+    "enough": [
+      "EPA supports cardiovascular health, inflammation balance, and is often paired with DHA in fish.",
+      "Regular fatty-fish meals or targeted fish oil supply meaningful EPA."
+    ],
+    "foodSources": [
+      "Salmon",
+      "Sardines",
+      "Mackerel",
+      "Anchovies",
+      "Fish oil",
+      "Krill oil",
+      "Algae EPA (supplement)"
+    ]
+  },
+  "dha": {
+    "tooLow": [
+      "Low DHA may affect brain and retina structure over time; important in pregnancy and aging.",
+      "Plant ALA alone often does not restore DHA without marine or algae sources."
+    ],
+    "enough": [
+      "DHA is a major structural fat in the brain and eyes and supports cognitive and visual health.",
+      "Fatty fish and algae-based supplements provide direct DHA."
+    ],
+    "foodSources": [
+      "Salmon & trout",
+      "Sardines",
+      "Herring",
+      "Caviar & roe",
+      "Fish oil",
+      "Algae DHA",
+      "Fortified foods"
+    ]
+  },
+  "linoleicAcid": {
+    "tooHigh": [
+      "Excess linoleic acid from refined oils can dominate omega-6 intake and widen the omega-6 : omega-3 gap.",
+      "Ultra-processed foods fried in soybean or corn oil are common drivers."
+    ],
+    "enough": [
+      "Linoleic acid is an essential omega-6; whole-food sources (nuts, seeds) differ from bottled oils used everywhere.",
+      "Aim for adequacy without high-omega-6 oils crowding out omega-3."
+    ],
+    "foodSources": [
+      "Soybean oil",
+      "Corn oil",
+      "Sunflower oil",
+      "Safflower oil",
+      "Mayonnaise",
+      "Processed baked goods",
+      "Sunflower seeds"
+    ]
+  },
+  "arachidonicAcid": {
+    "tooHigh": [
+      "Arachidonic acid can feed pro-inflammatory pathways when omega-3 is low and overall diet is heavy in certain animal fats.",
+      "It is less commonly tracked than total omega-6 but appears in meat and eggs."
+    ],
+    "enough": [
+      "Some arachidonic acid is normal in omnivorous diets; balance with omega-3 and whole plants matters.",
+      "Not essential to maximize; focus on ratio and food quality."
+    ],
+    "foodSources": [
+      "Chicken & turkey",
+      "Eggs",
+      "Beef & pork",
+      "Organ meats",
+      "Fish (variable)",
+      "Shellfish",
+      "Dairy fat"
+    ]
+  },
+  "oleicAcid": {
+    "tooLow": [
+      "Low oleic acid often reflects little olive or avocado oil use—not usually a clinical deficiency.",
+      "Replacing butter or palm oil with oleic-rich oils improves fat quality."
+    ],
+    "enough": [
+      "Oleic acid is the main omega-9 in olive oil and supports heart-healthy fat substitution.",
+      "Stable for cooking compared with high-PUFA oils."
+    ],
+    "foodSources": [
+      "Olive oil",
+      "Avocado & avocado oil",
+      "Almonds",
+      "Cashews",
+      "Hazelnuts",
+      "Chicken fat (partial)",
+      "Canola (partial)"
+    ]
+  },
+  "palmitoleicAcid": {
+    "tooHigh": [
+      "Palmitoleic acid (omega-7) in very high amounts from processed or overfed animal products is an emerging research area.",
+      "Less commonly tracked; whole-diet pattern matters more than single fatty acids."
+    ],
+    "enough": [
+      "Omega-7 occurs in some fish, macadamia oil, and sea buckthorn; not an essential fat to target high.",
+      "Optional tracking for completeness in longevity-focused diets."
+    ],
+    "foodSources": [
+      "Macadamia nuts & oil",
+      "Sea buckthorn",
+      "Salmon & anchovies",
+      "Avocado (trace)",
+      "Dairy fat (trace)",
+      "Eggs (trace)"
+    ]
+  },
+  "vitaminE": {
+    "tooLow": [
+      "Low vitamin E reduces antioxidant protection for cell membranes and LDL particles.",
+      "Very low-fat diets or fat malabsorption increase risk."
+    ],
+    "enough": [
+      "Vitamin E protects fats from oxidation and supports immune and skin health.",
+      "Nuts, seeds, and oils are the best food sources; needs rise with high PUFA intake."
+    ],
+    "foodSources": [
+      "Almonds & sunflower seeds",
+      "Sunflower & safflower oil",
+      "Peanut butter",
+      "Spinach & Swiss chard",
+      "Avocado",
+      "Wheat germ",
+      "Hazelnuts"
+    ]
+  },
+  "vitaminK": {
+    "tooLow": [
+      "Low vitamin K can impair clotting factors and osteocalcin activity, affecting bone and vascular calcium handling.",
+      "Antibiotics, warfarin, or very low green vegetable intake increase risk."
+    ],
+    "enough": [
+      "Vitamin K supports blood clotting and helps direct calcium toward bone rather than soft tissues.",
+      "K1 from greens and K2 from fermented foods and some animal products play overlapping roles."
+    ],
+    "foodSources": [
+      "Kale & spinach",
+      "Broccoli & Brussels sprouts",
+      "Natto (K2)",
+      "Egg yolks & cheese (K2)",
+      "Chicken & pork (K2)",
+      "Parsley",
+      "Sauerkraut"
+    ]
+  },
+  "vitaminK1": {
+    "tooLow": [
+      "Low K1 (phylloquinone) mainly affects clotting and bone proteins when green vegetable intake is very low.",
+      "Consistent leafy greens usually cover K1."
+    ],
+    "enough": [
+      "K1 from plants supports clotting and works with vitamin D and calcium for bone metabolism.",
+      "A serving of leafy greens most days is a simple baseline."
+    ],
+    "foodSources": [
+      "Spinach & kale",
+      "Collard & turnip greens",
+      "Broccoli",
+      "Brussels sprouts",
+      "Lettuce",
+      "Asparagus",
+      "Parsley"
+    ]
+  },
+  "vitaminK2": {
+    "tooLow": [
+      "Low K2 (menaquinone) is debated for bone and arterial health, especially with high calcium and low K overall.",
+      "Fermented foods and animal products supply most dietary K2."
+    ],
+    "enough": [
+      "K2 may help activate proteins that regulate where calcium deposits; research is strongest in deficiency and CKD contexts.",
+      "Natto, cheese, and egg yolks are notable sources."
+    ],
+    "foodSources": [
+      "Natto",
+      "Gouda & Brie",
+      "Egg yolks",
+      "Chicken & pork",
+      "Beef liver",
+      "Sauerkraut",
+      "Butter (grass-fed, variable)"
+    ]
+  },
+  "selenium": {
+    "tooLow": [
+      "Low selenium weakens antioxidant enzymes (glutathione peroxidase), thyroid conversion, and immunity.",
+      "Soil-poor regions and very restrictive diets increase risk."
+    ],
+    "enough": [
+      "Selenium supports thyroid hormone activation, DNA repair, and oxidative stress defense.",
+      "A few Brazil nuts weekly or seafood and eggs often cover needs—avoid megadoses."
+    ],
+    "foodSources": [
+      "Brazil nuts (1–2/day max)",
+      "Tuna & sardines",
+      "Eggs",
+      "Chicken & turkey",
+      "Sunflower seeds",
+      "Brown rice",
+      "Cottage cheese"
+    ]
+  },
+  "polyphenols": {
+    "tooLow": [
+      "Low polyphenol intake means fewer plant antioxidants that support gut microbes, blood vessels, and inflammation balance.",
+      "Diets low in berries, tea, cocoa, and herbs miss easy sources."
+    ],
+    "enough": [
+      "Polyphenols from diverse plants add color, flavor, and antioxidant/anti-inflammatory potential beyond vitamins.",
+      "No single DV exists—variety and whole foods are the practical goal."
+    ],
+    "foodSources": [
+      "Berries",
+      "Green & black tea",
+      "Dark cocoa (70%+)",
+      "Red onion & apples",
+      "Extra-virgin olive oil",
+      "Herbs & spices",
+      "Red wine (if used)"
+    ]
+  },
+  "flavonoids": {
+    "tooLow": [
+      "Low flavonoid intake parallels low fruit, tea, and vegetable diversity—linked with weaker vascular support in population studies.",
+      "Highly processed diets often lack these compounds entirely."
+    ],
+    "enough": [
+      "Flavonoids (a polyphenol subclass) support endothelial function and may modestly lower blood pressure in higher intakes.",
+      "Citrus, berries, tea, and onions are reliable contributors."
+    ],
+    "foodSources": [
+      "Blueberries & strawberries",
+      "Citrus fruit",
+      "Green tea",
+      "Onions & kale",
+      "Dark chocolate",
+      "Apples",
+      "Parsley"
+    ]
+  },
+  "carotenoids": {
+    "tooLow": [
+      "Low carotenoids reduce beta-carotene, lutein, and lycopene intake—important for eyes, skin, and antioxidant networks.",
+      "Very low produce intake is the usual cause."
+    ],
+    "enough": [
+      "Carotenoids from orange, red, and green plants support vision (lutein/zeaxanthin) and general antioxidant status.",
+      "Fat with meals improves absorption."
+    ],
+    "foodSources": [
+      "Carrots & sweet potato",
+      "Spinach & kale",
+      "Tomatoes & sauce",
+      "Red bell pepper",
+      "Watermelon",
+      "Eggs (yolk)",
+      "Mango"
+    ]
+  },
+  "curcumin": {
+    "tooLow": [
+      "No essential deficiency—low curcumin simply means less turmeric in cooking and fewer curry-style anti-inflammatory phytochemicals.",
+      "Whole turmeric with black pepper and fat improves absorption vs. spice dust alone."
+    ],
+    "enough": [
+      "Curcumin from turmeric is studied for joint comfort and inflammation markers; food amounts are smaller than trial doses.",
+      "Regular culinary turmeric plus pepper is a low-risk way to include it."
+    ],
+    "foodSources": [
+      "Turmeric root & powder",
+      "Golden milk",
+      "Curry dishes",
+      "Some mustards",
+      "Supplements (if used)",
+      "Combine with black pepper",
+      "Pair with oil or fat"
+    ]
+  },
+  "resveratrol": {
+    "tooLow": [
+      "Not an essential nutrient—low resveratrol reflects little red grapes, berries, or peanuts in the diet.",
+      "Wine is not required; grapes and berries supply it without alcohol."
+    ],
+    "enough": [
+      "Resveratrol is a polyphenol studied for aging pathways; food doses are far below many supplement trials.",
+      "Whole grapes, blueberries, and peanuts contribute modest amounts."
+    ],
+    "foodSources": [
+      "Red & purple grapes",
+      "Blueberries & cranberries",
+      "Peanuts & pistachios",
+      "Red wine (optional)",
+      "Cocoa (trace)",
+      "Itadori tea",
+      "Supplements (if used)"
+    ]
+  },
+  "coq10": {
+    "tooLow": [
+      "CoQ10 is made in the body; low food intake rarely causes deficiency except with statins or certain diseases.",
+      "Older age and some medications lower tissue CoQ10."
+    ],
+    "enough": [
+      "CoQ10 supports mitochondrial energy and may help when depleted (e.g., on statins).",
+      "Organ meats and fatty fish provide small dietary amounts."
+    ],
+    "foodSources": [
+      "Beef heart & liver",
+      "Sardines & mackerel",
+      "Chicken",
+      "Peanuts & pistachios",
+      "Broccoli",
+      "Avocado",
+      "Supplements (if used)"
+    ]
+  },
+  "sulforaphane": {
+    "tooLow": [
+      "No classical deficiency—low sulforaphane means infrequent cruciferous vegetables, missing easy detox-support phytochemicals.",
+      "Chopping broccoli and letting it sit before cooking boosts sulforaphane formation."
+    ],
+    "enough": [
+      "Sulforaphane from broccoli sprouts and crucifers activates cellular antioxidant defenses (Nrf2).",
+      "Several weekly servings of broccoli, kale, or cabbage are practical targets."
+    ],
+    "foodSources": [
+      "Broccoli & sprouts",
+      "Brussels sprouts",
+      "Kale & cabbage",
+      "Kohlrabi",
+      "Arugula",
+      "Bok choy",
+      "Mustard greens"
+    ]
+  },
+  "phosphorus": {
+    "tooHigh": [
+      "Excess phosphorus—especially phosphate additives in processed foods—may harm bone–mineral balance and vascular health in susceptible people.",
+      "CKD patients must limit phosphorus carefully; most people should not chase higher intake.",
+      "Food labels listing \"phosphate\" or \"phosphoric acid\" are red flags."
+    ],
+    "enough": [
+      "Phosphorus is abundant in whole foods; deficiency is rare without medical issues.",
+      "Adequate protein, dairy, and legumes usually cover needs without additives."
+    ],
+    "foodSources": [
+      "Meat & poultry",
+      "Dairy",
+      "Beans & lentils",
+      "Nuts & seeds",
+      "Cola (phosphoric acid)",
+      "Processed meats",
+      "Fast food (additives)"
+    ]
+  },
+  "glycemicIndex": {
+    "tooHigh": [
+      "Frequent high-GI choices spike blood glucose quickly and can increase glycemic load when portions are large.",
+      "White bread, sugary drinks, and refined cereals are common high-GI staples."
+    ],
+    "enough": [
+      "Lower-GI carbs digest slower, smoothing glucose and insulin; pairing carbs with fat, protein, or acid lowers effective GI.",
+      "GI is per food—portion size and GL matter as much as the number."
+    ],
+    "foodSources": [
+      "Low: beans, pasta al dente, apples",
+      "Medium: oats, sweet potato, brown rice",
+      "High: white bread, rice cakes, candy",
+      "Watermelon (high GI, lower GL)",
+      "Soda & juice",
+      "Potatoes (variable prep)"
+    ]
+  },
+  "addedSugar": {
+    "tooHigh": [
+      "High added sugar drives glycemic load, liver fat, triglycerides, and dental issues; linked with weight gain when calories exceed needs.",
+      "Soda, sweets, and sweetened yogurt are concentrated sources beyond whole fruit."
+    ],
+    "enough": [
+      "Keeping added sugar modest leaves room for whole fruit and stable energy.",
+      "WHO suggests limiting free sugars for cardiometabolic health; labels list \"added sugars\" separately."
+    ],
+    "foodSources": [
+      "Soda & energy drinks",
+      "Candy & cookies",
+      "Ice cream",
+      "Sweetened cereal",
+      "Flavored yogurt",
+      "Coffee drinks",
+      "Ketchup & sauces (check labels)"
+    ]
+  },
+  "refinedCarbs": {
+    "tooHigh": [
+      "Heavy refined carb intake (white flour, stripped grains) raises glycemic load and often displaces fiber and micronutrients.",
+      "Frequent spikes can worsen insulin resistance over time in susceptible people."
+    ],
+    "enough": [
+      "Whole grains and intact grains digest slower and carry more fiber and minerals.",
+      "Mixing refined carbs with protein, fat, and vegetables blunts glucose response."
+    ],
+    "foodSources": [
+      "White bread & bagels",
+      "White rice",
+      "Most crackers",
+      "Pastries",
+      "Pretzels",
+      "Instant noodles",
+      "Swap: whole grain versions"
+    ]
+  },
+  "netCarbs": {
+    "tooHigh": [
+      "High net carbs (total carbs minus fiber) mean more absorbable carbohydrate per meal—relevant for keto tracking and glycemic control.",
+      "Large net-carb loads behave like high GL even if fiber is present elsewhere in the day."
+    ],
+    "enough": [
+      "Net carbs help compare portions when fiber is high; whole foods with fiber lower net carbs per serving.",
+      "Use alongside GL/GI for a fuller carb-quality picture."
+    ],
+    "foodSources": [
+      "Low net: leafy greens, cauliflower",
+      "Medium: berries, beans",
+      "High: bread, rice, sugar",
+      "Fiber lowers net in whole grains",
+      "Labels: total carbs − fiber",
+      "Sugar alcohols (some diets)"
+    ]
+  },
+  "omega6To3": {
+    "tooHigh": [
+      "Ratios well above 4:1 (often 10:1+ in Western diets) suggest omega-6-heavy oils dominating omega-3 intake.",
+      "Shifting oils toward olive oil and adding fish or flax improves the ratio without eliminating omega-6."
+    ],
+    "enough": [
+      "A lower omega-6 : omega-3 ratio is associated with less inflammatory signaling in research models.",
+      "Track EPA/DHA and linoleic acid sources, not just totals."
+    ],
+    "foodSources": [
+      "Improve ratio: fatty fish",
+      "Flax & walnuts (ALA)",
+      "Reduce: soybean & corn oil",
+      "Olive oil for cooking",
+      "Fewer fried packaged foods",
+      "Whole foods vs. oils"
+    ]
+  },
+  "satToUnsat": {
+    "tooHigh": [
+      "A high saturated : unsaturated ratio mirrors butter, palm, and fatty meat displacing olive oil, nuts, and fish.",
+      "Heart-health guidelines emphasize replacing saturated with unsaturated fats."
+    ],
+    "enough": [
+      "More unsaturated fat relative to saturated supports healthier lipid profiles in most people.",
+      "Cook with olive or avocado oil; keep saturated fat from whole foods in moderation."
+    ],
+    "foodSources": [
+      "Lower ratio: olive oil, fish, nuts",
+      "Higher ratio: butter, cheese, palm oil",
+      "Coconut (saturated)",
+      "Lean proteins",
+      "Avocado",
+      "Fatty fish",
+      "Legumes"
+    ]
+  },
+  "epaPlusDha": {
+    "tooLow": [
+      "Low combined EPA + DHA limits direct marine omega-3 benefits for heart and brain.",
+      "Flax alone may not raise EPA/DHA blood levels enough for many people."
+    ],
+    "enough": [
+      "EPA and DHA together are the active omega-3s from fish and algae; sum them for weekly seafood goals.",
+      "Rough targets often cite ~250–500 mg/day combined from food or supplements for general adults."
+    ],
+    "foodSources": [
+      "Salmon & sardines",
+      "Mackerel & herring",
+      "Anchovies",
+      "Fish oil",
+      "Algae oil",
+      "Fortified eggs",
+      "Canned tuna (choose wisely)"
+    ]
+  },
+  "glycemicLoad": {
+    "tooHigh": [
+      "High daily glycemic load means frequent large portions of high-GI carbs—white rice, bread, sweets, and drinks.",
+      "GL = GI × carbs per serving ÷ 100; watermelon can be high GI but lower GL in small portions."
+    ],
+    "enough": [
+      "Moderate GL smooths glucose curves and supports steady energy.",
+      "Prioritize GL over GI alone because portion size determines real-world impact."
+    ],
+    "foodSources": [
+      "Lower GL: beans, lentils, berries",
+      "Portion control on rice & bread",
+      "Vegetables first on the plate",
+      "Limit sugary drinks",
+      "Pair carbs with protein/fat",
+      "Whole grains vs. refined"
+    ]
+  }
+}

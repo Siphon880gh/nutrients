@@ -20,6 +20,7 @@
           <div class="dashboard__toggles">
             <button type="button" id="dashboard-week-toggle" class="dashboard__toggle" aria-expanded="false" aria-controls="week-summary">Week total</button>
             <button type="button" id="dashboard-micro-toggle" class="dashboard__toggle" aria-expanded="false" aria-controls="dashboard-micro-panel">Micro requirements</button>
+            <button type="button" id="dashboard-longevity-toggle" class="dashboard__toggle" aria-expanded="false" aria-controls="dashboard-longevity-panel">Longevity</button>
           </div>
         </div>
         <p class="dashboard__hint">Each food match in a day adds that food's macros (4 cal/g protein &amp; carbs, 9 cal/g fat)</p>
@@ -31,6 +32,19 @@
           <button type="button" id="micro-gaps-ai-open" class="import-modal__ai-link" aria-label="Ask AI to help fill in the gaps">✨ Ask AI to help fill gaps</button>
         </p>
         <div id="dashboard-micro-list" class="dashboard__micro-list" role="list"></div>
+      </div>
+      <div id="dashboard-longevity-panel" class="dashboard__longevity-panel" hidden>
+        <p class="dashboard__longevity-hint">Average daily intake (Mon–Sun) for fats, omegas, longevity compounds, and carb quality. Calcium, magnesium, and vitamin D come from your micro entries. Track glycemic load (GL) more than GI alone.</p>
+        <aside class="dashboard__longevity-processed-note" role="note">
+          <p class="dashboard__longevity-processed-note-text">
+            Limit your processed food. This dashboard does not track processed food. Use an app like
+            <a href="https://yuka.io/en/app/" target="_blank" rel="noopener noreferrer">Yuka</a>
+            or
+            <a href="https://apps.apple.com/us/app/bobby-approved-food-scanner/id1571725006" target="_blank" rel="noopener noreferrer">Bobby</a>
+            (<a href="https://play.google.com/store/apps/details?id=com.bobbyapproved" target="_blank" rel="noopener noreferrer">Android</a>) to scan a food or barcode for processed chemicals.
+          </p>
+        </aside>
+        <div id="dashboard-longevity-content"></div>
       </div>
       <div id="week-summary" class="week-summary" hidden aria-label="Week summary"></div>
     </section>
@@ -139,6 +153,7 @@
               <th class="keywords__th-macro" scope="col">Carbs (g)</th>
               <th class="keywords__th-macro" scope="col">Fats (g)</th>
               <th class="keywords__th-micros" scope="col">Micros</th>
+              <th class="keywords__th-longevity" scope="col">Longevity</th>
               <th class="keywords__th-actions" scope="col"><span class="visually-hidden">Actions</span></th>
             </tr>
           </thead>
@@ -261,7 +276,7 @@
         <p id="import-modal-food" class="modal__subtitle"></p>
       </header>
       <div class="import-modal__body">
-        <p class="import-modal__hint">JSON with at least <code>name</code>. Omitted fields are left unchanged; micronutrients not listed are skipped.</p>
+        <p class="import-modal__hint">JSON with at least <code>name</code>. Omitted fields are left unchanged; <code>micros</code>, <code>longevity</code>, and <code>carbQuality</code> keys not listed are skipped.</p>
         <p class="import-modal__tools">
           <button type="button" id="import-ai-toggle" class="import-modal__ai-link" aria-expanded="false" aria-controls="import-ai-panel" aria-label="Have AI help me import food data">✨ Have AI help me</button>
         </p>
@@ -346,6 +361,20 @@
     </div>
   </div>
 
+  <div id="longevity-modal" class="modal" hidden>
+    <div class="modal__backdrop" data-action="close-longevity-modal"></div>
+    <div class="modal__panel modal__panel--wide" role="dialog" aria-modal="true" aria-labelledby="longevity-modal-title">
+      <header class="modal__header">
+        <h3 id="longevity-modal-title" class="modal__title">Longevity nutrients</h3>
+        <p id="longevity-modal-food" class="modal__subtitle"></p>
+      </header>
+      <form id="longevity-form" class="longevity-form"></form>
+      <footer class="modal__footer">
+        <button type="button" id="longevity-modal-done" class="modal__done">Done</button>
+      </footer>
+    </div>
+  </div>
+
   <div id="micro-modal" class="modal" hidden>
     <div class="modal__backdrop" data-action="close-micro-modal"></div>
     <div class="modal__panel" role="dialog" aria-modal="true" aria-labelledby="micro-modal-title">
@@ -361,6 +390,7 @@
   </div>
 
   <script src="demographic-dv.js"></script>
+  <script src="longevity-dv.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

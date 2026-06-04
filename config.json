@@ -26,5 +26,61 @@
         "fontWeight": 800
       }
     ]
+  },
+  "longevityStatus": {
+    "normalTiers": [
+      {
+        "id": "green",
+        "minPercent": 100,
+        "color": "#1a7a36",
+        "fontWeight": 400
+      },
+      {
+        "id": "blue",
+        "minPercent": 70,
+        "color": "#2a5f9e",
+        "fontWeight": 600
+      },
+      {
+        "id": "orange",
+        "minPercent": 40,
+        "color": "#c45c00",
+        "fontWeight": 800
+      },
+      {
+        "id": "red",
+        "minPercent": 0,
+        "color": "#b42318",
+        "fontWeight": 800
+      }
+    ],
+    "limitingTiers": [
+      {
+        "id": "red",
+        "minPercent": 100,
+        "color": "#b42318",
+        "fontWeight": 800
+      },
+      {
+        "id": "orange",
+        "minPercent": 70,
+        "color": "#c45c00",
+        "fontWeight": 800
+      },
+      {
+        "id": "blue",
+        "minPercent": 40,
+        "color": "#2a5f9e",
+        "fontWeight": 600
+      },
+      {
+        "id": "green",
+        "minPercent": 0,
+        "color": "#1a7a36",
+        "fontWeight": 400
+      }
+    ],
+    "transFatMaxGPerDay": 0.5,
+    "omega6To3IdealMax": 4
   }
 }

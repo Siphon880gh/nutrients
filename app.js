@@ -14,6 +14,8 @@
   var STORAGE_KEY_DAYS = "nutrients-day-notes";
   var demographicDv =
     typeof NutrientsDemographicDv !== "undefined" ? NutrientsDemographicDv : null;
+  var longevityDv =
+    typeof NutrientsLongevityDv !== "undefined" ? NutrientsLongevityDv : null;
   var DEFAULT_DEMOGRAPHIC = demographicDv
     ? demographicDv.DEFAULT_DEMOGRAPHIC
     : "male";
@@ -32,6 +34,13 @@
   var dashboardMicroToggleEl = document.getElementById("dashboard-micro-toggle");
   var dashboardMicroPanelEl = document.getElementById("dashboard-micro-panel");
   var dashboardMicroListEl = document.getElementById("dashboard-micro-list");
+  var dashboardLongevityToggleEl = document.getElementById("dashboard-longevity-toggle");
+  var dashboardLongevityPanelEl = document.getElementById("dashboard-longevity-panel");
+  var dashboardLongevityContentEl = document.getElementById("dashboard-longevity-content");
+  var longevityModalEl = document.getElementById("longevity-modal");
+  var longevityFormEl = document.getElementById("longevity-form");
+  var longevityModalFoodEl = document.getElementById("longevity-modal-food");
+  var longevityModalDoneBtn = document.getElementById("longevity-modal-done");
   var microGapsAiOpenBtn = document.getElementById("micro-gaps-ai-open");
   var microGapsModalEl = document.getElementById("micro-gaps-modal");
   var microGapsPreferenceEl = document.getElementById("micro-gaps-preference");
@@ -94,9 +103,21 @@
   var demographic = DEFAULT_DEMOGRAPHIC;
   var weekTotalOpen = false;
   var microRequirementsOpen = false;
+  var longevityPanelOpen = false;
+  var activeLongevityId = null;
+  var longevitySaveTimer;
   var lastWeekTotals = null;
   var microDefinitions = {};
+  var longevityDefinitions = {};
   var activeMicroDefKey = null;
+  var activeLongevityDefKey = null;
+
+  var LONGEVITY_DERIVED_DEFS = {
+    omega6To3: { label: "Omega-6 : Omega-3 ratio", limiting: true },
+    satToUnsat: { label: "Saturated : unsaturated fat ratio", limiting: true },
+    epaPlusDha: { label: "EPA + DHA", limiting: false },
+    glycemicLoad: { label: "Glycemic load (daily avg)", limiting: true },
+  };
 
   var MICRO_FIELDS = [
     { key: "fiber", label: "Fiber", unit: "g", code: "f" },
@@ -112,6 +133,162 @@
     { key: "vitaminC", label: "Vitamin C", unit: "mg", code: "c" },
     { key: "folate", label: "Folate", unit: "mcg", code: "fol" },
   ];
+
+  var LONGEVITY_GROUPS = [
+    { id: "fats", label: "Fats & cholesterol" },
+    { id: "omega", label: "Omega fatty acids" },
+    { id: "compounds", label: "Longevity & inflammation compounds" },
+    { id: "carb", label: "Carb quality & glycemic" },
+  ];
+
+  var LONGEVITY_FROM_MICRO = [
+    { microKey: "calcium", label: "Calcium", limiting: true },
+    { microKey: "magnesium", label: "Magnesium", limiting: false },
+    { microKey: "vitaminD", label: "Vitamin D", limiting: false },
+  ];
+
+  var LONGEVITY_FIELDS = [
+    {
+      key: "saturatedFat",
+      label: "Saturated fat",
+      unit: "g",
+      code: "sat",
+      group: "fats",
+      limiting: true,
+    },
+    {
+      key: "monounsaturatedFat",
+      label: "Monounsaturated fat",
+      unit: "g",
+      code: "mufa",
+      group: "fats",
+    },
+    {
+      key: "polyunsaturatedFat",
+      label: "Polyunsaturated fat",
+      unit: "g",
+      code: "pufa",
+      group: "fats",
+    },
+    {
+      key: "transFat",
+      label: "Trans fat",
+      unit: "g",
+      code: "trans",
+      group: "fats",
+      limiting: true,
+    },
+    {
+      key: "cholesterol",
+      label: "Cholesterol",
+      unit: "mg",
+      code: "chol",
+      group: "fats",
+      limiting: true,
+    },
+    { key: "omega3", label: "Omega-3 (total)", unit: "g", code: "o3", group: "omega" },
+    {
+      key: "omega6",
+      label: "Omega-6 (total)",
+      unit: "g",
+      code: "o6",
+      group: "omega",
+      limiting: true,
+    },
+    { key: "omega9", label: "Omega-9", unit: "g", code: "o9", group: "omega" },
+    { key: "ala", label: "ALA", unit: "g", code: "ala", group: "omega" },
+    { key: "epa", label: "EPA", unit: "g", code: "epa", group: "omega" },
+    { key: "dha", label: "DHA", unit: "g", code: "dha", group: "omega" },
+    {
+      key: "linoleicAcid",
+      label: "Linoleic acid",
+      unit: "g",
+      code: "la",
+      group: "omega",
+      limiting: true,
+    },
+    {
+      key: "arachidonicAcid",
+      label: "Arachidonic acid",
+      unit: "g",
+      code: "aa",
+      group: "omega",
+      limiting: true,
+    },
+    { key: "oleicAcid", label: "Oleic acid", unit: "g", code: "ol", group: "omega" },
+    {
+      key: "palmitoleicAcid",
+      label: "Palmitoleic acid (ω-7)",
+      unit: "g",
+      code: "po",
+      group: "omega",
+    },
+    { key: "vitaminE", label: "Vitamin E", unit: "mg", code: "e", group: "compounds" },
+    { key: "vitaminK", label: "Vitamin K", unit: "mcg", code: "k", group: "compounds" },
+    { key: "vitaminK1", label: "Vitamin K1", unit: "mcg", code: "k1", group: "compounds" },
+    { key: "vitaminK2", label: "Vitamin K2", unit: "mcg", code: "k2", group: "compounds" },
+    { key: "selenium", label: "Selenium", unit: "mcg", code: "se", group: "compounds" },
+    {
+      key: "polyphenols",
+      label: "Polyphenols",
+      unit: "mg",
+      code: "poly",
+      group: "compounds",
+    },
+    { key: "flavonoids", label: "Flavonoids", unit: "mg", code: "flav", group: "compounds" },
+    { key: "carotenoids", label: "Carotenoids", unit: "mg", code: "car", group: "compounds" },
+    { key: "curcumin", label: "Curcumin", unit: "mg", code: "cur", group: "compounds" },
+    {
+      key: "resveratrol",
+      label: "Resveratrol",
+      unit: "mg",
+      code: "res",
+      group: "compounds",
+    },
+    { key: "coq10", label: "Coenzyme Q10", unit: "mg", code: "coq", group: "compounds" },
+    {
+      key: "sulforaphane",
+      label: "Sulforaphane",
+      unit: "mg",
+      code: "sul",
+      group: "compounds",
+    },
+    {
+      key: "phosphorus",
+      label: "Phosphorus",
+      unit: "mg",
+      code: "p",
+      group: "compounds",
+      limiting: true,
+    },
+    { key: "glycemicIndex", label: "Glycemic index", unit: "GI", code: "gi", group: "carb" },
+    {
+      key: "addedSugar",
+      label: "Added sugar",
+      unit: "g",
+      code: "sug",
+      group: "carb",
+      limiting: true,
+    },
+    {
+      key: "refinedCarbs",
+      label: "Refined carbohydrates",
+      unit: "g",
+      code: "ref",
+      group: "carb",
+      limiting: true,
+    },
+    {
+      key: "netCarbs",
+      label: "Net carbohydrates",
+      unit: "g",
+      code: "net",
+      group: "carb",
+      limiting: true,
+    },
+  ];
+
+  var CARB_QUALITY_KEYS = ["glycemicIndex", "addedSugar", "refinedCarbs", "netCarbs"];
 
   function escapeHtml(text) {
     return String(text)
@@ -171,6 +348,118 @@
     });
   }
 
+  function blankLongevity() {
+    var longevity = {};
+    LONGEVITY_FIELDS.forEach(function (field) {
+      longevity[field.key] = "";
+    });
+    return longevity;
+  }
+
+  function normalizeLongevity(raw) {
+    var longevity = blankLongevity();
+    if (!raw || typeof raw !== "object") return longevity;
+    LONGEVITY_FIELDS.forEach(function (field) {
+      var v = raw[field.key];
+      if (v === "" || v == null) {
+        longevity[field.key] = "";
+      } else {
+        var n = parseFloat(v);
+        longevity[field.key] = isNaN(n) ? "" : n;
+      }
+    });
+    return longevity;
+  }
+
+  function mergeCarbQualityIntoLongevity(longevity, carbQuality) {
+    if (!carbQuality || typeof carbQuality !== "object" || Array.isArray(carbQuality)) {
+      return longevity;
+    }
+    CARB_QUALITY_KEYS.forEach(function (key) {
+      if (key in carbQuality) {
+        var n = parseFloat(carbQuality[key]);
+        longevity[key] = isNaN(n) ? "" : n;
+      }
+    });
+    return longevity;
+  }
+
+  function applyLongevityImportToKeyword(kw, data) {
+    if (data.longevity && typeof data.longevity === "object" && !Array.isArray(data.longevity)) {
+      var merged = normalizeLongevity(kw.longevity);
+      LONGEVITY_FIELDS.forEach(function (field) {
+        if (field.key in data.longevity) {
+          var n = parseFloat(data.longevity[field.key]);
+          merged[field.key] = isNaN(n) ? "" : n;
+        }
+      });
+      kw.longevity = merged;
+    }
+    if (
+      data.carbQuality &&
+      typeof data.carbQuality === "object" &&
+      !Array.isArray(data.carbQuality)
+    ) {
+      kw.longevity = mergeCarbQualityIntoLongevity(kw.longevity, data.carbQuality);
+    }
+  }
+
+  function hasLongevityFilled(longevity) {
+    if (!longevity) return false;
+    return LONGEVITY_FIELDS.some(function (field) {
+      var v = longevity[field.key];
+      return v !== "" && v != null;
+    });
+  }
+
+  function longevityFieldByKey(key) {
+    for (var i = 0; i < LONGEVITY_FIELDS.length; i++) {
+      if (LONGEVITY_FIELDS[i].key === key) return LONGEVITY_FIELDS[i];
+    }
+    return null;
+  }
+
+  function filledLongevityCodes(longevity) {
+    var codes = [];
+    LONGEVITY_FIELDS.forEach(function (field) {
+      var v = longevity[field.key];
+      if (v !== "" && v != null) {
+        codes.push(field.code);
+      }
+    });
+    return codes;
+  }
+
+  function longevityButtonText(kw) {
+    var codes = filledLongevityCodes(kw.longevity);
+    return codes.length ? codes.join(",") : "Longevity";
+  }
+
+  function longevityButtonAria(kw) {
+    var codes = filledLongevityCodes(kw.longevity);
+    if (!codes.length) return "Add longevity nutrients";
+    return "Edit longevity nutrients: " + codes.join(", ");
+  }
+
+  function longevityButtonHtml(kw) {
+    var filled = hasLongevityFilled(kw.longevity);
+    var cls =
+      "keywords__longevity" + (filled ? " keywords__longevity--filled" : "");
+    var text = longevityButtonText(kw);
+    var tooltipAttr = filled ? ' data-tooltip="' + escapeAttr(text) + '"' : "";
+    return (
+      '<button type="button" class="' +
+      cls +
+      '" data-action="longevity"' +
+      tooltipAttr +
+      ' aria-label="' +
+      escapeAttr(longevityButtonAria(kw)) +
+      '"><span class="keywords__longevity-text">' +
+      escapeHtml(text) +
+      "</span></button>"
+    );
+  }
+
   function blankKeyword() {
     return {
       id: makeId(),
@@ -179,6 +468,7 @@
       carbs: "",
       fats: "",
       micros: blankMicros(),
+      longevity: blankLongevity(),
     };
   }
 
@@ -269,6 +559,24 @@
       obj.micros = micros;
     }
 
+    var longevity = {};
+    var carbQuality = {};
+    LONGEVITY_FIELDS.forEach(function (field) {
+      var v = kw.longevity[field.key];
+      if (v === "" || v == null) return;
+      if (CARB_QUALITY_KEYS.indexOf(field.key) >= 0) {
+        carbQuality[field.key] = v;
+      } else {
+        longevity[field.key] = v;
+      }
+    });
+    if (Object.keys(longevity).length > 0) {
+      obj.longevity = longevity;
+    }
+    if (Object.keys(carbQuality).length > 0) {
+      obj.carbQuality = carbQuality;
+    }
+
     return obj;
   }
 
@@ -334,6 +642,8 @@
         }
       });
     }
+
+    applyLongevityImportToKeyword(kw, data);
   }
 
   function findKeywordIndexByName(name) {
@@ -462,6 +772,15 @@
     MICRO_FIELDS.forEach(function (field) {
       micros[field.key] = 0;
     });
+    var longevity = {};
+    var carbQuality = {};
+    LONGEVITY_FIELDS.forEach(function (field) {
+      if (CARB_QUALITY_KEYS.indexOf(field.key) >= 0) {
+        carbQuality[field.key] = 0;
+      } else {
+        longevity[field.key] = 0;
+      }
+    });
     return JSON.stringify(
       {
         name: "1 cup of peanuts",
@@ -469,6 +788,8 @@
         carbs: 0,
         fats: 0,
         micros: micros,
+        longevity: longevity,
+        carbQuality: carbQuality,
       },
       null,
       2
@@ -481,8 +802,29 @@
       "Micronutrients — include only those you can estimate; omit unknown keys:",
     ];
     MICRO_FIELDS.forEach(function (field) {
-      lines.push("  - " + field.key + ": " + field.label + " (" + field.unit + ")");
+      lines.push("  - micros." + field.key + ": " + field.label + " (" + field.unit + ")");
     });
+    lines.push(
+      "Longevity / fats / omegas / compounds — omit unknown keys; use longevity object:"
+    );
+    LONGEVITY_FIELDS.forEach(function (field) {
+      if (CARB_QUALITY_KEYS.indexOf(field.key) >= 0) return;
+      lines.push(
+        "  - longevity." + field.key + ": " + field.label + " (" + field.unit + ")"
+      );
+    });
+    lines.push("Carb quality — use carbQuality object (glycemic load uses GI × carbs / 100):");
+    CARB_QUALITY_KEYS.forEach(function (key) {
+      var field = longevityFieldByKey(key);
+      if (field) {
+        lines.push(
+          "  - carbQuality." + field.key + ": " + field.label + " (" + field.unit + ")"
+        );
+      }
+    });
+    lines.push(
+      "Notes: EPA/DHA often come from fish; ALA from flax/chia/walnuts. Prefer unsaturated over saturated/trans fats. Do not inflate phosphorus unless deficient."
+    );
     return lines.join("\n");
   }
 
@@ -714,6 +1056,70 @@
       });
   }
 
+  function longevityDefKeyList() {
+    var keys = LONGEVITY_FIELDS.map(function (field) {
+      return field.key;
+    });
+    Object.keys(LONGEVITY_DERIVED_DEFS).forEach(function (key) {
+      keys.push(key);
+    });
+    return keys;
+  }
+
+  function longevityDefLabel(key) {
+    var field = longevityFieldByKey(key);
+    if (field) return field.label;
+    var derived = LONGEVITY_DERIVED_DEFS[key];
+    return derived ? derived.label : key;
+  }
+
+  function isLongevityLimitingDefKey(key) {
+    var field = longevityFieldByKey(key);
+    if (field) return !!field.limiting;
+    var derived = LONGEVITY_DERIVED_DEFS[key];
+    return derived ? !!derived.limiting : false;
+  }
+
+  function normalizeLongevityDefinitions(data) {
+    var out = {};
+    if (!data || typeof data !== "object") return out;
+    longevityDefKeyList().forEach(function (key) {
+      var raw = data[key];
+      if (!raw || typeof raw !== "object") return;
+      var entry = {
+        tooLow: stringArray(raw.tooLow),
+        tooHigh: stringArray(raw.tooHigh),
+        enough: stringArray(raw.enough),
+        foodSources: stringArray(raw.foodSources),
+      };
+      if (
+        entry.tooLow.length ||
+        entry.tooHigh.length ||
+        entry.enough.length ||
+        entry.foodSources.length
+      ) {
+        out[key] = entry;
+      }
+    });
+    return out;
+  }
+
+  function loadLongevityDefinitions(done) {
+    fetch("definitions-longevity.json")
+      .then(function (res) {
+        if (!res.ok) throw new Error("longevity definitions fetch failed");
+        return res.json();
+      })
+      .then(function (data) {
+        longevityDefinitions = normalizeLongevityDefinitions(data);
+        if (done) done();
+      })
+      .catch(function () {
+        longevityDefinitions = {};
+        if (done) done();
+      });
+  }
+
   function microFieldByKey(key) {
     for (var i = 0; i < MICRO_FIELDS.length; i++) {
       if (MICRO_FIELDS[i].key === key) return MICRO_FIELDS[i];
@@ -826,6 +1232,63 @@
       html || '<p class="micro-def__empty">No description content yet.</p>';
   }
 
+  function renderLongevityDefBody(key) {
+    if (!microDefBodyEl) return;
+    var def = longevityDefinitions[key];
+    var label = longevityDefLabel(key);
+    if (!def) {
+      microDefBodyEl.innerHTML =
+        '<p class="micro-def__empty">No description is available for ' +
+        escapeHtml(label) +
+        " yet.</p>";
+      return;
+    }
+
+    var limiting = isLongevityLimitingDefKey(key);
+    var html = "";
+
+    if (def.foodSources.length) {
+      html += microDefFoodSourcesHtml(def.foodSources);
+    }
+
+    if (!limiting && def.tooLow.length) {
+      html +=
+        '<section class="micro-def__section">' +
+        '<h4 class="micro-def__heading">If intake is too low</h4>' +
+        microDefParagraphsHtml(def.tooLow) +
+        "</section>";
+    }
+
+    if (limiting && def.tooHigh.length) {
+      html +=
+        '<section class="micro-def__section">' +
+        '<h4 class="micro-def__heading">If intake is too high</h4>' +
+        microDefParagraphsHtml(def.tooHigh) +
+        "</section>";
+    }
+
+    if (def.enough.length) {
+      html +=
+        '<section class="micro-def__section">' +
+        '<h4 class="micro-def__heading">' +
+        (limiting ? "Keeping intake in a healthy range" : "When you get enough") +
+        "</h4>" +
+        microDefParagraphsHtml(def.enough) +
+        "</section>";
+    }
+
+    if (!limiting && def.tooHigh.length) {
+      html +=
+        '<section class="micro-def__section">' +
+        '<h4 class="micro-def__heading">If intake is too high</h4>' +
+        microDefParagraphsHtml(def.tooHigh) +
+        "</section>";
+    }
+
+    microDefBodyEl.innerHTML =
+      html || '<p class="micro-def__empty">No description content yet.</p>';
+  }
+
   function setMicroDefFullscreen(on) {
     microDefFullscreen = !!on;
     if (microDefModalEl) {
@@ -849,9 +1312,40 @@
   function closeMicroDefModal() {
     if (!microDefModalEl) return;
     activeMicroDefKey = null;
+    activeLongevityDefKey = null;
     setMicroDefFullscreen(false);
     microDefModalEl.hidden = true;
     updateBodyModalOpen();
+  }
+
+  function openLongevityDefModal(key) {
+    if (!microDefModalEl || !key) return;
+
+    if (activeImportId) closeImportModal();
+    if (importAllModalEl && !importAllModalEl.hidden) closeImportAllModal();
+    if (importAllMealsModalEl && !importAllMealsModalEl.hidden) {
+      closeImportAllMealsModal();
+    }
+    if (microGapsModalEl && !microGapsModalEl.hidden) closeMicroGapsModal();
+    if (activeMicroId) {
+      saveMicrosFromForm();
+      closeMicroModal();
+    }
+    if (activeLongevityId) {
+      saveLongevityFromForm();
+      closeLongevityModal();
+    }
+
+    activeMicroDefKey = null;
+    activeLongevityDefKey = key;
+    setMicroDefFullscreen(false);
+    if (microDefModalTitleEl) {
+      microDefModalTitleEl.textContent = longevityDefLabel(key);
+    }
+    renderLongevityDefBody(key);
+    microDefModalEl.hidden = false;
+    updateBodyModalOpen();
+    if (microDefModalDoneBtn) microDefModalDoneBtn.focus();
   }
 
   function openMicroDefModal(key) {
@@ -869,7 +1363,12 @@
       saveMicrosFromForm();
       closeMicroModal();
     }
+    if (activeLongevityId) {
+      saveLongevityFromForm();
+      closeLongevityModal();
+    }
 
+    activeLongevityDefKey = null;
     activeMicroDefKey = key;
     setMicroDefFullscreen(false);
     if (microDefModalTitleEl) {
@@ -893,6 +1392,10 @@
     if (activeMicroId) {
       saveMicrosFromForm();
       closeMicroModal();
+    }
+    if (activeLongevityId) {
+      saveLongevityFromForm();
+      closeLongevityModal();
     }
 
     renderMicroGapsAiPreview();
@@ -957,7 +1460,10 @@
       (microGapsModalEl && !microGapsModalEl.hidden) ||
       (microDefModalEl && !microDefModalEl.hidden) ||
       !!activeImportId ||
-      !!activeMicroId;
+      !!activeMicroId ||
+      !!activeLongevityId ||
+      !!activeMicroDefKey ||
+      !!activeLongevityDefKey;
     document.body.classList.toggle("modal-open", open);
   }
 
@@ -996,6 +1502,10 @@
       saveMicrosFromForm();
       closeMicroModal();
     }
+    if (activeLongevityId) {
+      saveLongevityFromForm();
+      closeLongevityModal();
+    }
     if (importAllModalEl && !importAllModalEl.hidden) closeImportAllModal();
     if (importAllMealsModalEl && !importAllMealsModalEl.hidden) {
       closeImportAllMealsModal();
@@ -1028,6 +1538,10 @@
     if (activeMicroId) {
       saveMicrosFromForm();
       closeMicroModal();
+    }
+    if (activeLongevityId) {
+      saveLongevityFromForm();
+      closeLongevityModal();
     }
     if (importAllMealsModalEl && !importAllMealsModalEl.hidden) {
       closeImportAllMealsModal();
@@ -1110,6 +1624,8 @@
       });
     }
 
+    applyLongevityImportToKeyword(keywords[i], data);
+
     saveFoodDefinitions();
   }
 
@@ -1133,6 +1649,10 @@
     if (activeMicroId) {
       saveMicrosFromForm();
       closeMicroModal();
+    }
+    if (activeLongevityId) {
+      saveLongevityFromForm();
+      closeLongevityModal();
     }
 
     activeImportId = id;
@@ -1319,6 +1839,158 @@
     return week;
   }
 
+  function emptyLongevityTotals() {
+    var totals = {};
+    LONGEVITY_FIELDS.forEach(function (field) {
+      totals[field.key] = 0;
+    });
+    return totals;
+  }
+
+  function longevityTotalsFromText(text) {
+    var totals = emptyLongevityTotals();
+    var seen = {};
+
+    keywords.forEach(function (kw) {
+      var name = kw.name.trim();
+      if (!name) return;
+      var key = name.toLowerCase();
+      if (seen[key]) return;
+      seen[key] = true;
+
+      var hits = countKeyword(text, name);
+      if (!hits) return;
+
+      LONGEVITY_FIELDS.forEach(function (field) {
+        var v = kw.longevity[field.key];
+        if (v === "" || v == null) return;
+        totals[field.key] += hits * parseFloat(v);
+      });
+    });
+
+    return totals;
+  }
+
+  function addLongevityTotals(a, b) {
+    var out = emptyLongevityTotals();
+    LONGEVITY_FIELDS.forEach(function (field) {
+      out[field.key] = a[field.key] + b[field.key];
+    });
+    return out;
+  }
+
+  function weekLongevityTotals() {
+    var week = emptyLongevityTotals();
+    DAYS.forEach(function (day) {
+      var el = document.getElementById(day.id);
+      var text = el ? el.value : "";
+      week = addLongevityTotals(week, longevityTotalsFromText(text));
+    });
+    return week;
+  }
+
+  function giBucketsFromWeek() {
+    var low = 0;
+    var med = 0;
+    var high = 0;
+
+    DAYS.forEach(function (day) {
+      var el = document.getElementById(day.id);
+      var text = el ? el.value : "";
+      var seen = {};
+      keywords.forEach(function (kw) {
+        var name = kw.name.trim();
+        if (!name) return;
+        var key = name.toLowerCase();
+        if (seen[key]) return;
+        seen[key] = true;
+
+        var gi = parseFloat(kw.longevity.glycemicIndex);
+        if (isNaN(gi) || gi <= 0) return;
+
+        var carbs = parseMacro(kw.carbs);
+        if (!carbs) return;
+
+        var hits = countKeyword(text, name);
+        if (!hits) return;
+
+        var weight = hits * carbs;
+        if (gi <= 55) low += weight;
+        else if (gi <= 69) med += weight;
+        else high += weight;
+      });
+    });
+
+    return { low: low, med: med, high: high };
+  }
+
+  function weekGlycemicLoadTotal() {
+    var total = 0;
+
+    DAYS.forEach(function (day) {
+      var el = document.getElementById(day.id);
+      var text = el ? el.value : "";
+      var seen = {};
+      keywords.forEach(function (kw) {
+        var name = kw.name.trim();
+        if (!name) return;
+        var key = name.toLowerCase();
+        if (seen[key]) return;
+        seen[key] = true;
+
+        var gi = parseFloat(kw.longevity.glycemicIndex);
+        if (isNaN(gi) || gi <= 0) return;
+
+        var carbs = parseMacro(kw.carbs);
+        if (!carbs) return;
+
+        var hits = countKeyword(text, name);
+        if (!hits) return;
+
+        total += hits * ((gi * carbs) / 100);
+      });
+    });
+
+    return total;
+  }
+
+  function dailyLongevityDv(key) {
+    if (longevityDv && longevityDv.getDailyLongevityDv) {
+      return longevityDv.getDailyLongevityDv(key);
+    }
+    return 0;
+  }
+
+  function avgDailyLongevity(key, weekTotal) {
+    return weekTotal / DAYS.length;
+  }
+
+  function avgDailyLongevityPct(key, weekTotal) {
+    var dv = dailyLongevityDv(key);
+    if (!dv) return null;
+    return (avgDailyLongevity(key, weekTotal) / dv) * 100;
+  }
+
+  function computeLongevityDerived(weekLongevity, weekMicro) {
+    var avg = function (k) {
+      return avgDailyLongevity(k, weekLongevity[k] || 0);
+    };
+    var o6 = avg("omega6");
+    var o3 = avg("omega3");
+    var sat = avg("saturatedFat");
+    var unsat = avg("monounsaturatedFat") + avg("polyunsaturatedFat");
+    var ratioO6O3 = o3 > 0 ? o6 / o3 : null;
+    var ratioSatUnsat = unsat > 0 ? sat / unsat : null;
+    return {
+      omega6To3: ratioO6O3,
+      satToUnsat: ratioSatUnsat,
+      epaPlusDha: avg("epa") + avg("dha"),
+      transFatG: avg("transFat"),
+      weekGl: weekGlycemicLoadTotal() / DAYS.length,
+      giBuckets: giBucketsFromWeek(),
+    };
+  }
+
   function dailyDv(key) {
     if (demographicDv && demographicDv.getDailyMicroDv) {
       return demographicDv.getDailyMicroDv(demographic, key);
@@ -1343,6 +2015,65 @@
   };
 
   var microDvStatus = DEFAULT_MICRO_DV_STATUS;
+
+  var DEFAULT_LIMITING_TIERS = [
+    { id: "red", minPercent: 100, color: "#b42318", fontWeight: 800 },
+    { id: "orange", minPercent: 70, color: "#c45c00", fontWeight: 800 },
+    { id: "blue", minPercent: 40, color: "#2a5f9e", fontWeight: 600 },
+    { id: "green", minPercent: 0, color: "#1a7a36", fontWeight: 400 },
+  ];
+
+  var DEFAULT_LONGEVITY_STATUS = {
+    normalTiers: DEFAULT_MICRO_DV_STATUS.tiers,
+    limitingTiers: DEFAULT_LIMITING_TIERS,
+    transFatMaxGPerDay: 0.5,
+    omega6To3IdealMax: 4,
+  };
+
+  var longevityDvStatus = DEFAULT_LONGEVITY_STATUS;
+
+  function normalizeTierArray(rawTiers, fallbackTiers) {
+    if (!rawTiers) return fallbackTiers.slice();
+    var list = Array.isArray(rawTiers) ? rawTiers : [];
+    var tiers = list
+      .map(function (tier) {
+        var minPercent = parseFloat(tier.minPercent);
+        if (isNaN(minPercent)) return null;
+        var fontWeight = parseInt(tier.fontWeight, 10);
+        return {
+          id: typeof tier.id === "string" ? tier.id : "",
+          minPercent: minPercent,
+          color: typeof tier.color === "string" ? tier.color : "#1a1a1a",
+          fontWeight: isNaN(fontWeight) ? 400 : fontWeight,
+        };
+      })
+      .filter(Boolean)
+      .sort(function (a, b) {
+        return b.minPercent - a.minPercent;
+      });
+    return tiers.length ? tiers : fallbackTiers.slice();
+  }
+
+  function normalizeLongevityStatus(raw) {
+    if (!raw || typeof raw !== "object") return DEFAULT_LONGEVITY_STATUS;
+    var legacyTiers = raw.tiers;
+    return {
+      normalTiers: normalizeTierArray(
+        raw.normalTiers || legacyTiers,
+        DEFAULT_LONGEVITY_STATUS.normalTiers
+      ),
+      limitingTiers: normalizeTierArray(
+        raw.limitingTiers,
+        DEFAULT_LONGEVITY_STATUS.limitingTiers
+      ),
+      transFatMaxGPerDay:
+        parseFloat(raw.transFatMaxGPerDay) ||
+        DEFAULT_LONGEVITY_STATUS.transFatMaxGPerDay,
+      omega6To3IdealMax:
+        parseFloat(raw.omega6To3IdealMax) ||
+        DEFAULT_LONGEVITY_STATUS.omega6To3IdealMax,
+    };
+  }
 
   function normalizeMicroDvTiers(raw) {
     if (!raw || !Array.isArray(raw.tiers)) return DEFAULT_MICRO_DV_STATUS;
@@ -1374,25 +2105,38 @@
       })
       .then(function (data) {
         microDvStatus = normalizeMicroDvTiers(data.microDvStatus);
+        if (data.longevityStatus) {
+          longevityDvStatus = normalizeLongevityStatus(data.longevityStatus);
+        }
         done();
       })
       .catch(function () {
         microDvStatus = DEFAULT_MICRO_DV_STATUS;
+        longevityDvStatus = DEFAULT_LONGEVITY_STATUS;
         done();
       });
   }
 
-  function tierForMicroPct(pct) {
-    if (pct == null || isNaN(pct)) return null;
-    var tiers = microDvStatus.tiers;
+  function tierForPctInList(pct, tiers) {
+    if (pct == null || isNaN(pct) || !tiers || !tiers.length) return null;
     for (var i = 0; i < tiers.length; i++) {
       if (pct >= tiers[i].minPercent) return tiers[i];
     }
     return tiers[tiers.length - 1] || null;
   }
 
-  function microPctInlineStyle(pct) {
-    var tier = tierForMicroPct(pct);
+  function tierForMicroPct(pct) {
+    return tierForPctInList(pct, microDvStatus.tiers);
+  }
+
+  function tierForLongevityPct(pct, limiting) {
+    var tiers = limiting
+      ? longevityDvStatus.limitingTiers
+      : longevityDvStatus.normalTiers;
+    return tierForPctInList(pct, tiers);
+  }
+
+  function pctInlineStyle(pct, tier) {
     if (!tier) return "";
     return (
       ' style="color:' +
@@ -1401,6 +2145,14 @@
       tier.fontWeight +
       ';"'
     );
+  }
+
+  function microPctInlineStyle(pct) {
+    return pctInlineStyle(pct, tierForMicroPct(pct));
+  }
+
+  function longevityPctInlineStyle(pct, limiting) {
+    return pctInlineStyle(pct, tierForLongevityPct(pct, limiting));
   }
 
   function renderMicroRequirements() {
@@ -1443,6 +2195,275 @@
 
     if (microGapsModalEl && !microGapsModalEl.hidden) {
       renderMicroGapsAiPreview();
+    }
+  }
+
+  function longevityRowHtml(
+    label,
+    amtText,
+    pctText,
+    pct,
+    extraClass,
+    limiting,
+    defKey,
+    useMicroDef
+  ) {
+    var tier = tierForLongevityPct(pct, !!limiting);
+    var tierAttr = tier ? ' data-dv-tier="' + escapeAttr(tier.id) + '"' : "";
+    var rowCls = "dashboard__longevity-row" + (extraClass ? " " + extraClass : "");
+    if (limiting) rowCls += " dashboard__longevity-row--limiting";
+    var nameHtml;
+    if (defKey) {
+      rowCls += " dashboard__longevity-row--clickable";
+      var defAttr = useMicroDef ? "data-micro-def" : "data-longevity-def";
+      nameHtml =
+        '<button type="button" class="dashboard__longevity-name" ' +
+        defAttr +
+        '="' +
+        escapeAttr(defKey) +
+        '" aria-haspopup="dialog">' +
+        escapeHtml(label) +
+        "</button>";
+    } else {
+      nameHtml =
+        '<span class="dashboard__longevity-name">' + escapeHtml(label) + "</span>";
+    }
+    return (
+      '<div class="' +
+      rowCls +
+      '"' +
+      tierAttr +
+      ' role="listitem">' +
+      nameHtml +
+      '<span class="dashboard__longevity-amt">' +
+      escapeHtml(amtText) +
+      "</span>" +
+      '<span class="dashboard__longevity-pct"' +
+      longevityPctInlineStyle(pct, !!limiting) +
+      ">" +
+      escapeHtml(pctText) +
+      "</span>" +
+      "</div>"
+    );
+  }
+
+  function renderLongevityGiBuckets(buckets) {
+    var sum = buckets.low + buckets.med + buckets.high;
+    if (sum <= 0) {
+      return '<p class="dashboard__longevity-note">No GI data yet — add glycemic index and carbs on matched foods.</p>';
+    }
+    var pct = function (v) {
+      return Math.round((v / sum) * 100);
+    };
+    var h = function (val, cls, label) {
+      var p = pct(val);
+      var height = Math.max(4, Math.round((p / 100) * 48));
+      return (
+        '<div class="dashboard__gi-bucket">' +
+        '<div class="dashboard__gi-bucket-bar dashboard__gi-bucket-bar--' +
+        cls +
+        '" style="height:' +
+        height +
+        'px" title="' +
+        escapeAttr(fmtNum(val) + " g carb-weighted") +
+        '"></div>' +
+        '<span class="dashboard__gi-bucket-label">' +
+        escapeHtml(label + " " + p + "%") +
+        "</span></div>"
+      );
+    };
+    return (
+      '<div class="dashboard__gi-buckets">' +
+      h(buckets.low, "low", "Low GI ≤55") +
+      h(buckets.med, "med", "Med 56–69") +
+      h(buckets.high, "high", "High ≥70") +
+      "</div>"
+    );
+  }
+
+  function renderLongevityPanel() {
+    if (!dashboardLongevityContentEl) return;
+
+    var weekLongevity = weekLongevityTotals();
+    var weekMicro = weekMicroTotals();
+    var derived = computeLongevityDerived(weekLongevity, weekMicro);
+    var html = "";
+
+    LONGEVITY_GROUPS.forEach(function (group) {
+      var rows = "";
+      LONGEVITY_FIELDS.forEach(function (field) {
+        if (field.group !== group.id) return;
+        var total = weekLongevity[field.key];
+        var pct = avgDailyLongevityPct(field.key, total);
+        var pctText =
+          pct == null || isNaN(pct) ? "—" : fmtNum(pct) + "% DV";
+        var amtText =
+          total > 0
+            ? fmtNum(avgDailyLongevity(field.key, total)) +
+              " " +
+              field.unit +
+              "/day avg"
+            : "—";
+        if (field.key === "glycemicIndex") {
+          pctText = "per food";
+          amtText = total > 0 ? "see GL below" : "—";
+        }
+        rows += longevityRowHtml(
+          field.label,
+          amtText,
+          pctText,
+          pct,
+          "",
+          !!field.limiting,
+          field.key,
+          false
+        );
+      });
+      if (!rows) return;
+      html +=
+        '<section class="dashboard__longevity-section">' +
+        '<h3 class="dashboard__longevity-section-title">' +
+        escapeHtml(group.label) +
+        "</h3>" +
+        '<div class="dashboard__longevity-list" role="list">' +
+        rows +
+        "</div></section>";
+    });
+
+    html +=
+      '<section class="dashboard__longevity-section">' +
+      '<h3 class="dashboard__longevity-section-title">Calcification & vascular balance</h3>' +
+      '<p class="dashboard__longevity-note">From micro entries. Phosphorus is tracked above — most people should not chase higher phosphorus.</p>' +
+      '<div class="dashboard__longevity-list" role="list">';
+    LONGEVITY_FROM_MICRO.forEach(function (item) {
+      var field = microFieldByKey(item.microKey);
+      var unit = field ? field.unit : "";
+      var total = weekMicro[item.microKey] || 0;
+      var pct = avgDailyMicroPct(item.microKey, total);
+      var pctText = pct == null || isNaN(pct) ? "—" : fmtNum(pct) + "% DV";
+      var amtText =
+        total > 0
+          ? fmtNum(total / DAYS.length) + " " + unit + "/day avg"
+          : "—";
+      html += longevityRowHtml(
+        item.label,
+        amtText,
+        pctText,
+        pct,
+        "dashboard__longevity-row--from-micro",
+        !!item.limiting,
+        item.microKey,
+        true
+      );
+    });
+    html += "</div></section>";
+
+    html +=
+      '<section class="dashboard__longevity-section">' +
+      '<h3 class="dashboard__longevity-section-title">Derived scores</h3>' +
+      '<div class="dashboard__longevity-list" role="list">';
+
+    var o6o3 = derived.omega6To3;
+    var o6o3Text =
+      o6o3 == null || isNaN(o6o3) ? "—" : fmtNum(o6o3) + ":1";
+    var o6o3Note =
+      o6o3 != null && o6o3 <= longevityDvStatus.omega6To3IdealMax
+        ? "≤ " + longevityDvStatus.omega6To3IdealMax + " ideal"
+        : "—";
+    html += longevityRowHtml(
+      "Omega-6 : Omega-3",
+      o6o3Note,
+      o6o3Text,
+      null,
+      "dashboard__longevity-row--computed",
+      true,
+      "omega6To3",
+      false
+    );
+
+    var satUnsat = derived.satToUnsat;
+    html += longevityRowHtml(
+      "Saturated : unsaturated",
+      satUnsat == null ? "—" : "ratio",
+      satUnsat == null || isNaN(satUnsat) ? "—" : fmtNum(satUnsat) + ":1",
+      null,
+      "dashboard__longevity-row--computed",
+      true,
+      "satToUnsat",
+      false
+    );
+
+    html += longevityRowHtml(
+      "EPA + DHA",
+      derived.epaPlusDha > 0 ? fmtNum(derived.epaPlusDha) + " g/day avg" : "—",
+      derived.epaPlusDha > 0 ? "combined" : "—",
+      null,
+      "dashboard__longevity-row--computed",
+      false,
+      "epaPlusDha",
+      false
+    );
+
+    var transOk = derived.transFatG <= longevityDvStatus.transFatMaxGPerDay;
+    var transPct = avgDailyLongevityPct("transFat", weekLongevity.transFat || 0);
+    html += longevityRowHtml(
+      "Trans fat",
+      derived.transFatG > 0
+        ? fmtNum(derived.transFatG) + " g/day avg"
+        : "none logged",
+      transOk ? "near zero ✓" : "elevated",
+      transPct != null && !isNaN(transPct)
+        ? transPct
+        : transOk
+          ? 25
+          : 110,
+      "dashboard__longevity-row--computed",
+      true,
+      "transFat",
+      false
+    );
+
+    html += "</div></section>";
+
+    html +=
+      '<section class="dashboard__longevity-section">' +
+      '<h3 class="dashboard__longevity-section-title">Glycemic load & GI distribution</h3>' +
+      '<p class="dashboard__longevity-note">GL = GI × carbs per serving ÷ 100. Portion size matters — prefer tracking GL over GI alone.</p>' +
+      '<div class="dashboard__longevity-list" role="list">' +
+      longevityRowHtml(
+        "Avg daily glycemic load",
+        derived.weekGl > 0 ? "from matched foods" : "—",
+        derived.weekGl > 0 ? fmtNum(derived.weekGl) : "—",
+        null,
+        "dashboard__longevity-row--computed",
+        true,
+        "glycemicLoad",
+        false
+      ) +
+      "</div>" +
+      renderLongevityGiBuckets(derived.giBuckets) +
+      "</section>";
+
+    dashboardLongevityContentEl.innerHTML = html;
+  }
+
+  function setLongevityPanelOpen(open) {
+    longevityPanelOpen = !!open;
+    if (dashboardLongevityToggleEl) {
+      dashboardLongevityToggleEl.setAttribute(
+        "aria-expanded",
+        longevityPanelOpen ? "true" : "false"
+      );
+      dashboardLongevityToggleEl.classList.toggle(
+        "dashboard__toggle--open",
+        longevityPanelOpen
+      );
+    }
+    if (dashboardLongevityPanelEl) {
+      dashboardLongevityPanelEl.hidden = !longevityPanelOpen;
+    }
+    if (longevityPanelOpen) {
+      renderLongevityPanel();
     }
   }
 
@@ -1609,6 +2630,9 @@
     if (microRequirementsOpen) {
       renderMicroRequirements();
     }
+    if (longevityPanelOpen) {
+      renderLongevityPanel();
+    }
   }
 
   function syncScroll(textarea, backdrop) {
@@ -1658,6 +2682,8 @@
       var data = JSON.parse(raw);
       if (!Array.isArray(data)) return;
       keywords = data.map(function (item) {
+        var longevity = normalizeLongevity(item.longevity);
+        longevity = mergeCarbQualityIntoLongevity(longevity, item.carbQuality);
         return {
           id: item.id || makeId(),
           name: typeof item.name === "string" ? item.name : "",
@@ -1665,6 +2691,7 @@
           carbs: item.carbs === "" || item.carbs == null ? "" : item.carbs,
           fats: item.fats === "" || item.fats == null ? "" : item.fats,
           micros: normalizeMicros(item.micros),
+          longevity: longevity,
         };
       });
       data.forEach(function (item) {
@@ -1692,6 +2719,13 @@
     updateBodyModalOpen();
   }
 
+  function closeLongevityModal() {
+    if (!longevityModalEl) return;
+    activeLongevityId = null;
+    longevityModalEl.hidden = true;
+    updateBodyModalOpen();
+  }
+
   function updateMicroButton(id) {
     if (!keywordsListEl) return;
     var i = findIndex(id);
@@ -1701,6 +2735,28 @@
     var btn = row.querySelector('[data-action="micros"]');
     if (!btn) return;
     applyMicroButtonContent(btn, keywords[i]);
+  }
+
+  function updateLongevityButton(id) {
+    if (!keywordsListEl) return;
+    var i = findIndex(id);
+    if (i < 0) return;
+    var row = keywordsListEl.querySelector('[data-id="' + id + '"]');
+    if (!row) return;
+    var btn = row.querySelector('[data-action="longevity"]');
+    if (!btn) return;
+    var kw = keywords[i];
+    var filled = hasLongevityFilled(kw.longevity);
+    var text = longevityButtonText(kw);
+    btn.classList.toggle("keywords__longevity--filled", filled);
+    btn.setAttribute("aria-label", longevityButtonAria(kw));
+    if (filled) {
+      btn.setAttribute("data-tooltip", text);
+    } else {
+      btn.removeAttribute("data-tooltip");
+    }
+    btn.innerHTML =
+      '<span class="keywords__longevity-text">' + escapeHtml(text) + "</span>";
   }
 
   function saveMicrosFromForm() {
@@ -1721,6 +2777,33 @@
     keywords[i].micros = micros;
     saveFoodDefinitions();
     updateMicroButton(activeMicroId);
+    refreshAll();
+  }
+
+  function saveLongevityFromForm() {
+    if (!longevityFormEl || !activeLongevityId) return;
+    var i = findIndex(activeLongevityId);
+    if (i < 0) return;
+
+    var longevity = blankLongevity();
+    LONGEVITY_FIELDS.forEach(function (field) {
+      var input = longevityFormEl.querySelector(
+        '[data-longevity-key="' + field.key + '"]'
+      );
+      if (!input) return;
+      var v = input.value.trim();
+      if (v === "") {
+        longevity[field.key] = "";
+      } else {
+        var n = parseFloat(v);
+        longevity[field.key] = isNaN(n) ? "" : n;
+      }
+    });
+
+    keywords[i].longevity = longevity;
+    saveFoodDefinitions();
+    updateLongevityButton(activeLongevityId);
+    refreshAll();
   }
 
   function populateMicroForm(kw) {
@@ -1767,7 +2850,63 @@
     microModalEl.hidden = false;
     updateBodyModalOpen();
 
+    if (activeLongevityId) {
+      saveLongevityFromForm();
+      closeLongevityModal();
+    }
+
     var first = microFormEl.querySelector("input");
+    if (first) first.focus();
+  }
+
+  function populateLongevityForm(kw) {
+    if (!longevityFormEl || !kw) return;
+    LONGEVITY_FIELDS.forEach(function (field) {
+      var input = longevityFormEl.querySelector(
+        '[data-longevity-key="' + field.key + '"]'
+      );
+      if (input) {
+        input.value = microInputValue(kw.longevity[field.key]);
+      }
+    });
+  }
+
+  function openLongevityModal(id) {
+    if (!longevityModalEl || !longevityFormEl) return;
+    var i = findIndex(id);
+    if (i < 0) return;
+
+    if (activeImportId) closeImportModal();
+    if (microDefModalEl && !microDefModalEl.hidden) closeMicroDefModal();
+    if (activeMicroId && activeMicroId !== id) {
+      saveMicrosFromForm();
+      closeMicroModal();
+    }
+    if (activeLongevityId && activeLongevityId !== id) {
+      saveLongevityFromForm();
+    }
+
+    activeLongevityId = id;
+    var kw = keywords[i];
+
+    if (longevityModalFoodEl) {
+      longevityModalFoodEl.textContent = kw.name.trim()
+        ? kw.name.trim()
+        : "Untitled food";
+    }
+
+    populateLongevityForm(kw);
+    if (importAllMealsModalEl && !importAllMealsModalEl.hidden) {
+      closeImportAllMealsModal();
+    }
+    if (importAllModalEl && !importAllModalEl.hidden) {
+      closeImportAllModal();
+    }
+
+    longevityModalEl.hidden = false;
+    updateBodyModalOpen();
+
+    var first = longevityFormEl.querySelector("input");
     if (first) first.focus();
   }
 
@@ -1793,9 +2932,53 @@
     }).join("");
   }
 
+  function initLongevityForm() {
+    if (!longevityFormEl) return;
+
+    longevityFormEl.innerHTML = LONGEVITY_GROUPS.map(function (group) {
+      var fields = LONGEVITY_FIELDS.filter(function (f) {
+        return f.group === group.id;
+      });
+      if (!fields.length) return "";
+      return (
+        '<fieldset class="longevity-form__group">' +
+        '<legend class="longevity-form__legend">' +
+        escapeHtml(group.label) +
+        "</legend>" +
+        '<div class="longevity-form__grid">' +
+        fields
+          .map(function (field) {
+            return (
+              '<label class="longevity-form__field">' +
+              '<span class="longevity-form__label">' +
+              escapeHtml(field.label) +
+              " (" +
+              escapeHtml(field.code) +
+              ")</span>" +
+              '<span class="longevity-form__unit">' +
+              escapeHtml(field.unit) +
+              "</span>" +
+              '<input type="number" class="longevity-form__input" min="0" step="0.1" inputmode="decimal" ' +
+              'data-longevity-key="' +
+              escapeAttr(field.key) +
+              '" placeholder="0">' +
+              "</label>"
+            );
+          })
+          .join("") +
+        "</div></fieldset>"
+      );
+    }).join("");
+  }
+
   function scheduleMicroSave() {
     clearTimeout(microSaveTimer);
     microSaveTimer = setTimeout(saveMicrosFromForm, 250);
+  }
+
+  function scheduleLongevitySave() {
+    clearTimeout(longevitySaveTimer);
+    longevitySaveTimer = setTimeout(saveLongevityFromForm, 250);
   }
 
   function moveKeyword(id, delta) {
@@ -1803,6 +2986,7 @@
     var j = i + delta;
     if (i < 0 || j < 0 || j >= keywords.length) return;
     if (activeMicroId === id) closeMicroModal();
+    if (activeLongevityId === id) closeLongevityModal();
     if (activeImportId === id) closeImportModal();
     var tmp = keywords[i];
     keywords[i] = keywords[j];
@@ -1816,6 +3000,7 @@
     var i = findIndex(id);
     if (i < 0) return;
     if (activeMicroId === id) closeMicroModal();
+    if (activeLongevityId === id) closeLongevityModal();
     if (activeImportId === id) closeImportModal();
     keywords.splice(i, 1);
     saveFoodDefinitions();
@@ -1897,6 +3082,9 @@
         "</td>" +
         '<td class="keywords__micros-cell">' +
         microsButtonHtml(kw) +
+        "</td>" +
+        '<td class="keywords__longevity-cell">' +
+        longevityButtonHtml(kw) +
         "</td>" +
         '<td class="keywords__actions">' +
         '<button type="button" class="keywords__import" data-action="import" aria-label="Import food definition as JSON">Import</button>' +
@@ -2180,6 +3368,7 @@
       else if (action === "down") moveKeyword(id, 1);
       else if (action === "delete") removeKeyword(id);
       else if (action === "micros") openMicroModal(id);
+      else if (action === "longevity") openLongevityModal(id);
       else if (action === "import") openImportModal(id);
     });
   }
@@ -2339,6 +3528,11 @@
       closeImportModal();
       return;
     }
+    if (activeLongevityId) {
+      saveLongevityFromForm();
+      closeLongevityModal();
+      return;
+    }
     if (activeMicroId) {
       saveMicrosFromForm();
       closeMicroModal();
@@ -2346,6 +3540,7 @@
   });
 
   initMicroForm();
+  initLongevityForm();
 
   if (addKeywordBtn) {
     addKeywordBtn.addEventListener("click", addKeyword);
@@ -2454,11 +3649,51 @@
     });
   }
 
+  if (dashboardLongevityToggleEl) {
+    dashboardLongevityToggleEl.addEventListener("click", function () {
+      setLongevityPanelOpen(!longevityPanelOpen);
+    });
+  }
+
+  if (longevityFormEl) {
+    longevityFormEl.addEventListener("input", scheduleLongevitySave);
+  }
+
+  if (longevityModalDoneBtn) {
+    longevityModalDoneBtn.addEventListener("click", function () {
+      saveLongevityFromForm();
+      closeLongevityModal();
+    });
+  }
+
+  if (longevityModalEl) {
+    longevityModalEl.addEventListener("click", function (e) {
+      if (e.target.closest('[data-action="close-longevity-modal"]')) {
+        saveLongevityFromForm();
+        closeLongevityModal();
+      }
+    });
+  }
+
   if (dashboardMicroListEl) {
     dashboardMicroListEl.addEventListener("click", function (e) {
       var btn = e.target.closest("[data-micro-def]");
       if (!btn) return;
       openMicroDefModal(btn.getAttribute("data-micro-def"));
+    });
+  }
+
+  if (dashboardLongevityContentEl) {
+    dashboardLongevityContentEl.addEventListener("click", function (e) {
+      var microBtn = e.target.closest("[data-micro-def]");
+      if (microBtn) {
+        openMicroDefModal(microBtn.getAttribute("data-micro-def"));
+        return;
+      }
+      var longevityBtn = e.target.closest("[data-longevity-def]");
+      if (longevityBtn) {
+        openLongevityDefModal(longevityBtn.getAttribute("data-longevity-def"));
+      }
     });
   }
 
@@ -2498,6 +3733,12 @@
   }
 
   loadAppConfig(function () {
-    loadMicroDefinitions(boot);
+    var pending = 2;
+    function definitionsReady() {
+      pending -= 1;
+      if (pending === 0) boot();
+    }
+    loadMicroDefinitions(definitionsReady);
+    loadLongevityDefinitions(definitionsReady);
   });
 })();
