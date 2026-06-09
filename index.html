@@ -27,7 +27,10 @@
       </div>
       <div id="dashboard-grid" class="dashboard__grid"></div>
       <div id="dashboard-micro-panel" class="dashboard__micro-panel" hidden>
-        <p class="dashboard__micro-hint">Average daily intake vs your demographic daily values (Mon–Sun). DV's will be low if you dont fill up all days. Click a nutrient to learn more.</p>
+        <div class="dashboard__micro-intro">
+          <p class="dashboard__micro-hint">Average daily intake vs your demographic daily values (Mon–Sun). DV's will be low if you dont fill up all days. Click a nutrient to learn more.</p>
+          <button type="button" id="dashboard-micro-dv-toggle" class="dashboard__micro-dv-toggle" aria-pressed="false" aria-label="Show daily requirement">Daily requirement</button>
+        </div>
         <p class="dashboard__micro-tools">
           <button type="button" id="micro-gaps-ai-open" class="import-modal__ai-link" aria-label="Ask AI to help fill in the gaps">✨ Ask AI to help fill gaps</button>
         </p>

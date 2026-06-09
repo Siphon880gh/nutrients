@@ -273,5 +273,101 @@
 		"vitaminC": 0,
 		"folate": 12
 	  }
+	},
+	{
+	  "name": "Chicken Steak - Asian",
+	  "protein": 42,
+	  "carbs": 10,
+	  "fats": 24,
+	  "micros": {
+		"fiber": 0.3,
+		"sodium": 1100,
+		"potassium": 520,
+		"calcium": 25,
+		"iron": 1.6,
+		"magnesium": 45,
+		"zinc": 3.1,
+		"vitaminA": 25,
+		"vitaminD": 0.3,
+		"vitaminB12": 0.7,
+		"vitaminC": 2,
+		"folate": 10
+	  },
+	  "longevity": {
+		"saturatedFat": 6,
+		"monounsaturatedFat": 10,
+		"polyunsaturatedFat": 5,
+		"transFat": 0,
+		"cholesterol": 170,
+		"omega3": 0.18,
+		"omega6": 4.3,
+		"omega9": 9.2,
+		"ala": 0.08,
+		"linoleicAcid": 4.1,
+		"arachidonicAcid": 0.12,
+		"oleicAcid": 9.1,
+		"palmitoleicAcid": 0.6,
+		"vitaminE": 1.1,
+		"vitaminK": 7,
+		"vitaminK1": 6,
+		"selenium": 42,
+		"coq10": 2.5,
+		"phosphorus": 390
+	  },
+	  "carbQuality": {
+		"glycemicIndex": 45,
+		"addedSugar": 4,
+		"refinedCarbs": 2,
+		"netCarbs": 9.7
+	  }
+	},
+	{
+	  "name": "Shrimp Fried - 3pc",
+	  "protein": 11,
+	  "carbs": 13,
+	  "fats": 8,
+	  "micros": {
+		"fiber": 0.6,
+		"sodium": 480,
+		"potassium": 130,
+		"calcium": 45,
+		"iron": 0.7,
+		"magnesium": 25,
+		"zinc": 0.9,
+		"vitaminA": 20,
+		"vitaminD": 0.1,
+		"vitaminB12": 0.9,
+		"vitaminC": 0,
+		"folate": 12
+	  },
+	  "longevity": {
+		"saturatedFat": 1.3,
+		"monounsaturatedFat": 3.2,
+		"polyunsaturatedFat": 2.4,
+		"transFat": 0,
+		"cholesterol": 90,
+		"omega3": 0.15,
+		"omega6": 2.1,
+		"omega9": 3,
+		"ala": 0.08,
+		"epa": 0.05,
+		"dha": 0.06,
+		"linoleicAcid": 2,
+		"arachidonicAcid": 0.04,
+		"oleicAcid": 2.9,
+		"palmitoleicAcid": 0.15,
+		"vitaminE": 1.2,
+		"vitaminK": 6,
+		"vitaminK1": 5,
+		"selenium": 22,
+		"coq10": 0.8,
+		"phosphorus": 140
+	  },
+	  "carbQuality": {
+		"glycemicIndex": 65,
+		"addedSugar": 1,
+		"refinedCarbs": 11,
+		"netCarbs": 12.4
+	  }
 	}
   ]

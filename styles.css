@@ -88,10 +88,45 @@ body {
   background: #fff;
 }
 
+.dashboard__micro-intro {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.35rem;
+}
+
 .dashboard__micro-hint {
-  margin: 0 0 0.35rem;
+  margin: 0;
+  flex: 1;
+  min-width: 0;
   font-size: 0.78rem;
   color: #5c5c5c;
+}
+
+.dashboard__micro-dv-toggle {
+  padding: 0;
+  border: none;
+  background: none;
+  font: inherit;
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: #7a7a7a;
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  cursor: pointer;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.dashboard__micro-dv-toggle:hover {
+  color: #5c5c5c;
+  text-decoration-color: rgba(92, 92, 92, 0.35);
+}
+
+.dashboard__micro-dv-toggle[aria-pressed="true"] {
+  color: #5c5c5c;
+  text-decoration-color: rgba(92, 92, 92, 0.45);
 }
 
 .dashboard__micro-tools {
@@ -266,6 +301,20 @@ button.dashboard__micro-name:focus-visible {
   font-variant-numeric: tabular-nums;
   color: #5c5c5c;
   font-size: 0.72rem;
+}
+
+.dashboard__micro-row--show-dv .dashboard__micro-amt {
+  grid-row: 1;
+  align-self: end;
+}
+
+.dashboard__micro-dv-req {
+  grid-column: 2;
+  grid-row: 2;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  color: #7a7a7a;
+  font-size: 0.68rem;
 }
 
 .dashboard__micro-pct {

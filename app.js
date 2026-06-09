@@ -38,6 +38,7 @@
   var dashboardMicroToggleEl = document.getElementById("dashboard-micro-toggle");
   var dashboardMicroPanelEl = document.getElementById("dashboard-micro-panel");
   var dashboardMicroListEl = document.getElementById("dashboard-micro-list");
+  var dashboardMicroDvToggleEl = document.getElementById("dashboard-micro-dv-toggle");
   var dashboardLongevityToggleEl = document.getElementById("dashboard-longevity-toggle");
   var dashboardLongevityPanelEl = document.getElementById("dashboard-longevity-panel");
   var dashboardLongevityContentEl = document.getElementById("dashboard-longevity-content");
@@ -116,6 +117,7 @@
   var demographic = DEFAULT_DEMOGRAPHIC;
   var weekTotalOpen = false;
   var microRequirementsOpen = false;
+  var showMicroDailyDv = false;
   var longevityPanelOpen = false;
   var activeLongevityId = null;
   var longevitySaveTimer;
@@ -2145,8 +2147,24 @@
     return pctInlineStyle(pct, tierForLongevityPct(pct, limiting));
   }
 
+  function microDailyDvText(field) {
+    var dv = dailyDv(field.key);
+    if (!dv) return "—";
+    return fmtNum(dv) + " " + field.unit + "/day req";
+  }
+
+  function syncMicroDailyDvToggleUi() {
+    if (!dashboardMicroDvToggleEl) return;
+    dashboardMicroDvToggleEl.setAttribute(
+      "aria-pressed",
+      showMicroDailyDv ? "true" : "false"
+    );
+  }
+
   function renderMicroRequirements() {
     if (!dashboardMicroListEl) return;
+
+    syncMicroDailyDvToggleUi();
 
     var week = weekMicroTotals();
     var html = "";
@@ -2160,9 +2178,14 @@
         total > 0 ? fmtNum(total / DAYS.length) + " " + field.unit + "/day avg" : "—";
       var tier = tierForMicroPct(pct);
       var tierAttr = tier ? ' data-dv-tier="' + escapeAttr(tier.id) + '"' : "";
+      var rowCls =
+        "dashboard__micro-row dashboard__micro-row--clickable" +
+        (showMicroDailyDv ? " dashboard__micro-row--show-dv" : "");
 
       html +=
-        '<div class="dashboard__micro-row dashboard__micro-row--clickable"' +
+        '<div class="' +
+        rowCls +
+        '"' +
         tierAttr +
         ' role="listitem">' +
         '<button type="button" class="dashboard__micro-name" data-micro-def="' +
@@ -2172,7 +2195,14 @@
         "</button>" +
         '<span class="dashboard__micro-amt">' +
         escapeHtml(amtText) +
-        "</span>" +
+        "</span>";
+      if (showMicroDailyDv) {
+        html +=
+          '<span class="dashboard__micro-dv-req">' +
+          escapeHtml(microDailyDvText(field)) +
+          "</span>";
+      }
+      html +=
         '<span class="dashboard__micro-pct"' +
         microPctInlineStyle(pct) +
         ">" +
@@ -3884,6 +3914,17 @@
   if (dashboardMicroToggleEl) {
     dashboardMicroToggleEl.addEventListener("click", function () {
       setMicroRequirementsOpen(!microRequirementsOpen);
+    });
+  }
+
+  if (dashboardMicroDvToggleEl) {
+    dashboardMicroDvToggleEl.addEventListener("click", function () {
+      showMicroDailyDv = !showMicroDailyDv;
+      if (microRequirementsOpen) {
+        renderMicroRequirements();
+      } else {
+        syncMicroDailyDvToggleUi();
+      }
     });
   }
 
