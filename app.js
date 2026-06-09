@@ -3036,8 +3036,10 @@
     });
   }
 
-  function keywordPositionOptionLabel(index, currentIndex) {
-    var label = String(index + 1);
+  function keywordPositionOptionLabel(index, currentIndex, kw) {
+    var name =
+      kw && kw.name && kw.name.trim() ? kw.name.trim() : "Untitled food";
+    var label = String(index + 1) + " — " + name;
     if (index === currentIndex) label += " (current)";
     return label;
   }
@@ -3072,7 +3074,7 @@
         '"' +
         (index === currentIndex ? " selected" : "") +
         ">" +
-        escapeHtml(keywordPositionOptionLabel(index, currentIndex)) +
+        escapeHtml(keywordPositionOptionLabel(index, currentIndex, kw)) +
         "</option>";
     });
     keywordPositionSelectEl.innerHTML = html;
