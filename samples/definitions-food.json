@@ -1,16 +1,60 @@
 [
 	{
-	  "name": "Costco Rotisserie Chicken 1 cup (of 4)",
-	  "protein": 31.3,
-	  "carbs": 0,
-	  "fats": 11.5,
+	  "name": "First Street Trail Mix - 10 tablespoons",
+	  "protein": 12.5,
+	  "carbs": 32.5,
+	  "fats": 17.5,
 	  "micros": {
 		"fiber": 5,
-		"sodium": 225,
-		"potassium": 500,
-		"calcium": 75,
-		"iron": 2,
-		"vitaminD": 0
+		"sodium": 0,
+		"potassium": 350,
+		"calcium": 49.8,
+		"iron": 3.5,
+		"vitaminC": 3
+	  },
+	  "longevity": {
+		"saturatedFat": 2.5,
+		"monounsaturatedFat": 8,
+		"polyunsaturatedFat": 5,
+		"transFat": 0,
+		"cholesterol": 0,
+		"omega3": 0.13,
+		"omega6": 4.5,
+		"omega9": 7.5,
+		"ala": 0.13,
+		"epa": 0,
+		"dha": 0,
+		"linoleicAcid": 4.5,
+		"arachidonicAcid": 0,
+		"oleicAcid": 7.5,
+		"vitaminE": 2.3,
+		"selenium": 3.8
+	  },
+	  "carbQuality": {
+		"glycemicIndex": 45,
+		"addedSugar": 12.5,
+		"refinedCarbs": 12.5,
+		"netCarbs": 27.5
+	  }
+	},
+	{
+	  "name": "1 cup of peanuts",
+	  "protein": 37.7,
+	  "carbs": 23.5,
+	  "fats": 71.8,
+	  "micros": {
+		"fiber": 12.4,
+		"sodium": 26,
+		"potassium": 1029,
+		"calcium": 134,
+		"iron": 6.7,
+		"magnesium": 245,
+		"zinc": 4.8,
+		"vitaminA": 0,
+		"vitaminD": 0,
+		"vitaminB12": 0,
+		"vitaminC": 0,
+		"folate": 350
 	  }
 	},
 	{
@@ -45,125 +89,6 @@
 		"vitaminB12": 3.6,
 		"vitaminC": 0,
 		"folate": 29
-	  }
-	},
-	{
-	  "name": "1 cup of peanuts",
-	  "protein": 37.7,
-	  "carbs": 23.5,
-	  "fats": 71.8,
-	  "micros": {
-		"fiber": 12.4,
-		"sodium": 26,
-		"potassium": 1029,
-		"calcium": 134,
-		"iron": 6.7,
-		"magnesium": 245,
-		"zinc": 4.8,
-		"vitaminA": 0,
-		"vitaminD": 0,
-		"vitaminB12": 0,
-		"vitaminC": 0,
-		"folate": 350
-	  }
-	},
-	{
-	  "name": "Apple md",
-	  "protein": 0.5,
-	  "carbs": 25.1,
-	  "fats": 0.3,
-	  "micros": {
-		"fiber": 4.4,
-		"sodium": 2,
-		"potassium": 195,
-		"calcium": 11,
-		"iron": 0.2,
-		"magnesium": 9,
-		"zinc": 0.1,
-		"vitaminA": 5,
-		"vitaminD": 0,
-		"vitaminB12": 0,
-		"vitaminC": 8.4,
-		"folate": 5
-	  }
-	},
-	{
-	  "name": "Orange md",
-	  "protein": 1.2,
-	  "carbs": 15.4,
-	  "fats": 0.2,
-	  "micros": {
-		"fiber": 3.1,
-		"sodium": 0,
-		"potassium": 237,
-		"calcium": 52,
-		"iron": 0.1,
-		"magnesium": 13,
-		"zinc": 0.1,
-		"vitaminA": 14,
-		"vitaminD": 0,
-		"vitaminB12": 0,
-		"vitaminC": 69.7,
-		"folate": 39
-	  }
-	},
-	{
-	  "name": "Milk reduced 1 cup",
-	  "protein": 8.1,
-	  "carbs": 12.2,
-	  "fats": 4.8,
-	  "micros": {
-		"fiber": 0,
-		"sodium": 105,
-		"potassium": 366,
-		"calcium": 293,
-		"iron": 0.1,
-		"magnesium": 27,
-		"zinc": 1,
-		"vitaminA": 139,
-		"vitaminD": 2.9,
-		"vitaminB12": 1.3,
-		"vitaminC": 0,
-		"folate": 12
-	  }
-	},
-	{
-	  "name": "Costco Rotisserie Chicken 1 cup (of 4)",
-	  "protein": 31.3,
-	  "carbs": 0,
-	  "fats": 11.5,
-	  "micros": {
-		"fiber": 0,
-		"sodium": 758,
-		"potassium": 320,
-		"calcium": 15,
-		"iron": 1.2,
-		"magnesium": 29,
-		"zinc": 2.1,
-		"vitaminA": 20,
-		"vitaminD": 0.2,
-		"vitaminB12": 0.5,
-		"vitaminC": 0,
-		"folate": 7
-	  }
-	},
-	{
-	  "name": "Greek Yogurt",
-	  "protein": 17,
-	  "carbs": 6,
-	  "fats": 0.4,
-	  "micros": {
-		"fiber": 0,
-		"sodium": 60,
-		"potassium": 240,
-		"calcium": 187,
-		"iron": 0.1,
-		"magnesium": 17,
-		"zinc": 1,
-		"vitaminA": 3,
-		"vitaminB12": 1.2,
-		"vitaminC": 0,
-		"folate": 12
 	  }
 	},
 	{
@@ -207,23 +132,146 @@
 	  }
 	},
 	{
-	  "name": "General Mills Total Whole Grain Cereal 1 cup",
-	  "protein": 3,
-	  "carbs": 33,
-	  "fats": 1,
+	  "name": "Apple md",
+	  "protein": 0.5,
+	  "carbs": 25.1,
+	  "fats": 0.3,
 	  "micros": {
-		"fiber": 4,
-		"sodium": 190,
-		"potassium": 150,
-		"calcium": 40,
-		"iron": 18,
-		"magnesium": 42,
-		"zinc": 11,
-		"vitaminA": 90,
-		"vitaminD": 4,
-		"vitaminB12": 2.4,
-		"vitaminC": 90,
-		"folate": 400
+		"fiber": 4.4,
+		"sodium": 2,
+		"potassium": 195,
+		"calcium": 11,
+		"iron": 0.2,
+		"magnesium": 9,
+		"zinc": 0.1,
+		"vitaminA": 5,
+		"vitaminD": 0,
+		"vitaminB12": 0,
+		"vitaminC": 8.4,
+		"folate": 5
+	  }
+	},
+	{
+	  "name": "Orange md",
+	  "protein": 1.2,
+	  "carbs": 15.4,
+	  "fats": 0.2,
+	  "micros": {
+		"fiber": 3.1,
+		"sodium": 0,
+		"potassium": 237,
+		"calcium": 52,
+		"iron": 0.1,
+		"magnesium": 13,
+		"zinc": 0.1,
+		"vitaminA": 14,
+		"vitaminD": 0,
+		"vitaminB12": 0,
+		"vitaminC": 69.7,
+		"folate": 39
+	  }
+	},
+	{
+	  "name": "Greek Yogurt",
+	  "protein": 17,
+	  "carbs": 6,
+	  "fats": 0.4,
+	  "micros": {
+		"fiber": 0,
+		"sodium": 60,
+		"potassium": 240,
+		"calcium": 187,
+		"iron": 0.1,
+		"magnesium": 17,
+		"zinc": 1,
+		"vitaminA": 3,
+		"vitaminB12": 1.2,
+		"vitaminC": 0,
+		"folate": 12
+	  }
+	},
+	{
+	  "name": "Costco Rotisserie Chicken 1 cup (of 4)",
+	  "protein": 31.3,
+	  "carbs": 0,
+	  "fats": 11.5,
+	  "micros": {
+		"fiber": 5,
+		"sodium": 225,
+		"potassium": 500,
+		"calcium": 75,
+		"iron": 2,
+		"vitaminD": 0
+	  }
+	},
+	{
+	  "name": "Starbucks Bacon & Gruyère Egg Bites - 2 bites",
+	  "protein": 19,
+	  "carbs": 9,
+	  "fats": 20,
+	  "micros": {
+		"fiber": 0,
+		"sodium": 680,
+		"potassium": 180,
+		"calcium": 286,
+		"iron": 1,
+		"magnesium": 20,
+		"zinc": 1.6,
+		"vitaminA": 180,
+		"vitaminD": 2,
+		"vitaminB12": 1,
+		"vitaminC": 0,
+		"folate": 35
+	  },
+	  "longevity": {
+		"saturatedFat": 12,
+		"monounsaturatedFat": 5.5,
+		"polyunsaturatedFat": 1.5,
+		"transFat": 0,
+		"cholesterol": 215,
+		"omega3": 0.08,
+		"omega6": 1.2,
+		"omega9": 4.5,
+		"ala": 0.04,
+		"epa": 0,
+		"dha": 0.03,
+		"linoleicAcid": 1.1,
+		"arachidonicAcid": 0.08,
+		"oleicAcid": 4.4,
+		"palmitoleicAcid": 0.25,
+		"vitaminE": 0.8,
+		"vitaminK": 3,
+		"vitaminK1": 1,
+		"vitaminK2": 12,
+		"selenium": 25,
+		"coq10": 0.7,
+		"phosphorus": 340
+	  },
+	  "carbQuality": {
+		"glycemicIndex": 35,
+		"addedSugar": 1,
+		"refinedCarbs": 6,
+		"netCarbs": 9
+	  }
+	},
+	{
+	  "name": "Milk reduced 1 cup",
+	  "protein": 8.1,
+	  "carbs": 12.2,
+	  "fats": 4.8,
+	  "micros": {
+		"fiber": 0,
+		"sodium": 105,
+		"potassium": 366,
+		"calcium": 293,
+		"iron": 0.1,
+		"magnesium": 27,
+		"zinc": 1,
+		"vitaminA": 139,
+		"vitaminD": 2.9,
+		"vitaminB12": 1.3,
+		"vitaminC": 0,
+		"folate": 12
 	  }
 	}
   ]

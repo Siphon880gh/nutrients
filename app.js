@@ -12,6 +12,7 @@
   var STORAGE_KEY_LEGACY = "nutrients-keywords";
   var STORAGE_KEY_DEMOGRAPHIC = "nutrients-demographic";
   var STORAGE_KEY_DAYS = "nutrients-day-notes";
+  var STORAGE_KEY_REORDER = "nutrients-keywords-reorder-open";
   var demographicDv =
     typeof NutrientsDemographicDv !== "undefined" ? NutrientsDemographicDv : null;
   var longevityDv =
@@ -26,7 +27,10 @@
 
   var keywords = [];
   var keywordsListEl = document.getElementById("keywords-list");
+  var keywordsTableEl = document.getElementById("keywords-table");
+  var keywordsReorderToggleEl = document.getElementById("keywords-reorder-toggle");
   var keywordsEmptyEl = document.getElementById("keywords-empty");
+  var keywordReorderOpen = false;
   var addKeywordBtn = document.getElementById("add-keyword");
   var dashboardGridEl = document.getElementById("dashboard-grid");
   var weekSummaryEl = document.getElementById("week-summary");
@@ -99,6 +103,15 @@
   var importAllMealsBtn = document.getElementById("import-all-meals");
   var activeMicroId = null;
   var activeImportId = null;
+  var activeImportIndex = -1;
+  var activePositionId = null;
+  var activePositionIndex = -1;
+  var keywordPositionModalEl = document.getElementById("keyword-position-modal");
+  var keywordPositionFoodEl = document.getElementById("keyword-position-food");
+  var keywordPositionSelectEl = document.getElementById("keyword-position-select");
+  var keywordPositionErrorEl = document.getElementById("keyword-position-error");
+  var keywordPositionApplyBtn = document.getElementById("keyword-position-apply");
+  var keywordPositionCancelBtn = document.getElementById("keyword-position-cancel");
   var microSaveTimer;
   var demographic = DEFAULT_DEMOGRAPHIC;
   var weekTotalOpen = false;
@@ -862,9 +875,9 @@
   }
 
   function syncImportAiInputs() {
-    if (!activeImportId || !importAiPortionEl) return;
-    var i = findIndex(activeImportId);
-    if (i < 0) return;
+    if (activeImportIndex < 0 || !importAiPortionEl) return;
+    var i = activeImportIndex;
+    if (i >= keywords.length) return;
     var name = keywords[i].name.trim();
     if (name && !importAiPortionEl.value.trim()) {
       importAiPortionEl.value = name;
@@ -1422,17 +1435,15 @@
       importJsonWrapEl.classList.toggle("import-json-wrap--ai", open);
     }
 
-    if (importJsonEl && activeImportId) {
-      var i = findIndex(activeImportId);
-      if (i >= 0) {
-        if (open) {
-          importJsonEl.value = "";
-          importJsonEl.placeholder =
-            '{\n  "name": "1 cup of peanuts",\n  "protein": 0\n}';
-        } else {
-          importJsonEl.placeholder = "";
-          importJsonEl.value = exportFoodJson(keywords[i]);
-        }
+    if (importJsonEl && activeImportIndex >= 0 && activeImportIndex < keywords.length) {
+      var i = activeImportIndex;
+      if (open) {
+        importJsonEl.value = "";
+        importJsonEl.placeholder =
+          '{\n  "name": "1 cup of peanuts",\n  "protein": 0\n}';
+      } else {
+        importJsonEl.placeholder = "";
+        importJsonEl.value = exportFoodJson(keywords[i]);
       }
     }
 
@@ -1459,6 +1470,7 @@
       (importAllModalEl && !importAllModalEl.hidden) ||
       (microGapsModalEl && !microGapsModalEl.hidden) ||
       (microDefModalEl && !microDefModalEl.hidden) ||
+      (keywordPositionModalEl && !keywordPositionModalEl.hidden) ||
       !!activeImportId ||
       !!activeMicroId ||
       !!activeLongevityId ||
@@ -1571,13 +1583,14 @@
   function closeImportModal() {
     if (!importModalEl) return;
     activeImportId = null;
+    activeImportIndex = -1;
     importModalEl.hidden = true;
     showImportError("");
     setImportAiPanelOpen(false);
     updateBodyModalOpen();
   }
 
-  function applyImportJson(id, raw) {
+  function applyImportJson(index, raw) {
     var data;
     try {
       data = JSON.parse(raw);
@@ -1593,46 +1606,22 @@
       throw new Error("Name is required");
     }
 
-    var i = findIndex(id);
-    if (i < 0) {
+    if (index < 0 || index >= keywords.length) {
       throw new Error("Food definition not found");
     }
 
-    keywords[i].name = String(data.name).trim();
-
-    if ("protein" in data) {
-      keywords[i].protein = storedMacroValue(data.protein);
-    }
-    if ("carbs" in data) {
-      keywords[i].carbs = storedMacroValue(data.carbs);
-    }
-    if ("fats" in data) {
-      keywords[i].fats = storedMacroValue(data.fats);
-    }
-
-    if (
-      data.micros &&
-      typeof data.micros === "object" &&
-      !Array.isArray(data.micros)
-    ) {
-      MICRO_FIELDS.forEach(function (field) {
-        if (field.key in data.micros) {
-          keywords[i].micros[field.key] = storedMacroValue(
-            data.micros[field.key]
-          );
-        }
-      });
-    }
-
-    applyLongevityImportToKeyword(keywords[i], data);
+    var fresh = blankKeyword();
+    fresh.id = keywords[index].id;
+    applyImportItemToKeyword(fresh, data);
+    keywords[index] = fresh;
 
     saveFoodDefinitions();
   }
 
   function runImport() {
-    if (!activeImportId || !importJsonEl) return;
+    if (activeImportIndex < 0 || !importJsonEl) return;
     try {
-      applyImportJson(activeImportId, importJsonEl.value);
+      applyImportJson(activeImportIndex, importJsonEl.value);
       closeImportModal();
       renderKeywords();
       refreshAll();
@@ -1641,10 +1630,9 @@
     }
   }
 
-  function openImportModal(id) {
+  function openImportModalByIndex(i) {
     if (!importModalEl || !importJsonEl) return;
-    var i = findIndex(id);
-    if (i < 0) return;
+    if (i < 0 || i >= keywords.length) return;
 
     if (activeMicroId) {
       saveMicrosFromForm();
@@ -1654,8 +1642,10 @@
       saveLongevityFromForm();
       closeLongevityModal();
     }
+    if (activePositionId) closeKeywordPositionModal();
 
-    activeImportId = id;
+    activeImportIndex = i;
+    activeImportId = keywords[i].id;
     var kw = keywords[i];
 
     if (importModalFoodEl) {
@@ -2681,11 +2671,18 @@
       if (!raw) return;
       var data = JSON.parse(raw);
       if (!Array.isArray(data)) return;
+      data.forEach(function (item) {
+        if (item && item.id && String(item.id).match(/\d+/)) {
+          var n = parseInt(String(item.id).replace(/\D/g, ""), 10);
+          if (!isNaN(n) && n >= nextId) nextId = n + 1;
+        }
+      });
       keywords = data.map(function (item) {
         var longevity = normalizeLongevity(item.longevity);
         longevity = mergeCarbQualityIntoLongevity(longevity, item.carbQuality);
         return {
-          id: item.id || makeId(),
+          id:
+            item.id != null && item.id !== "" ? String(item.id) : makeId(),
           name: typeof item.name === "string" ? item.name : "",
           protein: item.protein === "" || item.protein == null ? "" : item.protein,
           carbs: item.carbs === "" || item.carbs == null ? "" : item.carbs,
@@ -2694,20 +2691,18 @@
           longevity: longevity,
         };
       });
-      data.forEach(function (item) {
-        if (item.id && String(item.id).match(/\d+/)) {
-          var n = parseInt(String(item.id).replace(/\D/g, ""), 10);
-          if (!isNaN(n) && n >= nextId) nextId = n + 1;
-        }
-      });
+      if (ensureUniqueKeywordIds()) {
+        saveFoodDefinitions();
+      }
     } catch (e) {
       keywords = [];
     }
   }
 
   function findIndex(id) {
+    var key = String(id);
     for (var i = 0; i < keywords.length; i++) {
-      if (keywords[i].id === id) return i;
+      if (String(keywords[i].id) === key) return i;
     }
     return -1;
   }
@@ -2824,6 +2819,7 @@
     if (activeImportId) {
       closeImportModal();
     }
+    if (activePositionId) closeKeywordPositionModal();
     if (microDefModalEl && !microDefModalEl.hidden) closeMicroDefModal();
 
     if (activeMicroId && activeMicroId !== id) {
@@ -2877,6 +2873,7 @@
     if (i < 0) return;
 
     if (activeImportId) closeImportModal();
+    if (activePositionId) closeKeywordPositionModal();
     if (microDefModalEl && !microDefModalEl.hidden) closeMicroDefModal();
     if (activeMicroId && activeMicroId !== id) {
       saveMicrosFromForm();
@@ -2981,13 +2978,152 @@
     longevitySaveTimer = setTimeout(saveLongevityFromForm, 250);
   }
 
-  function moveKeyword(id, delta) {
-    var i = findIndex(id);
-    var j = i + delta;
-    if (i < 0 || j < 0 || j >= keywords.length) return;
+  function ensureUniqueKeywordIds() {
+    var seen = {};
+    var changed = false;
+    keywords.forEach(function (kw) {
+      var original = kw.id != null ? String(kw.id) : "";
+      var id = original;
+      if (!id || seen[id]) {
+        id = makeId();
+      }
+      if (id !== original) changed = true;
+      seen[id] = true;
+      kw.id = id;
+    });
+    return changed;
+  }
+
+  function keywordRowIndex(row) {
+    if (!keywordsListEl || !row) return -1;
+    return Array.prototype.indexOf.call(keywordsListEl.children, row);
+  }
+
+  function syncAllFieldsFromDom() {
+    if (!keywordsListEl) return;
+    keywordsListEl.querySelectorAll(".keywords__row").forEach(function (row) {
+      syncFieldFromDom(row);
+    });
+  }
+
+  function keywordPositionOptionLabel(index, currentIndex) {
+    var label = String(index + 1);
+    if (index === currentIndex) label += " (current)";
+    return label;
+  }
+
+  function showKeywordPositionError(message) {
+    if (!keywordPositionErrorEl) return;
+    if (!message) {
+      keywordPositionErrorEl.hidden = true;
+      keywordPositionErrorEl.textContent = "";
+      return;
+    }
+    keywordPositionErrorEl.hidden = false;
+    keywordPositionErrorEl.textContent = message;
+  }
+
+  function closeKeywordPositionModal() {
+    if (!keywordPositionModalEl) return;
+    activePositionId = null;
+    activePositionIndex = -1;
+    keywordPositionModalEl.hidden = true;
+    showKeywordPositionError("");
+    updateBodyModalOpen();
+  }
+
+  function populateKeywordPositionSelect(currentIndex) {
+    if (!keywordPositionSelectEl) return;
+    var html = "";
+    keywords.forEach(function (kw, index) {
+      html +=
+        '<option value="' +
+        (index + 1) +
+        '"' +
+        (index === currentIndex ? " selected" : "") +
+        ">" +
+        escapeHtml(keywordPositionOptionLabel(index, currentIndex)) +
+        "</option>";
+    });
+    keywordPositionSelectEl.innerHTML = html;
+  }
+
+  function openKeywordPositionModalByIndex(i) {
+    if (!keywordPositionModalEl || !keywordPositionSelectEl) return;
+    syncAllFieldsFromDom();
+    if (i < 0 || i >= keywords.length) return;
+
+    if (activeMicroId) {
+      saveMicrosFromForm();
+      closeMicroModal();
+    }
+    if (activeLongevityId) {
+      saveLongevityFromForm();
+      closeLongevityModal();
+    }
+    if (activeImportId) closeImportModal();
+
+    activePositionIndex = i;
+    activePositionId = keywords[i].id;
+    if (keywordPositionFoodEl) {
+      keywordPositionFoodEl.textContent =
+        "Moving: " +
+        (keywords[i].name.trim() ? keywords[i].name.trim() : "Untitled food");
+    }
+    populateKeywordPositionSelect(i);
+    showKeywordPositionError("");
+    keywordPositionModalEl.hidden = false;
+    updateBodyModalOpen();
+    keywordPositionSelectEl.focus();
+  }
+
+  function closeKeywordEditorModalsForId(id) {
     if (activeMicroId === id) closeMicroModal();
     if (activeLongevityId === id) closeLongevityModal();
     if (activeImportId === id) closeImportModal();
+    if (
+      activePositionIndex >= 0 &&
+      keywords[activePositionIndex] &&
+      String(keywords[activePositionIndex].id) === String(id)
+    ) {
+      closeKeywordPositionModal();
+    }
+  }
+
+  function moveKeywordToPositionByIndex(fromIndex, position) {
+    syncAllFieldsFromDom();
+    if (fromIndex < 0 || fromIndex >= keywords.length) return;
+    var to = position - 1;
+    if (to < 0 || to >= keywords.length || fromIndex === to) return;
+
+    closeKeywordEditorModalsForId(keywords[fromIndex].id);
+
+    var item = keywords.splice(fromIndex, 1)[0];
+    keywords.splice(to, 0, item);
+    saveFoodDefinitions();
+    renderKeywords();
+    refreshAll();
+  }
+
+  function applyKeywordPositionMove() {
+    if (activePositionIndex < 0 || !keywordPositionSelectEl) return;
+    var position = parseInt(keywordPositionSelectEl.value, 10);
+    if (isNaN(position) || position < 1 || position > keywords.length) {
+      showKeywordPositionError(
+        "Choose a position between 1 and " + keywords.length + "."
+      );
+      return;
+    }
+    var fromIndex = activePositionIndex;
+    closeKeywordPositionModal();
+    moveKeywordToPositionByIndex(fromIndex, position);
+  }
+
+  function moveKeywordByIndex(i, delta) {
+    syncAllFieldsFromDom();
+    var j = i + delta;
+    if (i < 0 || i >= keywords.length || j < 0 || j >= keywords.length) return;
+    closeKeywordEditorModalsForId(keywords[i].id);
     var tmp = keywords[i];
     keywords[i] = keywords[j];
     keywords[j] = tmp;
@@ -2996,12 +3132,19 @@
     refreshAll();
   }
 
-  function removeKeyword(id) {
-    var i = findIndex(id);
-    if (i < 0) return;
-    if (activeMicroId === id) closeMicroModal();
-    if (activeLongevityId === id) closeLongevityModal();
-    if (activeImportId === id) closeImportModal();
+  function confirmRemoveKeyword(kw) {
+    var name = kw && kw.name ? kw.name.trim() : "";
+    var label = name ? '"' + name + '"' : "this untitled food";
+    return window.confirm(
+      "Delete the food definition " + label + "? This cannot be undone."
+    );
+  }
+
+  function removeKeywordByIndex(i) {
+    syncAllFieldsFromDom();
+    if (i < 0 || i >= keywords.length) return;
+    if (!confirmRemoveKeyword(keywords[i])) return;
+    closeKeywordEditorModalsForId(keywords[i].id);
     keywords.splice(i, 1);
     saveFoodDefinitions();
     renderKeywords();
@@ -3021,9 +3164,8 @@
   }
 
   function syncFieldFromDom(row) {
-    var id = row.getAttribute("data-id");
-    var i = findIndex(id);
-    if (i < 0) return;
+    var i = keywordRowIndex(row);
+    if (i < 0 || i >= keywords.length) return;
 
     var nameEl = row.querySelector('[data-field="name"]');
     var proteinEl = row.querySelector('[data-field="protein"]');
@@ -3034,6 +3176,58 @@
     keywords[i].protein = proteinEl ? parseMacro(proteinEl.value) : "";
     keywords[i].carbs = carbsEl ? parseMacro(carbsEl.value) : "";
     keywords[i].fats = fatsEl ? parseMacro(fatsEl.value) : "";
+  }
+
+  function loadKeywordReorderOpen() {
+    try {
+      keywordReorderOpen =
+        localStorage.getItem(STORAGE_KEY_REORDER) === "true";
+    } catch (e) {
+      keywordReorderOpen = false;
+    }
+  }
+
+  function saveKeywordReorderOpen() {
+    try {
+      localStorage.setItem(
+        STORAGE_KEY_REORDER,
+        keywordReorderOpen ? "true" : "false"
+      );
+    } catch (e) {
+      /* ignore */
+    }
+  }
+
+  function updateKeywordReorderUi() {
+    if (keywordsTableEl) {
+      keywordsTableEl.classList.toggle(
+        "keywords__table--reorder-open",
+        keywordReorderOpen
+      );
+    }
+    if (keywordsReorderToggleEl) {
+      keywordsReorderToggleEl.setAttribute(
+        "aria-expanded",
+        keywordReorderOpen ? "true" : "false"
+      );
+      keywordsReorderToggleEl.setAttribute(
+        "aria-label",
+        keywordReorderOpen ? "Hide reorder controls" : "Show reorder controls"
+      );
+    }
+  }
+
+  function setKeywordReorderOpen(open) {
+    keywordReorderOpen = !!open;
+    if (!keywordReorderOpen && activePositionId) {
+      closeKeywordPositionModal();
+    }
+    saveKeywordReorderOpen();
+    updateKeywordReorderUi();
+  }
+
+  function toggleKeywordReorderOpen() {
+    setKeywordReorderOpen(!keywordReorderOpen);
   }
 
   function renderKeywords() {
@@ -3052,14 +3246,23 @@
 
       tr.innerHTML =
         '<td class="keywords__order">' +
-        '<div class="keywords__order-btns">' +
+        '<div class="keywords__order-cell">' +
+        '<span class="keywords__num" aria-hidden="true">' +
+        (index + 1) +
+        "</span>" +
+        '<div class="keywords__order-controls">' +
+        '<div class="keywords__order-steppers">' +
         '<button type="button" class="keywords__move" data-action="up" aria-label="Move up"' +
         (index === 0 ? " disabled" : "") +
         ">↑</button>" +
         '<button type="button" class="keywords__move" data-action="down" aria-label="Move down"' +
         (index === keywords.length - 1 ? " disabled" : "") +
         ">↓</button>" +
-        "</div></td>" +
+        "</div>" +
+        '<button type="button" class="keywords__move keywords__move--position" data-action="position" aria-label="Move to position"' +
+        (keywords.length === 1 ? " disabled" : "") +
+        ">Jump</button>" +
+        "</div></div></td>" +
         '<td class="keywords__name">' +
         '<input type="text" class="keywords__input keywords__input--name" data-field="name" value="' +
         escapeAttr(kw.name) +
@@ -3097,6 +3300,8 @@
     if (keywordsEmptyEl) {
       keywordsEmptyEl.hidden = keywords.length > 0;
     }
+
+    updateKeywordReorderUi();
   }
 
   function dayById(id) {
@@ -3347,29 +3552,61 @@
     });
   }
 
+  function onKeywordFieldChange(e) {
+    var row = e.target.closest(".keywords__row");
+    if (!row) return;
+    syncFieldFromDom(row);
+    saveFoodDefinitions();
+    refreshAll();
+  }
+
+  if (keywordsReorderToggleEl) {
+    keywordsReorderToggleEl.addEventListener("click", toggleKeywordReorderOpen);
+  }
+
   if (keywordsListEl) {
-    keywordsListEl.addEventListener("input", function (e) {
-      var row = e.target.closest(".keywords__row");
-      if (!row) return;
-      syncFieldFromDom(row);
-      saveFoodDefinitions();
-      refreshAll();
-    });
+    keywordsListEl.addEventListener("input", onKeywordFieldChange);
+    keywordsListEl.addEventListener("change", onKeywordFieldChange);
 
     keywordsListEl.addEventListener("click", function (e) {
       var btn = e.target.closest("[data-action]");
       if (!btn || btn.disabled) return;
       var row = btn.closest(".keywords__row");
       if (!row) return;
-      var id = row.getAttribute("data-id");
+      var index = keywordRowIndex(row);
+      if (index < 0 || index >= keywords.length) return;
+      var id = keywords[index].id;
       var action = btn.getAttribute("data-action");
 
-      if (action === "up") moveKeyword(id, -1);
-      else if (action === "down") moveKeyword(id, 1);
-      else if (action === "delete") removeKeyword(id);
+      if (action === "up") moveKeywordByIndex(index, -1);
+      else if (action === "down") moveKeywordByIndex(index, 1);
+      else if (action === "position") openKeywordPositionModalByIndex(index);
+      else if (action === "delete") removeKeywordByIndex(index);
       else if (action === "micros") openMicroModal(id);
       else if (action === "longevity") openLongevityModal(id);
-      else if (action === "import") openImportModal(id);
+      else if (action === "import") openImportModalByIndex(index);
+    });
+  }
+
+  if (keywordPositionApplyBtn) {
+    keywordPositionApplyBtn.addEventListener("click", applyKeywordPositionMove);
+  }
+
+  if (keywordPositionCancelBtn) {
+    keywordPositionCancelBtn.addEventListener("click", closeKeywordPositionModal);
+  }
+
+  if (keywordPositionModalEl) {
+    keywordPositionModalEl.addEventListener("click", function (e) {
+      if (e.target.closest('[data-action="close-keyword-position-modal"]')) {
+        closeKeywordPositionModal();
+      }
+    });
+  }
+
+  if (keywordPositionSelectEl) {
+    keywordPositionSelectEl.addEventListener("change", function () {
+      showKeywordPositionError("");
     });
   }
 
@@ -3632,6 +3869,7 @@
   }
 
   window.addEventListener("beforeunload", function () {
+    syncAllFieldsFromDom();
     saveFoodDefinitions();
     saveDemographic();
     saveDayNotes();
@@ -3725,6 +3963,7 @@
 
   function boot() {
     loadFoodDefinitions();
+    loadKeywordReorderOpen();
     loadDayNotes();
     loadDemographic();
     renderDemographicUi();
