@@ -28,13 +28,26 @@
       <div id="dashboard-grid" class="dashboard__grid"></div>
       <div id="dashboard-micro-panel" class="dashboard__micro-panel" hidden>
         <div class="dashboard__micro-intro">
-          <p class="dashboard__micro-hint">Average daily intake vs your demographic daily values (Mon–Sun). DV's will be low if you dont fill up all days. Click a nutrient to learn more.</p>
-          <button type="button" id="dashboard-micro-dv-toggle" class="dashboard__micro-dv-toggle" aria-pressed="false" aria-label="Show total daily">Total Daily</button>
+          <p id="dashboard-micro-hint" class="dashboard__micro-hint">Average daily intake vs your demographic daily values (Mon–Sun). DV's will be low if you dont fill up all days. Click a nutrient to learn more.</p>
+          <div class="dashboard__micro-intro-actions">
+            <div class="dashboard__micro-toggle-group" role="group" aria-label="Micro view">
+              <span class="dashboard__micro-toggle-label">View</span>
+              <div class="dashboard__micro-segmented">
+                <button type="button" id="dashboard-micro-view-weekly" class="dashboard__micro-segment" aria-pressed="true">Weekly average</button>
+                <button type="button" id="dashboard-micro-view-daily" class="dashboard__micro-segment" aria-pressed="false">Each day</button>
+              </div>
+            </div>
+            <div class="dashboard__micro-toggle-group" role="group" aria-label="Display options">
+              <span class="dashboard__micro-toggle-label">Targets</span>
+              <button type="button" id="dashboard-micro-dv-toggle" class="dashboard__micro-segment dashboard__micro-segment--solo" aria-pressed="false">Show DV targets</button>
+            </div>
+          </div>
         </div>
         <p class="dashboard__micro-tools">
           <button type="button" id="micro-gaps-ai-open" class="import-modal__ai-link" aria-label="Ask AI to help fill in the gaps">✨ Ask AI to help fill gaps</button>
         </p>
         <div id="dashboard-micro-list" class="dashboard__micro-list" role="list"></div>
+        <div id="dashboard-micro-daily-grid" class="dashboard__micro-daily-grid" hidden></div>
       </div>
       <div id="dashboard-longevity-panel" class="dashboard__longevity-panel" hidden>
         <p class="dashboard__longevity-hint">Average daily intake (Mon–Sun) for fats, omegas, longevity compounds, and carb quality. Calcium, magnesium, and vitamin D come from your micro entries. Track glycemic load (GL) more than GI alone.</p>

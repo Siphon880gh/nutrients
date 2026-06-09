@@ -38,6 +38,10 @@
   var dashboardMicroToggleEl = document.getElementById("dashboard-micro-toggle");
   var dashboardMicroPanelEl = document.getElementById("dashboard-micro-panel");
   var dashboardMicroListEl = document.getElementById("dashboard-micro-list");
+  var dashboardMicroDailyGridEl = document.getElementById("dashboard-micro-daily-grid");
+  var dashboardMicroHintEl = document.getElementById("dashboard-micro-hint");
+  var dashboardMicroViewWeeklyEl = document.getElementById("dashboard-micro-view-weekly");
+  var dashboardMicroViewDailyEl = document.getElementById("dashboard-micro-view-daily");
   var dashboardMicroDvToggleEl = document.getElementById("dashboard-micro-dv-toggle");
   var dashboardLongevityToggleEl = document.getElementById("dashboard-longevity-toggle");
   var dashboardLongevityPanelEl = document.getElementById("dashboard-longevity-panel");
@@ -118,6 +122,7 @@
   var weekTotalOpen = false;
   var microRequirementsOpen = false;
   var showMicroDailyDv = false;
+  var microViewDaily = false;
   var longevityPanelOpen = false;
   var activeLongevityId = null;
   var longevitySaveTimer;
@@ -1990,11 +1995,14 @@
     return 0;
   }
 
-  function avgDailyMicroPct(key, weekTotal) {
+  function dailyMicroPct(key, amount) {
     var dv = dailyDv(key);
     if (!dv) return null;
-    var avgDaily = weekTotal / DAYS.length;
-    return (avgDaily / dv) * 100;
+    return (amount / dv) * 100;
+  }
+
+  function avgDailyMicroPct(key, weekTotal) {
+    return dailyMicroPct(key, weekTotal / DAYS.length);
   }
 
   var DEFAULT_MICRO_DV_STATUS = {
@@ -2159,59 +2167,177 @@
       "aria-pressed",
       showMicroDailyDv ? "true" : "false"
     );
+    dashboardMicroDvToggleEl.textContent = showMicroDailyDv
+      ? "Hide DV targets"
+      : "Show DV targets";
+  }
+
+  function syncMicroViewToggleUi() {
+    if (dashboardMicroViewWeeklyEl) {
+      dashboardMicroViewWeeklyEl.setAttribute(
+        "aria-pressed",
+        microViewDaily ? "false" : "true"
+      );
+    }
+    if (dashboardMicroViewDailyEl) {
+      dashboardMicroViewDailyEl.setAttribute(
+        "aria-pressed",
+        microViewDaily ? "true" : "false"
+      );
+    }
+  }
+
+  function setMicroViewDaily(daily) {
+    microViewDaily = !!daily;
+    if (microRequirementsOpen) {
+      renderMicroRequirements();
+    } else {
+      syncMicroViewToggleUi();
+      syncMicroHintText();
+    }
+  }
+
+  function syncMicroHintText() {
+    if (!dashboardMicroHintEl) return;
+    dashboardMicroHintEl.textContent = microViewDaily
+      ? "Per-day intake vs your demographic daily values (Mon–Sun). Click a nutrient to learn more."
+      : "Average daily intake vs your demographic daily values (Mon–Sun). DV's will be low if you dont fill up all days. Click a nutrient to learn more.";
+  }
+
+  function microWeeklyRowHtml(field, total) {
+    var pct = avgDailyMicroPct(field.key, total);
+    var pctText = pct == null || isNaN(pct) ? "—" : fmtNum(pct) + "% DV";
+    var amtText =
+      total > 0 ? fmtNum(total / DAYS.length) + " " + field.unit + "/day avg" : "—";
+    var tier = tierForMicroPct(pct);
+    var tierAttr = tier ? ' data-dv-tier="' + escapeAttr(tier.id) + '"' : "";
+    var rowCls =
+      "dashboard__micro-row dashboard__micro-row--clickable" +
+      (showMicroDailyDv ? " dashboard__micro-row--show-dv" : "");
+
+    var html =
+      '<div class="' +
+      rowCls +
+      '"' +
+      tierAttr +
+      ' role="listitem">' +
+      '<button type="button" class="dashboard__micro-name" data-micro-def="' +
+      escapeAttr(field.key) +
+      '" aria-haspopup="dialog">' +
+      escapeHtml(field.label) +
+      "</button>" +
+      '<span class="dashboard__micro-amt">' +
+      escapeHtml(amtText) +
+      "</span>";
+    if (showMicroDailyDv) {
+      html +=
+        '<span class="dashboard__micro-dv-req">' +
+        escapeHtml(microDailyDvText(field)) +
+        "</span>";
+    }
+    html +=
+      '<span class="dashboard__micro-pct"' +
+      microPctInlineStyle(pct) +
+      ">" +
+      escapeHtml(pctText) +
+      "</span>" +
+      "</div>";
+    return html;
+  }
+
+  function microDayCardHtml(dayLabel, totals) {
+    var rows = "";
+    MICRO_FIELDS.forEach(function (field) {
+      var total = totals[field.key];
+      var pct = dailyMicroPct(field.key, total);
+      var pctText = pct == null || isNaN(pct) ? "—" : fmtNum(pct) + "% DV";
+      var amtText = total > 0 ? fmtNum(total) + " " + field.unit : "—";
+      var tier = tierForMicroPct(pct);
+      var tierAttr = tier ? ' data-dv-tier="' + escapeAttr(tier.id) + '"' : "";
+      var rowCls = "dashboard__micro-day-row dashboard__micro-day-row--clickable";
+
+      rows +=
+        '<div class="' +
+        rowCls +
+        '"' +
+        tierAttr +
+        ">" +
+        '<button type="button" class="dashboard__micro-day-name" data-micro-def="' +
+        escapeAttr(field.key) +
+        '" aria-haspopup="dialog">' +
+        escapeHtml(field.label) +
+        "</button>" +
+        '<div class="dashboard__micro-day-meta">' +
+        '<span class="dashboard__micro-day-pct"' +
+        microPctInlineStyle(pct) +
+        ">" +
+        escapeHtml(pctText) +
+        "</span>" +
+        '<span class="dashboard__micro-day-amt">' +
+        escapeHtml(amtText) +
+        "</span>";
+      if (showMicroDailyDv) {
+        rows +=
+          '<span class="dashboard__micro-day-dv-req">' +
+          escapeHtml(microDailyDvText(field)) +
+          "</span>";
+      }
+      rows += "</div></div>";
+    });
+
+    return (
+      '<article class="dashboard__card dashboard__micro-day-card">' +
+      '<span class="dashboard__label">' +
+      escapeHtml(dayLabel) +
+      "</span>" +
+      '<div class="dashboard__micro-day-rows">' +
+      rows +
+      "</div></article>"
+    );
+  }
+
+  function renderMicroWeeklyList() {
+    if (!dashboardMicroListEl) return;
+
+    var week = weekMicroTotals();
+    var html = "";
+    MICRO_FIELDS.forEach(function (field) {
+      html += microWeeklyRowHtml(field, week[field.key]);
+    });
+    dashboardMicroListEl.innerHTML = html;
+  }
+
+  function renderMicroDailyGrid() {
+    if (!dashboardMicroDailyGridEl) return;
+
+    var html = "";
+    DAYS.forEach(function (day) {
+      var el = document.getElementById(day.id);
+      var text = el ? el.value : "";
+      html += microDayCardHtml(day.label, microTotalsFromText(text));
+    });
+    dashboardMicroDailyGridEl.innerHTML = html;
   }
 
   function renderMicroRequirements() {
     if (!dashboardMicroListEl) return;
 
     syncMicroDailyDvToggleUi();
+    syncMicroViewToggleUi();
+    syncMicroHintText();
 
-    var week = weekMicroTotals();
-    var html = "";
+    if (dashboardMicroListEl) {
+      dashboardMicroListEl.hidden = microViewDaily;
+    }
+    if (dashboardMicroDailyGridEl) {
+      dashboardMicroDailyGridEl.hidden = !microViewDaily;
+    }
 
-    MICRO_FIELDS.forEach(function (field) {
-      var total = week[field.key];
-      var pct = avgDailyMicroPct(field.key, total);
-      var pctText =
-        pct == null || isNaN(pct) ? "—" : fmtNum(pct) + "% DV";
-      var amtText =
-        total > 0 ? fmtNum(total / DAYS.length) + " " + field.unit + "/day avg" : "—";
-      var tier = tierForMicroPct(pct);
-      var tierAttr = tier ? ' data-dv-tier="' + escapeAttr(tier.id) + '"' : "";
-      var rowCls =
-        "dashboard__micro-row dashboard__micro-row--clickable" +
-        (showMicroDailyDv ? " dashboard__micro-row--show-dv" : "");
-
-      html +=
-        '<div class="' +
-        rowCls +
-        '"' +
-        tierAttr +
-        ' role="listitem">' +
-        '<button type="button" class="dashboard__micro-name" data-micro-def="' +
-        escapeAttr(field.key) +
-        '" aria-haspopup="dialog">' +
-        escapeHtml(field.label) +
-        "</button>" +
-        '<span class="dashboard__micro-amt">' +
-        escapeHtml(amtText) +
-        "</span>";
-      if (showMicroDailyDv) {
-        html +=
-          '<span class="dashboard__micro-dv-req">' +
-          escapeHtml(microDailyDvText(field)) +
-          "</span>";
-      }
-      html +=
-        '<span class="dashboard__micro-pct"' +
-        microPctInlineStyle(pct) +
-        ">" +
-        escapeHtml(pctText) +
-        "</span>" +
-        "</div>";
-    });
-
-    dashboardMicroListEl.innerHTML = html;
+    if (microViewDaily) {
+      renderMicroDailyGrid();
+    } else {
+      renderMicroWeeklyList();
+    }
 
     if (microGapsModalEl && !microGapsModalEl.hidden) {
       renderMicroGapsAiPreview();
@@ -3919,6 +4045,18 @@
     });
   }
 
+  if (dashboardMicroViewWeeklyEl) {
+    dashboardMicroViewWeeklyEl.addEventListener("click", function () {
+      setMicroViewDaily(false);
+    });
+  }
+
+  if (dashboardMicroViewDailyEl) {
+    dashboardMicroViewDailyEl.addEventListener("click", function () {
+      setMicroViewDaily(true);
+    });
+  }
+
   if (dashboardMicroDvToggleEl) {
     dashboardMicroDvToggleEl.addEventListener("click", function () {
       showMicroDailyDv = !showMicroDailyDv;
@@ -3956,12 +4094,18 @@
     });
   }
 
+  function handleMicroDefClick(e) {
+    var btn = e.target.closest("[data-micro-def]");
+    if (!btn) return;
+    openMicroDefModal(btn.getAttribute("data-micro-def"));
+  }
+
   if (dashboardMicroListEl) {
-    dashboardMicroListEl.addEventListener("click", function (e) {
-      var btn = e.target.closest("[data-micro-def]");
-      if (!btn) return;
-      openMicroDefModal(btn.getAttribute("data-micro-def"));
-    });
+    dashboardMicroListEl.addEventListener("click", handleMicroDefClick);
+  }
+
+  if (dashboardMicroDailyGridEl) {
+    dashboardMicroDailyGridEl.addEventListener("click", handleMicroDefClick);
   }
 
   if (dashboardLongevityContentEl) {
