@@ -13,6 +13,7 @@
   var STORAGE_KEY_DEMOGRAPHIC = "nutrients-demographic";
   var STORAGE_KEY_DAYS = "nutrients-day-notes";
   var STORAGE_KEY_REORDER = "nutrients-keywords-reorder-open";
+  var STORAGE_KEY_CALORIES = "nutrients-keywords-calories-open";
   var demographicDv =
     typeof NutrientsDemographicDv !== "undefined" ? NutrientsDemographicDv : null;
   var longevityDv =
@@ -31,6 +32,11 @@
   var keywordsReorderToggleEl = document.getElementById("keywords-reorder-toggle");
   var keywordsEmptyEl = document.getElementById("keywords-empty");
   var keywordReorderOpen = false;
+  var keywordCaloriesOpen = false;
+  var keywordsCaloriesToggleEls = document.querySelectorAll(
+    ".keywords__macro-toggle[data-action='toggle-calories']"
+  );
+  var keywordsTotalCalHeaderEl = document.querySelector(".keywords__th-total--cal");
   var addKeywordBtn = document.getElementById("add-keyword");
   var dashboardGridEl = document.getElementById("dashboard-grid");
   var weekSummaryEl = document.getElementById("week-summary");
@@ -625,6 +631,34 @@
     if (value === "" || value == null) return 0;
     var n = parseFloat(value);
     return isNaN(n) ? 0 : n;
+  }
+
+  function macroCalFromGrams(grams, calPerGram) {
+    if (grams === "" || grams == null) return "";
+    return fmtNum(parseMacro(grams) * calPerGram);
+  }
+
+  function keywordMacroCalories(kw) {
+    var proteinCal = macroCalFromGrams(kw.protein, CAL_PROTEIN);
+    var carbsCal = macroCalFromGrams(kw.carbs, CAL_CARBS);
+    var fatsCal = macroCalFromGrams(kw.fats, CAL_FATS);
+    var hasAny =
+      kw.protein !== "" ||
+      kw.carbs !== "" ||
+      kw.fats !== "";
+    var totalCal = hasAny
+      ? fmtNum(
+          parseMacro(kw.protein) * CAL_PROTEIN +
+            parseMacro(kw.carbs) * CAL_CARBS +
+            parseMacro(kw.fats) * CAL_FATS
+        )
+      : "";
+    return {
+      proteinCal: proteinCal,
+      carbsCal: carbsCal,
+      fatsCal: fatsCal,
+      totalCal: totalCal,
+    };
   }
 
   function storedMacroValue(val) {
@@ -3661,10 +3695,10 @@
     var carbsEl = row.querySelector('[data-field="carbs"]');
     var fatsEl = row.querySelector('[data-field="fats"]');
 
-    keywords[i].name = nameEl ? nameEl.value : "";
-    keywords[i].protein = proteinEl ? parseMacro(proteinEl.value) : "";
-    keywords[i].carbs = carbsEl ? parseMacro(carbsEl.value) : "";
-    keywords[i].fats = fatsEl ? parseMacro(fatsEl.value) : "";
+    if (nameEl) keywords[i].name = nameEl.value;
+    if (proteinEl) keywords[i].protein = parseMacro(proteinEl.value);
+    if (carbsEl) keywords[i].carbs = parseMacro(carbsEl.value);
+    if (fatsEl) keywords[i].fats = parseMacro(fatsEl.value);
   }
 
   function loadKeywordReorderOpen() {
@@ -3719,6 +3753,68 @@
     setKeywordReorderOpen(!keywordReorderOpen);
   }
 
+  function loadKeywordCaloriesOpen() {
+    try {
+      keywordCaloriesOpen =
+        localStorage.getItem(STORAGE_KEY_CALORIES) === "true";
+    } catch (e) {
+      keywordCaloriesOpen = false;
+    }
+  }
+
+  function saveKeywordCaloriesOpen() {
+    try {
+      localStorage.setItem(
+        STORAGE_KEY_CALORIES,
+        keywordCaloriesOpen ? "true" : "false"
+      );
+    } catch (e) {
+      /* ignore */
+    }
+  }
+
+  function updateKeywordCaloriesUi() {
+    if (keywordsTableEl) {
+      keywordsTableEl.classList.toggle(
+        "keywords__table--calories-open",
+        keywordCaloriesOpen
+      );
+    }
+    if (keywordsTotalCalHeaderEl) {
+      keywordsTotalCalHeaderEl.hidden = !keywordCaloriesOpen;
+    }
+    keywordsCaloriesToggleEls.forEach(function (btn) {
+      var label = btn.textContent.trim();
+      if (keywordCaloriesOpen) {
+        label = label.replace(" (g)", " (cal)");
+      } else {
+        label = label.replace(" (cal)", " (g)");
+      }
+      btn.textContent = label;
+      btn.setAttribute("aria-pressed", keywordCaloriesOpen ? "true" : "false");
+      btn.setAttribute(
+        "aria-label",
+        keywordCaloriesOpen
+          ? "Show " + label.replace(" (cal)", "").toLowerCase() + " grams"
+          : "Show " + label.replace(" (g)", "").toLowerCase() + " calories"
+      );
+    });
+  }
+
+  function setKeywordCaloriesOpen(open) {
+    var nextOpen = !!open;
+    if (nextOpen && !keywordCaloriesOpen) {
+      syncAllFieldsFromDom();
+    }
+    keywordCaloriesOpen = nextOpen;
+    saveKeywordCaloriesOpen();
+    renderKeywords();
+  }
+
+  function toggleKeywordCaloriesOpen() {
+    setKeywordCaloriesOpen(!keywordCaloriesOpen);
+  }
+
   function renderKeywords() {
     if (!keywordsListEl) return;
 
@@ -3732,6 +3828,45 @@
       var proteinVal = kw.protein === "" ? "" : kw.protein;
       var carbsVal = kw.carbs === "" ? "" : kw.carbs;
       var fatsVal = kw.fats === "" ? "" : kw.fats;
+      var macroCellsHtml;
+
+      if (keywordCaloriesOpen) {
+        var cals = keywordMacroCalories(kw);
+        macroCellsHtml =
+          '<td class="keywords__macro">' +
+          '<span class="keywords__cal">' +
+          escapeHtml(cals.proteinCal) +
+          "</span></td>" +
+          '<td class="keywords__macro">' +
+          '<span class="keywords__cal">' +
+          escapeHtml(cals.carbsCal) +
+          "</span></td>" +
+          '<td class="keywords__macro">' +
+          '<span class="keywords__cal">' +
+          escapeHtml(cals.fatsCal) +
+          "</span></td>" +
+          '<td class="keywords__macro keywords__macro--total">' +
+          '<span class="keywords__cal">' +
+          escapeHtml(cals.totalCal) +
+          "</span></td>";
+      } else {
+        macroCellsHtml =
+          '<td class="keywords__macro">' +
+          '<input type="number" class="keywords__input keywords__input--num" data-field="protein" min="0" step="0.1" inputmode="decimal" placeholder="0" value="' +
+          escapeAttr(proteinVal) +
+          '">' +
+          "</td>" +
+          '<td class="keywords__macro">' +
+          '<input type="number" class="keywords__input keywords__input--num" data-field="carbs" min="0" step="0.1" inputmode="decimal" placeholder="0" value="' +
+          escapeAttr(carbsVal) +
+          '">' +
+          "</td>" +
+          '<td class="keywords__macro">' +
+          '<input type="number" class="keywords__input keywords__input--num" data-field="fats" min="0" step="0.1" inputmode="decimal" placeholder="0" value="' +
+          escapeAttr(fatsVal) +
+          '">' +
+          "</td>";
+      }
 
       tr.innerHTML =
         '<td class="keywords__order">' +
@@ -3757,21 +3892,7 @@
         escapeAttr(kw.name) +
         '" placeholder="e.g. chicken" spellcheck="false">' +
         "</td>" +
-        '<td class="keywords__macro">' +
-        '<input type="number" class="keywords__input keywords__input--num" data-field="protein" min="0" step="0.1" inputmode="decimal" placeholder="0" value="' +
-        escapeAttr(proteinVal) +
-        '">' +
-        "</td>" +
-        '<td class="keywords__macro">' +
-        '<input type="number" class="keywords__input keywords__input--num" data-field="carbs" min="0" step="0.1" inputmode="decimal" placeholder="0" value="' +
-        escapeAttr(carbsVal) +
-        '">' +
-        "</td>" +
-        '<td class="keywords__macro">' +
-        '<input type="number" class="keywords__input keywords__input--num" data-field="fats" min="0" step="0.1" inputmode="decimal" placeholder="0" value="' +
-        escapeAttr(fatsVal) +
-        '">' +
-        "</td>" +
+        macroCellsHtml +
         '<td class="keywords__micros-cell">' +
         microsButtonHtml(kw) +
         "</td>" +
@@ -3791,6 +3912,7 @@
     }
 
     updateKeywordReorderUi();
+    updateKeywordCaloriesUi();
   }
 
   function dayById(id) {
@@ -4052,6 +4174,10 @@
   if (keywordsReorderToggleEl) {
     keywordsReorderToggleEl.addEventListener("click", toggleKeywordReorderOpen);
   }
+
+  keywordsCaloriesToggleEls.forEach(function (btn) {
+    btn.addEventListener("click", toggleKeywordCaloriesOpen);
+  });
 
   if (keywordsListEl) {
     keywordsListEl.addEventListener("input", onKeywordFieldChange);
@@ -4505,6 +4631,7 @@
   function boot() {
     loadFoodDefinitions();
     loadKeywordReorderOpen();
+    loadKeywordCaloriesOpen();
     loadDayNotes();
     loadDemographic();
     renderDemographicUi();

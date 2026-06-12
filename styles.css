@@ -1349,6 +1349,63 @@ button.dashboard__longevity-name:focus-visible {
   width: 6.5rem;
 }
 
+.keywords__macro-toggle {
+  display: inline-flex;
+  align-items: center;
+  margin: 0;
+  padding: 0.2rem 0.35rem;
+  font: inherit;
+  font-size: inherit;
+  font-weight: 600;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  color: inherit;
+  background: none;
+  border: 1px solid transparent;
+  border-radius: 5px;
+  cursor: pointer;
+  line-height: 1.2;
+}
+
+.keywords__macro-toggle:hover {
+  background: #eeeee8;
+  border-color: #dcdcd8;
+}
+
+.keywords__macro-toggle:focus-visible {
+  outline: none;
+  border-color: #888880;
+  box-shadow: 0 0 0 2px rgba(120, 120, 110, 0.15);
+}
+
+.keywords__macro-toggle[aria-pressed="true"] {
+  background: #eef3f8;
+  border-color: #b8c8d8;
+  color: #2d4a66;
+}
+
+.keywords__th-total--cal {
+  width: 6.5rem;
+}
+
+.keywords__cal {
+  display: inline-block;
+  min-width: 3rem;
+  padding: 0.45rem 0.5rem;
+  border: 1px solid #e8e8e4;
+  border-radius: 4px;
+  background: #f8f8f6;
+  color: #5c5c5c;
+  font-variant-numeric: tabular-nums;
+}
+
+.keywords__macro--total .keywords__cal {
+  font-weight: 600;
+  color: #2d4a66;
+  background: #eef3f8;
+  border-color: #c8d4e0;
+}
+
 .keywords__th-micros {
   width: 7.5rem;
 }

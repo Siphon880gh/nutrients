@@ -178,9 +178,40 @@
                 </button>
               </th>
               <th class="keywords__th-name" scope="col">Food</th>
-              <th class="keywords__th-macro" scope="col">Protein (g)</th>
-              <th class="keywords__th-macro" scope="col">Carbs (g)</th>
-              <th class="keywords__th-macro" scope="col">Fats (g)</th>
+              <th class="keywords__th-macro" scope="col">
+                <button
+                  type="button"
+                  class="keywords__macro-toggle"
+                  data-action="toggle-calories"
+                  aria-pressed="false"
+                  aria-label="Show protein calories"
+                >
+                  Prot (g)
+                </button>
+              </th>
+              <th class="keywords__th-macro" scope="col">
+                <button
+                  type="button"
+                  class="keywords__macro-toggle"
+                  data-action="toggle-calories"
+                  aria-pressed="false"
+                  aria-label="Show carbs calories"
+                >
+                  Carbs (g)
+                </button>
+              </th>
+              <th class="keywords__th-macro" scope="col">
+                <button
+                  type="button"
+                  class="keywords__macro-toggle"
+                  data-action="toggle-calories"
+                  aria-pressed="false"
+                  aria-label="Show fats calories"
+                >
+                  Fats (g)
+                </button>
+              </th>
+              <th class="keywords__th-total keywords__th-total--cal" scope="col" hidden>Total (cal)</th>
               <th class="keywords__th-micros" scope="col">Micros</th>
               <th class="keywords__th-longevity" scope="col">Longevity</th>
               <th class="keywords__th-actions" scope="col"><span class="visually-hidden">Actions</span></th>
