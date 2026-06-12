@@ -2447,8 +2447,9 @@ body.modal-open {
   }
 
   .day__backdrop .hl {
-    print-color-adjust: exact;
-    -webkit-print-color-adjust: exact;
+    background: transparent;
+    color: inherit;
+    border-radius: 0;
   }
 
   .dashboard__micro-name,
