@@ -18,6 +18,7 @@
         <div class="dashboard__header-row">
           <h2 id="dashboard-heading" class="dashboard__title">Dashboard</h2>
           <div class="dashboard__toggles">
+            <button type="button" id="dashboard-print" class="dashboard__toggle dashboard__print" aria-label="Print preview">Print</button>
             <button type="button" id="dashboard-week-toggle" class="dashboard__toggle" aria-expanded="false" aria-controls="week-summary">Week total</button>
             <button type="button" id="dashboard-micro-toggle" class="dashboard__toggle" aria-expanded="false" aria-controls="dashboard-micro-panel">Micro requirements</button>
             <button type="button" id="dashboard-longevity-toggle" class="dashboard__toggle" aria-expanded="false" aria-controls="dashboard-longevity-panel">Longevity</button>
@@ -50,7 +51,7 @@
         <div id="dashboard-micro-daily-grid" class="dashboard__micro-daily-grid" hidden></div>
       </div>
       <div id="dashboard-longevity-panel" class="dashboard__longevity-panel" hidden>
-        <p class="dashboard__longevity-hint">Average daily intake (Mon–Sun) for fats, omegas, longevity compounds, and carb quality. Calcium, magnesium, and vitamin D come from your micro entries. Track glycemic load (GL) more than GI alone.</p>
+        <p class="dashboard__longevity-hint">Weekly average per day (Mon–Sun). Micronutrients repeat from your micro entries so you can reason in one place. Green bars = good for “aim” nutrients; red bars on limit nutrients mean you are high. Click <em>explain</em> on a heading or nutrient for detail.</p>
         <aside class="dashboard__longevity-processed-note" role="note">
           <p class="dashboard__longevity-processed-note-text">
             Limit your processed food. This dashboard does not track processed food. Use an app like

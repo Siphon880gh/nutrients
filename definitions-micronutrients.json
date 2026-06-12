@@ -1,12 +1,16 @@
 {
   "fiber": {
     "tooLow": [
-      "Very low fiber often means harder, less frequent bowel movements and more bloating or swings in blood sugar after meals.",
-      "Over time, chronically low fiber is linked with higher LDL cholesterol and less support for the gut bacteria that help immunity and mood."
+      "Very low fiber often means harder, less frequent bowel movements, blood sugar swings after meals, and weaker gut barrier function.",
+      "Over years, chronically low fiber is linked with higher LDL cholesterol, diverticular disease, and colorectal cancer risk in population studies."
     ],
     "enough": [
-      "Adequate fiber feeds beneficial gut microbes, steadies digestion, and helps you feel full on fewer calories.",
-      "Soluble fiber (oats, beans, fruit) can lower LDL cholesterol; insoluble fiber (whole grains, vegetables) adds bulk and regularity."
+      "Adequate fiber feeds beneficial gut microbes—the main prebiotic effect—steadies digestion, and helps you feel full on fewer calories, supporting weight stability and metabolic health.",
+      "Soluble fiber (oats, beans, fruit) can lower LDL cholesterol and may reduce gut production of TMAO from animal foods; insoluble fiber (whole grains, vegetables) adds bulk and regularity, protecting colon health."
+    ],
+    "tooHigh": [
+      "Sudden large increases in fiber without enough water can cause bloating, gas, and cramping—raise intake gradually.",
+      "Very high fiber with poor hydration may worsen constipation in some people; spread intake across meals."
     ],
     "foodSources": [
       "Beans & lentils",
@@ -33,7 +37,11 @@
     ],
     "enough": [
       "Enough sodium maintains fluid balance, nerve signals, and muscle contraction—especially when you sweat or train hard.",
-      "Staying near guideline levels (about 2,300 mg/day for most adults) supports blood pressure without unnecessary restriction for active people."
+      "Staying near guideline levels (about 2,300 mg/day for most adults) helps keep blood pressure in a healthy range and lowers long-term stroke and kidney disease risk."
+    ],
+    "tooHigh": [
+      "Chronic high sodium raises blood pressure in many people, which over decades increases heart attack, stroke, heart failure, and kidney damage risk.",
+      "Most excess comes from restaurant meals, packaged foods, and cured meats—not the salt shaker alone."
     ],
     "foodSources": [
       "Table salt & sea salt",
@@ -59,8 +67,12 @@
       "Diuretics, heavy sweating, vomiting, or very low fruit/vegetable intake are common contributors."
     ],
     "enough": [
-      "Potassium helps nerves and muscles work, supports normal blood pressure, and balances sodium in cells.",
+      "Potassium helps nerves and muscles work, supports normal blood pressure, and balances sodium—lowering stroke and kidney stone risk when intake is adequate.",
       "Food sources are preferable to supplements unless a clinician directs otherwise."
+    ],
+    "tooHigh": [
+      "Too much potassium from supplements or salt substitutes can be dangerous, especially with kidney disease or certain blood pressure medications.",
+      "Food potassium from vegetables, beans, and fruit is rarely a problem for healthy kidneys."
     ],
     "foodSources": [
       "Potatoes (with skin)",
@@ -87,8 +99,12 @@
       "Very low intake plus low vitamin D magnifies bone loss; some people also notice sleep or dental issues when severely deficient."
     ],
     "enough": [
-      "Enough calcium builds and maintains bone structure, supports muscle contraction, blood clotting, and nerve signaling.",
-      "Spread intake through the day with vitamin D and weight-bearing activity for best bone outcomes."
+      "Enough calcium builds and maintains bone structure, reducing fracture and osteoporosis risk, and supports muscle contraction, blood clotting, and nerve signaling.",
+      "Spread intake through the day with vitamin D and weight-bearing activity for best lifelong bone outcomes."
+    ],
+    "tooHigh": [
+      "Very high calcium from supplements—especially without enough vitamin K, magnesium, and movement—may contribute to kidney stones or arterial calcification in some people.",
+      "Food calcium is generally safer than megadose pills; pair with vitamin D rather than pushing calcium alone."
     ],
     "foodSources": [
       "Milk & yogurt",
@@ -114,8 +130,12 @@
       "In women, heavy periods, pregnancy, or low red-meat/legume intake are frequent causes; men should investigate unexplained low iron with a clinician."
     ],
     "enough": [
-      "Adequate iron carries oxygen in hemoglobin, supports energy metabolism, immune function, and cognitive focus.",
+      "Adequate iron carries oxygen in hemoglobin, supports energy metabolism, immune function, and cognitive focus—preventing the fatigue and brain fog of creeping deficiency.",
       "Pair plant iron with vitamin C; separate coffee/tea/calcium from iron-rich meals by an hour when optimizing absorption."
+    ],
+    "tooHigh": [
+      "Excess iron—especially from supplements without confirmed deficiency—may raise oxidative stress and is linked with higher cardiovascular risk in some studies.",
+      "Men and postmenopausal women should not supplement iron routinely without blood tests."
     ],
     "foodSources": [
       "Beef & liver",
@@ -142,8 +162,12 @@
       "Chronic stress, alcohol, PPI use, and refined diets low in greens/nuts/seeds increase risk."
     ],
     "enough": [
-      "Magnesium supports 300+ enzyme reactions: energy (ATP), muscle relaxation, sleep quality, blood sugar control, and blood pressure.",
+      "Magnesium supports 300+ enzyme reactions: energy (ATP), muscle relaxation, sleep quality, blood sugar control, and blood pressure—helping prevent cramps, migraines, and metabolic drift.",
       "Food sources are first-line; supplements only if diet falls short."
+    ],
+    "tooHigh": [
+      "High-dose magnesium supplements can cause diarrhea, low blood pressure, and dangerous heart rhythm changes in extreme cases.",
+      "People with kidney disease should avoid unsupervised magnesium supplements."
     ],
     "foodSources": [
       "Pumpkin seeds",
@@ -170,8 +194,12 @@
       "Plant-heavy diets without legumes/nuts/seeds, or high phytate intake without soaking, raise deficiency risk."
     ],
     "enough": [
-      "Zinc supports immune defense, protein synthesis, DNA repair, and hundreds of enzymes including those for testosterone and thyroid.",
+      "Zinc supports immune defense, wound healing, protein synthesis, and DNA repair—helping you recover from illness and training without frequent infections.",
       "Oysters and varied animal/plant foods usually cover needs without megadoses."
+    ],
+    "tooHigh": [
+      "Chronic high-dose zinc supplements can deplete copper, weaken immunity, and cause nausea—more is not better.",
+      "Long-term zinc above needs may interfere with copper absorption and HDL cholesterol."
     ],
     "foodSources": [
       "Oysters",
@@ -197,8 +225,12 @@
       "Fat malabsorption or very low animal/vegetable intake (preformed A or beta-carotene) are typical causes."
     ],
     "enough": [
-      "Vitamin A (retinol and carotenoids) supports vision, immune barriers in gut/lungs/skin, and cell growth.",
+      "Vitamin A (retinol and carotenoids) supports night vision, immune barriers in gut/lungs/skin, and cell growth—reducing infection severity and poor wound healing.",
       "Beta-carotene from colorful plants converts as needed; preformed A from liver/dairy/eggs is more potent—avoid megadoses."
+    ],
+    "tooHigh": [
+      "Excess preformed vitamin A from supplements or frequent liver can cause liver damage, bone thinning, and birth defects in pregnancy.",
+      "Beta-carotene from plants is safer because the body converts only what it needs."
     ],
     "foodSources": [
       "Sweet potato & carrot",
@@ -224,8 +256,12 @@
       "Limited sun, dark skin at high latitudes, obesity, and aging reduce production; food alone rarely fixes severe deficiency."
     ],
     "enough": [
-      "Adequate vitamin D helps absorb calcium, regulates immunity, and supports muscle function and mood.",
-      "Sun exposure when safe, fatty fish, fortified dairy, and supplements per labs are common ways to reach targets (~15 mcg / 600 IU daily for many adults)."
+      "Adequate vitamin D helps absorb calcium, regulates immunity, and supports muscle function and mood—lowering fall, fracture, and respiratory infection risk when levels are sufficient.",
+      "Some human trials and animal studies show vitamin D supplementation lowers TMAO—possibly by shifting gut microbes (more Bacteroides, less Firmicutes)—especially when you start deficient."
+    ],
+    "tooHigh": [
+      "Very high vitamin D from megadose supplements raises blood calcium, which can cause kidney stones, heart rhythm problems, and soft-tissue calcification.",
+      "Test levels before taking high-dose vitamin D long term."
     ],
     "foodSources": [
       "Salmon & sardines",
@@ -252,7 +288,7 @@
     ],
     "enough": [
       "B12 is required for red blood cells, nerve myelination, DNA synthesis, and homocysteine control.",
-      "Animal foods or fortified foods/supplements maintain levels; absorption matters more than huge single doses."
+      "In a one-year trial, vitamin D plus B12, B6, and folate lowered fasting TMAO more than vitamin D alone—likely through homocysteine and choline metabolism cross-talk, though mechanisms are still unclear."
     ],
     "foodSources": [
       "Clams & nutritional yeast (fortified)",
@@ -278,8 +314,12 @@
       "Smokers need more; very low fruit/vegetable intake or heat/light-degraded foods increase risk."
     ],
     "enough": [
-      "Vitamin C builds collagen, supports immunity, improves plant-iron absorption, and acts as an antioxidant.",
-      "Regular produce intake easily covers daily needs for most people."
+      "Vitamin C builds collagen for skin, joints, and blood vessels; supports immunity; improves plant-iron absorption; and acts as an antioxidant against pollution and exercise stress.",
+      "Regular produce intake easily covers daily needs for most people and helps prevent scurvy-related bleeding gums and slow healing."
+    ],
+    "tooHigh": [
+      "Megadose vitamin C supplements may cause digestive upset and, in predisposed people, increase kidney stone risk.",
+      "Food sources are safe at normal intake; very high pills are unnecessary for most people."
     ],
     "foodSources": [
       "Oranges & grapefruit",
@@ -299,14 +339,80 @@
       "Useful for collagen during pregnancy and for healing after procedures or injury."
     ]
   },
+  "iodine": {
+    "tooLow": [
+      "Low iodine impairs thyroid hormone production, which can cause fatigue, cold intolerance, weight changes, and goiter over time.",
+      "People who avoid iodized salt, seafood, and dairy are at higher risk, especially during pregnancy."
+    ],
+    "enough": [
+      "Iodine is essential for thyroid hormones that regulate metabolism, body temperature, and brain development—preventing goiter, fatigue, and cognitive sluggishness when intake is steady.",
+      "Iodized table salt, seafood, and dairy are common sources—a little goes a long way for most adults."
+    ],
+    "tooHigh": [
+      "Excess iodine from high-dose supplements or daily seaweed megadoses can trigger or worsen thyroid dysfunction—especially in people with autoimmune thyroid disease.",
+      "Iodized salt in normal cooking amounts is rarely a problem; watch concentrated supplements."
+    ],
+    "foodSources": [
+      "Iodized table salt",
+      "Cod & seaweed",
+      "Yogurt & milk",
+      "Eggs",
+      "Shrimp & tuna",
+      "Prunes",
+      "Fortified bread"
+    ],
+    "male": [
+      "Adequate iodine supports thyroid-driven energy, temperature regulation, and workout recovery.",
+      "Very high intake from supplements or seaweed megadoses can also disrupt thyroid function."
+    ],
+    "female": [
+      "Iodine needs rise in pregnancy and breastfeeding for fetal brain development.",
+      "Low iodine can worsen cycle-related fatigue and hair thinning when thyroid function dips."
+    ]
+  },
+  "vitaminB6": {
+    "tooLow": [
+      "Low B6 can cause anemia-like fatigue, cracked lips, depression, and weakened immunity; severe deficiency damages nerves.",
+      "Heavy alcohol use, some medications, and very processed diets increase risk."
+    ],
+    "enough": [
+      "Vitamin B6 supports neurotransmitters, homocysteine metabolism, and immune function—working with folate and B12 in one-carbon metabolism.",
+      "It was included in the B-vitamin arm that lowered TMAO alongside vitamin D in a year-long trial; correcting low B6 may help cardiovascular and gut-metabolite balance."
+    ],
+    "tooHigh": [
+      "Very high B6 supplements (often 50–100 mg) for months can cause nerve tingling and numbness—stay near food-level intake unless prescribed.",
+      "Chronic megadoses are not needed for TMAO and can harm nerves."
+    ],
+    "foodSources": [
+      "Chickpeas & lentils",
+      "Salmon & tuna",
+      "Chicken & turkey",
+      "Potatoes & sweet potato",
+      "Bananas",
+      "Fortified cereals",
+      "Sunflower seeds"
+    ],
+    "male": [
+      "Supports testosterone-related enzyme pathways indirectly and helps process homocysteine when eating high-protein diets.",
+      "Athletes on heavy training may need consistent intake for energy metabolism and mood."
+    ],
+    "female": [
+      "Useful for PMS mood symptoms and nausea in pregnancy (often combined with ginger); works with folate for homocysteine control.",
+      "Oral contraceptives can increase B6 needs slightly in some women."
+    ]
+  },
   "folate": {
     "tooLow": [
       "Low folate causes megaloblastic anemia, mouth sores, poor growth, and raises homocysteine; severe deficiency in pregnancy risks neural tube defects.",
       "Heavy alcohol use, certain medications, and diets without greens/legumes are common causes."
     ],
     "enough": [
-      "Folate (B9) supports DNA synthesis, red blood cell formation, and methylation reactions that affect mood and cardiovascular markers.",
-      "Leafy greens, legumes, and fortified grains are reliable sources; works with B12."
+      "Folate (B9) supports DNA synthesis, red blood cell formation, and methylation reactions that affect mood and homocysteine—a marker tied to cardiovascular risk.",
+      "Together with B12 and B6, folate was part of the combination that lowered TMAO alongside vitamin D in clinical research—adequacy matters more than megadoses."
+    ],
+    "tooHigh": [
+      "Very high folic acid from supplements can mask B12 deficiency, allowing nerve damage to progress unnoticed.",
+      "Food folate is generally safe; separate high-dose folic acid from unchecked B12 status."
     ],
     "foodSources": [
       "Spinach & romaine",

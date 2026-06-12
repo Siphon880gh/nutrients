@@ -34,6 +34,7 @@
   var addKeywordBtn = document.getElementById("add-keyword");
   var dashboardGridEl = document.getElementById("dashboard-grid");
   var weekSummaryEl = document.getElementById("week-summary");
+  var dashboardPrintBtn = document.getElementById("dashboard-print");
   var dashboardWeekToggleEl = document.getElementById("dashboard-week-toggle");
   var dashboardMicroToggleEl = document.getElementById("dashboard-micro-toggle");
   var dashboardMicroPanelEl = document.getElementById("dashboard-micro-panel");
@@ -139,6 +140,18 @@
     glycemicLoad: { label: "Glycemic load (daily avg)", limiting: true },
   };
 
+  var LONGEVITY_SECTION_DEFS = {
+    sectionFats: { label: "Fats & cholesterol" },
+    sectionOmega: { label: "Omega fatty acids" },
+    sectionCompounds: { label: "Longevity & inflammation compounds" },
+    sectionCarb: { label: "Carb quality & glycemic" },
+    sectionMicronutrients: { label: "Micronutrients from food" },
+    sectionCalcification: { label: "Calcification & vascular balance" },
+    sectionDerived: { label: "Derived scores" },
+    sectionTmao: { label: "TMAO balance" },
+    sectionGlycemic: { label: "Glycemic load & GI distribution" },
+  };
+
   var MICRO_FIELDS = [
     { key: "fiber", label: "Fiber", unit: "g", code: "f" },
     { key: "sodium", label: "Sodium", unit: "mg", code: "na" },
@@ -147,18 +160,24 @@
     { key: "iron", label: "Iron", unit: "mg", code: "fe" },
     { key: "magnesium", label: "Magnesium", unit: "mg", code: "mg" },
     { key: "zinc", label: "Zinc", unit: "mg", code: "zn" },
+    { key: "iodine", label: "Iodine", unit: "mcg", code: "i" },
     { key: "vitaminA", label: "Vitamin A", unit: "mcg", code: "a" },
     { key: "vitaminD", label: "Vitamin D", unit: "mcg", code: "d" },
     { key: "vitaminB12", label: "Vitamin B12", unit: "mcg", code: "b12" },
+    { key: "vitaminB6", label: "Vitamin B6", unit: "mg", code: "b6" },
     { key: "vitaminC", label: "Vitamin C", unit: "mg", code: "c" },
     { key: "folate", label: "Folate", unit: "mcg", code: "fol" },
   ];
 
   var LONGEVITY_GROUPS = [
-    { id: "fats", label: "Fats & cholesterol" },
-    { id: "omega", label: "Omega fatty acids" },
-    { id: "compounds", label: "Longevity & inflammation compounds" },
-    { id: "carb", label: "Carb quality & glycemic" },
+    { id: "fats", label: "Fats & cholesterol", sectionDefKey: "sectionFats" },
+    { id: "omega", label: "Omega fatty acids", sectionDefKey: "sectionOmega" },
+    {
+      id: "compounds",
+      label: "Longevity & inflammation compounds",
+      sectionDefKey: "sectionCompounds",
+    },
+    { id: "carb", label: "Carb quality & glycemic", sectionDefKey: "sectionCarb" },
   ];
 
   var LONGEVITY_FROM_MICRO = [
@@ -166,6 +185,31 @@
     { microKey: "magnesium", label: "Magnesium", limiting: false },
     { microKey: "vitaminD", label: "Vitamin D", limiting: false },
   ];
+
+  var LONGEVITY_COMPOUNDS_FROM_MICRO = [
+    { microKey: "iodine", label: "Iodine", limiting: false },
+    { microKey: "fiber", label: "Fiber (prebiotic)", limiting: false },
+  ];
+
+  var LONGEVITY_TMAO_PRECURSOR_KEYS = ["choline", "carnitine", "betaine"];
+
+  var LONGEVITY_TMAO_LOWERING_FROM_MICRO = [
+    { microKey: "fiber", label: "Fiber (prebiotic)" },
+    { microKey: "vitaminD", label: "Vitamin D" },
+    { microKey: "folate", label: "Folate (B9)" },
+    { microKey: "vitaminB12", label: "Vitamin B12" },
+    { microKey: "vitaminB6", label: "Vitamin B6" },
+  ];
+
+  var LONGEVITY_TMAO_LOWERING_LONGEVITY = [
+    { key: "monounsaturatedFat", label: "Monounsaturated fat (olive oil)" },
+    { key: "polyphenols", label: "Polyphenols" },
+  ];
+
+  /** Micro keys where high % DV is undesirable on the longevity panel */
+  var LONGEVITY_MICRO_LIMITING_KEYS = {
+    sodium: true,
+  };
 
   var LONGEVITY_FIELDS = [
     {
@@ -248,6 +292,7 @@
     { key: "vitaminK1", label: "Vitamin K1", unit: "mcg", code: "k1", group: "compounds" },
     { key: "vitaminK2", label: "Vitamin K2", unit: "mcg", code: "k2", group: "compounds" },
     { key: "selenium", label: "Selenium", unit: "mcg", code: "se", group: "compounds" },
+    { key: "copper", label: "Copper", unit: "mcg", code: "cu", group: "compounds" },
     {
       key: "polyphenols",
       label: "Polyphenols",
@@ -278,6 +323,30 @@
       label: "Phosphorus",
       unit: "mg",
       code: "p",
+      group: "compounds",
+      limiting: true,
+    },
+    {
+      key: "choline",
+      label: "Choline",
+      unit: "mg",
+      code: "ch",
+      group: "compounds",
+      limiting: true,
+    },
+    {
+      key: "carnitine",
+      label: "L-Carnitine",
+      unit: "mg",
+      code: "carn",
+      group: "compounds",
+      limiting: true,
+    },
+    {
+      key: "betaine",
+      label: "Betaine",
+      unit: "mg",
+      code: "bet",
       group: "compounds",
       limiting: true,
     },
@@ -842,8 +911,36 @@
         );
       }
     });
+    lines.push("Estimation hints — omit any key you cannot estimate:");
     lines.push(
-      "Notes: EPA/DHA often come from fish; ALA from flax/chia/walnuts. Prefer unsaturated over saturated/trans fats. Do not inflate phosphorus unless deficient."
+      "  - micros.iodine: iodized table salt ~45 mcg/g salt; also fish, dairy, eggs"
+    );
+    lines.push(
+      "  - micros.vitaminB6: poultry, fish, chickpeas, potatoes, bananas"
+    );
+    lines.push(
+      "  - longevity.copper: shellfish, nuts, liver, dark chocolate (mcg)"
+    );
+    lines.push(
+      "  - longevity.choline: egg yolks, liver, meat, fish (mg; high in eggs)"
+    );
+    lines.push(
+      "  - longevity.carnitine: highest in beef/lamb; moderate in pork/chicken; very low in plants (mg)"
+    );
+    lines.push(
+      "  - longevity.betaine: wheat bran, beets, spinach; some supplements (mg)"
+    );
+    lines.push(
+      "  - longevity.phosphorus: whole foods are fine; do not inflate — processed foods may have phosphate additives"
+    );
+    lines.push(
+      "  - longevity EPA/DHA/ALA: fatty fish for EPA & DHA; flax/chia/walnuts for ALA"
+    );
+    lines.push(
+      "  - carbQuality: glycemicIndex is per food (0–100+); addedSugar and refinedCarbs in grams"
+    );
+    lines.push(
+      "General: prefer unsaturated over saturated/trans fats; use realistic portions in name"
     );
     return lines.join("\n");
   }
@@ -1042,6 +1139,7 @@
       if (!raw || typeof raw !== "object") return;
       var entry = {
         tooLow: stringArray(raw.tooLow),
+        tooHigh: stringArray(raw.tooHigh),
         enough: stringArray(raw.enough),
         foodSources: stringArray(raw.foodSources),
         male: stringArray(raw.male),
@@ -1049,6 +1147,7 @@
       };
       if (
         entry.tooLow.length ||
+        entry.tooHigh.length ||
         entry.enough.length ||
         entry.foodSources.length ||
         entry.male.length ||
@@ -1083,6 +1182,9 @@
     Object.keys(LONGEVITY_DERIVED_DEFS).forEach(function (key) {
       keys.push(key);
     });
+    Object.keys(LONGEVITY_SECTION_DEFS).forEach(function (key) {
+      keys.push(key);
+    });
     return keys;
   }
 
@@ -1090,14 +1192,31 @@
     var field = longevityFieldByKey(key);
     if (field) return field.label;
     var derived = LONGEVITY_DERIVED_DEFS[key];
-    return derived ? derived.label : key;
+    if (derived) return derived.label;
+    var section = LONGEVITY_SECTION_DEFS[key];
+    return section ? section.label : key;
   }
 
   function isLongevityLimitingDefKey(key) {
+    if (LONGEVITY_SECTION_DEFS[key]) return false;
     var field = longevityFieldByKey(key);
     if (field) return !!field.limiting;
     var derived = LONGEVITY_DERIVED_DEFS[key];
     return derived ? !!derived.limiting : false;
+  }
+
+  function longevitySectionTitleHtml(title, sectionDefKey) {
+    var link = sectionDefKey
+      ? ' <button type="button" class="dashboard__longevity-section-link" data-longevity-def="' +
+        escapeAttr(sectionDefKey) +
+        '" aria-haspopup="dialog">explain</button>'
+      : "";
+    return (
+      '<h3 class="dashboard__longevity-section-title">' +
+      escapeHtml(title) +
+      link +
+      "</h3>"
+    );
   }
 
   function normalizeLongevityDefinitions(data) {
@@ -1216,10 +1335,6 @@
 
     var html = "";
 
-    if (def.foodSources.length) {
-      html += microDefFoodSourcesHtml(def.foodSources);
-    }
-
     if (def.tooLow.length) {
       html +=
         '<section class="micro-def__section">' +
@@ -1236,6 +1351,14 @@
         "</section>";
     }
 
+    if (def.tooHigh.length) {
+      html +=
+        '<section class="micro-def__section">' +
+        '<h4 class="micro-def__heading">If intake is too high</h4>' +
+        microDefParagraphsHtml(def.tooHigh) +
+        "</section>";
+    }
+
     if (def.male.length || def.female.length) {
       html += '<section class="micro-def__section">';
       html += '<h4 class="micro-def__heading">Sex-specific benefits</h4>';
@@ -1246,6 +1369,10 @@
         html += microDefListHtml(def.female, "female");
       }
       html += "</section>";
+    }
+
+    if (def.foodSources.length) {
+      html += microDefFoodSourcesHtml(def.foodSources);
     }
 
     microDefBodyEl.innerHTML =
@@ -1267,10 +1394,6 @@
     var limiting = isLongevityLimitingDefKey(key);
     var html = "";
 
-    if (def.foodSources.length) {
-      html += microDefFoodSourcesHtml(def.foodSources);
-    }
-
     if (!limiting && def.tooLow.length) {
       html +=
         '<section class="micro-def__section">' +
@@ -1288,10 +1411,15 @@
     }
 
     if (def.enough.length) {
+      var enoughHeading = LONGEVITY_SECTION_DEFS[key]
+        ? "Why it matters"
+        : limiting
+          ? "Keeping intake in a healthy range"
+          : "When you get enough";
       html +=
         '<section class="micro-def__section">' +
         '<h4 class="micro-def__heading">' +
-        (limiting ? "Keeping intake in a healthy range" : "When you get enough") +
+        enoughHeading +
         "</h4>" +
         microDefParagraphsHtml(def.enough) +
         "</section>";
@@ -1303,6 +1431,10 @@
         '<h4 class="micro-def__heading">If intake is too high</h4>' +
         microDefParagraphsHtml(def.tooHigh) +
         "</section>";
+    }
+
+    if (def.foodSources.length) {
+      html += microDefFoodSourcesHtml(def.foodSources);
     }
 
     microDefBodyEl.innerHTML =
@@ -2344,6 +2476,73 @@
     }
   }
 
+  function longevityBarHtml(pct, limiting) {
+    if (pct == null || isNaN(pct)) {
+      return (
+        '<div class="dashboard__longevity-bar dashboard__longevity-bar--empty" aria-hidden="true"></div>'
+      );
+    }
+    var tier = tierForLongevityPct(pct, !!limiting);
+    var width = Math.min(100, Math.max(4, pct));
+    var color = tier ? tier.color : "#c8c8c4";
+    return (
+      '<div class="dashboard__longevity-bar" role="presentation" title="' +
+      escapeAttr(fmtNum(pct) + "% of daily reference") +
+      '"><div class="dashboard__longevity-bar-fill" style="width:' +
+      escapeAttr(String(width)) +
+      "%;background:" +
+      escapeAttr(color) +
+      '"></div></div>'
+    );
+  }
+
+  function longevityListOpen() {
+    return (
+      '<div class="dashboard__longevity-table">' +
+      '<div class="dashboard__longevity-thead" aria-hidden="true">' +
+      "<span>Nutrient</span>" +
+      "<span>Daily avg</span>" +
+      "<span>% DV</span>" +
+      "<span>Level</span>" +
+      "</div>" +
+      '<div class="dashboard__longevity-tbody" role="list">'
+    );
+  }
+
+  function longevityListClose() {
+    return "</div></div>";
+  }
+
+  function longevitySubgroupHtml(label, kind) {
+    return (
+      '<p class="dashboard__longevity-subgroup dashboard__longevity-subgroup--' +
+      escapeAttr(kind || "neutral") +
+      '">' +
+      escapeHtml(label) +
+      "</p>"
+    );
+  }
+
+  function longevitySectionWrap(title, sectionDefKey, noteHtml, bodyHtml) {
+    return (
+      '<section class="dashboard__longevity-section">' +
+      longevitySectionTitleHtml(title, sectionDefKey) +
+      (noteHtml || "") +
+      bodyHtml +
+      "</section>"
+    );
+  }
+
+  function longevityLegendHtml() {
+    return (
+      '<div class="dashboard__longevity-legend" role="note">' +
+      '<span class="dashboard__longevity-legend-item dashboard__longevity-legend-item--aim">Aim ↑ higher % DV</span>' +
+      '<span class="dashboard__longevity-legend-item dashboard__longevity-legend-item--limit">Limit ↓ lower % DV</span>' +
+      '<span class="dashboard__longevity-legend-item dashboard__longevity-legend-item--micro">Dashed = from micro entries</span>' +
+      "</div>"
+    );
+  }
+
   function longevityRowHtml(
     label,
     amtText,
@@ -2389,41 +2588,120 @@
       ">" +
       escapeHtml(pctText) +
       "</span>" +
+      longevityBarHtml(pct, !!limiting) +
       "</div>"
     );
+  }
+
+  function longevityRowFromLongevityField(field, weekLongevity) {
+    var total = weekLongevity[field.key];
+    var pct = avgDailyLongevityPct(field.key, total);
+    var pctText = pct == null || isNaN(pct) ? "—" : fmtNum(pct) + "%";
+    var amtText =
+      total > 0
+        ? fmtNum(avgDailyLongevity(field.key, total)) + " " + field.unit
+        : "—";
+    if (field.key === "glycemicIndex") {
+      pctText = "per food";
+      amtText = total > 0 ? "see GL" : "—";
+    }
+    return longevityRowHtml(
+      field.label,
+      amtText,
+      pctText,
+      pct,
+      "",
+      !!field.limiting,
+      field.key,
+      false
+    );
+  }
+
+  function longevityRowFromMicroKey(microKey, label, limiting, weekMicro) {
+    var field = microFieldByKey(microKey);
+    var unit = field ? field.unit : "";
+    var total = weekMicro[microKey] || 0;
+    var pct = avgDailyMicroPct(microKey, total);
+    var pctText = pct == null || isNaN(pct) ? "—" : fmtNum(pct) + "%";
+    var amtText = total > 0 ? fmtNum(total / DAYS.length) + " " + unit : "—";
+    return longevityRowHtml(
+      label || (field ? field.label : microKey),
+      amtText,
+      pctText,
+      pct,
+      "dashboard__longevity-row--from-micro",
+      !!limiting,
+      microKey,
+      true
+    );
+  }
+
+  function longevityRowsGroupedByLimit(fields, weekLongevity) {
+    var watch = [];
+    var aim = [];
+    fields.forEach(function (field) {
+      if (field.limiting) watch.push(field);
+      else aim.push(field);
+    });
+    var html = "";
+    if (watch.length) {
+      html += longevitySubgroupHtml("Watch — lower % DV is better", "limit");
+      watch.forEach(function (field) {
+        html += longevityRowFromLongevityField(field, weekLongevity);
+      });
+    }
+    if (aim.length) {
+      html += longevitySubgroupHtml("Aim — higher % DV is better", "aim");
+      aim.forEach(function (field) {
+        html += longevityRowFromLongevityField(field, weekLongevity);
+      });
+    }
+    return html;
   }
 
   function renderLongevityGiBuckets(buckets) {
     var sum = buckets.low + buckets.med + buckets.high;
     if (sum <= 0) {
-      return '<p class="dashboard__longevity-note">No GI data yet — add glycemic index and carbs on matched foods.</p>';
+      return '<p class="dashboard__longevity-note dashboard__longevity-note--gi">No GI data yet — add glycemic index and carbs on matched foods.</p>';
     }
     var pct = function (v) {
       return Math.round((v / sum) * 100);
     };
-    var h = function (val, cls, label) {
+    var barMaxPx = 56;
+    var bucket = function (val, cls, label) {
       var p = pct(val);
-      var height = Math.max(4, Math.round((p / 100) * 48));
-      return (
-        '<div class="dashboard__gi-bucket">' +
-        '<div class="dashboard__gi-bucket-bar dashboard__gi-bucket-bar--' +
-        cls +
-        '" style="height:' +
-        height +
-        'px" title="' +
-        escapeAttr(fmtNum(val) + " g carb-weighted") +
-        '"></div>' +
-        '<span class="dashboard__gi-bucket-label">' +
-        escapeHtml(label + " " + p + "%") +
-        "</span></div>"
-      );
+      var height = Math.max(4, Math.round((p / 100) * barMaxPx));
+      return {
+        bar:
+          '<div class="dashboard__gi-bar-slot">' +
+          '<div class="dashboard__gi-bucket-bar dashboard__gi-bucket-bar--' +
+          cls +
+          '" style="height:' +
+          height +
+          'px" title="' +
+          escapeAttr(fmtNum(val) + " g carb-weighted") +
+          '"></div></div>',
+        label:
+          '<span class="dashboard__gi-bucket-label">' +
+          escapeHtml(label + " " + p + "%") +
+          "</span>",
+      };
     };
+    var low = bucket(buckets.low, "low", "Low GI ≤55");
+    var med = bucket(buckets.med, "med", "Med 56–69");
+    var high = bucket(buckets.high, "high", "High ≥70");
     return (
-      '<div class="dashboard__gi-buckets">' +
-      h(buckets.low, "low", "Low GI ≤55") +
-      h(buckets.med, "med", "Med 56–69") +
-      h(buckets.high, "high", "High ≥70") +
-      "</div>"
+      '<div class="dashboard__gi-chart">' +
+      '<div class="dashboard__gi-bars">' +
+      low.bar +
+      med.bar +
+      high.bar +
+      "</div>" +
+      '<div class="dashboard__gi-labels">' +
+      low.label +
+      med.label +
+      high.label +
+      "</div></div>"
     );
   }
 
@@ -2433,162 +2711,213 @@
     var weekLongevity = weekLongevityTotals();
     var weekMicro = weekMicroTotals();
     var derived = computeLongevityDerived(weekLongevity, weekMicro);
-    var html = "";
+    var html = longevityLegendHtml();
+
+    html += longevitySectionWrap(
+      "Micronutrients from food",
+      "sectionMicronutrients",
+      '<p class="dashboard__longevity-note">Same values as your micro entries—shown here so you can reason about longevity alongside fats, compounds, and carbs. Sodium uses inverted colors (high % DV is a concern).</p>',
+      longevityListOpen() +
+        longevitySubgroupHtml("Watch — lower % DV is better", "limit") +
+        MICRO_FIELDS.filter(function (field) {
+          return !!LONGEVITY_MICRO_LIMITING_KEYS[field.key];
+        })
+          .map(function (field) {
+            return longevityRowFromMicroKey(
+              field.key,
+              field.label,
+              true,
+              weekMicro
+            );
+          })
+          .join("") +
+        longevitySubgroupHtml("Aim — higher % DV is better", "aim") +
+        MICRO_FIELDS.filter(function (field) {
+          return !LONGEVITY_MICRO_LIMITING_KEYS[field.key];
+        })
+          .map(function (field) {
+            return longevityRowFromMicroKey(
+              field.key,
+              field.label,
+              false,
+              weekMicro
+            );
+          })
+          .join("") +
+        longevityListClose()
+    );
 
     LONGEVITY_GROUPS.forEach(function (group) {
-      var rows = "";
-      LONGEVITY_FIELDS.forEach(function (field) {
-        if (field.group !== group.id) return;
-        var total = weekLongevity[field.key];
-        var pct = avgDailyLongevityPct(field.key, total);
-        var pctText =
-          pct == null || isNaN(pct) ? "—" : fmtNum(pct) + "% DV";
-        var amtText =
-          total > 0
-            ? fmtNum(avgDailyLongevity(field.key, total)) +
-              " " +
-              field.unit +
-              "/day avg"
-            : "—";
-        if (field.key === "glycemicIndex") {
-          pctText = "per food";
-          amtText = total > 0 ? "see GL below" : "—";
-        }
-        rows += longevityRowHtml(
-          field.label,
-          amtText,
-          pctText,
-          pct,
-          "",
-          !!field.limiting,
-          field.key,
-          false
-        );
+      var groupFields = LONGEVITY_FIELDS.filter(function (field) {
+        return field.group === group.id;
       });
-      if (!rows) return;
-      html +=
-        '<section class="dashboard__longevity-section">' +
-        '<h3 class="dashboard__longevity-section-title">' +
-        escapeHtml(group.label) +
-        "</h3>" +
-        '<div class="dashboard__longevity-list" role="list">' +
-        rows +
-        "</div></section>";
+      if (!groupFields.length) return;
+      var body = longevityListOpen() + longevityRowsGroupedByLimit(groupFields, weekLongevity);
+      if (group.id === "compounds") {
+        body += longevitySubgroupHtml("Also from your micro entries", "micro");
+        LONGEVITY_COMPOUNDS_FROM_MICRO.forEach(function (item) {
+          body += longevityRowFromMicroKey(
+            item.microKey,
+            item.label,
+            !!item.limiting,
+            weekMicro
+          );
+        });
+      }
+      body += longevityListClose();
+      html += longevitySectionWrap(group.label, group.sectionDefKey, "", body);
     });
 
-    html +=
-      '<section class="dashboard__longevity-section">' +
-      '<h3 class="dashboard__longevity-section-title">Calcification & vascular balance</h3>' +
-      '<p class="dashboard__longevity-note">From micro entries. Phosphorus is tracked above — most people should not chase higher phosphorus.</p>' +
-      '<div class="dashboard__longevity-list" role="list">';
-    LONGEVITY_FROM_MICRO.forEach(function (item) {
-      var field = microFieldByKey(item.microKey);
-      var unit = field ? field.unit : "";
-      var total = weekMicro[item.microKey] || 0;
-      var pct = avgDailyMicroPct(item.microKey, total);
-      var pctText = pct == null || isNaN(pct) ? "—" : fmtNum(pct) + "% DV";
-      var amtText =
-        total > 0
-          ? fmtNum(total / DAYS.length) + " " + unit + "/day avg"
-          : "—";
-      html += longevityRowHtml(
-        item.label,
-        amtText,
-        pctText,
-        pct,
-        "dashboard__longevity-row--from-micro",
-        !!item.limiting,
-        item.microKey,
-        true
-      );
-    });
-    html += "</div></section>";
+    html += longevitySectionWrap(
+      "Calcification & vascular balance",
+      "sectionCalcification",
+      '<p class="dashboard__longevity-note">Phosphorus is tracked under compounds above. Excess absorbable phosphate from cola and processed foods can pull calcium into arteries.</p>',
+      longevityListOpen() +
+        longevitySubgroupHtml("From your micro entries", "micro") +
+        LONGEVITY_FROM_MICRO.map(function (item) {
+          return longevityRowFromMicroKey(
+            item.microKey,
+            item.label,
+            !!item.limiting,
+            weekMicro
+          );
+        }).join("") +
+        longevityListClose()
+    );
 
-    html +=
-      '<section class="dashboard__longevity-section">' +
-      '<h3 class="dashboard__longevity-section-title">Derived scores</h3>' +
-      '<div class="dashboard__longevity-list" role="list">';
+    html += longevitySectionWrap(
+      "TMAO balance",
+      "sectionTmao",
+      '<p class="dashboard__longevity-note">Gut bacteria turn precursors into TMAO. Compare ↑ precursors vs ↓ protectors—fiber, D and B vitamins, olive oil, fish oil.</p>',
+      longevityListOpen() +
+        longevitySubgroupHtml("↑ Precursors — lower % DV is better", "limit") +
+        LONGEVITY_TMAO_PRECURSOR_KEYS.map(function (key) {
+          var field = longevityFieldByKey(key);
+          if (!field) return "";
+          return longevityRowFromLongevityField(field, weekLongevity);
+        }).join("") +
+        longevitySubgroupHtml("↓ Protectors — higher % DV is better", "aim") +
+        LONGEVITY_TMAO_LOWERING_FROM_MICRO.map(function (item) {
+          return longevityRowFromMicroKey(
+            item.microKey,
+            item.label,
+            false,
+            weekMicro
+          );
+        }).join("") +
+        LONGEVITY_TMAO_LOWERING_LONGEVITY.map(function (item) {
+          var field = longevityFieldByKey(item.key);
+          if (!field) return "";
+          return longevityRowHtml(
+            item.label,
+            weekLongevity[item.key] > 0
+              ? fmtNum(avgDailyLongevity(item.key, weekLongevity[item.key])) +
+                " " +
+                field.unit
+              : "—",
+            (function () {
+              var pct = avgDailyLongevityPct(item.key, weekLongevity[item.key] || 0);
+              return pct == null || isNaN(pct) ? "—" : fmtNum(pct) + "%";
+            })(),
+            avgDailyLongevityPct(item.key, weekLongevity[item.key] || 0),
+            "",
+            false,
+            item.key,
+            false
+          );
+        }).join("") +
+        longevityRowHtml(
+          "EPA + DHA",
+          derived.epaPlusDha > 0 ? fmtNum(derived.epaPlusDha) + " g" : "—",
+          derived.epaPlusDha > 0 ? "combined" : "—",
+          null,
+          "dashboard__longevity-row--computed",
+          false,
+          "epaPlusDha",
+          false
+        ) +
+        longevityListClose()
+    );
 
     var o6o3 = derived.omega6To3;
-    var o6o3Text =
-      o6o3 == null || isNaN(o6o3) ? "—" : fmtNum(o6o3) + ":1";
+    var o6o3Text = o6o3 == null || isNaN(o6o3) ? "—" : fmtNum(o6o3) + ":1";
     var o6o3Note =
       o6o3 != null && o6o3 <= longevityDvStatus.omega6To3IdealMax
         ? "≤ " + longevityDvStatus.omega6To3IdealMax + " ideal"
         : "—";
-    html += longevityRowHtml(
-      "Omega-6 : Omega-3",
-      o6o3Note,
-      o6o3Text,
-      null,
-      "dashboard__longevity-row--computed",
-      true,
-      "omega6To3",
-      false
-    );
-
     var satUnsat = derived.satToUnsat;
-    html += longevityRowHtml(
-      "Saturated : unsaturated",
-      satUnsat == null ? "—" : "ratio",
-      satUnsat == null || isNaN(satUnsat) ? "—" : fmtNum(satUnsat) + ":1",
-      null,
-      "dashboard__longevity-row--computed",
-      true,
-      "satToUnsat",
-      false
-    );
-
-    html += longevityRowHtml(
-      "EPA + DHA",
-      derived.epaPlusDha > 0 ? fmtNum(derived.epaPlusDha) + " g/day avg" : "—",
-      derived.epaPlusDha > 0 ? "combined" : "—",
-      null,
-      "dashboard__longevity-row--computed",
-      false,
-      "epaPlusDha",
-      false
-    );
-
     var transOk = derived.transFatG <= longevityDvStatus.transFatMaxGPerDay;
     var transPct = avgDailyLongevityPct("transFat", weekLongevity.transFat || 0);
-    html += longevityRowHtml(
-      "Trans fat",
-      derived.transFatG > 0
-        ? fmtNum(derived.transFatG) + " g/day avg"
-        : "none logged",
-      transOk ? "near zero ✓" : "elevated",
-      transPct != null && !isNaN(transPct)
-        ? transPct
-        : transOk
-          ? 25
-          : 110,
-      "dashboard__longevity-row--computed",
-      true,
-      "transFat",
-      false
+
+    html += longevitySectionWrap(
+      "Derived scores",
+      "sectionDerived",
+      '<p class="dashboard__longevity-note">Ratios and combined scores—easier to scan than raw grams alone.</p>',
+      longevityListOpen() +
+        longevitySubgroupHtml("Watch — lower is better", "limit") +
+        longevityRowHtml(
+          "Omega-6 : Omega-3",
+          o6o3Note,
+          o6o3Text,
+          null,
+          "dashboard__longevity-row--computed",
+          true,
+          "omega6To3",
+          false
+        ) +
+        longevityRowHtml(
+          "Saturated : unsaturated",
+          satUnsat == null ? "—" : "ratio",
+          satUnsat == null || isNaN(satUnsat) ? "—" : fmtNum(satUnsat) + ":1",
+          null,
+          "dashboard__longevity-row--computed",
+          true,
+          "satToUnsat",
+          false
+        ) +
+        longevityRowHtml(
+          "Trans fat",
+          derived.transFatG > 0 ? fmtNum(derived.transFatG) + " g" : "none logged",
+          transOk ? "near zero ✓" : "elevated",
+          transPct != null && !isNaN(transPct) ? transPct : transOk ? 25 : 110,
+          "dashboard__longevity-row--computed",
+          true,
+          "transFat",
+          false
+        ) +
+        longevitySubgroupHtml("Aim — higher is better", "aim") +
+        longevityRowHtml(
+          "EPA + DHA",
+          derived.epaPlusDha > 0 ? fmtNum(derived.epaPlusDha) + " g" : "—",
+          derived.epaPlusDha > 0 ? "combined" : "—",
+          null,
+          "dashboard__longevity-row--computed",
+          false,
+          "epaPlusDha",
+          false
+        ) +
+        longevityListClose()
     );
 
-    html += "</div></section>";
-
-    html +=
-      '<section class="dashboard__longevity-section">' +
-      '<h3 class="dashboard__longevity-section-title">Glycemic load & GI distribution</h3>' +
-      '<p class="dashboard__longevity-note">GL = GI × carbs per serving ÷ 100. Portion size matters — prefer tracking GL over GI alone.</p>' +
-      '<div class="dashboard__longevity-list" role="list">' +
-      longevityRowHtml(
-        "Avg daily glycemic load",
-        derived.weekGl > 0 ? "from matched foods" : "—",
-        derived.weekGl > 0 ? fmtNum(derived.weekGl) : "—",
-        null,
-        "dashboard__longevity-row--computed",
-        true,
-        "glycemicLoad",
-        false
-      ) +
-      "</div>" +
-      renderLongevityGiBuckets(derived.giBuckets) +
-      "</section>";
+    html += longevitySectionWrap(
+      "Glycemic load & GI distribution",
+      "sectionGlycemic",
+      '<p class="dashboard__longevity-note">GL = GI × carbs per serving ÷ 100. Portion size matters — prefer tracking GL over GI alone.</p>',
+      longevityListOpen() +
+        longevitySubgroupHtml("Watch — lower glycemic load is better", "limit") +
+        longevityRowHtml(
+          "Avg daily glycemic load",
+          derived.weekGl > 0 ? "from matched foods" : "—",
+          derived.weekGl > 0 ? fmtNum(derived.weekGl) : "—",
+          null,
+          "dashboard__longevity-row--computed",
+          true,
+          "glycemicLoad",
+          false
+        ) +
+        longevityListClose() +
+        renderLongevityGiBuckets(derived.giBuckets)
+    );
 
     dashboardLongevityContentEl.innerHTML = html;
   }
@@ -4032,6 +4361,29 @@
     saveDemographic();
     saveDayNotes();
   });
+
+  function preparePrintLayout() {
+    DAYS.forEach(function (day) {
+      var ta = document.getElementById(day.id);
+      if (ta) {
+        updateDayHighlights(ta);
+      }
+    });
+  }
+
+  function printPage() {
+    preparePrintLayout();
+    document.body.classList.add("print-preview");
+    window.print();
+  }
+
+  window.addEventListener("afterprint", function () {
+    document.body.classList.remove("print-preview");
+  });
+
+  if (dashboardPrintBtn) {
+    dashboardPrintBtn.addEventListener("click", printPage);
+  }
 
   if (dashboardWeekToggleEl) {
     dashboardWeekToggleEl.addEventListener("click", function () {

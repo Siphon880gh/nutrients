@@ -25,7 +25,7 @@
     ],
     "enough": [
       "Monounsaturated fats support HDL, help replace saturated and trans fats, and fit well in stable cooking oils.",
-      "They add satiety without the inflammatory profile of some refined seed-oil-heavy processed foods."
+      "Extra-virgin olive oil contains DMB (3,3-dimethyl-1-butanol), which in animal studies inhibits gut bacteria from converting choline and carnitine into TMAO—one reason Mediterranean diets correlate with lower TMAO."
     ],
     "foodSources": [
       "Extra-virgin olive oil",
@@ -266,12 +266,12 @@
   },
   "palmitoleicAcid": {
     "tooHigh": [
-      "Palmitoleic acid (omega-7) in very high amounts from processed or overfed animal products is an emerging research area.",
-      "Less commonly tracked; whole-diet pattern matters more than single fatty acids."
+      "Diets heavy in overfed animal fats may supply excess palmitoleic acid (omega-7), which some research links with liver fat and metabolic stress when overall diet quality is poor.",
+      "The bigger risk is usually the surrounding pattern—processed meats, fried foods, and low omega-3—not this single fatty acid in isolation."
     ],
     "enough": [
-      "Omega-7 occurs in some fish, macadamia oil, and sea buckthorn; not an essential fat to target high.",
-      "Optional tracking for completeness in longevity-focused diets."
+      "Small amounts of omega-7 from fish, macadamia, and sea buckthorn fit a normal diet without needing to chase high intake.",
+      "Focus on whole-food fat quality and omega balance rather than maximizing omega-7."
     ],
     "foodSources": [
       "Macadamia nuts & oil",
@@ -377,14 +377,33 @@
       "Cottage cheese"
     ]
   },
+  "copper": {
+    "tooLow": [
+      "Low copper can weaken connective tissue, iron metabolism, and antioxidant enzymes over time.",
+      "Very high zinc intake without balance can interfere with copper absorption."
+    ],
+    "enough": [
+      "Copper supports collagen cross-linking, energy production, and iron transport.",
+      "Whole-food sources usually cover needs; megadoses are unnecessary and can be harmful."
+    ],
+    "foodSources": [
+      "Oysters & shellfish",
+      "Beef liver",
+      "Cashews & almonds",
+      "Sesame & sunflower seeds",
+      "Dark chocolate",
+      "Mushrooms",
+      "Lentils"
+    ]
+  },
   "polyphenols": {
     "tooLow": [
       "Low polyphenol intake means fewer plant antioxidants that support gut microbes, blood vessels, and inflammation balance.",
       "Diets low in berries, tea, cocoa, and herbs miss easy sources."
     ],
     "enough": [
-      "Polyphenols from diverse plants add color, flavor, and antioxidant/anti-inflammatory potential beyond vitamins.",
-      "No single DV exists—variety and whole foods are the practical goal."
+      "Polyphenols from diverse plants support blood vessel flexibility, gut microbial diversity, and lower oxidative stress—patterns linked with lower cardiovascular and cognitive decline risk over decades.",
+      "Regular berries, tea, cocoa, herbs, and olive oil add protective phytochemicals that vitamins alone do not replace."
     ],
     "foodSources": [
       "Berries",
@@ -510,15 +529,72 @@
       "Mustard greens"
     ]
   },
-  "phosphorus": {
+  "choline": {
     "tooHigh": [
-      "Excess phosphorus—especially phosphate additives in processed foods—may harm bone–mineral balance and vascular health in susceptible people.",
-      "CKD patients must limit phosphorus carefully; most people should not chase higher intake.",
-      "Food labels listing \"phosphate\" or \"phosphoric acid\" are red flags."
+      "Very high choline intake—especially from frequent eggs, liver, and red meat—supplies substrate for gut bacteria to make TMAO (trimethylamine N-oxide), which is associated with higher atherosclerosis and cardiovascular event risk in observational studies.",
+      "This does not mean avoiding eggs entirely; risk rises with heavy animal-product patterns and may be lower when fiber-rich plants and fish-forward diets support a different gut microbiome."
     ],
     "enough": [
-      "Phosphorus is abundant in whole foods; deficiency is rare without medical issues.",
-      "Adequate protein, dairy, and legumes usually cover needs without additives."
+      "Choline supports brain development, liver fat export, and cell membranes; adequate intake prevents deficiency without needing megadoses.",
+      "To lower TMAO: rotate egg and liver portions, emphasize plants and fish, and support gut microbes with fiber—vegetarians often produce far less TMAO even when choline is adequate."
+    ],
+    "foodSources": [
+      "Egg yolks",
+      "Beef & chicken liver",
+      "Salmon & cod",
+      "Chicken & turkey",
+      "Soybeans & tofu",
+      "Wheat germ",
+      "Milk"
+    ]
+  },
+  "carnitine": {
+    "tooHigh": [
+      "L-carnitine is abundant in red meat; gut microbes convert it to TMAO more efficiently than they do choline from plants—one reason heavy red-meat diets correlate with higher TMAO and cardiovascular risk in research.",
+      "Fish and chicken supply far less carnitine than beef and lamb; plant-based eaters typically have very low dietary carnitine (the body makes some on its own)."
+    ],
+    "enough": [
+      "Carnitine helps shuttle fatty acids into mitochondria for energy; deficiency is rare except in specific medical conditions.",
+      "To lower TMAO: cut back red meat frequency, add fiber-rich plants, use olive oil, and keep vitamin D and B vitamins adequate—see the TMAO balance section."
+    ],
+    "foodSources": [
+      "Beef & lamb (highest)",
+      "Pork & bacon",
+      "Chicken (moderate)",
+      "Fish (lower)",
+      "Dairy (small amounts)",
+      "Avocado (trace)",
+      "Plants: very little"
+    ]
+  },
+  "betaine": {
+    "tooHigh": [
+      "Betaine (trimethylglycine) is another TMAO precursor—gut bacteria convert it to TMA like they do choline and carnitine.",
+      "High intake from wheat bran, beets, and betaine supplements (sometimes marketed for homocysteine) can feed TMAO production when paired with a meat-heavy microbiome."
+    ],
+    "enough": [
+      "Betaine supports methylation and liver health in normal food amounts; you do not need to supplement it for TMAO reasons.",
+      "If homocysteine is a concern, folate and B12 often help without the TMAO trade-off of high-dose betaine."
+    ],
+    "foodSources": [
+      "Wheat bran & whole wheat",
+      "Beets & spinach",
+      "Quinoa",
+      "Shrimp (also has choline)",
+      "Betaine supplements",
+      "Breakfast cereals (some)"
+    ]
+  },
+  "phosphorus": {
+    "tooHigh": [
+      "Phosphorus is essential for bones, teeth, and cellular energy (ATP), but chronically high blood phosphate is the problem—not the mineral itself in normal whole foods.",
+      "When phosphate stays elevated, the body releases parathyroid hormone and FGF23, suppresses active vitamin D, and can pull calcium out of bone while promoting calcium-phosphate deposits in artery walls—vascular calcification that stiffens vessels and raises heart attack and stroke risk.",
+      "Phosphate additives in cola (phosphoric acid), processed cheese, deli meat, and fast food are absorbed far more efficiently than phosphorus bound in whole foods—often 90%+ vs roughly half from natural sources—so they spike blood phosphate without you noticing.",
+      "People with kidney disease must limit phosphorus carefully; even in healthy adults, the modern pattern is usually too much additive phosphate, not too little."
+    ],
+    "enough": [
+      "From meat, dairy, beans, and nuts, phosphorus supports strong bones and every cell's energy metabolism; deficiency is rare without serious illness.",
+      "Whole-food phosphorus rarely needs chasing—adequate protein and legumes cover needs. The prevention target is avoiding excess absorbable phosphate from additives, not maximizing intake."
     ],
     "foodSources": [
       "Meat & poultry",
@@ -536,8 +612,8 @@
       "White bread, sugary drinks, and refined cereals are common high-GI staples."
     ],
     "enough": [
-      "Lower-GI carbs digest slower, smoothing glucose and insulin; pairing carbs with fat, protein, or acid lowers effective GI.",
-      "GI is per food—portion size and GL matter as much as the number."
+      "Lower-GI carbs digest slower, smoothing glucose and insulin and reducing post-meal crashes that drive cravings and overeating.",
+      "Choosing slower carbs over white bread, sugary drinks, and refined cereals helps prevent insulin resistance and fatty liver when portions stay reasonable."
     ],
     "foodSources": [
       "Low: beans, pasta al dente, apples",
@@ -592,16 +668,16 @@
       "Large net-carb loads behave like high GL even if fiber is present elsewhere in the day."
     ],
     "enough": [
-      "Net carbs help compare portions when fiber is high; whole foods with fiber lower net carbs per serving.",
-      "Use alongside GL/GI for a fuller carb-quality picture."
+      "High absorbable carb loads—whether from sugar or stripped grains—push blood glucose and insulin harder than fiber-rich whole foods.",
+      "Keeping net carbs moderate at meals supports weight stability, clearer energy, and long-term metabolic health, especially if diabetes runs in your family."
     ],
     "foodSources": [
       "Low net: leafy greens, cauliflower",
       "Medium: berries, beans",
       "High: bread, rice, sugar",
-      "Fiber lowers net in whole grains",
-      "Labels: total carbs − fiber",
-      "Sugar alcohols (some diets)"
+      "Whole grains with fiber",
+      "Vegetables before starches",
+      "Protein or fat with carb-heavy meals"
     ]
   },
   "omega6To3": {
@@ -610,8 +686,8 @@
       "Shifting oils toward olive oil and adding fish or flax improves the ratio without eliminating omega-6."
     ],
     "enough": [
-      "A lower omega-6 : omega-3 ratio is associated with less inflammatory signaling in research models.",
-      "Track EPA/DHA and linoleic acid sources, not just totals."
+      "A lower omega-6 : omega-3 ratio is associated with less inflammatory signaling, which may lower long-term risk of heart disease, joint problems, and cognitive decline.",
+      "Shifting from soybean and corn oil toward olive oil, fish, walnuts, and flax is one of the highest-leverage fat changes for inflammation balance."
     ],
     "foodSources": [
       "Improve ratio: fatty fish",
@@ -647,8 +723,8 @@
       "Flax alone may not raise EPA/DHA blood levels enough for many people."
     ],
     "enough": [
-      "EPA and DHA together are the active omega-3s from fish and algae; sum them for weekly seafood goals.",
-      "Rough targets often cite ~250–500 mg/day combined from food or supplements for general adults."
+      "EPA and DHA together protect heart rhythm, lower triglycerides, support brain structure, and help resolve inflammation after injury or illness.",
+      "Most adults benefit from roughly 250–500 mg/day combined from fatty fish or algae oil—enough to matter for prevention, not just deficiency."
     ],
     "foodSources": [
       "Salmon & sardines",
@@ -662,12 +738,12 @@
   },
   "glycemicLoad": {
     "tooHigh": [
-      "High daily glycemic load means frequent large portions of high-GI carbs—white rice, bread, sweets, and drinks.",
-      "GL = GI × carbs per serving ÷ 100; watermelon can be high GI but lower GL in small portions."
+      "High daily glycemic load means your week is built on large portions of fast-digesting carbs—white rice, bread, sweets, and sugary drinks.",
+      "Over years this pattern raises risk of type 2 diabetes, fatty liver, cardiovascular disease, and the energy crashes that make snacking hard to control."
     ],
     "enough": [
-      "Moderate GL smooths glucose curves and supports steady energy.",
-      "Prioritize GL over GI alone because portion size determines real-world impact."
+      "Moderate glycemic load keeps blood sugar steadier, which protects arteries, supports weight stability, and reduces afternoon fatigue.",
+      "Beans, intact grains, vegetables, and smaller starch portions are the practical prevention lever—portion size often matters more than any single GI number."
     ],
     "foodSources": [
       "Lower GL: beans, lentils, berries",
@@ -676,6 +752,72 @@
       "Limit sugary drinks",
       "Pair carbs with protein/fat",
       "Whole grains vs. refined"
+    ]
+  },
+  "sectionMicronutrients": {
+    "enough": [
+      "Micronutrients from your food log are repeated here on purpose—longevity is not separate from vitamins, minerals, and fiber, and seeing them beside fats and compounds helps you spot gaps.",
+      "Aim nutrients (fiber, potassium, magnesium, D, B vitamins, iodine) support decades-long outcomes: blood pressure, bones, thyroid, immunity, and gut health.",
+      "Sodium is the main watch item—high % DV from processed and restaurant food raises stroke and kidney risk even when everything else looks fine."
+    ]
+  },
+  "sectionFats": {
+    "enough": [
+      "The type of fat you eat shapes LDL and HDL cholesterol, artery inflammation, and long-term heart attack and stroke risk more than total fat alone.",
+      "Diets heavy in saturated and industrial trans fat tend to stiffen blood vessels and raise LDL; swapping toward olive oil, nuts, avocado, and fish is one of the strongest dietary prevention moves.",
+      "Cholesterol from whole eggs or shellfish is less concerning for many people than the same calories from processed meats paired with refined carbs and low fiber."
+    ]
+  },
+  "sectionOmega": {
+    "enough": [
+      "Omega-3 and omega-6 fats compete in inflammation pathways—too much omega-6 from fried and packaged foods without enough omega-3 may keep the body in a low-grade inflammatory state linked to heart disease, arthritis, and cognitive aging.",
+      "EPA and DHA from fish and algae directly support brain structure, mood stability, and triglyceride control; ALA from flax and walnuts helps but converts only partly.",
+      "Improving this balance—more fatty fish and olive oil, less soybean and corn oil—is a practical anti-inflammatory strategy you can measure over weeks."
+    ]
+  },
+  "sectionCompounds": {
+    "enough": [
+      "Antioxidants, fat-soluble vitamins, and trace minerals here defend cells against oxidative damage, quiet chronic inflammation, and keep arteries and bones working correctly as you age.",
+      "Low selenium or copper over time can weaken thyroid conversion, immunity, and connective tissue; low polyphenols mean missing the plant compounds tied to lower cardiovascular and dementia risk in population studies.",
+      "Choline, carnitine, and betaine feed gut bacteria that make TMAO—see the TMAO balance section for precursors vs protectors (fiber, D and B vitamins, olive oil).",
+      "Probiotics (live cultures in yogurt, kefir, kimchi, sauerkraut) are not counted here—CFU amounts vary too much per product to log reliably; focus on regular fermented foods instead of chasing numbers."
+    ]
+  },
+  "sectionCarb": {
+    "enough": [
+      "Refined carbs and added sugar drive repeated glucose spikes that, over years, promote insulin resistance, fatty liver, weight gain, and higher diabetes and heart disease risk.",
+      "Fiber-rich whole foods digest slower, feed beneficial gut bacteria, and blunt the post-meal insulin surge that leaves you hungry again within hours.",
+      "Watching added sugar and refined flour—not just total carbs—helps prevent the metabolic pattern behind many preventable midlife health problems."
+    ]
+  },
+  "sectionCalcification": {
+    "enough": [
+      "Calcium, vitamin D, and magnesium work together to mineralize bone, maintain muscle strength, and support immune defense—reducing fracture and fall risk as you age.",
+      "Phosphorus is the mineral to watch here: it is required for life, but when blood phosphate runs high—especially from cola, processed meats, and phosphate additives—the body lowers active vitamin D and shifts calcium away from bone.",
+      "That imbalance can harden arteries (vascular calcification) while bones weaken, a double hit seen with heavy soda, fast food, and additive-heavy packaged foods even when calcium and vitamin D look fine on paper.",
+      "This balance matters most after 40, during menopause, with kidney disease, or when family history includes osteoporosis or early heart disease."
+    ]
+  },
+  "sectionDerived": {
+    "enough": [
+      "Ratios summarize whether your fat pattern is inflammatory or protective—the omega-6 : omega-3 and saturated : unsaturated scores reflect heart and joint health risk over decades, not just today's numbers.",
+      "EPA + DHA combined captures the marine omega-3 dose most tied to lower triglycerides, steadier mood, and brain aging resilience.",
+      "Near-zero trans fat is a hard prevention target: even small amounts from fried and packaged foods raise LDL, lower HDL, and increase heart attack risk with no known safe level."
+    ]
+  },
+  "sectionTmao": {
+    "enough": [
+      "TMAO is not in food—your gut bacteria make it from choline, carnitine, and betaine (eggs, red meat, liver, wheat). High blood TMAO is linked with atherosclerosis and heart attack risk in observational studies.",
+      "The strongest dietary reversals: eat less red meat and fewer egg-yolk-heavy days; eat more fiber (prebiotic) to shift gut microbes; use extra-virgin olive oil and polyphenol-rich plants (DMB and antioxidants may block bacterial TMA production).",
+      "Vitamins D, B6, B12, and folate show mixed but promising results in small trials—D plus B vitamins lowered TMAO more than D alone in one year-long study, especially when correcting deficiency. They are not a substitute for eating less carnitine-rich meat.",
+      "There is no single \"TMAO reversal pill.\" Mediterranean-style eating (low red meat, olive oil, legumes, fish) reliably lowers TMAO in trials. Probiotics may help but strain-specific; fermented foods are worth eating, hard to count."
+    ]
+  },
+  "sectionGlycemic": {
+    "enough": [
+      "Glycemic load reflects how hard your actual meals hit blood sugar—large portions of bread, rice, fries, and sweets add up to diabetes and cardiovascular risk even when individual foods seem fine.",
+      "A week dominated by high-GI staples means repeated insulin surges that promote belly fat, fatty liver, and the fatigue–craving cycle that makes healthy eating harder.",
+      "Shifting toward beans, berries, intact grains, and smaller starch portions is one of the most direct dietary ways to prevent type 2 diabetes and metabolic decline."
     ]
   }
 }
