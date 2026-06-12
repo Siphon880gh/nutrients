@@ -202,8 +202,10 @@
   ];
 
   var LONGEVITY_TMAO_LOWERING_LONGEVITY = [
-    { key: "monounsaturatedFat", label: "Monounsaturated fat (olive oil)" },
-    { key: "polyphenols", label: "Polyphenols" },
+    { key: "monounsaturatedFat", label: "Monounsaturated fat (olive oil DMB)" },
+    { key: "polyphenols", label: "Polyphenols (microbiome)" },
+    { key: "flavonoids", label: "Flavonoids (berries, tea)" },
+    { key: "resveratrol", label: "Resveratrol (grapes, berries)" },
   ];
 
   /** Micro keys where high % DV is undesirable on the longevity panel */
@@ -2788,7 +2790,7 @@
     html += longevitySectionWrap(
       "TMAO balance",
       "sectionTmao",
-      '<p class="dashboard__longevity-note">Gut bacteria turn precursors into TMAO. Compare ↑ precursors vs ↓ protectors—fiber, D and B vitamins, olive oil, fish oil.</p>',
+      '<p class="dashboard__longevity-note">Gut bacteria turn precursors into TMAO, which drives atherosclerosis. Compare ↑ precursors vs ↓ protectors: some block the bacterial enzyme (olive-oil DMB, raw garlic), some reshape the microbiome (fiber, polyphenols, flavonoids, resveratrol), and D, B6, B12, folate &amp; fish oil help clear it.</p>',
       longevityListOpen() +
         longevitySubgroupHtml("↑ Precursors — lower % DV is better", "limit") +
         LONGEVITY_TMAO_PRECURSOR_KEYS.map(function (key) {

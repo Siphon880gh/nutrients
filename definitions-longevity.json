@@ -403,6 +403,7 @@
     ],
     "enough": [
       "Polyphenols from diverse plants support blood vessel flexibility, gut microbial diversity, and lower oxidative stress—patterns linked with lower cardiovascular and cognitive decline risk over decades.",
+      "They also act as a TMAO protector: polyphenols feed beneficial microbes and curb the gut bacteria that turn choline and carnitine into TMA, the precursor of atherosclerosis-linked TMAO.",
       "Regular berries, tea, cocoa, herbs, and olive oil add protective phytochemicals that vitamins alone do not replace."
     ],
     "foodSources": [
@@ -422,6 +423,7 @@
     ],
     "enough": [
       "Flavonoids (a polyphenol subclass) support endothelial function and may modestly lower blood pressure in higher intakes.",
+      "As a TMAO protector, flavonoids from berries, tea, citrus, and onions help shift the microbiome away from the bacteria that produce TMA—part of why plant-rich eaters tend to have lower TMAO and less atherosclerosis risk.",
       "Citrus, berries, tea, and onions are reliable contributors."
     ],
     "foodSources": [
@@ -479,6 +481,7 @@
     ],
     "enough": [
       "Resveratrol is a polyphenol studied for aging pathways; food doses are far below many supplement trials.",
+      "In animal studies it lowers TMAO by remodeling gut bacteria (raising Akkermansia and bile-acid signaling), one of the microbiome-shifting protectors against atherosclerosis—human food doses are modest, so treat it as one of several plant compounds, not a standalone fix.",
       "Whole grapes, blueberries, and peanuts contribute modest amounts."
     ],
     "foodSources": [
@@ -807,10 +810,11 @@
   },
   "sectionTmao": {
     "enough": [
-      "TMAO is not in food—your gut bacteria make it from choline, carnitine, and betaine (eggs, red meat, liver, wheat). High blood TMAO is linked with atherosclerosis and heart attack risk in observational studies.",
-      "The strongest dietary reversals: eat less red meat and fewer egg-yolk-heavy days; eat more fiber (prebiotic) to shift gut microbes; use extra-virgin olive oil and polyphenol-rich plants (DMB and antioxidants may block bacterial TMA production).",
-      "Vitamins D, B6, B12, and folate show mixed but promising results in small trials—D plus B vitamins lowered TMAO more than D alone in one year-long study, especially when correcting deficiency. They are not a substitute for eating less carnitine-rich meat.",
-      "There is no single \"TMAO reversal pill.\" Mediterranean-style eating (low red meat, olive oil, legumes, fish) reliably lowers TMAO in trials. Probiotics may help but strain-specific; fermented foods are worth eating, hard to count."
+      "TMAO isn't in food—gut microbes make it from the three precursors you see (choline, carnitine, betaine), and high TMAO promotes atherosclerosis. Nutrients and compounds that counter it work in three ways:",
+      "1. Block the bacterial enzyme (TMA-lyase): DMB from extra-virgin olive oil, balsamic and red-wine vinegar, grapeseed oil; allicin from raw garlic. These act on the bug, not just the dose of meat.",
+      "2. Reshape the microbiome away from TMA producers: fiber and prebiotics, polyphenols, flavonoids, and resveratrol (grapes, berries, tea, cocoa, onions, olive oil) shift gut populations toward lower TMAO over weeks.",
+      "3. Help the body process and clear it: vitamin D, B6, B12, and folate (D plus B vitamins lowered TMAO more than D alone in one year-long trial, especially when correcting deficiency), plus EPA and DHA fish oil for the vascular side. None replace eating less carnitine-rich red meat.",
+      "There is no single \"TMAO reversal pill.\" Mediterranean-style eating (low red meat, olive oil, vinegar, legumes, fish, lots of plants) reliably lowers TMAO in trials. Probiotics and fermented foods (yogurt, kefir, kimchi, sauerkraut) may help but are strain-specific and hard to count—eat them regularly rather than chasing numbers."
     ]
   },
   "sectionGlycemic": {
