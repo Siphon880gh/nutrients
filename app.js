@@ -152,6 +152,7 @@
     sectionCompounds: { label: "Longevity & inflammation compounds" },
     sectionCarb: { label: "Carb quality & glycemic" },
     sectionMicronutrients: { label: "Micronutrients from food" },
+    sectionBoneDensity: { label: "Bone density" },
     sectionCalcification: { label: "Calcification & vascular balance" },
     sectionDerived: { label: "Derived scores" },
     sectionTmao: { label: "TMAO balance" },
@@ -186,11 +187,13 @@
     { id: "carb", label: "Carb quality & glycemic", sectionDefKey: "sectionCarb" },
   ];
 
-  var LONGEVITY_FROM_MICRO = [
-    { microKey: "calcium", label: "Calcium", limiting: true },
+  var LONGEVITY_BONE_FROM_MICRO = [
+    { microKey: "calcium", label: "Calcium", limiting: false },
     { microKey: "magnesium", label: "Magnesium", limiting: false },
     { microKey: "vitaminD", label: "Vitamin D", limiting: false },
   ];
+
+  var LONGEVITY_CALCIFICATION_FIELD_KEYS = ["phosphorus"];
 
   var LONGEVITY_COMPOUNDS_FROM_MICRO = [
     { microKey: "iodine", label: "Iodine", limiting: false },
@@ -2805,18 +2808,32 @@
     });
 
     html += longevitySectionWrap(
-      "Calcification & vascular balance",
-      "sectionCalcification",
-      '<p class="dashboard__longevity-note">Phosphorus is tracked under compounds above. Excess absorbable phosphate from cola and processed foods can pull calcium into arteries.</p>',
+      "Bone density",
+      "sectionBoneDensity",
+      '<p class="dashboard__longevity-note">Same calcium, magnesium, and vitamin D values as your micro entries—grouped here for fracture and osteoporosis prevention.</p>',
       longevityListOpen() +
         longevitySubgroupHtml("From your micro entries", "micro") +
-        LONGEVITY_FROM_MICRO.map(function (item) {
+        LONGEVITY_BONE_FROM_MICRO.map(function (item) {
           return longevityRowFromMicroKey(
             item.microKey,
             item.label,
             !!item.limiting,
             weekMicro
           );
+        }).join("") +
+        longevityListClose()
+    );
+
+    html += longevitySectionWrap(
+      "Calcification & vascular balance",
+      "sectionCalcification",
+      '<p class="dashboard__longevity-note">Phosphorus also appears under compounds above. Excess absorbable phosphate from cola and processed foods can pull calcium into arteries even when calcium and vitamin D intake looks fine.</p>',
+      longevityListOpen() +
+        longevitySubgroupHtml("Watch — lower % DV is better", "limit") +
+        LONGEVITY_CALCIFICATION_FIELD_KEYS.map(function (key) {
+          var field = longevityFieldByKey(key);
+          if (!field) return "";
+          return longevityRowFromLongevityField(field, weekLongevity);
         }).join("") +
         longevityListClose()
     );

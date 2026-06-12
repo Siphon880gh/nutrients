@@ -793,12 +793,18 @@
       "Watching added sugar and refined flour—not just total carbs—helps prevent the metabolic pattern behind many preventable midlife health problems."
     ]
   },
-  "sectionCalcification": {
+  "sectionBoneDensity": {
     "enough": [
       "Calcium, vitamin D, and magnesium work together to mineralize bone, maintain muscle strength, and support immune defense—reducing fracture and fall risk as you age.",
-      "Phosphorus is the mineral to watch here: it is required for life, but when blood phosphate runs high—especially from cola, processed meats, and phosphate additives—the body lowers active vitamin D and shifts calcium away from bone.",
-      "That imbalance can harden arteries (vascular calcification) while bones weaken, a double hit seen with heavy soda, fast food, and additive-heavy packaged foods even when calcium and vitamin D look fine on paper.",
-      "This balance matters most after 40, during menopause, with kidney disease, or when family history includes osteoporosis or early heart disease."
+      "Spread calcium through the day with enough vitamin D, magnesium, and weight-bearing activity for best lifelong bone outcomes; peak bone mass in youth and slowing loss after menopause both depend on this trio.",
+      "This balance matters most after 40, during menopause, with low sun exposure, or when family history includes osteoporosis."
+    ]
+  },
+  "sectionCalcification": {
+    "enough": [
+      "Phosphorus is required for life (ATP, DNA, bone), but when blood phosphate runs high—especially from cola, processed meats, and phosphate additives—the body lowers active vitamin D and shifts calcium away from bone.",
+      "That high-phosphate imbalance can harden arteries (vascular calcification) while bones weaken—a double hit seen with heavy soda, fast food, and additive-heavy packaged foods even when calcium and vitamin D intake looks fine on paper.",
+      "Whole-food phosphorus from meat, dairy, and legumes is rarely the problem; watch absorbable phosphate from additives. Kidney disease, heavy cola, and processed-meat diets need the closest attention."
     ]
   },
   "sectionDerived": {
