@@ -1025,15 +1025,32 @@ button.dashboard__longevity-name:focus-visible {
 
 .week-summary:not([hidden]) {
   margin-top: 0.6rem;
-  padding: 0.65rem 0.85rem;
+  padding: 0.85rem;
   border: 1px solid #9eb4cc;
   border-radius: 6px;
   background: #e8eef4;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
+  justify-content: center;
   flex-wrap: wrap;
+}
+
+.week-summary__stats {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-evenly;
+  gap: 1rem;
+  width: 100%;
+}
+
+.week-summary__stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0.25rem;
+  min-width: 7rem;
 }
 
 .week-summary__label {
@@ -1057,6 +1074,10 @@ button.dashboard__longevity-name:focus-visible {
   gap: 0.75rem 1.25rem;
   font-size: 0.8rem;
   color: #5c5c5c;
+}
+
+.week-summary__extras:empty {
+  display: none;
 }
 
 .dashboard__card {

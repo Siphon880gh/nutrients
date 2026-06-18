@@ -3235,11 +3235,23 @@
   function renderWeekSummary(week) {
     if (!weekSummaryEl) return;
 
+    var dayAvgCal = week.totalCal / DAYS.length;
+
     weekSummaryEl.innerHTML =
+      '<div class="week-summary__stats">' +
+      '<div class="week-summary__stat">' +
       '<span class="week-summary__label">Week total</span>' +
       '<span class="week-summary__calories">' +
       fmtNumGrouped(week.totalCal) +
       " cal</span>" +
+      "</div>" +
+      '<div class="week-summary__stat">' +
+      '<span class="week-summary__label">Day average</span>' +
+      '<span class="week-summary__calories">' +
+      fmtNumGrouped(dayAvgCal) +
+      " cal</span>" +
+      "</div>" +
+      "</div>" +
       '<div class="week-summary__extras" data-week-extras></div>';
   }
 
