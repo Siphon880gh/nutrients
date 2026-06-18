@@ -18,18 +18,18 @@ No backend, no bundler, no framework.
 | [AGENTS_CODE_REFERENCE-import.md](./AGENTS_CODE_REFERENCE-import.md) | Single + bulk JSON import, sample import, AI prompt panels (import + micro gaps), ChatGPT/Claude links |
 | [AGENTS_CODE_REFERENCE-ui.md](./AGENTS_CODE_REFERENCE-ui.md) | `index.html` regions, `styles.css` layout, modals, highlight overlay |
 
-When context is tight: read **this file** first, then open the one feature file you need. Full logic lives in `app.js` (~4500 lines) — load it whole only when editing behavior, otherwise navigate by the function names listed in the companion docs.
+When context is tight: read **this file** first, then open the one feature file you need. Full logic lives in `app.js` (~5200 lines) — load it whole only when editing behavior, otherwise navigate by the function names listed in the companion docs.
 
 ## Tech stack
 
 | Layer | Choice |
 |-------|--------|
 | Markup | Static HTML5 |
-| Style | Plain CSS (`styles.css`, ~2500 lines) |
-| Logic | Single IIFE in `app.js` (~4500 lines) |
+| Style | Plain CSS (`styles.css`, ~2800 lines) |
+| Logic | Single IIFE in `app.js` (~5200 lines) |
 | Data files | `config.json` (% DV tiers), `definitions-micronutrients.json`, `definitions-longevity.json`, `samples/definitions-food.json` (all `fetch`ed at boot / on demand) |
 | Reference values | `demographic-dv.js` (micro DV), `longevity-dv.js` (longevity DV) — globals, loaded before `app.js` |
-| Persistence | `localStorage` for **food definitions**, **day meals**, **demographic**, **reorder toggle** |
+| Persistence | `localStorage` for **food definitions**, **day meals**, **demographic**, **day editor height**, **reorder toggle** |
 | Run | Open `index.html` via a static file server (boot `fetch`es JSON, so `file://` will fall back to defaults) |
 
 ## Architecture (high level)
@@ -44,7 +44,8 @@ When context is tight: read **this file** first, then open the one feature file 
 │      TMAO balance, glycemic load, derived ratios)       │
 │  ← computed from day text × food-definition nutrients   │
 ├─────────────────────────────────────────────────────────┤
-│  Mon–Sun textareas (mirror backdrop = highlights)       │
+│  Mon–Sun textareas (mirror backdrop = highlights; food-name │
+│  suggest popover; shared vertical resize on .day__editor)     │
 ├─────────────────────────────────────────────────────────┤
 │  Food definitions table (CRUD, micros + longevity       │
 │  modals, single/bulk/sample import, reorder)            │
@@ -54,15 +55,15 @@ When context is tight: read **this file** first, then open the one feature file 
 └─────────────────────────────────────────────────────────┘
 ```
 
-**Persisted:** day meals (`nutrients-day-notes`), food definitions (`nutrients-food-definitions`), demographic (`nutrients-demographic`), reorder-open flag (`nutrients-keywords-reorder-open`). Bulk export/import for meals and foods; sample import from `samples/definitions-food.json`; clear per day with `confirm`.
+**Persisted:** day meals (`nutrients-day-notes`), food definitions (`nutrients-food-definitions`), demographic (`nutrients-demographic`), day editor height (`nutrients-day-editor-height`), reorder-open flag (`nutrients-keywords-reorder-open`). Bulk export/import for meals and foods; sample import from `samples/definitions-food.json`; clear per day with `confirm`.
 
 ## File tree
 
 ```text
 nutrients/
-├── index.html                      (~444 lines)  Page structure, modals, static day editors
-├── styles.css                      (~2500 lines) Layout, dashboard, table, modals, responsive, print
-├── app.js                          (~4500 lines) All application logic (IIFE)
+├── index.html                      (~550 lines)  Page structure, modals, static day editors
+├── styles.css                      (~2800 lines) Layout, dashboard, table, modals, responsive, print
+├── app.js                          (~5200 lines) All application logic (IIFE)
 ├── config.json                     Micro + longevity % DV tier colors / font weights (fetched at boot)
 ├── demographic-dv.js               window.NutrientsDemographicDv — gender micro DV targets
 ├── longevity-dv.js                 window.NutrientsLongevityDv — longevity nutrient DV targets
@@ -75,8 +76,8 @@ nutrients/
 
 ## Code flow
 
-1. **Boot** (end of `app.js`): `loadAppConfig()` → in parallel `loadMicroDefinitions()` + `loadLongevityDefinitions()` → `boot()`: `loadFoodDefinitions()` → `loadKeywordReorderOpen()` → `loadDayNotes()` → `loadDemographic()` → `renderDemographicUi()` → `renderKeywords()` → `refreshAll()`. Listeners are bound earlier in the same closure.
-2. **User types in a day note** → `updateDayHighlights` + `renderDashboard` (each `input` on day textareas).
+1. **Boot** (end of `app.js`): `loadAppConfig()` → in parallel `loadMicroDefinitions()` + `loadLongevityDefinitions()` → `boot()`: `loadFoodDefinitions()` → `loadKeywordReorderOpen()` → `loadDayNotes()` → `loadDayEditorHeight()` → `loadDemographic()` → `renderDemographicUi()` → `renderKeywords()` → `refreshAll()`. Listeners are bound earlier in the same closure (`bindDay` per textarea, `bindDayEditorResize` on the week grid).
+2. **User types in a day note** → `updateDayHighlights` + `renderDashboard` + `updateDaySuggest` (food-name autocomplete on the current line).
 3. **User edits food row / micros modal / longevity modal** → sync to `keywords[]` → `saveFoodDefinitions()` → `refreshAll()`.
 4. **Match rule:** whole-word, case-insensitive `\b(name)\b`; each occurrence adds that definition’s macros/micros/longevity once.
 5. **Calories:** protein×4 + carbs×4 + fats×9 per day; week bar sums seven days.
@@ -109,13 +110,13 @@ Micros and longevity nutrients affect **storage and UI** (button codes, import J
 ## Key constants (near top of `app.js`)
 
 - `DAYS` — seven entries `{ id, label }` (`mon`…`sun`).
-- `MICRO_FIELDS` — `{ key, label, unit, code }` for 14 micros; `code` drives button label (`f`, `na`, `b12`, …).
+- `MICRO_FIELDS` — `{ key, label, unit, code }` for 15 micros; `code` drives button label (`f`, `na`, `b12`, …).
 - `LONGEVITY_FIELDS` — `{ key, label, unit, code, group, limiting? }` for the longevity nutrients (fats, omega, compounds, carb). `group` ∈ `LONGEVITY_GROUPS` ids; `limiting: true` flips the % DV color scale (high = bad).
 - `CARB_QUALITY_KEYS` — subset of longevity keys (`glycemicIndex`, `addedSugar`, `refinedCarbs`, `netCarbs`) surfaced as `carbQuality` on import/export.
 - `LONGEVITY_GROUPS`, `LONGEVITY_FROM_MICRO`, `LONGEVITY_COMPOUNDS_FROM_MICRO`, `LONGEVITY_TMAO_*`, `LONGEVITY_DERIVED_DEFS`, `LONGEVITY_SECTION_DEFS` — drive longevity panel sections, TMAO balance, and derived scores.
 - `STORAGE_KEY` — `nutrients-food-definitions`; migrates from `STORAGE_KEY_LEGACY` (`nutrients-keywords`).
 - `STORAGE_KEY_DEMOGRAPHIC` — `nutrients-demographic`; `male` | `female`, default `male`.
-- `STORAGE_KEY_DAYS` — `nutrients-day-notes`. `STORAGE_KEY_REORDER` — `nutrients-keywords-reorder-open`.
+- `STORAGE_KEY_DAYS` — `nutrients-day-notes`. `STORAGE_KEY_DAY_EDITOR_HEIGHT` — `nutrients-day-editor-height` (shared px height for all `.day__editor`). `STORAGE_KEY_REORDER` — `nutrients-keywords-reorder-open`.
 - `demographicDv` / `longevityDv` — references to `window.NutrientsDemographicDv` / `window.NutrientsLongevityDv` (must load before `app.js`).
 - `CAL_PROTEIN|CARBS|FATS` — 4, 4, 9.
 - `CHATGPT_URL`, `CLAUDE_URL`, `IMPORT_SAMPLE_FOODS_URL` (`samples/definitions-food.json`).
@@ -129,11 +130,11 @@ Top to bottom inside `<main class="week">`:
    - Micro panel: weekly/daily view segments, **Show DV targets** toggle, **Ask AI to help fill gaps**, `#dashboard-micro-list` + `#dashboard-micro-daily-grid`
    - Longevity panel: `#dashboard-longevity-content` + processed-food note
 3. `.week__days-toolbar` — export/import all meals, clear all days
-4. `.week__grid` — seven `.day__editor` (backdrop + transparent textarea)
+4. `.week__grid` — seven `.day__editor` (backdrop + transparent textarea + optional `.day__suggest` popover). Editors are vertically resizable (`resize: vertical` on `.day__editor`); releasing the drag syncs height to all seven and persists.
 5. `.keywords` — food definitions table (`#keywords-table`, body `#keywords-list`, reorder toggle, add + bulk + sample import)
 6. `.demographic` — collapsible `#demographic-panel`; badge `#demographic-badge`
 
-Outside main (modal siblings): `#import-all-meals-modal`, `#import-all-modal`, `#keyword-position-modal`, `#import-modal`, `#micro-gaps-modal`, `#micro-def-modal`, `#longevity-modal`, `#micro-modal`.
+Outside main (modal siblings): `#import-all-meals-modal`, `#import-all-modal`, `#keyword-position-modal`, `#import-modal`, `#micro-gaps-modal`, `#micro-def-modal`, `#longevity-modal`, `#micro-modal`, `#phosphorus-binder-modal`, `#caffeine-tip-modal`.
 
 ## Safe-change checklist for AI
 
@@ -143,6 +144,8 @@ Outside main (modal siblings): `#import-all-meals-modal`, `#import-all-modal`, `
 - **Dashboard metric:** extend `totalsFromText` / `dashboardCardHtml` / `renderWeekSummary`; micro % DV uses `microTotalsFromText` / `renderMicroRequirements` / `renderMicroDailyGrid`; longevity uses `longevityTotalsFromText` / `renderLongevityPanel` ([core doc](./AGENTS_CODE_REFERENCE-core.md)).
 - **Demographic / DV:** extend `DAILY_MICRO_DV` in `demographic-dv.js` and `loadDemographic` / `setDemographic` ([core doc](./AGENTS_CODE_REFERENCE-core.md)).
 - **Day meals:** `loadDayNotes` / `saveDayNotes`; bulk `exportAllDayMeals` / `applyImportAllDayMealsReplace` (missing days: empty out or leave alone); clear via `clearDayNotes` / `clearAllDayNotes` ([core doc](./AGENTS_CODE_REFERENCE-core.md)).
+- **Day editor height:** `loadDayEditorHeight` / `saveDayEditorHeight` / `applyDayEditorHeight` / `bindDayEditorResize`; CSS default `calc(45vh - 2.5rem)` until user resizes ([ui doc](./AGENTS_CODE_REFERENCE-ui.md)).
+- **Food-name suggestions:** `updateDaySuggest` / `foodSuggestMatches` / `DAY_SUGGEST_MAX`; scrollable `.day__suggest-list`; per-line dismiss via Escape or Dismiss ([core doc](./AGENTS_CODE_REFERENCE-core.md)).
 - **% DV / longevity colors:** edit tiers in `config.json` (`microDvStatus`, `longevityStatus`); read by `tierForMicroPct` / `tierForLongevityPct`.
 - **Highlighting** requires mirror DOM; do not style matches only in textarea ([ui doc](./AGENTS_CODE_REFERENCE-ui.md)).
 - Preserve HTML-escape paths: `escapeHtml`, `escapeAttr` for injected strings.

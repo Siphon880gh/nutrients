@@ -1,6 +1,6 @@
 # AGENTS_CODE_REFERENCE-ui.md
 
-> **Approximate locations only** — use class names and file regions in `index.html` (~444 lines) and `styles.css` (~2500 lines).
+> **Approximate locations only** — use class names and file regions in `index.html` (~550 lines) and `styles.css` (~2800 lines).
 
 Markup structure, layout, modals, and the **highlight mirror** pattern.
 
@@ -26,12 +26,15 @@ Parent: [AGENTS_CODE_REFERENCE.md](./AGENTS_CODE_REFERENCE.md)
 │   │   └── #dashboard-longevity-content (JS)
 │   └── #week-summary              (hidden by default; week calories toggle)
 ├── .week__days-toolbar     (hint + export/import all meals + clear all)
-├── .week__grid             (7 columns Mon–Sun)
+├── .week__grid             (7 columns Mon–Sun; min-height only — grows with editor height)
 │   └── .day × 7
 │       ├── .day__head (label + Clear)
-│       └── .day__editor
+│       └── .day__editor (vertically resizable; shared height across all days)
 │           ├── .day__backdrop   (highlight layer)
-│           └── textarea.day__input (transparent text)
+│           ├── textarea.day__input (transparent text; resize: none)
+│           └── .day__suggest (optional food-name popover; hidden by default)
+│               ├── .day__suggest-dismiss
+│               └── .day__suggest-list (scrollable pill buttons)
 ├── .keywords               (food definitions table)
 └── .demographic            (collapsed `<details>`; ♂/♀ badge on summary)
 ```
@@ -49,12 +52,21 @@ Native `<textarea>` cannot color individual words. Pattern:
 
 **CSS** — block starting `.day__editor`:
 
-- Editor: bordered box, `position: relative`, flex child in `.day`.
-- Backdrop: `position: absolute; inset: 0`, `pointer-events: none`, `pre-wrap`.
+- Editor: bordered box, `position: relative`, `flex: 0 0 auto`, `resize: vertical`, default `height: calc(45vh - 2.5rem)`, `min-height: 6rem`, `max-height: 80vh`, `overflow: hidden`.
+- Backdrop: `position: absolute; inset: 0`, `pointer-events: none`, `pre-wrap`, `overflow: auto`.
+- Textarea: `height: 100%`, `resize: none` (resize grip is on the editor, not the textarea).
 - `.hl` — amber highlight (`#ffd966`).
 - Selection on textarea uses semi-transparent overlay so selection stays visible.
 
-**Scroll** — JS `syncScroll` copies `scrollTop` / `scrollLeft` (see core doc).
+**Food-name popover** — `.day__suggest`:
+
+- `position: absolute; right/bottom` inside `.day__editor`, `z-index: 2`, `max-height: calc(100% - 0.9rem)`.
+- `.day__suggest-list` — `overflow-y: auto`, `overscroll-behavior: contain`, `scrollbar-width: thin`; pill items `.day__suggest-item` with match highlight `.day__suggest-match`.
+- Hidden in print / print-preview.
+
+**Shared resize** — drag the bottom-right grip on any `.day__editor`; on release JS sets the same pixel height on all seven editors and saves to `localStorage` (see core doc).
+
+**Scroll** — JS `syncScroll` copies `scrollTop` / `scrollLeft` between textarea and backdrop (see core doc).
 
 ## Dashboard, micro & longevity panels
 
@@ -74,7 +86,7 @@ Native `<textarea>` cannot color individual words. Pattern:
 - `#dashboard-longevity-content` rendered by JS into grouped sections (fats, omega, compounds, carb, micronutrients-from-food, TMAO balance, derived scores, glycemic load).
 - Inline color from `config.json` `longevityStatus` (`normalTiers` vs inverted `limitingTiers`). Section/nutrient headings carry `data-longevity-def` / `data-micro-def` for explain modals.
 
-**Responsive / print** (lower `styles.css`): grid column counts shrink at breakpoints; day editors switch to `min-height` on small screens; a print stylesheet drives the **Print** preview.
+**Responsive / print** (lower `styles.css`): grid column counts shrink at breakpoints; on narrow screens `.week__grid` is `height: auto` with single column; day editors keep `resize: vertical` unless print/print-preview (`resize: none`).
 
 ## Food definitions table
 
@@ -115,6 +127,8 @@ Variants & instances:
 - **Longevity modal** (`#longevity-modal`) — `#longevity-form`; built by `initLongevityForm`.
 - **Definition modal** (`#micro-def-modal`) — shared by micro + longevity “explain”; `.modal__header--with-tools` with `#micro-def-fullscreen-toggle`; body `.micro-def__body`.
 - **Micro-gaps modal** (`#micro-gaps-modal`) — preference select + free-text + prompt preview / copy / open.
+- **Phosphorus binder modal** (`#phosphorus-binder-modal`) — educational calcium-acetate / phosphate content; opened from longevity calcification tip link (`data-action="open-phosphorus-binder-modal"`).
+- **Caffeine tip modal** (`#caffeine-tip-modal`) — gum/patches vs coffee/tea mineral absorption; opened from micro panel tip (`data-action="open-caffeine-tip-modal"`).
 - **Import modal** (`#import-modal`) — `.import-modal__body` scrollable; AI panel `.import-ai-panel`; JSON `.import-modal__json` (shorter when `.import-json-wrap--ai`).
 - **Move-to-position modal** (`#keyword-position-modal`) — `#keyword-position-select`.
 
@@ -134,9 +148,10 @@ JS does not depend on BEM beyond stable IDs (`#mon`, `#keywords-list`, etc.).
 Critical hooks (do not rename without updating the element lookups near the top of `app.js`):
 
 - Day: `mon` … `sun`, `export-all-meals`, `import-all-meals`, `import-all-meals-modal`, `clear-all-days`
-- Dashboard: `dashboard-grid`, `dashboard-print`, `week-summary`, `dashboard-week-toggle`, `dashboard-micro-toggle`, `dashboard-micro-panel`, `dashboard-micro-list`, `dashboard-micro-daily-grid`, `dashboard-micro-view-weekly`, `dashboard-micro-view-daily`, `dashboard-micro-dv-toggle`, `dashboard-micro-hint`
+- Dashboard: `dashboard-grid`, `dashboard-print`, `week-summary`, `dashboard-week-toggle`, `dashboard-micro-toggle`, `dashboard-micro-panel`, `dashboard-micro-list`, `dashboard-micro-daily-grid`, `dashboard-micro-view-weekly`, `dashboard-micro-view-daily`, `dashboard-micro-dv-toggle`, `dashboard-micro-hint`, `dashboard-micro-hint-text`
 - Longevity: `dashboard-longevity-toggle`, `dashboard-longevity-panel`, `dashboard-longevity-content`, `longevity-modal`, `longevity-form`, `longevity-modal-food`, `longevity-modal-done`
 - Micro gaps: `micro-gaps-ai-open`, `micro-gaps-modal`, `micro-gaps-preference`, `micro-gaps-additional`, `micro-gaps-ai-preview`, `micro-gaps-ai-copy`, `micro-gaps-open-chatgpt`, `micro-gaps-open-claude`, `micro-gaps-modal-done`
+- Tip modals: `phosphorus-binder-modal`, `phosphorus-binder-modal-done`, `caffeine-tip-modal`, `caffeine-tip-modal-done`
 - Definitions: `micro-def-modal`, `micro-def-modal-title`, `micro-def-body`, `micro-def-modal-done`, `micro-def-fullscreen-toggle`
 - Demographic: `demographic-panel`, `demographic-badge`, `demographic-options`
 - Table: `keywords-table`, `keywords-list`, `keywords-empty`, `keywords-reorder-toggle`, `add-keyword`, `export-all-foods`, `import-all-foods`, `import-sample-foods`, `keyword-position-modal` (+ `-food`/`-select`/`-error`/`-apply`/`-cancel`)
@@ -150,12 +165,14 @@ Critical hooks (do not rename without updating the element lookups near the top 
 
 - Changing grid column count: update **both** `index.html` day columns **and** `.week__grid` / `.dashboard__grid` in CSS.
 - Do not remove backdrop layer if highlights remain a feature.
+- Day suggest popover is injected by JS inside `.day__editor`; keep `overflow: hidden` on the editor and scroll on `.day__suggest-list` if adding more suggestion UI.
+- Shared editor resize: change `.day__editor` sizing in CSS **and** `clampDayEditorHeight` / `STORAGE_KEY_DAY_EDITOR_HEIGHT` in JS together.
 - New modal: copy `.modal` + `hidden` + backdrop `data-action` close pattern from existing modals; wire close in the global Escape handler.
 
 ## File size hint
 
 | File | ~Lines | Load when |
 |------|--------|-----------|
-| `index.html` | 444 | Structure / new regions |
-| `styles.css` | 2500 | Visual/layout only |
-| `app.js` | 4500 | Behavior (other docs) |
+| `index.html` | 550 | Structure / new regions |
+| `styles.css` | 2800 | Visual/layout only |
+| `app.js` | 5200 | Behavior (other docs) |

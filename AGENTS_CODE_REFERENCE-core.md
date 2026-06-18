@@ -1,6 +1,6 @@
 # AGENTS_CODE_REFERENCE-core.md
 
-> **Approximate locations only** — no exact line numbers. Code moves; use section names and relative position within `app.js` (~4500 lines).
+> **Approximate locations only** — no exact line numbers. Code moves; use section names and relative position within `app.js` (~5200 lines).
 
 Core logic: food definitions, matching, highlighting orchestration, dashboard totals, micro % DV, longevity panel, definition modals, localStorage.
 
@@ -21,6 +21,8 @@ Parent overview: [AGENTS_CODE_REFERENCE.md](./AGENTS_CODE_REFERENCE.md)
 | % DV tiers | `loadAppConfig`, `tierForMicroPct`, `tierForLongevityPct`, `tierForPctInList`, `pctInlineStyle` |
 | Demographic | `loadDemographic`, `saveDemographic`, `setDemographic`, `renderDemographicUi`; targets in `demographic-dv.js` |
 | Highlights | `updateDayHighlights`, `highlightedHtml`, `refreshAll`, `syncScroll` |
+| Food-name suggestions | `updateDaySuggest`, `foodSuggestMatches`, `applyDayFoodSuggest`, `hideDaySuggest`, `DAY_SUGGEST_MAX` |
+| Day editor height | `loadDayEditorHeight`, `saveDayEditorHeight`, `applyDayEditorHeight`, `bindDayEditorResize`, `clampDayEditorHeight` |
 | Persistence | `saveFoodDefinitions`, `loadFoodDefinitions`, `saveDayNotes`, `loadDayNotes` |
 | Day meals | `exportAllDayMeals`, `applyImportAllDayMealsReplace`, `getImportAllMealsMissingMode` (`empty` \| `keep`), `clearDayNotes`, `clearAllDayNotes`, `anyDayHasNotes` |
 
@@ -137,6 +139,7 @@ Read-only “learn more” content, loaded from JSON at boot:
 | `nutrients-food-definitions` | `JSON.stringify(keywords)` (includes `micros` + `longevity`) |
 | `nutrients-demographic` | `"male"` or `"female"` (default `male` if missing) |
 | `nutrients-day-notes` | `{ mon … sun }` string values per day id |
+| `nutrients-day-editor-height` | Pixel height string for all `.day__editor` boxes (clamped 6rem–80vh) |
 | `nutrients-keywords-reorder-open` | `"1"` / `"0"` reorder column visibility |
 | `nutrients-keywords` (legacy) | Migrated once on load, then removed |
 
@@ -167,6 +170,41 @@ On fetch failure, `DEFAULT_MICRO_DV_STATUS` / `DEFAULT_LONGEVITY_STATUS` are use
 
 UI mirror pattern: [AGENTS_CODE_REFERENCE-ui.md](./AGENTS_CODE_REFERENCE-ui.md)
 
+## Food-name suggestions (day autocomplete)
+
+While typing on the **current line** of a day textarea, a popover suggests matching food-definition names (up to `DAY_SUGGEST_MAX` = 8).
+
+**Show/hide** — `updateDaySuggest(textarea)` (called from `bindDay` on `input` / `keyup` / `click`, plus a document `selectionchange` handler when a day textarea is focused):
+
+- Hidden when the line is empty, already matches a full food name, or has no fuzzy/prefix matches.
+- Hidden on `blur`; dismissed per line via **Dismiss** or **Escape** (`_daySuggestDismissedLine` tracks the line start offset).
+
+**Matching** — `foodSuggestMatches(query)` against `keywordNames()`:
+
+- Prefix match (score 0), fuzzy prefix via Levenshtein on the first `query.length` chars (score 1+), or word-boundary substring (score 2).
+- Highlight range from `foodSuggestHighlightRange` → `daySuggestItemHtml`.
+
+**DOM** — `ensureDaySuggestEl` appends `.day__suggest` (`role="listbox"`) inside `.day__editor`:
+
+- **Dismiss** button (`.day__suggest-dismiss`) stays above a scrollable `.day__suggest-list` of pill buttons (`.day__suggest-item`, `data-food-name`).
+- Clicking a pill runs `applyDayFoodSuggest` (replaces text from line start to line end with the food name).
+- `mousedown` on the popover is `preventDefault` so the textarea keeps focus; wheel events on the list do not scroll the textarea behind it.
+
+Only one popover is visible at a time (`hideAllDaySuggests` before show).
+
+## Day editor height (shared resize)
+
+All seven `.day__editor` boxes share one height.
+
+**CSS** — `resize: vertical` on `.day__editor` (not `.day__input`); default `height: calc(45vh - 2.5rem)`; `min-height: 6rem`, `max-height: 80vh`. `.week__grid` uses `min-height` only (no fixed `45vh`).
+
+**Interaction** — `bindDayEditorResize` (wired when `.week__grid` exists):
+
+- `pointerdown` on the editor’s bottom-right resize grip (~24px) sets `dayEditorResizeTarget`.
+- `pointerup` reads that editor’s `offsetHeight`, runs `applyDayEditorHeight` on **all** editors, then `saveDayEditorHeight`.
+
+**Boot** — `loadDayEditorHeight()` restores the saved px height from `nutrients-day-editor-height`.
+
 ## Internal naming vs UI
 
 - Code still uses `keywords`, `addKeyword`, `#keywords-list`, `blankKeyword` — **UI strings say “Food definitions”**. Prefer extending existing names unless doing a deliberate rename pass.
@@ -183,12 +221,14 @@ UI mirror pattern: [AGENTS_CODE_REFERENCE-ui.md](./AGENTS_CODE_REFERENCE-ui.md)
 | Add longevity section | `LONGEVITY_GROUPS` / `LONGEVITY_SECTION_DEFS` + `renderLongevityPanel` |
 | Add explanatory text | key entry in `definitions-micronutrients.json` / `definitions-longevity.json` |
 | Change day clear copy | `confirmClearDay`, `confirmClearAllDays` |
+| Tune food suggestions | `DAY_SUGGEST_MAX`, `foodSuggestMatches`, `levenshtein` thresholds |
+| Change shared editor height limits | `clampDayEditorHeight`, `.day__editor` min/max in CSS |
 | Eighth column | extend `DAYS`, HTML, CSS `repeat(n)` for dashboard + week grid |
 | Stricter matching | `countKeyword` / regex builder |
 
 ## Event binding & boot (end of `app.js`)
 
-Listeners are attached in the **last ~20%** of the file: keywords table click/input, per-day `bindDay` loop, dashboard toggles (week/micro/longevity/print + micro view/DV), micros + longevity modals, definition modals (`data-micro-def` / `data-longevity-def`), demographic options, and import/sample modals — see [import doc](./AGENTS_CODE_REFERENCE-import.md).
+Listeners are attached in the **last ~20%** of the file: keywords table click/input, per-day `bindDay` loop, `bindDayEditorResize`, dashboard toggles (week/micro/longevity/print + micro view/DV), micros + longevity modals, definition modals (`data-micro-def` / `data-longevity-def`), demographic options, phosphorus/caffeine tip modals, and import/sample modals — see [import doc](./AGENTS_CODE_REFERENCE-import.md).
 
 Boot sequence (very end):
 
@@ -200,5 +240,6 @@ loadAppConfig(function () {
   loadLongevityDefinitions(definitionsReady);
 });
 // boot(): loadFoodDefinitions → loadKeywordReorderOpen → loadDayNotes →
-//         loadDemographic → renderDemographicUi → renderKeywords → refreshAll
+//         loadDayEditorHeight → loadDemographic → renderDemographicUi →
+//         renderKeywords → refreshAll
 ```
