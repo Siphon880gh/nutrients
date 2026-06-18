@@ -1,6 +1,6 @@
 [
 	{
-	  "name": "First Street Trail Mix - 10 tablespoons",
+	  "name": "First Street Trail Mix 10 tablespoons",
 	  "protein": 12.5,
 	  "carbs": 32.5,
 	  "fats": 17.5,
@@ -1409,7 +1409,7 @@
 	  }
 	},
 	{
-	  "name": "Pure Protein",
+	  "name": "Pure Protein Bar",
 	  "protein": 21,
 	  "carbs": 17,
 	  "fats": 4.5,
@@ -1441,6 +1441,105 @@
 	  }
 	},
 	{
+	  "name": "Premier Protein Shake",
+	  "protein": 30,
+	  "carbs": 4,
+	  "fats": 3,
+	  "micros": {
+		"fiber": 1,
+		"sodium": 230,
+		"potassium": 180,
+		"calcium": 650,
+		"iron": 1.8,
+		"magnesium": 90,
+		"zinc": 2.8,
+		"vitaminD": 6,
+		"vitaminC": 46
+	  },
+	  "longevity": {
+		"saturatedFat": 1,
+		"transFat": 0,
+		"cholesterol": 20
+	  },
+	  "carbQuality": {
+		"addedSugar": 0,
+		"refinedCarbs": 0,
+		"netCarbs": 3
+	  }
+	},
+	{
+	  "name": "Orgain 30g Protein Drink",
+	  "protein": 30,
+	  "carbs": 7,
+	  "fats": 3,
+	  "micros": {
+		"fiber": 2,
+		"sodium": 280,
+		"potassium": 260,
+		"calcium": 540,
+		"iron": 1.6,
+		"vitaminD": 0
+	  },
+	  "longevity": {
+		"saturatedFat": 0.5,
+		"transFat": 0,
+		"cholesterol": 20
+	  },
+	  "carbQuality": {
+		"addedSugar": 0,
+		"refinedCarbs": 0,
+		"netCarbs": 5
+	  }
+	},
+	{
+	  "name": "Orgain 20g Protein Drink",
+	  "protein": 20,
+	  "carbs": 11,
+	  "fats": 2,
+	  "micros": {
+		"fiber": 2,
+		"sodium": 240,
+		"potassium": 290,
+		"calcium": 600,
+		"iron": 1.8,
+		"vitaminD": 0
+	  },
+	  "longevity": {
+		"saturatedFat": 0.5,
+		"transFat": 0,
+		"cholesterol": 17
+	  },
+	  "carbQuality": {
+		"addedSugar": 3,
+		"refinedCarbs": 0,
+		"netCarbs": 9
+	  }
+	},
+	{
+	  "name": "Isopure 32g Protein Drink",
+	  "protein": 32,
+	  "carbs": 0,
+	  "fats": 0,
+	  "micros": {
+		"fiber": 0,
+		"sodium": 25,
+		"potassium": 0,
+		"calcium": 0,
+		"iron": 0,
+		"vitaminD": 0
+	  },
+	  "longevity": {
+		"saturatedFat": 0,
+		"transFat": 0,
+		"cholesterol": 0
+	  },
+	  "carbQuality": {
+		"addedSugar": 0,
+		"refinedCarbs": 0,
+		"netCarbs": 0
+	  }
+	},
+	{
 	  "name": "Quest Protein Bar",
 	  "protein": 21,
 	  "carbs": 22,
@@ -1465,7 +1564,31 @@
 	  }
 	},
 	{
-	  "name": "Peanut Butter",
+	  "name": "Peanut Butter 1 tablespoon",
+	  "protein": 4,
+	  "carbs": 3.5,
+	  "fats": 8,
+	  "micros": {
+		"fiber": 1.5,
+		"sodium": 48,
+		"potassium": 101,
+		"calcium": 9,
+		"iron": 0.5
+	  },
+	  "longevity": {
+		"saturatedFat": 1.5,
+		"transFat": 0,
+		"cholesterol": 0
+	  },
+	  "carbQuality": {
+		"glycemicIndex": 14,
+		"addedSugar": 0,
+		"refinedCarbs": 0,
+		"netCarbs": 2
+	  }
+	},
+	{
+	  "name": "Peanut Butter 2 tablespoons",
 	  "protein": 8,
 	  "carbs": 7,
 	  "fats": 16,
@@ -1510,6 +1633,30 @@
 		"addedSugar": 3,
 		"refinedCarbs": 0,
 		"netCarbs": 15
+	  }
+	},
+	{
+	  "name": "Whole Wheat Bread - Western Hearth 12 grain",
+	  "protein": 5,
+	  "carbs": 26,
+	  "fats": 3,
+	  "micros": {
+		"fiber": 1,
+		"sodium": 250,
+		"potassium": 70,
+		"calcium": 30,
+		"iron": 1.6
+	  },
+	  "longevity": {
+		"saturatedFat": 0,
+		"transFat": 0,
+		"cholesterol": 0
+	  },
+	  "carbQuality": {
+		"glycemicIndex": 69,
+		"addedSugar": 4,
+		"refinedCarbs": 0,
+		"netCarbs": 25
 	  }
 	},
 	{
