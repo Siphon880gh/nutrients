@@ -47,6 +47,7 @@
       vitaminB6: 1.3,
       vitaminC: 90,
       folate: 400,
+      biotin: 30,
     },
     female: {
       fiber: 25,
@@ -63,6 +64,7 @@
       vitaminB6: 1.3,
       vitaminC: 75,
       folate: 400,
+      biotin: 30,
     },
   };
 

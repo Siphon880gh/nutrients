@@ -29,7 +29,9 @@
       <div id="dashboard-grid" class="dashboard__grid"></div>
       <div id="dashboard-micro-panel" class="dashboard__micro-panel" hidden>
         <div class="dashboard__micro-intro">
-          <p id="dashboard-micro-hint" class="dashboard__micro-hint">Average daily intake vs your demographic daily values (Mon–Sun). DV's will be low if you dont fill up all days. Click a nutrient to learn more.</p>
+          <p id="dashboard-micro-hint" class="dashboard__micro-hint"><span id="dashboard-micro-hint-text">Average daily intake vs your demographic daily values (Mon–Sun). DV's will be low if you dont fill up all days. Click a nutrient to learn more.</span>
+            <button type="button" id="micro-gaps-ai-open" class="import-modal__ai-link dashboard__micro-hint-ai" aria-label="Ask AI to help fill in the gaps">✨ Ask AI to help fill gaps</button>
+          </p>
           <div class="dashboard__micro-intro-actions">
             <div class="dashboard__micro-toggle-group" role="group" aria-label="Micro view">
               <span class="dashboard__micro-toggle-label">View</span>
@@ -44,9 +46,12 @@
             </div>
           </div>
         </div>
-        <p class="dashboard__micro-tools">
-          <button type="button" id="micro-gaps-ai-open" class="import-modal__ai-link" aria-label="Ask AI to help fill in the gaps">✨ Ask AI to help fill gaps</button>
-        </p>
+        <aside class="dashboard__micro-tip" role="note">
+          <p class="dashboard__micro-tip-text">
+            Caffeine gum or patches can give you caffeine without the tannins and polyphenols in coffee and tea that bind iron and other minerals in your gut before you absorb them…
+            <button type="button" class="dashboard__micro-tip-expand" data-action="open-caffeine-tip-modal">Read more</button>
+          </p>
+        </aside>
         <div id="dashboard-micro-list" class="dashboard__micro-list" role="list"></div>
         <div id="dashboard-micro-daily-grid" class="dashboard__micro-daily-grid" hidden></div>
       </div>
@@ -436,6 +441,74 @@
       <div id="micro-def-body" class="micro-def__body"></div>
       <footer class="modal__footer">
         <button type="button" id="micro-def-modal-done" class="modal__done">Done</button>
+      </footer>
+    </div>
+  </div>
+
+  <div id="phosphorus-binder-modal" class="modal" hidden>
+    <div class="modal__backdrop" data-action="close-phosphorus-binder-modal"></div>
+    <div class="modal__panel modal__panel--wide" role="dialog" aria-modal="true" aria-labelledby="phosphorus-binder-modal-title">
+      <header class="modal__header">
+        <h3 id="phosphorus-binder-modal-title" class="modal__title">Calcium acetate &amp; phosphorus</h3>
+        <p class="modal__subtitle">Educational reference — not medical advice</p>
+      </header>
+      <div class="import-modal__body phosphorus-binder-modal__body">
+        <p class="phosphorus-binder-modal__lead">
+          Calcium acetate is a mealtime phosphate binder: it pairs with phosphorus in the gut so less is absorbed. It is commonly used when blood phosphate runs high (often with kidney disease). Most over-the-counter calcium acetate is synthesized because food sources never reach binder-strength concentrations.
+        </p>
+        <section class="phosphorus-binder-modal__section">
+          <h4 class="phosphorus-binder-modal__heading">Dosing expectancies</h4>
+          <ul class="phosphorus-binder-modal__list">
+            <li>About <strong>45&nbsp;mg of phosphorus bound per 1&nbsp;g of calcium acetate</strong>.</li>
+            <li>A typical mealtime dose of <strong>2 tablets (1,334&nbsp;mg total calcium acetate)</strong> binds roughly <strong>60–70&nbsp;mg of phosphorus</strong> from that meal.</li>
+            <li>Binders work on phosphate in the meal you take them with—timing and tablet count are usually set by a clinician for your labs, not guessed from diet tracking alone.</li>
+          </ul>
+        </section>
+        <details class="phosphorus-binder-modal__details">
+          <summary class="phosphorus-binder-modal__summary">What phosphorus does in the body</summary>
+          <div class="phosphorus-binder-modal__details-body">
+            <ul class="phosphorus-binder-modal__list">
+              <li><strong>Energy (ATP):</strong> every cell uses phosphate to store and release energy.</li>
+              <li><strong>Genes &amp; repair:</strong> DNA and RNA backbones are phosphate-based; you need phosphorus to build and copy cells.</li>
+              <li><strong>Bone:</strong> hydroxyapatite crystals in bone are a calcium–phosphate matrix—about 85% of body phosphorus sits in skeleton.</li>
+              <li><strong>Membranes &amp; signaling:</strong> phospholipids form cell membranes; phosphate groups switch proteins on and off.</li>
+              <li><strong>Acid–base balance:</strong> phosphate buffers help keep blood pH in range.</li>
+            </ul>
+            <p class="phosphorus-binder-modal__note">Whole-food phosphorus from meat, dairy, beans, and nuts supports these roles; the calcification concern is usually excess absorbable phosphate from additives, not meeting basic needs.</p>
+          </div>
+        </details>
+        <details class="phosphorus-binder-modal__details">
+          <summary class="phosphorus-binder-modal__summary">If phosphorus drops too low</summary>
+          <div class="phosphorus-binder-modal__details-body">
+            <ul class="phosphorus-binder-modal__list">
+              <li>Early signs can include weakness, loss of appetite, and bone or joint discomfort.</li>
+              <li>More severe deficiency can affect breathing muscles, cause confusion, and disrupt heart rhythm—this is a medical emergency territory.</li>
+              <li>Aggressive binder use without monitoring is the usual context for low phosphate, not simply eating less processed food.</li>
+              <li>Do not use phosphate binders to “balance” a normal diet; if you have kidney disease, elevated phosphate, or take binders already, dose changes belong with your care team and lab work.</li>
+            </ul>
+          </div>
+        </details>
+      </div>
+      <footer class="modal__footer">
+        <button type="button" id="phosphorus-binder-modal-done" class="modal__done">Done</button>
+      </footer>
+    </div>
+  </div>
+
+  <div id="caffeine-tip-modal" class="modal" hidden>
+    <div class="modal__backdrop" data-action="close-caffeine-tip-modal"></div>
+    <div class="modal__panel modal__panel--wide" role="dialog" aria-modal="true" aria-labelledby="caffeine-tip-modal-title">
+      <header class="modal__header">
+        <h3 id="caffeine-tip-modal-title" class="modal__title">Caffeine gum, patches &amp; mineral absorption</h3>
+        <p class="modal__subtitle">Why delivery method can matter for micronutrients</p>
+      </header>
+      <div class="import-modal__body micro-tip-modal__body">
+        <p>Caffeine gum or patches can be a cleaner way to get caffeine than coffee or tea. You still get the stimulant, but you skip the plant compounds that can get in the way of absorbing minerals from food.</p>
+        <p>Tannins and polyphenols in coffee and tea can bind iron, zinc, calcium, and magnesium in your gut before they are absorbed—iron is hit hardest. Coffee with a meal has been shown to reduce iron uptake by about 39%; tea, about 64%. Tea also adds oxalate, which is worth noting if you are prone to kidney stones.</p>
+        <p>Gum delivers some caffeine through the mouth lining and some through digestion; patches bypass most of the gut. Both avoid the main coffee-and-tea problem. Caffeine itself can still slightly increase how much calcium and magnesium you lose in urine, so it is not a free pass—just a different tradeoff.</p>
+      </div>
+      <footer class="modal__footer">
+        <button type="button" id="caffeine-tip-modal-done" class="modal__done">Done</button>
       </footer>
     </div>
   </div>

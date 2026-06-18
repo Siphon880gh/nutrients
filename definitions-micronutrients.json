@@ -431,5 +431,36 @@
       "Essential before conception and in early pregnancy for neural tube development (often supplemented as folic acid).",
       "Supports energy and mood when paired with B12; needs stay at 400 mcg DFE for many adult women not pregnant."
     ]
+  },
+  "biotin": {
+    "tooLow": [
+      "Low biotin is uncommon but can cause thinning hair, brittle nails, scaly rash around eyes/nose/mouth, and depression when severe.",
+      "Long-term raw egg whites (avidin blocks absorption), some antibiotics, and rare metabolic disorders increase deficiency risk."
+    ],
+    "enough": [
+      "Biotin (B7) supports keratin production for hair and nails, fatty acid synthesis, and glucose metabolism—helping energy and skin barrier health.",
+      "Most people cover needs from eggs, nuts, and varied whole foods without supplements."
+    ],
+    "tooHigh": [
+      "Biotin from food is safe; very high supplement doses can interfere with some lab tests (especially thyroid and troponin)—tell clinicians before blood work.",
+      "Megadoses are not needed for hair or nails unless a clinician confirms deficiency."
+    ],
+    "foodSources": [
+      "Eggs (yolk)",
+      "Salmon & sardines",
+      "Peanuts & almonds",
+      "Sweet potato",
+      "Spinach & broccoli",
+      "Cheddar & mozzarella",
+      "Sunflower seeds"
+    ],
+    "male": [
+      "Supports healthy hair and nail turnover and helps process fats and carbs during heavy training blocks.",
+      "Adequate intake supports skin recovery and energy metabolism without megadose supplements."
+    ],
+    "female": [
+      "Often marketed for hair and nails; food sources usually suffice unless deficiency is confirmed.",
+      "Needs stay at about 30 mcg/day through pregnancy and breastfeeding—eggs, nuts, and produce cover most diets."
+    ]
   }
 }

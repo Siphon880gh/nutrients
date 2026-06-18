@@ -12,6 +12,7 @@
   var STORAGE_KEY_LEGACY = "nutrients-keywords";
   var STORAGE_KEY_DEMOGRAPHIC = "nutrients-demographic";
   var STORAGE_KEY_DAYS = "nutrients-day-notes";
+  var STORAGE_KEY_DAY_EDITOR_HEIGHT = "nutrients-day-editor-height";
   var STORAGE_KEY_REORDER = "nutrients-keywords-reorder-open";
   var STORAGE_KEY_CALORIES = "nutrients-keywords-calories-open";
   var demographicDv =
@@ -46,7 +47,7 @@
   var dashboardMicroPanelEl = document.getElementById("dashboard-micro-panel");
   var dashboardMicroListEl = document.getElementById("dashboard-micro-list");
   var dashboardMicroDailyGridEl = document.getElementById("dashboard-micro-daily-grid");
-  var dashboardMicroHintEl = document.getElementById("dashboard-micro-hint");
+  var dashboardMicroHintTextEl = document.getElementById("dashboard-micro-hint-text");
   var dashboardMicroViewWeeklyEl = document.getElementById("dashboard-micro-view-weekly");
   var dashboardMicroViewDailyEl = document.getElementById("dashboard-micro-view-daily");
   var dashboardMicroDvToggleEl = document.getElementById("dashboard-micro-dv-toggle");
@@ -73,6 +74,12 @@
   var microDefFullscreenToggleBtn = document.getElementById(
     "micro-def-fullscreen-toggle"
   );
+  var phosphorusBinderModalEl = document.getElementById("phosphorus-binder-modal");
+  var phosphorusBinderModalDoneBtn = document.getElementById(
+    "phosphorus-binder-modal-done"
+  );
+  var caffeineTipModalEl = document.getElementById("caffeine-tip-modal");
+  var caffeineTipModalDoneBtn = document.getElementById("caffeine-tip-modal-done");
   var microDefFullscreen = false;
   var demographicBadgeEl = document.getElementById("demographic-badge");
   var demographicOptionsEl = document.getElementById("demographic-options");
@@ -173,7 +180,8 @@
     { key: "vitaminB12", label: "Vitamin B12", unit: "mcg", code: "b12" },
     { key: "vitaminB6", label: "Vitamin B6", unit: "mg", code: "b6" },
     { key: "vitaminC", label: "Vitamin C", unit: "mg", code: "c" },
-    { key: "folate", label: "Folate", unit: "mcg", code: "fol" },
+    { key: "folate", label: "Folate (B9)", unit: "mcg", code: "fol" },
+    { key: "biotin", label: "Biotin (B7)", unit: "mcg", code: "b7" },
   ];
 
   var LONGEVITY_GROUPS = [
@@ -958,6 +966,12 @@
       "  - micros.vitaminB6: poultry, fish, chickpeas, potatoes, bananas"
     );
     lines.push(
+      "  - micros.folate: leafy greens, legumes, fortified grains, avocado, eggs"
+    );
+    lines.push(
+      "  - micros.biotin: eggs, salmon, nuts, seeds, sweet potato, liver"
+    );
+    lines.push(
       "  - longevity.copper: shellfish, nuts, liver, dark chocolate (mcg)"
     );
     lines.push(
@@ -1509,6 +1523,83 @@
     updateBodyModalOpen();
   }
 
+  function openPhosphorusBinderModal() {
+    if (!phosphorusBinderModalEl) return;
+
+    if (activeImportId) closeImportModal();
+    if (importAllModalEl && !importAllModalEl.hidden) closeImportAllModal();
+    if (importAllMealsModalEl && !importAllMealsModalEl.hidden) {
+      closeImportAllMealsModal();
+    }
+    if (microGapsModalEl && !microGapsModalEl.hidden) closeMicroGapsModal();
+    if (microDefModalEl && !microDefModalEl.hidden) closeMicroDefModal();
+    if (caffeineTipModalEl && !caffeineTipModalEl.hidden) closeCaffeineTipModal();
+    if (activeMicroId) {
+      saveMicrosFromForm();
+      closeMicroModal();
+    }
+    if (activeLongevityId) {
+      saveLongevityFromForm();
+      closeLongevityModal();
+    }
+
+    phosphorusBinderModalEl.hidden = false;
+    updateBodyModalOpen();
+    if (phosphorusBinderModalDoneBtn) phosphorusBinderModalDoneBtn.focus();
+  }
+
+  function closePhosphorusBinderModal() {
+    if (!phosphorusBinderModalEl) return;
+    phosphorusBinderModalEl.hidden = true;
+    updateBodyModalOpen();
+  }
+
+  function openCaffeineTipModal() {
+    if (!caffeineTipModalEl) return;
+
+    if (activeImportId) closeImportModal();
+    if (importAllModalEl && !importAllModalEl.hidden) closeImportAllModal();
+    if (importAllMealsModalEl && !importAllMealsModalEl.hidden) {
+      closeImportAllMealsModal();
+    }
+    if (microGapsModalEl && !microGapsModalEl.hidden) closeMicroGapsModal();
+    if (microDefModalEl && !microDefModalEl.hidden) closeMicroDefModal();
+    if (phosphorusBinderModalEl && !phosphorusBinderModalEl.hidden) {
+      closePhosphorusBinderModal();
+    }
+    if (activeMicroId) {
+      saveMicrosFromForm();
+      closeMicroModal();
+    }
+    if (activeLongevityId) {
+      saveLongevityFromForm();
+      closeLongevityModal();
+    }
+
+    caffeineTipModalEl.hidden = false;
+    updateBodyModalOpen();
+    if (caffeineTipModalDoneBtn) caffeineTipModalDoneBtn.focus();
+  }
+
+  function closeCaffeineTipModal() {
+    if (!caffeineTipModalEl) return;
+    caffeineTipModalEl.hidden = true;
+    updateBodyModalOpen();
+  }
+
+  function calcificationPhosphorusTipHtml() {
+    return (
+      '<aside class="dashboard__longevity-processed-note dashboard__longevity-processed-note--section" role="note">' +
+      '<p class="dashboard__longevity-processed-note-text">' +
+      "Excess absorbable phosphate is hard to dial down on a typical American diet—cola, deli meat, cheese spreads, and fast food often carry phosphate additives that do not show up clearly on labels. " +
+      '<a href="https://www.amazon.com/s?k=calcium+acetate" target="_blank" rel="noopener noreferrer">Calcium acetate</a> ' +
+      "is sold as a mealtime phosphate binder; most commercial products are made synthetically because natural food sources do not concentrate enough for binding doses. " +
+      '<button type="button" class="dashboard__longevity-tip-link" data-action="open-phosphorus-binder-modal">Calcium acetate dosing &amp; phosphorus details</button>' +
+      "</p>" +
+      "</aside>"
+    );
+  }
+
   function openLongevityDefModal(key) {
     if (!microDefModalEl || !key) return;
 
@@ -1518,6 +1609,10 @@
       closeImportAllMealsModal();
     }
     if (microGapsModalEl && !microGapsModalEl.hidden) closeMicroGapsModal();
+    if (phosphorusBinderModalEl && !phosphorusBinderModalEl.hidden) {
+      closePhosphorusBinderModal();
+    }
+    if (caffeineTipModalEl && !caffeineTipModalEl.hidden) closeCaffeineTipModal();
     if (activeMicroId) {
       saveMicrosFromForm();
       closeMicroModal();
@@ -1550,6 +1645,11 @@
       closeImportAllMealsModal();
     }
     if (microGapsModalEl && !microGapsModalEl.hidden) closeMicroGapsModal();
+    if (microDefModalEl && !microDefModalEl.hidden) closeMicroDefModal();
+    if (phosphorusBinderModalEl && !phosphorusBinderModalEl.hidden) {
+      closePhosphorusBinderModal();
+    }
+    if (caffeineTipModalEl && !caffeineTipModalEl.hidden) closeCaffeineTipModal();
     if (activeMicroId) {
       saveMicrosFromForm();
       closeMicroModal();
@@ -1580,6 +1680,10 @@
       closeImportAllMealsModal();
     }
     if (microDefModalEl && !microDefModalEl.hidden) closeMicroDefModal();
+    if (phosphorusBinderModalEl && !phosphorusBinderModalEl.hidden) {
+      closePhosphorusBinderModal();
+    }
+    if (caffeineTipModalEl && !caffeineTipModalEl.hidden) closeCaffeineTipModal();
     if (activeMicroId) {
       saveMicrosFromForm();
       closeMicroModal();
@@ -1648,6 +1752,8 @@
       (importAllModalEl && !importAllModalEl.hidden) ||
       (microGapsModalEl && !microGapsModalEl.hidden) ||
       (microDefModalEl && !microDefModalEl.hidden) ||
+      (phosphorusBinderModalEl && !phosphorusBinderModalEl.hidden) ||
+      (caffeineTipModalEl && !caffeineTipModalEl.hidden) ||
       (keywordPositionModalEl && !keywordPositionModalEl.hidden) ||
       !!activeImportId ||
       !!activeMicroId ||
@@ -2369,8 +2475,8 @@
   }
 
   function syncMicroHintText() {
-    if (!dashboardMicroHintEl) return;
-    dashboardMicroHintEl.textContent = microViewDaily
+    if (!dashboardMicroHintTextEl) return;
+    dashboardMicroHintTextEl.textContent = microViewDaily
       ? "Per-day intake vs your demographic daily values (Mon–Sun). Click a nutrient to learn more."
       : "Average daily intake vs your demographic daily values (Mon–Sun). DV's will be low if you dont fill up all days. Click a nutrient to learn more.";
   }
@@ -2827,7 +2933,8 @@
     html += longevitySectionWrap(
       "Calcification & vascular balance",
       "sectionCalcification",
-      '<p class="dashboard__longevity-note">Phosphorus also appears under compounds above. Excess absorbable phosphate from cola and processed foods can pull calcium into arteries even when calcium and vitamin D intake looks fine.</p>',
+      '<p class="dashboard__longevity-note">Phosphorus also appears under compounds above. Excess absorbable phosphate from cola and processed foods can pull calcium into arteries even when calcium and vitamin D intake looks fine.</p>' +
+        calcificationPhosphorusTipHtml(),
       longevityListOpen() +
         longevitySubgroupHtml("Watch — lower % DV is better", "limit") +
         LONGEVITY_CALCIFICATION_FIELD_KEYS.map(function (key) {
@@ -3956,6 +4063,78 @@
     }
   }
 
+  function clampDayEditorHeight(px) {
+    var min = 96;
+    var max = Math.max(min, Math.floor(window.innerHeight * 0.8));
+    return Math.round(Math.max(min, Math.min(max, px)));
+  }
+
+  function applyDayEditorHeight(px) {
+    var height = clampDayEditorHeight(px);
+    document.querySelectorAll(".day__editor").forEach(function (editor) {
+      editor.style.height = height + "px";
+    });
+    return height;
+  }
+
+  function saveDayEditorHeight(px) {
+    try {
+      localStorage.setItem(STORAGE_KEY_DAY_EDITOR_HEIGHT, String(px));
+    } catch (e) {
+      /* ignore */
+    }
+  }
+
+  function loadDayEditorHeight() {
+    try {
+      var raw = localStorage.getItem(STORAGE_KEY_DAY_EDITOR_HEIGHT);
+      if (!raw) return;
+      var height = parseInt(raw, 10);
+      if (height > 0) applyDayEditorHeight(height);
+    } catch (e) {
+      /* ignore */
+    }
+  }
+
+  function isDayEditorResizeIntent(e, editor) {
+    var rect = editor.getBoundingClientRect();
+    var grip = 24;
+    return (
+      e.clientX >= rect.right - grip &&
+      e.clientY >= rect.bottom - grip &&
+      e.clientX <= rect.right + 6 &&
+      e.clientY <= rect.bottom + 6
+    );
+  }
+
+  var dayEditorResizeTarget = null;
+
+  function bindDayEditorResize() {
+    document.addEventListener(
+      "pointerdown",
+      function (e) {
+        if (e.button !== 0) return;
+        var editor = e.target.closest(".day__editor");
+        if (!editor) return;
+        if (!isDayEditorResizeIntent(e, editor)) return;
+        dayEditorResizeTarget = editor;
+      },
+      true
+    );
+
+    function finishDayEditorResize() {
+      if (!dayEditorResizeTarget) return;
+      var height = applyDayEditorHeight(dayEditorResizeTarget.offsetHeight);
+      saveDayEditorHeight(height);
+      dayEditorResizeTarget = null;
+    }
+
+    document.addEventListener("pointerup", finishDayEditorResize);
+    document.addEventListener("pointercancel", function () {
+      dayEditorResizeTarget = null;
+    });
+  }
+
   function loadDayNotes() {
     try {
       var raw = localStorage.getItem(STORAGE_KEY_DAYS);
@@ -4123,6 +4302,278 @@
     if (clearAllBtn) clearAllBtn.disabled = !anyDayHasNotes();
   }
 
+  var DAY_SUGGEST_MAX = 8;
+
+  function clearDaySuggestDismissed(textarea) {
+    if (!textarea) return;
+    textarea._daySuggestDismissedLine = null;
+  }
+
+  function syncDaySuggestDismissedLine(textarea) {
+    if (!textarea || textarea._daySuggestDismissedLine == null) return;
+    var info = getCurrentLineInfo(textarea);
+    if (info.lineStart !== textarea._daySuggestDismissedLine) {
+      clearDaySuggestDismissed(textarea);
+    }
+  }
+
+  function isDaySuggestDismissed(textarea) {
+    if (!textarea || textarea._daySuggestDismissedLine == null) return false;
+    var info = getCurrentLineInfo(textarea);
+    return info.lineStart === textarea._daySuggestDismissedLine;
+  }
+
+  function dismissDaySuggest(textarea) {
+    if (!textarea) return;
+    var info = getCurrentLineInfo(textarea);
+    textarea._daySuggestDismissedLine = info.lineStart;
+    hideDaySuggest(textarea);
+  }
+
+  function daySuggestPanelHtml(matches) {
+    return (
+      '<button type="button" class="day__suggest-dismiss" data-action="dismiss-suggest" aria-label="Dismiss suggestions for this line">Dismiss</button>' +
+      '<div class="day__suggest-list" role="presentation">' +
+      matches.map(daySuggestItemHtml).join("") +
+      "</div>"
+    );
+  }
+
+  function commonPrefixLen(a, b) {
+    var max = Math.min(a.length, b.length);
+    for (var i = 0; i < max; i++) {
+      if (a.charAt(i).toLowerCase() !== b.charAt(i).toLowerCase()) return i;
+    }
+    return max;
+  }
+
+  function levenshtein(a, b) {
+    var m = a.length;
+    var n = b.length;
+    if (m === 0) return n;
+    if (n === 0) return m;
+    var row = [];
+    var i;
+    var j;
+    for (j = 0; j <= n; j++) row[j] = j;
+    for (i = 1; i <= m; i++) {
+      var prev = i;
+      for (j = 1; j <= n; j++) {
+        var cost = a.charAt(i - 1) === b.charAt(j - 1) ? 0 : 1;
+        var val = Math.min(row[j - 1] + cost, prev + 1, row[j] + 1);
+        row[j - 1] = prev;
+        prev = val;
+      }
+      row[n] = prev;
+    }
+    return row[n];
+  }
+
+  function getCurrentLineInfo(textarea) {
+    var value = textarea.value;
+    var pos = textarea.selectionStart;
+    var lineStart = value.lastIndexOf("\n", pos - 1) + 1;
+    var lineEnd = value.indexOf("\n", pos);
+    if (lineEnd === -1) lineEnd = value.length;
+    return {
+      lineStart: lineStart,
+      lineEnd: lineEnd,
+      text: value.substring(lineStart, pos),
+      fullLine: value.substring(lineStart, lineEnd),
+    };
+  }
+
+  function lineMatchesFoodDefinition(text) {
+    var key = String(text).trim().toLowerCase();
+    if (!key) return false;
+    for (var i = 0; i < keywords.length; i++) {
+      if (keywords[i].name.trim().toLowerCase() === key) return true;
+    }
+    return false;
+  }
+
+  function foodSuggestHighlightRange(name, query) {
+    var q = query.trim();
+    if (!q) return { start: 0, len: 0 };
+    var ql = q.toLowerCase();
+    var nl = name.toLowerCase();
+    var at = nl.indexOf(ql);
+    if (at >= 0) return { start: at, len: q.length };
+    return { start: 0, len: commonPrefixLen(q, name) };
+  }
+
+  function foodSuggestMatches(query) {
+    var q = query.trim();
+    if (!q) return [];
+
+    var ql = q.toLowerCase();
+    var results = [];
+
+    keywordNames().forEach(function (name) {
+      var nl = name.toLowerCase();
+      var prefixLen = commonPrefixLen(q, name);
+      var match = null;
+
+      if (nl.indexOf(ql) === 0) {
+        match = { name: name, score: 0, highlight: { start: 0, len: q.length } };
+      } else if (prefixLen >= 2) {
+        var slice = nl.slice(0, q.length);
+        var dist = levenshtein(ql, slice);
+        var maxDist = q.length <= 4 ? 1 : Math.max(1, Math.floor(q.length / 4));
+        if (dist <= maxDist) {
+          match = {
+            name: name,
+            score: 1 + dist,
+            highlight: { start: 0, len: prefixLen },
+          };
+        }
+      } else {
+        var wordAt = nl.indexOf(ql);
+        if (
+          wordAt > 0 &&
+          (nl.charAt(wordAt - 1) === " " || nl.charAt(wordAt - 1) === "-")
+        ) {
+          match = {
+            name: name,
+            score: 2,
+            highlight: { start: wordAt, len: q.length },
+          };
+        }
+      }
+
+      if (match && match.highlight.len > 0) results.push(match);
+    });
+
+    results.sort(function (a, b) {
+      if (a.score !== b.score) return a.score - b.score;
+      return a.name.length - b.name.length;
+    });
+
+    return results.slice(0, DAY_SUGGEST_MAX);
+  }
+
+  function daySuggestItemHtml(match) {
+    var name = match.name;
+    var start = match.highlight.start;
+    var len = match.highlight.len;
+    var before = escapeHtml(name.substring(0, start));
+    var matched = escapeHtml(name.substring(start, start + len));
+    var after = escapeHtml(name.substring(start + len));
+    return (
+      '<button type="button" class="day__suggest-item" data-food-name="' +
+      escapeAttr(name) +
+      '" role="option">' +
+      (before ? '<span class="day__suggest-rest">' + before + "</span>" : "") +
+      '<span class="day__suggest-match">' +
+      matched +
+      "</span>" +
+      (after ? '<span class="day__suggest-rest">' + after + "</span>" : "") +
+      "</button>"
+    );
+  }
+
+  function hideAllDaySuggests() {
+    document.querySelectorAll(".day__suggest").forEach(function (el) {
+      el.hidden = true;
+      el.innerHTML = "";
+    });
+  }
+
+  function hideDaySuggest(textarea) {
+    if (!textarea) return;
+    var editor = textarea.closest(".day__editor");
+    if (!editor) return;
+    var suggestEl = editor.querySelector(".day__suggest");
+    if (!suggestEl) return;
+    suggestEl.hidden = true;
+    suggestEl.innerHTML = "";
+  }
+
+  function ensureDaySuggestEl(editor) {
+    var el = editor.querySelector(".day__suggest");
+    if (el) return el;
+
+    el = document.createElement("div");
+    el.className = "day__suggest";
+    el.hidden = true;
+    el.setAttribute("role", "listbox");
+    el.setAttribute("aria-label", "Food name suggestions");
+    el.addEventListener("mousedown", function (e) {
+      e.preventDefault();
+    });
+    el.addEventListener("wheel", function (e) {
+      var list = el.querySelector(".day__suggest-list");
+      if (!list || list.scrollHeight <= list.clientHeight) return;
+      var atTop = list.scrollTop <= 0;
+      var atBottom =
+        list.scrollTop + list.clientHeight >= list.scrollHeight - 1;
+      if ((e.deltaY < 0 && atTop) || (e.deltaY > 0 && atBottom)) return;
+      e.stopPropagation();
+    });
+    el.addEventListener("click", function (e) {
+      var textarea = editor.querySelector(".day__input");
+      if (!textarea) return;
+      if (e.target.closest('[data-action="dismiss-suggest"]')) {
+        dismissDaySuggest(textarea);
+        return;
+      }
+      var btn = e.target.closest("[data-food-name]");
+      if (!btn) return;
+      applyDayFoodSuggest(textarea, btn.getAttribute("data-food-name"));
+    });
+    editor.appendChild(el);
+    return el;
+  }
+
+  function applyDayFoodSuggest(textarea, foodName) {
+    if (!foodName) return;
+    var info = getCurrentLineInfo(textarea);
+    var value = textarea.value;
+    textarea.value =
+      value.substring(0, info.lineStart) +
+      foodName +
+      value.substring(info.lineEnd);
+    var pos = info.lineStart + foodName.length;
+    textarea.setSelectionRange(pos, pos);
+    clearDaySuggestDismissed(textarea);
+    hideDaySuggest(textarea);
+    applyDayNoteChange(textarea);
+    textarea.focus();
+  }
+
+  function updateDaySuggest(textarea) {
+    if (!textarea || !textarea.classList.contains("day__input")) return;
+    var editor = textarea.closest(".day__editor");
+    if (!editor) return;
+
+    var info = getCurrentLineInfo(textarea);
+    var query = info.text;
+
+    syncDaySuggestDismissedLine(textarea);
+
+    if (!query.trim() || lineMatchesFoodDefinition(info.fullLine)) {
+      if (!query.trim()) clearDaySuggestDismissed(textarea);
+      hideDaySuggest(textarea);
+      return;
+    }
+
+    if (isDaySuggestDismissed(textarea)) {
+      hideDaySuggest(textarea);
+      return;
+    }
+
+    var matches = foodSuggestMatches(query);
+    if (!matches.length) {
+      hideDaySuggest(textarea);
+      return;
+    }
+
+    hideAllDaySuggests();
+    var suggestEl = ensureDaySuggestEl(editor);
+    suggestEl.innerHTML = daySuggestPanelHtml(matches);
+    suggestEl.hidden = false;
+  }
+
   function applyDayNoteChange(textarea) {
     updateDayHighlights(textarea);
     renderDashboard();
@@ -4174,11 +4625,36 @@
 
     textarea.addEventListener("input", function () {
       applyDayNoteChange(textarea);
+      updateDaySuggest(textarea);
+    });
+    textarea.addEventListener("keyup", function () {
+      updateDaySuggest(textarea);
+    });
+    textarea.addEventListener("click", function () {
+      updateDaySuggest(textarea);
+    });
+    textarea.addEventListener("blur", function () {
+      hideDaySuggest(textarea);
+    });
+    textarea.addEventListener("keydown", function (e) {
+      if (e.key !== "Escape") return;
+      var editor = textarea.closest(".day__editor");
+      var suggestEl = editor && editor.querySelector(".day__suggest");
+      if (!suggestEl || suggestEl.hidden) return;
+      e.preventDefault();
+      dismissDaySuggest(textarea);
     });
     textarea.addEventListener("scroll", function () {
       syncScroll(textarea, backdrop);
     });
   }
+
+  document.addEventListener("selectionchange", function () {
+    var active = document.activeElement;
+    if (active && active.classList.contains("day__input")) {
+      updateDaySuggest(active);
+    }
+  });
 
   function onKeywordFieldChange(e) {
     var row = e.target.closest(".keywords__row");
@@ -4458,6 +4934,7 @@
   });
 
   if (weekGridEl) {
+    bindDayEditorResize();
     weekGridEl.addEventListener("click", function (e) {
       var btn = e.target.closest('[data-action="clear-day"]');
       if (!btn) return;
@@ -4605,8 +5082,20 @@
     dashboardMicroDailyGridEl.addEventListener("click", handleMicroDefClick);
   }
 
+  if (dashboardMicroPanelEl) {
+    dashboardMicroPanelEl.addEventListener("click", function (e) {
+      if (e.target.closest('[data-action="open-caffeine-tip-modal"]')) {
+        openCaffeineTipModal();
+      }
+    });
+  }
+
   if (dashboardLongevityContentEl) {
     dashboardLongevityContentEl.addEventListener("click", function (e) {
+      if (e.target.closest('[data-action="open-phosphorus-binder-modal"]')) {
+        openPhosphorusBinderModal();
+        return;
+      }
       var microBtn = e.target.closest("[data-micro-def]");
       if (microBtn) {
         openMicroDefModal(microBtn.getAttribute("data-micro-def"));
@@ -4621,6 +5110,30 @@
 
   if (microDefModalDoneBtn) {
     microDefModalDoneBtn.addEventListener("click", closeMicroDefModal);
+  }
+
+  if (phosphorusBinderModalDoneBtn) {
+    phosphorusBinderModalDoneBtn.addEventListener("click", closePhosphorusBinderModal);
+  }
+
+  if (phosphorusBinderModalEl) {
+    phosphorusBinderModalEl.addEventListener("click", function (e) {
+      if (e.target.closest('[data-action="close-phosphorus-binder-modal"]')) {
+        closePhosphorusBinderModal();
+      }
+    });
+  }
+
+  if (caffeineTipModalDoneBtn) {
+    caffeineTipModalDoneBtn.addEventListener("click", closeCaffeineTipModal);
+  }
+
+  if (caffeineTipModalEl) {
+    caffeineTipModalEl.addEventListener("click", function (e) {
+      if (e.target.closest('[data-action="close-caffeine-tip-modal"]')) {
+        closeCaffeineTipModal();
+      }
+    });
   }
 
   if (microDefFullscreenToggleBtn) {
@@ -4650,6 +5163,7 @@
     loadKeywordReorderOpen();
     loadKeywordCaloriesOpen();
     loadDayNotes();
+    loadDayEditorHeight();
     loadDemographic();
     renderDemographicUi();
     renderKeywords();

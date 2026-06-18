@@ -178,10 +178,60 @@ body {
   min-width: 0;
   font-size: 0.78rem;
   color: #5c5c5c;
+  line-height: 1.45;
 }
 
-.dashboard__micro-tools {
-  margin: 0 0 0.6rem;
+.dashboard__micro-hint-ai {
+  margin-left: 0.35rem;
+  white-space: nowrap;
+  vertical-align: baseline;
+}
+
+.dashboard__micro-tip {
+  margin: 0 0 0.65rem;
+  padding: 0.65rem 0.75rem;
+  font-size: 0.78rem;
+  line-height: 1.45;
+  color: #444;
+  background: #f6f8fa;
+  border-left: 3px solid #9eb4cc;
+  border-radius: 0 4px 4px 0;
+}
+
+.dashboard__micro-tip-text {
+  margin: 0;
+}
+
+.dashboard__micro-tip-expand {
+  display: inline;
+  padding: 0;
+  margin-left: 0.15rem;
+  font: inherit;
+  font-weight: 600;
+  color: #2a5f9e;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.dashboard__micro-tip-expand:hover {
+  color: #1a4078;
+}
+
+.micro-tip-modal__body {
+  font-size: 0.88rem;
+  line-height: 1.55;
+  color: #333;
+}
+
+.micro-tip-modal__body p {
+  margin: 0 0 0.85rem;
+}
+
+.micro-tip-modal__body p:last-child {
+  margin-bottom: 0;
 }
 
 .dashboard__micro-list {
@@ -631,6 +681,107 @@ button.dashboard__micro-day-name:focus-visible {
   color: #1a4078;
 }
 
+.dashboard__longevity-processed-note--section {
+  margin-top: 0.35rem;
+  margin-bottom: 0.5rem;
+}
+
+.dashboard__longevity-tip-link {
+  display: inline;
+  padding: 0;
+  font: inherit;
+  font-weight: 600;
+  color: #2a5f9e;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.dashboard__longevity-tip-link:hover {
+  color: #1a4078;
+}
+
+.phosphorus-binder-modal__body {
+  font-size: 0.88rem;
+  line-height: 1.5;
+  color: #333;
+}
+
+.phosphorus-binder-modal__lead {
+  margin: 0 0 1rem;
+}
+
+.phosphorus-binder-modal__section {
+  margin-bottom: 0.85rem;
+}
+
+.phosphorus-binder-modal__heading {
+  margin: 0 0 0.4rem;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: #444;
+}
+
+.phosphorus-binder-modal__list {
+  margin: 0;
+  padding-left: 1.15rem;
+}
+
+.phosphorus-binder-modal__list li {
+  margin-bottom: 0.45rem;
+}
+
+.phosphorus-binder-modal__list li:last-child {
+  margin-bottom: 0;
+}
+
+.phosphorus-binder-modal__note {
+  margin: 0.65rem 0 0;
+  font-size: 0.82rem;
+  color: #5c5c5c;
+}
+
+.phosphorus-binder-modal__details {
+  margin-bottom: 0.55rem;
+  border: 1px solid #d8dde3;
+  border-radius: 6px;
+  background: #fafbfc;
+}
+
+.phosphorus-binder-modal__details:last-child {
+  margin-bottom: 0;
+}
+
+.phosphorus-binder-modal__summary {
+  padding: 0.55rem 0.75rem;
+  font-weight: 600;
+  font-size: 0.86rem;
+  cursor: pointer;
+  list-style: none;
+}
+
+.phosphorus-binder-modal__summary::-webkit-details-marker {
+  display: none;
+}
+
+.phosphorus-binder-modal__summary::before {
+  content: "▸ ";
+  color: #5c5c5c;
+}
+
+.phosphorus-binder-modal__details[open] .phosphorus-binder-modal__summary::before {
+  content: "▾ ";
+}
+
+.phosphorus-binder-modal__details-body {
+  padding: 0 0.75rem 0.65rem;
+  border-top: 1px solid #e8ebef;
+}
+
 .dashboard__longevity-subgroup {
   margin: 0.5rem 0 0.2rem;
   padding: 0.2rem 0.35rem;
@@ -1023,7 +1174,6 @@ button.dashboard__longevity-name:focus-visible {
   display: grid;
   grid-template-columns: repeat(7, minmax(0, 1fr));
   gap: 0.75rem;
-  height: 45vh;
   min-height: 8rem;
 }
 
@@ -1051,8 +1201,11 @@ button.dashboard__longevity-name:focus-visible {
 
 .day__editor {
   position: relative;
-  flex: 1;
-  min-height: 0;
+  flex: 0 0 auto;
+  height: var(--day-editor-height, calc(45vh - 2.5rem));
+  min-height: 6rem;
+  max-height: 80vh;
+  resize: vertical;
   border: 1px solid #c8c8c4;
   border-radius: 6px;
   background: #fff;
@@ -1099,7 +1252,7 @@ button.dashboard__longevity-name:focus-visible {
   caret-color: #1a1a1a;
   font: inherit;
   line-height: 1.5;
-  resize: vertical;
+  resize: none;
   white-space: pre-wrap;
   word-wrap: break-word;
 }
@@ -1111,6 +1264,93 @@ button.dashboard__longevity-name:focus-visible {
 .day__input::selection {
   color: transparent;
   background: rgba(61, 107, 158, 0.35);
+}
+
+.day__suggest {
+  position: absolute;
+  right: 0.45rem;
+  bottom: 0.45rem;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.35rem;
+  max-width: calc(100% - 0.9rem);
+  max-height: calc(100% - 0.9rem);
+  min-height: 0;
+  pointer-events: auto;
+}
+
+.day__suggest-list {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.35rem;
+  width: 100%;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+}
+
+.day__suggest[hidden] {
+  display: none;
+}
+
+.day__suggest-dismiss {
+  margin: 0;
+  padding: 0.2rem 0.55rem;
+  border: 1px solid #c8c8c4;
+  border-radius: 999px;
+  background: #f5f5f3;
+  box-shadow: 0 1px 4px rgba(26, 26, 26, 0.08);
+  font: inherit;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  line-height: 1.35;
+  color: #666;
+  cursor: pointer;
+}
+
+.day__suggest-dismiss:hover {
+  background: #ececea;
+  border-color: #b0b0aa;
+  color: #444;
+}
+
+.day__suggest-item {
+  margin: 0;
+  padding: 0.35rem 0.65rem;
+  max-width: 100%;
+  border: 1px solid #3d6b9e;
+  border-radius: 999px;
+  background: #fff;
+  box-shadow: 0 2px 10px rgba(26, 26, 26, 0.12);
+  font: inherit;
+  font-size: 0.8125rem;
+  line-height: 1.35;
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: pointer;
+  color: #444;
+}
+
+.day__suggest-item:hover {
+  background: #eef4fa;
+  border-color: #2f5680;
+}
+
+.day__suggest-match {
+  font-weight: 600;
+  color: #2f5680;
+}
+
+.day__suggest-rest {
+  color: #555;
 }
 
 .visually-hidden {
@@ -2429,10 +2669,11 @@ body.modal-open {
   .day__editor {
     flex: none;
     min-height: 6rem;
+    max-height: none;
   }
 
   .day__input {
-    min-height: 6rem;
+    min-height: 0;
   }
 }
 
@@ -2455,7 +2696,7 @@ body.modal-open {
   .demographic,
   .modal,
   .dashboard__micro-intro-actions,
-  .dashboard__micro-tools,
+  .dashboard__micro-hint-ai,
   .dashboard__longevity-section-link {
     display: none !important;
   }
@@ -2482,6 +2723,7 @@ body.modal-open {
     background: transparent;
     overflow: visible;
     outline: none;
+    resize: none;
   }
 
   .day__editor:focus-within {
@@ -2533,11 +2775,12 @@ body.print-preview .week {
 body.print-preview .dashboard__toggles,
 body.print-preview .week__days-actions,
 body.print-preview .day__clear,
+body.print-preview .day__suggest,
 body.print-preview .keywords,
 body.print-preview .demographic,
 body.print-preview .modal,
 body.print-preview .dashboard__micro-intro-actions,
-body.print-preview .dashboard__micro-tools,
+body.print-preview .dashboard__micro-hint-ai,
 body.print-preview .dashboard__longevity-section-link {
   display: none !important;
 }
@@ -2562,6 +2805,7 @@ body.print-preview .day__editor {
   background: transparent;
   overflow: visible;
   outline: none;
+  resize: none;
 }
 
 body.print-preview .day__editor:focus-within {
