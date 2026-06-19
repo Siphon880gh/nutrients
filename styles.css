@@ -3192,6 +3192,27 @@ body.modal-open {
   font-weight: 600;
 }
 
+button.modal__title-link {
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+
+button.modal__title-link:hover {
+  color: #1a4d7a;
+}
+
+button.modal__title-link:focus-visible {
+  outline: 2px solid #3d6b9e;
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
 .modal__subtitle {
   margin: 0.25rem 0 0;
   font-size: 0.875rem;

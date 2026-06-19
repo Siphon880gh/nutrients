@@ -89,6 +89,8 @@
   var microDefModalEl = document.getElementById("micro-def-modal");
   var microDefModalTitleEl = document.getElementById("micro-def-modal-title");
   var microDefBodyEl = document.getElementById("micro-def-body");
+  var microDefModalFooterEl = document.getElementById("micro-def-modal-footer");
+  var microDefModalBackBtn = document.getElementById("micro-def-modal-back");
   var microDefModalDoneBtn = document.getElementById("micro-def-modal-done");
   var microDefFullscreenToggleBtn = document.getElementById(
     "micro-def-fullscreen-toggle"
@@ -229,6 +231,7 @@
   var longevityDefinitions = {};
   var activeMicroDefKey = null;
   var activeLongevityDefKey = null;
+  var defModalReturnSources = null;
   var activeMicroSourcesKey = null;
   var activeMicroSourcesScope = "week";
   var activeLongevitySourcesKey = null;
@@ -1678,12 +1681,42 @@
     }
   }
 
+  function setDefModalReturnSources(returnTo) {
+    defModalReturnSources = returnTo || null;
+    if (microDefModalBackBtn) {
+      microDefModalBackBtn.hidden = !defModalReturnSources;
+    }
+    if (microDefModalFooterEl) {
+      microDefModalFooterEl.classList.toggle(
+        "modal__footer--split",
+        !!defModalReturnSources
+      );
+    }
+  }
+
+  function returnFromDefModalToSources() {
+    if (!defModalReturnSources) return;
+    var returnTo = defModalReturnSources;
+    activeMicroDefKey = null;
+    activeLongevityDefKey = null;
+    setMicroDefFullscreen(false);
+    if (microDefModalEl) microDefModalEl.hidden = true;
+    setDefModalReturnSources(null);
+    updateBodyModalOpen();
+    if (returnTo.kind === "micro") {
+      openMicroSourcesModal(returnTo.key, returnTo.scope);
+    } else {
+      openLongevitySourcesModal(returnTo.key, returnTo.sourcesKind);
+    }
+  }
+
   function closeMicroDefModal() {
     if (!microDefModalEl) return;
     activeMicroDefKey = null;
     activeLongevityDefKey = null;
     setMicroDefFullscreen(false);
     microDefModalEl.hidden = true;
+    setDefModalReturnSources(null);
     updateBodyModalOpen();
   }
 
@@ -2168,6 +2201,49 @@
     return html;
   }
 
+  function hasMicroDef(key) {
+    return !!(key && microDefinitions[key]);
+  }
+
+  function hasLongevityDef(key) {
+    return !!(key && longevityDefinitions[key]);
+  }
+
+  function sourcesModalTitleHtml(label, suffix, defKey, useMicroDef) {
+    var defExists = useMicroDef ? hasMicroDef(defKey) : hasLongevityDef(defKey);
+    var labelPart;
+    if (defKey && defExists) {
+      var attr = useMicroDef ? "data-micro-def" : "data-longevity-def";
+      labelPart =
+        '<button type="button" class="modal__title-link" ' +
+        attr +
+        '="' +
+        escapeAttr(defKey) +
+        '" aria-haspopup="dialog">' +
+        escapeHtml(label) +
+        "</button>";
+    } else {
+      labelPart = escapeHtml(label);
+    }
+    return labelPart + " — " + escapeHtml(suffix);
+  }
+
+  function handleSourcesModalTitleDefClick(e, titleEl, closeModal, getReturnTo) {
+    var microBtn = e.target.closest("[data-micro-def]");
+    var longevityBtn = e.target.closest("[data-longevity-def]");
+    var btn = microBtn || longevityBtn;
+    if (!btn || !titleEl || !titleEl.contains(btn)) return false;
+    e.preventDefault();
+    var returnTo = getReturnTo ? getReturnTo() : null;
+    closeModal();
+    if (microBtn) {
+      openMicroDefModal(microBtn.getAttribute("data-micro-def"), returnTo);
+    } else {
+      openLongevityDefModal(longevityBtn.getAttribute("data-longevity-def"), returnTo);
+    }
+    return true;
+  }
+
   function renderLongevitySourcesBody() {
     if (!longevitySourcesBodyEl || !activeLongevitySourcesKey) return;
     var label;
@@ -2238,7 +2314,12 @@
     activeLongevitySourcesKind = kind;
     setLongevitySourcesFullscreen(false);
     if (longevitySourcesModalTitleEl) {
-      longevitySourcesModalTitleEl.textContent = label + " — food sources";
+      longevitySourcesModalTitleEl.innerHTML = sourcesModalTitleHtml(
+        label,
+        "my food",
+        nutrientKey,
+        kind === "micro"
+      );
     }
     if (longevitySourcesModalSubtitleEl) {
       longevitySourcesModalSubtitleEl.textContent =
@@ -2267,7 +2348,7 @@
       escapeAttr(nutrientKey) +
       '" data-longevity-sources-kind="' +
       escapeAttr(kind) +
-      '" aria-label="Show food sources ranked by amount" title="Food sources">' +
+      '" aria-label="Show my food ranked by amount" title="My food">' +
       '<svg class="dashboard__micro-sources-icon" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" focusable="false">' +
       '<rect x="1" y="8" width="3" height="7" rx="0.5"></rect>' +
       '<rect x="6.5" y="4" width="3" height="11" rx="0.5"></rect>' +
@@ -2327,7 +2408,12 @@
     setMicroSourcesFullscreen(false);
     populateMicroSourcesScopeSelect(activeMicroSourcesScope);
     if (microSourcesModalTitleEl) {
-      microSourcesModalTitleEl.textContent = field.label + " — food sources";
+      microSourcesModalTitleEl.innerHTML = sourcesModalTitleHtml(
+        field.label,
+        "my food",
+        microKey,
+        true
+      );
     }
     renderMicroSourcesBody();
     microSourcesModalEl.hidden = false;
@@ -2353,7 +2439,7 @@
       escapeAttr(microKey) +
       '"' +
       dayAttr +
-      ' aria-label="Show food sources ranked by amount" title="Food sources">' +
+      ' aria-label="Show my food ranked by amount" title="My food">' +
       '<svg class="dashboard__micro-sources-icon" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" focusable="false">' +
       '<rect x="1" y="8" width="3" height="7" rx="0.5"></rect>' +
       '<rect x="6.5" y="4" width="3" height="11" rx="0.5"></rect>' +
@@ -2547,7 +2633,7 @@
     );
   }
 
-  function openLongevityDefModal(key) {
+  function openLongevityDefModal(key, returnTo) {
     if (!microDefModalEl || !key) return;
 
     if (activeImportId) closeImportModal();
@@ -2582,12 +2668,17 @@
       microDefModalTitleEl.textContent = longevityDefLabel(key);
     }
     renderLongevityDefBody(key);
+    setDefModalReturnSources(returnTo || null);
     microDefModalEl.hidden = false;
     updateBodyModalOpen();
-    if (microDefModalDoneBtn) microDefModalDoneBtn.focus();
+    if (defModalReturnSources && microDefModalBackBtn) {
+      microDefModalBackBtn.focus();
+    } else if (microDefModalDoneBtn) {
+      microDefModalDoneBtn.focus();
+    }
   }
 
-  function openMicroDefModal(key) {
+  function openMicroDefModal(key, returnTo) {
     if (!microDefModalEl || !key) return;
     var field = microFieldByKey(key);
     if (!field) return;
@@ -2625,9 +2716,14 @@
       microDefModalTitleEl.textContent = field.label;
     }
     renderMicroDefBody(key);
+    setDefModalReturnSources(returnTo || null);
     microDefModalEl.hidden = false;
     updateBodyModalOpen();
-    if (microDefModalDoneBtn) microDefModalDoneBtn.focus();
+    if (defModalReturnSources && microDefModalBackBtn) {
+      microDefModalBackBtn.focus();
+    } else if (microDefModalDoneBtn) {
+      microDefModalDoneBtn.focus();
+    }
   }
 
   function openMicroGapsModal() {
@@ -7055,6 +7151,14 @@
       closeMicroGapsModal();
       return;
     }
+    if (tdeeCalculatorModalEl && !tdeeCalculatorModalEl.hidden) {
+      closeTdeeCalculatorModal();
+      return;
+    }
+    if (settingsModalEl && !settingsModalEl.hidden) {
+      closeSettingsModal();
+      return;
+    }
     if (microSourcesModalEl && !microSourcesModalEl.hidden) {
       if (microSourcesFullscreen) {
         setMicroSourcesFullscreen(false);
@@ -7365,7 +7469,22 @@
     longevitySourcesModalEl.addEventListener("click", function (e) {
       if (e.target.closest('[data-action="close-longevity-sources-modal"]')) {
         closeLongevitySourcesModal();
+        return;
       }
+      handleSourcesModalTitleDefClick(
+        e,
+        longevitySourcesModalTitleEl,
+        closeLongevitySourcesModal,
+        function () {
+          return activeLongevitySourcesKey
+            ? {
+                kind: "longevity",
+                key: activeLongevitySourcesKey,
+                sourcesKind: activeLongevitySourcesKind,
+              }
+            : null;
+        }
+      );
     });
   }
 
@@ -7396,8 +7515,27 @@
     microSourcesModalEl.addEventListener("click", function (e) {
       if (e.target.closest('[data-action="close-micro-sources-modal"]')) {
         closeMicroSourcesModal();
+        return;
       }
+      handleSourcesModalTitleDefClick(
+        e,
+        microSourcesModalTitleEl,
+        closeMicroSourcesModal,
+        function () {
+          return activeMicroSourcesKey
+            ? {
+                kind: "micro",
+                key: activeMicroSourcesKey,
+                scope: activeMicroSourcesScope,
+              }
+            : null;
+        }
+      );
     });
+  }
+
+  if (microDefModalBackBtn) {
+    microDefModalBackBtn.addEventListener("click", returnFromDefModalToSources);
   }
 
   if (microDefModalDoneBtn) {
@@ -7460,6 +7598,10 @@
 
   if (microDefModalEl) {
     microDefModalEl.addEventListener("click", function (e) {
+      if (e.target.closest('[data-action="return-to-sources-modal"]')) {
+        returnFromDefModalToSources();
+        return;
+      }
       if (e.target.closest('[data-action="close-micro-def-modal"]')) {
         closeMicroDefModal();
       }

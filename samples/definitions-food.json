@@ -452,7 +452,8 @@
 			"riboflavin": 0.4,
 			"niacin": 10,
 			"pantothenicAcid": 2.2,
-			"chromium": 3
+			"chromium": 3,
+			"iodine": 12
 		},
 		"longevity": {
 			"saturatedFat": 4,
@@ -490,7 +491,8 @@
 			"riboflavin": 0.24,
 			"niacin": 8.5,
 			"pantothenicAcid": 1.9,
-			"chromium": 0
+			"chromium": 0,
+			"iodine": 21
 		},
 		"longevity": {
 			"saturatedFat": 3.1,
@@ -556,7 +558,8 @@
 			"riboflavin": 0.23,
 			"niacin": 0.04,
 			"pantothenicAcid": 0.7,
-			"chromium": 0.5
+			"chromium": 0.5,
+			"iodine": 24
 		},
 		"longevity": {
 			"saturatedFat": 1.3,
@@ -622,7 +625,8 @@
 			"riboflavin": 0.92,
 			"niacin": 0.16,
 			"pantothenicAcid": 2.8,
-			"chromium": 2
+			"chromium": 2,
+			"iodine": 96
 		},
 		"longevity": {
 			"saturatedFat": 5.2,
@@ -688,7 +692,8 @@
 			"riboflavin": 0.69,
 			"niacin": 0.12,
 			"pantothenicAcid": 2.1,
-			"chromium": 1.5
+			"chromium": 1.5,
+			"iodine": 72
 		},
 		"longevity": {
 			"saturatedFat": 3.9,
@@ -1017,7 +1022,8 @@
 			"riboflavin": 0.35,
 			"niacin": 0.2,
 			"pantothenicAcid": 0.5,
-			"chromium": 0.5
+			"chromium": 0.5,
+			"iodine": 13
 		},
 		"longevity": {
 			"saturatedFat": 0.3,
@@ -1078,7 +1084,8 @@
 			"riboflavin": 0.35,
 			"niacin": 0.3,
 			"pantothenicAcid": 0.6,
-			"chromium": 1
+			"chromium": 1,
+			"iodine": 52
 		},
 		"longevity": {
 			"saturatedFat": 1,
@@ -1270,7 +1277,8 @@
 			"riboflavin": 0.18,
 			"niacin": 10.5,
 			"pantothenicAcid": 1.2,
-			"chromium": 2
+			"chromium": 2,
+			"iodine": 8
 		},
 		"longevity": {
 			"saturatedFat": 3.2,
@@ -1336,7 +1344,8 @@
 			"riboflavin": 0.55,
 			"niacin": 1.5,
 			"pantothenicAcid": 1.8,
-			"chromium": 2
+			"chromium": 2,
+			"iodine": 42
 		},
 		"longevity": {
 			"saturatedFat": 12,
@@ -1396,7 +1405,8 @@
 			"riboflavin": 0.45,
 			"niacin": 0.2,
 			"pantothenicAcid": 0.9,
-			"chromium": 2
+			"chromium": 2,
+			"iodine": 56
 		},
 		"longevity": {
 			"saturatedFat": 3.1,
@@ -1519,7 +1529,8 @@
 			"riboflavin": 0.08,
 			"niacin": 2.5,
 			"pantothenicAcid": 0.4,
-			"chromium": 1
+			"chromium": 1,
+			"iodine": 28
 		},
 		"longevity": {
 			"saturatedFat": 1.3,
@@ -1803,7 +1814,8 @@
 			"riboflavin": 0.5,
 			"niacin": 8,
 			"pantothenicAcid": 2.5,
-			"chromium": 12
+			"chromium": 12,
+			"iodine": 42
 		},
 		"longevity": {
 			"saturatedFat": 1,
@@ -1838,7 +1850,8 @@
 			"riboflavin": 0.4,
 			"niacin": 6,
 			"pantothenicAcid": 2,
-			"chromium": 10
+			"chromium": 10,
+			"iodine": 35
 		},
 		"longevity": {
 			"saturatedFat": 0.5,
@@ -1873,7 +1886,8 @@
 			"riboflavin": 0.35,
 			"niacin": 5,
 			"pantothenicAcid": 1.8,
-			"chromium": 8
+			"chromium": 8,
+			"iodine": 24
 		},
 		"longevity": {
 			"saturatedFat": 0.5,
@@ -1908,7 +1922,8 @@
 			"riboflavin": 0,
 			"niacin": 0,
 			"pantothenicAcid": 0,
-			"chromium": 0
+			"chromium": 0,
+			"iodine": 6
 		},
 		"longevity": {
 			"saturatedFat": 0,
@@ -2047,7 +2062,8 @@
 			"riboflavin": 0.08,
 			"niacin": 2,
 			"pantothenicAcid": 0.3,
-			"chromium": 3
+			"chromium": 3,
+			"iodine": 18
 		},
 		"longevity": {
 			"saturatedFat": 0,
@@ -2082,7 +2098,8 @@
 			"riboflavin": 0.1,
 			"niacin": 2.5,
 			"pantothenicAcid": 0.4,
-			"chromium": 4
+			"chromium": 4,
+			"iodine": 18
 		},
 		"longevity": {
 			"saturatedFat": 0,
