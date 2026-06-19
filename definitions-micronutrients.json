@@ -284,11 +284,16 @@
   "vitaminB12": {
     "tooLow": [
       "B12 deficiency causes fatigue, numbness/tingling, balance problems, memory issues, and megaloblastic anemia—can mimic neuropathy or dementia.",
+      "B12 is essential whenever cells divide: each division requires accurate DNA copying. When levels are too low, copying errors can accumulate—over many years raising the risk of certain cancers, particularly colon cancer.",
       "Vegans, older adults with low stomach acid, and people on metformin or long-term PPIs are high-risk groups."
     ],
     "enough": [
       "B12 is required for red blood cells, nerve myelination, DNA synthesis, and homocysteine control.",
       "In a one-year trial, vitamin D plus B12, B6, and folate lowered fasting TMAO more than vitamin D alone—likely through homocysteine and choline metabolism cross-talk, though mechanisms are still unclear."
+    ],
+    "tooHigh": [
+      "While deficiency can harm DNA, some studies link very high B12—especially from long-term high-dose supplements—to lung, pancreatic, and liver cancer, certain myeloid blood cancers, and poorer outcomes in some cancer patients.",
+      "Food sources are safe at normal intake; routine megadose supplements beyond correcting deficiency are rarely warranted."
     ],
     "foodSources": [
       "Clams & nutritional yeast (fortified)",
@@ -466,6 +471,7 @@
   "thiamin": {
     "tooLow": [
       "Low thiamin (B1) causes fatigue, irritability, poor appetite, and nerve problems; severe deficiency leads to beriberi.",
+      "Without enough thiamin, your body cannot efficiently convert carbohydrates into usable energy—instead, carbs are diverted into lactic acid, which can build up to dangerous levels (lactic acidosis).",
       "Heavy alcohol use, very refined diets, and frequent vomiting raise deficiency risk."
     ],
     "enough": [
