@@ -234,6 +234,33 @@ body {
   margin-bottom: 0;
 }
 
+.micro-tip-modal__heading {
+  margin: 1rem 0 0.4rem;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #333;
+}
+
+.micro-tip-modal__heading:first-child {
+  margin-top: 0;
+}
+
+.micro-tip-modal__list {
+  margin: 0 0 0.85rem;
+  padding-left: 1.15rem;
+  font-size: 0.88rem;
+  line-height: 1.55;
+  color: #333;
+}
+
+.micro-tip-modal__list li {
+  margin-bottom: 0.45rem;
+}
+
+.micro-tip-modal__list li:last-child {
+  margin-bottom: 0;
+}
+
 .dashboard__micro-list {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(13rem, 1fr));
@@ -778,6 +805,36 @@ button.dashboard__micro-day-name:focus-visible {
   margin: 0 0 0.6rem;
   font-size: 0.78rem;
   color: #5c5c5c;
+}
+
+.dashboard__longevity-intro {
+  margin: 0 0 0.65rem;
+  padding: 0.65rem 0.75rem;
+  font-size: 0.78rem;
+  line-height: 1.45;
+  color: #444;
+  background: #f4f7f2;
+  border-left: 3px solid #7a9e6a;
+  border-radius: 0 4px 4px 0;
+}
+
+.dashboard__longevity-intro-text {
+  margin: 0;
+}
+
+.dashboard__longevity-disclaimer {
+  margin: 0 0 0.65rem;
+  padding: 0.65rem 0.75rem;
+  font-size: 0.78rem;
+  line-height: 1.45;
+  color: #6b3a12;
+  background: #fff4e8;
+  border-left: 3px solid #e67e22;
+  border-radius: 0 4px 4px 0;
+}
+
+.dashboard__longevity-disclaimer-text {
+  margin: 0;
 }
 
 .dashboard__longevity-legend {

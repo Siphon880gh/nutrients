@@ -84,6 +84,10 @@
   var fatsCholesterolTipModalDoneBtn = document.getElementById(
     "fats-cholesterol-tip-modal-done"
   );
+  var tmaoProtectorsTipModalEl = document.getElementById("tmao-protectors-tip-modal");
+  var tmaoProtectorsTipModalDoneBtn = document.getElementById(
+    "tmao-protectors-tip-modal-done"
+  );
   var microDefFullscreen = false;
   var demographicBadgeEl = document.getElementById("demographic-badge");
   var demographicOptionsEl = document.getElementById("demographic-options");
@@ -1639,6 +1643,9 @@
     if (fatsCholesterolTipModalEl && !fatsCholesterolTipModalEl.hidden) {
       closeFatsCholesterolTipModal();
     }
+    if (tmaoProtectorsTipModalEl && !tmaoProtectorsTipModalEl.hidden) {
+      closeTmaoProtectorsTipModal();
+    }
     if (activeMicroId) {
       saveMicrosFromForm();
       closeMicroModal();
@@ -2036,6 +2043,9 @@
     if (fatsCholesterolTipModalEl && !fatsCholesterolTipModalEl.hidden) {
       closeFatsCholesterolTipModal();
     }
+    if (tmaoProtectorsTipModalEl && !tmaoProtectorsTipModalEl.hidden) {
+      closeTmaoProtectorsTipModal();
+    }
     if (activeMicroId) {
       saveMicrosFromForm();
       closeMicroModal();
@@ -2072,6 +2082,9 @@
     if (fatsCholesterolTipModalEl && !fatsCholesterolTipModalEl.hidden) {
       closeFatsCholesterolTipModal();
     }
+    if (tmaoProtectorsTipModalEl && !tmaoProtectorsTipModalEl.hidden) {
+      closeTmaoProtectorsTipModal();
+    }
     if (activeMicroId) {
       saveMicrosFromForm();
       closeMicroModal();
@@ -2106,6 +2119,9 @@
       closePhosphorusBinderModal();
     }
     if (caffeineTipModalEl && !caffeineTipModalEl.hidden) closeCaffeineTipModal();
+    if (tmaoProtectorsTipModalEl && !tmaoProtectorsTipModalEl.hidden) {
+      closeTmaoProtectorsTipModal();
+    }
     if (activeMicroId) {
       saveMicrosFromForm();
       closeMicroModal();
@@ -2126,12 +2142,60 @@
     updateBodyModalOpen();
   }
 
+  function openTmaoProtectorsTipModal() {
+    if (!tmaoProtectorsTipModalEl) return;
+
+    if (activeImportId) closeImportModal();
+    if (importAllModalEl && !importAllModalEl.hidden) closeImportAllModal();
+    if (importAllMealsModalEl && !importAllMealsModalEl.hidden) {
+      closeImportAllMealsModal();
+    }
+    if (microGapsModalEl && !microGapsModalEl.hidden) closeMicroGapsModal();
+    if (microDefModalEl && !microDefModalEl.hidden) closeMicroDefModal();
+    if (phosphorusBinderModalEl && !phosphorusBinderModalEl.hidden) {
+      closePhosphorusBinderModal();
+    }
+    if (caffeineTipModalEl && !caffeineTipModalEl.hidden) closeCaffeineTipModal();
+    if (fatsCholesterolTipModalEl && !fatsCholesterolTipModalEl.hidden) {
+      closeFatsCholesterolTipModal();
+    }
+    if (activeMicroId) {
+      saveMicrosFromForm();
+      closeMicroModal();
+    }
+    if (activeLongevityId) {
+      saveLongevityFromForm();
+      closeLongevityModal();
+    }
+
+    tmaoProtectorsTipModalEl.hidden = false;
+    updateBodyModalOpen();
+    if (tmaoProtectorsTipModalDoneBtn) tmaoProtectorsTipModalDoneBtn.focus();
+  }
+
+  function closeTmaoProtectorsTipModal() {
+    if (!tmaoProtectorsTipModalEl) return;
+    tmaoProtectorsTipModalEl.hidden = true;
+    updateBodyModalOpen();
+  }
+
   function fatsCholesterolTipHtml() {
     return (
       '<aside class="dashboard__longevity-processed-note dashboard__longevity-processed-note--section" role="note">' +
       '<p class="dashboard__longevity-processed-note-text">' +
       "For most healthy adults, eggs in moderation are fine for your heart. Egg yolks are high in cholesterol, but dietary cholesterol affects blood levels less than saturated fat does… " +
       '<button type="button" class="dashboard__longevity-tip-link" data-action="open-fats-cholesterol-tip-modal">Read more</button>' +
+      "</p>" +
+      "</aside>"
+    );
+  }
+
+  function tmaoProtectorsTipHtml() {
+    return (
+      '<aside class="dashboard__longevity-processed-note dashboard__longevity-processed-note--section" role="note">' +
+      '<p class="dashboard__longevity-processed-note-text">' +
+      "<strong>TMAO protectors</strong> lower the gut-and-liver compound tied to atherosclerosis through what you eat—not only by cutting choline, carnitine, and betaine. No single protector does it all—olive-oil DMB and raw garlic block the bacterial enzyme; fiber, polyphenols, flavonoids, and resveratrol reshape the microbiome; vitamin D, B vitamins, and fish oil help the body clear TMAO. All matter alongside eating less carnitine-rich red meat… " +
+      '<button type="button" class="dashboard__longevity-tip-link" data-action="open-tmao-protectors-tip-modal">Read more</button>' +
       "</p>" +
       "</aside>"
     );
@@ -2165,6 +2229,9 @@
     if (caffeineTipModalEl && !caffeineTipModalEl.hidden) closeCaffeineTipModal();
     if (fatsCholesterolTipModalEl && !fatsCholesterolTipModalEl.hidden) {
       closeFatsCholesterolTipModal();
+    }
+    if (tmaoProtectorsTipModalEl && !tmaoProtectorsTipModalEl.hidden) {
+      closeTmaoProtectorsTipModal();
     }
     if (activeMicroId) {
       saveMicrosFromForm();
@@ -2206,6 +2273,9 @@
     if (fatsCholesterolTipModalEl && !fatsCholesterolTipModalEl.hidden) {
       closeFatsCholesterolTipModal();
     }
+    if (tmaoProtectorsTipModalEl && !tmaoProtectorsTipModalEl.hidden) {
+      closeTmaoProtectorsTipModal();
+    }
     if (activeMicroId) {
       saveMicrosFromForm();
       closeMicroModal();
@@ -2242,6 +2312,9 @@
     if (caffeineTipModalEl && !caffeineTipModalEl.hidden) closeCaffeineTipModal();
     if (fatsCholesterolTipModalEl && !fatsCholesterolTipModalEl.hidden) {
       closeFatsCholesterolTipModal();
+    }
+    if (tmaoProtectorsTipModalEl && !tmaoProtectorsTipModalEl.hidden) {
+      closeTmaoProtectorsTipModal();
     }
     if (activeMicroId) {
       saveMicrosFromForm();
@@ -2316,6 +2389,7 @@
       (phosphorusBinderModalEl && !phosphorusBinderModalEl.hidden) ||
       (caffeineTipModalEl && !caffeineTipModalEl.hidden) ||
       (fatsCholesterolTipModalEl && !fatsCholesterolTipModalEl.hidden) ||
+      (tmaoProtectorsTipModalEl && !tmaoProtectorsTipModalEl.hidden) ||
       (keywordPositionModalEl && !keywordPositionModalEl.hidden) ||
       !!activeImportId ||
       !!activeMicroId ||
@@ -3667,7 +3741,8 @@
     html += longevitySectionWrap(
       "TMAO balance",
       "sectionTmao",
-      '<p class="dashboard__longevity-note">Gut bacteria turn precursors into TMAO, which drives atherosclerosis. Compare ↑ precursors vs ↓ protectors: some block the bacterial enzyme (olive-oil DMB, raw garlic), some reshape the microbiome (fiber, polyphenols, flavonoids, resveratrol), and D, B6, B12, folate &amp; fish oil help clear it.</p>',
+      '<p class="dashboard__longevity-note">Gut bacteria turn precursors into TMAO, which drives atherosclerosis. Compare ↑ precursors vs ↓ protectors below.</p>' +
+        tmaoProtectorsTipHtml(),
       longevityListOpen() +
         longevitySubgroupHtml("↑ Precursors — lower % DV is better", "limit") +
         LONGEVITY_TMAO_PRECURSOR_KEYS.map(function (key) {
@@ -5876,6 +5951,10 @@
         openFatsCholesterolTipModal();
         return;
       }
+      if (e.target.closest('[data-action="open-tmao-protectors-tip-modal"]')) {
+        openTmaoProtectorsTipModal();
+        return;
+      }
       var longevitySourcesBtn = e.target.closest("[data-longevity-sources]");
       if (longevitySourcesBtn) {
         e.preventDefault();
@@ -5977,6 +6056,18 @@
     fatsCholesterolTipModalEl.addEventListener("click", function (e) {
       if (e.target.closest('[data-action="close-fats-cholesterol-tip-modal"]')) {
         closeFatsCholesterolTipModal();
+      }
+    });
+  }
+
+  if (tmaoProtectorsTipModalDoneBtn) {
+    tmaoProtectorsTipModalDoneBtn.addEventListener("click", closeTmaoProtectorsTipModal);
+  }
+
+  if (tmaoProtectorsTipModalEl) {
+    tmaoProtectorsTipModalEl.addEventListener("click", function (e) {
+      if (e.target.closest('[data-action="close-tmao-protectors-tip-modal"]')) {
+        closeTmaoProtectorsTipModal();
       }
     });
   }
