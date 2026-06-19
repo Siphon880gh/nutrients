@@ -462,5 +462,160 @@
       "Often marketed for hair and nails; food sources usually suffice unless deficiency is confirmed.",
       "Needs stay at about 30 mcg/day through pregnancy and breastfeeding—eggs, nuts, and produce cover most diets."
     ]
+  },
+  "thiamin": {
+    "tooLow": [
+      "Low thiamin (B1) causes fatigue, irritability, poor appetite, and nerve problems; severe deficiency leads to beriberi.",
+      "Heavy alcohol use, very refined diets, and frequent vomiting raise deficiency risk."
+    ],
+    "enough": [
+      "Thiamin helps convert carbs into energy and supports nerve and heart muscle function—keeping you alert and steady during long workdays.",
+      "Most varied diets with grains, pork, or legumes cover needs without supplements."
+    ],
+    "tooHigh": [
+      "Thiamin from food is safe; high-dose supplements are rarely needed and can cause stomach upset in sensitive people.",
+      "Water-soluble excess is usually excreted—megadoses do not boost energy beyond correcting deficiency."
+    ],
+    "foodSources": [
+      "Pork & ham",
+      "Fortified cereals & bread",
+      "Black beans & lentils",
+      "Sunflower seeds",
+      "Salmon & trout",
+      "Acorn squash",
+      "Green peas"
+    ],
+    "male": [
+      "Supports energy metabolism during heavy training and long shifts when carb intake is high.",
+      "Alcohol-heavy weeks deplete thiamin faster—whole grains and legumes help restore balance."
+    ],
+    "female": [
+      "Important during pregnancy and breastfeeding when energy and nerve demands rise.",
+      "Helps mood and focus when paired with other B vitamins in a balanced diet."
+    ]
+  },
+  "riboflavin": {
+    "tooLow": [
+      "Low riboflavin (B2) can cause cracked lips, sore throat, skin inflammation, and anemia-like fatigue.",
+      "Vegan diets without dairy or fortified foods and heavy alcohol use increase risk."
+    ],
+    "enough": [
+      "Riboflavin supports energy production, antioxidant enzymes, and healthy skin and eyes—helping you recover from daily oxidative stress.",
+      "Milk, eggs, and leafy greens usually cover needs in mixed diets."
+    ],
+    "tooHigh": [
+      "Riboflavin from food is safe; excess turns urine bright yellow harmlessly.",
+      "Supplements above needs rarely help performance and are unnecessary for most people."
+    ],
+    "foodSources": [
+      "Milk & yogurt",
+      "Eggs",
+      "Lean beef & organ meats",
+      "Almonds",
+      "Spinach & broccoli",
+      "Fortified cereals",
+      "Salmon"
+    ],
+    "male": [
+      "Supports antioxidant defenses during sun exposure and heavy exercise.",
+      "Helps process fats and proteins when eating high-protein diets."
+    ],
+    "female": [
+      "Supports skin and eye health; needs stay steady through pregnancy at about 1.4 mg/day.",
+      "Oral contraceptives may slightly increase riboflavin turnover in some women."
+    ]
+  },
+  "niacin": {
+    "tooLow": [
+      "Low niacin (B3) causes fatigue, digestive issues, and skin changes; severe deficiency causes pellagra.",
+      "Very low-protein or corn-heavy diets without variety are rare causes in developed countries."
+    ],
+    "enough": [
+      "Niacin supports energy metabolism, DNA repair, and cholesterol balance at food-level intakes—keeping cells fueled and skin healthy.",
+      "Poultry, fish, peanuts, and fortified grains typically cover needs."
+    ],
+    "tooHigh": [
+      "High-dose niacin supplements (often 500 mg+) can cause flushing, liver stress, and glucose changes—prescription doses need monitoring.",
+      "Food niacin is safe; megadoses are not needed for heart health without medical supervision."
+    ],
+    "foodSources": [
+      "Chicken & turkey",
+      "Tuna & salmon",
+      "Peanuts & peanut butter",
+      "Mushrooms",
+      "Fortified cereals & bread",
+      "Brown rice",
+      "Green peas"
+    ],
+    "male": [
+      "Higher calorie intake generally means higher niacin needs—protein-rich meals cover most active men.",
+      "Supports energy turnover during heavy training blocks."
+    ],
+    "female": [
+      "Needs are slightly lower (about 14 mg NE/day) but still essential for skin and energy.",
+      "Adequate niacin supports mood and metabolism alongside other B vitamins."
+    ]
+  },
+  "pantothenicAcid": {
+    "tooLow": [
+      "Low pantothenic acid (B5) is rare but can cause fatigue, numbness, and burning feet in severe deficiency.",
+      "Only extreme malnutrition or rare metabolic disorders typically cause noticeable shortfalls."
+    ],
+    "enough": [
+      "Pantothenic acid helps make coenzyme A for energy, hormones, and fat metabolism—supporting steady energy and stress resilience.",
+      "It is widespread in animal and plant foods, so varied diets usually cover the ~5 mg/day target."
+    ],
+    "tooHigh": [
+      "Pantothenic acid from food is safe; very high supplements may cause diarrhea in some people.",
+      "Megadoses are not proven to boost energy or hair growth beyond correcting deficiency."
+    ],
+    "foodSources": [
+      "Chicken & beef",
+      "Mushrooms",
+      "Avocado",
+      "Broccoli & kale",
+      "Eggs",
+      "Sunflower seeds",
+      "Yogurt"
+    ],
+    "male": [
+      "Supports hormone and energy metabolism during high-stress or heavy training periods.",
+      "Found in most protein-rich meals—shortfalls are uncommon with varied eating."
+    ],
+    "female": [
+      "Needs stay at about 5 mg/day through pregnancy and breastfeeding.",
+      "Works with other B vitamins for energy and adrenal-related stress pathways."
+    ]
+  },
+  "chromium": {
+    "tooLow": [
+      "Low chromium is hard to diagnose; some research links inadequate intake to poorer blood sugar control, but clear deficiency symptoms are uncommon.",
+      "Very refined diets low in whole grains and vegetables may provide less chromium."
+    ],
+    "enough": [
+      "Chromium may help insulin sensitivity and glucose metabolism at adequate intakes—supporting steady energy between meals.",
+      "Broccoli, whole grains, and varied whole foods usually supply enough without supplements."
+    ],
+    "tooHigh": [
+      "Chromium supplements in high doses have unclear long-term safety; stick to food sources unless a clinician recommends otherwise.",
+      "Industrial hexavalent chromium is toxic—that is not the form in food or typical supplements."
+    ],
+    "foodSources": [
+      "Broccoli",
+      "Grape juice",
+      "Whole grains & bread",
+      "Brewer's yeast",
+      "Beef & turkey",
+      "Apples & bananas",
+      "Green beans"
+    ],
+    "male": [
+      "May support glucose handling during heavy training and high-carb meals—whole grains and broccoli are practical sources.",
+      "Adequate intake fits into a longevity-minded diet without relying on pills."
+    ],
+    "female": [
+      "Some studies link adequate chromium to better insulin sensitivity; needs are slightly lower (about 25 mcg/day).",
+      "Whole-food sources are preferable to high-dose chromium picolinate supplements."
+    ]
   }
 }

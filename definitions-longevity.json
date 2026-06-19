@@ -740,6 +740,11 @@
     ]
   },
   "glycemicLoad": {
+    "targetReference": [
+      "Two different scales get mixed up online. Per serving or per meal: GL ≤10 is low, 11–19 moderate, ≥20 high — so a GL of 80 for one meal would be very high. This app tracks your daily average across the whole week.",
+      "For daily totals, common guides use roughly <100 GL/day as favorable, 100–120 moderate, and >120 high. The % target bar uses 100 as that daily reference — not a vitamin % DV and not a blood glucose reading.",
+      "Some programs cite ~80 GL/day on a 2000 kcal diet as a moderate target when stepping down from a high-carb pattern; others use <80/day as a strict low-GL diet definition. There is no single official cutoff — portion size and individual metabolism still matter."
+    ],
     "tooHigh": [
       "High daily glycemic load means your week is built on large portions of fast-digesting carbs—white rice, bread, sweets, and sugary drinks.",
       "Over years this pattern raises risk of type 2 diabetes, fatty liver, cardiovascular disease, and the energy crashes that make snacking hard to control."

@@ -174,10 +174,15 @@
     { key: "iron", label: "Iron", unit: "mg", code: "fe" },
     { key: "magnesium", label: "Magnesium", unit: "mg", code: "mg" },
     { key: "zinc", label: "Zinc", unit: "mg", code: "zn" },
+    { key: "chromium", label: "Chromium", unit: "mcg", code: "cr" },
     { key: "iodine", label: "Iodine", unit: "mcg", code: "i" },
     { key: "vitaminA", label: "Vitamin A", unit: "mcg", code: "a" },
     { key: "vitaminD", label: "Vitamin D", unit: "mcg", code: "d" },
     { key: "vitaminB12", label: "Vitamin B12", unit: "mcg", code: "b12" },
+    { key: "thiamin", label: "Thiamin (B1)", unit: "mg", code: "b1" },
+    { key: "riboflavin", label: "Riboflavin (B2)", unit: "mg", code: "b2" },
+    { key: "niacin", label: "Niacin (B3)", unit: "mg", code: "b3" },
+    { key: "pantothenicAcid", label: "Pantothenic acid (B5)", unit: "mg", code: "b5" },
     { key: "vitaminB6", label: "Vitamin B6", unit: "mg", code: "b6" },
     { key: "vitaminC", label: "Vitamin C", unit: "mg", code: "c" },
     { key: "folate", label: "Folate (B9)", unit: "mcg", code: "fol" },
@@ -960,7 +965,25 @@
     });
     lines.push("Estimation hints — omit any key you cannot estimate:");
     lines.push(
+      "  - micros.zinc: oysters, beef, pumpkin seeds, chickpeas, chicken (mg)"
+    );
+    lines.push(
+      "  - micros.chromium: broccoli, grape juice, whole grains, brewer's yeast (mcg; often low in foods)"
+    );
+    lines.push(
       "  - micros.iodine: iodized table salt ~45 mcg/g salt; also fish, dairy, eggs"
+    );
+    lines.push(
+      "  - micros.thiamin: pork, fortified grains, legumes, sunflower seeds (mg)"
+    );
+    lines.push(
+      "  - micros.riboflavin: milk, eggs, lean beef, almonds, spinach (mg)"
+    );
+    lines.push(
+      "  - micros.niacin: poultry, tuna, peanuts, mushrooms, fortified grains (mg NE)"
+    );
+    lines.push(
+      "  - micros.pantothenicAcid: chicken, beef, mushrooms, avocado, broccoli (mg)"
     );
     lines.push(
       "  - micros.vitaminB6: poultry, fish, chickpeas, potatoes, bananas"
@@ -973,6 +996,9 @@
     );
     lines.push(
       "  - longevity.copper: shellfish, nuts, liver, dark chocolate (mcg)"
+    );
+    lines.push(
+      "  - longevity.transFat: 0 for whole/natural foods; fried fast food, movie-theater buttery popcorn, and some pastries may have 0.1–4 g — use label data when available (g)"
     );
     lines.push(
       "  - longevity.choline: egg yolks, liver, meat, fish (mg; high in eggs)"
@@ -1283,12 +1309,14 @@
         tooHigh: stringArray(raw.tooHigh),
         enough: stringArray(raw.enough),
         foodSources: stringArray(raw.foodSources),
+        targetReference: stringArray(raw.targetReference),
       };
       if (
         entry.tooLow.length ||
         entry.tooHigh.length ||
         entry.enough.length ||
-        entry.foodSources.length
+        entry.foodSources.length ||
+        entry.targetReference.length
       ) {
         out[key] = entry;
       }
@@ -1446,6 +1474,14 @@
 
     var limiting = isLongevityLimitingDefKey(key);
     var html = "";
+
+    if (def.targetReference && def.targetReference.length) {
+      html +=
+        '<section class="micro-def__section">' +
+        '<h4 class="micro-def__heading">Daily target reference</h4>' +
+        microDefParagraphsHtml(def.targetReference) +
+        "</section>";
+    }
 
     if (!limiting && def.tooLow.length) {
       html +=
@@ -2167,6 +2203,9 @@
     var low = 0;
     var med = 0;
     var high = 0;
+    var lowGl = 0;
+    var medGl = 0;
+    var highGl = 0;
 
     DAYS.forEach(function (day) {
       var el = document.getElementById(day.id);
@@ -2189,13 +2228,28 @@
         if (!hits) return;
 
         var weight = hits * carbs;
-        if (gi <= 55) low += weight;
-        else if (gi <= 69) med += weight;
-        else high += weight;
+        var gl = hits * ((gi * carbs) / 100);
+        if (gi <= 55) {
+          low += weight;
+          lowGl += gl;
+        } else if (gi <= 69) {
+          med += weight;
+          medGl += gl;
+        } else {
+          high += weight;
+          highGl += gl;
+        }
       });
     });
 
-    return { low: low, med: med, high: high };
+    return {
+      low: low,
+      med: med,
+      high: high,
+      lowGl: lowGl,
+      medGl: medGl,
+      highGl: highGl,
+    };
   }
 
   function weekGlycemicLoadTotal() {
@@ -2305,6 +2359,7 @@
     limitingTiers: DEFAULT_LIMITING_TIERS,
     transFatMaxGPerDay: 0.5,
     omega6To3IdealMax: 4,
+    glycemicLoadMaxPerDay: 100,
   };
 
   var longevityDvStatus = DEFAULT_LONGEVITY_STATUS;
@@ -2349,6 +2404,9 @@
       omega6To3IdealMax:
         parseFloat(raw.omega6To3IdealMax) ||
         DEFAULT_LONGEVITY_STATUS.omega6To3IdealMax,
+      glycemicLoadMaxPerDay:
+        parseFloat(raw.glycemicLoadMaxPerDay) ||
+        DEFAULT_LONGEVITY_STATUS.glycemicLoadMaxPerDay,
     };
   }
 
@@ -2654,6 +2712,19 @@
     );
   }
 
+  function longevityGlycemicListOpen() {
+    return (
+      '<div class="dashboard__longevity-table">' +
+      '<div class="dashboard__longevity-thead" aria-hidden="true">' +
+      "<span>Metric</span>" +
+      "<span>Daily avg</span>" +
+      "<span>% target</span>" +
+      "<span>Level</span>" +
+      "</div>" +
+      '<div class="dashboard__longevity-tbody" role="list">'
+    );
+  }
+
   function longevityListClose() {
     return "</div></div>";
   }
@@ -2688,6 +2759,16 @@
     );
   }
 
+  function glycemicLoadTargetPctHtml(glPct, glMax) {
+    if (glPct == null || isNaN(glPct) || !glMax) return null;
+    return (
+      escapeHtml(fmtNum(glPct) + "% of ") +
+      '<button type="button" class="dashboard__longevity-tip-link" data-longevity-def="glycemicLoad" aria-haspopup="dialog">' +
+      escapeHtml(fmtNum(glMax)) +
+      "</button>"
+    );
+  }
+
   function longevityRowHtml(
     label,
     amtText,
@@ -2696,7 +2777,8 @@
     extraClass,
     limiting,
     defKey,
-    useMicroDef
+    useMicroDef,
+    pctHtml
   ) {
     var tier = tierForLongevityPct(pct, !!limiting);
     var tierAttr = tier ? ' data-dv-tier="' + escapeAttr(tier.id) + '"' : "";
@@ -2731,7 +2813,7 @@
       '<span class="dashboard__longevity-pct"' +
       longevityPctInlineStyle(pct, !!limiting) +
       ">" +
-      escapeHtml(pctText) +
+      (pctHtml || escapeHtml(pctText)) +
       "</span>" +
       longevityBarHtml(pct, !!limiting) +
       "</div>"
@@ -2809,44 +2891,59 @@
     if (sum <= 0) {
       return '<p class="dashboard__longevity-note dashboard__longevity-note--gi">No GI data yet — add glycemic index and carbs on matched foods.</p>';
     }
+    var dayCount = DAYS.length;
     var pct = function (v) {
       return Math.round((v / sum) * 100);
     };
-    var barMaxPx = 56;
-    var bucket = function (val, cls, label) {
-      var p = pct(val);
-      var height = Math.max(4, Math.round((p / 100) * barMaxPx));
-      return {
-        bar:
-          '<div class="dashboard__gi-bar-slot">' +
-          '<div class="dashboard__gi-bucket-bar dashboard__gi-bucket-bar--' +
-          cls +
-          '" style="height:' +
-          height +
-          'px" title="' +
-          escapeAttr(fmtNum(val) + " g carb-weighted") +
-          '"></div></div>',
-        label:
-          '<span class="dashboard__gi-bucket-label">' +
-          escapeHtml(label + " " + p + "%") +
-          "</span>",
-      };
+    var dailyAvg = function (v) {
+      return v / dayCount;
     };
-    var low = bucket(buckets.low, "low", "Low GI ≤55");
-    var med = bucket(buckets.med, "med", "Med 56–69");
-    var high = bucket(buckets.high, "high", "High ≥70");
+    var barMaxPx = 56;
+    var giCol = function (carbVal, glVal, cls, tier, range) {
+      var share = pct(carbVal);
+      var dailyCarbs = dailyAvg(carbVal);
+      var dailyGl = dailyAvg(glVal);
+      var height = Math.max(4, Math.round((share / 100) * barMaxPx));
+      return (
+        '<div class="dashboard__gi-col">' +
+        '<div class="dashboard__gi-bar-slot">' +
+        '<div class="dashboard__gi-bucket-bar dashboard__gi-bucket-bar--' +
+        cls +
+        '" style="height:' +
+        height +
+        'px" title="' +
+        escapeAttr(
+          fmtNum(dailyGl) +
+            " GL · " +
+            fmtNum(dailyCarbs) +
+            " g carbs/day · " +
+            share +
+            "% of carbs"
+        ) +
+        '"></div></div>' +
+        '<div class="dashboard__gi-bucket-label">' +
+        '<div class="dashboard__gi-bucket-tier">' +
+        escapeHtml(tier) +
+        "</div>" +
+        '<div class="dashboard__gi-bucket-sub">' +
+        escapeHtml(range) +
+        "</div>" +
+        '<div class="dashboard__gi-bucket-meta">' +
+        escapeHtml(
+          fmtNum(dailyGl) + " GL · " + fmtNum(dailyCarbs) + " g · " + share + "%"
+        ) +
+        "</div></div></div>"
+      );
+    };
     return (
+      '<div class="dashboard__gi-section">' +
       '<div class="dashboard__gi-chart">' +
+      '<p class="dashboard__gi-chart-title">GI distribution</p>' +
       '<div class="dashboard__gi-bars">' +
-      low.bar +
-      med.bar +
-      high.bar +
-      "</div>" +
-      '<div class="dashboard__gi-labels">' +
-      low.label +
-      med.label +
-      high.label +
-      "</div></div>"
+      giCol(buckets.low, buckets.lowGl, "low", "Low GI", "≤55") +
+      giCol(buckets.med, buckets.medGl, "med", "Med GI", "56–69") +
+      giCol(buckets.high, buckets.highGl, "high", "High GI", "≥70") +
+      "</div></div></div>"
     );
   }
 
@@ -3062,19 +3159,27 @@
     html += longevitySectionWrap(
       "Glycemic load & GI distribution",
       "sectionGlycemic",
-      '<p class="dashboard__longevity-note">GL = GI × carbs per serving ÷ 100. Portion size matters — prefer tracking GL over GI alone.</p>',
-      longevityListOpen() +
+      '<p class="dashboard__longevity-note">GL = GI × carbs per serving ÷ 100 — a meal-impact score, not blood glucose or a vitamin % DV.</p>',
+      longevityGlycemicListOpen() +
         longevitySubgroupHtml("Watch — lower glycemic load is better", "limit") +
-        longevityRowHtml(
-          "Avg daily glycemic load",
-          derived.weekGl > 0 ? "from matched foods" : "—",
-          derived.weekGl > 0 ? fmtNum(derived.weekGl) : "—",
-          null,
-          "dashboard__longevity-row--computed",
-          true,
-          "glycemicLoad",
-          false
-        ) +
+        (function () {
+          var glMax = longevityDvStatus.glycemicLoadMaxPerDay;
+          var gl = derived.weekGl;
+          var glPct = gl > 0 && glMax > 0 ? (gl / glMax) * 100 : null;
+          return longevityRowHtml(
+            "Avg daily glycemic load",
+            gl > 0 ? fmtNum(gl) + " GL" : "—",
+            glPct == null || isNaN(glPct)
+              ? "—"
+              : fmtNum(glPct) + "% of " + fmtNum(glMax),
+            glPct,
+            "dashboard__longevity-row--computed",
+            true,
+            "glycemicLoad",
+            false,
+            glycemicLoadTargetPctHtml(glPct, glMax)
+          );
+        })() +
         longevityListClose() +
         renderLongevityGiBuckets(derived.giBuckets)
     );
