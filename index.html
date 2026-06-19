@@ -35,9 +35,37 @@
       <div id="dashboard-grid" class="dashboard__grid"></div>
       <div id="dashboard-micro-panel" class="dashboard__micro-panel" hidden>
         <div class="dashboard__micro-intro">
-          <p id="dashboard-micro-hint" class="dashboard__micro-hint"><span id="dashboard-micro-hint-text">Average daily intake vs your demographic daily values (Mon–Sun). DV's will be low if you dont fill up all days. Click a nutrient to learn more.</span>
-            <button type="button" id="micro-gaps-ai-open" class="import-modal__ai-link dashboard__micro-hint-ai" aria-label="Ask AI to help fill in the gaps">✨ Ask AI to help fill gaps</button>
-          </p>
+          <div class="dashboard__micro-hint-block">
+            <p id="dashboard-micro-hint" class="dashboard__micro-hint"><span id="dashboard-micro-hint-text">Average daily intake vs your demographic daily values (Mon–Sun). DV's will be low if you dont fill up all days.</span></p>
+            <div class="dashboard__micro-hint-actions">
+              <button type="button" id="micro-gaps-ai-open" class="dashboard__micro-hint-action-btn dashboard__micro-hint-ai" aria-label="Ask AI to help fill in the gaps"><span class="dashboard__micro-hint-action-icon" aria-hidden="true">✨</span><span>Ask AI to help fill gaps</span></button>
+              <div class="dashboard__micro-condition-wrap">
+                <div class="dashboard__micro-condition-controls">
+                  <button type="button" id="dashboard-micro-condition-toggle" class="dashboard__micro-hint-action-btn dashboard__micro-condition-toggle" aria-expanded="false" aria-controls="dashboard-micro-condition-list" aria-haspopup="listbox">
+                    <svg class="dashboard__micro-condition-icon" viewBox="0 0 16 16" width="13" height="13" aria-hidden="true" focusable="false">
+                      <path fill="currentColor" d="M8 2.25C4.55 2.25 1.68 4.73 1 8c.68 3.27 3.55 5.75 7 5.75S14.32 11.27 15 8c-.68-3.27-3.45-5.75-7-5.75zm0 9.5A3.75 3.75 0 1 1 8 4.25 3.75 3.75 0 0 1 8 11.75zm0-6A2.25 2.25 0 1 0 5.75 8 2.25 2.25 0 0 0 8 5.75z"></path>
+                    </svg>
+                    <span id="dashboard-micro-condition-label">Focus on conditions</span>
+                  </button>
+                  <button type="button" id="dashboard-micro-condition-clear" class="dashboard__micro-condition-clear" hidden aria-label="Clear condition focus">×</button>
+                </div>
+                <ul id="dashboard-micro-condition-list" class="dashboard__micro-condition-list" role="listbox" hidden>
+                  <li id="dashboard-micro-condition-clear-item" class="dashboard__micro-condition-item dashboard__micro-condition-item--clear" role="presentation" hidden>
+                    <button type="button" class="dashboard__micro-condition-link dashboard__micro-condition-link--clear" role="option" data-micro-condition="">Clear focus</button>
+                  </li>
+                  <li class="dashboard__micro-condition-item" role="presentation">
+                    <button type="button" class="dashboard__micro-condition-link" role="option" data-micro-condition="coffeeTeaUser">Chronic coffee / tea / energy drink user</button>
+                  </li>
+                  <li class="dashboard__micro-condition-item" role="presentation">
+                    <button type="button" class="dashboard__micro-condition-link" role="option" data-micro-condition="adhd">ADHD</button>
+                  </li>
+                  <li class="dashboard__micro-condition-item" role="presentation">
+                    <button type="button" class="dashboard__micro-condition-link" role="option" data-micro-condition="anemia">Anemia</button>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
           <div class="dashboard__micro-intro-actions">
             <div class="dashboard__micro-toggle-group" role="group" aria-label="Micro view">
               <span class="dashboard__micro-toggle-label">View</span>

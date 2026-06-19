@@ -49,6 +49,21 @@
   var dashboardMicroListEl = document.getElementById("dashboard-micro-list");
   var dashboardMicroDailyGridEl = document.getElementById("dashboard-micro-daily-grid");
   var dashboardMicroHintTextEl = document.getElementById("dashboard-micro-hint-text");
+  var dashboardMicroConditionToggleEl = document.getElementById(
+    "dashboard-micro-condition-toggle"
+  );
+  var dashboardMicroConditionLabelEl = document.getElementById(
+    "dashboard-micro-condition-label"
+  );
+  var dashboardMicroConditionClearEl = document.getElementById(
+    "dashboard-micro-condition-clear"
+  );
+  var dashboardMicroConditionClearItemEl = document.getElementById(
+    "dashboard-micro-condition-clear-item"
+  );
+  var dashboardMicroConditionListEl = document.getElementById(
+    "dashboard-micro-condition-list"
+  );
   var dashboardMicroViewWeeklyEl = document.getElementById("dashboard-micro-view-weekly");
   var dashboardMicroViewDailyEl = document.getElementById("dashboard-micro-view-daily");
   var dashboardMicroDvToggleEl = document.getElementById("dashboard-micro-dv-toggle");
@@ -215,6 +230,8 @@
   var dashboardMacroPctView = false;
   var weekTotalOpen = false;
   var microRequirementsOpen = false;
+  var microConditionExpanded = false;
+  var microConditionFocus = null;
   var showMicroDailyDv = false;
   var microViewDaily = false;
   var longevityPanelOpen = false;
@@ -275,6 +292,39 @@
     sectionDerived: { label: "Derived scores" },
     sectionTmao: { label: "TMAO balance" },
     sectionGlycemic: { label: "Glycemic load & GI distribution" },
+  };
+
+  var MICRO_CONDITION_FOCUS = {
+    coffeeTeaUser: {
+      label: "Chronic coffee / tea / energy drink user",
+      nutrients: ["iron", "zinc", "calcium", "magnesium", "vitaminC"],
+    },
+    adhd: {
+      label: "ADHD",
+      nutrients: [
+        "folate",
+        "iron",
+        "magnesium",
+        "zinc",
+        "vitaminB6",
+        "vitaminD",
+        "vitaminC",
+        "calcium",
+        "vitaminB12",
+      ],
+      longevityNutrients: ["epa", "dha"],
+    },
+    anemia: {
+      label: "Anemia",
+      nutrients: [
+        "iron",
+        "vitaminB12",
+        "folate",
+        "vitaminB6",
+        "riboflavin",
+        "vitaminC",
+      ],
+    },
   };
 
   var MICRO_FIELDS = [
@@ -1354,6 +1404,9 @@
         foodSources: stringArray(raw.foodSources),
         male: stringArray(raw.male),
         female: stringArray(raw.female),
+        coffeeTeaUser: stringArray(raw.coffeeTeaUser),
+        adhd: stringArray(raw.adhd),
+        anemia: stringArray(raw.anemia),
       };
       if (
         entry.tooLow.length ||
@@ -1361,7 +1414,10 @@
         entry.enough.length ||
         entry.foodSources.length ||
         entry.male.length ||
-        entry.female.length
+        entry.female.length ||
+        entry.coffeeTeaUser.length ||
+        entry.adhd.length ||
+        entry.anemia.length
       ) {
         out[field.key] = entry;
       }
@@ -1441,13 +1497,19 @@
         enough: stringArray(raw.enough),
         foodSources: stringArray(raw.foodSources),
         targetReference: stringArray(raw.targetReference),
+        coffeeTeaUser: stringArray(raw.coffeeTeaUser),
+        adhd: stringArray(raw.adhd),
+        anemia: stringArray(raw.anemia),
       };
       if (
         entry.tooLow.length ||
         entry.tooHigh.length ||
         entry.enough.length ||
         entry.foodSources.length ||
-        entry.targetReference.length
+        entry.targetReference.length ||
+        entry.coffeeTeaUser.length ||
+        entry.adhd.length ||
+        entry.anemia.length
       ) {
         out[key] = entry;
       }
@@ -1533,6 +1595,25 @@
     );
   }
 
+  function microDefConditionSectionHtml(def) {
+    if (!microConditionFocus) return "";
+    var condMeta = MICRO_CONDITION_FOCUS[microConditionFocus];
+    var condNotes = def[microConditionFocus];
+    if (!condMeta || !condNotes || !condNotes.length) return "";
+    return (
+      '<section class="micro-def__section micro-def__section--condition">' +
+      '<h4 class="micro-def__heading micro-def__heading--condition">' +
+      '<svg class="micro-def__heading--condition-icon" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" focusable="false">' +
+      '<path fill="currentColor" d="M8 2.25C4.55 2.25 1.68 4.73 1 8c.68 3.27 3.55 5.75 7 5.75S14.32 11.27 15 8c-.68-3.27-3.45-5.75-7-5.75zm0 9.5A3.75 3.75 0 1 1 8 4.25 3.75 3.75 0 0 1 8 11.75zm0-6A2.25 2.25 0 1 0 5.75 8 2.25 2.25 0 0 0 8 5.75z"></path>' +
+      "</svg>" +
+      "<span>Focus: " +
+      escapeHtml(condMeta.label) +
+      "</span></h4>" +
+      microDefParagraphsHtml(condNotes) +
+      "</section>"
+    );
+  }
+
   function renderMicroDefBody(key) {
     if (!microDefBodyEl) return;
     var field = microFieldByKey(key);
@@ -1545,7 +1626,7 @@
       return;
     }
 
-    var html = "";
+    var html = microDefConditionSectionHtml(def);
 
     if (def.tooLow.length) {
       html +=
@@ -1604,7 +1685,7 @@
     }
 
     var limiting = isLongevityLimitingDefKey(key);
-    var html = "";
+    var html = microDefConditionSectionHtml(def);
 
     if (def.targetReference && def.targetReference.length) {
       html +=
@@ -3645,20 +3726,84 @@
   function syncMicroHintText() {
     if (!dashboardMicroHintTextEl) return;
     dashboardMicroHintTextEl.textContent = microViewDaily
-      ? "Per-day intake vs your demographic daily values (Mon–Sun). Click a nutrient to learn more."
-      : "Average daily intake vs your demographic daily values (Mon–Sun). DV's will be low if you dont fill up all days. Click a nutrient to learn more.";
+      ? "Per-day intake vs your demographic daily values (Mon–Sun)."
+      : "Average daily intake vs your demographic daily values (Mon–Sun). DV's will be low if you dont fill up all days.";
   }
 
-  function microWeeklyRowHtml(field, total) {
-    var pct = avgDailyMicroPct(field.key, total);
+  function microConditionDisplayFields() {
+    if (!microConditionFocus) {
+      return MICRO_FIELDS.map(function (field) {
+        return { source: "micro", field: field };
+      });
+    }
+    var meta = MICRO_CONDITION_FOCUS[microConditionFocus];
+    if (!meta) {
+      return MICRO_FIELDS.map(function (field) {
+        return { source: "micro", field: field };
+      });
+    }
+    var out = [];
+    (meta.nutrients || []).forEach(function (key) {
+      var field = microFieldByKey(key);
+      if (field) out.push({ source: "micro", field: field });
+    });
+    (meta.longevityNutrients || []).forEach(function (key) {
+      var field = longevityFieldByKey(key);
+      if (field) out.push({ source: "longevity", field: field });
+    });
+    return out;
+  }
+
+  function longevityDailyDvText(field) {
+    var dv = dailyLongevityDv(field.key);
+    return dv ? fmtNum(dv) + " " + field.unit + "/day DV" : "—";
+  }
+
+  function microConditionAmtText(entry, total, perDay) {
+    var field = entry.field;
+    total = total || 0;
+    if (entry.source === "longevity") {
+      return total > 0
+        ? fmtNum(perDay ? total : avgDailyLongevity(field.key, total)) +
+            " " +
+            field.unit +
+            (perDay ? "" : "/day avg")
+        : "—";
+    }
+    return total > 0
+      ? fmtNum(perDay ? total : total / DAYS.length) +
+          " " +
+          field.unit +
+          (perDay ? "" : "/day avg")
+      : "—";
+  }
+
+  function microConditionSourcesIconHtml(entry, dayId) {
+    if (entry.source === "longevity") {
+      if (entry.field.key === "glycemicIndex") return "";
+      return longevitySourcesIconHtml(entry.field.key, "longevity");
+    }
+    return microSourcesIconHtml(entry.field.key, dayId);
+  }
+
+  function microConditionRowHtml(entry, weekMicro, weekLongevity) {
+    var field = entry.field;
+    var isLongevity = entry.source === "longevity";
+    var total = isLongevity
+      ? weekLongevity[field.key] || 0
+      : weekMicro[field.key] || 0;
+    var pct = isLongevity
+      ? avgDailyLongevityPct(field.key, total)
+      : avgDailyMicroPct(field.key, total);
     var pctText = pct == null || isNaN(pct) ? "—" : fmtNum(pct) + "% DV";
-    var amtText =
-      total > 0 ? fmtNum(total / DAYS.length) + " " + field.unit + "/day avg" : "—";
+    var amtText = microConditionAmtText(entry, total, false);
     var tier = tierForMicroPct(pct);
     var tierAttr = tier ? ' data-dv-tier="' + escapeAttr(tier.id) + '"' : "";
     var rowCls =
       "dashboard__micro-row dashboard__micro-row--clickable" +
-      (showMicroDailyDv ? " dashboard__micro-row--show-dv" : "");
+      (showMicroDailyDv ? " dashboard__micro-row--show-dv" : "") +
+      (isLongevity ? " dashboard__micro-row--longevity" : "");
+    var defAttr = isLongevity ? "data-longevity-def" : "data-micro-def";
 
     var html =
       '<div class="' +
@@ -3667,12 +3812,14 @@
       tierAttr +
       ' role="listitem">' +
       '<span class="dashboard__micro-name-wrap">' +
-      '<button type="button" class="dashboard__micro-name" data-micro-def="' +
+      '<button type="button" class="dashboard__micro-name" ' +
+      defAttr +
+      '="' +
       escapeAttr(field.key) +
       '" aria-haspopup="dialog">' +
       escapeHtml(field.label) +
       "</button>" +
-      microSourcesIconHtml(field.key) +
+      microConditionSourcesIconHtml(entry) +
       "</span>" +
       '<span class="dashboard__micro-amt">' +
       escapeHtml(amtText) +
@@ -3680,7 +3827,9 @@
     if (showMicroDailyDv) {
       html +=
         '<span class="dashboard__micro-dv-req">' +
-        escapeHtml(microDailyDvText(field)) +
+        escapeHtml(
+          isLongevity ? longevityDailyDvText(field) : microDailyDvText(field)
+        ) +
         "</span>";
     }
     html +=
@@ -3693,16 +3842,82 @@
     return html;
   }
 
-  function microDayCardHtml(dayLabel, dayId, totals) {
+  function setMicroConditionExpanded(open) {
+    microConditionExpanded = !!open;
+    if (dashboardMicroConditionToggleEl) {
+      dashboardMicroConditionToggleEl.setAttribute(
+        "aria-expanded",
+        microConditionExpanded ? "true" : "false"
+      );
+    }
+    if (dashboardMicroConditionListEl) {
+      dashboardMicroConditionListEl.hidden = !microConditionExpanded;
+    }
+  }
+
+  function syncMicroConditionUi() {
+    var active = !!microConditionFocus;
+    if (dashboardMicroConditionToggleEl) {
+      dashboardMicroConditionToggleEl.classList.toggle(
+        "dashboard__micro-condition-toggle--active",
+        active
+      );
+    }
+    if (dashboardMicroConditionLabelEl) {
+      dashboardMicroConditionLabelEl.textContent = active
+        ? "Focus: " + MICRO_CONDITION_FOCUS[microConditionFocus].label
+        : "Focus on conditions";
+    }
+    if (dashboardMicroConditionClearEl) {
+      dashboardMicroConditionClearEl.hidden = !active;
+    }
+    if (dashboardMicroConditionClearItemEl) {
+      dashboardMicroConditionClearItemEl.hidden = !active;
+    }
+    if (dashboardMicroConditionListEl) {
+      dashboardMicroConditionListEl
+        .querySelectorAll(
+          ".dashboard__micro-condition-link[data-micro-condition]:not([data-micro-condition=''])"
+        )
+        .forEach(function (btn) {
+          var id = btn.getAttribute("data-micro-condition");
+          var selected = id === microConditionFocus;
+          btn.classList.toggle("dashboard__micro-condition-link--active", selected);
+          btn.setAttribute("aria-selected", selected ? "true" : "false");
+        });
+    }
+  }
+
+  function setMicroConditionFocus(id) {
+    microConditionFocus = id && MICRO_CONDITION_FOCUS[id] ? id : null;
+    setMicroConditionExpanded(false);
+    syncMicroConditionUi();
+    if (microRequirementsOpen) {
+      renderMicroRequirements();
+    }
+  }
+
+  function microDayCardHtml(dayLabel, dayId, microTotals, longevityTotals) {
     var rows = "";
-    MICRO_FIELDS.forEach(function (field) {
-      var total = totals[field.key];
-      var pct = dailyMicroPct(field.key, total);
+    microConditionDisplayFields().forEach(function (entry) {
+      var field = entry.field;
+      var isLongevity = entry.source === "longevity";
+      var total = isLongevity
+        ? longevityTotals[field.key] || 0
+        : microTotals[field.key] || 0;
+      var pct = isLongevity
+        ? dailyLongevityDv(field.key)
+          ? (total / dailyLongevityDv(field.key)) * 100
+          : null
+        : dailyMicroPct(field.key, total);
       var pctText = pct == null || isNaN(pct) ? "—" : fmtNum(pct) + "% DV";
-      var amtText = total > 0 ? fmtNum(total) + " " + field.unit : "—";
+      var amtText = microConditionAmtText(entry, total, true);
       var tier = tierForMicroPct(pct);
       var tierAttr = tier ? ' data-dv-tier="' + escapeAttr(tier.id) + '"' : "";
-      var rowCls = "dashboard__micro-day-row dashboard__micro-day-row--clickable";
+      var rowCls =
+        "dashboard__micro-day-row dashboard__micro-day-row--clickable" +
+        (isLongevity ? " dashboard__micro-day-row--longevity" : "");
+      var defAttr = isLongevity ? "data-longevity-def" : "data-micro-def";
 
       rows +=
         '<div class="' +
@@ -3711,12 +3926,14 @@
         tierAttr +
         ">" +
         '<span class="dashboard__micro-day-name-wrap">' +
-        '<button type="button" class="dashboard__micro-day-name" data-micro-def="' +
+        '<button type="button" class="dashboard__micro-day-name" ' +
+        defAttr +
+        '="' +
         escapeAttr(field.key) +
         '" aria-haspopup="dialog">' +
         escapeHtml(field.label) +
         "</button>" +
-        microSourcesIconHtml(field.key, dayId) +
+        microConditionSourcesIconHtml(entry, dayId) +
         "</span>" +
         '<div class="dashboard__micro-day-meta">' +
         '<span class="dashboard__micro-day-pct"' +
@@ -3730,7 +3947,9 @@
       if (showMicroDailyDv) {
         rows +=
           '<span class="dashboard__micro-day-dv-req">' +
-          escapeHtml(microDailyDvText(field)) +
+          escapeHtml(
+            isLongevity ? longevityDailyDvText(field) : microDailyDvText(field)
+          ) +
           "</span>";
       }
       rows += "</div></div>";
@@ -3750,10 +3969,11 @@
   function renderMicroWeeklyList() {
     if (!dashboardMicroListEl) return;
 
-    var week = weekMicroTotals();
+    var weekMicro = weekMicroTotals();
+    var weekLongevity = weekLongevityTotals();
     var html = "";
-    MICRO_FIELDS.forEach(function (field) {
-      html += microWeeklyRowHtml(field, week[field.key]);
+    microConditionDisplayFields().forEach(function (entry) {
+      html += microConditionRowHtml(entry, weekMicro, weekLongevity);
     });
     dashboardMicroListEl.innerHTML = html;
   }
@@ -3765,7 +3985,12 @@
     DAYS.forEach(function (day) {
       var el = document.getElementById(day.id);
       var text = el ? el.value : "";
-      html += microDayCardHtml(day.label, day.id, microTotalsFromText(text));
+      html += microDayCardHtml(
+        day.label,
+        day.id,
+        microTotalsFromText(text),
+        longevityTotalsFromText(text)
+      );
     });
     dashboardMicroDailyGridEl.innerHTML = html;
   }
@@ -3776,6 +4001,7 @@
     syncMicroDailyDvToggleUi();
     syncMicroViewToggleUi();
     syncMicroHintText();
+    syncMicroConditionUi();
 
     if (dashboardMicroListEl) {
       dashboardMicroListEl.hidden = microViewDaily;
@@ -4633,6 +4859,8 @@
     }
     if (microRequirementsOpen) {
       renderMicroRequirements();
+    } else {
+      setMicroConditionExpanded(false);
     }
   }
 
@@ -7358,6 +7586,58 @@
     });
   }
 
+  if (dashboardMicroConditionToggleEl) {
+    dashboardMicroConditionToggleEl.addEventListener("click", function () {
+      setMicroConditionExpanded(!microConditionExpanded);
+    });
+  }
+
+  if (dashboardMicroConditionClearEl) {
+    dashboardMicroConditionClearEl.addEventListener("click", function () {
+      setMicroConditionFocus(null);
+    });
+  }
+
+  if (dashboardMicroConditionListEl) {
+    dashboardMicroConditionListEl.addEventListener("click", function (e) {
+      var btn = e.target.closest(".dashboard__micro-condition-link");
+      if (!btn) return;
+      e.preventDefault();
+      var id = btn.getAttribute("data-micro-condition");
+      if (!id) {
+        setMicroConditionFocus(null);
+        return;
+      }
+      setMicroConditionFocus(id === microConditionFocus ? null : id);
+    });
+  }
+
+  document.addEventListener("click", function (e) {
+    if (!microConditionExpanded) return;
+    if (
+      dashboardMicroConditionToggleEl &&
+      (dashboardMicroConditionToggleEl === e.target ||
+        dashboardMicroConditionToggleEl.contains(e.target))
+    ) {
+      return;
+    }
+    if (
+      dashboardMicroConditionClearEl &&
+      (dashboardMicroConditionClearEl === e.target ||
+        dashboardMicroConditionClearEl.contains(e.target))
+    ) {
+      return;
+    }
+    if (
+      dashboardMicroConditionListEl &&
+      (dashboardMicroConditionListEl === e.target ||
+        dashboardMicroConditionListEl.contains(e.target))
+    ) {
+      return;
+    }
+    setMicroConditionExpanded(false);
+  });
+
   if (dashboardLongevityToggleEl) {
     dashboardLongevityToggleEl.addEventListener("click", function () {
       setLongevityPanelOpen(!longevityPanelOpen);
@@ -7392,9 +7672,30 @@
 
   function handleMicroDefClick(e) {
     if (e.target.closest("[data-micro-sources]")) return;
-    var btn = e.target.closest("[data-micro-def]");
-    if (!btn) return;
-    openMicroDefModal(btn.getAttribute("data-micro-def"));
+    if (e.target.closest("[data-longevity-sources]")) return;
+    var microBtn = e.target.closest("[data-micro-def]");
+    if (microBtn) {
+      openMicroDefModal(microBtn.getAttribute("data-micro-def"));
+      return;
+    }
+    var longevityBtn = e.target.closest("[data-longevity-def]");
+    if (longevityBtn) {
+      openLongevityDefModal(longevityBtn.getAttribute("data-longevity-def"));
+    }
+  }
+
+  function handleMicroPanelSourcesClick(e) {
+    var longevityBtn = e.target.closest("[data-longevity-sources]");
+    if (longevityBtn) {
+      e.preventDefault();
+      e.stopPropagation();
+      openLongevitySourcesModal(
+        longevityBtn.getAttribute("data-longevity-sources"),
+        longevityBtn.getAttribute("data-longevity-sources-kind") || "longevity"
+      );
+      return;
+    }
+    handleMicroSourcesClick(e);
   }
 
   function handleMicroSourcesClick(e) {
@@ -7408,12 +7709,12 @@
   }
 
   if (dashboardMicroListEl) {
-    dashboardMicroListEl.addEventListener("click", handleMicroSourcesClick);
+    dashboardMicroListEl.addEventListener("click", handleMicroPanelSourcesClick);
     dashboardMicroListEl.addEventListener("click", handleMicroDefClick);
   }
 
   if (dashboardMicroDailyGridEl) {
-    dashboardMicroDailyGridEl.addEventListener("click", handleMicroSourcesClick);
+    dashboardMicroDailyGridEl.addEventListener("click", handleMicroPanelSourcesClick);
     dashboardMicroDailyGridEl.addEventListener("click", handleMicroDefClick);
   }
 

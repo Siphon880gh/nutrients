@@ -186,6 +186,11 @@
       "Fish oil",
       "Krill oil",
       "Algae EPA (supplement)"
+    ],
+    "adhd": [
+      "EPA and DHA tune the phospholipid structure of neuronal membranes—governing how efficiently neurotransmitters bind receptors and move across synapses.",
+      "EPA specifically helps reduce peripheral neuroinflammation and supports membrane fluidity around dopamine transporters. Clinical ADHD work often emphasizes high-EPA fish or algae oil (roughly 1,000–2,000 mg EPA daily) over high-DHA alone.",
+      "Low omega-3 status correlates with weaker working memory, executive dysfunction, and emotional dysregulation on top of baseline ADHD."
     ]
   },
   "dha": {
@@ -205,6 +210,11 @@
       "Fish oil",
       "Algae DHA",
       "Fortified foods"
+    ],
+    "adhd": [
+      "DHA is a major structural omega-3 in the brain; together with EPA it optimizes membrane signaling for attention and mood circuits.",
+      "While DHA is critical for long-term brain structure, high-EPA formulations have shown more consistent benefit for ADHD symptom clusters in trials—many clinicians pair both via fatty fish or fish/algae oil.",
+      "Algae-based oils are the main direct food or supplement route for DHA when fish intake is low."
     ]
   },
   "linoleicAcid": {

@@ -122,6 +122,14 @@
     "female": [
       "Critical before menopause to bank bone mass; after menopause, adequate calcium + D slows bone loss.",
       "Helps reduce risk of stress fractures and supports muscle function during pregnancy and breastfeeding (needs often rise)."
+    ],
+    "coffeeTeaUser": [
+      "Coffee and tea polyphenols can bind calcium in the gut; caffeine also mildly increases urinary calcium loss—heavy drinkers should mind calcium from food."
+    ],
+    "adhd": [
+      "ADHD nutrition stacks lean on several minerals at once—magnesium, zinc, and iron for dopamine signaling. Calcium supports nerve and muscle function, but large calcium doses at the same meal as iron or zinc can compete for absorption.",
+      "Stimulant medications often blunt appetite; irregular meals make it easier to run low on the whole mineral bundle, not just one nutrient.",
+      "Spread food calcium through the day and keep heavy dairy or calcium supplements away from iron-rich meals when optimizing ferritin for focus."
     ]
   },
   "iron": {
@@ -154,6 +162,17 @@
     "female": [
       "Higher need (about 18 mg/day premenopause) replaces menstrual losses and supports fertility and pregnancy.",
       "Adequate iron reduces hair shedding, cold intolerance, and brain fog that many women blame on stress alone."
+    ],
+    "coffeeTeaUser": [
+      "Coffee, tea, and energy drinks at meals can cut iron absorption substantially—especially tea. Track iron closely and separate caffeine drinks from iron-rich meals by at least an hour."
+    ],
+    "adhd": [
+      "Iron is a mandatory cofactor for tyrosine hydroxylase—the rate-limiting enzyme that turns tyrosine into L-DOPA, the immediate precursor to dopamine. Low brain iron stores cap dopamine production regardless of stimulant dose.",
+      "Track serum ferritin, not only hemoglobin. Clinical literature often targets ferritin above ~50 ng/mL for neurocognitive function. Low stores show up as severe mental fatigue, restless legs, high impulsivity, and weaker response to stimulant medication.",
+      "Food iron plus gentle supplemental forms such as iron bisglycinate (with clinician guidance) are common approaches when ferritin is low."
+    ],
+    "anemia": [
+      "Iron is the core of hemoglobin; low iron is the most common anemia cause—fatigue, pallor, and breathlessness."
     ]
   },
   "magnesium": {
@@ -186,6 +205,14 @@
     "female": [
       "Useful for PMS cramps, migraine prevention, and sleep in perimenopause; needs (about 320 mg/day) stay high despite smaller body size.",
       "Supports bone health alongside calcium and vitamin D, especially after 40."
+    ],
+    "coffeeTeaUser": [
+      "Caffeine increases urinary magnesium loss; heavy coffee, tea, or energy drink use can leave you lower than your food intake suggests."
+    ],
+    "adhd": [
+      "Magnesium is a natural antagonist at NMDA (glutamate) receptors—it acts as the nervous system's main molecular brake. Chronic stress and heavy cognitive load increase magnesium loss.",
+      "Without enough magnesium, glutamate-driven overexcitation fuels racing thoughts, physical restlessness, and sleep-onset insomnia. Jaw clenching and muscle tension are common, including as a side effect of stimulant medication.",
+      "Magnesium glycinate supports systemic relaxation and sleep; magnesium L-threonate crosses the blood–brain barrier more readily for cognitive calm. Magnesium oxide is poorly absorbed and less useful for these goals."
     ]
   },
   "zinc": {
@@ -217,6 +244,14 @@
     "female": [
       "Supports skin, cycle regularity, and immunity; needs are lower (about 8 mg/day) but still essential in pregnancy.",
       "Helps collagen repair and may reduce acne flares when intake and absorption are adequate."
+    ],
+    "coffeeTeaUser": [
+      "Tannins in coffee and tea can bind zinc in the gut alongside iron; chronic caffeine drinkers may need to mind zinc from food."
+    ],
+    "adhd": [
+      "Zinc shapes dopamine transporter (DAT) architecture so released dopamine stays in the synapse long enough to bind receptors. Low zinc speeds dopamine clearance and can mimic a functional dopamine shortage.",
+      "Low zinc correlates with inattention, weak spatial memory, and needing higher stimulant doses to achieve the same focus. Serum zinc is the usual biomarker to track.",
+      "Zinc picolinate or zinc gluconate with food is typical for supplementation; empty-stomach zinc often causes nausea."
     ]
   },
   "vitaminA": {
@@ -279,6 +314,11 @@
     "female": [
       "Supports bone density, mood, and immune health; deficiency is common in pregnancy and breastfeeding without supplementation.",
       "May ease cycle-related aches and winter fatigue when levels are brought into range."
+    ],
+    "adhd": [
+      "Vitamin D3 acts as a neurosteroid that upregulates neurotrophic factors and helps protect dopaminergic neurons from oxidative stress.",
+      "Levels below ~30 ng/mL are associated with worse executive function, working memory, and emotional regulation—symptoms that stack on top of ADHD.",
+      "Fatty fish, fortified dairy, safe sun exposure, and tested supplementation are typical ways to correct low status."
     ]
   },
   "vitaminB12": {
@@ -311,11 +351,18 @@
     "female": [
       "Critical before and during pregnancy to prevent neural tube and developmental issues (with folate).",
       "Low B12 can drive anemia that feels like “burnout” and hair loss, often overlooked in busy women."
+    ],
+    "adhd": [
+      "B12 partners with folate and B6 in one-carbon metabolism and methylation; without adequate B12, folate-driven dopamine support is incomplete.",
+      "Low B12 mimics brain fog, slow processing, and fatigue that are easy to attribute to ADHD alone.",
+      "Vegans, older adults, and people on metformin or long-term acid suppressants are higher-risk groups."
+    ],
+    "anemia": [
+      "B12 deficiency causes megaloblastic anemia—large, ineffective red cells; needs testing if iron is normal but you are tired."
     ]
   },
   "vitaminC": {
     "tooLow": [
-      "Low vitamin C leads to bleeding gums, slow wound healing, bruising, and in extreme cases scurvy.",
       "Smokers need more; very low fruit/vegetable intake or heat/light-degraded foods increase risk."
     ],
     "enough": [
@@ -342,11 +389,21 @@
     "female": [
       "Supports skin elasticity, iron absorption during higher iron needs, and immune defense.",
       "Useful for collagen during pregnancy and for healing after procedures or injury."
+    ],
+    "coffeeTeaUser": [
+      "Vitamin C helps recover iron absorption when you eat iron-rich foods—even if you drink coffee or tea at other meals."
+    ],
+    "adhd": [
+      "Vitamin C is a required cofactor for dopamine β-hydroxylase—the enzyme that converts dopamine into norepinephrine. Low vitamin C can bottleneck that step even when other dopamine pathways are supported.",
+      "It also strongly improves absorption of plant-based iron, which matters because adequate brain iron (ferritin) is needed for tyrosine hydroxylase and dopamine production in ADHD.",
+      "Regular produce at iron-containing meals supports both the iron–dopamine axis and catecholamine balance; deficiency contributes to fatigue and fog that overlap with ADHD symptoms."
+    ],
+    "anemia": [
+      "Vitamin C improves plant-iron absorption and supports healthy blood vessels when rebuilding iron stores."
     ]
   },
   "iodine": {
     "tooLow": [
-      "Low iodine impairs thyroid hormone production, which can cause fatigue, cold intolerance, weight changes, and goiter over time.",
       "People who avoid iodized salt, seafood, and dairy are at higher risk, especially during pregnancy."
     ],
     "enough": [
@@ -404,11 +461,18 @@
     "female": [
       "Useful for PMS mood symptoms and nausea in pregnancy (often combined with ginger); works with folate for homocysteine control.",
       "Oral contraceptives can increase B6 needs slightly in some women."
+    ],
+    "adhd": [
+      "Pyridoxal-5-phosphate (P5P) is the active form of vitamin B6 that drives conversion of L-DOPA into dopamine—it completes the catecholamine chain after iron-dependent tyrosine hydroxylase.",
+      "Standard pyridoxine HCl must be converted in the liver before the brain can use it; P5P is immediately available for neurotransmitter enzymes.",
+      "Low B6 worsens attention swings and mood instability when the dopamine synthesis pipeline is already under strain."
+    ],
+    "anemia": [
+      "B6 deficiency can cause sideroblastic anemia and nerve symptoms; often overlooked when only iron is checked."
     ]
   },
   "folate": {
     "tooLow": [
-      "Low folate causes megaloblastic anemia, mouth sores, poor growth, and raises homocysteine; severe deficiency in pregnancy risks neural tube defects.",
       "Heavy alcohol use, certain medications, and diets without greens/legumes are common causes."
     ],
     "enough": [
@@ -435,11 +499,18 @@
     "female": [
       "Essential before conception and in early pregnancy for neural tube development (often supplemented as folic acid).",
       "Supports energy and mood when paired with B12; needs stay at 400 mcg DFE for many adult women not pregnant."
+    ],
+    "adhd": [
+      "Folate (B9) fuels the methylation cycle that produces S-adenosylmethionine (SAMe). SAMe is directly used to synthesize dopamine, serotonin, and norepinephrine in the brain.",
+      "Synthetic folic acid must be converted through several steps before it can cross the blood–brain barrier. Up to ~40% of people carry MTHFR variants (e.g. C677T, A1298C) that slow this conversion—depriving the brain of active folate even when folic acid intake looks adequate on paper.",
+      "Adults with poor folate activation often show treatment-resistant ADHD symptoms, persistent brain fog, and overlapping mood issues. Active forms such as L-methylfolate (L-5-MTHF) or folinic acid bypass MTHFR bottlenecks and feed neurotransmitter pathways more directly."
+    ],
+    "anemia": [
+      "Folate deficiency also causes megaloblastic anemia; important to distinguish from B12 deficiency clinically."
     ]
   },
   "biotin": {
     "tooLow": [
-      "Low biotin is uncommon but can cause thinning hair, brittle nails, scaly rash around eyes/nose/mouth, and depression when severe.",
       "Long-term raw egg whites (avidin blocks absorption), some antibiotics, and rare metabolic disorders increase deficiency risk."
     ],
     "enough": [
@@ -529,11 +600,13 @@
     "female": [
       "Supports skin and eye health; needs stay steady through pregnancy at about 1.4 mg/day.",
       "Oral contraceptives may slightly increase riboflavin turnover in some women."
+    ],
+    "anemia": [
+      "Low B2 can cause anemia-like fatigue and cracked lips; part of the B-vitamin cluster that builds red blood cells."
     ]
   },
   "niacin": {
     "tooLow": [
-      "Low niacin (B3) causes fatigue, digestive issues, and skin changes; severe deficiency causes pellagra.",
       "Very low-protein or corn-heavy diets without variety are rare causes in developed countries."
     ],
     "enough": [
