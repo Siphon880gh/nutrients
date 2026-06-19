@@ -142,7 +142,7 @@ body {
 }
 
 .dashboard__micro-segment:last-child {
-  border-right: none;
+  /* border-right: none; */
 }
 
 .dashboard__micro-segment--solo {
@@ -1144,6 +1144,17 @@ button.dashboard__longevity-name:focus-visible {
 
 .dashboard__longevity-row--clickable:hover {
   background: #f3f3f0;
+}
+
+.dashboard__longevity-name-wrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  min-width: 0;
+}
+
+.dashboard__longevity-name-wrap .dashboard__longevity-name {
+  min-width: 0;
 }
 
 .dashboard__longevity-amt {
@@ -2256,6 +2267,49 @@ body.modal-open {
 
 #micro-def-modal.modal--fullscreen .micro-def__sex-icon {
   font-size: 1.2rem;
+}
+
+#micro-sources-modal.modal--fullscreen,
+#longevity-sources-modal.modal--fullscreen {
+  padding: 0;
+}
+
+#micro-sources-modal.modal--fullscreen .modal__backdrop,
+#longevity-sources-modal.modal--fullscreen .modal__backdrop {
+  background: #fff;
+}
+
+#micro-sources-modal.modal--fullscreen .modal__panel,
+#longevity-sources-modal.modal--fullscreen .modal__panel {
+  max-width: none;
+  max-height: none;
+  width: 100%;
+  height: 100%;
+  border-radius: 0;
+  border: none;
+  box-shadow: none;
+}
+
+#micro-sources-modal.modal--fullscreen .modal__title,
+#longevity-sources-modal.modal--fullscreen .modal__title {
+  font-size: 1.35rem;
+}
+
+#micro-sources-modal.modal--fullscreen .modal__subtitle,
+#longevity-sources-modal.modal--fullscreen .modal__subtitle {
+  font-size: 1rem;
+}
+
+#micro-sources-modal.modal--fullscreen .micro-sources-modal__body,
+#longevity-sources-modal.modal--fullscreen .micro-sources-modal__body {
+  max-height: none;
+  font-size: 1rem;
+  line-height: 1.55;
+}
+
+#micro-sources-modal.modal--fullscreen .micro-sources-modal__item,
+#longevity-sources-modal.modal--fullscreen .micro-sources-modal__item {
+  font-size: 0.95rem;
 }
 
 .modal__title {

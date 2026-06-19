@@ -147,11 +147,25 @@
   var activeLongevityDefKey = null;
   var activeMicroSourcesKey = null;
   var activeMicroSourcesScope = "week";
+  var activeLongevitySourcesKey = null;
+  var activeLongevitySourcesKind = null;
   var microSourcesModalEl = document.getElementById("micro-sources-modal");
   var microSourcesModalTitleEl = document.getElementById("micro-sources-modal-title");
   var microSourcesScopeEl = document.getElementById("micro-sources-scope");
   var microSourcesBodyEl = document.getElementById("micro-sources-body");
   var microSourcesModalDoneBtn = document.getElementById("micro-sources-modal-done");
+  var microSourcesFullscreenToggleBtn = document.getElementById(
+    "micro-sources-fullscreen-toggle"
+  );
+  var longevitySourcesModalEl = document.getElementById("longevity-sources-modal");
+  var longevitySourcesModalTitleEl = document.getElementById("longevity-sources-modal-title");
+  var longevitySourcesBodyEl = document.getElementById("longevity-sources-body");
+  var longevitySourcesModalDoneBtn = document.getElementById("longevity-sources-modal-done");
+  var longevitySourcesFullscreenToggleBtn = document.getElementById(
+    "longevity-sources-fullscreen-toggle"
+  );
+  var microSourcesFullscreen = false;
+  var longevitySourcesFullscreen = false;
 
   var LONGEVITY_DERIVED_DEFS = {
     omega6To3: { label: "Omega-6 : Omega-3 ratio", limiting: true },
@@ -1566,16 +1580,39 @@
     updateBodyModalOpen();
   }
 
-  function closeMicroDefModal() {
-    if (!microDefModalEl) return;
-    activeMicroDefKey = null;
-    activeLongevityDefKey = null;
-    setMicroDefFullscreen(false);
-    microDefModalEl.hidden = true;
-    updateBodyModalOpen();
+  function updateSourcesFullscreenToggle(btn, on) {
+    if (!btn) return;
+    btn.setAttribute("aria-pressed", on ? "true" : "false");
+    btn.textContent = on ? "Exit full screen" : "Full screen";
+    btn.setAttribute(
+      "aria-label",
+      on ? "Exit full screen" : "Read in full screen"
+    );
   }
 
-  function closeOtherModalsForMicroSources() {
+  function setMicroSourcesFullscreen(on) {
+    microSourcesFullscreen = !!on;
+    if (microSourcesModalEl) {
+      microSourcesModalEl.classList.toggle("modal--fullscreen", microSourcesFullscreen);
+    }
+    updateSourcesFullscreenToggle(microSourcesFullscreenToggleBtn, microSourcesFullscreen);
+  }
+
+  function setLongevitySourcesFullscreen(on) {
+    longevitySourcesFullscreen = !!on;
+    if (longevitySourcesModalEl) {
+      longevitySourcesModalEl.classList.toggle(
+        "modal--fullscreen",
+        longevitySourcesFullscreen
+      );
+    }
+    updateSourcesFullscreenToggle(
+      longevitySourcesFullscreenToggleBtn,
+      longevitySourcesFullscreen
+    );
+  }
+
+  function closeOtherModalsForSources() {
     if (activeImportId) closeImportModal();
     if (importAllModalEl && !importAllModalEl.hidden) closeImportAllModal();
     if (importAllMealsModalEl && !importAllMealsModalEl.hidden) {
@@ -1583,6 +1620,10 @@
     }
     if (microGapsModalEl && !microGapsModalEl.hidden) closeMicroGapsModal();
     if (microDefModalEl && !microDefModalEl.hidden) closeMicroDefModal();
+    if (microSourcesModalEl && !microSourcesModalEl.hidden) closeMicroSourcesModal();
+    if (longevitySourcesModalEl && !longevitySourcesModalEl.hidden) {
+      closeLongevitySourcesModal();
+    }
     if (phosphorusBinderModalEl && !phosphorusBinderModalEl.hidden) {
       closePhosphorusBinderModal();
     }
@@ -1595,6 +1636,53 @@
       saveLongevityFromForm();
       closeLongevityModal();
     }
+  }
+
+  function nutrientSourcesListHtml(list, unit) {
+    var total = 0;
+    var html = '<ol class="micro-sources-modal__list">';
+    list.forEach(function (item, idx) {
+      total += item.amount;
+      var perText = fmtNum(item.perServing) + " " + unit;
+      var rowTotalText = fmtNum(item.amount) + " " + unit;
+      var calcHtml;
+      if (item.hits > 1) {
+        calcHtml =
+          '<span class="micro-sources-modal__calc">' +
+          '<span class="micro-sources-modal__per">' +
+          escapeHtml(perText) +
+          "</span>" +
+          '<span class="micro-sources-modal__times">× ' +
+          item.hits +
+          "</span>" +
+          '<span class="micro-sources-modal__eq">=</span>' +
+          '<span class="micro-sources-modal__row-total">' +
+          escapeHtml(rowTotalText) +
+          "</span></span>";
+      } else {
+        calcHtml =
+          '<span class="micro-sources-modal__calc">' +
+          '<span class="micro-sources-modal__row-total">' +
+          escapeHtml(rowTotalText) +
+          "</span></span>";
+      }
+      html +=
+        '<li class="micro-sources-modal__item">' +
+        '<span class="micro-sources-modal__rank">' +
+        (idx + 1) +
+        "</span>" +
+        '<span class="micro-sources-modal__name">' +
+        escapeHtml(item.name) +
+        "</span>" +
+        calcHtml +
+        "</li>";
+    });
+    html += "</ol>";
+    html +=
+      '<p class="micro-sources-modal__total">Total: ' +
+      escapeHtml(fmtNum(total) + " " + unit) +
+      "</p>";
+    return html;
   }
 
   function microDvForDemographic(microKey, demoId) {
@@ -1673,6 +1761,170 @@
     return html;
   }
 
+  function longevityContributionsFromWeek(nutrientKey, kind) {
+    var merged = {};
+    DAYS.forEach(function (day) {
+      var el = document.getElementById(day.id);
+      var text = el ? el.value : "";
+      var seen = {};
+      keywords.forEach(function (kw) {
+        var name = kw.name.trim();
+        if (!name) return;
+        var nameKey = name.toLowerCase();
+        if (seen[nameKey]) return;
+        seen[nameKey] = true;
+
+        var hits = countKeyword(text, name);
+        if (!hits) return;
+
+        var v =
+          kind === "micro" ? kw.micros[nutrientKey] : kw.longevity[nutrientKey];
+        if (v === "" || v == null) return;
+        var perServing = parseFloat(v);
+        if (isNaN(perServing) || perServing <= 0) return;
+
+        if (merged[nameKey]) {
+          merged[nameKey].amount += hits * perServing;
+          merged[nameKey].hits += hits;
+        } else {
+          merged[nameKey] = {
+            name: name,
+            amount: hits * perServing,
+            hits: hits,
+            perServing: perServing,
+          };
+        }
+      });
+    });
+    return Object.keys(merged)
+      .map(function (k) {
+        return merged[k];
+      })
+      .sort(function (a, b) {
+        return b.amount - a.amount;
+      });
+  }
+
+  function longevitySourcesRequirementsHtml(nutrientKey, kind) {
+    if (kind === "micro") {
+      var microField = microFieldByKey(nutrientKey);
+      return microField ? microSourcesRequirementsHtml(microField) : "";
+    }
+
+    var field = longevityFieldByKey(nutrientKey);
+    if (!field) return "";
+    var dv = dailyLongevityDv(nutrientKey);
+    var weekCount = DAYS.length;
+    var html = '<div class="micro-sources-modal__reqs">';
+
+    if (!dv) {
+      html +=
+        '<p class="micro-sources-modal__req-note">No daily reference set for this nutrient.</p></div>';
+      return html;
+    }
+
+    html +=
+      '<div class="micro-sources-modal__req-row">' +
+      '<span class="micro-sources-modal__req-label">Daily requirement</span>' +
+      '<span class="micro-sources-modal__req-val">' +
+      escapeHtml(microDvAmountText(dv, field.unit)) +
+      "</span></div>" +
+      '<div class="micro-sources-modal__req-row">' +
+      '<span class="micro-sources-modal__req-label">Weekly requirement</span>' +
+      '<span class="micro-sources-modal__req-val">' +
+      escapeHtml(microDvAmountText(dv * weekCount, field.unit)) +
+      "</span></div></div>";
+    return html;
+  }
+
+  function renderLongevitySourcesBody() {
+    if (!longevitySourcesBodyEl || !activeLongevitySourcesKey) return;
+    var label;
+    var unit;
+    if (activeLongevitySourcesKind === "micro") {
+      var microField = microFieldByKey(activeLongevitySourcesKey);
+      if (!microField) return;
+      label = microField.label;
+      unit = microField.unit;
+    } else {
+      var longevityField = longevityFieldByKey(activeLongevitySourcesKey);
+      if (!longevityField) return;
+      label = longevityField.label;
+      unit = longevityField.unit;
+    }
+
+    var html = longevitySourcesRequirementsHtml(
+      activeLongevitySourcesKey,
+      activeLongevitySourcesKind
+    );
+    var list = longevityContributionsFromWeek(
+      activeLongevitySourcesKey,
+      activeLongevitySourcesKind
+    );
+
+    if (!list.length) {
+      html +=
+        '<p class="micro-sources-modal__empty">No matched foods with ' +
+        escapeHtml(label) +
+        " data for this week.</p>";
+      longevitySourcesBodyEl.innerHTML = html;
+      return;
+    }
+
+    html += nutrientSourcesListHtml(list, unit);
+    longevitySourcesBodyEl.innerHTML = html;
+  }
+
+  function openLongevitySourcesModal(nutrientKey, kind) {
+    if (!longevitySourcesModalEl || !nutrientKey || !kind) return;
+    var label;
+    if (kind === "micro") {
+      var microField = microFieldByKey(nutrientKey);
+      if (!microField) return;
+      label = microField.label;
+    } else {
+      var longevityField = longevityFieldByKey(nutrientKey);
+      if (!longevityField) return;
+      label = longevityField.label;
+    }
+
+    closeOtherModalsForSources();
+    activeLongevitySourcesKey = nutrientKey;
+    activeLongevitySourcesKind = kind;
+    setLongevitySourcesFullscreen(false);
+    if (longevitySourcesModalTitleEl) {
+      longevitySourcesModalTitleEl.textContent = label + " — food sources";
+    }
+    renderLongevitySourcesBody();
+    longevitySourcesModalEl.hidden = false;
+    updateBodyModalOpen();
+    if (longevitySourcesModalDoneBtn) longevitySourcesModalDoneBtn.focus();
+  }
+
+  function closeLongevitySourcesModal() {
+    if (!longevitySourcesModalEl) return;
+    activeLongevitySourcesKey = null;
+    activeLongevitySourcesKind = null;
+    setLongevitySourcesFullscreen(false);
+    longevitySourcesModalEl.hidden = true;
+    updateBodyModalOpen();
+  }
+
+  function longevitySourcesIconHtml(nutrientKey, kind) {
+    return (
+      '<button type="button" class="dashboard__micro-sources-btn" data-longevity-sources="' +
+      escapeAttr(nutrientKey) +
+      '" data-longevity-sources-kind="' +
+      escapeAttr(kind) +
+      '" aria-label="Show food sources ranked by amount" title="Food sources">' +
+      '<svg class="dashboard__micro-sources-icon" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" focusable="false">' +
+      '<rect x="1" y="8" width="3" height="7" rx="0.5"></rect>' +
+      '<rect x="6.5" y="4" width="3" height="11" rx="0.5"></rect>' +
+      '<rect x="12" y="1" width="3" height="14" rx="0.5"></rect>' +
+      "</svg></button>"
+    );
+  }
+
   function populateMicroSourcesScopeSelect(selectedScope) {
     if (!microSourcesScopeEl) return;
     var html =
@@ -1709,52 +1961,7 @@
       return;
     }
 
-    var total = 0;
-    list.forEach(function (item) {
-      total += item.amount;
-    });
-
-    html += '<ol class="micro-sources-modal__list">';
-    list.forEach(function (item, idx) {
-      var perText = fmtNum(item.perServing) + " " + field.unit;
-      var rowTotalText = fmtNum(item.amount) + " " + field.unit;
-      var calcHtml;
-      if (item.hits > 1) {
-        calcHtml =
-          '<span class="micro-sources-modal__calc">' +
-          '<span class="micro-sources-modal__per">' +
-          escapeHtml(perText) +
-          "</span>" +
-          '<span class="micro-sources-modal__times">× ' +
-          item.hits +
-          "</span>" +
-          '<span class="micro-sources-modal__eq">=</span>' +
-          '<span class="micro-sources-modal__row-total">' +
-          escapeHtml(rowTotalText) +
-          "</span></span>";
-      } else {
-        calcHtml =
-          '<span class="micro-sources-modal__calc">' +
-          '<span class="micro-sources-modal__row-total">' +
-          escapeHtml(rowTotalText) +
-          "</span></span>";
-      }
-      html +=
-        '<li class="micro-sources-modal__item">' +
-        '<span class="micro-sources-modal__rank">' +
-        (idx + 1) +
-        "</span>" +
-        '<span class="micro-sources-modal__name">' +
-        escapeHtml(item.name) +
-        "</span>" +
-        calcHtml +
-        "</li>";
-    });
-    html += "</ol>";
-    html +=
-      '<p class="micro-sources-modal__total">Total: ' +
-      escapeHtml(fmtNum(total) + " " + field.unit) +
-      "</p>";
+    html += nutrientSourcesListHtml(list, field.unit);
     microSourcesBodyEl.innerHTML = html;
   }
 
@@ -1763,9 +1970,10 @@
     var field = microFieldByKey(microKey);
     if (!field) return;
 
-    closeOtherModalsForMicroSources();
+    closeOtherModalsForSources();
     activeMicroSourcesKey = microKey;
     activeMicroSourcesScope = scope || "week";
+    setMicroSourcesFullscreen(false);
     populateMicroSourcesScopeSelect(activeMicroSourcesScope);
     if (microSourcesModalTitleEl) {
       microSourcesModalTitleEl.textContent = field.label + " — food sources";
@@ -1780,6 +1988,7 @@
     if (!microSourcesModalEl) return;
     activeMicroSourcesKey = null;
     activeMicroSourcesScope = "week";
+    setMicroSourcesFullscreen(false);
     microSourcesModalEl.hidden = true;
     updateBodyModalOpen();
   }
@@ -2032,6 +2241,7 @@
       (microGapsModalEl && !microGapsModalEl.hidden) ||
       (microDefModalEl && !microDefModalEl.hidden) ||
       (microSourcesModalEl && !microSourcesModalEl.hidden) ||
+      (longevitySourcesModalEl && !longevitySourcesModalEl.hidden) ||
       (phosphorusBinderModalEl && !phosphorusBinderModalEl.hidden) ||
       (caffeineTipModalEl && !caffeineTipModalEl.hidden) ||
       (keywordPositionModalEl && !keywordPositionModalEl.hidden) ||
@@ -3101,7 +3311,9 @@
     limiting,
     defKey,
     useMicroDef,
-    pctHtml
+    pctHtml,
+    sourcesKey,
+    sourcesKind
   ) {
     var tier = tierForLongevityPct(pct, !!limiting);
     var tierAttr = tier ? ' data-dv-tier="' + escapeAttr(tier.id) + '"' : "";
@@ -3122,6 +3334,13 @@
     } else {
       nameHtml =
         '<span class="dashboard__longevity-name">' + escapeHtml(label) + "</span>";
+    }
+    if (sourcesKey && sourcesKind) {
+      nameHtml =
+        '<span class="dashboard__longevity-name-wrap">' +
+        nameHtml +
+        longevitySourcesIconHtml(sourcesKey, sourcesKind) +
+        "</span>";
     }
     return (
       '<div class="' +
@@ -3155,6 +3374,7 @@
       pctText = "per food";
       amtText = total > 0 ? "see GL" : "—";
     }
+    var showSources = field.key !== "glycemicIndex";
     return longevityRowHtml(
       field.label,
       amtText,
@@ -3163,7 +3383,10 @@
       "",
       !!field.limiting,
       field.key,
-      false
+      false,
+      null,
+      showSources ? field.key : null,
+      showSources ? "longevity" : null
     );
   }
 
@@ -3182,7 +3405,10 @@
       "dashboard__longevity-row--from-micro",
       !!limiting,
       microKey,
-      true
+      true,
+      null,
+      microKey,
+      "micro"
     );
   }
 
@@ -5302,7 +5528,19 @@
       return;
     }
     if (microSourcesModalEl && !microSourcesModalEl.hidden) {
+      if (microSourcesFullscreen) {
+        setMicroSourcesFullscreen(false);
+        return;
+      }
       closeMicroSourcesModal();
+      return;
+    }
+    if (longevitySourcesModalEl && !longevitySourcesModalEl.hidden) {
+      if (longevitySourcesFullscreen) {
+        setLongevitySourcesFullscreen(false);
+        return;
+      }
+      closeLongevitySourcesModal();
       return;
     }
     if (microDefModalEl && !microDefModalEl.hidden) {
@@ -5553,6 +5791,16 @@
         openPhosphorusBinderModal();
         return;
       }
+      var longevitySourcesBtn = e.target.closest("[data-longevity-sources]");
+      if (longevitySourcesBtn) {
+        e.preventDefault();
+        e.stopPropagation();
+        openLongevitySourcesModal(
+          longevitySourcesBtn.getAttribute("data-longevity-sources"),
+          longevitySourcesBtn.getAttribute("data-longevity-sources-kind") || "longevity"
+        );
+        return;
+      }
       var microBtn = e.target.closest("[data-micro-def]");
       if (microBtn) {
         openMicroDefModal(microBtn.getAttribute("data-micro-def"));
@@ -5562,6 +5810,30 @@
       if (longevityBtn) {
         openLongevityDefModal(longevityBtn.getAttribute("data-longevity-def"));
       }
+    });
+  }
+
+  if (longevitySourcesModalDoneBtn) {
+    longevitySourcesModalDoneBtn.addEventListener("click", closeLongevitySourcesModal);
+  }
+
+  if (longevitySourcesModalEl) {
+    longevitySourcesModalEl.addEventListener("click", function (e) {
+      if (e.target.closest('[data-action="close-longevity-sources-modal"]')) {
+        closeLongevitySourcesModal();
+      }
+    });
+  }
+
+  if (microSourcesFullscreenToggleBtn) {
+    microSourcesFullscreenToggleBtn.addEventListener("click", function () {
+      setMicroSourcesFullscreen(!microSourcesFullscreen);
+    });
+  }
+
+  if (longevitySourcesFullscreenToggleBtn) {
+    longevitySourcesFullscreenToggleBtn.addEventListener("click", function () {
+      setLongevitySourcesFullscreen(!longevitySourcesFullscreen);
     });
   }
 
