@@ -6299,7 +6299,7 @@
         "</div>" +
         '<button type="button" class="keywords__move keywords__move--position" data-action="position" aria-label="Move to position"' +
         (keywords.length === 1 ? " disabled" : "") +
-        ">Jump</button>" +
+        ">Move</button>" +
         "</div></div></td>" +
         '<td class="keywords__name">' +
         '<input type="text" class="keywords__input keywords__input--name" data-field="name" value="' +
