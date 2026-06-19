@@ -147,6 +147,11 @@
   var tdeeHintModalDoneBtn = document.getElementById("tdee-hint-modal-done");
   var macroSplitHintModalEl = document.getElementById("macro-split-hint-modal");
   var macroSplitHintModalDoneBtn = document.getElementById("macro-split-hint-modal-done");
+  var macroSplitCarouselPrevEl = document.getElementById("macro-split-carousel-prev");
+  var macroSplitCarouselNextEl = document.getElementById("macro-split-carousel-next");
+  var macroSplitCarouselIndicatorEl = document.getElementById("macro-split-carousel-indicator");
+  var macroSplitCarouselCardEl = document.getElementById("macro-split-carousel-card");
+  var macroSplitCarouselIndex = 0;
   var microDefFullscreen = false;
   var demographicOptionsEl = document.getElementById("demographic-options");
   var microModalEl = document.getElementById("micro-modal");
@@ -4819,6 +4824,8 @@
 
   function openMacroSplitHintModal() {
     if (!macroSplitHintModalEl) return;
+    macroSplitCarouselIndex = 0;
+    renderMacroSplitCarousel();
     macroSplitHintModalEl.hidden = false;
     updateBodyModalOpen();
   }
@@ -4827,6 +4834,308 @@
     if (!macroSplitHintModalEl) return;
     macroSplitHintModalEl.hidden = true;
     updateBodyModalOpen();
+  }
+
+  var MACRO_BODY_TYPES = [
+    {
+      title: "Ectomorph",
+      mix: false,
+      blurb:
+        "Naturally lean and long-limbed; gains weight slowly. Tolerates—and often needs—more carbs to fuel training and a surplus.",
+      goals: [
+        {
+          title: "Lose weight (fat loss)",
+          note: "Run a modest deficit (see TDEE comparison). You may not need the highest protein if you are already lean—prioritize keeping training fuel.",
+          protein: "Lower range (~28–32%) — enough to preserve muscle without crowding out carbs.",
+          carbs: "Higher range (~35–40%) — keeps energy up for lifting and cardio.",
+          fats: "Lower range (~25–28%) — don’t go too low; hormones still need fat.",
+        },
+        {
+          title: "Gain muscle (lean bulk)",
+          note: "Use a small surplus (~200–400 cal/day). You may need a slightly larger surplus than other types to see scale movement.",
+          protein: "Lower range (~25–28%) — hit ~0.7–0.9 g/lb; extra calories are better spent on carbs.",
+          carbs: "Higher range (~45–50%) — main driver for training volume and recovery.",
+          fats: "Lower range (~20–25%) — fill remaining calories after protein and carbs.",
+        },
+        {
+          title: "Recomposition & maintenance",
+          note: "At maintenance, nudge composition with progressive lifting—not aggressive cuts.",
+          protein: "Mid range (~28–30%) — steady, not maximal.",
+          carbs: "Higher range (~42–45%) — supports frequent training.",
+          fats: "Lower-mid range (~25–28%).",
+        },
+        {
+          title: "Endurance & high-volume training",
+          note: "Long sessions raise carb demand sharply for this type.",
+          protein: "Lower range (~20–22%) — maintenance, not bulk.",
+          carbs: "Higher range (~55–60%) — primary fuel for volume.",
+          fats: "Lower range (~20–22%).",
+        },
+      ],
+    },
+    {
+      title: "Ecto-mesomorph",
+      mix: true,
+      blurb:
+        "Lean like an ectomorph but adds muscle more readily—athletic “hard gainer who responds.” Often the easiest mixed type for recomposition.",
+      goals: [
+        {
+          title: "Lose weight (fat loss)",
+          note: "Moderate deficit; you usually keep muscle well if protein stays solid.",
+          protein: "Mid range (~32–35%) — slightly above ectomorph defaults.",
+          carbs: "Mid-high range (~32–38%) — trim carbs before slashing below ~30%.",
+          fats: "Mid range (~28–30%).",
+        },
+        {
+          title: "Gain muscle (lean bulk)",
+          note: "Small surplus is enough; you tend to partition calories toward muscle.",
+          protein: "Mid range (~28–32%) — ~0.8–1.0 g/lb.",
+          carbs: "Higher range (~42–48%) — still your best lever for volume.",
+          fats: "Lower-mid range (~22–25%).",
+        },
+        {
+          title: "Recomposition & maintenance",
+          note: "Sweet spot for this mix—balanced split at maintenance often works.",
+          protein: "Mid range (~30–32%).",
+          carbs: "Mid range (~40–42%).",
+          fats: "Mid range (~28–30%).",
+        },
+        {
+          title: "Endurance & high-volume training",
+          note: "Blend ectomorph carb tolerance with mesomorph recovery.",
+          protein: "Lower-mid range (~22–24%).",
+          carbs: "Higher range (~52–56%).",
+          fats: "Mid range (~22–25%).",
+        },
+      ],
+    },
+    {
+      title: "Mesomorph",
+      mix: false,
+      blurb:
+        "Broad shoulders, natural muscle; loses fat and gains mass relatively easily. Balanced macros usually work—adjust by goal, not extremes.",
+      goals: [
+        {
+          title: "Lose weight (fat loss)",
+          note: "Moderate deficit; avoid over-cutting carbs if performance drops.",
+          protein: "Mid range (~32–35%) — ~0.8–1.0 g/lb.",
+          carbs: "Mid range (~30–35%) — lower if sedentary, higher if training hard.",
+          fats: "Mid range (~30–32%).",
+        },
+        {
+          title: "Gain muscle (lean bulk)",
+          note: "Small surplus (~200–400 cal/day); you often respond quickly—don’t overshoot calories.",
+          protein: "Mid range (~28–32%).",
+          carbs: "Mid range (~42–45%) — supports volume without excess fat gain.",
+          fats: "Mid range (~25–28%).",
+        },
+        {
+          title: "Recomposition & maintenance",
+          note: "Classic ~30 / 40 / 30 split is a strong default here.",
+          protein: "Mid range (~30%).",
+          carbs: "Mid range (~40%).",
+          fats: "Mid range (~30%).",
+        },
+        {
+          title: "Endurance & high-volume training",
+          note: "Shift toward carbs without dropping protein too far.",
+          protein: "Mid range (~22–25%).",
+          carbs: "Mid-high range (~50–55%).",
+          fats: "Mid range (~22–25%).",
+        },
+      ],
+    },
+    {
+      title: "Meso-endomorph",
+      mix: true,
+      blurb:
+        "Muscular frame but gains fat easily—strong lifter who has to watch surplus and carbs. Protein and portion control matter more than for pure mesomorphs.",
+      goals: [
+        {
+          title: "Lose weight (fat loss)",
+          note: "Deficit with higher protein and controlled carbs usually works best.",
+          protein: "Higher range (~35–38%) — satiety and muscle retention.",
+          carbs: "Lower-mid range (~28–32%) — tighten if fat loss stalls.",
+          fats: "Mid range (~30–32%) — moderate, not minimal.",
+        },
+        {
+          title: "Gain muscle (lean bulk)",
+          note: "Keep surplus small; extra carbs can spill over into fat for this mix.",
+          protein: "Mid-high range (~30–33%) — anchor the bulk.",
+          carbs: "Mid range (~38–42%) — enough for lifts, not a free-for-all.",
+          fats: "Mid range (~25–28%).",
+        },
+        {
+          title: "Recomposition & maintenance",
+          note: "Higher protein at maintenance helps offset carb sensitivity.",
+          protein: "Higher range (~32–35%).",
+          carbs: "Lower-mid range (~35–38%).",
+          fats: "Mid range (~28–30%).",
+        },
+        {
+          title: "Endurance & high-volume training",
+          note: "Add carbs around sessions; keep baseline carbs moderate on rest days.",
+          protein: "Mid range (~24–26%).",
+          carbs: "Mid range (~45–50%) — periodize up on big weeks.",
+          fats: "Mid range (~24–28%).",
+        },
+      ],
+    },
+    {
+      title: "Endomorph",
+      mix: false,
+      blurb:
+        "Rounder, stores fat readily; often strongest on higher protein and tighter carbs when cutting. Surplus bulks can add fat quickly—go slow.",
+      goals: [
+        {
+          title: "Lose weight (fat loss)",
+          note: "Modest deficit; protein and fiber keep hunger manageable.",
+          protein: "Higher range (~35–40%) — ~0.9–1.0+ g/lb if training.",
+          carbs: "Lower range (~25–30%) — raise only if performance suffers.",
+          fats: "Mid-high range (~30–35%) — don’t drop fat too low.",
+        },
+        {
+          title: "Gain muscle (lean bulk)",
+          note: "Minimal surplus; monitor waist and scale weekly.",
+          protein: "Higher range (~30–35%) — muscle without relying on excess carbs.",
+          carbs: "Lower-mid range (~35–40%) — enough for training, not maximal.",
+          fats: "Mid-high range (~28–32%).",
+        },
+        {
+          title: "Recomposition & maintenance",
+          note: "Protein-forward split at maintenance supports slow composition shifts.",
+          protein: "Higher range (~32–35%).",
+          carbs: "Lower-mid range (~35–38%).",
+          fats: "Mid range (~28–30%).",
+        },
+        {
+          title: "Endurance & high-volume training",
+          note: "Carbs still rise with mileage—just not as high as for ectomorphs.",
+          protein: "Mid range (~24–26%).",
+          carbs: "Mid range (~45–48%) — fuel sessions, trim elsewhere if needed.",
+          fats: "Mid-high range (~26–28%).",
+        },
+      ],
+    },
+    {
+      title: "Ecto-endomorph",
+      mix: true,
+      blurb:
+        "Often “skinny fat” or lean limbs with fat stored centrally—small frame but sensitive to surplus. Needs ectomorph portion sizes with endomorph macro discipline.",
+      goals: [
+        {
+          title: "Lose weight (fat loss)",
+          note: "Deficit with endomorph-style macro tilt even if you look small—central fat is often the issue, not scale weight.",
+          protein: "Higher range (~34–38%) — protect lean mass.",
+          carbs: "Lower range (~26–30%) — tighter than pure ectomorph.",
+          fats: "Mid range (~30–32%).",
+        },
+        {
+          title: "Gain muscle (lean bulk)",
+          note: "Very small surplus; prioritize lifting over calorie floods.",
+          protein: "Mid-high range (~30–33%).",
+          carbs: "Mid range (~38–42%) — not ectomorph-high.",
+          fats: "Mid range (~25–28%).",
+        },
+        {
+          title: "Recomposition & maintenance",
+          note: "Maintenance + high protein + lifting is often the best first step for this mix.",
+          protein: "Higher range (~32–35%).",
+          carbs: "Lower-mid range (~35–38%).",
+          fats: "Mid range (~28–30%).",
+        },
+        {
+          title: "Endurance & high-volume training",
+          note: "Add carbs for long efforts; keep baseline moderate on easy weeks.",
+          protein: "Mid range (~24–26%).",
+          carbs: "Mid range (~44–48%).",
+          fats: "Mid range (~26–28%).",
+        },
+      ],
+    },
+  ];
+
+  function macroSplitGoalHtml(goal) {
+    var recompExplain =
+      goal.title === "Recomposition & maintenance"
+        ? '<p class="macro-split-card__recomp-explain"><strong>Recomposition</strong> means eating at roughly maintenance calories while your body slowly trades fat for lean mass—scale weight may barely move, but shape and strength can improve over weeks and months. It is not a fast cut or a bulk; progressive resistance training is what drives the shift.</p>'
+        : "";
+    return (
+      '<section class="macro-split-card__goal">' +
+      '<h4 class="macro-split-card__goal-title">' +
+      goal.title +
+      "</h4>" +
+      recompExplain +
+      "<p>" +
+      goal.note +
+      "</p>" +
+      '<ul class="micro-tip-modal__list macro-split-card__macros">' +
+      "<li><strong>Protein:</strong> " +
+      goal.protein +
+      "</li>" +
+      "<li><strong>Carbs:</strong> " +
+      goal.carbs +
+      "</li>" +
+      "<li><strong>Fats:</strong> " +
+      goal.fats +
+      "</li>" +
+      "</ul>" +
+      "</section>"
+    );
+  }
+
+  function renderMacroSplitCarousel() {
+    if (!macroSplitCarouselCardEl || !macroSplitCarouselIndicatorEl) return;
+
+    var types = MACRO_BODY_TYPES;
+    if (!types.length) return;
+
+    if (macroSplitCarouselIndex < 0) {
+      macroSplitCarouselIndex = types.length - 1;
+    } else if (macroSplitCarouselIndex >= types.length) {
+      macroSplitCarouselIndex = 0;
+    }
+
+    var body = types[macroSplitCarouselIndex];
+    var goalsHtml = "";
+    body.goals.forEach(function (goal) {
+      goalsHtml += macroSplitGoalHtml(goal);
+    });
+
+    macroSplitCarouselIndicatorEl.textContent =
+      body.title + " (" + (macroSplitCarouselIndex + 1) + " / " + types.length + ")";
+
+    macroSplitCarouselCardEl.innerHTML =
+      '<header class="macro-split-card__head">' +
+      "<h4 class=\"macro-split-card__title\">" +
+      body.title +
+      (body.mix ? ' <span class="macro-split-card__mix">mixed</span>' : "") +
+      "</h4>" +
+      "<p class=\"macro-split-card__blurb\">" +
+      body.blurb +
+      "</p>" +
+      "</header>" +
+      '<div class="macro-split-card__goals">' +
+      goalsHtml +
+      "</div>";
+
+    if (macroSplitCarouselPrevEl) {
+      var prev = types[(macroSplitCarouselIndex - 1 + types.length) % types.length];
+      macroSplitCarouselPrevEl.setAttribute("aria-label", "Previous body type: " + prev.title);
+    }
+    if (macroSplitCarouselNextEl) {
+      var next = types[(macroSplitCarouselIndex + 1) % types.length];
+      macroSplitCarouselNextEl.setAttribute("aria-label", "Next body type: " + next.title);
+    }
+  }
+
+  function setMacroSplitCarouselIndex(index) {
+    macroSplitCarouselIndex = index;
+    renderMacroSplitCarousel();
+  }
+
+  function shiftMacroSplitCarousel(delta) {
+    setMacroSplitCarouselIndex(macroSplitCarouselIndex + delta);
   }
 
   function saveDemographic() {
@@ -7288,6 +7597,18 @@
       if (e.target.closest('[data-action="close-macro-split-hint-modal"]')) {
         closeMacroSplitHintModal();
       }
+    });
+  }
+
+  if (macroSplitCarouselPrevEl) {
+    macroSplitCarouselPrevEl.addEventListener("click", function () {
+      shiftMacroSplitCarousel(-1);
+    });
+  }
+
+  if (macroSplitCarouselNextEl) {
+    macroSplitCarouselNextEl.addEventListener("click", function () {
+      shiftMacroSplitCarousel(1);
     });
   }
 

@@ -845,34 +845,20 @@
         <h3 id="macro-split-hint-modal-title" class="modal__title">Macro split &amp; body type</h3>
         <p class="modal__subtitle">Typical protein, carb, and fat ranges by goal</p>
       </header>
-      <div class="import-modal__body micro-tip-modal__body">
-        <p>Your <strong>macro split (week avg)</strong> shows what share of calories came from protein, carbs, and fats across the week. Percentages are a planning tool—pair them with your calorie direction (deficit, surplus, or maintenance) from TDEE.</p>
-        <h4 class="micro-tip-modal__heading">Body types (starting points, not rules)</h4>
-        <p>Classic somatotypes describe tendencies, not fixed categories. Most people are a mix. Use these as rough guides for where to start, then adjust based on hunger, energy, training, and progress.</p>
-        <ul class="micro-tip-modal__list">
-          <li><strong>Ectomorph</strong> — naturally lean, hard to gain weight; often tolerates higher carbs; may need a larger surplus and consistent protein to add muscle.</li>
-          <li><strong>Mesomorph</strong> — builds muscle and loses fat relatively easily; often does well on balanced splits with moderate carbs and steady protein.</li>
-          <li><strong>Endomorph</strong> — gains weight more readily; often responds to higher protein, moderate fats, and controlled carbs when leaning down.</li>
-        </ul>
-        <h4 class="micro-tip-modal__heading">Lose weight (fat loss)</h4>
-        <p>Run a modest calorie deficit (see TDEE comparison). Keep protein high to preserve muscle.</p>
-        <ul class="micro-tip-modal__list">
-          <li><strong>Protein:</strong> ~30–40% of calories (roughly 0.7–1.0 g per lb body weight is a common target).</li>
-          <li><strong>Carbs:</strong> ~25–40% — lower if you prefer fewer starches; higher if you train hard and need fuel.</li>
-          <li><strong>Fats:</strong> ~25–35% — don’t go too low; hormones and satiety need adequate fat.</li>
-        </ul>
-        <h4 class="micro-tip-modal__heading">Gain muscle (lean bulk)</h4>
-        <p>Use a small surplus (~200–400 cal/day above maintenance). Extra calories beyond that mostly add fat, not muscle.</p>
-        <ul class="micro-tip-modal__list">
-          <li><strong>Protein:</strong> ~25–35% (about 0.7–1.0 g per lb body weight).</li>
-          <li><strong>Carbs:</strong> ~40–50% — supports training volume and recovery.</li>
-          <li><strong>Fats:</strong> ~20–30%.</li>
-        </ul>
-        <h4 class="micro-tip-modal__heading">Recomposition &amp; maintenance</h4>
-        <p>At maintenance calories, a higher-protein split (often ~30% protein, ~40% carbs, ~30% fats) with progressive resistance training can shift body composition slowly without large scale changes.</p>
-        <h4 class="micro-tip-modal__heading">Endurance &amp; high-volume training</h4>
-        <p>Long runs, cycling, or multi-hour sessions raise carb needs. Many athletes land around ~20–25% protein, ~50–60% carbs, ~20–25% fats—adjust upward for heavy weeks.</p>
-        <p>These ranges are educational starting points. Blood work, medical conditions, and individual response matter. This is not medical or dietitian advice.</p>
+      <div class="import-modal__body micro-tip-modal__body macro-split-modal__body">
+        <p>Your <strong>macro split (week avg)</strong> shows what share of calories came from protein, carbs, and fats across the week. Pick the body type closest to you—most people are a mix—then use the ranges for your goal.</p>
+        <div class="macro-split-carousel" id="macro-split-carousel">
+          <div class="macro-split-carousel__nav">
+            <button type="button" id="macro-split-carousel-prev" class="macro-split-carousel__adj macro-split-carousel__adj--prev" aria-label="Previous body type">&lt;</button>
+            <div class="macro-split-carousel__current">
+              <span class="macro-split-carousel__current-label">Body type</span>
+              <span id="macro-split-carousel-indicator" class="macro-split-carousel__current-title"></span>
+            </div>
+            <button type="button" id="macro-split-carousel-next" class="macro-split-carousel__adj macro-split-carousel__adj--next" aria-label="Next body type">&gt;</button>
+          </div>
+          <div id="macro-split-carousel-card" class="macro-split-carousel__card" role="region" aria-live="polite" aria-label="Body type macro guidance"></div>
+        </div>
+        <p class="macro-split-modal__disclaimer">These ranges are educational starting points. Blood work, medical conditions, and individual response matter. This is not medical or dietitian advice.</p>
       </div>
       <footer class="modal__footer">
         <button type="button" id="macro-split-hint-modal-done" class="modal__done">Done</button>
