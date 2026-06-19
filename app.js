@@ -145,6 +145,13 @@
   var longevityDefinitions = {};
   var activeMicroDefKey = null;
   var activeLongevityDefKey = null;
+  var activeMicroSourcesKey = null;
+  var activeMicroSourcesScope = "week";
+  var microSourcesModalEl = document.getElementById("micro-sources-modal");
+  var microSourcesModalTitleEl = document.getElementById("micro-sources-modal-title");
+  var microSourcesScopeEl = document.getElementById("micro-sources-scope");
+  var microSourcesBodyEl = document.getElementById("micro-sources-body");
+  var microSourcesModalDoneBtn = document.getElementById("micro-sources-modal-done");
 
   var LONGEVITY_DERIVED_DEFS = {
     omega6To3: { label: "Omega-6 : Omega-3 ratio", limiting: true },
@@ -1559,6 +1566,242 @@
     updateBodyModalOpen();
   }
 
+  function closeMicroDefModal() {
+    if (!microDefModalEl) return;
+    activeMicroDefKey = null;
+    activeLongevityDefKey = null;
+    setMicroDefFullscreen(false);
+    microDefModalEl.hidden = true;
+    updateBodyModalOpen();
+  }
+
+  function closeOtherModalsForMicroSources() {
+    if (activeImportId) closeImportModal();
+    if (importAllModalEl && !importAllModalEl.hidden) closeImportAllModal();
+    if (importAllMealsModalEl && !importAllMealsModalEl.hidden) {
+      closeImportAllMealsModal();
+    }
+    if (microGapsModalEl && !microGapsModalEl.hidden) closeMicroGapsModal();
+    if (microDefModalEl && !microDefModalEl.hidden) closeMicroDefModal();
+    if (phosphorusBinderModalEl && !phosphorusBinderModalEl.hidden) {
+      closePhosphorusBinderModal();
+    }
+    if (caffeineTipModalEl && !caffeineTipModalEl.hidden) closeCaffeineTipModal();
+    if (activeMicroId) {
+      saveMicrosFromForm();
+      closeMicroModal();
+    }
+    if (activeLongevityId) {
+      saveLongevityFromForm();
+      closeLongevityModal();
+    }
+  }
+
+  function microDvForDemographic(microKey, demoId) {
+    if (demographicDv && demographicDv.getDailyMicroDv) {
+      return demographicDv.getDailyMicroDv(demoId, microKey);
+    }
+    return 0;
+  }
+
+  function microDvAmountText(amount, unit) {
+    if (!amount) return "—";
+    return fmtNum(amount) + " " + unit;
+  }
+
+  function microSourcesRequirementsHtml(field) {
+    var maleDv = microDvForDemographic(field.key, "male");
+    var femaleDv = microDvForDemographic(field.key, "female");
+    var weekCount = DAYS.length;
+    var sameBySex = maleDv === femaleDv;
+
+    var html = '<div class="micro-sources-modal__reqs">';
+
+    if (!maleDv && !femaleDv) {
+      html +=
+        '<p class="micro-sources-modal__req-note">No daily reference set for this nutrient.</p></div>';
+      return html;
+    }
+
+    if (sameBySex) {
+      var dv = maleDv || femaleDv;
+      html +=
+        '<div class="micro-sources-modal__req-row">' +
+        '<span class="micro-sources-modal__req-label">Daily requirement</span>' +
+        '<span class="micro-sources-modal__req-val">' +
+        escapeHtml(microDvAmountText(dv, field.unit)) +
+        "</span></div>" +
+        '<div class="micro-sources-modal__req-row">' +
+        '<span class="micro-sources-modal__req-label">Weekly requirement</span>' +
+        '<span class="micro-sources-modal__req-val">' +
+        escapeHtml(microDvAmountText(dv * weekCount, field.unit)) +
+        "</span></div>";
+    } else {
+      var metaMap = demographicDv ? demographicDv.META : {};
+      var maleMeta = metaMap.male || { icon: "♂", label: "Male" };
+      var femaleMeta = metaMap.female || { icon: "♀", label: "Female" };
+      html += '<div class="micro-sources-modal__req-sex-grid">';
+      [
+        { id: "male", dv: maleDv, meta: maleMeta },
+        { id: "female", dv: femaleDv, meta: femaleMeta },
+      ].forEach(function (entry) {
+        if (!entry.dv) return;
+        var selected = demographic === entry.id;
+        html +=
+          '<div class="micro-sources-modal__req-sex' +
+          (selected ? " micro-sources-modal__req-sex--selected" : "") +
+          '">' +
+          '<p class="micro-sources-modal__req-sex-title">' +
+          escapeHtml(entry.meta.icon + " " + entry.meta.label) +
+          (selected ? ' <span class="micro-sources-modal__req-profile">(your profile)</span>' : "") +
+          "</p>" +
+          '<div class="micro-sources-modal__req-row">' +
+          '<span class="micro-sources-modal__req-label">Daily</span>' +
+          '<span class="micro-sources-modal__req-val">' +
+          escapeHtml(microDvAmountText(entry.dv, field.unit)) +
+          "</span></div>" +
+          '<div class="micro-sources-modal__req-row">' +
+          '<span class="micro-sources-modal__req-label">Weekly</span>' +
+          '<span class="micro-sources-modal__req-val">' +
+          escapeHtml(microDvAmountText(entry.dv * weekCount, field.unit)) +
+          "</span></div></div>";
+      });
+      html += "</div>";
+    }
+
+    html += "</div>";
+    return html;
+  }
+
+  function populateMicroSourcesScopeSelect(selectedScope) {
+    if (!microSourcesScopeEl) return;
+    var html =
+      '<option value="week"' +
+      (selectedScope === "week" ? " selected" : "") +
+      ">Full week (Mon–Sun)</option>";
+    DAYS.forEach(function (day) {
+      html +=
+        '<option value="' +
+        escapeAttr(day.id) +
+        '"' +
+        (selectedScope === day.id ? " selected" : "") +
+        ">" +
+        escapeHtml(day.label) +
+        "</option>";
+    });
+    microSourcesScopeEl.innerHTML = html;
+  }
+
+  function renderMicroSourcesBody() {
+    if (!microSourcesBodyEl || !activeMicroSourcesKey) return;
+    var field = microFieldByKey(activeMicroSourcesKey);
+    if (!field) return;
+
+    var html = microSourcesRequirementsHtml(field);
+    var list = microContributionsForScope(activeMicroSourcesKey, activeMicroSourcesScope);
+
+    if (!list.length) {
+      html +=
+        '<p class="micro-sources-modal__empty">No matched foods with ' +
+        escapeHtml(field.label) +
+        " data for this period.</p>";
+      microSourcesBodyEl.innerHTML = html;
+      return;
+    }
+
+    var total = 0;
+    list.forEach(function (item) {
+      total += item.amount;
+    });
+
+    html += '<ol class="micro-sources-modal__list">';
+    list.forEach(function (item, idx) {
+      var perText = fmtNum(item.perServing) + " " + field.unit;
+      var rowTotalText = fmtNum(item.amount) + " " + field.unit;
+      var calcHtml;
+      if (item.hits > 1) {
+        calcHtml =
+          '<span class="micro-sources-modal__calc">' +
+          '<span class="micro-sources-modal__per">' +
+          escapeHtml(perText) +
+          "</span>" +
+          '<span class="micro-sources-modal__times">× ' +
+          item.hits +
+          "</span>" +
+          '<span class="micro-sources-modal__eq">=</span>' +
+          '<span class="micro-sources-modal__row-total">' +
+          escapeHtml(rowTotalText) +
+          "</span></span>";
+      } else {
+        calcHtml =
+          '<span class="micro-sources-modal__calc">' +
+          '<span class="micro-sources-modal__row-total">' +
+          escapeHtml(rowTotalText) +
+          "</span></span>";
+      }
+      html +=
+        '<li class="micro-sources-modal__item">' +
+        '<span class="micro-sources-modal__rank">' +
+        (idx + 1) +
+        "</span>" +
+        '<span class="micro-sources-modal__name">' +
+        escapeHtml(item.name) +
+        "</span>" +
+        calcHtml +
+        "</li>";
+    });
+    html += "</ol>";
+    html +=
+      '<p class="micro-sources-modal__total">Total: ' +
+      escapeHtml(fmtNum(total) + " " + field.unit) +
+      "</p>";
+    microSourcesBodyEl.innerHTML = html;
+  }
+
+  function openMicroSourcesModal(microKey, scope) {
+    if (!microSourcesModalEl || !microKey) return;
+    var field = microFieldByKey(microKey);
+    if (!field) return;
+
+    closeOtherModalsForMicroSources();
+    activeMicroSourcesKey = microKey;
+    activeMicroSourcesScope = scope || "week";
+    populateMicroSourcesScopeSelect(activeMicroSourcesScope);
+    if (microSourcesModalTitleEl) {
+      microSourcesModalTitleEl.textContent = field.label + " — food sources";
+    }
+    renderMicroSourcesBody();
+    microSourcesModalEl.hidden = false;
+    updateBodyModalOpen();
+    if (microSourcesScopeEl) microSourcesScopeEl.focus();
+  }
+
+  function closeMicroSourcesModal() {
+    if (!microSourcesModalEl) return;
+    activeMicroSourcesKey = null;
+    activeMicroSourcesScope = "week";
+    microSourcesModalEl.hidden = true;
+    updateBodyModalOpen();
+  }
+
+  function microSourcesIconHtml(microKey, defaultDayId) {
+    var dayAttr = defaultDayId
+      ? ' data-micro-sources-day="' + escapeAttr(defaultDayId) + '"'
+      : "";
+    return (
+      '<button type="button" class="dashboard__micro-sources-btn" data-micro-sources="' +
+      escapeAttr(microKey) +
+      '"' +
+      dayAttr +
+      ' aria-label="Show food sources ranked by amount" title="Food sources">' +
+      '<svg class="dashboard__micro-sources-icon" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" focusable="false">' +
+      '<rect x="1" y="8" width="3" height="7" rx="0.5"></rect>' +
+      '<rect x="6.5" y="4" width="3" height="11" rx="0.5"></rect>' +
+      '<rect x="12" y="1" width="3" height="14" rx="0.5"></rect>' +
+      "</svg></button>"
+    );
+  }
+
   function openPhosphorusBinderModal() {
     if (!phosphorusBinderModalEl) return;
 
@@ -1788,6 +2031,7 @@
       (importAllModalEl && !importAllModalEl.hidden) ||
       (microGapsModalEl && !microGapsModalEl.hidden) ||
       (microDefModalEl && !microDefModalEl.hidden) ||
+      (microSourcesModalEl && !microSourcesModalEl.hidden) ||
       (phosphorusBinderModalEl && !phosphorusBinderModalEl.hidden) ||
       (caffeineTipModalEl && !caffeineTipModalEl.hidden) ||
       (keywordPositionModalEl && !keywordPositionModalEl.hidden) ||
@@ -2129,6 +2373,79 @@
     });
 
     return totals;
+  }
+
+  function microContributionsFromText(text, microKey) {
+    var list = [];
+    var seen = {};
+
+    keywords.forEach(function (kw) {
+      var name = kw.name.trim();
+      if (!name) return;
+      var key = name.toLowerCase();
+      if (seen[key]) return;
+      seen[key] = true;
+
+      var hits = countKeyword(text, name);
+      if (!hits) return;
+
+      var v = kw.micros[microKey];
+      if (v === "" || v == null) return;
+      var perServing = parseFloat(v);
+      if (isNaN(perServing) || perServing <= 0) return;
+
+      list.push({
+        name: name,
+        amount: hits * perServing,
+        hits: hits,
+        perServing: perServing,
+      });
+    });
+
+    list.sort(function (a, b) {
+      return b.amount - a.amount;
+    });
+    return list;
+  }
+
+  function microContributionsForScope(microKey, scope) {
+    if (scope === "week") {
+      var merged = {};
+      DAYS.forEach(function (day) {
+        var el = document.getElementById(day.id);
+        var text = el ? el.value : "";
+        microContributionsFromText(text, microKey).forEach(function (item) {
+          var k = item.name.toLowerCase();
+          if (merged[k]) {
+            merged[k].amount += item.amount;
+            merged[k].hits += item.hits;
+          } else {
+            merged[k] = {
+              name: item.name,
+              amount: item.amount,
+              hits: item.hits,
+              perServing: item.perServing,
+            };
+          }
+        });
+      });
+      return Object.keys(merged)
+        .map(function (k) {
+          return merged[k];
+        })
+        .sort(function (a, b) {
+          return b.amount - a.amount;
+        });
+    }
+
+    var text = "";
+    DAYS.forEach(function (day) {
+      if (day.id === scope) {
+        var el = document.getElementById(day.id);
+        text = el ? el.value : "";
+      }
+    });
+    return microContributionsFromText(text, microKey);
   }
 
   function addMicroTotals(a, b) {
@@ -2556,11 +2873,14 @@
       '"' +
       tierAttr +
       ' role="listitem">' +
+      '<span class="dashboard__micro-name-wrap">' +
       '<button type="button" class="dashboard__micro-name" data-micro-def="' +
       escapeAttr(field.key) +
       '" aria-haspopup="dialog">' +
       escapeHtml(field.label) +
       "</button>" +
+      microSourcesIconHtml(field.key) +
+      "</span>" +
       '<span class="dashboard__micro-amt">' +
       escapeHtml(amtText) +
       "</span>";
@@ -2580,7 +2900,7 @@
     return html;
   }
 
-  function microDayCardHtml(dayLabel, totals) {
+  function microDayCardHtml(dayLabel, dayId, totals) {
     var rows = "";
     MICRO_FIELDS.forEach(function (field) {
       var total = totals[field.key];
@@ -2597,11 +2917,14 @@
         '"' +
         tierAttr +
         ">" +
+        '<span class="dashboard__micro-day-name-wrap">' +
         '<button type="button" class="dashboard__micro-day-name" data-micro-def="' +
         escapeAttr(field.key) +
         '" aria-haspopup="dialog">' +
         escapeHtml(field.label) +
         "</button>" +
+        microSourcesIconHtml(field.key, dayId) +
+        "</span>" +
         '<div class="dashboard__micro-day-meta">' +
         '<span class="dashboard__micro-day-pct"' +
         microPctInlineStyle(pct) +
@@ -2649,7 +2972,7 @@
     DAYS.forEach(function (day) {
       var el = document.getElementById(day.id);
       var text = el ? el.value : "";
-      html += microDayCardHtml(day.label, microTotalsFromText(text));
+      html += microDayCardHtml(day.label, day.id, microTotalsFromText(text));
     });
     dashboardMicroDailyGridEl.innerHTML = html;
   }
@@ -4978,6 +5301,10 @@
       closeMicroGapsModal();
       return;
     }
+    if (microSourcesModalEl && !microSourcesModalEl.hidden) {
+      closeMicroSourcesModal();
+      return;
+    }
     if (microDefModalEl && !microDefModalEl.hidden) {
       if (microDefFullscreen) {
         setMicroDefFullscreen(false);
@@ -5186,16 +5513,29 @@
   }
 
   function handleMicroDefClick(e) {
+    if (e.target.closest("[data-micro-sources]")) return;
     var btn = e.target.closest("[data-micro-def]");
     if (!btn) return;
     openMicroDefModal(btn.getAttribute("data-micro-def"));
   }
 
+  function handleMicroSourcesClick(e) {
+    var btn = e.target.closest("[data-micro-sources]");
+    if (!btn) return;
+    e.preventDefault();
+    e.stopPropagation();
+    var key = btn.getAttribute("data-micro-sources");
+    var dayId = btn.getAttribute("data-micro-sources-day");
+    openMicroSourcesModal(key, dayId || "week");
+  }
+
   if (dashboardMicroListEl) {
+    dashboardMicroListEl.addEventListener("click", handleMicroSourcesClick);
     dashboardMicroListEl.addEventListener("click", handleMicroDefClick);
   }
 
   if (dashboardMicroDailyGridEl) {
+    dashboardMicroDailyGridEl.addEventListener("click", handleMicroSourcesClick);
     dashboardMicroDailyGridEl.addEventListener("click", handleMicroDefClick);
   }
 
@@ -5221,6 +5561,25 @@
       var longevityBtn = e.target.closest("[data-longevity-def]");
       if (longevityBtn) {
         openLongevityDefModal(longevityBtn.getAttribute("data-longevity-def"));
+      }
+    });
+  }
+
+  if (microSourcesModalDoneBtn) {
+    microSourcesModalDoneBtn.addEventListener("click", closeMicroSourcesModal);
+  }
+
+  if (microSourcesScopeEl) {
+    microSourcesScopeEl.addEventListener("change", function () {
+      activeMicroSourcesScope = microSourcesScopeEl.value || "week";
+      renderMicroSourcesBody();
+    });
+  }
+
+  if (microSourcesModalEl) {
+    microSourcesModalEl.addEventListener("click", function (e) {
+      if (e.target.closest('[data-action="close-micro-sources-modal"]')) {
+        closeMicroSourcesModal();
       }
     });
   }

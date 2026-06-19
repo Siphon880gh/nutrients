@@ -527,6 +527,24 @@
     </div>
   </div>
 
+  <div id="micro-sources-modal" class="modal" hidden>
+    <div class="modal__backdrop" data-action="close-micro-sources-modal"></div>
+    <div class="modal__panel modal__panel--wide" role="dialog" aria-modal="true" aria-labelledby="micro-sources-modal-title">
+      <header class="modal__header">
+        <h3 id="micro-sources-modal-title" class="modal__title"></h3>
+        <p id="micro-sources-modal-subtitle" class="modal__subtitle">Foods that matched your notes, ranked by amount</p>
+      </header>
+      <div class="micro-sources-modal__toolbar">
+        <label class="micro-sources-modal__label" for="micro-sources-scope">Period</label>
+        <select id="micro-sources-scope" class="micro-sources-modal__select"></select>
+      </div>
+      <div id="micro-sources-body" class="micro-sources-modal__body"></div>
+      <footer class="modal__footer">
+        <button type="button" id="micro-sources-modal-done" class="modal__done">Done</button>
+      </footer>
+    </div>
+  </div>
+
   <div id="micro-modal" class="modal" hidden>
     <div class="modal__backdrop" data-action="close-micro-modal"></div>
     <div class="modal__panel" role="dialog" aria-modal="true" aria-labelledby="micro-modal-title">
