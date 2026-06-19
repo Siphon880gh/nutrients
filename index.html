@@ -9,8 +9,14 @@
 <body>
   <main class="week">
     <header class="week__header">
-      <h1>Week meals</h1>
-      <p class="week__hint">Mon–Sun · multiple lines per day</p>
+      <div class="week__header-text">
+        <h1>Week meals</h1>
+        <p class="week__hint">Mon–Sun · multiple lines per day</p>
+      </div>
+      <button type="button" id="settings-open" class="week__settings" aria-haspopup="dialog" aria-label="Settings">
+        <span id="settings-demographic-icon" class="week__settings-icon" aria-hidden="true">♂</span>
+        <span class="week__settings-label">Settings</span>
+      </button>
     </header>
 
     <section class="dashboard" aria-labelledby="dashboard-heading">
@@ -76,6 +82,26 @@
             (<a href="https://play.google.com/store/apps/details?id=com.bobbyapproved" target="_blank" rel="noopener noreferrer">Android</a>) to scan a food or barcode for processed chemicals.
           </p>
         </aside>
+        <nav id="dashboard-longevity-nav" class="dashboard__longevity-nav" hidden aria-label="Longevity topics">
+          <div class="dashboard__longevity-nav-track">
+            <button type="button" id="dashboard-longevity-nav-prev" class="dashboard__longevity-nav-adj dashboard__longevity-nav-adj--prev" hidden>
+              <span class="dashboard__longevity-nav-adj-label">Previous</span>
+              <span id="dashboard-longevity-nav-prev-title" class="dashboard__longevity-nav-adj-title"></span>
+            </button>
+            <div class="dashboard__longevity-nav-current">
+              <span class="dashboard__longevity-nav-current-label">Current</span>
+              <span id="dashboard-longevity-nav-current-title" class="dashboard__longevity-nav-current-title"></span>
+            </div>
+            <button type="button" id="dashboard-longevity-nav-next" class="dashboard__longevity-nav-adj dashboard__longevity-nav-adj--next" hidden>
+              <span class="dashboard__longevity-nav-adj-label">Next</span>
+              <span id="dashboard-longevity-nav-next-title" class="dashboard__longevity-nav-adj-title"></span>
+            </button>
+          </div>
+          <div class="dashboard__longevity-nav-all-wrap">
+            <button type="button" id="dashboard-longevity-nav-all-toggle" class="dashboard__longevity-nav-all-toggle" aria-expanded="false" aria-controls="dashboard-longevity-nav-all-list">All topics</button>
+            <ul id="dashboard-longevity-nav-all-list" class="dashboard__longevity-nav-all-list" hidden></ul>
+          </div>
+        </nav>
         <div id="dashboard-longevity-content"></div>
       </div>
       <div id="week-summary" class="week-summary" hidden aria-label="Week summary"></div>
@@ -248,35 +274,6 @@
       </div>
     </section>
 
-    <section class="demographic" aria-labelledby="demographic-heading">
-      <details id="demographic-panel" class="demographic__details">
-        <summary class="demographic__summary">
-          <span id="demographic-heading" class="demographic__summary-text">Demographic</span>
-          <span id="demographic-badge" class="demographic__badge" aria-hidden="true" title="Male">♂</span>
-        </summary>
-        <div class="demographic__body">
-          <p class="demographic__hint">Daily values for micro requirements (% DV). Developer Note: Percentages use the targets in <code>demographic-dv.js</code> for your selection.</p>
-          <div class="demographic__note">
-            <p class="demographic__note-lead">Nutrition labels often show one genderless % DV, but needs differ in practice:</p>
-            <ul class="demographic__note-list">
-              <li><strong>Iron:</strong> Women typically need more iron (about 18&nbsp;mg/day) than men (about 8&nbsp;mg/day), largely due to menstruation.</li>
-              <li><strong>Vitamins &amp; fiber:</strong> Men generally need higher daily intakes of some vitamins (e.g. vitamin&nbsp;C, zinc) and fiber because of higher average body mass and calorie needs.</li>
-              <li><strong>Calories:</strong> A common maintenance baseline is roughly 2,400–2,600&nbsp;cal/day for men and 1,800–2,000&nbsp;cal/day for women (this app’s week calories still come from your food definitions, not these baselines).</li>
-            </ul>
-          </div>
-          <div id="demographic-options" class="demographic__options" role="radiogroup" aria-label="Demographic">
-            <button type="button" class="demographic__option demographic__option--selected" data-demographic="male" role="radio" aria-checked="true">
-              <span class="demographic__option-icon" aria-hidden="true">♂</span>
-              <span class="demographic__option-label">Male</span>
-            </button>
-            <button type="button" class="demographic__option" data-demographic="female" role="radio" aria-checked="false">
-              <span class="demographic__option-icon" aria-hidden="true">♀</span>
-              <span class="demographic__option-label">Female</span>
-            </button>
-          </div>
-        </div>
-      </details>
-    </section>
   </main>
 
   <div id="import-all-meals-modal" class="modal" hidden>
@@ -623,13 +620,262 @@
       <header class="modal__header modal__header--with-tools">
         <div class="modal__header-text">
           <h3 id="longevity-sources-modal-title" class="modal__title"></h3>
-          <p class="modal__subtitle">Full week (Mon–Sun) — matched foods ranked by amount</p>
+          <p id="longevity-sources-modal-subtitle" class="modal__subtitle">Full week (Mon–Sun) — matched foods ranked by amount</p>
         </div>
         <button type="button" id="longevity-sources-fullscreen-toggle" class="modal__tool-btn" aria-pressed="false" aria-label="Read in full screen">Full screen</button>
       </header>
       <div id="longevity-sources-body" class="micro-sources-modal__body"></div>
       <footer class="modal__footer">
         <button type="button" id="longevity-sources-modal-done" class="modal__done">Done</button>
+      </footer>
+    </div>
+  </div>
+
+  <div id="settings-modal" class="modal" hidden>
+    <div class="modal__backdrop" data-action="close-settings-modal"></div>
+    <div class="modal__panel modal__panel--wide" role="dialog" aria-modal="true" aria-labelledby="settings-modal-title">
+      <header class="modal__header">
+        <h3 id="settings-modal-title" class="modal__title">Settings</h3>
+      </header>
+      <div class="settings-modal__body">
+        <section class="settings-modal__section" aria-labelledby="settings-sex-heading">
+          <h4 id="settings-sex-heading" class="settings-modal__heading" style="margin-top:10px;">Sex</h4>
+          <p class="demographic__hint">Daily values for micro requirements (% DV). Percentages use the targets in <code>demographic-dv.js</code> for your selection.</p>
+          <div class="demographic__note">
+            <p class="demographic__note-lead">Nutrition labels often show one genderless % DV, but needs differ in practice:</p>
+            <ul class="demographic__note-list">
+              <li><strong>Iron:</strong> Women typically need more iron (about 18&nbsp;mg/day) than men (about 8&nbsp;mg/day), largely due to menstruation.</li>
+              <li><strong>Vitamins &amp; fiber:</strong> Men generally need higher daily intakes of some vitamins (e.g. vitamin&nbsp;C, zinc) and fiber because of higher average body mass and calorie needs.</li>
+              <li><strong>Calories:</strong> A common maintenance baseline is roughly 2,400–2,600&nbsp;cal/day for men and 1,800–2,000&nbsp;cal/day for women (this app’s week calories still come from your food definitions, not these baselines).</li>
+            </ul>
+          </div>
+          <div id="demographic-options" class="demographic__options" role="radiogroup" aria-label="Sex">
+            <button type="button" class="demographic__option demographic__option--selected" data-demographic="male" role="radio" aria-checked="true">
+              <span class="demographic__option-icon" aria-hidden="true">♂</span>
+              <span class="demographic__option-label">Male</span>
+            </button>
+            <button type="button" class="demographic__option" data-demographic="female" role="radio" aria-checked="false">
+              <span class="demographic__option-icon" aria-hidden="true">♀</span>
+              <span class="demographic__option-label">Female</span>
+            </button>
+          </div>
+        </section>
+        <section class="settings-modal__section" aria-labelledby="settings-tdee-heading">
+          <h4 id="settings-tdee-heading" class="settings-modal__heading">TDEE</h4>
+          <p class="settings-modal__hint">Total daily energy expenditure — your estimated maintenance calories per day.</p>
+          <div class="settings-modal__tdee-row">
+            <label class="settings-modal__field" for="settings-tdee">
+              <span class="settings-modal__field-label">Calories per day</span>
+              <input type="number" id="settings-tdee" class="settings-modal__input" min="0" step="1" inputmode="numeric" placeholder="2500">
+            </label>
+            <button type="button" id="settings-tdee-calc-open" class="settings-modal__calc-link">Calculate TDEE…</button>
+          </div>
+        </section>
+      </div>
+      <footer class="modal__footer">
+        <button type="button" id="settings-modal-done" class="modal__done">Done</button>
+      </footer>
+    </div>
+  </div>
+
+  <div id="tdee-calculator-modal" class="modal" hidden>
+    <div class="modal__backdrop" data-action="close-tdee-calculator-modal"></div>
+    <div class="modal__panel modal__panel--wide" role="dialog" aria-modal="true" aria-labelledby="tdee-calculator-modal-title">
+      <header class="modal__header">
+        <h3 id="tdee-calculator-modal-title" class="modal__title">TDEE calculator</h3>
+        <p class="modal__subtitle">Mifflin-St Jeor equation · estimate only</p>
+      </header>
+      <div class="tdee-calc__body" style="margin-top:10px;">
+        <fieldset class="tdee-calc__fieldset">
+          <legend class="tdee-calc__legend">Sex</legend>
+          <div id="tdee-calc-sex" class="demographic__options" role="radiogroup" aria-label="Sex for TDEE">
+            <button type="button" class="demographic__option demographic__option--selected" data-tdee-sex="male" role="radio" aria-checked="true">
+              <span class="demographic__option-icon" aria-hidden="true">♂</span>
+              <span class="demographic__option-label">Male</span>
+            </button>
+            <button type="button" class="demographic__option" data-tdee-sex="female" role="radio" aria-checked="false">
+              <span class="demographic__option-icon" aria-hidden="true">♀</span>
+              <span class="demographic__option-label">Female</span>
+            </button>
+          </div>
+        </fieldset>
+        <label class="settings-modal__field" for="tdee-calc-age">
+          <span class="settings-modal__field-label">Age (years)</span>
+          <input type="number" id="tdee-calc-age" class="settings-modal__input" min="1" max="120" step="1" inputmode="numeric">
+        </label>
+        <div class="tdee-calc__unit-group">
+          <label class="settings-modal__field" for="tdee-calc-weight">
+            <span class="settings-modal__field-label">Weight</span>
+            <input type="number" id="tdee-calc-weight" class="settings-modal__input" min="0" step="0.1" inputmode="decimal">
+          </label>
+          <div class="tdee-calc__unit-toggle" role="group" aria-label="Weight unit">
+            <button type="button" id="tdee-calc-weight-kg" class="tdee-calc__unit-btn" aria-pressed="false">kg</button>
+            <button type="button" id="tdee-calc-weight-lb" class="tdee-calc__unit-btn tdee-calc__unit-btn--active" aria-pressed="true">lb</button>
+          </div>
+        </div>
+        <div class="tdee-calc__height-cm" id="tdee-calc-height-cm-wrap" hidden>
+          <div class="tdee-calc__unit-group">
+            <label class="settings-modal__field" for="tdee-calc-height-cm">
+              <span class="settings-modal__field-label">Height (cm)</span>
+              <input type="number" id="tdee-calc-height-cm" class="settings-modal__input" min="0" step="0.1" inputmode="decimal">
+            </label>
+            <div class="tdee-calc__unit-toggle" role="group" aria-label="Height unit">
+              <button type="button" id="tdee-calc-height-cm-btn" class="tdee-calc__unit-btn" aria-pressed="false">cm</button>
+              <button type="button" id="tdee-calc-height-ft-btn" class="tdee-calc__unit-btn tdee-calc__unit-btn--active" aria-pressed="true">ft/in</button>
+            </div>
+          </div>
+        </div>
+        <div class="tdee-calc__height-ft" id="tdee-calc-height-ft-wrap">
+          <div class="tdee-calc__unit-group">
+            <div class="tdee-calc__ft-in">
+              <label class="settings-modal__field" for="tdee-calc-height-ft">
+                <span class="settings-modal__field-label">Height (ft)</span>
+                <input type="number" id="tdee-calc-height-ft" class="settings-modal__input" min="0" step="1" inputmode="numeric">
+              </label>
+              <label class="settings-modal__field" for="tdee-calc-height-in">
+                <span class="settings-modal__field-label">in</span>
+                <input type="number" id="tdee-calc-height-in" class="settings-modal__input" min="0" max="11" step="0.1" inputmode="decimal">
+              </label>
+            </div>
+            <div class="tdee-calc__unit-toggle" role="group" aria-label="Height unit">
+              <button type="button" id="tdee-calc-height-cm-btn-2" class="tdee-calc__unit-btn" aria-pressed="false">cm</button>
+              <button type="button" id="tdee-calc-height-ft-btn-2" class="tdee-calc__unit-btn tdee-calc__unit-btn--active" aria-pressed="true">ft/in</button>
+            </div>
+          </div>
+        </div>
+        <hr style="width: 100%; opacity: 20%;"/>
+        <fieldset class="tdee-calc__fieldset tdee-calc__activity-block">
+          <legend class="tdee-calc__legend" style="font-size:120%;">Resistance training</legend>
+          <div class="tdee-calc__mode-toggle" role="group" aria-label="Resistance tracking mode">
+            <button type="button" id="tdee-calc-resistance-mode-days" class="tdee-calc__unit-btn tdee-calc__unit-btn--active" aria-pressed="true">Days per week</button>
+            <button type="button" id="tdee-calc-resistance-mode-sets" class="tdee-calc__unit-btn" aria-pressed="false">Weekly sets</button>
+          </div>
+          <div id="tdee-calc-resistance-days-wrap">
+            <label class="settings-modal__field" for="tdee-calc-resistance-days">
+              <span class="settings-modal__field-label">Weight training days</span>
+              <select id="tdee-calc-resistance-days" class="settings-modal__select">
+                <option value="0">0 days — none</option>
+                <option value="1">1 day / week</option>
+                <option value="2">2 days / week</option>
+                <option value="3" selected>3 days / week</option>
+                <option value="4">4 days / week</option>
+                <option value="5">5 days / week</option>
+                <option value="6">6 days / week</option>
+                <option value="7">7 days / week</option>
+              </select>
+            </label>
+          </div>
+          <div id="tdee-calc-resistance-sets-wrap" class="tdee-calc__sets-row" hidden>
+            <label class="settings-modal__field" for="tdee-calc-heavy-sets">
+              <span class="settings-modal__field-label">Heavy sets / week</span>
+              <input type="number" id="tdee-calc-heavy-sets" class="settings-modal__input" min="0" step="1" inputmode="numeric" placeholder="e.g. 12">
+            </label>
+            <label class="settings-modal__field" for="tdee-calc-light-sets">
+              <span class="settings-modal__field-label">Light sets / week</span>
+              <input type="number" id="tdee-calc-light-sets" class="settings-modal__input" min="0" step="1" inputmode="numeric" placeholder="e.g. 20">
+            </label>
+          </div>
+          <p class="tdee-calc__hint">Heavy = compound lifts near failure; light = accessories or higher reps.</p>
+        </fieldset>
+        <hr style="width: 100%; opacity: 20%;"/>
+        <fieldset class="tdee-calc__fieldset tdee-calc__activity-block">
+          <legend class="tdee-calc__legend" style="font-size:120%;">Cardio</legend>
+          <label class="tdee-calc__check">
+            <input type="checkbox" id="tdee-calc-cardio-enabled">
+            <span>Include cardio</span>
+          </label>
+          <div id="tdee-calc-cardio-wrap" class="tdee-calc__cardio-details" hidden>
+            <label class="settings-modal__field" for="tdee-calc-cardio-days">
+              <span class="settings-modal__field-label">Cardio days</span>
+              <select id="tdee-calc-cardio-days" class="settings-modal__select">
+                <option value="1">1 day / week</option>
+                <option value="2">2 days / week</option>
+                <option value="3" selected>3 days / week</option>
+                <option value="4">4 days / week</option>
+                <option value="5">5 days / week</option>
+                <option value="6">6 days / week</option>
+                <option value="7">7 days / week</option>
+              </select>
+            </label>
+            <label class="settings-modal__field" for="tdee-calc-cardio-intensity">
+              <span class="settings-modal__field-label">Intensity</span>
+              <select id="tdee-calc-cardio-intensity" class="settings-modal__select">
+                <option value="light">Light — walking, easy cycling</option>
+                <option value="moderate" selected>Moderate — jogging, steady effort</option>
+                <option value="vigorous">Vigorous — intervals, hard runs</option>
+              </select>
+            </label>
+          </div>
+        </fieldset>
+        <p id="tdee-calc-activity-factor" class="tdee-calc__activity-factor" aria-live="polite">Activity factor: —</p>
+        <div class="tdee-calc__result" aria-live="polite">
+          <span class="tdee-calc__result-label">Estimated TDEE</span>
+          <span id="tdee-calc-result" class="tdee-calc__result-value">—</span>
+        </div>
+      </div>
+      <footer class="modal__footer modal__footer--split">
+        <button type="button" id="tdee-calculator-cancel" class="modal__secondary">Cancel</button>
+        <button type="button" id="tdee-calculator-apply" class="modal__done" disabled>Use this value</button>
+      </footer>
+    </div>
+  </div>
+
+  <div id="tdee-hint-modal" class="modal" hidden>
+    <div class="modal__backdrop" data-action="close-tdee-hint-modal"></div>
+    <div class="modal__panel modal__panel--wide" role="dialog" aria-modal="true" aria-labelledby="tdee-hint-modal-title">
+      <header class="modal__header">
+        <h3 id="tdee-hint-modal-title" class="modal__title">TDEE comparison</h3>
+        <p class="modal__subtitle">Using intake vs maintenance for body-composition goals</p>
+      </header>
+      <div class="import-modal__body micro-tip-modal__body">
+        <p>Compare your logged <strong>week total</strong> intake to your weekly maintenance (TDEE × 7) to <strong>lean down</strong> (calorie deficit) or <strong>gain mass</strong> (calorie surplus). Pair the direction with a macro split that fits your goal—higher protein often helps whether you are cutting or bulking.</p>
+        <p>Rule of thumb: about <strong>3,500 kcal</strong> of cumulative surplus or deficit over time corresponds to roughly <strong>1 lb</strong> of body-weight change on average. That energy-balance relationship holds whether the tissue gained or lost is mostly fat or lean mass—<strong>macros influence body composition</strong>, not the calorie arithmetic itself.</p>
+        <p>Individual results vary with metabolism, activity, sleep, stress, and consistency. This is a planning aid, not medical advice.</p>
+      </div>
+      <footer class="modal__footer">
+        <button type="button" id="tdee-hint-modal-done" class="modal__done">Done</button>
+      </footer>
+    </div>
+  </div>
+
+  <div id="macro-split-hint-modal" class="modal" hidden>
+    <div class="modal__backdrop" data-action="close-macro-split-hint-modal"></div>
+    <div class="modal__panel modal__panel--wide" role="dialog" aria-modal="true" aria-labelledby="macro-split-hint-modal-title">
+      <header class="modal__header">
+        <h3 id="macro-split-hint-modal-title" class="modal__title">Macro split &amp; body type</h3>
+        <p class="modal__subtitle">Typical protein, carb, and fat ranges by goal</p>
+      </header>
+      <div class="import-modal__body micro-tip-modal__body">
+        <p>Your <strong>macro split (week avg)</strong> shows what share of calories came from protein, carbs, and fats across the week. Percentages are a planning tool—pair them with your calorie direction (deficit, surplus, or maintenance) from TDEE.</p>
+        <h4 class="micro-tip-modal__heading">Body types (starting points, not rules)</h4>
+        <p>Classic somatotypes describe tendencies, not fixed categories. Most people are a mix. Use these as rough guides for where to start, then adjust based on hunger, energy, training, and progress.</p>
+        <ul class="micro-tip-modal__list">
+          <li><strong>Ectomorph</strong> — naturally lean, hard to gain weight; often tolerates higher carbs; may need a larger surplus and consistent protein to add muscle.</li>
+          <li><strong>Mesomorph</strong> — builds muscle and loses fat relatively easily; often does well on balanced splits with moderate carbs and steady protein.</li>
+          <li><strong>Endomorph</strong> — gains weight more readily; often responds to higher protein, moderate fats, and controlled carbs when leaning down.</li>
+        </ul>
+        <h4 class="micro-tip-modal__heading">Lose weight (fat loss)</h4>
+        <p>Run a modest calorie deficit (see TDEE comparison). Keep protein high to preserve muscle.</p>
+        <ul class="micro-tip-modal__list">
+          <li><strong>Protein:</strong> ~30–40% of calories (roughly 0.7–1.0 g per lb body weight is a common target).</li>
+          <li><strong>Carbs:</strong> ~25–40% — lower if you prefer fewer starches; higher if you train hard and need fuel.</li>
+          <li><strong>Fats:</strong> ~25–35% — don’t go too low; hormones and satiety need adequate fat.</li>
+        </ul>
+        <h4 class="micro-tip-modal__heading">Gain muscle (lean bulk)</h4>
+        <p>Use a small surplus (~200–400 cal/day above maintenance). Extra calories beyond that mostly add fat, not muscle.</p>
+        <ul class="micro-tip-modal__list">
+          <li><strong>Protein:</strong> ~25–35% (about 0.7–1.0 g per lb body weight).</li>
+          <li><strong>Carbs:</strong> ~40–50% — supports training volume and recovery.</li>
+          <li><strong>Fats:</strong> ~20–30%.</li>
+        </ul>
+        <h4 class="micro-tip-modal__heading">Recomposition &amp; maintenance</h4>
+        <p>At maintenance calories, a higher-protein split (often ~30% protein, ~40% carbs, ~30% fats) with progressive resistance training can shift body composition slowly without large scale changes.</p>
+        <h4 class="micro-tip-modal__heading">Endurance &amp; high-volume training</h4>
+        <p>Long runs, cycling, or multi-hour sessions raise carb needs. Many athletes land around ~20–25% protein, ~50–60% carbs, ~20–25% fats—adjust upward for heavy weeks.</p>
+        <p>These ranges are educational starting points. Blood work, medical conditions, and individual response matter. This is not medical or dietitian advice.</p>
+      </div>
+      <footer class="modal__footer">
+        <button type="button" id="macro-split-hint-modal-done" class="modal__done">Done</button>
       </footer>
     </div>
   </div>

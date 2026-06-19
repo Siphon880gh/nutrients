@@ -851,7 +851,10 @@
   },
   "sectionGlycemic": {
     "enough": [
-      "Glycemic load reflects how hard your actual meals hit blood sugar—large portions of bread, rice, fries, and sweets add up to diabetes and cardiovascular risk even when individual foods seem fine.",
+      "Glycemic index (GI) and glycemic load (GL) measure different things. GI rates how quickly a standard carb portion of a food raises blood sugar—it is a property of the food itself. GL applies that speed to the carbs you actually eat: same GI, bigger portion means higher GL. GI describes the kind of carb; GL describes the impact of your real meal.",
+      "Mathematically, GL scales GI by the grams of carbohydrate in your serving. Multiply GI by carb grams, divide by 100. Example: white rice with GI 73 and 45 g carbs per cup → GL = 73 × 45 ÷ 100 ≈ 33 (high for one serving). Watermelon is the opposite case—GI around 76, but a small wedge has only a few grams of carbs, so GL stays low despite the high GI.",
+      "Formula: GL = (GI × grams of carbs per serving) ÷ 100. The ÷ 100 is a scaling step, not a guess: GI is scored on a 0–100 scale where glucose = 100, so it works like a percentage. Multiplying that percentage by grams without dividing would inflate the result 100×; dividing converts the scale back and keeps GL in a readable range (roughly single digits to low tens per serving—low ≤10, moderate 11–19, high ≥20). Daily GL is the sum of GL from everything you logged that day; this app shows your weekly average.",
+      "Large portions of bread, rice, fries, and sweets stack GL even when individual foods look acceptable on GI alone—raising diabetes and cardiovascular risk over time.",
       "A week dominated by high-GI staples means repeated insulin surges that promote belly fat, fatty liver, and the fatigue–craving cycle that makes healthy eating harder.",
       "Shifting toward beans, berries, intact grains, and smaller starch portions is one of the most direct dietary ways to prevent type 2 diabetes and metabolic decline."
     ]
