@@ -127,7 +127,7 @@ Triggered by **Ask AI to help fill gaps** (`#micro-gaps-ai-open`) inside the mic
 - **`openImportModalByIndex(i)`** — closes other modals; sets JSON from export; AI panel closed by default.
 - **`closeImportModal`** — clears `activeImportId`, hides modal, resets AI panel, clears error.
 - **`updateBodyModalOpen`** — toggles a body class while any modal is open (scroll lock).
-- **Escape** — global keydown at end of `app.js` closes the topmost open modal.
+- **Escape** — global keydown at end of `app.js` closes the topmost open modal (import, sources, settings, TDEE, tips, def modals, etc.).
 
 ## Example JSON (for AI / users)
 
@@ -171,6 +171,7 @@ Bulk array example:
 - External links are not prompt-in-URL APIs — always **copy-first**, then open tab.
 - New AI provider: add link in HTML + listener beside ChatGPT/Claude block at end of `app.js` (both import and micro-gaps panels).
 - `carbQuality` is an import/export alias only; do not add a separate in-memory `carbQuality` store — fold into `longevity` via `mergeCarbQualityIntoLongevity`.
+- **Condition notes in JSON:** `definitions-micronutrients.json` / `definitions-longevity.json` entries may include keys matching `MICRO_CONDITION_FOCUS` ids (`coffeeTeaUser`, `adhd`, `anemia`) — string arrays shown in explain modals when that condition is focused ([core doc](./AGENTS_CODE_REFERENCE-core.md)).
 
 ## Related CSS
 

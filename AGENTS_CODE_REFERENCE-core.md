@@ -1,6 +1,6 @@
 # AGENTS_CODE_REFERENCE-core.md
 
-> **Approximate locations only** — no exact line numbers. Code moves; use section names and relative position within `app.js` (~5200 lines).
+> **Approximate locations only** — no exact line numbers. Code moves; use section names and relative position within `app.js` (~8100 lines).
 
 Core logic: food definitions, matching, highlighting orchestration, dashboard totals, micro % DV, longevity panel, definition modals, localStorage.
 
@@ -10,16 +10,18 @@ Parent overview: [AGENTS_CODE_REFERENCE.md](./AGENTS_CODE_REFERENCE.md)
 
 | Concern | Primary symbols |
 |---------|-----------------|
-| In-memory state | `keywords[]`, `demographic`, `microRequirementsOpen`, `microViewDaily`, `showMicroDailyDv`, `longevityPanelOpen`, `weekTotalOpen`, `keywordReorderOpen`, `activeMicroId`, `activeLongevityId`, `activeImportId/Index`, `activePositionId/Index`, `activeMicroDefKey`, `activeLongevityDefKey` |
+| In-memory state | `keywords[]`, `demographic`, `userTdee`, `microRequirementsOpen`, `microViewDaily`, `showMicroDailyDv`, `microConditionFocus`, `longevityPanelOpen`, `weekTotalOpen`, `keywordReorderOpen`, `keywordCaloriesOpen`, `dashboardMacroPctView`, `lastWeekTotals`, `activeMicroId`, `activeLongevityId`, `activeImportId/Index`, `activePositionId/Index`, `activeMicroDefKey`, `activeLongevityDefKey`, `activeMicroSourcesKey/Scope`, `activeLongevitySourcesKey/Kind`, `defModalReturnSources`, `longevityNavActiveIndex` |
 | IDs | `makeId()`, `findIndex(id)` |
 | Table UI | `renderKeywords`, `syncFieldFromDom`, `moveKeyword`, `removeKeyword`, `addKeyword`, reorder toggle (`loadKeywordReorderOpen`), move-to-position modal |
 | Matching | `countKeyword`, `keywordNames`, `buildHighlightRegex`, `keywordMatchPattern`, `escapeRegex` |
-| Macro totals | `totalsFromText`, `addTotals`, `renderDashboard`, `renderWeekSummary`, `setWeekTotalOpen` |
-| Micro totals / DV | `microTotalsFromText`, `weekMicroTotals`, `renderMicroRequirements`, `renderMicroDailyGrid`, `setMicroViewDaily`, `dailyDv` |
-| Longevity | `longevityTotalsFromText`, `renderLongevityPanel`, `renderLongevityGiBuckets`, `setLongevityPanelOpen`, blank/normalize/merge helpers (below) |
-| Definition modals | `openMicroDefModal`, `renderMicroDefBody`, `openLongevityDefModal`, `renderLongevityDefBody`, `setMicroDefFullscreen`, `loadMicroDefinitions`, `loadLongevityDefinitions` |
+| Macro totals | `totalsFromText`, `addTotals`, `renderDashboard`, `dashboardCardHtml`, `dashboardMacroPctView`, `macroPctFromTotals`, `renderWeekSummary`, `setWeekTotalOpen` |
+| Micro totals / DV | `microTotalsFromText`, `weekMicroTotals`, `renderMicroRequirements`, `renderMicroWeeklyList`, `renderMicroDailyGrid`, `setMicroViewDaily`, `dailyDv`, `microConditionDisplayFields`, `setMicroConditionFocus` |
+| Longevity | `longevityTotalsFromText`, `renderLongevityPanel`, `renderLongevityGiBuckets`, `setLongevityPanelOpen`, longevity nav (`buildLongevityNavAllList`, `scrollLongevityNavToSection`), blank/normalize/merge helpers (below) |
+| Ranked food sources | `microContributionsFromText`, `microContributionsForScope`, `longevityContributionsFromWeek`, `glycemicLoadContributionsFromWeek`, `nutrientSourcesListHtml`, `openMicroSourcesModal`, `openLongevitySourcesModal`, `microSourcesIconHtml`, `longevitySourcesIconHtml` |
+| Settings / TDEE | `openSettingsModal`, `loadTdee`, `saveTdee`, `getTdee`, `getTdeeBaseline`, `openTdeeCalculatorModal`, `calcMifflinStJeor`, `openTdeeHintModal`, `openMacroSplitHintModal`, `renderMacroSplitCarousel`, `MACRO_BODY_TYPES` |
+| Definition modals | `openMicroDefModal`, `renderMicroDefBody`, `openLongevityDefModal`, `renderLongevityDefBody`, `setMicroDefFullscreen`, `setDefModalReturnSources`, `returnFromDefModalToSources`, `microDefConditionSectionHtml`, `loadMicroDefinitions`, `loadLongevityDefinitions` |
 | % DV tiers | `loadAppConfig`, `tierForMicroPct`, `tierForLongevityPct`, `tierForPctInList`, `pctInlineStyle` |
-| Demographic | `loadDemographic`, `saveDemographic`, `setDemographic`, `renderDemographicUi`; targets in `demographic-dv.js` |
+| Demographic | `loadDemographic`, `saveDemographic`, `setDemographic`, `renderDemographicUi` (updates `#settings-demographic-icon`); targets in `demographic-dv.js` (`DAILY_MICRO_DV`, `CALORIE_BASELINE`) |
 | Highlights | `updateDayHighlights`, `highlightedHtml`, `refreshAll`, `syncScroll` |
 | Food-name suggestions | `updateDaySuggest`, `foodSuggestMatches`, `applyDayFoodSuggest`, `hideDaySuggest`, `DAY_SUGGEST_MAX` |
 | Day editor height | `loadDayEditorHeight`, `saveDayEditorHeight`, `applyDayEditorHeight`, `bindDayEditorResize`, `clampDayEditorHeight` |
@@ -80,7 +82,8 @@ new RegExp("\\b" + escapeRegex(name) + "\\b", "gi")
 - Loops `DAYS`, reads `document.getElementById(day.id).value`.
 - Accumulates `week` via `addTotals`; caches `lastWeekTotals`.
 - Sets `#dashboard-grid` HTML from `dashboardCardHtml` (per-macro g + cal, total cal).
-- **`#week-summary`** hidden by default; **Week total** toggle (`#dashboard-week-toggle`, `setWeekTotalOpen`) shows bar with `renderWeekSummary(week)` when open.
+- **`#week-summary`** hidden by default; **Week total** toggle (`#dashboard-week-toggle`, `setWeekTotalOpen`) shows `renderWeekSummary(week)` when open — **week total**, **day average**, **TDEE deficit/surplus** (or “Set TDEE in Settings”), **macro split (week avg)** with explain links to `#tdee-hint-modal` / `#macro-split-hint-modal`.
+- Per-day cards: `dashboardCardHtml` — default shows g·cal rows; `#dashboard-grid` toggle (`dashboardMacroPctView`, `data-action="toggle-dashboard-macro-view"`) switches all cards to macro **percentages**.
 - If **Micro requirements** is open (`#dashboard-micro-toggle`), `renderMicroRequirements` (or `renderMicroDailyGrid` in daily view) fills the micro panel.
 - If **Longevity** is open (`#dashboard-longevity-toggle`), `renderLongevityPanel` fills `#dashboard-longevity-content`.
 - **Print** (`#dashboard-print`) opens a print-styled view.
@@ -89,7 +92,9 @@ new RegExp("\\b" + escapeRegex(name) + "\\b", "gi")
 
 `microTotalsFromText` mirrors macro matching (hits × per-food micros).
 
-- **Weekly average view** (default): average daily amount = week sum ÷ `DAYS.length` (7). **% DV** = `(avgDaily / dailyDv(key)) × 100` where `dailyDv` calls `NutrientsDemographicDv.getDailyMicroDv(demographic, key)` from `demographic-dv.js` (e.g. female iron 18 mg, male 8 mg). Rendered by `renderMicroRequirements` into `#dashboard-micro-list`.
+- **Weekly average view** (default): average daily amount = week sum ÷ `DAYS.length` (7). **% DV** = `(avgDaily / dailyDv(key)) × 100` where `dailyDv` calls `NutrientsDemographicDv.getDailyMicroDv(demographic, key)` from `demographic-dv.js` (e.g. female iron 18 mg, male 8 mg). Rendered by `renderMicroWeeklyList` into `#dashboard-micro-list`.
+- **Condition focus** (`MICRO_CONDITION_FOCUS`, `#dashboard-micro-condition-toggle`): filters rows to condition-relevant micros (+ optional longevity keys for ADHD); adds a **Focus:** section at top of explain modals when JSON has matching condition key. Session-only (not persisted).
+- **My food** bar-chart button on each row (`microSourcesIconHtml`, `data-micro-sources`) opens `#micro-sources-modal` — ranked matched foods with per-hit calculations; scope select (week or single day).
 - **Each-day view** (`setMicroViewDaily(true)`): `renderMicroDailyGrid` builds a per-day grid into `#dashboard-micro-daily-grid`.
 - **Show DV targets** (`showMicroDailyDv`, `#dashboard-micro-dv-toggle`): appends the daily requirement text (`microDailyDvText`).
 - **% DV color/weight** from `config.json` `microDvStatus.tiers` via `tierForMicroPct` / `microPctInlineStyle`.
@@ -101,13 +106,15 @@ Toggle/view state is session-only; demographic choice is persisted.
 
 `longevityTotalsFromText` mirrors matching for `LONGEVITY_FIELDS` (and the micro keys reused via `LONGEVITY_FROM_MICRO` / `LONGEVITY_COMPOUNDS_FROM_MICRO`).
 
-**`renderLongevityPanel`** builds sections from `LONGEVITY_GROUPS` plus derived blocks:
+**`renderLongevityPanel`** builds sections from `LONGEVITY_GROUPS` plus derived blocks (see `LONGEVITY_SECTION_DEFS` — includes bone density, calcification, TMAO, glycemic):
 
 - **Fats & cholesterol**, **Omega fatty acids**, **Longevity & inflammation compounds**, **Carb quality & glycemic** (the `group` field on each `LONGEVITY_FIELDS` entry).
-- **Micronutrients from food** — repeats calcium/magnesium/vitamin D (and iodine/fiber for compounds) from the micro entries so users reason in one place.
-- **TMAO balance** — precursors (`LONGEVITY_TMAO_PRECURSOR_KEYS`: choline, carnitine, betaine) vs lowering factors (`LONGEVITY_TMAO_LOWERING_FROM_MICRO`, `LONGEVITY_TMAO_LOWERING_LONGEVITY`).
+- **Micronutrients from food**, **Bone density**, **Calcification & vascular balance** — repeat micro/longevity entries so users reason in one place.
+- **TMAO balance** — precursors vs lowering factors; inline tips link to `#tmao-protectors-tip-modal`.
 - **Derived scores** (`LONGEVITY_DERIVED_DEFS`): omega-6:omega-3 ratio, saturated:unsaturated ratio, EPA+DHA, glycemic load.
-- **Glycemic load & GI distribution** — `renderLongevityGiBuckets`.
+- **Glycemic load & GI distribution** — `renderLongevityGiBuckets`; GL rows use color by GI tier.
+- **Section nav** — sticky `#dashboard-longevity-nav` (prev/next + “All topics”) scroll-spies `#dashboard-longevity-content` sections.
+- **My food** icons on rows (`longevitySourcesIconHtml`, `data-longevity-sources`) open `#longevity-sources-modal` with ranked contributions; glycemic load uses special GL-per-serving ranking.
 
 **% DV** uses `NutrientsLongevityDv.getDailyLongevityDv(key)` from `longevity-dv.js`. **`limiting: true`** fields (e.g. saturated fat, omega-6, added sugar, sodium via `LONGEVITY_MICRO_LIMITING_KEYS`) use the inverted `longevityStatus.limitingTiers` so a high % is red, not green. Coloring via `tierForLongevityPct` / `longevityPctInlineStyle`. Section + nutrient headings carry `data-longevity-def` / `data-micro-def` for the explain modals.
 
@@ -128,9 +135,45 @@ Micros/longevity are **not** in macro `totalsFromText`; use `microTotalsFromText
 Read-only “learn more” content, loaded from JSON at boot:
 
 - **`loadMicroDefinitions`** → `definitions-micronutrients.json` → `microDefinitions`; **`loadLongevityDefinitions`** → `definitions-longevity.json` → `longevityDefinitions`. Both fall back to `{}` on fetch error.
-- **`openMicroDefModal(key)` / `renderMicroDefBody`** — general paragraphs (`tooLow` / `enough` / `tooHigh`), `foodSources`, then sex-specific (`male` / `female`) notes.
-- **`openLongevityDefModal(key)` / `renderLongevityDefBody`** — handles `LONGEVITY_FIELDS` keys, derived keys (`LONGEVITY_DERIVED_DEFS`), and section keys (`LONGEVITY_SECTION_DEFS`).
-- Both render into the shared `#micro-def-modal`; `setMicroDefFullscreen` toggles a fullscreen reading layout.
+- **`openMicroDefModal(key)` / `renderMicroDefBody`** — optional **Focus:** section from `microDefConditionSectionHtml`; general paragraphs (`tooLow` / `enough` / `tooHigh`), `foodSources`, then sex-specific (`male` / `female`) notes. Second arg `returnTo` sets `defModalReturnSources` for **← My food** back nav.
+- **`openLongevityDefModal(key)` / `renderLongevityDefBody`** — handles `LONGEVITY_FIELDS` keys, derived keys (`LONGEVITY_DERIVED_DEFS`), and section keys (`LONGEVITY_SECTION_DEFS`); limiting nutrients swap heading order.
+- Both render into the shared `#micro-def-modal`; `setMicroDefFullscreen` toggles a fullscreen reading layout. Title links inside sources modals call these with a return stack so **Done** or **← My food** restores the ranking modal.
+
+## Ranked food-source modals
+
+**Micro** — `#micro-sources-modal`:
+
+- Opened from dashboard micro rows (`openMicroSourcesModal(key, scope)`); scope `week` or a day id via `#micro-sources-scope`.
+- **`microContributionsForScope`** / **`microContributionsFromText`**: for each matched food, `hits × micro value`; sorted descending.
+- **`nutrientSourcesListHtml`**: ranked list with rank #, food name, per-serving amount, × hits, row total; footer **Total**.
+- Requirements block: daily + weekly DV (sex grid when micro has demographic DV).
+- Title nutrient name is a link (`data-micro-def`) → explain modal with return to this sources modal.
+- Fullscreen: `#micro-sources-fullscreen-toggle`.
+
+**Longevity** — `#longevity-sources-modal`:
+
+- Opened from longevity panel rows (`openLongevitySourcesModal(key, kind)`); `kind` ∈ `micro` | `longevity` | `glycemicLoad`.
+- **`longevityContributionsFromWeek`** / **`glycemicLoadContributionsFromWeek`**: same hit×value pattern; GL ranks by GL per serving (GI × carbs ÷ 100), color by GI tier.
+- Glycemic load view adds tier comparison bars (`micro-sources-modal__gl-tier`).
+- Title link → longevity/micro explain modal with return stack.
+
+**Shared:** `closeOtherModalsForSources` closes competing modals; `handleSourcesModalTitleDefClick` wires title → explain → back.
+
+## Settings & TDEE
+
+Demographic + TDEE live in **`#settings-modal`** (header `#settings-open`), not a bottom panel.
+
+- **Sex** — same `setDemographic` / `#demographic-options` radios; updates `#settings-demographic-icon` and micro % DV immediately.
+- **TDEE** — `#settings-tdee` input; persisted `STORAGE_KEY_TDEE` (`userTdee`). Placeholder from `getTdeeBaseline()` → `demographic-dv.js` `CALORIE_BASELINE`.
+- **TDEE calculator** — `#tdee-calculator-modal`: Mifflin–St Jeor BMR × activity factor; resistance (days/week or weekly heavy/light sets) + optional cardio; **Use this value** writes settings input.
+- **Week summary compare** — `renderWeekSummary` uses `getTdee()` × 7 vs week total; deficit/surplus label, cal/week delta, ~lb/week (`3500` rule). Explain: `#tdee-hint-modal`.
+- **Macro split guidance** — week avg P/C/F % in summary; explain opens `#macro-split-hint-modal` with `MACRO_BODY_TYPES` carousel (`renderMacroSplitCarousel`).
+
+## Food table calories column
+
+- **`keywordCaloriesOpen`** — persisted `STORAGE_KEY_CALORIES`.
+- Header `.keywords__macro-toggle` (`data-action="toggle-calories"`) switches Prot/Carbs/Fats columns between **(g)** and **(cal)**; reveals **Total (cal)** column.
+- `renderKeywords` writes cal or g values per row when open.
 
 ## localStorage
 
@@ -138,14 +181,16 @@ Read-only “learn more” content, loaded from JSON at boot:
 |-----|---------|
 | `nutrients-food-definitions` | `JSON.stringify(keywords)` (includes `micros` + `longevity`) |
 | `nutrients-demographic` | `"male"` or `"female"` (default `male` if missing) |
+| `nutrients-tdee` | Optional positive number string (user maintenance calories/day) |
 | `nutrients-day-notes` | `{ mon … sun }` string values per day id |
 | `nutrients-day-editor-height` | Pixel height string for all `.day__editor` boxes (clamped 6rem–80vh) |
-| `nutrients-keywords-reorder-open` | `"1"` / `"0"` reorder column visibility |
+| `nutrients-keywords-reorder-open` | `"true"` / `"false"` reorder column visibility |
+| `nutrients-keywords-calories-open` | `"true"` / `"false"` food table g ↔ cal column mode |
 | `nutrients-keywords` (legacy) | Migrated once on load, then removed |
 
 **Load** — `loadFoodDefinitions`: maps array, `normalizeMicros(item.micros)` + `normalizeLongevity(item.longevity)`, bumps `nextId` from existing ids.
 
-**Save triggers** — day textarea `input`, row input, add/delete/reorder, micros save, longevity save, import apply, demographic change, `beforeunload` (definitions + demographic + day notes).
+**Save triggers** — day textarea `input`, row input, add/delete/reorder, micros save, longevity save, import apply, demographic change, TDEE input blur, calories toggle, `beforeunload` (definitions + demographic + day notes).
 
 ## Config (`config.json`)
 
@@ -218,7 +263,11 @@ All seven `.day__editor` boxes share one height.
 | Change longevity DV targets | `longevity-dv.js` → `DAILY_LONGEVITY_DV`; keys must match `LONGEVITY_FIELDS` |
 | New demographic option | `META`, `DAILY_MICRO_DV`, HTML options, `normalizeDemographic` in `demographic-dv.js` |
 | Edit % DV colors | `config.json` (`microDvStatus`, `longevityStatus`) |
-| Add longevity section | `LONGEVITY_GROUPS` / `LONGEVITY_SECTION_DEFS` + `renderLongevityPanel` |
+| Add condition focus | `MICRO_CONDITION_FOCUS` + HTML options + JSON condition keys on nutrient defs |
+| Add ranked source metric | contribution builder + `nutrientSourcesListHtml` + panel row `sourcesIconHtml` |
+| Change TDEE / body-type copy | settings modal HTML + `MACRO_BODY_TYPES` + hint modals |
+| Toggle food table cal column | `keywordCaloriesOpen`, `updateKeywordCaloriesUi`, `STORAGE_KEY_CALORIES` |
+| Add longevity section | `LONGEVITY_GROUPS` / `LONGEVITY_SECTION_DEFS` + `renderLongevityPanel` + nav list |
 | Add explanatory text | key entry in `definitions-micronutrients.json` / `definitions-longevity.json` |
 | Change day clear copy | `confirmClearDay`, `confirmClearAllDays` |
 | Tune food suggestions | `DAY_SUGGEST_MAX`, `foodSuggestMatches`, `levenshtein` thresholds |
@@ -239,7 +288,7 @@ loadAppConfig(function () {
   loadMicroDefinitions(definitionsReady);
   loadLongevityDefinitions(definitionsReady);
 });
-// boot(): loadFoodDefinitions → loadKeywordReorderOpen → loadDayNotes →
-//         loadDayEditorHeight → loadDemographic → renderDemographicUi →
-//         renderKeywords → refreshAll
+// boot(): loadFoodDefinitions → loadKeywordReorderOpen → loadKeywordCaloriesOpen →
+//         loadDayNotes → loadDayEditorHeight → loadDemographic → loadTdee →
+//         renderDemographicUi → syncSettingsTdeeInput → renderKeywords → refreshAll
 ```
