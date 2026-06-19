@@ -4413,7 +4413,7 @@
     html += longevitySectionWrap(
       "TMAO balance",
       "sectionTmao",
-      '<p class="dashboard__longevity-note">Gut bacteria turn precursors into TMAO, which drives atherosclerosis. Compare ↑ precursors vs ↓ protectors below.</p>' +
+      '<p class="dashboard__longevity-note">Gut bacteria metabolize certain nutrients into trimethylamine (TMA). TMA is absorbed into your bloodstream and travels to the liver, where it is oxidized into TMAO. Elevated levels can increase cardiovascular and kidney disease risks. Quest can test for this: <a href="https://testdirectory.questdiagnostics.com/test/test-guides/TS_TMAO/tmao-trimethylamine-n-oxide" target="_blank" rel="noopener noreferrer">TMAO (trimethylamine N-oxide)</a>. Compare ↑ precursors vs ↓ protectors below.</p>' +
         tmaoProtectorsTipHtml(),
       longevityListOpen() +
         longevitySubgroupHtml("↑ Precursors — lower % DV is better", "limit") +
