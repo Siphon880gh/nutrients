@@ -1,6 +1,6 @@
 # AGENTS_CODE_REFERENCE-ui.md
 
-> **Approximate locations only** — use class names and file regions in `index.html` (~920 lines) and `styles.css` (~4300 lines).
+> **Approximate locations only** — use class names and file regions in `index.html` (~930 lines) and `styles.css` (~4400 lines).
 
 Markup structure, layout, modals, and the **highlight mirror** pattern.
 
@@ -43,7 +43,7 @@ Parent: [AGENTS_CODE_REFERENCE.md](./AGENTS_CODE_REFERENCE.md)
 └── (no bottom demographic panel — sex/TDEE in #settings-modal)
 ```
 
-Modals are **siblings** of `main`, not inside it.
+Modals are **siblings** of `main`, not inside it. **`#starter-guide`** is also a sibling — fixed-position beginner popover (not a blocking modal).
 
 ## Day editor: highlight mirror
 
@@ -98,6 +98,8 @@ Native `<textarea>` cannot color individual words. Pattern:
 
 **`.keywords__panel`** — white panel, table `#keywords-table` inside; body `#keywords-list`.
 
+**`#keywords-empty`** — shown when the table has no rows; includes recommended copy and `.keywords__empty-link` button (`data-action="import-sample-from-empty"`) that triggers sample import.
+
 Notable columns:
 
 - **Order** — `.keywords__th-order`; reorder controls revealed by `#keywords-reorder-toggle` (persisted open state).
@@ -146,15 +148,17 @@ Variants & instances:
 - **TMAO protectors tip modal** (`#tmao-protectors-tip-modal`) — diet strategies beyond cutting precursors (`data-action="open-tmao-protectors-tip-modal"`).
 - **Import modal** (`#import-modal`) — `.import-modal__body` scrollable; AI panel `.import-ai-panel`; JSON `.import-modal__json` (shorter when `.import-json-wrap--ai`).
 - **Move-to-position modal** (`#keyword-position-modal`) — `#keyword-position-select`; primary button label **Move**.
+- **Starter guide** (`#starter-guide`) — fixed popover above import button or week grid; `#starter-guide-text`, `#starter-guide-dismiss` (**Got it**); `.starter-guide__arrow` with `data-placement`; hidden in print / print-preview.
 
 ## Z-index & stacking
 
 - Modals `z-index: 100`.
+- Starter guide `.starter-guide` `z-index: 120` (above modals).
 - Micros / longevity tooltip on button is above the row (cells use `overflow: visible` so it isn’t clipped).
 
 ## CSS naming convention
 
-BEM-like blocks: `.week__`, `.day__`, `.dashboard__`, `.keywords__`, `.settings-modal__`, `.tdee-calc__`, `.macro-split-carousel`, `.micro-sources-modal__`, `.import-ai-`, `.micro-gaps-modal__`, `.micro-def__`, `.micro-tip-modal__`, `.longevity-form`, `.modal__`.
+BEM-like blocks: `.week__`, `.day__`, `.dashboard__`, `.keywords__`, `.settings-modal__`, `.tdee-calc__`, `.macro-split-carousel`, `.micro-sources-modal__`, `.import-ai-`, `.micro-gaps-modal__`, `.micro-def__`, `.micro-tip-modal__`, `.longevity-form`, `.starter-guide__`, `.modal__`.
 
 JS does not depend on BEM beyond stable IDs (`#mon`, `#keywords-list`, etc.).
 
@@ -173,6 +177,7 @@ Critical hooks (do not rename without updating the element lookups near the top 
 - Tip modals: `phosphorus-binder-modal`, `phosphorus-binder-modal-done`, `caffeine-tip-modal`, `caffeine-tip-modal-done`, `fats-cholesterol-tip-modal`, `fats-cholesterol-tip-modal-done`, `tmao-protectors-tip-modal`, `tmao-protectors-tip-modal-done`
 - Definitions: `micro-def-modal`, `micro-def-modal-title`, `micro-def-body`, `micro-def-modal-done`, `micro-def-modal-back`, `micro-def-fullscreen-toggle`
 - Table: `keywords-table`, `keywords-list`, `keywords-empty`, `keywords-reorder-toggle`, `add-keyword`, `export-all-foods`, `import-all-foods`, `import-sample-foods`, `keyword-position-modal` (+ `-food`/`-select`/`-error`/`-apply`/`-cancel`)
+- Starter guide: `starter-guide`, `starter-guide-text`, `starter-guide-dismiss`
 - Import: `import-modal`, `import-json`, `import-ai-*`, `import-all-modal`, `import-all-json`, `micro-modal`, `micro-form`
 
 ## Visual tokens (informal)
@@ -186,11 +191,12 @@ Critical hooks (do not rename without updating the element lookups near the top 
 - Day suggest popover is injected by JS inside `.day__editor`; keep `overflow: hidden` on the editor and scroll on `.day__suggest-list` if adding more suggestion UI.
 - Shared editor resize: change `.day__editor` sizing in CSS **and** `clampDayEditorHeight` / `STORAGE_KEY_DAY_EDITOR_HEIGHT` in JS together.
 - New modal: copy `.modal` + `hidden` + backdrop `data-action` close pattern from existing modals; wire close in the global Escape handler.
+- Starter guide is not a `.modal`; use fixed positioning + scroll/resize listeners (see core doc). Keep `z-index` above modals if stacking changes.
 
 ## File size hint
 
 | File | ~Lines | Load when |
 |------|--------|-----------|
-| `index.html` | 920 | Structure / new regions |
-| `styles.css` | 4300 | Visual/layout only |
-| `app.js` | 8100 | Behavior (other docs) |
+| `index.html` | 930 | Structure / new regions |
+| `styles.css` | 4400 | Visual/layout only |
+| `app.js` | 8200 | Behavior (other docs) |

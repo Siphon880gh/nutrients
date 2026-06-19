@@ -1,6 +1,6 @@
 # AGENTS_CODE_REFERENCE-core.md
 
-> **Approximate locations only** — no exact line numbers. Code moves; use section names and relative position within `app.js` (~8100 lines).
+> **Approximate locations only** — no exact line numbers. Code moves; use section names and relative position within `app.js` (~8200 lines).
 
 Core logic: food definitions, matching, highlighting orchestration, dashboard totals, micro % DV, longevity panel, definition modals, localStorage.
 
@@ -24,6 +24,7 @@ Parent overview: [AGENTS_CODE_REFERENCE.md](./AGENTS_CODE_REFERENCE.md)
 | Demographic | `loadDemographic`, `saveDemographic`, `setDemographic`, `renderDemographicUi` (updates `#settings-demographic-icon`); targets in `demographic-dv.js` (`DAILY_MICRO_DV`, `CALORIE_BASELINE`) |
 | Highlights | `updateDayHighlights`, `highlightedHtml`, `refreshAll`, `syncScroll` |
 | Food-name suggestions | `updateDaySuggest`, `foodSuggestMatches`, `applyDayFoodSuggest`, `hideDaySuggest`, `DAY_SUGGEST_MAX` |
+| Starter guide | `maybeShowStarterGuideImportStep`, `advanceStarterGuideAfterImport`, `showStarterGuideStep`, `repositionStarterGuide`, `dismissStarterGuide`, `hideStarterGuide`, `starterGuideEligible`, `starterGuideStep` |
 | Day editor height | `loadDayEditorHeight`, `saveDayEditorHeight`, `applyDayEditorHeight`, `bindDayEditorResize`, `clampDayEditorHeight` |
 | Persistence | `saveFoodDefinitions`, `loadFoodDefinitions`, `saveDayNotes`, `loadDayNotes` |
 | Day meals | `exportAllDayMeals`, `applyImportAllDayMealsReplace`, `getImportAllMealsMissingMode` (`empty` \| `keep`), `clearDayNotes`, `clearAllDayNotes`, `anyDayHasNotes` |
@@ -237,6 +238,22 @@ While typing on the **current line** of a day textarea, a popover suggests match
 
 Only one popover is visible at a time (`hideAllDaySuggests` before show).
 
+## Starter guide (beginner popover)
+
+Two-step, session-only onboarding when the food list is empty on first load.
+
+**Eligibility** — `maybeShowStarterGuideImportStep()` runs at end of `boot()` when `keywords.length === 0`; sets `starterGuideEligible = true` and, after a double `requestAnimationFrame`, shows step **`import`** if the list is still empty.
+
+**Step `import`** — anchored to `#import-sample-foods` or `#food-definitions-heading`; copy prompts sample import. Scrolls `.keywords` into view. Also reachable from `#keywords-empty` inline link (`data-action="import-sample-from-empty"` → `importSampleFoods()`).
+
+**Step `meals`** — after successful sample import (`advanceStarterGuideAfterImport()` from `importSampleFoods` replace path), anchored to `.week__grid`; copy prompts Mon–Wed meal entry and mentions food-name suggestions.
+
+**Dismiss** — `#starter-guide-dismiss` (**Got it**): on **`meals`** step sets `starterGuideEligible = false` (won’t re-show); on **`import`** step only hides (eligible until meals dismissed or foods added).
+
+**Positioning** — `#starter-guide` is `position: fixed`; `repositionStarterGuide` reads target `getBoundingClientRect`, clamps horizontal center, places panel above target (`data-placement="bottom"` arrow). `bindStarterGuideScrollResize` listens to scroll (capture) + resize while visible.
+
+Not persisted; not closed by the global Escape modal stack.
+
 ## Day editor height (shared resize)
 
 All seven `.day__editor` boxes share one height.
@@ -271,13 +288,14 @@ All seven `.day__editor` boxes share one height.
 | Add explanatory text | key entry in `definitions-micronutrients.json` / `definitions-longevity.json` |
 | Change day clear copy | `confirmClearDay`, `confirmClearAllDays` |
 | Tune food suggestions | `DAY_SUGGEST_MAX`, `foodSuggestMatches`, `levenshtein` thresholds |
+| Tune starter guide copy/steps | `maybeShowStarterGuideImportStep`, `advanceStarterGuideAfterImport`, `showStarterGuideStep`, `starterGuideTargetForStep` |
 | Change shared editor height limits | `clampDayEditorHeight`, `.day__editor` min/max in CSS |
 | Eighth column | extend `DAYS`, HTML, CSS `repeat(n)` for dashboard + week grid |
 | Stricter matching | `countKeyword` / regex builder |
 
 ## Event binding & boot (end of `app.js`)
 
-Listeners are attached in the **last ~20%** of the file: keywords table click/input, per-day `bindDay` loop, `bindDayEditorResize`, dashboard toggles (week/micro/longevity/print + micro view/DV), micros + longevity modals, definition modals (`data-micro-def` / `data-longevity-def`), demographic options, phosphorus/caffeine tip modals, and import/sample modals — see [import doc](./AGENTS_CODE_REFERENCE-import.md).
+Listeners are attached in the **last ~20%** of the file: keywords table click/input, per-day `bindDay` loop, `bindDayEditorResize`, dashboard toggles (week/micro/longevity/print + micro view/DV), micros + longevity modals, definition modals (`data-micro-def` / `data-longevity-def`), demographic options, phosphorus/caffeine tip modals, starter guide dismiss + empty-state sample link, and import/sample modals — see [import doc](./AGENTS_CODE_REFERENCE-import.md).
 
 Boot sequence (very end):
 
@@ -290,5 +308,6 @@ loadAppConfig(function () {
 });
 // boot(): loadFoodDefinitions → loadKeywordReorderOpen → loadKeywordCaloriesOpen →
 //         loadDayNotes → loadDayEditorHeight → loadDemographic → loadTdee →
-//         renderDemographicUi → syncSettingsTdeeInput → renderKeywords → refreshAll
+//         renderDemographicUi → syncSettingsTdeeInput → renderKeywords → refreshAll →
+//         maybeShowStarterGuideImportStep
 ```

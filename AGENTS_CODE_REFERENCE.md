@@ -14,19 +14,19 @@ No backend, no bundler, no framework.
 
 | File | Scope |
 |------|--------|
-| [AGENTS_CODE_REFERENCE-core.md](./AGENTS_CODE_REFERENCE-core.md) | Data model, localStorage, matching, dashboard math, micro % DV, condition focus, ranked source modals, TDEE/settings, longevity panel + nav, definition modals, highlights, food-definition table |
+| [AGENTS_CODE_REFERENCE-core.md](./AGENTS_CODE_REFERENCE-core.md) | Data model, localStorage, matching, dashboard math, micro % DV, condition focus, ranked source modals, TDEE/settings, longevity panel + nav, definition modals, highlights, starter guide, food-definition table |
 | [AGENTS_CODE_REFERENCE-import.md](./AGENTS_CODE_REFERENCE-import.md) | Single + bulk JSON import, sample import, AI prompt panels (import + micro gaps), ChatGPT/Claude links |
-| [AGENTS_CODE_REFERENCE-ui.md](./AGENTS_CODE_REFERENCE-ui.md) | `index.html` regions, `styles.css` layout, settings/TDEE modals, sources modals, highlight overlay |
+| [AGENTS_CODE_REFERENCE-ui.md](./AGENTS_CODE_REFERENCE-ui.md) | `index.html` regions, `styles.css` layout, settings/TDEE modals, sources modals, starter guide popover, highlight overlay |
 
-When context is tight: read **this file** first, then open the one feature file you need. Full logic lives in `app.js` (~8100 lines) — load it whole only when editing behavior, otherwise navigate by the function names listed in the companion docs.
+When context is tight: read **this file** first, then open the one feature file you need. Full logic lives in `app.js` (~8200 lines) — load it whole only when editing behavior, otherwise navigate by the function names listed in the companion docs.
 
 ## Tech stack
 
 | Layer | Choice |
 |-------|--------|
 | Markup | Static HTML5 |
-| Style | Plain CSS (`styles.css`, ~4300 lines) |
-| Logic | Single IIFE in `app.js` (~8100 lines) |
+| Style | Plain CSS (`styles.css`, ~4400 lines) |
+| Logic | Single IIFE in `app.js` (~8200 lines) |
 | Data files | `config.json` (% DV tiers), `definitions-micronutrients.json`, `definitions-longevity.json`, `samples/definitions-food.json` (all `fetch`ed at boot / on demand) |
 | Reference values | `demographic-dv.js` (micro DV), `longevity-dv.js` (longevity DV) — globals, loaded before `app.js` |
 | Persistence | `localStorage` for **food definitions**, **day meals**, **demographic**, **TDEE**, **day editor height**, **reorder toggle**, **calories-column toggle** |
@@ -51,7 +51,7 @@ When context is tight: read **this file** first, then open the one feature file 
 ├─────────────────────────────────────────────────────────┤
 │  Food definitions table (CRUD, optional cal column,      │
 │  micros + longevity modals, single/bulk/sample import,  │
-│  reorder, move-to-position)                             │
+│  reorder, move-to-position; empty-state sample link)    │
 │  ← persisted: localStorage `nutrients-food-definitions` │
 │  Settings (header): sex / micro DV profile + TDEE       │
 │  ← persisted: `nutrients-demographic`, `nutrients-tdee` │
@@ -64,9 +64,9 @@ When context is tight: read **this file** first, then open the one feature file 
 
 ```text
 nutrients/
-├── index.html                      (~920 lines)  Page structure, modals, static day editors
-├── styles.css                      (~4300 lines) Layout, dashboard, table, modals, responsive, print
-├── app.js                          (~8100 lines) All application logic (IIFE)
+├── index.html                      (~930 lines)  Page structure, modals, starter guide, static day editors
+├── styles.css                      (~4400 lines) Layout, dashboard, table, modals, starter guide, responsive, print
+├── app.js                          (~8200 lines) All application logic (IIFE)
 ├── config.json                     Micro + longevity % DV tier colors / font weights (fetched at boot)
 ├── demographic-dv.js               window.NutrientsDemographicDv — gender micro DV targets
 ├── longevity-dv.js                 window.NutrientsLongevityDv — longevity nutrient DV targets
@@ -79,7 +79,7 @@ nutrients/
 
 ## Code flow
 
-1. **Boot** (end of `app.js`): `loadAppConfig()` → in parallel `loadMicroDefinitions()` + `loadLongevityDefinitions()` → `boot()`: `loadFoodDefinitions()` → `loadKeywordReorderOpen()` → `loadKeywordCaloriesOpen()` → `loadDayNotes()` → `loadDayEditorHeight()` → `loadDemographic()` → `loadTdee()` → `renderDemographicUi()` → `syncSettingsTdeeInput()` → `renderKeywords()` → `refreshAll()`. Listeners are bound earlier in the same closure (`bindDay` per textarea, `bindDayEditorResize` on the week grid).
+1. **Boot** (end of `app.js`): `loadAppConfig()` → in parallel `loadMicroDefinitions()` + `loadLongevityDefinitions()` → `boot()`: `loadFoodDefinitions()` → `loadKeywordReorderOpen()` → `loadKeywordCaloriesOpen()` → `loadDayNotes()` → `loadDayEditorHeight()` → `loadDemographic()` → `loadTdee()` → `renderDemographicUi()` → `syncSettingsTdeeInput()` → `renderKeywords()` → `refreshAll()` → `maybeShowStarterGuideImportStep()` (empty food list only). Listeners are bound earlier in the same closure (`bindDay` per textarea, `bindDayEditorResize` on the week grid).
 2. **User types in a day note** → `updateDayHighlights` + `renderDashboard` + `updateDaySuggest` (food-name autocomplete on the current line).
 3. **User edits food row / micros modal / longevity modal** → sync to `keywords[]` → `saveFoodDefinitions()` → `refreshAll()`.
 4. **Match rule:** whole-word, case-insensitive `\b(name)\b`; each occurrence adds that definition’s macros/micros/longevity once.
@@ -136,9 +136,9 @@ Top to bottom inside `<main class="week">`:
    - Longevity panel: intro/disclaimer, sticky `#dashboard-longevity-nav`, `#dashboard-longevity-content` (+ **My food** icons → `#longevity-sources-modal`)
 3. `.week__days-toolbar` — export/import all meals, clear all days
 4. `.week__grid` — seven `.day__editor` (backdrop + transparent textarea + optional `.day__suggest` popover). Editors are vertically resizable (`resize: vertical` on `.day__editor`); releasing the drag syncs height to all seven and persists.
-5. `.keywords` — food definitions table (`#keywords-table`, body `#keywords-list`, reorder toggle, macro cal/g toggle, add + bulk + sample import)
+5. `.keywords` — food definitions table (`#keywords-table`, body `#keywords-list`, `#keywords-empty` with inline **Import our sample** link, reorder toggle, macro cal/g toggle, add + bulk + sample import)
 
-Outside main (modal siblings): `#settings-modal`, `#tdee-calculator-modal`, `#tdee-hint-modal`, `#macro-split-hint-modal`, `#micro-sources-modal`, `#longevity-sources-modal`, `#import-all-meals-modal`, `#import-all-modal`, `#keyword-position-modal`, `#import-modal`, `#micro-gaps-modal`, `#micro-def-modal`, `#longevity-modal`, `#micro-modal`, `#phosphorus-binder-modal`, `#caffeine-tip-modal`, `#fats-cholesterol-tip-modal`, `#tmao-protectors-tip-modal`.
+Outside main (modal / overlay siblings): `#settings-modal`, `#tdee-calculator-modal`, `#tdee-hint-modal`, `#macro-split-hint-modal`, `#micro-sources-modal`, `#longevity-sources-modal`, `#import-all-meals-modal`, `#import-all-modal`, `#keyword-position-modal`, `#import-modal`, `#micro-gaps-modal`, `#micro-def-modal`, `#longevity-modal`, `#micro-modal`, `#phosphorus-binder-modal`, `#caffeine-tip-modal`, `#fats-cholesterol-tip-modal`, `#tmao-protectors-tip-modal`, `#starter-guide` (fixed beginner popover; not a blocking modal).
 
 ## Safe-change checklist for AI
 
@@ -151,6 +151,7 @@ Outside main (modal siblings): `#settings-modal`, `#tdee-calculator-modal`, `#td
 - **Day meals:** `loadDayNotes` / `saveDayNotes`; bulk `exportAllDayMeals` / `applyImportAllDayMealsReplace` (missing days: empty out or leave alone); clear via `clearDayNotes` / `clearAllDayNotes` ([core doc](./AGENTS_CODE_REFERENCE-core.md)).
 - **Day editor height:** `loadDayEditorHeight` / `saveDayEditorHeight` / `applyDayEditorHeight` / `bindDayEditorResize`; CSS default `calc(45vh - 2.5rem)` until user resizes ([ui doc](./AGENTS_CODE_REFERENCE-ui.md)).
 - **Food-name suggestions:** `updateDaySuggest` / `foodSuggestMatches` / `DAY_SUGGEST_MAX`; scrollable `.day__suggest-list`; per-line dismiss via Escape or Dismiss ([core doc](./AGENTS_CODE_REFERENCE-core.md)).
+- **Starter guide (empty state):** `maybeShowStarterGuideImportStep` / `advanceStarterGuideAfterImport` / `showStarterGuideStep` / `dismissStarterGuide`; `#keywords-empty` inline sample link (`data-action="import-sample-from-empty"`); session-only `starterGuideEligible` ([core doc](./AGENTS_CODE_REFERENCE-core.md)).
 - **Food table calories column:** `keywordCaloriesOpen` / `toggleKeywordCaloriesOpen` / `STORAGE_KEY_CALORIES`; header `.keywords__macro-toggle` switches g ↔ cal ([core doc](./AGENTS_CODE_REFERENCE-core.md)).
 - **Def modal ↔ sources modal:** `defModalReturnSources` + `#micro-def-modal-back` (`data-action="return-to-sources-modal"`); title links in sources modals open explain modal with return stack ([core doc](./AGENTS_CODE_REFERENCE-core.md)).
 - **% DV / longevity colors:** edit tiers in `config.json` (`microDvStatus`, `longevityStatus`); read by `tierForMicroPct` / `tierForLongevityPct`.

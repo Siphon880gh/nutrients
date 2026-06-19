@@ -99,7 +99,9 @@ Used when opening import with AI panel **closed** (`setImportAiPanelOpen(false)`
 
 ## Sample import
 
-**`importSampleFoods`** — fetches `IMPORT_SAMPLE_FOODS_URL` (`samples/definitions-food.json`), then `confirmImportSampleReplace(count)` and applies via the replace path. The sample file is an array of food objects using the same `name` / `protein` / `carbs` / `fats` / `micros` / `longevity` / `carbQuality` shape.
+**`importSampleFoods`** — fetches `IMPORT_SAMPLE_FOODS_URL` (`samples/definitions-food.json`), then `confirmImportSampleReplace(count)` and applies via the replace path. On success calls `advanceStarterGuideAfterImport()` (meals step of starter guide when eligible). The sample file is an array of food objects using the same `name` / `protein` / `carbs` / `fats` / `micros` / `longevity` / `carbQuality` shape.
+
+Empty table copy in `#keywords-empty` also links to sample import via `data-action="import-sample-from-empty"` (delegated click on `#keywords-empty`).
 
 ## Day meals import (`#import-all-meals-modal`)
 
