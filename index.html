@@ -289,7 +289,11 @@
           <tbody id="keywords-list"></tbody>
         </table>
 
-        <p id="keywords-empty" class="keywords__empty" hidden>No food definitions yet.</p>
+        <p id="keywords-empty" class="keywords__empty" hidden>
+          No food definitions yet. Recommended:
+          <button type="button" class="keywords__empty-link" data-action="import-sample-from-empty">Import our sample</button>.
+          You need food definitions before entering your meals; otherwise calories, macros, nutrition, and more won&rsquo;t tabulate.
+        </p>
 
         <div class="keywords__footer">
           <button type="button" id="add-keyword" class="keywords__add">Add food definition</button>
@@ -907,6 +911,14 @@
         <button type="button" id="micro-modal-done" class="modal__done">Done</button>
       </footer>
     </div>
+  </div>
+
+  <div id="starter-guide" class="starter-guide" hidden role="dialog" aria-modal="false" aria-labelledby="starter-guide-text">
+    <div class="starter-guide__panel">
+      <p id="starter-guide-text" class="starter-guide__text"></p>
+      <button type="button" id="starter-guide-dismiss" class="starter-guide__dismiss">Got it</button>
+    </div>
+    <div class="starter-guide__arrow" aria-hidden="true"></div>
   </div>
 
   <script src="demographic-dv.js"></script>

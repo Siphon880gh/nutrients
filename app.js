@@ -200,6 +200,13 @@
   var exportAllFoodsBtn = document.getElementById("export-all-foods");
   var importAllFoodsBtn = document.getElementById("import-all-foods");
   var importSampleFoodsBtn = document.getElementById("import-sample-foods");
+  var starterGuideEl = document.getElementById("starter-guide");
+  var starterGuideTextEl = document.getElementById("starter-guide-text");
+  var starterGuideDismissEl = document.getElementById("starter-guide-dismiss");
+  var starterGuideEligible = false;
+  var starterGuideStep = null;
+  var starterGuideTarget = null;
+  var starterGuideScrollResizeBound = false;
   var IMPORT_SAMPLE_FOODS_URL = "samples/definitions-food.json";
   var importAllMealsModalEl = document.getElementById("import-all-meals-modal");
   var importAllMealsJsonEl = document.getElementById("import-all-meals-json");
@@ -2970,6 +2977,7 @@
         applyImportAllReplace(items, true);
         renderKeywords();
         refreshAll();
+        advanceStarterGuideAfterImport();
       })
       .catch(function (e) {
         if (e.message === "cancelled") return;
@@ -7446,6 +7454,18 @@
     importSampleFoodsBtn.addEventListener("click", importSampleFoods);
   }
 
+  if (keywordsEmptyEl) {
+    keywordsEmptyEl.addEventListener("click", function (e) {
+      if (e.target.closest('[data-action="import-sample-from-empty"]')) {
+        importSampleFoods();
+      }
+    });
+  }
+
+  if (starterGuideDismissEl) {
+    starterGuideDismissEl.addEventListener("click", dismissStarterGuide);
+  }
+
   if (importAllApplyBtn) {
     importAllApplyBtn.addEventListener("click", runImportAll);
   }
@@ -8075,6 +8095,122 @@
     });
   }
 
+  function bindStarterGuideScrollResize() {
+    if (starterGuideScrollResizeBound) return;
+    starterGuideScrollResizeBound = true;
+    window.addEventListener("scroll", repositionStarterGuide, true);
+    window.addEventListener("resize", repositionStarterGuide);
+  }
+
+  function unbindStarterGuideScrollResize() {
+    if (!starterGuideScrollResizeBound) return;
+    starterGuideScrollResizeBound = false;
+    window.removeEventListener("scroll", repositionStarterGuide, true);
+    window.removeEventListener("resize", repositionStarterGuide);
+  }
+
+  function starterGuideTargetForStep(step) {
+    if (step === "import") {
+      return (
+        importSampleFoodsBtn ||
+        document.getElementById("food-definitions-heading")
+      );
+    }
+    if (step === "meals") {
+      return document.querySelector(".week__grid");
+    }
+    return null;
+  }
+
+  function repositionStarterGuide() {
+    if (!starterGuideEl || starterGuideEl.hidden || !starterGuideTarget) return;
+
+    var rect = starterGuideTarget.getBoundingClientRect();
+    var gap = 14;
+    var panelWidth = starterGuideEl.offsetWidth || 280;
+    var left = rect.left + rect.width / 2;
+    var minLeft = panelWidth / 2 + 12;
+    var maxLeft = window.innerWidth - panelWidth / 2 - 12;
+    left = Math.max(minLeft, Math.min(maxLeft, left));
+
+    if (starterGuideStep === "import") {
+      starterGuideEl.style.left = left + "px";
+      starterGuideEl.style.top = rect.top - gap + "px";
+      starterGuideEl.style.transform = "translate(-50%, -100%)";
+      starterGuideEl.setAttribute("data-placement", "bottom");
+      return;
+    }
+
+    if (starterGuideStep === "meals") {
+      starterGuideEl.style.left = left + "px";
+      starterGuideEl.style.top = rect.top - gap + "px";
+      starterGuideEl.style.transform = "translate(-50%, -100%)";
+      starterGuideEl.setAttribute("data-placement", "bottom");
+    }
+  }
+
+  function hideStarterGuide() {
+    if (!starterGuideEl) return;
+    starterGuideEl.hidden = true;
+    starterGuideStep = null;
+    starterGuideTarget = null;
+    unbindStarterGuideScrollResize();
+  }
+
+  function dismissStarterGuide() {
+    if (starterGuideStep === "meals") {
+      starterGuideEligible = false;
+    }
+    hideStarterGuide();
+  }
+
+  function showStarterGuideStep(step, message, scrollTarget) {
+    if (!starterGuideEl || !starterGuideTextEl) return;
+
+    starterGuideStep = step;
+    starterGuideTarget = starterGuideTargetForStep(step);
+    if (!starterGuideTarget) return;
+
+    starterGuideTextEl.textContent = message;
+    starterGuideEl.hidden = false;
+
+    if (scrollTarget) {
+      scrollTarget.scrollIntoView({ behavior: "smooth", block: "center" });
+      window.setTimeout(repositionStarterGuide, 350);
+    } else {
+      repositionStarterGuide();
+    }
+
+    bindStarterGuideScrollResize();
+  }
+
+  function maybeShowStarterGuideImportStep() {
+    if (keywords.length > 0) return;
+    starterGuideEligible = true;
+    window.requestAnimationFrame(function () {
+      window.requestAnimationFrame(function () {
+        if (keywords.length > 0 || !starterGuideEligible) return;
+        var section = document.querySelector(".keywords");
+        showStarterGuideStep(
+          "import",
+          "Start here — import our sample food definitions so the app knows each food\u2019s nutrition.",
+          section
+        );
+      });
+    });
+  }
+
+  function advanceStarterGuideAfterImport() {
+    if (!starterGuideEligible || keywords.length === 0) return;
+
+    var weekGrid = document.querySelector(".week__grid");
+    showStarterGuideStep(
+      "meals",
+      "Enter what you ate on Mon\u2013Wed (and the rest of the week). Type names that match your food definitions \u2014 suggestions appear as you type.",
+      weekGrid
+    );
+  }
+
   function boot() {
     loadFoodDefinitions();
     loadKeywordReorderOpen();
@@ -8087,6 +8223,7 @@
     syncSettingsTdeeInput();
     renderKeywords();
     refreshAll();
+    maybeShowStarterGuideImportStep();
   }
 
   loadAppConfig(function () {
