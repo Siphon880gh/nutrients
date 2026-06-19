@@ -2404,6 +2404,30 @@ body.modal-open {
   color: #333;
 }
 
+button.longevity-form__label-link {
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  color: #2a5a8a;
+  text-decoration: underline;
+  text-decoration-color: rgba(42, 90, 138, 0.35);
+  text-underline-offset: 0.12em;
+}
+
+button.longevity-form__label-link:hover {
+  color: #1a4570;
+  text-decoration-color: currentColor;
+}
+
+button.longevity-form__label-link:focus-visible {
+  outline: 2px solid #3d6b9e;
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
 .longevity-form__unit {
   font-size: 0.72rem;
   color: #5c5c5c;

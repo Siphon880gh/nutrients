@@ -80,6 +80,10 @@
   );
   var caffeineTipModalEl = document.getElementById("caffeine-tip-modal");
   var caffeineTipModalDoneBtn = document.getElementById("caffeine-tip-modal-done");
+  var fatsCholesterolTipModalEl = document.getElementById("fats-cholesterol-tip-modal");
+  var fatsCholesterolTipModalDoneBtn = document.getElementById(
+    "fats-cholesterol-tip-modal-done"
+  );
   var microDefFullscreen = false;
   var demographicBadgeEl = document.getElementById("demographic-badge");
   var demographicOptionsEl = document.getElementById("demographic-options");
@@ -347,6 +351,7 @@
     },
     { key: "flavonoids", label: "Flavonoids", unit: "mg", code: "flav", group: "compounds" },
     { key: "carotenoids", label: "Carotenoids", unit: "mg", code: "car", group: "compounds" },
+    { key: "lutein", label: "Lutein", unit: "mg", code: "lut", group: "compounds" },
     { key: "curcumin", label: "Curcumin", unit: "mg", code: "cur", group: "compounds" },
     {
       key: "resveratrol",
@@ -1022,6 +1027,9 @@
       "  - longevity.transFat: 0 for whole/natural foods; fried fast food, movie-theater buttery popcorn, and some pastries may have 0.1–4 g — use label data when available (g)"
     );
     lines.push(
+      "  - longevity.lutein: spinach, kale, corn, egg yolks (mg; fat-soluble—better absorbed with oil or egg fat)"
+    );
+    lines.push(
       "  - longevity.choline: egg yolks, liver, meat, fish (mg; high in eggs)"
     );
     lines.push(
@@ -1260,7 +1268,7 @@
   }
 
   function loadMicroDefinitions(done) {
-    fetch("definitions-micronutrients.json")
+    fetch("definitions-micronutrients.json", { cache: "no-store" })
       .then(function (res) {
         if (!res.ok) throw new Error("definitions fetch failed");
         return res.json();
@@ -1346,7 +1354,7 @@
   }
 
   function loadLongevityDefinitions(done) {
-    fetch("definitions-longevity.json")
+    fetch("definitions-longevity.json", { cache: "no-store" })
       .then(function (res) {
         if (!res.ok) throw new Error("longevity definitions fetch failed");
         return res.json();
@@ -1628,6 +1636,9 @@
       closePhosphorusBinderModal();
     }
     if (caffeineTipModalEl && !caffeineTipModalEl.hidden) closeCaffeineTipModal();
+    if (fatsCholesterolTipModalEl && !fatsCholesterolTipModalEl.hidden) {
+      closeFatsCholesterolTipModal();
+    }
     if (activeMicroId) {
       saveMicrosFromForm();
       closeMicroModal();
@@ -2022,6 +2033,9 @@
     if (microGapsModalEl && !microGapsModalEl.hidden) closeMicroGapsModal();
     if (microDefModalEl && !microDefModalEl.hidden) closeMicroDefModal();
     if (caffeineTipModalEl && !caffeineTipModalEl.hidden) closeCaffeineTipModal();
+    if (fatsCholesterolTipModalEl && !fatsCholesterolTipModalEl.hidden) {
+      closeFatsCholesterolTipModal();
+    }
     if (activeMicroId) {
       saveMicrosFromForm();
       closeMicroModal();
@@ -2055,6 +2069,9 @@
     if (phosphorusBinderModalEl && !phosphorusBinderModalEl.hidden) {
       closePhosphorusBinderModal();
     }
+    if (fatsCholesterolTipModalEl && !fatsCholesterolTipModalEl.hidden) {
+      closeFatsCholesterolTipModal();
+    }
     if (activeMicroId) {
       saveMicrosFromForm();
       closeMicroModal();
@@ -2073,6 +2090,51 @@
     if (!caffeineTipModalEl) return;
     caffeineTipModalEl.hidden = true;
     updateBodyModalOpen();
+  }
+
+  function openFatsCholesterolTipModal() {
+    if (!fatsCholesterolTipModalEl) return;
+
+    if (activeImportId) closeImportModal();
+    if (importAllModalEl && !importAllModalEl.hidden) closeImportAllModal();
+    if (importAllMealsModalEl && !importAllMealsModalEl.hidden) {
+      closeImportAllMealsModal();
+    }
+    if (microGapsModalEl && !microGapsModalEl.hidden) closeMicroGapsModal();
+    if (microDefModalEl && !microDefModalEl.hidden) closeMicroDefModal();
+    if (phosphorusBinderModalEl && !phosphorusBinderModalEl.hidden) {
+      closePhosphorusBinderModal();
+    }
+    if (caffeineTipModalEl && !caffeineTipModalEl.hidden) closeCaffeineTipModal();
+    if (activeMicroId) {
+      saveMicrosFromForm();
+      closeMicroModal();
+    }
+    if (activeLongevityId) {
+      saveLongevityFromForm();
+      closeLongevityModal();
+    }
+
+    fatsCholesterolTipModalEl.hidden = false;
+    updateBodyModalOpen();
+    if (fatsCholesterolTipModalDoneBtn) fatsCholesterolTipModalDoneBtn.focus();
+  }
+
+  function closeFatsCholesterolTipModal() {
+    if (!fatsCholesterolTipModalEl) return;
+    fatsCholesterolTipModalEl.hidden = true;
+    updateBodyModalOpen();
+  }
+
+  function fatsCholesterolTipHtml() {
+    return (
+      '<aside class="dashboard__longevity-processed-note dashboard__longevity-processed-note--section" role="note">' +
+      '<p class="dashboard__longevity-processed-note-text">' +
+      "For most healthy adults, eggs in moderation are fine for your heart. Egg yolks are high in cholesterol, but dietary cholesterol affects blood levels less than saturated fat does… " +
+      '<button type="button" class="dashboard__longevity-tip-link" data-action="open-fats-cholesterol-tip-modal">Read more</button>' +
+      "</p>" +
+      "</aside>"
+    );
   }
 
   function calcificationPhosphorusTipHtml() {
@@ -2101,6 +2163,9 @@
       closePhosphorusBinderModal();
     }
     if (caffeineTipModalEl && !caffeineTipModalEl.hidden) closeCaffeineTipModal();
+    if (fatsCholesterolTipModalEl && !fatsCholesterolTipModalEl.hidden) {
+      closeFatsCholesterolTipModal();
+    }
     if (activeMicroId) {
       saveMicrosFromForm();
       closeMicroModal();
@@ -2138,6 +2203,9 @@
       closePhosphorusBinderModal();
     }
     if (caffeineTipModalEl && !caffeineTipModalEl.hidden) closeCaffeineTipModal();
+    if (fatsCholesterolTipModalEl && !fatsCholesterolTipModalEl.hidden) {
+      closeFatsCholesterolTipModal();
+    }
     if (activeMicroId) {
       saveMicrosFromForm();
       closeMicroModal();
@@ -2172,6 +2240,9 @@
       closePhosphorusBinderModal();
     }
     if (caffeineTipModalEl && !caffeineTipModalEl.hidden) closeCaffeineTipModal();
+    if (fatsCholesterolTipModalEl && !fatsCholesterolTipModalEl.hidden) {
+      closeFatsCholesterolTipModal();
+    }
     if (activeMicroId) {
       saveMicrosFromForm();
       closeMicroModal();
@@ -2244,6 +2315,7 @@
       (longevitySourcesModalEl && !longevitySourcesModalEl.hidden) ||
       (phosphorusBinderModalEl && !phosphorusBinderModalEl.hidden) ||
       (caffeineTipModalEl && !caffeineTipModalEl.hidden) ||
+      (fatsCholesterolTipModalEl && !fatsCholesterolTipModalEl.hidden) ||
       (keywordPositionModalEl && !keywordPositionModalEl.hidden) ||
       !!activeImportId ||
       !!activeMicroId ||
@@ -3556,7 +3628,8 @@
         });
       }
       body += longevityListClose();
-      html += longevitySectionWrap(group.label, group.sectionDefKey, "", body);
+      var noteHtml = group.id === "fats" ? fatsCholesterolTipHtml() : "";
+      html += longevitySectionWrap(group.label, group.sectionDefKey, noteHtml, body);
     });
 
     html += longevitySectionWrap(
@@ -4258,11 +4331,13 @@
           .map(function (field) {
             return (
               '<label class="longevity-form__field">' +
-              '<span class="longevity-form__label">' +
+              '<button type="button" class="longevity-form__label longevity-form__label-link" data-longevity-def="' +
+              escapeAttr(field.key) +
+              '" aria-haspopup="dialog">' +
               escapeHtml(field.label) +
               " (" +
               escapeHtml(field.code) +
-              ")</span>" +
+              ")</button>" +
               '<span class="longevity-form__unit">' +
               escapeHtml(field.unit) +
               "</span>" +
@@ -5732,6 +5807,12 @@
 
   if (longevityFormEl) {
     longevityFormEl.addEventListener("input", scheduleLongevitySave);
+    longevityFormEl.addEventListener("click", function (e) {
+      var longevityBtn = e.target.closest("[data-longevity-def]");
+      if (!longevityBtn) return;
+      e.preventDefault();
+      openLongevityDefModal(longevityBtn.getAttribute("data-longevity-def"));
+    });
   }
 
   if (longevityModalDoneBtn) {
@@ -5789,6 +5870,10 @@
     dashboardLongevityContentEl.addEventListener("click", function (e) {
       if (e.target.closest('[data-action="open-phosphorus-binder-modal"]')) {
         openPhosphorusBinderModal();
+        return;
+      }
+      if (e.target.closest('[data-action="open-fats-cholesterol-tip-modal"]')) {
+        openFatsCholesterolTipModal();
         return;
       }
       var longevitySourcesBtn = e.target.closest("[data-longevity-sources]");
@@ -5880,6 +5965,18 @@
     caffeineTipModalEl.addEventListener("click", function (e) {
       if (e.target.closest('[data-action="close-caffeine-tip-modal"]')) {
         closeCaffeineTipModal();
+      }
+    });
+  }
+
+  if (fatsCholesterolTipModalDoneBtn) {
+    fatsCholesterolTipModalDoneBtn.addEventListener("click", closeFatsCholesterolTipModal);
+  }
+
+  if (fatsCholesterolTipModalEl) {
+    fatsCholesterolTipModalEl.addEventListener("click", function (e) {
+      if (e.target.closest('[data-action="close-fats-cholesterol-tip-modal"]')) {
+        closeFatsCholesterolTipModal();
       }
     });
   }

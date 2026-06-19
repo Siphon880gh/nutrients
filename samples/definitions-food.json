@@ -38,7 +38,8 @@
 			"vitaminE": 2.3,
 			"selenium": 3.8,
 			"choline": 45,
-			"copper": 450
+			"copper": 450,
+			"lutein": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 45,
@@ -103,7 +104,8 @@
 			"sulforaphane": 0,
 			"phosphorus": 548,
 			"choline": 78,
-			"copper": 670
+			"copper": 670,
+			"lutein": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 14,
@@ -169,7 +171,8 @@
 			"sulforaphane": 0,
 			"phosphorus": 0,
 			"choline": 0,
-			"copper": 0
+			"copper": 0,
+			"lutein": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 0,
@@ -235,7 +238,8 @@
 			"sulforaphane": 0,
 			"phosphorus": 0,
 			"choline": 0,
-			"copper": 0
+			"copper": 0,
+			"lutein": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 0,
@@ -301,7 +305,8 @@
 			"sulforaphane": 0,
 			"phosphorus": 0,
 			"choline": 0,
-			"copper": 0
+			"copper": 0,
+			"lutein": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 0,
@@ -361,7 +366,8 @@
 			"sulforaphane": 0,
 			"phosphorus": 350,
 			"choline": 65,
-			"copper": 350
+			"copper": 350,
+			"lutein": 0.5
 		},
 		"carbQuality": {
 			"glycemicIndex": 45,
@@ -391,7 +397,8 @@
 			"saturatedFat": 12,
 			"choline": 95,
 			"copper": 280,
-			"transFat": 0
+			"transFat": 0,
+			"lutein": 0
 		},
 		"carbQuality": {
 			"netCarbs": 7
@@ -419,7 +426,8 @@
 			"cholesterol": 120,
 			"choline": 140,
 			"copper": 320,
-			"transFat": 0
+			"transFat": 0,
+			"lutein": 0
 		},
 		"carbQuality": {
 			"netCarbs": 75
@@ -451,7 +459,8 @@
 			"transFat": 0,
 			"cholesterol": 40,
 			"choline": 115,
-			"copper": 180
+			"copper": 180,
+			"lutein": 0
 		},
 		"carbQuality": {
 			"netCarbs": 31
@@ -513,7 +522,8 @@
 			"sulforaphane": 0,
 			"phosphorus": 280,
 			"choline": 105,
-			"copper": 55
+			"copper": 55,
+			"lutein": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 0,
@@ -578,7 +588,8 @@
 			"sulforaphane": 0,
 			"phosphorus": 86,
 			"choline": 147,
-			"copper": 40
+			"copper": 40,
+			"lutein": 0.25
 		},
 		"carbQuality": {
 			"glycemicIndex": 0,
@@ -643,7 +654,8 @@
 			"sulforaphane": 0,
 			"phosphorus": 344,
 			"choline": 588,
-			"copper": 160
+			"copper": 160,
+			"lutein": 1
 		},
 		"carbQuality": {
 			"glycemicIndex": 0,
@@ -708,7 +720,8 @@
 			"sulforaphane": 0,
 			"phosphorus": 258,
 			"choline": 441,
-			"copper": 120
+			"copper": 120,
+			"lutein": 0.75
 		},
 		"carbQuality": {
 			"glycemicIndex": 0,
@@ -773,7 +786,8 @@
 			"sulforaphane": 0,
 			"phosphorus": 23,
 			"choline": 7,
-			"copper": 60
+			"copper": 60,
+			"lutein": 0.03
 		},
 		"carbQuality": {
 			"glycemicIndex": 50,
@@ -838,7 +852,8 @@
 			"sulforaphane": 0,
 			"phosphorus": 20,
 			"choline": 4,
-			"copper": 50
+			"copper": 50,
+			"lutein": 0.01
 		},
 		"carbQuality": {
 			"glycemicIndex": 36,
@@ -903,7 +918,8 @@
 			"sulforaphane": 0,
 			"phosphorus": 25.96,
 			"choline": 12,
-			"copper": 90
+			"copper": 90,
+			"lutein": 0.01
 		},
 		"carbQuality": {
 			"glycemicIndex": 51,
@@ -968,7 +984,8 @@
 			"sulforaphane": 0,
 			"phosphorus": 18,
 			"choline": 8,
-			"copper": 45
+			"copper": 45,
+			"lutein": 0.12
 		},
 		"carbQuality": {
 			"glycemicIndex": 43,
@@ -1032,7 +1049,8 @@
 			"sulforaphane": 0,
 			"phosphorus": 220,
 			"choline": 22,
-			"copper": 25
+			"copper": 25,
+			"lutein": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 11,
@@ -1067,7 +1085,8 @@
 			"transFat": 0,
 			"cholesterol": 5,
 			"choline": 18,
-			"copper": 20
+			"copper": 20,
+			"lutein": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 35,
@@ -1111,7 +1130,8 @@
 			"selenium": 7,
 			"phosphorus": 100,
 			"choline": 15,
-			"copper": 400
+			"copper": 400,
+			"lutein": 0
 		},
 		"carbQuality": {
 			"addedSugar": 1,
@@ -1150,7 +1170,8 @@
 			"transFat": 0,
 			"cholesterol": 0,
 			"choline": 18,
-			"copper": 350
+			"copper": 350,
+			"lutein": 0
 		},
 		"carbQuality": {
 			"addedSugar": 9,
@@ -1183,7 +1204,8 @@
 			"transFat": 0,
 			"cholesterol": 0,
 			"choline": 22,
-			"copper": 280
+			"copper": 280,
+			"lutein": 0
 		},
 		"carbQuality": {
 			"addedSugar": 0,
@@ -1220,7 +1242,8 @@
 			"cholesterol": 0,
 			"phosphorus": 200,
 			"choline": 12,
-			"copper": 200
+			"copper": 200,
+			"lutein": 0
 		},
 		"carbQuality": {
 			"addedSugar": 0,
@@ -1279,7 +1302,8 @@
 			"sulforaphane": 0,
 			"phosphorus": 300,
 			"choline": 95,
-			"copper": 120
+			"copper": 120,
+			"lutein": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 0,
@@ -1338,7 +1362,8 @@
 			"coq10": 0.7,
 			"phosphorus": 340,
 			"choline": 190,
-			"copper": 90
+			"copper": 90,
+			"lutein": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 35,
@@ -1403,7 +1428,8 @@
 			"sulforaphane": 0,
 			"phosphorus": 224,
 			"choline": 43,
-			"copper": 25
+			"copper": 25,
+			"lutein": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 31,
@@ -1459,7 +1485,8 @@
 			"coq10": 2.5,
 			"phosphorus": 390,
 			"choline": 105,
-			"copper": 150
+			"copper": 150,
+			"lutein": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 45,
@@ -1517,7 +1544,8 @@
 			"coq10": 0.8,
 			"phosphorus": 140,
 			"choline": 100,
-			"copper": 280
+			"copper": 280,
+			"lutein": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 65,
@@ -1566,7 +1594,8 @@
 			"oleicAcid": 9.9,
 			"vitaminE": 3.5,
 			"choline": 0,
-			"copper": 0
+			"copper": 0,
+			"lutein": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 0,
@@ -1612,7 +1641,8 @@
 			"selenium": 0.01,
 			"phosphorus": 1.2,
 			"choline": 0,
-			"copper": 0
+			"copper": 0,
+			"lutein": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 0,
@@ -1654,7 +1684,8 @@
 			"transFat": 0,
 			"cholesterol": 0,
 			"choline": 0,
-			"copper": 0
+			"copper": 0,
+			"lutein": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 0,
@@ -1698,7 +1729,8 @@
 			"vitaminE": 1,
 			"phosphorus": 30,
 			"choline": 28,
-			"copper": 200
+			"copper": 200,
+			"lutein": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 15,
@@ -1740,7 +1772,8 @@
 			"vitaminE": 5,
 			"phosphorus": 100,
 			"choline": 35,
-			"copper": 300
+			"copper": 300,
+			"lutein": 0
 		},
 		"carbQuality": {
 			"addedSugar": 0,
@@ -1777,7 +1810,8 @@
 			"transFat": 0,
 			"cholesterol": 20,
 			"choline": 55,
-			"copper": 250
+			"copper": 250,
+			"lutein": 0
 		},
 		"carbQuality": {
 			"addedSugar": 0,
@@ -1811,7 +1845,8 @@
 			"transFat": 0,
 			"cholesterol": 20,
 			"choline": 45,
-			"copper": 200
+			"copper": 200,
+			"lutein": 0
 		},
 		"carbQuality": {
 			"addedSugar": 0,
@@ -1845,7 +1880,8 @@
 			"transFat": 0,
 			"cholesterol": 17,
 			"choline": 40,
-			"copper": 180
+			"copper": 180,
+			"lutein": 0
 		},
 		"carbQuality": {
 			"addedSugar": 3,
@@ -1879,7 +1915,8 @@
 			"transFat": 0,
 			"cholesterol": 0,
 			"choline": 0,
-			"copper": 0
+			"copper": 0,
+			"lutein": 0
 		},
 		"carbQuality": {
 			"addedSugar": 0,
@@ -1913,7 +1950,8 @@
 			"transFat": 0,
 			"cholesterol": 5,
 			"choline": 25,
-			"copper": 150
+			"copper": 150,
+			"lutein": 0
 		},
 		"carbQuality": {
 			"addedSugar": 0,
@@ -1946,7 +1984,8 @@
 			"transFat": 0,
 			"cholesterol": 0,
 			"choline": 15,
-			"copper": 85
+			"copper": 85,
+			"lutein": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 14,
@@ -1980,7 +2019,8 @@
 			"transFat": 0,
 			"cholesterol": 0,
 			"choline": 30,
-			"copper": 170
+			"copper": 170,
+			"lutein": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 14,
@@ -2014,7 +2054,8 @@
 			"transFat": 0,
 			"cholesterol": 0,
 			"choline": 18,
-			"copper": 90
+			"copper": 90,
+			"lutein": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 69,
@@ -2048,7 +2089,8 @@
 			"transFat": 0,
 			"cholesterol": 0,
 			"choline": 20,
-			"copper": 100
+			"copper": 100,
+			"lutein": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 69,
@@ -2083,7 +2125,8 @@
 			"transFat": 0,
 			"cholesterol": 0,
 			"choline": 15,
-			"copper": 80
+			"copper": 80,
+			"lutein": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 54,
@@ -2118,7 +2161,8 @@
 			"transFat": 0,
 			"cholesterol": 0,
 			"choline": 25,
-			"copper": 150
+			"copper": 150,
+			"lutein": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 50,
@@ -2152,7 +2196,8 @@
 			"transFat": 0,
 			"cholesterol": 0,
 			"choline": 55,
-			"copper": 120
+			"copper": 120,
+			"lutein": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 75,
@@ -2183,7 +2228,8 @@
 			"transFat": 0,
 			"cholesterol": 0,
 			"choline": 75,
-			"copper": 160
+			"copper": 160,
+			"lutein": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 75,
@@ -2221,7 +2267,8 @@
 			"transFat": 3,
 			"cholesterol": 135,
 			"choline": 175,
-			"copper": 350
+			"copper": 350,
+			"lutein": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 50,
@@ -2255,7 +2302,8 @@
 			"transFat": 4.5,
 			"cholesterol": 200,
 			"choline": 240,
-			"copper": 480
+			"copper": 480,
+			"lutein": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 50,
@@ -2289,7 +2337,8 @@
 			"transFat": 3.8,
 			"cholesterol": 0,
 			"choline": 22,
-			"copper": 80
+			"copper": 80,
+			"lutein": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 55,
@@ -2323,7 +2372,8 @@
 			"transFat": 4.6,
 			"cholesterol": 0,
 			"choline": 22,
-			"copper": 80
+			"copper": 80,
+			"lutein": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 55,
@@ -2357,7 +2407,8 @@
 			"transFat": 3.8,
 			"cholesterol": 0,
 			"choline": 22,
-			"copper": 80
+			"copper": 80,
+			"lutein": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 55,
@@ -2391,7 +2442,8 @@
 			"transFat": 4.6,
 			"cholesterol": 0,
 			"choline": 22,
-			"copper": 80
+			"copper": 80,
+			"lutein": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 55,

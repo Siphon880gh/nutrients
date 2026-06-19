@@ -455,6 +455,26 @@
       "Mango"
     ]
   },
+  "lutein": {
+    "tooLow": [
+      "The body cannot synthesize lutein—it must come from diet or supplements.",
+      "Low lutein usually means little dark leafy green, yellow-orange produce, or egg yolk—reducing macular and brain carotenoid intake."
+    ],
+    "enough": [
+      "Lutein concentrates in the macula with zeaxanthin, filtering blue light and lowering retinal oxidative stress—supporting vision and lowering AMD and cataract risk.",
+      "It is the predominant carotenoid in brain tissue and is linked with learning, memory, and cognitive performance across the lifespan.",
+      "Antioxidant activity may help limit arterial plaque and protect skin from UV and blue light. As a fat-soluble carotenoid, pair with healthy fats for absorption."
+    ],
+    "foodSources": [
+      "Spinach & kale",
+      "Parsley & broccoli",
+      "Corn",
+      "Egg yolks",
+      "Cook greens in olive oil",
+      "Eggs with yolk intact",
+      "Yellow-orange vegetables"
+    ]
+  },
   "curcumin": {
     "tooLow": [
       "No essential deficiency—low curcumin simply means less turmeric in cooking and fewer curry-style anti-inflammatory phytochemicals.",

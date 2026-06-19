@@ -29,6 +29,7 @@
     polyphenols: 650,
     flavonoids: 400,
     carotenoids: 0,
+    lutein: 10,
     curcumin: 0,
     resveratrol: 0,
     coq10: 0,
