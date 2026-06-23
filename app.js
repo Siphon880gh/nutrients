@@ -2768,7 +2768,7 @@
     return (
       '<aside class="dashboard__longevity-processed-note dashboard__longevity-processed-note--section" role="note">' +
       '<p class="dashboard__longevity-processed-note-text">' +
-      "Adequate fiber is one of the strongest dietary levers for colorectal cancer prevention—population studies link each extra 10 g/day to about 10% lower risk, and diets rich in whole grains and legumes show roughly 15–20% lower risk than low-fiber patterns. Aim for 100%+ DV from beans, whole grains, vegetables, and fruit… " +
+      "Adequate fiber supports colon health—high intake lowers colorectal cancer risk (about 10% per extra 10 g/day) and helps prevent other common conditions like diverticulitis, constipation, and hemorrhoids. The opposite pattern—low fiber with frequent red meat—raises those risks. Aim for 100%+ DV from beans, whole grains, vegetables, and fruit… " +
       '<button type="button" class="dashboard__longevity-tip-link" data-action="open-fiber-colon-tip-modal">Read more</button>' +
       "</p>" +
       "</aside>"
@@ -4444,7 +4444,7 @@
     html += longevitySectionWrap(
       "Fiber & colon health",
       "sectionFiber",
-      '<p class="dashboard__longevity-note">Same fiber value as your micro entries—grouped here for colorectal cancer prevention.</p>' +
+      '<p class="dashboard__longevity-note">Same fiber value as your micro entries—grouped here for colon health and disease prevention.</p>' +
         fiberColonTipHtml(),
       longevityListOpen() +
         longevitySubgroupHtml("From your micro entries", "micro") +
