@@ -1,4 +1,11 @@
 {
+  "nad": {
+    "enough": [
+      "NAD is made from vitamin B3 forms: niacin, nicotinamide, and tryptophan* can feed into it. NR and NMN are NAD precursors too, just different entry points.",
+      "For most people, getting the normal daily amount of vitamin B3 is generally enough for basic NAD needs. High-dose NR or NMN for \"longevity\" is still an open question as of June 2026.",
+      "*Tryptophan: No, tryptophan is not a vitamin, but rather an essential amino acid. However, your body can use tryptophan as a building block to synthesize Vitamin B3 (known as niacin)."
+    ]
+  },
   "saturatedFat": {
     "tooHigh": [
       "Diets high in saturated fat tend to raise LDL cholesterol and are linked with higher cardiovascular risk when they displace unsaturated fats.",
@@ -835,11 +842,25 @@
       "Sodium is the main watch item—high % DV from processed and restaurant food raises stroke and kidney risk even when everything else looks fine."
     ]
   },
+  "sectionDerived": {
+    "enough": [
+      "Ratios summarize whether your fat pattern is inflammatory or protective—the omega-6 : omega-3 and saturated : unsaturated scores reflect heart and joint health risk over decades, not just today's numbers.",
+      "EPA + DHA combined captures the marine omega-3 dose most tied to lower triglycerides, steadier mood, and brain aging resilience.",
+      "Near-zero trans fat is a hard prevention target: even small amounts from fried and packaged foods raise LDL, lower HDL, and increase heart attack risk with no known safe level."
+    ]
+  },
   "sectionFiber": {
     "enough": [
       "Fiber from your micro entries is highlighted here because colon health is largely shaped by diet and screening—adequate fiber is one of the strongest levers you can track weekly.",
       "High fiber lowers colorectal cancer risk and helps prevent diverticulitis, constipation, and hemorrhoids; low fiber with frequent red meat pushes the other way.",
       "Aim for 100%+ DV (about 38 g/day for men, 25 g/day for women). Insoluble fiber shortens colon transit time; soluble fiber feeds gut bacteria that produce protective butyrate."
+    ]
+  },
+  "sectionBoneDensity": {
+    "enough": [
+      "Calcium, vitamin D, and magnesium work together to mineralize bone, maintain muscle strength, and support immune defense—reducing fracture and fall risk as you age.",
+      "Spread calcium through the day with enough vitamin D, magnesium, and weight-bearing activity for best lifelong bone outcomes; peak bone mass in youth and slowing loss after menopause both depend on this trio.",
+      "This balance matters most after 40, during menopause, with low sun exposure, or when family history includes osteoporosis."
     ]
   },
   "sectionMitochondrial": {
@@ -870,6 +891,13 @@
       "Improving this balance—more fatty fish and olive oil, less soybean and corn oil—is a practical anti-inflammatory strategy you can measure over weeks."
     ]
   },
+  "sectionGlutathione": {
+    "enough": [
+      "Glutathione is a tripeptide antioxidant your body makes from cysteine, glycine, and glutamate to help control oxidative stress, immune function, and detoxification.",
+      "This section repeats supporting nutrients instead of treating glutathione as a direct food target: vitamin C helps recycle glutathione; riboflavin supports glutathione reductase; selenium powers glutathione peroxidase; vitamin E works alongside the antioxidant network.",
+      "Sulfur-rich foods such as onions, garlic, broccoli, Brussels sprouts, cabbage, and other crucifers help supply the sulfur and Nrf2-supporting plant compounds that keep this system active. Protein-rich foods such as lean meats, poultry, eggs, legumes, and seeds supply amino acid building blocks."
+    ]
+  },
   "sectionCompounds": {
     "enough": [
       "Antioxidants, fat-soluble vitamins, and trace minerals here defend cells against oxidative damage, quiet chronic inflammation, and keep arteries and bones working correctly as you age.",
@@ -885,26 +913,12 @@
       "Watching added sugar and refined flour—not just total carbs—helps prevent the metabolic pattern behind many preventable midlife health problems."
     ]
   },
-  "sectionBoneDensity": {
-    "enough": [
-      "Calcium, vitamin D, and magnesium work together to mineralize bone, maintain muscle strength, and support immune defense—reducing fracture and fall risk as you age.",
-      "Spread calcium through the day with enough vitamin D, magnesium, and weight-bearing activity for best lifelong bone outcomes; peak bone mass in youth and slowing loss after menopause both depend on this trio.",
-      "This balance matters most after 40, during menopause, with low sun exposure, or when family history includes osteoporosis."
-    ]
-  },
   "sectionCalcification": {
     "enough": [
       "Phosphorus is required for life (ATP, DNA, bone), but when blood phosphate runs high—especially from cola, processed meats, and phosphate additives—the body lowers active vitamin D and shifts calcium away from bone.",
       "That high-phosphate imbalance can harden arteries (vascular calcification) while bones weaken—a double hit seen with heavy soda, fast food, and additive-heavy packaged foods even when calcium and vitamin D intake looks fine on paper.",
       "Whole-food phosphorus from meat, dairy, and legumes is rarely the problem; watch absorbable phosphate from additives. Kidney disease, heavy cola, and processed-meat diets need the closest attention.",
       "When blood phosphate stays high despite diet changes, clinicians sometimes prescribe mealtime calcium acetate or other binders—synthetic products because food cannot deliver binder-strength doses. That is a monitored treatment, not a substitute for cutting additive phosphate."
-    ]
-  },
-  "sectionDerived": {
-    "enough": [
-      "Ratios summarize whether your fat pattern is inflammatory or protective—the omega-6 : omega-3 and saturated : unsaturated scores reflect heart and joint health risk over decades, not just today's numbers.",
-      "EPA + DHA combined captures the marine omega-3 dose most tied to lower triglycerides, steadier mood, and brain aging resilience.",
-      "Near-zero trans fat is a hard prevention target: even small amounts from fried and packaged foods raise LDL, lower HDL, and increase heart attack risk with no known safe level."
     ]
   },
   "sectionTmao": {

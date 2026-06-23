@@ -1313,13 +1313,13 @@ button.dashboard__micro-day-name:focus-visible {
 }
 
 .dashboard__longevity-nav-track {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr) minmax(0, 1fr);
+  display: flex;
   gap: 0.45rem 0.65rem;
-  align-items: start;
+  align-items: stretch;
 }
 
 .dashboard__longevity-nav-adj {
+  flex: 1 1 0;
   display: flex;
   flex-direction: column;
   gap: 0.1rem;
@@ -1362,6 +1362,8 @@ button.dashboard__micro-day-name:focus-visible {
 
 .dashboard__longevity-nav-adj-title {
   display: block;
+  flex: 1;
+  min-height: 1.25em;
   font-weight: 600;
   color: #2d4a66;
   overflow: hidden;
@@ -1369,7 +1371,26 @@ button.dashboard__micro-day-name:focus-visible {
   white-space: nowrap;
 }
 
+.dashboard__longevity-nav-adj-title:empty::before {
+  content: "\00a0";
+}
+
+.dashboard__longevity-nav-adj[data-longevity-topic-color] {
+  border-color: color-mix(in srgb, var(--longevity-topic-color) 65%, #d8dde4);
+  background: color-mix(in srgb, var(--longevity-topic-color) 22%, #f8f9fb);
+}
+
+.dashboard__longevity-nav-adj[data-longevity-topic-color]:hover {
+  border-color: color-mix(in srgb, var(--longevity-topic-color) 75%, #b8c8d8);
+  background: color-mix(in srgb, var(--longevity-topic-color) 28%, #eef3f8);
+}
+
+.dashboard__longevity-nav-adj[data-longevity-topic-color] .dashboard__longevity-nav-adj-title {
+  color: var(--longevity-topic-color);
+}
+
 .dashboard__longevity-nav-current {
+  flex: 1 1 0;
   display: flex;
   flex-direction: column;
   gap: 0.12rem;
@@ -1391,10 +1412,25 @@ button.dashboard__micro-day-name:focus-visible {
 
 .dashboard__longevity-nav-current-title {
   display: block;
+  flex: 1;
+  min-height: 1.25em;
   font-size: 0.78rem;
   font-weight: 700;
   line-height: 1.25;
   color: #2a3a22;
+}
+
+.dashboard__longevity-nav-current[data-longevity-topic-color] {
+  border-color: color-mix(in srgb, var(--longevity-topic-color) 70%, #7a9e6a);
+  background: color-mix(in srgb, var(--longevity-topic-color) 24%, #f4f7f2);
+}
+
+.dashboard__longevity-nav-current[data-longevity-topic-color] .dashboard__longevity-nav-current-label {
+  color: color-mix(in srgb, var(--longevity-topic-color) 72%, #5a7a4a);
+}
+
+.dashboard__longevity-nav-current[data-longevity-topic-color] .dashboard__longevity-nav-current-title {
+  color: var(--longevity-topic-color);
 }
 
 .dashboard__longevity-nav-all-wrap {
@@ -1490,6 +1526,22 @@ button.dashboard__micro-day-name:focus-visible {
   background: #e8f0e4;
   color: #2a3a22;
   font-weight: 600;
+}
+
+.dashboard__longevity-nav-all-link[data-longevity-topic-color] {
+  border-left: 4px solid var(--longevity-topic-color);
+  padding-left: calc(0.45rem - 1px);
+  background: color-mix(in srgb, var(--longevity-topic-color) 8%, transparent);
+}
+
+.dashboard__longevity-nav-all-link[data-longevity-topic-color]:not(.dashboard__longevity-nav-all-link--active):not([aria-current="true"]) {
+  color: #444;
+}
+
+.dashboard__longevity-nav-all-link--active[data-longevity-topic-color],
+.dashboard__longevity-nav-all-link[aria-current="true"][data-longevity-topic-color] {
+  background: color-mix(in srgb, var(--longevity-topic-color) 18%, #e8f0e4);
+  color: var(--longevity-topic-color);
 }
 
 .dashboard__longevity-hint {
@@ -4203,7 +4255,7 @@ button.longevity-form__label-link:focus-visible {
 
 @media (max-width: 720px) {
   .dashboard__longevity-nav-track {
-    grid-template-columns: 1fr;
+    flex-direction: column;
     gap: 0.35rem;
   }
 

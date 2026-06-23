@@ -82,5 +82,17 @@
     ],
     "transFatMaxGPerDay": 0.5,
     "omega6To3IdealMax": 4
+  },
+  "longevityNavTopicColors": {
+    "sectionMitochondrial": "#6d5cad",
+    "sectionCellularAging": "#6d5cad",
+    "sectionFats": "#a67c00",
+    "sectionOmega": "#a67c00",
+    "sectionGlutathione": "#2a7d6e",
+    "sectionCompounds": "#2a7d6e",
+    "sectionCarb": "#3d6ea8",
+    "sectionGlycemic": "#3d6ea8",
+    "sectionCalcification": "#a8505a",
+    "sectionTmao": "#a8505a"
   }
 }

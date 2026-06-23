@@ -294,8 +294,10 @@
   };
 
   var LONGEVITY_SECTION_DEFS = {
+    nad: { label: "NAD" },
     sectionFats: { label: "Fats & cholesterol" },
     sectionOmega: { label: "Omega fatty acids" },
+    sectionGlutathione: { label: "Glutathione support" },
     sectionCompounds: { label: "Longevity & inflammation compounds" },
     sectionCarb: { label: "Carb quality & glycemic" },
     sectionMicronutrients: { label: "Micronutrients from food" },
@@ -395,6 +397,7 @@
   var LONGEVITY_GROUPS = [
     { id: "fats", label: "Fats & cholesterol", sectionDefKey: "sectionFats" },
     { id: "omega", label: "Omega fatty acids", sectionDefKey: "sectionOmega" },
+    { id: "glutathione", label: "Glutathione support", sectionDefKey: "sectionGlutathione" },
     {
       id: "compounds",
       label: "Longevity & inflammation compounds",
@@ -405,7 +408,9 @@
 
   var LONGEVITY_NAV_SECTIONS = [
     { label: "Micronutrients from food", sectionDefKey: "sectionMicronutrients" },
+    { label: "Derived scores", sectionDefKey: "sectionDerived" },
     { label: "Fiber & colon health", sectionDefKey: "sectionFiber" },
+    { label: "Bone density", sectionDefKey: "sectionBoneDensity" },
     {
       label: "Mitochondrial health & cellular energy",
       sectionDefKey: "sectionMitochondrial",
@@ -419,10 +424,8 @@
     )
     .concat([
       { label: "Glycemic load & GI distribution", sectionDefKey: "sectionGlycemic" },
-      { label: "Bone density", sectionDefKey: "sectionBoneDensity" },
       { label: "Calcification & vascular balance", sectionDefKey: "sectionCalcification" },
       { label: "TMAO balance", sectionDefKey: "sectionTmao" },
-      { label: "Derived scores", sectionDefKey: "sectionDerived" },
     ]);
 
   var LONGEVITY_BONE_FROM_MICRO = [
@@ -457,6 +460,19 @@
     { key: "curcumin", label: "Curcumin", limiting: false },
     { key: "epa", label: "EPA", limiting: false },
     { key: "dha", label: "DHA", limiting: false },
+  ];
+
+  var LONGEVITY_GLUTATHIONE_FROM_MICRO = [
+    { microKey: "vitaminC", label: "Vitamin C", limiting: false },
+    { microKey: "riboflavin", label: "Riboflavin (B2)", limiting: false },
+    { microKey: "vitaminB6", label: "Vitamin B6", limiting: false },
+  ];
+
+  var LONGEVITY_GLUTATHIONE_FROM_LONGEVITY = [
+    { key: "selenium", label: "Selenium", limiting: false },
+    { key: "vitaminE", label: "Vitamin E", limiting: false },
+    { key: "sulforaphane", label: "Sulforaphane", limiting: false },
+    { key: "polyphenols", label: "Polyphenols", limiting: false },
   ];
 
   var LONGEVITY_CALCIFICATION_FIELD_KEYS = ["phosphorus"];
@@ -3715,6 +3731,7 @@
   };
 
   var longevityDvStatus = DEFAULT_LONGEVITY_STATUS;
+  var longevityNavTopicColors = {};
 
   function normalizeTierArray(rawTiers, fallbackTiers) {
     if (!rawTiers) return fallbackTiers.slice();
@@ -3787,6 +3804,48 @@
     return { tiers: tiers };
   }
 
+  function normalizeLongevityNavTopicColors(raw) {
+    if (!raw || typeof raw !== "object") return {};
+    var out = {};
+    Object.keys(raw).forEach(function (key) {
+      var color = raw[key];
+      if (typeof color === "string" && /^#[0-9a-fA-F]{3,8}$/.test(color.trim())) {
+        out[key] = color.trim();
+      }
+    });
+    return out;
+  }
+
+  function longevityNavTopicColor(sectionDefKey) {
+    if (!sectionDefKey) return null;
+    return longevityNavTopicColors[sectionDefKey] || null;
+  }
+
+  function applyLongevityNavTopicColor(el, sectionDefKey) {
+    if (!el) return;
+    var color = longevityNavTopicColor(sectionDefKey);
+    if (color) {
+      el.setAttribute("data-longevity-topic-color", "");
+      el.style.setProperty("--longevity-topic-color", color);
+    } else {
+      el.removeAttribute("data-longevity-topic-color");
+      el.style.removeProperty("--longevity-topic-color");
+    }
+  }
+
+  function refreshLongevityNavTopicColors() {
+    if (dashboardLongevityNavAllListEl) {
+      dashboardLongevityNavAllListEl
+        .querySelectorAll(".dashboard__longevity-nav-all-link")
+        .forEach(function (link) {
+          applyLongevityNavTopicColor(link, link.getAttribute("data-longevity-nav-key"));
+        });
+    }
+    if (longevityPanelOpen) {
+      updateLongevityNavUi(longevityNavActiveIndex);
+    }
+  }
+
   function loadAppConfig(done) {
     fetch("config.json")
       .then(function (res) {
@@ -3798,11 +3857,16 @@
         if (data.longevityStatus) {
           longevityDvStatus = normalizeLongevityStatus(data.longevityStatus);
         }
+        longevityNavTopicColors = normalizeLongevityNavTopicColors(
+          data.longevityNavTopicColors
+        );
+        refreshLongevityNavTopicColors();
         done();
       })
       .catch(function () {
         microDvStatus = DEFAULT_MICRO_DV_STATUS;
         longevityDvStatus = DEFAULT_LONGEVITY_STATUS;
+        longevityNavTopicColors = {};
         done();
       });
   }
@@ -4520,6 +4584,66 @@
         longevityListClose()
     );
 
+    var o6o3 = derived.omega6To3;
+    var o6o3Text = o6o3 == null || isNaN(o6o3) ? "—" : fmtNum(o6o3) + ":1";
+    var o6o3Note =
+      o6o3 != null && o6o3 <= longevityDvStatus.omega6To3IdealMax
+        ? "≤ " + longevityDvStatus.omega6To3IdealMax + " ideal"
+        : "—";
+    var satUnsat = derived.satToUnsat;
+    var transOk = derived.transFatG <= longevityDvStatus.transFatMaxGPerDay;
+    var transPct = avgDailyLongevityPct("transFat", weekLongevity.transFat || 0);
+
+    html += longevitySectionWrap(
+      "Derived scores",
+      "sectionDerived",
+      '<p class="dashboard__longevity-note">Ratios and combined scores—easier to scan than raw grams alone.</p>',
+      longevityListOpen() +
+        longevitySubgroupHtml("Watch — lower is better", "limit") +
+        longevityRowHtml(
+          "Omega-6 : Omega-3",
+          o6o3Note,
+          o6o3Text,
+          null,
+          "dashboard__longevity-row--computed",
+          true,
+          "omega6To3",
+          false
+        ) +
+        longevityRowHtml(
+          "Saturated : unsaturated",
+          satUnsat == null ? "—" : "ratio",
+          satUnsat == null || isNaN(satUnsat) ? "—" : fmtNum(satUnsat) + ":1",
+          null,
+          "dashboard__longevity-row--computed",
+          true,
+          "satToUnsat",
+          false
+        ) +
+        longevityRowHtml(
+          "Trans fat",
+          derived.transFatG > 0 ? fmtNum(derived.transFatG) + " g" : "none logged",
+          transOk ? "near zero ✓" : "elevated",
+          transPct != null && !isNaN(transPct) ? transPct : transOk ? 25 : 110,
+          "dashboard__longevity-row--computed",
+          true,
+          "transFat",
+          false
+        ) +
+        longevitySubgroupHtml("Aim — higher is better", "aim") +
+        longevityRowHtml(
+          "EPA + DHA",
+          derived.epaPlusDha > 0 ? fmtNum(derived.epaPlusDha) + " g" : "—",
+          derived.epaPlusDha > 0 ? "combined" : "—",
+          null,
+          "dashboard__longevity-row--computed",
+          false,
+          "epaPlusDha",
+          false
+        ) +
+        longevityListClose()
+    );
+
     html += longevitySectionWrap(
       "Fiber & colon health",
       "sectionFiber",
@@ -4532,9 +4656,26 @@
     );
 
     html += longevitySectionWrap(
+      "Bone density",
+      "sectionBoneDensity",
+      '<p class="dashboard__longevity-note">Same calcium, magnesium, and vitamin D values as your micro entries—grouped here for fracture and osteoporosis prevention.</p>',
+      longevityListOpen() +
+        longevitySubgroupHtml("From your micro entries", "micro") +
+        LONGEVITY_BONE_FROM_MICRO.map(function (item) {
+          return longevityRowFromMicroKey(
+            item.microKey,
+            item.label,
+            !!item.limiting,
+            weekMicro
+          );
+        }).join("") +
+        longevityListClose()
+    );
+
+    html += longevitySectionWrap(
       "Mitochondrial health & cellular energy",
       "sectionMitochondrial",
-      '<p class="dashboard__longevity-note">B vitamins build NAD and related cofactors (FAD, coenzyme A); magnesium and iron support ATP production; CoQ10 (is also a nutrient) carries electrons in mitochondria. These repeat values from your micro and longevity entries so you can spot gaps in cellular fuel—not just general % DV.</p>',
+      '<p class="dashboard__longevity-note">B vitamins build <button type="button" class="dashboard__longevity-tip-link" data-longevity-def="nad" aria-haspopup="dialog">NAD</button> and related cofactors (FAD, coenzyme A); magnesium and iron support ATP production; CoQ10 (is also a nutrient) carries electrons in mitochondria. These repeat values from your micro and longevity entries so you can spot gaps in cellular fuel—not just general % DV.</p>',
       longevityListOpen() +
         longevitySubgroupHtml("From your micro entries", "micro") +
         LONGEVITY_MITO_FROM_MICRO.map(function (item) {
@@ -4579,6 +4720,31 @@
     );
 
     LONGEVITY_GROUPS.forEach(function (group) {
+      if (group.id === "glutathione") {
+        html += longevitySectionWrap(
+          "Glutathione support",
+          "sectionGlutathione",
+          '<p class="dashboard__longevity-note">Glutathione is a tripeptide antioxidant your body makes from cysteine, glycine, and glutamate. This section repeats supporting nutrients that help supply precursors, recycle glutathione, and activate glutathione-related enzymes involved in oxidative stress defense, immune function, and detoxification.</p>',
+          longevityListOpen() +
+            longevitySubgroupHtml("From your micro entries", "micro") +
+            LONGEVITY_GLUTATHIONE_FROM_MICRO.map(function (item) {
+              return longevityRowFromMicroKey(
+                item.microKey,
+                item.label,
+                !!item.limiting,
+                weekMicro
+              );
+            }).join("") +
+            longevitySubgroupHtml("From your longevity entries", "compounds") +
+            LONGEVITY_GLUTATHIONE_FROM_LONGEVITY.map(function (item) {
+              var field = longevityFieldByKey(item.key);
+              if (!field) return "";
+              return longevityRowFromLongevityField(field, weekLongevity);
+            }).join("") +
+            longevityListClose()
+        );
+        return;
+      }
       var groupFields = LONGEVITY_FIELDS.filter(function (field) {
         return field.group === group.id;
       });
@@ -4628,23 +4794,6 @@
         })() +
         longevityListClose() +
         renderLongevityGiBuckets(derived.giBuckets)
-    );
-
-    html += longevitySectionWrap(
-      "Bone density",
-      "sectionBoneDensity",
-      '<p class="dashboard__longevity-note">Same calcium, magnesium, and vitamin D values as your micro entries—grouped here for fracture and osteoporosis prevention.</p>',
-      longevityListOpen() +
-        longevitySubgroupHtml("From your micro entries", "micro") +
-        LONGEVITY_BONE_FROM_MICRO.map(function (item) {
-          return longevityRowFromMicroKey(
-            item.microKey,
-            item.label,
-            !!item.limiting,
-            weekMicro
-          );
-        }).join("") +
-        longevityListClose()
     );
 
     html += longevitySectionWrap(
@@ -4720,66 +4869,6 @@
         longevityListClose()
     );
 
-    var o6o3 = derived.omega6To3;
-    var o6o3Text = o6o3 == null || isNaN(o6o3) ? "—" : fmtNum(o6o3) + ":1";
-    var o6o3Note =
-      o6o3 != null && o6o3 <= longevityDvStatus.omega6To3IdealMax
-        ? "≤ " + longevityDvStatus.omega6To3IdealMax + " ideal"
-        : "—";
-    var satUnsat = derived.satToUnsat;
-    var transOk = derived.transFatG <= longevityDvStatus.transFatMaxGPerDay;
-    var transPct = avgDailyLongevityPct("transFat", weekLongevity.transFat || 0);
-
-    html += longevitySectionWrap(
-      "Derived scores",
-      "sectionDerived",
-      '<p class="dashboard__longevity-note">Ratios and combined scores—easier to scan than raw grams alone.</p>',
-      longevityListOpen() +
-        longevitySubgroupHtml("Watch — lower is better", "limit") +
-        longevityRowHtml(
-          "Omega-6 : Omega-3",
-          o6o3Note,
-          o6o3Text,
-          null,
-          "dashboard__longevity-row--computed",
-          true,
-          "omega6To3",
-          false
-        ) +
-        longevityRowHtml(
-          "Saturated : unsaturated",
-          satUnsat == null ? "—" : "ratio",
-          satUnsat == null || isNaN(satUnsat) ? "—" : fmtNum(satUnsat) + ":1",
-          null,
-          "dashboard__longevity-row--computed",
-          true,
-          "satToUnsat",
-          false
-        ) +
-        longevityRowHtml(
-          "Trans fat",
-          derived.transFatG > 0 ? fmtNum(derived.transFatG) + " g" : "none logged",
-          transOk ? "near zero ✓" : "elevated",
-          transPct != null && !isNaN(transPct) ? transPct : transOk ? 25 : 110,
-          "dashboard__longevity-row--computed",
-          true,
-          "transFat",
-          false
-        ) +
-        longevitySubgroupHtml("Aim — higher is better", "aim") +
-        longevityRowHtml(
-          "EPA + DHA",
-          derived.epaPlusDha > 0 ? fmtNum(derived.epaPlusDha) + " g" : "—",
-          derived.epaPlusDha > 0 ? "combined" : "—",
-          null,
-          "dashboard__longevity-row--computed",
-          false,
-          "epaPlusDha",
-          false
-        ) +
-        longevityListClose()
-    );
-
     dashboardLongevityContentEl.innerHTML = html;
     syncLongevityNav(true);
   }
@@ -4815,6 +4904,11 @@
         "</button></li>"
       );
     }).join("");
+    dashboardLongevityNavAllListEl
+      .querySelectorAll(".dashboard__longevity-nav-all-link")
+      .forEach(function (link) {
+        applyLongevityNavTopicColor(link, link.getAttribute("data-longevity-nav-key"));
+      });
     longevityNavListBuilt = true;
   }
 
@@ -4881,6 +4975,10 @@
 
     if (dashboardLongevityNavCurrentTitleEl) {
       dashboardLongevityNavCurrentTitleEl.textContent = current.label;
+      applyLongevityNavTopicColor(
+        dashboardLongevityNavCurrentTitleEl.parentElement,
+        current.sectionDefKey
+      );
     }
 
     if (dashboardLongevityNavPrevEl && dashboardLongevityNavPrevTitleEl) {
@@ -4900,6 +4998,10 @@
         dashboardLongevityNavPrevEl.removeAttribute("data-longevity-nav-key");
         dashboardLongevityNavPrevEl.removeAttribute("data-longevity-nav-index");
       }
+      applyLongevityNavTopicColor(
+        dashboardLongevityNavPrevEl,
+        prev ? prev.sectionDefKey : null
+      );
     }
 
     if (dashboardLongevityNavNextEl && dashboardLongevityNavNextTitleEl) {
@@ -4919,6 +5021,10 @@
         dashboardLongevityNavNextEl.removeAttribute("data-longevity-nav-key");
         dashboardLongevityNavNextEl.removeAttribute("data-longevity-nav-index");
       }
+      applyLongevityNavTopicColor(
+        dashboardLongevityNavNextEl,
+        next ? next.sectionDefKey : null
+      );
     }
 
     if (dashboardLongevityNavAllListEl) {
@@ -4926,6 +5032,7 @@
         ".dashboard__longevity-nav-all-link"
       );
       links.forEach(function (link, linkIndex) {
+        applyLongevityNavTopicColor(link, link.getAttribute("data-longevity-nav-key"));
         link.classList.toggle(
           "dashboard__longevity-nav-all-link--active",
           linkIndex === index
@@ -6315,7 +6422,9 @@
   function initLongevityForm() {
     if (!longevityFormEl) return;
 
-    longevityFormEl.innerHTML = LONGEVITY_GROUPS.map(function (group) {
+    longevityFormEl.innerHTML = LONGEVITY_GROUPS.filter(function (group) {
+      return group.id !== "glutathione";
+    }).map(function (group) {
       var fields = LONGEVITY_FIELDS.filter(function (f) {
         return f.group === group.id;
       });
@@ -7650,7 +7759,6 @@
 
   initMicroForm();
   initLongevityForm();
-  initLongevityNav();
 
   if (addKeywordBtn) {
     addKeywordBtn.addEventListener("click", addKeyword);
@@ -8465,6 +8573,7 @@
     renderDemographicUi();
     syncSettingsTdeeInput();
     renderKeywords();
+    initLongevityNav();
     refreshAll();
     maybeShowStarterGuideImportStep();
   }
