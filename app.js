@@ -124,6 +124,8 @@
   var tmaoProtectorsTipModalDoneBtn = document.getElementById(
     "tmao-protectors-tip-modal-done"
   );
+  var fiberColonTipModalEl = document.getElementById("fiber-colon-tip-modal");
+  var fiberColonTipModalDoneBtn = document.getElementById("fiber-colon-tip-modal-done");
   var settingsOpenBtn = document.getElementById("settings-open");
   var settingsModalEl = document.getElementById("settings-modal");
   var settingsModalDoneBtn = document.getElementById("settings-modal-done");
@@ -294,6 +296,7 @@
     sectionCompounds: { label: "Longevity & inflammation compounds" },
     sectionCarb: { label: "Carb quality & glycemic" },
     sectionMicronutrients: { label: "Micronutrients from food" },
+    sectionFiber: { label: "Fiber & colon health" },
     sectionBoneDensity: { label: "Bone density" },
     sectionCalcification: { label: "Calcification & vascular balance" },
     sectionDerived: { label: "Derived scores" },
@@ -370,6 +373,7 @@
 
   var LONGEVITY_NAV_SECTIONS = [
     { label: "Micronutrients from food", sectionDefKey: "sectionMicronutrients" },
+    { label: "Fiber & colon health", sectionDefKey: "sectionFiber" },
   ]
     .concat(
       LONGEVITY_GROUPS.map(function (group) {
@@ -377,11 +381,11 @@
       })
     )
     .concat([
+      { label: "Glycemic load & GI distribution", sectionDefKey: "sectionGlycemic" },
       { label: "Bone density", sectionDefKey: "sectionBoneDensity" },
       { label: "Calcification & vascular balance", sectionDefKey: "sectionCalcification" },
       { label: "TMAO balance", sectionDefKey: "sectionTmao" },
       { label: "Derived scores", sectionDefKey: "sectionDerived" },
-      { label: "Glycemic load & GI distribution", sectionDefKey: "sectionGlycemic" },
     ]);
 
   var LONGEVITY_BONE_FROM_MICRO = [
@@ -1862,6 +1866,9 @@
     if (tmaoProtectorsTipModalEl && !tmaoProtectorsTipModalEl.hidden) {
       closeTmaoProtectorsTipModal();
     }
+    if (fiberColonTipModalEl && !fiberColonTipModalEl.hidden) {
+      closeFiberColonTipModal();
+    }
     if (activeMicroId) {
       saveMicrosFromForm();
       closeMicroModal();
@@ -2553,6 +2560,9 @@
     if (tmaoProtectorsTipModalEl && !tmaoProtectorsTipModalEl.hidden) {
       closeTmaoProtectorsTipModal();
     }
+    if (fiberColonTipModalEl && !fiberColonTipModalEl.hidden) {
+      closeFiberColonTipModal();
+    }
     if (activeMicroId) {
       saveMicrosFromForm();
       closeMicroModal();
@@ -2592,6 +2602,9 @@
     if (tmaoProtectorsTipModalEl && !tmaoProtectorsTipModalEl.hidden) {
       closeTmaoProtectorsTipModal();
     }
+    if (fiberColonTipModalEl && !fiberColonTipModalEl.hidden) {
+      closeFiberColonTipModal();
+    }
     if (activeMicroId) {
       saveMicrosFromForm();
       closeMicroModal();
@@ -2628,6 +2641,9 @@
     if (caffeineTipModalEl && !caffeineTipModalEl.hidden) closeCaffeineTipModal();
     if (tmaoProtectorsTipModalEl && !tmaoProtectorsTipModalEl.hidden) {
       closeTmaoProtectorsTipModal();
+    }
+    if (fiberColonTipModalEl && !fiberColonTipModalEl.hidden) {
+      closeFiberColonTipModal();
     }
     if (activeMicroId) {
       saveMicrosFromForm();
@@ -2686,6 +2702,46 @@
     updateBodyModalOpen();
   }
 
+  function openFiberColonTipModal() {
+    if (!fiberColonTipModalEl) return;
+
+    if (activeImportId) closeImportModal();
+    if (importAllModalEl && !importAllModalEl.hidden) closeImportAllModal();
+    if (importAllMealsModalEl && !importAllMealsModalEl.hidden) {
+      closeImportAllMealsModal();
+    }
+    if (microGapsModalEl && !microGapsModalEl.hidden) closeMicroGapsModal();
+    if (microDefModalEl && !microDefModalEl.hidden) closeMicroDefModal();
+    if (phosphorusBinderModalEl && !phosphorusBinderModalEl.hidden) {
+      closePhosphorusBinderModal();
+    }
+    if (caffeineTipModalEl && !caffeineTipModalEl.hidden) closeCaffeineTipModal();
+    if (fatsCholesterolTipModalEl && !fatsCholesterolTipModalEl.hidden) {
+      closeFatsCholesterolTipModal();
+    }
+    if (tmaoProtectorsTipModalEl && !tmaoProtectorsTipModalEl.hidden) {
+      closeTmaoProtectorsTipModal();
+    }
+    if (activeMicroId) {
+      saveMicrosFromForm();
+      closeMicroModal();
+    }
+    if (activeLongevityId) {
+      saveLongevityFromForm();
+      closeLongevityModal();
+    }
+
+    fiberColonTipModalEl.hidden = false;
+    updateBodyModalOpen();
+    if (fiberColonTipModalDoneBtn) fiberColonTipModalDoneBtn.focus();
+  }
+
+  function closeFiberColonTipModal() {
+    if (!fiberColonTipModalEl) return;
+    fiberColonTipModalEl.hidden = true;
+    updateBodyModalOpen();
+  }
+
   function fatsCholesterolTipHtml() {
     return (
       '<aside class="dashboard__longevity-processed-note dashboard__longevity-processed-note--section" role="note">' +
@@ -2703,6 +2759,17 @@
       '<p class="dashboard__longevity-processed-note-text">' +
       "<strong>TMAO protectors</strong> lower the gut-and-liver compound tied to atherosclerosis through what you eat—not only by cutting choline, carnitine, and betaine. No single protector does it all—olive-oil DMB and raw garlic block the bacterial enzyme; fiber, polyphenols, flavonoids, and resveratrol reshape the microbiome; vitamin D, B vitamins, and fish oil help the body clear TMAO. All matter alongside eating less carnitine-rich red meat… " +
       '<button type="button" class="dashboard__longevity-tip-link" data-action="open-tmao-protectors-tip-modal">Read more</button>' +
+      "</p>" +
+      "</aside>"
+    );
+  }
+
+  function fiberColonTipHtml() {
+    return (
+      '<aside class="dashboard__longevity-processed-note dashboard__longevity-processed-note--section" role="note">' +
+      '<p class="dashboard__longevity-processed-note-text">' +
+      "Adequate fiber is one of the strongest dietary levers for colorectal cancer prevention—population studies link each extra 10 g/day to about 10% lower risk, and diets rich in whole grains and legumes show roughly 15–20% lower risk than low-fiber patterns. Aim for 100%+ DV from beans, whole grains, vegetables, and fruit… " +
+      '<button type="button" class="dashboard__longevity-tip-link" data-action="open-fiber-colon-tip-modal">Read more</button>' +
       "</p>" +
       "</aside>"
     );
@@ -2739,6 +2806,9 @@
     }
     if (tmaoProtectorsTipModalEl && !tmaoProtectorsTipModalEl.hidden) {
       closeTmaoProtectorsTipModal();
+    }
+    if (fiberColonTipModalEl && !fiberColonTipModalEl.hidden) {
+      closeFiberColonTipModal();
     }
     if (activeMicroId) {
       saveMicrosFromForm();
@@ -2788,6 +2858,9 @@
     if (tmaoProtectorsTipModalEl && !tmaoProtectorsTipModalEl.hidden) {
       closeTmaoProtectorsTipModal();
     }
+    if (fiberColonTipModalEl && !fiberColonTipModalEl.hidden) {
+      closeFiberColonTipModal();
+    }
     if (activeMicroId) {
       saveMicrosFromForm();
       closeMicroModal();
@@ -2832,6 +2905,9 @@
     }
     if (tmaoProtectorsTipModalEl && !tmaoProtectorsTipModalEl.hidden) {
       closeTmaoProtectorsTipModal();
+    }
+    if (fiberColonTipModalEl && !fiberColonTipModalEl.hidden) {
+      closeFiberColonTipModal();
     }
     if (activeMicroId) {
       saveMicrosFromForm();
@@ -2907,6 +2983,7 @@
       (caffeineTipModalEl && !caffeineTipModalEl.hidden) ||
       (fatsCholesterolTipModalEl && !fatsCholesterolTipModalEl.hidden) ||
       (tmaoProtectorsTipModalEl && !tmaoProtectorsTipModalEl.hidden) ||
+      (fiberColonTipModalEl && !fiberColonTipModalEl.hidden) ||
       (settingsModalEl && !settingsModalEl.hidden) ||
       (tdeeCalculatorModalEl && !tdeeCalculatorModalEl.hidden) ||
       (tdeeHintModalEl && !tdeeHintModalEl.hidden) ||
@@ -4364,6 +4441,17 @@
         longevityListClose()
     );
 
+    html += longevitySectionWrap(
+      "Fiber & colon health",
+      "sectionFiber",
+      '<p class="dashboard__longevity-note">Same fiber value as your micro entries—grouped here for colorectal cancer prevention.</p>' +
+        fiberColonTipHtml(),
+      longevityListOpen() +
+        longevitySubgroupHtml("From your micro entries", "micro") +
+        longevityRowFromMicroKey("fiber", "Fiber", false, weekMicro) +
+        longevityListClose()
+    );
+
     LONGEVITY_GROUPS.forEach(function (group) {
       var groupFields = LONGEVITY_FIELDS.filter(function (field) {
         return field.group === group.id;
@@ -4385,6 +4473,36 @@
       var noteHtml = group.id === "fats" ? fatsCholesterolTipHtml() : "";
       html += longevitySectionWrap(group.label, group.sectionDefKey, noteHtml, body);
     });
+
+    html += longevitySectionWrap(
+      "Glycemic load & GI distribution",
+      "sectionGlycemic",
+      '<p class="dashboard__longevity-note">GL = GI × carbs per serving ÷ 100 — a meal-impact score, not blood glucose or a vitamin % DV.</p>',
+      longevityGlycemicListOpen() +
+        longevitySubgroupHtml("Watch — lower glycemic load is better", "limit") +
+        (function () {
+          var glMax = longevityDvStatus.glycemicLoadMaxPerDay;
+          var gl = derived.weekGl;
+          var glPct = gl > 0 && glMax > 0 ? (gl / glMax) * 100 : null;
+          return longevityRowHtml(
+            "Avg daily glycemic load",
+            gl > 0 ? fmtNum(gl) + " GL" : "—",
+            glPct == null || isNaN(glPct)
+              ? "—"
+              : fmtNum(glPct) + "% of " + fmtNum(glMax),
+            glPct,
+            "dashboard__longevity-row--computed",
+            true,
+            "glycemicLoad",
+            false,
+            glycemicLoadTargetPctHtml(glPct, glMax),
+            "glycemicLoad",
+            "glycemicLoad"
+          );
+        })() +
+        longevityListClose() +
+        renderLongevityGiBuckets(derived.giBuckets)
+    );
 
     html += longevitySectionWrap(
       "Bone density",
@@ -4534,36 +4652,6 @@
           false
         ) +
         longevityListClose()
-    );
-
-    html += longevitySectionWrap(
-      "Glycemic load & GI distribution",
-      "sectionGlycemic",
-      '<p class="dashboard__longevity-note">GL = GI × carbs per serving ÷ 100 — a meal-impact score, not blood glucose or a vitamin % DV.</p>',
-      longevityGlycemicListOpen() +
-        longevitySubgroupHtml("Watch — lower glycemic load is better", "limit") +
-        (function () {
-          var glMax = longevityDvStatus.glycemicLoadMaxPerDay;
-          var gl = derived.weekGl;
-          var glPct = gl > 0 && glMax > 0 ? (gl / glMax) * 100 : null;
-          return longevityRowHtml(
-            "Avg daily glycemic load",
-            gl > 0 ? fmtNum(gl) + " GL" : "—",
-            glPct == null || isNaN(glPct)
-              ? "—"
-              : fmtNum(glPct) + "% of " + fmtNum(glMax),
-            glPct,
-            "dashboard__longevity-row--computed",
-            true,
-            "glycemicLoad",
-            false,
-            glycemicLoadTargetPctHtml(glPct, glMax),
-            "glycemicLoad",
-            "glycemicLoad"
-          );
-        })() +
-        longevityListClose() +
-        renderLongevityGiBuckets(derived.giBuckets)
     );
 
     dashboardLongevityContentEl.innerHTML = html;
@@ -7760,6 +7848,10 @@
         openTmaoProtectorsTipModal();
         return;
       }
+      if (e.target.closest('[data-action="open-fiber-colon-tip-modal"]')) {
+        openFiberColonTipModal();
+        return;
+      }
       var longevitySourcesBtn = e.target.closest("[data-longevity-sources]");
       if (longevitySourcesBtn) {
         e.preventDefault();
@@ -7907,6 +7999,18 @@
     tmaoProtectorsTipModalEl.addEventListener("click", function (e) {
       if (e.target.closest('[data-action="close-tmao-protectors-tip-modal"]')) {
         closeTmaoProtectorsTipModal();
+      }
+    });
+  }
+
+  if (fiberColonTipModalDoneBtn) {
+    fiberColonTipModalDoneBtn.addEventListener("click", closeFiberColonTipModal);
+  }
+
+  if (fiberColonTipModalEl) {
+    fiberColonTipModalEl.addEventListener("click", function (e) {
+      if (e.target.closest('[data-action="close-fiber-colon-tip-modal"]')) {
+        closeFiberColonTipModal();
       }
     });
   }

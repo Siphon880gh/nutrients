@@ -799,6 +799,13 @@
       "Sodium is the main watch item—high % DV from processed and restaurant food raises stroke and kidney risk even when everything else looks fine."
     ]
   },
+  "sectionFiber": {
+    "enough": [
+      "Fiber from your micro entries is highlighted here because colorectal cancer is largely preventable with diet and screening—adequate fiber is one of the strongest levers you can track weekly.",
+      "Population studies link each extra 10 g/day of fiber to about 10% lower colorectal cancer risk; whole grains, beans, vegetables, and fruit are the foods that move your % DV.",
+      "Aim for 100%+ DV (about 38 g/day for men, 25 g/day for women). Insoluble fiber shortens colon transit time; soluble fiber feeds gut bacteria that produce protective butyrate."
+    ]
+  },
   "sectionFats": {
     "enough": [
       "The type of fat you eat shapes LDL and HDL cholesterol, artery inflammation, and long-term heart attack and stroke risk more than total fat alone.",
