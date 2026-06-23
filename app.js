@@ -14,6 +14,7 @@
   var STORAGE_KEY_TDEE = "nutrients-tdee";
   var STORAGE_KEY_DAYS = "nutrients-day-notes";
   var STORAGE_KEY_DAY_EDITOR_HEIGHT = "nutrients-day-editor-height";
+  var STORAGE_KEY_DAY_HIGHLIGHTS = "nutrients-day-highlights";
   var STORAGE_KEY_REORDER = "nutrients-keywords-reorder-open";
   var STORAGE_KEY_CALORIES = "nutrients-keywords-calories-open";
   var demographicDv =
@@ -220,6 +221,7 @@
   var importAllMealsCancelBtn = document.getElementById("import-all-meals-cancel");
   var exportAllMealsBtn = document.getElementById("export-all-meals");
   var importAllMealsBtn = document.getElementById("import-all-meals");
+  var dayHighlightsToggleBtn = document.getElementById("day-highlights-toggle");
   var activeMicroId = null;
   var activeImportId = null;
   var activeImportIndex = -1;
@@ -239,6 +241,7 @@
   var tdeeCalcHeightUnit = "ft";
   var tdeeCalcResistanceMode = "days";
   var tdeeCalcLastResult = null;
+  var dayHighlightsEnabled = true;
   var dashboardMacroPctView = false;
   var weekTotalOpen = false;
   var microRequirementsOpen = false;
@@ -6126,6 +6129,12 @@
     var backdrop = editor.querySelector(".day__backdrop");
     if (!backdrop) return;
 
+    if (!dayHighlightsEnabled) {
+      backdrop.textContent = textarea.value;
+      syncScroll(textarea, backdrop);
+      return;
+    }
+
     var regex = buildHighlightRegex(keywordNames());
     backdrop.innerHTML = highlightedHtml(textarea.value, regex);
     syncScroll(textarea, backdrop);
@@ -6910,6 +6919,54 @@
     } catch (e) {
       /* ignore */
     }
+  }
+
+  function saveDayHighlightsPreference() {
+    try {
+      localStorage.setItem(
+        STORAGE_KEY_DAY_HIGHLIGHTS,
+        dayHighlightsEnabled ? "on" : "off"
+      );
+    } catch (e) {
+      /* ignore */
+    }
+  }
+
+  function loadDayHighlightsPreference() {
+    try {
+      dayHighlightsEnabled =
+        localStorage.getItem(STORAGE_KEY_DAY_HIGHLIGHTS) !== "off";
+    } catch (e) {
+      dayHighlightsEnabled = true;
+    }
+  }
+
+  function syncDayHighlightsToggleUi() {
+    if (!dayHighlightsToggleBtn) return;
+    dayHighlightsToggleBtn.classList.toggle(
+      "week__highlight-toggle--off",
+      !dayHighlightsEnabled
+    );
+    dayHighlightsToggleBtn.setAttribute(
+      "aria-pressed",
+      dayHighlightsEnabled ? "true" : "false"
+    );
+    dayHighlightsToggleBtn.setAttribute(
+      "aria-label",
+      dayHighlightsEnabled
+        ? "Turn food highlighting off"
+        : "Turn food highlighting on"
+    );
+  }
+
+  function setDayHighlightsEnabled(enabled) {
+    dayHighlightsEnabled = !!enabled;
+    saveDayHighlightsPreference();
+    syncDayHighlightsToggleUi();
+    DAYS.forEach(function (day) {
+      var el = document.getElementById(day.id);
+      if (el) updateDayHighlights(el);
+    });
   }
 
   function clampDayEditorHeight(px) {
@@ -7880,6 +7937,7 @@
     saveDemographic();
     saveTdee();
     saveDayNotes();
+    saveDayHighlightsPreference();
   });
 
   function preparePrintLayout() {
@@ -8445,6 +8503,12 @@
     });
   }
 
+  if (dayHighlightsToggleBtn) {
+    dayHighlightsToggleBtn.addEventListener("click", function () {
+      setDayHighlightsEnabled(!dayHighlightsEnabled);
+    });
+  }
+
   function bindStarterGuideScrollResize() {
     if (starterGuideScrollResizeBound) return;
     starterGuideScrollResizeBound = true;
@@ -8567,10 +8631,12 @@
     loadKeywordReorderOpen();
     loadKeywordCaloriesOpen();
     loadDayNotes();
+    loadDayHighlightsPreference();
     loadDayEditorHeight();
     loadDemographic();
     loadTdee();
     renderDemographicUi();
+    syncDayHighlightsToggleUi();
     syncSettingsTdeeInput();
     renderKeywords();
     initLongevityNav();

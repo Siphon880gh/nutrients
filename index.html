@@ -139,7 +139,15 @@
     </section>
 
     <div class="week__days-toolbar">
-      <p class="week__days-hint">Day meals are saved in this browser.</p>
+      <p class="week__days-hint">
+        Day meals are saved in this browser.
+        <button type="button" id="day-highlights-toggle" class="week__highlight-toggle" aria-pressed="true" aria-label="Turn food highlighting off">
+          <svg class="week__highlight-toggle-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path d="M15.7 3.3a1.8 1.8 0 0 1 2.5 0l2.5 2.5a1.8 1.8 0 0 1 0 2.5l-8.3 8.3-5.1 1.2 1.2-5.1 8.2-8.4ZM5.2 19.3h13.6a1 1 0 1 1 0 2H5.2a1 1 0 1 1 0-2Z"></path>
+          </svg>
+          <span class="visually-hidden">Food highlighting</span>
+        </button>
+      </p>
       <div class="week__days-actions">
         <button type="button" id="export-all-meals" class="week__meals-bulk">Export all</button>
         <button type="button" id="import-all-meals" class="week__meals-bulk">Import all</button>

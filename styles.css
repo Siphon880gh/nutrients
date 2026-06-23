@@ -2340,6 +2340,9 @@ button.dashboard__longevity-name:focus-visible {
 }
 
 .week__days-hint {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
   margin: 0;
   font-size: 0.8rem;
   color: #5c5c5c;
@@ -2350,6 +2353,44 @@ button.dashboard__longevity-name:focus-visible {
   flex-wrap: wrap;
   align-items: center;
   gap: 0.35rem 0.5rem;
+}
+
+.week__highlight-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 1.25rem;
+  height: 1.25rem;
+  padding: 0;
+  border: 1px solid rgba(226, 178, 54, 0.6);
+  border-radius: 5px;
+  background: #fff6d8;
+  color: #7a5a0a;
+  cursor: pointer;
+}
+
+.week__highlight-toggle:hover {
+  border-color: #d9a91e;
+  background: #ffefb5;
+}
+
+.week__highlight-toggle:focus-visible {
+  outline: 2px solid #3d6b9e;
+  outline-offset: 2px;
+}
+
+.week__highlight-toggle--off {
+  border-color: #d0d0ca;
+  background: transparent;
+  color: #9a9a96;
+}
+
+.week__highlight-toggle-icon {
+  display: block;
+  width: 0.82rem;
+  height: 0.82rem;
+  fill: currentColor;
 }
 
 .toolbar-bulk-btn,
