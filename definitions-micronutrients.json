@@ -173,6 +173,10 @@
     ],
     "anemia": [
       "Iron is the core of hemoglobin; low iron is the most common anemia cause—fatigue, pallor, and breathlessness."
+    ],
+    "antiAging": [
+      "Iron supports cytochrome enzymes in mitochondria that generate ATP and manage oxidative byproducts—low iron starves cellular energy even before anemia appears.",
+      "Balance matters: excess iron raises oxidative stress, but adequate food iron with vitamin C supports oxygen delivery and mitochondrial electron transport as you age."
     ]
   },
   "magnesium": {
@@ -213,6 +217,11 @@
       "Magnesium is a natural antagonist at NMDA (glutamate) receptors—it acts as the nervous system's main molecular brake. Chronic stress and heavy cognitive load increase magnesium loss.",
       "Without enough magnesium, glutamate-driven overexcitation fuels racing thoughts, physical restlessness, and sleep-onset insomnia. Jaw clenching and muscle tension are common, including as a side effect of stimulant medication.",
       "Magnesium glycinate supports systemic relaxation and sleep; magnesium L-threonate crosses the blood–brain barrier more readily for cognitive calm. Magnesium oxide is poorly absorbed and less useful for these goals."
+    ],
+    "antiAging": [
+      "Magnesium is required for ATP stability in mitochondria—without it, cells cannot hold or use energy efficiently, which shows up as fatigue and metabolic drift with age.",
+      "Low magnesium worsens insulin resistance, blood pressure, and sleep—patterns that accelerate vascular and cognitive aging over decades.",
+      "Greens, nuts, seeds, and legumes supply the mitochondrial cofactor most refined diets under-deliver."
     ]
   },
   "zinc": {
@@ -319,6 +328,11 @@
       "Vitamin D3 acts as a neurosteroid that upregulates neurotrophic factors and helps protect dopaminergic neurons from oxidative stress.",
       "Levels below ~30 ng/mL are associated with worse executive function, working memory, and emotional regulation—symptoms that stack on top of ADHD.",
       "Fatty fish, fortified dairy, safe sun exposure, and tested supplementation are typical ways to correct low status."
+    ],
+    "antiAging": [
+      "Vitamin D acts as a senomorphic nutrient—it downregulates chronic age-related inflammation (inflamaging) and supports immune balance rather than only bone health.",
+      "Low vitamin D is linked with faster epigenetic aging markers, weaker muscle maintenance, and higher cardiovascular risk over decades.",
+      "Adequate D from fatty fish, fortified foods, and safe sun helps cells resist the inflammatory signaling that accelerates tissue decline."
     ]
   },
   "vitaminB12": {
@@ -359,6 +373,10 @@
     ],
     "anemia": [
       "B12 deficiency causes megaloblastic anemia—large, ineffective red cells; needs testing if iron is normal but you are tired."
+    ],
+    "antiAging": [
+      "B12 protects DNA integrity during cell division and supports mitochondrial methyl-group chemistry with folate.",
+      "Low B12 raises homocysteine and mimics accelerated cognitive aging—correcting deficiency is one of the clearest nutrition wins for older adults."
     ]
   },
   "vitaminC": {
@@ -400,6 +418,11 @@
     ],
     "anemia": [
       "Vitamin C improves plant-iron absorption and supports healthy blood vessels when rebuilding iron stores."
+    ],
+    "antiAging": [
+      "Vitamin C neutralizes free radicals in blood and tissues, recycling vitamin E and protecting DNA from oxidative hits that trigger cellular aging.",
+      "It supports collagen repair and immune surveillance—both decline with age when antioxidant intake is low.",
+      "Regular produce intake is the practical shield against oxidative stress; megadose pills are not required for this longevity role."
     ]
   },
   "iodine": {
@@ -469,6 +492,10 @@
     ],
     "anemia": [
       "B6 deficiency can cause sideroblastic anemia and nerve symptoms; often overlooked when only iron is checked."
+    ],
+    "antiAging": [
+      "B6 supports mitochondrial enzyme function and homocysteine control—high homocysteine damages blood vessels and is linked with faster cognitive aging.",
+      "Together with folate and B12, B6 keeps one-carbon metabolism running so cells can repair DNA and manage oxidative stress."
     ]
   },
   "folate": {
@@ -507,6 +534,10 @@
     ],
     "anemia": [
       "Folate deficiency also causes megaloblastic anemia; important to distinguish from B12 deficiency clinically."
+    ],
+    "antiAging": [
+      "Folate drives DNA repair and methylation—processes that slow when cells accumulate damage during aging.",
+      "Adequate folate with B12 and B6 supports homocysteine clearance and protects vascular and brain tissue from oxidative injury over decades."
     ]
   },
   "biotin": {
@@ -537,6 +568,10 @@
     "female": [
       "Often marketed for hair and nails; food sources usually suffice unless deficiency is confirmed.",
       "Needs stay at about 30 mcg/day through pregnancy and breastfeeding—eggs, nuts, and produce cover most diets."
+    ],
+    "antiAging": [
+      "Biotin supports enzymes that build fatty acids and metabolize carbs—both feed mitochondrial energy production.",
+      "Low biotin impairs glucose handling and skin barrier repair, subtle deficits that compound metabolic aging over time."
     ]
   },
   "thiamin": {
@@ -569,6 +604,10 @@
     "female": [
       "Important during pregnancy and breastfeeding when energy and nerve demands rise.",
       "Helps mood and focus when paired with other B vitamins in a balanced diet."
+    ],
+    "antiAging": [
+      "Thiamin (B1) is required for pyruvate dehydrogenase—the step that feeds carbohydrate breakdown into the mitochondrial Krebs cycle.",
+      "Low thiamin traps cells in low-energy metabolism and raises lactic acid, a pattern that accelerates fatigue and vascular stress with age."
     ]
   },
   "riboflavin": {
@@ -603,6 +642,10 @@
     ],
     "anemia": [
       "Low B2 can cause anemia-like fatigue and cracked lips; part of the B-vitamin cluster that builds red blood cells."
+    ],
+    "antiAging": [
+      "Riboflavin (B2) builds FAD—another mitochondrial electron carrier paired with NAD in the energy-production chain.",
+      "Low riboflavin weakens antioxidant enzyme systems (glutathione reductase) that protect cells from the oxidative stress that drives aging."
     ]
   },
   "niacin": {
@@ -633,6 +676,11 @@
     "female": [
       "Needs are slightly lower (about 14 mg NE/day) but still essential for skin and energy.",
       "Adequate niacin supports mood and metabolism alongside other B vitamins."
+    ],
+    "antiAging": [
+      "Niacin (vitamin B3) is the direct food precursor for NAD+—the coenzyme mitochondria use to transfer electrons and rebuild cellular energy capacity.",
+      "NAD+ pools decline with age; adequate niacin from poultry, fish, peanuts, and whole grains supports the NAD salvage pathway that keeps mitochondria fueled.",
+      "Food niacin supports longevity through energy metabolism—not the high-dose niacin supplement protocols studied for lipids."
     ]
   },
   "pantothenicAcid": {
@@ -664,6 +712,10 @@
     "female": [
       "Needs stay at about 5 mg/day through pregnancy and breastfeeding.",
       "Works with other B vitamins for energy and adrenal-related stress pathways."
+    ],
+    "antiAging": [
+      "Pantothenic acid (B5) builds coenzyme A—the molecule that links fat and carb breakdown to mitochondrial ATP production.",
+      "Without adequate B5, cells cannot efficiently funnel nutrients into the Krebs cycle, which shows up as low energy and poor stress tolerance over time."
     ]
   },
   "chromium": {

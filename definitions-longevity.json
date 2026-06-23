@@ -191,6 +191,10 @@
       "EPA and DHA tune the phospholipid structure of neuronal membranes—governing how efficiently neurotransmitters bind receptors and move across synapses.",
       "EPA specifically helps reduce peripheral neuroinflammation and supports membrane fluidity around dopamine transporters. Clinical ADHD work often emphasizes high-EPA fish or algae oil (roughly 1,000–2,000 mg EPA daily) over high-DHA alone.",
       "Low omega-3 status correlates with weaker working memory, executive dysfunction, and emotional dysregulation on top of baseline ADHD."
+    ],
+    "antiAging": [
+      "EPA dampens inflammatory eicosanoids that drive vascular aging and joint degradation—part of the senomorphic side of longevity nutrition.",
+      "Adequate marine omega-3 intake is linked with slower telomere attrition and lower cardiovascular mortality in long-term cohort studies."
     ]
   },
   "dha": {
@@ -215,6 +219,10 @@
       "DHA is a major structural omega-3 in the brain; together with EPA it optimizes membrane signaling for attention and mood circuits.",
       "While DHA is critical for long-term brain structure, high-EPA formulations have shown more consistent benefit for ADHD symptom clusters in trials—many clinicians pair both via fatty fish or fish/algae oil.",
       "Algae-based oils are the main direct food or supplement route for DHA when fish intake is low."
+    ],
+    "antiAging": [
+      "DHA maintains neuronal membrane structure and supports brain resilience as oxidative stress rises with age.",
+      "Higher DHA status correlates with slower cognitive decline and better retinal protection—two hallmark targets of healthy aging."
     ]
   },
   "linoleicAcid": {
@@ -309,6 +317,10 @@
       "Avocado",
       "Wheat germ",
       "Hazelnuts"
+    ],
+    "antiAging": [
+      "Vitamin E shields cell membranes and LDL from lipid peroxidation—the oxidative damage that accelerates vascular and brain aging.",
+      "It works as an antioxidant shield alongside vitamin C; low E leaves fats in membranes and mitochondria vulnerable to free-radical chain reactions."
     ]
   },
   "vitaminK": {
@@ -385,6 +397,10 @@
       "Sunflower seeds",
       "Brown rice",
       "Cottage cheese"
+    ],
+    "antiAging": [
+      "Selenium powers glutathione peroxidase and other antioxidant enzymes that neutralize peroxides before they damage DNA.",
+      "Adequate selenium supports thyroid hormone activation and DNA repair—two systems that drift with age when trace intake is low."
     ]
   },
   "copper": {
@@ -424,6 +440,10 @@
       "Extra-virgin olive oil",
       "Herbs & spices",
       "Red wine (if used)"
+    ],
+    "antiAging": [
+      "Polyphenols act as senomorphics—they quiet inflammatory signaling in aging cells without directly killing senescent cells.",
+      "Diverse plant polyphenols support gut microbes that produce protective metabolites and lower the oxidative stress that damages DNA over decades."
     ]
   },
   "flavonoids": {
@@ -444,6 +464,10 @@
       "Dark chocolate",
       "Apples",
       "Parsley"
+    ],
+    "antiAging": [
+      "Flavonoids such as quercetin (onions, apples, tea) are studied as senomorphics and senolytics in supplement trials—food intake supports antioxidant and endothelial protection.",
+      "Regular berries, citrus, tea, and onions supply the flavonoid diversity that helps cells resist oxidative DNA damage over decades."
     ]
   },
   "carotenoids": {
@@ -502,6 +526,10 @@
       "Supplements (if used)",
       "Combine with black pepper",
       "Pair with oil or fat"
+    ],
+    "antiAging": [
+      "Curcumin from turmeric is studied both as a senomorphic (NF-κB and inflammatory cytokine modulation) and as a senolytic in high-dose supplement trials—not at typical food amounts.",
+      "Culinary turmeric with pepper and fat is a low-risk senomorphic habit; supplement curcumin is what most aging research doses for stronger effects."
     ]
   },
   "resveratrol": {
@@ -522,6 +550,10 @@
       "Cocoa (trace)",
       "Itadori tea",
       "Supplements (if used)"
+    ],
+    "antiAging": [
+      "Resveratrol activates stress-response pathways (sirtuins) studied in aging biology and appears in senolytic supplement protocols alongside quercetin and fisetin.",
+      "Food amounts from grapes and berries provide senomorphic antioxidant support; trial doses are usually far higher from supplements."
     ]
   },
   "coq10": {
@@ -540,7 +572,11 @@
       "Peanuts & pistachios",
       "Broccoli",
       "Avocado",
-      "Supplements (if used)"
+      "Supplement - Coenzyme Q10 100mg"
+    ],
+    "antiAging": [
+      "CoQ10 is the mitochondrial electron shuttle between complexes I/II and III—tissue levels fall with age and statin use, reducing cellular energy capacity.",
+      "Adequate CoQ10 from organ meats, fish, and nuts supports ATP production and may blunt the oxidative stress that damages mitochondrial DNA over time."
     ]
   },
   "sulforaphane": {
@@ -804,6 +840,20 @@
       "Fiber from your micro entries is highlighted here because colon health is largely shaped by diet and screening—adequate fiber is one of the strongest levers you can track weekly.",
       "High fiber lowers colorectal cancer risk and helps prevent diverticulitis, constipation, and hemorrhoids; low fiber with frequent red meat pushes the other way.",
       "Aim for 100%+ DV (about 38 g/day for men, 25 g/day for women). Insoluble fiber shortens colon transit time; soluble fiber feeds gut bacteria that produce protective butyrate."
+    ]
+  },
+  "sectionMitochondrial": {
+    "enough": [
+      "Mitochondrial health is cellular energy health—NAD+, FAD, coenzyme A, and CoQ10 keep the electron transport chain running so ATP can fuel repair, immunity, and cognition.",
+      "Niacin (B3) is the main food precursor for NAD+; riboflavin (B2) builds FAD; pantothenic acid (B5) builds coenzyme A; thiamin (B1) feeds pyruvate into the Krebs cycle; magnesium stabilizes ATP; iron supports cytochromes; CoQ10 shuttles electrons between mitochondrial complexes.",
+      "When these run low, cells shift into low-energy metabolism—fatigue, metabolic drift, and faster vascular aging follow over decades, not just on bad days."
+    ]
+  },
+  "sectionCellularAging": {
+    "enough": [
+      "Cellular aging is driven partly by chronic inflammation, oxidative DNA damage, and senescent cells that refuse to die cleanly—nutrition mainly helps through senomorphic pathways.",
+      "Vitamin D downregulates age-related inflammatory signaling; vitamin C and E neutralize free radicals that damage DNA; selenium and plant polyphenols support antioxidant enzyme systems.",
+      "Essential vitamins function like a shield—protecting cells from oxidative stress and DNA damage that triggers aging. That is different from true senolytics (fisetin, quercetin, curcumin, resveratrol in supplement trials) that target senescent cells directly; food patterns support the senomorphic side."
     ]
   },
   "sectionFats": {

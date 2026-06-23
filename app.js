@@ -305,6 +305,8 @@
     sectionDerived: { label: "Derived scores" },
     sectionTmao: { label: "TMAO balance" },
     sectionGlycemic: { label: "Glycemic load & GI distribution" },
+    sectionMitochondrial: { label: "Mitochondrial health & cellular energy" },
+    sectionCellularAging: { label: "Cellular aging & senomorphics" },
   };
 
   var MICRO_CONDITION_FOCUS = {
@@ -336,6 +338,33 @@
         "vitaminB6",
         "riboflavin",
         "vitaminC",
+      ],
+    },
+    antiAging: {
+      label: "Anti-aging & longevity",
+      nutrients: [
+        "vitaminD",
+        "vitaminC",
+        "magnesium",
+        "niacin",
+        "riboflavin",
+        "pantothenicAcid",
+        "thiamin",
+        "iron",
+        "folate",
+        "vitaminB6",
+        "vitaminB12",
+      ],
+      longevityNutrients: [
+        "coq10",
+        "epa",
+        "dha",
+        "vitaminE",
+        "selenium",
+        "polyphenols",
+        "flavonoids",
+        "resveratrol",
+        "curcumin",
       ],
     },
   };
@@ -377,6 +406,11 @@
   var LONGEVITY_NAV_SECTIONS = [
     { label: "Micronutrients from food", sectionDefKey: "sectionMicronutrients" },
     { label: "Fiber & colon health", sectionDefKey: "sectionFiber" },
+    {
+      label: "Mitochondrial health & cellular energy",
+      sectionDefKey: "sectionMitochondrial",
+    },
+    { label: "Cellular aging & senomorphics", sectionDefKey: "sectionCellularAging" },
   ]
     .concat(
       LONGEVITY_GROUPS.map(function (group) {
@@ -395,6 +429,34 @@
     { microKey: "calcium", label: "Calcium", limiting: false },
     { microKey: "magnesium", label: "Magnesium", limiting: false },
     { microKey: "vitaminD", label: "Vitamin D", limiting: false },
+  ];
+
+  var LONGEVITY_MITO_FROM_MICRO = [
+    { microKey: "niacin", label: "Niacin (B3) — NAD precursor", limiting: false },
+    { microKey: "riboflavin", label: "Riboflavin (B2)", limiting: false },
+    { microKey: "pantothenicAcid", label: "Pantothenic acid (B5)", limiting: false },
+    { microKey: "thiamin", label: "Thiamin (B1)", limiting: false },
+    { microKey: "magnesium", label: "Magnesium", limiting: false },
+    { microKey: "iron", label: "Iron", limiting: false },
+    { microKey: "biotin", label: "Biotin (B7)", limiting: false },
+  ];
+
+  var LONGEVITY_MITO_FROM_LONGEVITY = [{ key: "coq10", label: "Coenzyme Q10", limiting: false }];
+
+  var LONGEVITY_CELLULAR_AGING_FROM_MICRO = [
+    { microKey: "vitaminD", label: "Vitamin D", limiting: false },
+    { microKey: "vitaminC", label: "Vitamin C", limiting: false },
+  ];
+
+  var LONGEVITY_CELLULAR_AGING_FROM_LONGEVITY = [
+    { key: "vitaminE", label: "Vitamin E", limiting: false },
+    { key: "selenium", label: "Selenium", limiting: false },
+    { key: "polyphenols", label: "Polyphenols", limiting: false },
+    { key: "flavonoids", label: "Flavonoids", limiting: false },
+    { key: "resveratrol", label: "Resveratrol", limiting: false },
+    { key: "curcumin", label: "Curcumin", limiting: false },
+    { key: "epa", label: "EPA", limiting: false },
+    { key: "dha", label: "DHA", limiting: false },
   ];
 
   var LONGEVITY_CALCIFICATION_FIELD_KEYS = ["phosphorus"];
@@ -1421,6 +1483,7 @@
         coffeeTeaUser: stringArray(raw.coffeeTeaUser),
         adhd: stringArray(raw.adhd),
         anemia: stringArray(raw.anemia),
+        antiAging: stringArray(raw.antiAging),
       };
       if (
         entry.tooLow.length ||
@@ -1431,7 +1494,8 @@
         entry.female.length ||
         entry.coffeeTeaUser.length ||
         entry.adhd.length ||
-        entry.anemia.length
+        entry.anemia.length ||
+        entry.antiAging.length
       ) {
         out[field.key] = entry;
       }
@@ -1514,6 +1578,7 @@
         coffeeTeaUser: stringArray(raw.coffeeTeaUser),
         adhd: stringArray(raw.adhd),
         anemia: stringArray(raw.anemia),
+        antiAging: stringArray(raw.antiAging),
       };
       if (
         entry.tooLow.length ||
@@ -1523,7 +1588,8 @@
         entry.targetReference.length ||
         entry.coffeeTeaUser.length ||
         entry.adhd.length ||
-        entry.anemia.length
+        entry.anemia.length ||
+        entry.antiAging.length
       ) {
         out[key] = entry;
       }
@@ -2773,6 +2839,16 @@
       '<p class="dashboard__longevity-processed-note-text">' +
       "Adequate fiber supports colon health—high intake lowers colorectal cancer risk (about 10% per extra 10 g/day) and helps prevent other common conditions like diverticulitis, constipation, and hemorrhoids. The opposite pattern—low fiber with frequent red meat—raises those risks. Aim for 100%+ DV from beans, whole grains, vegetables, and fruit… " +
       '<button type="button" class="dashboard__longevity-tip-link" data-action="open-fiber-colon-tip-modal">Read more</button>' +
+      "</p>" +
+      "</aside>"
+    );
+  }
+
+  function senomorphicsTipHtml() {
+    return (
+      '<aside class="dashboard__longevity-processed-note dashboard__longevity-processed-note--section" role="note">' +
+      '<p class="dashboard__longevity-processed-note-text">' +
+      "<strong>Senomorphics vs senolytics:</strong> Essential vitamins and plant compounds work mainly as senomorphics—they quiet chronic age-related inflammation, neutralize free radicals, and shield DNA from oxidative damage that accelerates cellular aging. That is not the same as true senolytics, which target senescent “zombie” cells directly. For senolytic research compounds, supplements such as fisetin, quercetin, curcumin, and resveratrol are what trials study—food doses are supportive but rarely match supplement protocols." +
       "</p>" +
       "</aside>"
     );
@@ -4452,6 +4528,53 @@
       longevityListOpen() +
         longevitySubgroupHtml("From your micro entries", "micro") +
         longevityRowFromMicroKey("fiber", "Fiber", false, weekMicro) +
+        longevityListClose()
+    );
+
+    html += longevitySectionWrap(
+      "Mitochondrial health & cellular energy",
+      "sectionMitochondrial",
+      '<p class="dashboard__longevity-note">B vitamins build NAD and related cofactors (FAD, coenzyme A); magnesium and iron support ATP production; CoQ10 (is also a nutrient) carries electrons in mitochondria. These repeat values from your micro and longevity entries so you can spot gaps in cellular fuel—not just general % DV.</p>',
+      longevityListOpen() +
+        longevitySubgroupHtml("From your micro entries", "micro") +
+        LONGEVITY_MITO_FROM_MICRO.map(function (item) {
+          return longevityRowFromMicroKey(
+            item.microKey,
+            item.label,
+            !!item.limiting,
+            weekMicro
+          );
+        }).join("") +
+        longevitySubgroupHtml("From your longevity entries", "compounds") +
+        LONGEVITY_MITO_FROM_LONGEVITY.map(function (item) {
+          var field = longevityFieldByKey(item.key);
+          if (!field) return "";
+          return longevityRowFromLongevityField(field, weekLongevity);
+        }).join("") +
+        longevityListClose()
+    );
+
+    html += longevitySectionWrap(
+      "Cellular aging & senomorphics",
+      "sectionCellularAging",
+      '<p class="dashboard__longevity-note">Vitamin D downregulates chronic age-related inflammation; vitamin C and E neutralize free radicals that damage DNA. Essential vitamins act like a shield against oxidative stress—the senomorphic side of longevity. See the note below on food vs supplement senolytics.</p>' +
+        senomorphicsTipHtml(),
+      longevityListOpen() +
+        longevitySubgroupHtml("From your micro entries", "micro") +
+        LONGEVITY_CELLULAR_AGING_FROM_MICRO.map(function (item) {
+          return longevityRowFromMicroKey(
+            item.microKey,
+            item.label,
+            !!item.limiting,
+            weekMicro
+          );
+        }).join("") +
+        longevitySubgroupHtml("From your longevity entries", "compounds") +
+        LONGEVITY_CELLULAR_AGING_FROM_LONGEVITY.map(function (item) {
+          var field = longevityFieldByKey(item.key);
+          if (!field) return "";
+          return longevityRowFromLongevityField(field, weekLongevity);
+        }).join("") +
         longevityListClose()
     );
 
