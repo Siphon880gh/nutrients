@@ -139,7 +139,11 @@
     ],
     "enough": [
       "Adequate iron carries oxygen in hemoglobin, supports energy metabolism, immune function, and cognitive focus—preventing the fatigue and brain fog of creeping deficiency.",
-      "Pair plant iron with vitamin C; separate coffee/tea/calcium from iron-rich meals by an hour when optimizing absorption."
+      "Separate coffee/tea/calcium from iron-rich meals by an hour when optimizing absorption.",
+      "Mix with Vitamin C if the iron source is non-heme iron.",
+      "Heme iron: comes from animal foods like red meat, chicken, fish, and shellfish. It is absorbed more easily and is less affected by other foods.",
+      "Non-heme iron: comes from plant foods and fortified foods. It is absorbed less efficiently, but Vitamin C helps a lot; pair it with orange, kiwi, strawberries, lemon, bell pepper, or salsa.",
+      "Even though eggs are animal food, much of their iron acts more like non-heme iron, and egg yolk proteins can reduce absorption a bit."
     ],
     "tooHigh": [
       "Excess iron—especially from supplements without confirmed deficiency—may raise oxidative stress and is linked with higher cardiovascular risk in some studies.",
