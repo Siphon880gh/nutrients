@@ -2887,19 +2887,40 @@ button.dashboard__longevity-name:focus-visible {
 }
 
 .keywords__header {
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.35rem;
 }
 
 .keywords__title {
-  margin: 0 0 0.25rem;
+  margin: 0;
   font-size: 1rem;
   font-weight: 600;
 }
 
+.keywords__toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.75rem;
+}
+
 .keywords__hint {
   margin: 0;
+  flex: 1 1 auto;
+  min-width: 0;
   color: #5c5c5c;
-  font-size: 0.875rem;
+  font-size: 0.8rem;
+}
+
+.keywords__toolbar-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.35rem 0.5rem;
+  flex: 0 0 auto;
+  margin-left: auto;
 }
 
 .keywords__panel {
@@ -3954,6 +3975,10 @@ button.longevity-form__label-link:focus-visible {
   display: flex;
   flex-wrap: wrap;
   gap: 0.4rem;
+}
+
+.keywords__panel:not(:has(#keywords-list .keywords__row:nth-child(20))) .keywords__bulk {
+  display: none;
 }
 
 .keywords__move,

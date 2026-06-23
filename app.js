@@ -202,6 +202,9 @@
   var exportAllFoodsBtn = document.getElementById("export-all-foods");
   var importAllFoodsBtn = document.getElementById("import-all-foods");
   var importSampleFoodsBtn = document.getElementById("import-sample-foods");
+  var exportAllFoodsTopBtn = document.getElementById("export-all-foods-top");
+  var importAllFoodsTopBtn = document.getElementById("import-all-foods-top");
+  var importSampleFoodsTopBtn = document.getElementById("import-sample-foods-top");
   var starterGuideEl = document.getElementById("starter-guide");
   var starterGuideTextEl = document.getElementById("starter-guide-text");
   var starterGuideDismissEl = document.getElementById("starter-guide-dismiss");
@@ -7542,6 +7545,18 @@
     importSampleFoodsBtn.addEventListener("click", importSampleFoods);
   }
 
+  if (exportAllFoodsTopBtn) {
+    exportAllFoodsTopBtn.addEventListener("click", exportAllFoods);
+  }
+
+  if (importAllFoodsTopBtn) {
+    importAllFoodsTopBtn.addEventListener("click", openImportAllModal);
+  }
+
+  if (importSampleFoodsTopBtn) {
+    importSampleFoodsTopBtn.addEventListener("click", importSampleFoods);
+  }
+
   if (keywordsEmptyEl) {
     keywordsEmptyEl.addEventListener("click", function (e) {
       if (e.target.closest('[data-action="import-sample-from-empty"]')) {
@@ -8216,6 +8231,7 @@
   function starterGuideTargetForStep(step) {
     if (step === "import") {
       return (
+        importSampleFoodsTopBtn ||
         importSampleFoodsBtn ||
         document.getElementById("food-definitions-heading")
       );
