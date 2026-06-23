@@ -4365,6 +4365,8 @@ button.longevity-form__label-link:focus-visible {
   .dashboard__micro-intro-actions,
   .dashboard__micro-hint-actions,
   .dashboard__micro-hint-ai,
+  .dashboard__micro-sources-btn,
+  .dashboard__card-toggle,
   .dashboard__longevity-nav,
   .dashboard__longevity-section-link {
     display: none !important;
@@ -4452,6 +4454,8 @@ body.print-preview .modal,
 body.print-preview .dashboard__micro-intro-actions,
 body.print-preview .dashboard__micro-hint-actions,
 body.print-preview .dashboard__micro-hint-ai,
+body.print-preview .dashboard__micro-sources-btn,
+body.print-preview .dashboard__card-toggle,
 body.print-preview .dashboard__longevity-section-link {
   display: none !important;
 }
