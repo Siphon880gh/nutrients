@@ -475,6 +475,26 @@ body {
   margin-bottom: 0;
 }
 
+.micro-tip-modal__table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.82rem;
+  margin: 0.75rem 0 1rem;
+}
+
+.micro-tip-modal__table th,
+.micro-tip-modal__table td {
+  border: 1px solid #e0e0dc;
+  padding: 0.45rem 0.55rem;
+  text-align: left;
+  vertical-align: top;
+}
+
+.micro-tip-modal__table th {
+  background: #f5f7fa;
+  font-weight: 600;
+}
+
 .macro-split-modal__body > p {
   margin-bottom: 0.85rem;
 }
@@ -2088,6 +2108,18 @@ button.dashboard__longevity-name:focus-visible {
 .dashboard__longevity-pct .dashboard__longevity-tip-link {
   font-size: inherit;
   font-variant-numeric: tabular-nums;
+}
+
+.dashboard__longevity-pct .dashboard__longevity-pct-link {
+  font-weight: inherit;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.dashboard__longevity-pct .dashboard__longevity-pct-link:hover,
+.dashboard__longevity-pct .dashboard__longevity-pct-link:focus-visible {
+  color: #1a4078;
 }
 
 .dashboard__title {

@@ -812,6 +812,32 @@
       "Canned tuna (choose wisely)"
     ]
   },
+  "pufaVitaminEProtection": {
+    "targetReference": [
+      "Actual ratio = vitamin E (mg/day) ÷ PUFA (g/day) → mg alpha-tocopherol per g PUFA.",
+      "% of target = actual ratio ÷ 0.6 mg/g target. At 100%, your logged vitamin E matches your logged PUFA at the review ratio.",
+      "The reference range is ~0.4–0.6 mg vitamin E per gram of PUFA overall, with omega-6 around ~0.5 mg/g and omega-3 fish oils around ~0.6–1 mg/g; monounsaturated and saturated fats add no extra requirement.",
+      "As PUFA rises, vitamin E matters more, and vitamin C, selenium, polyphenols, and carotenoids help recycle or extend that antioxidant cover."
+    ],
+    "tooLow": [
+      "Vitamin E below about 0.6 mg alpha-tocopherol per gram of PUFA leaves fragile fats with less antioxidant cover, especially when those fats come from refined or heated oils.",
+      "High PUFA from fried foods, old bottles, or fish oil can add oxidative stress over time when it is not paired with enough vitamin E-rich whole foods and supporting antioxidants."
+    ],
+    "enough": [
+      "At 100%+ of target, your logged vitamin E covers your logged PUFA at the review ratio. That is a useful dietary pattern check, not a guarantee against rancid oils.",
+      "This match helps protect cell membranes, LDL particles, dietary fats, mitochondria, and DNA from lipid peroxidation and related oxidative stress.",
+      "Whole foods like sunflower seeds, almonds, hazelnuts, and avocado often pair PUFA with vitamin E, while vitamin C regenerates vitamin E, selenium supports glutathione enzymes, and polyphenols and carotenoids add broader antioxidant cover."
+    ],
+    "foodSources": [
+      "Sunflower seeds & almonds",
+      "Hazelnuts & pistachios",
+      "Avocado & leafy greens",
+      "Cold-use PUFA oils only",
+      "Stable fats for cooking",
+      "Fresh nuts and seeds",
+      "Avoid reheated fry oil"
+    ]
+  },
   "glycemicLoad": {
     "targetReference": [
       "Two different scales get mixed up online. Per serving or per meal: GL ≤10 is low, 11–19 moderate, ≥20 high — so a GL of 80 for one meal would be very high. This app tracks your daily average across the whole week.",
@@ -882,6 +908,12 @@
       "The type of fat you eat shapes LDL and HDL cholesterol, artery inflammation, and long-term heart attack and stroke risk more than total fat alone.",
       "Diets heavy in saturated and industrial trans fat tend to stiffen blood vessels and raise LDL; swapping toward olive oil, nuts, avocado, and fish is one of the strongest dietary prevention moves.",
       "Cholesterol from whole eggs or shellfish is less concerning for many people than the same calories from processed meats paired with refined carbs and low fiber."
+    ]
+  },
+  "sectionPufaAntioxidant": {
+    "enough": [
+      "This section tracks PUFA against vitamin E and related antioxidants—see the callout above for the core idea (~0.6 mg vitamin E per gram PUFA).",
+      "Use Read more for fat-type guidelines, recycling nutrients, cooking and storage, and PUFA + vitamin E food pairings."
     ]
   },
   "sectionOmega": {

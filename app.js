@@ -127,6 +127,10 @@
   );
   var fiberColonTipModalEl = document.getElementById("fiber-colon-tip-modal");
   var fiberColonTipModalDoneBtn = document.getElementById("fiber-colon-tip-modal-done");
+  var pufaAntioxidantTipModalEl = document.getElementById("pufa-antioxidant-tip-modal");
+  var pufaAntioxidantTipModalDoneBtn = document.getElementById(
+    "pufa-antioxidant-tip-modal-done"
+  );
   var settingsOpenBtn = document.getElementById("settings-open");
   var settingsModalEl = document.getElementById("settings-modal");
   var settingsModalDoneBtn = document.getElementById("settings-modal-done");
@@ -294,6 +298,10 @@
     satToUnsat: { label: "Saturated : unsaturated fat ratio", limiting: true },
     epaPlusDha: { label: "EPA + DHA", limiting: false },
     glycemicLoad: { label: "Glycemic load (daily avg)", limiting: true },
+    pufaVitaminEProtection: {
+      label: "Vitamin E : PUFA protection",
+      limiting: false,
+    },
   };
 
   var LONGEVITY_SECTION_DEFS = {
@@ -309,6 +317,7 @@
     sectionCalcification: { label: "Calcification & vascular balance" },
     sectionDerived: { label: "Derived scores" },
     sectionTmao: { label: "TMAO balance" },
+    sectionPufaAntioxidant: { label: "Fat oxidation & antioxidant protection" },
     sectionGlycemic: { label: "Glycemic load & GI distribution" },
     sectionMitochondrial: { label: "Mitochondrial health & cellular energy" },
     sectionCellularAging: { label: "Cellular aging & senomorphics" },
@@ -421,9 +430,16 @@
     { label: "Cellular aging & senomorphics", sectionDefKey: "sectionCellularAging" },
   ]
     .concat(
-      LONGEVITY_GROUPS.map(function (group) {
-        return { label: group.label, sectionDefKey: group.sectionDefKey };
-      })
+      LONGEVITY_GROUPS.reduce(function (sections, group) {
+        sections.push({ label: group.label, sectionDefKey: group.sectionDefKey });
+        if (group.id === "omega") {
+          sections.push({
+            label: "Fat oxidation & antioxidant protection",
+            sectionDefKey: "sectionPufaAntioxidant",
+          });
+        }
+        return sections;
+      }, [])
     )
     .concat([
       { label: "Glycemic load & GI distribution", sectionDefKey: "sectionGlycemic" },
@@ -500,6 +516,22 @@
     { key: "polyphenols", label: "Polyphenols (microbiome)" },
     { key: "flavonoids", label: "Flavonoids (berries, tea)" },
     { key: "resveratrol", label: "Resveratrol (grapes, berries)" },
+  ];
+
+  var LONGEVITY_PUFA_ANTIOXIDANT_SUPPORT_FROM_MICRO = [
+    { microKey: "vitaminC", label: "Vitamin C — regenerates vitamin E" },
+  ];
+
+  var LONGEVITY_PUFA_ANTIOXIDANT_SUPPORT_FROM_LONGEVITY = [
+    { key: "selenium", label: "Selenium — supports glutathione enzymes" },
+    {
+      key: "polyphenols",
+      label: "Polyphenols (berries, tea, cocoa) — reduce oxidation",
+    },
+    {
+      key: "carotenoids",
+      label: "Carotenoids (beta-carotene, lycopene) — antioxidant support",
+    },
   ];
 
   /** Micro keys where high % DV is undesirable on the longevity panel */
@@ -1274,6 +1306,9 @@
       "  - longevity.transFat: 0 for whole/natural foods; fried fast food, movie-theater buttery popcorn, and some pastries may have 0.1–4 g — use label data when available (g)"
     );
     lines.push(
+      "  - longevity.carotenoids: carrots, sweet potato, spinach, kale, tomatoes, red bell pepper, mango (mg; fat-soluble—pair with oil for absorption)"
+    );
+    lines.push(
       "  - longevity.lutein: spinach, kale, corn, egg yolks (mg; fat-soluble—better absorbed with oil or egg fat)"
     );
     lines.push(
@@ -1771,6 +1806,96 @@
       html || '<p class="micro-def__empty">No description content yet.</p>';
   }
 
+  function pufaVitaminEProtectionCalcHtml() {
+    var weekLongevity = weekLongevityTotals();
+    var derived = computeLongevityDerived(weekLongevity, weekMicroTotals());
+    var vitEMg = derived.vitaminEMg;
+    var pufaG = derived.pufaG;
+    var target = longevityDvStatus.pufaVitaminEAlphaTocopherolPerGram;
+    var ratio = derived.pufaVitaminERatio;
+    var protection = derived.pufaVitaminEProtection;
+
+    if (pufaG <= 0) {
+      return (
+        '<section class="micro-def__section">' +
+        '<h4 class="micro-def__heading">Your calculation</h4>' +
+        '<p class="micro-def__p">Log some polyunsaturated fat first—there is no daily PUFA average to divide by yet.</p>' +
+        "</section>"
+      );
+    }
+
+    var scoreRatio =
+      target > 0 && ratio != null && !isNaN(ratio) ? ratio / target : null;
+
+    return (
+      '<section class="micro-def__section">' +
+      '<h4 class="micro-def__heading">Your calculation</h4>' +
+      '<p class="micro-def__p">Weekly average per day (Mon–Sun):</p>' +
+      '<ul class="micro-def__list">' +
+      "<li>Vitamin E: " +
+      escapeHtml(fmtNum(vitEMg)) +
+      " mg/day</li>" +
+      "<li>PUFA: " +
+      escapeHtml(fmtNum(pufaG)) +
+      " g/day</li>" +
+      "</ul><br/>" +
+      '<p class="micro-def__p"><strong>Actual ratio</strong> = vitamin E ÷ PUFA<br>' +
+      "= " +
+      escapeHtml(fmtNum(vitEMg)) +
+      " mg ÷ " +
+      escapeHtml(fmtNum(pufaG)) +
+      " g<br>" +
+      "= <strong>" +
+      escapeHtml(fmtNum(ratio)) +
+      " mg/g</strong></p>" +
+      '<p class="micro-def__p"><strong>% of target</strong> = ratio ÷ ' +
+      escapeHtml(fmtNum(target)) +
+      " mg/g target<br>" +
+      "= " +
+      escapeHtml(fmtNum(ratio)) +
+      " ÷ " +
+      escapeHtml(fmtNum(target)) +
+      "<br>" +
+      "= " +
+      escapeHtml(fmtNum(scoreRatio)) +
+      " → <strong>" +
+      escapeHtml(fmtNum(protection)) +
+      "% of target</strong></p>" +
+      "</section>"
+    );
+  }
+
+  function pufaVitaminEAntioxidantSupportHtml() {
+    return (
+      '<section class="micro-def__section">' +
+      '<h4 class="micro-def__heading">Fat type → nutrients that help balance or protect</h4>' +
+      '<ul class="micro-def__list">' +
+      "<li><strong>PUFA (omega-3, omega-6)</strong> → vitamin E (primary)</li>" +
+      "<li><strong>Omega-3 fish oils</strong> → vitamin E, selenium</li>" +
+      "<li><strong>Monounsaturated fats</strong> (olive oil, avocado) → less need, but vitamin E helps</li>" +
+      "<li><strong>Saturated fats</strong> → no specific antioxidant balancing needed</li>" +
+      "<li><strong>Trans fats</strong> → no nutrient balances them; best minimized</li>" +
+      "</ul>" +
+      '<h4 class="micro-def__heading">Approximate vitamin E guidelines</h4>' +
+      '<p class="micro-def__p">Use the ratio for PUFA, not total fat: total fat, monounsaturated fat, and saturated fat alone do not add a specific vitamin E requirement.</p>' +
+      '<ul class="micro-def__list">' +
+      "<li>PUFA overall: ~0.4–0.6 mg/g (this score uses 0.6 mg/g).</li>" +
+      "<li>Omega-6 (seed oils, nuts): ~0.5 mg/g · omega-3 (fish oil): ~0.6–1 mg/g.</li>" +
+      "<li>Examples: 10 g PUFA → ~4–6 mg E · 20 g → ~8–12 mg · RDA = 15 mg/day.</li>" +
+      "</ul>" +
+      '<h4 class="micro-def__heading">Other nutrients that support antioxidant recycling</h4>' +
+      '<ul class="micro-def__list">' +
+      "<li><strong>Vitamin C</strong> → regenerates vitamin E</li>" +
+      "<li><strong>Selenium</strong> → supports glutathione enzymes</li>" +
+      "<li><strong>Polyphenols</strong> (berries, tea, cocoa) → reduce oxidation</li>" +
+      "<li><strong>Carotenoids</strong> (beta-carotene, lycopene) → antioxidant support</li>" +
+      "</ul>" +
+      '<p class="micro-def__p"><strong>Rule of thumb:</strong> The more PUFA you eat, the more useful adequate vitamin E becomes; vitamin C, selenium, polyphenols, and carotenoids widen cover beyond vitamin E alone. If your diet is heavy in nuts, seeds, seed oils, or fish oil, aim for at least 15 mg/day from food. High-dose vitamin E supplements (&gt;200–400 IU/day) are generally not recommended unless directed by a clinician.</p>' +
+      '<p class="micro-def__p">The sections below apply this to the target formula, cooking and storage choices, DNA-risk context, and PUFA + vitamin E food pairings.</p>' +
+      "</section>"
+    );
+  }
+
   function renderLongevityDefBody(key) {
     if (!microDefBodyEl) return;
     var def = longevityDefinitions[key];
@@ -1784,7 +1909,11 @@
     }
 
     var limiting = isLongevityLimitingDefKey(key);
-    var html = microDefConditionSectionHtml(def);
+    var html =
+      key === "pufaVitaminEProtection"
+        ? pufaVitaminEProtectionCalcHtml() + pufaVitaminEAntioxidantSupportHtml()
+        : "";
+    html += microDefConditionSectionHtml(def);
 
     if (def.targetReference && def.targetReference.length) {
       html +=
@@ -1956,6 +2085,9 @@
     }
     if (fiberColonTipModalEl && !fiberColonTipModalEl.hidden) {
       closeFiberColonTipModal();
+    }
+    if (pufaAntioxidantTipModalEl && !pufaAntioxidantTipModalEl.hidden) {
+      closePufaAntioxidantTipModal();
     }
     if (activeMicroId) {
       saveMicrosFromForm();
@@ -2651,6 +2783,9 @@
     if (fiberColonTipModalEl && !fiberColonTipModalEl.hidden) {
       closeFiberColonTipModal();
     }
+    if (pufaAntioxidantTipModalEl && !pufaAntioxidantTipModalEl.hidden) {
+      closePufaAntioxidantTipModal();
+    }
     if (activeMicroId) {
       saveMicrosFromForm();
       closeMicroModal();
@@ -2693,6 +2828,9 @@
     if (fiberColonTipModalEl && !fiberColonTipModalEl.hidden) {
       closeFiberColonTipModal();
     }
+    if (pufaAntioxidantTipModalEl && !pufaAntioxidantTipModalEl.hidden) {
+      closePufaAntioxidantTipModal();
+    }
     if (activeMicroId) {
       saveMicrosFromForm();
       closeMicroModal();
@@ -2733,6 +2871,9 @@
     if (fiberColonTipModalEl && !fiberColonTipModalEl.hidden) {
       closeFiberColonTipModal();
     }
+    if (pufaAntioxidantTipModalEl && !pufaAntioxidantTipModalEl.hidden) {
+      closePufaAntioxidantTipModal();
+    }
     if (activeMicroId) {
       saveMicrosFromForm();
       closeMicroModal();
@@ -2769,6 +2910,12 @@
     if (caffeineTipModalEl && !caffeineTipModalEl.hidden) closeCaffeineTipModal();
     if (fatsCholesterolTipModalEl && !fatsCholesterolTipModalEl.hidden) {
       closeFatsCholesterolTipModal();
+    }
+    if (fiberColonTipModalEl && !fiberColonTipModalEl.hidden) {
+      closeFiberColonTipModal();
+    }
+    if (pufaAntioxidantTipModalEl && !pufaAntioxidantTipModalEl.hidden) {
+      closePufaAntioxidantTipModal();
     }
     if (activeMicroId) {
       saveMicrosFromForm();
@@ -2810,6 +2957,9 @@
     if (tmaoProtectorsTipModalEl && !tmaoProtectorsTipModalEl.hidden) {
       closeTmaoProtectorsTipModal();
     }
+    if (pufaAntioxidantTipModalEl && !pufaAntioxidantTipModalEl.hidden) {
+      closePufaAntioxidantTipModal();
+    }
     if (activeMicroId) {
       saveMicrosFromForm();
       closeMicroModal();
@@ -2827,6 +2977,49 @@
   function closeFiberColonTipModal() {
     if (!fiberColonTipModalEl) return;
     fiberColonTipModalEl.hidden = true;
+    updateBodyModalOpen();
+  }
+
+  function openPufaAntioxidantTipModal() {
+    if (!pufaAntioxidantTipModalEl) return;
+
+    if (activeImportId) closeImportModal();
+    if (importAllModalEl && !importAllModalEl.hidden) closeImportAllModal();
+    if (importAllMealsModalEl && !importAllMealsModalEl.hidden) {
+      closeImportAllMealsModal();
+    }
+    if (microGapsModalEl && !microGapsModalEl.hidden) closeMicroGapsModal();
+    if (microDefModalEl && !microDefModalEl.hidden) closeMicroDefModal();
+    if (phosphorusBinderModalEl && !phosphorusBinderModalEl.hidden) {
+      closePhosphorusBinderModal();
+    }
+    if (caffeineTipModalEl && !caffeineTipModalEl.hidden) closeCaffeineTipModal();
+    if (fatsCholesterolTipModalEl && !fatsCholesterolTipModalEl.hidden) {
+      closeFatsCholesterolTipModal();
+    }
+    if (tmaoProtectorsTipModalEl && !tmaoProtectorsTipModalEl.hidden) {
+      closeTmaoProtectorsTipModal();
+    }
+    if (fiberColonTipModalEl && !fiberColonTipModalEl.hidden) {
+      closeFiberColonTipModal();
+    }
+    if (activeMicroId) {
+      saveMicrosFromForm();
+      closeMicroModal();
+    }
+    if (activeLongevityId) {
+      saveLongevityFromForm();
+      closeLongevityModal();
+    }
+
+    pufaAntioxidantTipModalEl.hidden = false;
+    updateBodyModalOpen();
+    if (pufaAntioxidantTipModalDoneBtn) pufaAntioxidantTipModalDoneBtn.focus();
+  }
+
+  function closePufaAntioxidantTipModal() {
+    if (!pufaAntioxidantTipModalEl) return;
+    pufaAntioxidantTipModalEl.hidden = true;
     updateBodyModalOpen();
   }
 
@@ -2858,6 +3051,17 @@
       '<p class="dashboard__longevity-processed-note-text">' +
       "Adequate fiber supports colon health—high intake lowers colorectal cancer risk (about 10% per extra 10 g/day) and helps prevent other common conditions like diverticulitis, constipation, and hemorrhoids. The opposite pattern—low fiber with frequent red meat—raises those risks. Aim for 100%+ DV from beans, whole grains, vegetables, and fruit… " +
       '<button type="button" class="dashboard__longevity-tip-link" data-action="open-fiber-colon-tip-modal">Read more</button>' +
+      "</p>" +
+      "</aside>"
+    );
+  }
+
+  function pufaAntioxidantTipHtml() {
+    return (
+      '<aside class="dashboard__longevity-processed-note dashboard__longevity-processed-note--section" role="note">' +
+      '<p class="dashboard__longevity-processed-note-text">' +
+      "PUFAs are essential for cell membranes and signaling—eating more raises your vitamin E need (about 0.6 mg per gram PUFA). They are fragile: fats you absorb can oxidize during normal metabolism, not only when oil goes bad from heat, air, or storage. Vitamin E (alpha-tocopherol) helps protect them. Some whole foods pair PUFA with vitamin E (sunflower seeds, almonds); refined or overheated oils often do not, and how you store and cook oils matters… " +
+      '<button type="button" class="dashboard__longevity-tip-link" data-action="open-pufa-antioxidant-tip-modal">Read more</button>' +
       "</p>" +
       "</aside>"
     );
@@ -2907,6 +3111,9 @@
     }
     if (fiberColonTipModalEl && !fiberColonTipModalEl.hidden) {
       closeFiberColonTipModal();
+    }
+    if (pufaAntioxidantTipModalEl && !pufaAntioxidantTipModalEl.hidden) {
+      closePufaAntioxidantTipModal();
     }
     if (activeMicroId) {
       saveMicrosFromForm();
@@ -2959,6 +3166,9 @@
     if (fiberColonTipModalEl && !fiberColonTipModalEl.hidden) {
       closeFiberColonTipModal();
     }
+    if (pufaAntioxidantTipModalEl && !pufaAntioxidantTipModalEl.hidden) {
+      closePufaAntioxidantTipModal();
+    }
     if (activeMicroId) {
       saveMicrosFromForm();
       closeMicroModal();
@@ -3006,6 +3216,9 @@
     }
     if (fiberColonTipModalEl && !fiberColonTipModalEl.hidden) {
       closeFiberColonTipModal();
+    }
+    if (pufaAntioxidantTipModalEl && !pufaAntioxidantTipModalEl.hidden) {
+      closePufaAntioxidantTipModal();
     }
     if (activeMicroId) {
       saveMicrosFromForm();
@@ -3082,6 +3295,7 @@
       (fatsCholesterolTipModalEl && !fatsCholesterolTipModalEl.hidden) ||
       (tmaoProtectorsTipModalEl && !tmaoProtectorsTipModalEl.hidden) ||
       (fiberColonTipModalEl && !fiberColonTipModalEl.hidden) ||
+      (pufaAntioxidantTipModalEl && !pufaAntioxidantTipModalEl.hidden) ||
       (settingsModalEl && !settingsModalEl.hidden) ||
       (tdeeCalculatorModalEl && !tdeeCalculatorModalEl.hidden) ||
       (tdeeHintModalEl && !tdeeHintModalEl.hidden) ||
@@ -3679,11 +3893,21 @@
     var unsat = avg("monounsaturatedFat") + avg("polyunsaturatedFat");
     var ratioO6O3 = o3 > 0 ? o6 / o3 : null;
     var ratioSatUnsat = unsat > 0 ? sat / unsat : null;
+    var pufaG = avg("polyunsaturatedFat");
+    var vitEMg = avg("vitaminE");
+    var pufaTarget = longevityDvStatus.pufaVitaminEAlphaTocopherolPerGram;
+    var pufaVitaminERatio = pufaG > 0 ? vitEMg / pufaG : null;
+    var pufaVitaminEProtection =
+      pufaG > 0 && pufaTarget > 0 ? (vitEMg / (pufaG * pufaTarget)) * 100 : null;
     return {
       omega6To3: ratioO6O3,
       satToUnsat: ratioSatUnsat,
       epaPlusDha: avg("epa") + avg("dha"),
       transFatG: avg("transFat"),
+      pufaG: pufaG,
+      vitaminEMg: vitEMg,
+      pufaVitaminERatio: pufaVitaminERatio,
+      pufaVitaminEProtection: pufaVitaminEProtection,
       weekGl: weekGlycemicLoadTotal() / DAYS.length,
       giBuckets: giBucketsFromWeek(),
     };
@@ -3729,6 +3953,7 @@
     limitingTiers: DEFAULT_LIMITING_TIERS,
     transFatMaxGPerDay: 0.5,
     omega6To3IdealMax: 4,
+    pufaVitaminEAlphaTocopherolPerGram: 0.6,
     glycemicLoadMaxPerDay: 100,
     glycemicLoadModerateMaxPerDay: 120,
   };
@@ -3776,6 +4001,9 @@
       omega6To3IdealMax:
         parseFloat(raw.omega6To3IdealMax) ||
         DEFAULT_LONGEVITY_STATUS.omega6To3IdealMax,
+      pufaVitaminEAlphaTocopherolPerGram:
+        parseFloat(raw.pufaVitaminEAlphaTocopherolPerGram) ||
+        DEFAULT_LONGEVITY_STATUS.pufaVitaminEAlphaTocopherolPerGram,
       glycemicLoadMaxPerDay:
         parseFloat(raw.glycemicLoadMaxPerDay) ||
         DEFAULT_LONGEVITY_STATUS.glycemicLoadMaxPerDay,
@@ -4351,6 +4579,15 @@
     );
   }
 
+  function pufaVitaminEProtectionPctHtml(pufaProtection) {
+    if (pufaProtection == null || isNaN(pufaProtection)) return null;
+    return (
+      '<button type="button" class="dashboard__longevity-tip-link dashboard__longevity-pct-link" data-longevity-def="pufaVitaminEProtection" aria-haspopup="dialog">' +
+      escapeHtml(fmtNum(pufaProtection) + "% of target") +
+      "</button>"
+    );
+  }
+
   function longevityRowHtml(
     label,
     amtText,
@@ -4722,6 +4959,79 @@
         longevityListClose()
     );
 
+    var pufaRatio = derived.pufaVitaminERatio;
+    var pufaProtection = derived.pufaVitaminEProtection;
+    function pufaAntioxidantSectionHtml() {
+      return longevitySectionWrap(
+        "Fat oxidation & antioxidant protection",
+        "sectionPufaAntioxidant",
+        pufaAntioxidantTipHtml(),
+        longevityListOpen() +
+          longevitySubgroupHtml("Your intake", "aim") +
+          (function () {
+            var pufaField = longevityFieldByKey("polyunsaturatedFat");
+            var vitEField = longevityFieldByKey("vitaminE");
+            var rows = "";
+            if (pufaField) rows += longevityRowFromLongevityField(pufaField, weekLongevity);
+            if (vitEField) rows += longevityRowFromLongevityField(vitEField, weekLongevity);
+            return rows;
+          })() +
+          longevitySubgroupHtml("Protection score — higher is better", "aim") +
+          longevityRowHtml(
+            "Vitamin E : PUFA",
+            pufaRatio == null || isNaN(pufaRatio)
+              ? "—"
+              : fmtNum(pufaRatio) + " mg/g",
+            pufaProtection == null || isNaN(pufaProtection)
+              ? "—"
+              : fmtNum(pufaProtection) + "% of target",
+            pufaProtection,
+            "dashboard__longevity-row--computed",
+            false,
+            "pufaVitaminEProtection",
+            false,
+            pufaVitaminEProtectionPctHtml(pufaProtection)
+          ) +
+          longevitySubgroupHtml(
+            "Other nutrients that support antioxidant recycling",
+            "aim"
+          ) +
+          LONGEVITY_PUFA_ANTIOXIDANT_SUPPORT_FROM_MICRO.map(function (item) {
+            return longevityRowFromMicroKey(
+              item.microKey,
+              item.label,
+              false,
+              weekMicro
+            );
+          }).join("") +
+          LONGEVITY_PUFA_ANTIOXIDANT_SUPPORT_FROM_LONGEVITY.map(function (item) {
+            var field = longevityFieldByKey(item.key);
+            if (!field) return "";
+            return longevityRowHtml(
+              item.label,
+              weekLongevity[item.key] > 0
+                ? fmtNum(avgDailyLongevity(item.key, weekLongevity[item.key])) +
+                  " " +
+                  field.unit
+                : "—",
+              (function () {
+                var pct = avgDailyLongevityPct(item.key, weekLongevity[item.key] || 0);
+                return pct == null || isNaN(pct) ? "—" : fmtNum(pct) + "%";
+              })(),
+              avgDailyLongevityPct(item.key, weekLongevity[item.key] || 0),
+              "",
+              false,
+              item.key,
+              false,
+              null,
+              item.key,
+              "longevity"
+            );
+          }).join("") +
+          longevityListClose()
+      );
+    }
+
     LONGEVITY_GROUPS.forEach(function (group) {
       if (group.id === "glutathione") {
         html += longevitySectionWrap(
@@ -4767,6 +5077,9 @@
       body += longevityListClose();
       var noteHtml = group.id === "fats" ? fatsCholesterolTipHtml() : "";
       html += longevitySectionWrap(group.label, group.sectionDefKey, noteHtml, body);
+      if (group.id === "omega") {
+        html += pufaAntioxidantSectionHtml();
+      }
     });
 
     html += longevitySectionWrap(
@@ -8156,6 +8469,10 @@
         openFiberColonTipModal();
         return;
       }
+      if (e.target.closest('[data-action="open-pufa-antioxidant-tip-modal"]')) {
+        openPufaAntioxidantTipModal();
+        return;
+      }
       var longevitySourcesBtn = e.target.closest("[data-longevity-sources]");
       if (longevitySourcesBtn) {
         e.preventDefault();
@@ -8315,6 +8632,18 @@
     fiberColonTipModalEl.addEventListener("click", function (e) {
       if (e.target.closest('[data-action="close-fiber-colon-tip-modal"]')) {
         closeFiberColonTipModal();
+      }
+    });
+  }
+
+  if (pufaAntioxidantTipModalDoneBtn) {
+    pufaAntioxidantTipModalDoneBtn.addEventListener("click", closePufaAntioxidantTipModal);
+  }
+
+  if (pufaAntioxidantTipModalEl) {
+    pufaAntioxidantTipModalEl.addEventListener("click", function (e) {
+      if (e.target.closest('[data-action="close-pufa-antioxidant-tip-modal"]')) {
+        closePufaAntioxidantTipModal();
       }
     });
   }
