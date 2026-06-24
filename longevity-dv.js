@@ -42,7 +42,6 @@
     glycemicIndex: 0,
     addedSugar: 50,
     refinedCarbs: 0,
-    netCarbs: 0,
   };
 
   /** Micro keys shown in longevity panel but stored under food.micros */

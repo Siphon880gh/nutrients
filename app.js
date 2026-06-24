@@ -313,7 +313,7 @@
     sectionGlutathione: { label: "Glutathione support" },
     sectionDnaRepair: { label: "DNA repair support" },
     sectionCompounds: { label: "Longevity & inflammation compounds" },
-    sectionCarb: { label: "Carb quality & glycemic" },
+    sectionCarb: { label: "Carb quality" },
     sectionMicronutrients: { label: "Micronutrients from food" },
     sectionFiber: { label: "Fiber & colon health" },
     sectionBoneDensity: { label: "Bone density" },
@@ -421,7 +421,7 @@
       label: "Longevity & inflammation compounds",
       sectionDefKey: "sectionCompounds",
     },
-    { id: "carb", label: "Carb quality & glycemic", sectionDefKey: "sectionCarb" },
+    { id: "carb", label: "Carb quality", sectionDefKey: "sectionCarb" },
   ];
 
   var LONGEVITY_NAV_SECTIONS = [
@@ -773,7 +773,7 @@
       group: "compounds",
       limiting: true,
     },
-    { key: "glycemicIndex", label: "Glycemic index", unit: "GI", code: "gi", group: "carb" },
+    { key: "glycemicIndex", label: "Glycemic index", unit: "GI", code: "gi", group: "glycemic" },
     {
       key: "addedSugar",
       label: "Added sugar",
@@ -790,17 +790,9 @@
       group: "carb",
       limiting: true,
     },
-    {
-      key: "netCarbs",
-      label: "Net carbohydrates",
-      unit: "g",
-      code: "net",
-      group: "carb",
-      limiting: true,
-    },
   ];
 
-  var CARB_QUALITY_KEYS = ["glycemicIndex", "addedSugar", "refinedCarbs", "netCarbs"];
+  var CARB_QUALITY_KEYS = ["glycemicIndex", "addedSugar", "refinedCarbs"];
 
   function escapeHtml(text) {
     return String(text)
@@ -3914,6 +3906,7 @@
       if (!hits) return;
 
       LONGEVITY_FIELDS.forEach(function (field) {
+        if (field.key === "glycemicIndex") return;
         var v = kw.longevity[field.key];
         if (v === "" || v == null) return;
         totals[field.key] += hits * parseFloat(v);
@@ -3994,6 +3987,29 @@
     };
   }
 
+  function giSummaryFromBuckets(buckets) {
+    var carbG = buckets.low + buckets.med + buckets.high;
+    if (carbG <= 0) return null;
+    var avgGi = ((buckets.lowGl + buckets.medGl + buckets.highGl) / carbG) * 100;
+    return {
+      avgGi: avgGi,
+      highShare: Math.round((buckets.high / carbG) * 100),
+      dailyCarbG: carbG / DAYS.length,
+    };
+  }
+
+  function giTierSummaryLabel(avgGi) {
+    if (avgGi == null || isNaN(avgGi)) return "—";
+    if (avgGi <= 55) return "low · ≤55";
+    if (avgGi <= 69) return "medium · 56–69";
+    return "high · ≥70";
+  }
+
+  function giLimitPctFromAvg(avgGi) {
+    if (avgGi == null || isNaN(avgGi)) return null;
+    return (avgGi / 55) * 100;
+  }
+
   function weekGlycemicLoadTotal() {
     var total = 0;
 
@@ -4057,6 +4073,7 @@
     var pufaVitaminERatio = pufaG > 0 ? vitEMg / pufaG : null;
     var pufaVitaminEProtection =
       pufaG > 0 && pufaTarget > 0 ? (vitEMg / (pufaG * pufaTarget)) * 100 : null;
+    var giBuckets = giBucketsFromWeek();
     return {
       omega6To3: ratioO6O3,
       satToUnsat: ratioSatUnsat,
@@ -4067,7 +4084,8 @@
       pufaVitaminERatio: pufaVitaminERatio,
       pufaVitaminEProtection: pufaVitaminEProtection,
       weekGl: weekGlycemicLoadTotal() / DAYS.length,
-      giBuckets: giBucketsFromWeek(),
+      giBuckets: giBuckets,
+      giSummary: giSummaryFromBuckets(giBuckets),
     };
   }
 
@@ -4814,11 +4832,6 @@
       total > 0
         ? fmtNum(avgDailyLongevity(field.key, total)) + " " + field.unit
         : "—";
-    if (field.key === "glycemicIndex") {
-      pctText = "per food";
-      amtText = total > 0 ? "see GL" : "—";
-    }
-    var showSources = field.key !== "glycemicIndex";
     return longevityRowHtml(
       field.label,
       amtText,
@@ -4829,8 +4842,8 @@
       field.key,
       false,
       null,
-      showSources ? field.key : null,
-      showSources ? "longevity" : null
+      field.key,
+      "longevity"
     );
   }
 
@@ -5306,6 +5319,34 @@
       "sectionGlycemic",
       '<p class="dashboard__longevity-note">GL = GI × carbs per serving ÷ 100 — a meal-impact score, not blood glucose or a vitamin % DV.</p>',
       longevityGlycemicListOpen() +
+        (function () {
+          var gi = derived.giSummary;
+          var avgGi = gi ? gi.avgGi : null;
+          var giPct = giLimitPctFromAvg(avgGi);
+          var pctText = giTierSummaryLabel(avgGi);
+          if (gi && gi.highShare > 0) {
+            pctText += " · " + gi.highShare + "% high GI carbs";
+          }
+          return (
+            longevitySubgroupHtml(
+              "Glycemic index — carb-weighted from matched foods",
+              "micro"
+            ) +
+            longevityRowHtml(
+              "Glycemic index",
+              avgGi == null || isNaN(avgGi) ? "—" : fmtNum(avgGi) + " avg GI",
+              pctText,
+              giPct,
+              "dashboard__longevity-row--computed",
+              true,
+              "glycemicIndex",
+              false,
+              null,
+              "glycemicLoad",
+              "glycemicLoad"
+            )
+          );
+        })() +
         longevitySubgroupHtml("Watch — lower glycemic load is better", "limit") +
         (function () {
           var glMax = longevityDvStatus.glycemicLoadMaxPerDay;

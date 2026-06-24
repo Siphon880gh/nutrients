@@ -712,6 +712,7 @@
       "White bread, sugary drinks, and refined cereals are common high-GI staples."
     ],
     "enough": [
+      "The dashboard shows a carb-weighted average GI from your matched foods—lower is better (≤55 low, 56–69 medium, ≥70 high).",
       "Lower-GI carbs digest slower, smoothing glucose and insulin and reducing post-meal crashes that drive cravings and overeating.",
       "Choosing slower carbs over white bread, sugary drinks, and refined cereals helps prevent insulin resistance and fatty liver when portions stay reasonable."
     ],
@@ -760,24 +761,6 @@
       "Pretzels",
       "Instant noodles",
       "Swap: whole grain versions"
-    ]
-  },
-  "netCarbs": {
-    "tooHigh": [
-      "High net carbs (total carbs minus fiber) mean more absorbable carbohydrate per meal—relevant for keto tracking and glycemic control.",
-      "Large net-carb loads behave like high GL even if fiber is present elsewhere in the day."
-    ],
-    "enough": [
-      "High absorbable carb loads—whether from sugar or stripped grains—push blood glucose and insulin harder than fiber-rich whole foods.",
-      "Keeping net carbs moderate at meals supports weight stability, clearer energy, and long-term metabolic health, especially if diabetes runs in your family."
-    ],
-    "foodSources": [
-      "Low net: leafy greens, cauliflower",
-      "Medium: berries, beans",
-      "High: bread, rice, sugar",
-      "Whole grains with fiber",
-      "Vegetables before starches",
-      "Protein or fat with carb-heavy meals"
     ]
   },
   "omega6To3": {

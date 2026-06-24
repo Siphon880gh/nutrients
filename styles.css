@@ -1514,11 +1514,15 @@ button.dashboard__micro-day-name:focus-visible {
 
 .dashboard__longevity-nav-all-item {
   margin: 0;
+  display: flex;
 }
 
 .dashboard__longevity-nav-all-link {
-  display: block;
+  display: flex;
+  align-items: center;
+  flex: 1;
   width: 100%;
+  min-height: 100%;
   padding: 0.35rem 0.45rem;
   border: 0;
   border-radius: 4px;
@@ -1543,8 +1547,8 @@ button.dashboard__micro-day-name:focus-visible {
 
 .dashboard__longevity-nav-all-link--active,
 .dashboard__longevity-nav-all-link[aria-current="true"] {
-  background: #e8f0e4;
-  color: #2a3a22;
+  background: #e8e8e6;
+  color: #333;
   font-weight: 600;
 }
 
@@ -1560,7 +1564,7 @@ button.dashboard__micro-day-name:focus-visible {
 
 .dashboard__longevity-nav-all-link--active[data-longevity-topic-color],
 .dashboard__longevity-nav-all-link[aria-current="true"][data-longevity-topic-color] {
-  background: color-mix(in srgb, var(--longevity-topic-color) 18%, #e8f0e4);
+  background: color-mix(in srgb, var(--longevity-topic-color) 18%, #e8e8e6);
   color: var(--longevity-topic-color);
 }
 
