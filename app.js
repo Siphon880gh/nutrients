@@ -386,6 +386,31 @@
         "curcumin",
       ],
     },
+    hairLoss: {
+      label: "Hair loss",
+      nutrients: [
+        "iron",
+        "zinc",
+        "biotin",
+        "vitaminD",
+        "folate",
+        "vitaminB12",
+        "vitaminC",
+      ],
+      longevityNutrients: ["selenium"],
+    },
+    cataractsPrevention: {
+      label: "Cataracts prevention",
+      nutrients: ["vitaminC", "vitaminA", "zinc"],
+      longevityNutrients: [
+        "vitaminE",
+        "lutein",
+        "carotenoids",
+        "selenium",
+        "epa",
+        "dha",
+      ],
+    },
   };
 
   var MICRO_FIELDS = [
@@ -1610,36 +1635,48 @@
     });
   }
 
+  function microConditionDefFields(raw) {
+    var fields = {};
+    Object.keys(MICRO_CONDITION_FOCUS).forEach(function (id) {
+      fields[id] = stringArray(raw[id]);
+    });
+    return fields;
+  }
+
+  function microDefEntryHasContent(entry) {
+    if (
+      entry.tooLow.length ||
+      entry.tooHigh.length ||
+      entry.enough.length ||
+      entry.foodSources.length ||
+      entry.male.length ||
+      entry.female.length
+    ) {
+      return true;
+    }
+    return Object.keys(MICRO_CONDITION_FOCUS).some(function (id) {
+      return entry[id].length;
+    });
+  }
+
   function normalizeMicroDefinitions(data) {
     var out = {};
     if (!data || typeof data !== "object") return out;
     MICRO_FIELDS.forEach(function (field) {
       var raw = data[field.key];
       if (!raw || typeof raw !== "object") return;
-      var entry = {
-        tooLow: stringArray(raw.tooLow),
-        tooHigh: stringArray(raw.tooHigh),
-        enough: stringArray(raw.enough),
-        foodSources: stringArray(raw.foodSources),
-        male: stringArray(raw.male),
-        female: stringArray(raw.female),
-        coffeeTeaUser: stringArray(raw.coffeeTeaUser),
-        adhd: stringArray(raw.adhd),
-        anemia: stringArray(raw.anemia),
-        antiAging: stringArray(raw.antiAging),
-      };
-      if (
-        entry.tooLow.length ||
-        entry.tooHigh.length ||
-        entry.enough.length ||
-        entry.foodSources.length ||
-        entry.male.length ||
-        entry.female.length ||
-        entry.coffeeTeaUser.length ||
-        entry.adhd.length ||
-        entry.anemia.length ||
-        entry.antiAging.length
-      ) {
+      var entry = Object.assign(
+        {
+          tooLow: stringArray(raw.tooLow),
+          tooHigh: stringArray(raw.tooHigh),
+          enough: stringArray(raw.enough),
+          foodSources: stringArray(raw.foodSources),
+          male: stringArray(raw.male),
+          female: stringArray(raw.female),
+        },
+        microConditionDefFields(raw)
+      );
+      if (microDefEntryHasContent(entry)) {
         out[field.key] = entry;
       }
     });
@@ -1706,34 +1743,38 @@
     );
   }
 
+  function longevityDefEntryHasContent(entry) {
+    if (
+      entry.tooLow.length ||
+      entry.tooHigh.length ||
+      entry.enough.length ||
+      entry.foodSources.length ||
+      entry.targetReference.length
+    ) {
+      return true;
+    }
+    return Object.keys(MICRO_CONDITION_FOCUS).some(function (id) {
+      return entry[id].length;
+    });
+  }
+
   function normalizeLongevityDefinitions(data) {
     var out = {};
     if (!data || typeof data !== "object") return out;
     longevityDefKeyList().forEach(function (key) {
       var raw = data[key];
       if (!raw || typeof raw !== "object") return;
-      var entry = {
-        tooLow: stringArray(raw.tooLow),
-        tooHigh: stringArray(raw.tooHigh),
-        enough: stringArray(raw.enough),
-        foodSources: stringArray(raw.foodSources),
-        targetReference: stringArray(raw.targetReference),
-        coffeeTeaUser: stringArray(raw.coffeeTeaUser),
-        adhd: stringArray(raw.adhd),
-        anemia: stringArray(raw.anemia),
-        antiAging: stringArray(raw.antiAging),
-      };
-      if (
-        entry.tooLow.length ||
-        entry.tooHigh.length ||
-        entry.enough.length ||
-        entry.foodSources.length ||
-        entry.targetReference.length ||
-        entry.coffeeTeaUser.length ||
-        entry.adhd.length ||
-        entry.anemia.length ||
-        entry.antiAging.length
-      ) {
+      var entry = Object.assign(
+        {
+          tooLow: stringArray(raw.tooLow),
+          tooHigh: stringArray(raw.tooHigh),
+          enough: stringArray(raw.enough),
+          foodSources: stringArray(raw.foodSources),
+          targetReference: stringArray(raw.targetReference),
+        },
+        microConditionDefFields(raw)
+      );
+      if (longevityDefEntryHasContent(entry)) {
         out[key] = entry;
       }
     });
@@ -1818,11 +1859,14 @@
     );
   }
 
-  function microDefConditionSectionHtml(def) {
-    if (!microConditionFocus) return "";
+  function microDefConditionSectionHtml(key, def) {
+    if (!microConditionFocus || !key) return "";
     var condMeta = MICRO_CONDITION_FOCUS[microConditionFocus];
     var condNotes = def[microConditionFocus];
     if (!condMeta || !condNotes || !condNotes.length) return "";
+    var inMicro = (condMeta.nutrients || []).indexOf(key) !== -1;
+    var inLongevity = (condMeta.longevityNutrients || []).indexOf(key) !== -1;
+    if (!inMicro && !inLongevity) return "";
     return (
       '<section class="micro-def__section micro-def__section--condition">' +
       '<h4 class="micro-def__heading micro-def__heading--condition">' +
@@ -1849,7 +1893,7 @@
       return;
     }
 
-    var html = microDefConditionSectionHtml(def);
+    var html = microDefConditionSectionHtml(key, def);
 
     if (def.tooLow.length) {
       html +=
@@ -2002,7 +2046,7 @@
       key === "pufaVitaminEProtection"
         ? pufaVitaminEProtectionCalcHtml() + pufaVitaminEAntioxidantSupportHtml()
         : "";
-    html += microDefConditionSectionHtml(def);
+    html += microDefConditionSectionHtml(key, def);
 
     if (def.targetReference && def.targetReference.length) {
       html +=

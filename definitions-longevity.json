@@ -202,6 +202,10 @@
     "antiAging": [
       "EPA dampens inflammatory eicosanoids that drive vascular aging and joint degradation—part of the senomorphic side of longevity nutrition.",
       "Adequate marine omega-3 intake is linked with slower telomere attrition and lower cardiovascular mortality in long-term cohort studies."
+    ],
+    "cataractsPrevention": [
+      "EPA helps balance inflammatory eicosanoids in retinal tissue; higher marine omega-3 intake is associated with lower cataract risk in several observational studies.",
+      "Fatty fish and algae oil supply EPA alongside DHA for the full omega-3 eye-support stack."
     ]
   },
   "dha": {
@@ -230,6 +234,10 @@
     "antiAging": [
       "DHA maintains neuronal membrane structure and supports brain resilience as oxidative stress rises with age.",
       "Higher DHA status correlates with slower cognitive decline and better retinal protection—two hallmark targets of healthy aging."
+    ],
+    "cataractsPrevention": [
+      "DHA is a major structural fat in the retina and helps maintain cell-membrane fluidity under oxidative stress—relevant to long-term lens and retinal health.",
+      "Salmon, sardines, herring, and algae DHA are direct food sources when plant ALA alone is insufficient."
     ]
   },
   "linoleicAcid": {
@@ -328,6 +336,10 @@
     "antiAging": [
       "Vitamin E shields cell membranes and LDL from lipid peroxidation—the oxidative damage that accelerates vascular and brain aging.",
       "It works as an antioxidant shield alongside vitamin C; low E leaves fats in membranes and mitochondria vulnerable to free-radical chain reactions."
+    ],
+    "cataractsPrevention": [
+      "Vitamin E protects the lipid-rich membranes of eye tissues from oxidation; population studies link higher E intake from nuts and seeds with lower cataract rates.",
+      "It pairs with vitamin C in the lens antioxidant network—food E from almonds, sunflower seeds, and leafy greens is preferable to high-dose pills."
     ]
   },
   "vitaminK": {
@@ -408,6 +420,14 @@
     "antiAging": [
       "Selenium powers glutathione peroxidase and other antioxidant enzymes that neutralize peroxides before they damage DNA.",
       "Adequate selenium supports thyroid hormone activation and DNA repair—two systems that drift with age when trace intake is low."
+    ],
+    "hairLoss": [
+      "Selenium supports thyroid hormone activation and glutathione peroxidase—both tie into hair cycling; deficiency can worsen shedding, but excess selenium is also toxic to hair.",
+      "A few Brazil nuts weekly, seafood, or eggs usually cover needs without megadose supplements."
+    ],
+    "cataractsPrevention": [
+      "Selenium powers glutathione peroxidase in the lens and other eye tissues, helping neutralize peroxides that drive cataract-related oxidative damage.",
+      "Brazil nuts, seafood, and eggs supply trace selenium; avoid daily handfuls of Brazil nuts, which can overshoot safe intake."
     ]
   },
   "copper": {
@@ -518,6 +538,10 @@
       "Watermelon",
       "Eggs (yolk)",
       "Mango"
+    ],
+    "cataractsPrevention": [
+      "Carotenoids—including beta-carotene, lutein, and lycopene—filter short-wavelength light and quench lens oxidants; low produce intake reduces this protective pool.",
+      "Orange, red, and green plants with a little fat at meals improve absorption of the fat-soluble carotenoid network."
     ]
   },
   "lutein": {
@@ -538,6 +562,10 @@
       "Cook greens in olive oil",
       "Eggs with yolk intact",
       "Yellow-orange vegetables"
+    ],
+    "cataractsPrevention": [
+      "Lutein and zeaxanthin concentrate in the macula and lens, filtering blue light and lowering oxidative stress—population studies link higher lutein intake with lower cataract risk.",
+      "Dark leafy greens, egg yolks, and corn cooked with olive oil are practical food sources; pair with fat for absorption."
     ]
   },
   "curcumin": {

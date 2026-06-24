@@ -181,6 +181,10 @@
     "antiAging": [
       "Iron supports cytochrome enzymes in mitochondria that generate ATP and manage oxidative byproducts—low iron starves cellular energy even before anemia appears.",
       "Balance matters: excess iron raises oxidative stress, but adequate food iron with vitamin C supports oxygen delivery and mitochondrial electron transport as you age."
+    ],
+    "hairLoss": [
+      "Low ferritin is one of the most common correctable causes of diffuse hair shedding (telogen effluvium)—especially in women with heavy periods, pregnancy, or restrictive diets.",
+      "Iron supports oxygen delivery to rapidly dividing hair-follicle cells; pair plant iron with vitamin C and keep coffee/tea away from iron-rich meals when rebuilding stores."
     ]
   },
   "magnesium": {
@@ -265,6 +269,14 @@
       "Zinc shapes dopamine transporter (DAT) architecture so released dopamine stays in the synapse long enough to bind receptors. Low zinc speeds dopamine clearance and can mimic a functional dopamine shortage.",
       "Low zinc correlates with inattention, weak spatial memory, and needing higher stimulant doses to achieve the same focus. Serum zinc is the usual biomarker to track.",
       "Zinc picolinate or zinc gluconate with food is typical for supplementation; empty-stomach zinc often causes nausea."
+    ],
+    "hairLoss": [
+      "Zinc is required for hair-follicle protein synthesis and cell division; deficiency shows up as thinning hair, brittle strands, and slow regrowth.",
+      "Plant-heavy diets without legumes, nuts, or seeds—and high phytate intake without soaking—raise zinc shortfall risk alongside iron."
+    ],
+    "cataractsPrevention": [
+      "Zinc is a cofactor for lens antioxidant enzymes (including copper/zinc superoxide dismutase) that help neutralize oxidative damage linked with cataract formation.",
+      "Adequate zinc from oysters, meat, legumes, and seeds supports eye tissue repair without the copper-depleting risks of chronic high-dose zinc pills."
     ]
   },
   "vitaminA": {
@@ -296,6 +308,10 @@
     "female": [
       "Critical for fertility, fetal development, and breastfeeding—too much preformed A in pregnancy is harmful, so food balance matters.",
       "Helps mucous membranes stay healthy, reducing dry-eye and vaginal dryness when overall nutrition is sound."
+    ],
+    "cataractsPrevention": [
+      "Vitamin A (retinol and carotenoids) supports corneal and retinal health; beta-carotene from colorful produce also feeds the broader carotenoid network that protects eye tissues.",
+      "Food sources—sweet potato, leafy greens, eggs—supply vision-supporting A without the cataract-unrelated risks of megadose preformed A supplements."
     ]
   },
   "vitaminD": {
@@ -337,6 +353,10 @@
       "Vitamin D acts as a senomorphic nutrient—it downregulates chronic age-related inflammation (inflamaging) and supports immune balance rather than only bone health.",
       "Low vitamin D is linked with faster epigenetic aging markers, weaker muscle maintenance, and higher cardiovascular risk over decades.",
       "Adequate D from fatty fish, fortified foods, and safe sun helps cells resist the inflammatory signaling that accelerates tissue decline."
+    ],
+    "hairLoss": [
+      "Low vitamin D is linked with telogen effluvium and some forms of alopecia; follicles have vitamin D receptors and need adequate status for normal cycling.",
+      "Fatty fish, fortified dairy, safe sun, and tested supplementation are the usual routes when blood levels run low—especially in winter or with limited outdoor time."
     ]
   },
   "vitaminB12": {
@@ -381,6 +401,10 @@
     "antiAging": [
       "B12 protects DNA integrity during cell division and supports mitochondrial methyl-group chemistry with folate.",
       "Low B12 raises homocysteine and mimics accelerated cognitive aging—correcting deficiency is one of the clearest nutrition wins for older adults."
+    ],
+    "hairLoss": [
+      "B12 deficiency can trigger megaloblastic anemia and diffuse hair shedding that feels like stress-related loss—test B12 when iron is normal but shedding persists.",
+      "Vegans, older adults, and people on metformin or long-term acid suppressants are higher-risk groups for B12-driven fatigue and hair changes."
     ]
   },
   "vitaminC": {
@@ -427,6 +451,14 @@
       "Vitamin C neutralizes free radicals in blood and tissues, recycling vitamin E and protecting DNA from oxidative hits that trigger cellular aging.",
       "It supports collagen repair and immune surveillance—both decline with age when antioxidant intake is low.",
       "Regular produce intake is the practical shield against oxidative stress; megadose pills are not required for this longevity role."
+    ],
+    "hairLoss": [
+      "Vitamin C builds collagen for the scalp and hair shaft and strongly improves plant-iron absorption—both matter when iron-driven shedding is part of the picture.",
+      "Regular produce at iron-containing meals helps rebuild ferritin while supporting connective tissue around follicles."
+    ],
+    "cataractsPrevention": [
+      "The lens concentrates vitamin C as an antioxidant buffer against UV and oxidative damage—one reason produce-rich diets correlate with lower cataract risk in population studies.",
+      "Vitamin C also recycles vitamin E in eye tissues; citrus, peppers, and leafy greens supply the water-soluble half of that antioxidant pair."
     ]
   },
   "iodine": {
@@ -542,6 +574,10 @@
     "antiAging": [
       "Folate drives DNA repair and methylation—processes that slow when cells accumulate damage during aging.",
       "Adequate folate with B12 and B6 supports homocysteine clearance and protects vascular and brain tissue from oxidative injury over decades."
+    ],
+    "hairLoss": [
+      "Folate supports rapid cell division in the hair bulb; low folate alongside B12 can cause anemia-like shedding and brittle regrowth.",
+      "Active folate forms (L-methylfolate) matter when MTHFR variants slow conversion—folate status is worth checking when B12 and iron look normal."
     ]
   },
   "biotin": {
@@ -576,6 +612,10 @@
     "antiAging": [
       "Biotin supports enzymes that build fatty acids and metabolize carbs—both feed mitochondrial energy production.",
       "Low biotin impairs glucose handling and skin barrier repair, subtle deficits that compound metabolic aging over time."
+    ],
+    "hairLoss": [
+      "Biotin (B7) supports keratin production—the structural protein in hair and nails; deficiency can cause thinning, though true biotin deficiency is uncommon outside raw-egg-white diets or long antibiotic courses.",
+      "Eggs, nuts, salmon, and varied whole foods usually cover needs; megadose biotin supplements can skew lab tests and are rarely needed without confirmed deficiency."
     ]
   },
   "thiamin": {
