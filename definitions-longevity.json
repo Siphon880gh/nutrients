@@ -930,6 +930,13 @@
       "Sulfur-rich foods such as onions, garlic, broccoli, Brussels sprouts, cabbage, and other crucifers help supply the sulfur and Nrf2-supporting plant compounds that keep this system active. Protein-rich foods such as lean meats, poultry, eggs, legumes, and seeds supply amino acid building blocks."
     ]
   },
+  "sectionDnaRepair": {
+    "enough": [
+      "DNA repair is not driven by one magic nutrient. The most useful pattern is covering the cofactors for repair enzymes, nucleotide building, methylation, and antioxidant defense.",
+      "Vitamin C, vitamin E, selenium, polyphenols, flavonoids, and carotenoids help lower free-radical pressure before oxidative lesions accumulate. Folate, B12, B6, niacin, and riboflavin support nucleotide synthesis, methylation, NAD-dependent repair signaling, and redox balance.",
+      "Magnesium and zinc are key mineral cofactors for DNA replication and repair proteins. Keeping these nutrients adequate supports repair capacity after oxidative damage or copying errors, but it does not guarantee that every lesion is fixed."
+    ]
+  },
   "sectionCompounds": {
     "enough": [
       "Antioxidants, fat-soluble vitamins, and trace minerals here defend cells against oxidative damage, quiet chronic inflammation, and keep arteries and bones working correctly as you age.",

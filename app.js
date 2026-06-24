@@ -309,6 +309,7 @@
     sectionFats: { label: "Fats & cholesterol" },
     sectionOmega: { label: "Omega fatty acids" },
     sectionGlutathione: { label: "Glutathione support" },
+    sectionDnaRepair: { label: "DNA repair support" },
     sectionCompounds: { label: "Longevity & inflammation compounds" },
     sectionCarb: { label: "Carb quality & glycemic" },
     sectionMicronutrients: { label: "Micronutrients from food" },
@@ -410,6 +411,7 @@
     { id: "fats", label: "Fats & cholesterol", sectionDefKey: "sectionFats" },
     { id: "omega", label: "Omega fatty acids", sectionDefKey: "sectionOmega" },
     { id: "glutathione", label: "Glutathione support", sectionDefKey: "sectionGlutathione" },
+    { id: "dnaRepair", label: "DNA repair support", sectionDefKey: "sectionDnaRepair" },
     {
       id: "compounds",
       label: "Longevity & inflammation compounds",
@@ -492,6 +494,25 @@
     { key: "vitaminE", label: "Vitamin E", limiting: false },
     { key: "sulforaphane", label: "Sulforaphane", limiting: false },
     { key: "polyphenols", label: "Polyphenols", limiting: false },
+  ];
+
+  var LONGEVITY_DNA_REPAIR_FROM_MICRO = [
+    { microKey: "vitaminC", label: "Vitamin C — antioxidant defense", limiting: false },
+    { microKey: "folate", label: "Folate (B9) — nucleotide synthesis", limiting: false },
+    { microKey: "vitaminB12", label: "Vitamin B12 — methylation support", limiting: false },
+    { microKey: "vitaminB6", label: "Vitamin B6 — methylation support", limiting: false },
+    { microKey: "niacin", label: "Niacin (B3) — NAD for repair enzymes", limiting: false },
+    { microKey: "riboflavin", label: "Riboflavin (B2) — redox support", limiting: false },
+    { microKey: "magnesium", label: "Magnesium — DNA polymerase cofactor", limiting: false },
+    { microKey: "zinc", label: "Zinc — DNA repair protein cofactor", limiting: false },
+  ];
+
+  var LONGEVITY_DNA_REPAIR_FROM_LONGEVITY = [
+    { key: "selenium", label: "Selenium — antioxidant enzymes", limiting: false },
+    { key: "vitaminE", label: "Vitamin E — lipid antioxidant defense", limiting: false },
+    { key: "polyphenols", label: "Polyphenols — oxidative stress support", limiting: false },
+    { key: "flavonoids", label: "Flavonoids — antioxidant signaling", limiting: false },
+    { key: "carotenoids", label: "Carotenoids — antioxidant support", limiting: false },
   ];
 
   var LONGEVITY_CALCIFICATION_FIELD_KEYS = ["phosphorus"];
@@ -5050,6 +5071,31 @@
             }).join("") +
             longevitySubgroupHtml("From your longevity entries", "compounds") +
             LONGEVITY_GLUTATHIONE_FROM_LONGEVITY.map(function (item) {
+              var field = longevityFieldByKey(item.key);
+              if (!field) return "";
+              return longevityRowFromLongevityField(field, weekLongevity);
+            }).join("") +
+            longevityListClose()
+        );
+        return;
+      }
+      if (group.id === "dnaRepair") {
+        html += longevitySectionWrap(
+          "DNA repair support",
+          "sectionDnaRepair",
+          '<p class="dashboard__longevity-note">These nutrients do not instantly undo DNA damage, but they support the systems that prevent and repair it: antioxidant defenses for free-radical damage, B vitamins for nucleotide and methylation chemistry, and minerals used by DNA repair and replication enzymes.</p>',
+          longevityListOpen() +
+            longevitySubgroupHtml("From your micro entries", "micro") +
+            LONGEVITY_DNA_REPAIR_FROM_MICRO.map(function (item) {
+              return longevityRowFromMicroKey(
+                item.microKey,
+                item.label,
+                !!item.limiting,
+                weekMicro
+              );
+            }).join("") +
+            longevitySubgroupHtml("From your longevity entries", "compounds") +
+            LONGEVITY_DNA_REPAIR_FROM_LONGEVITY.map(function (item) {
               var field = longevityFieldByKey(item.key);
               if (!field) return "";
               return longevityRowFromLongevityField(field, weekLongevity);
