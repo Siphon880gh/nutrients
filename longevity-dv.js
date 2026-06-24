@@ -26,6 +26,7 @@
     vitaminK2: 120,
     selenium: 55,
     copper: 900,
+    methionine: 0,
     polyphenols: 650,
     flavonoids: 400,
     carotenoids: 0,

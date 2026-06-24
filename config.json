@@ -92,10 +92,12 @@
     "sectionOmega": "#a67c00",
     "sectionGlutathione": "#2a7d6e",
     "sectionDnaRepair": "#2a7d6e",
-    "sectionCompounds": "#2a7d6e",
+    "sectionCompounds": "#6a9050",
+    "sectionHistamine": "#6a9050",
     "sectionCarb": "#3d6ea8",
     "sectionGlycemic": "#3d6ea8",
     "sectionCalcification": "#a8505a",
-    "sectionTmao": "#a8505a"
+    "sectionTmao": "#a8505a",
+    "sectionHomocysteine": "#a8505a"
   }
 }

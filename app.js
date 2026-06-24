@@ -131,6 +131,8 @@
   var pufaAntioxidantTipModalDoneBtn = document.getElementById(
     "pufa-antioxidant-tip-modal-done"
   );
+  var histamineTipModalEl = document.getElementById("histamine-tip-modal");
+  var histamineTipModalDoneBtn = document.getElementById("histamine-tip-modal-done");
   var settingsOpenBtn = document.getElementById("settings-open");
   var settingsModalEl = document.getElementById("settings-modal");
   var settingsModalDoneBtn = document.getElementById("settings-modal-done");
@@ -316,8 +318,10 @@
     sectionFiber: { label: "Fiber & colon health" },
     sectionBoneDensity: { label: "Bone density" },
     sectionCalcification: { label: "Calcification & vascular balance" },
+    sectionHomocysteine: { label: "Methylation & homocysteine balance" },
     sectionDerived: { label: "Derived scores" },
     sectionTmao: { label: "TMAO balance" },
+    sectionHistamine: { label: "Histamine tolerance & quality of life" },
     sectionPufaAntioxidant: { label: "Fat oxidation & antioxidant protection" },
     sectionGlycemic: { label: "Glycemic load & GI distribution" },
     sectionMitochondrial: { label: "Mitochondrial health & cellular energy" },
@@ -440,6 +444,12 @@
             sectionDefKey: "sectionPufaAntioxidant",
           });
         }
+        if (group.id === "compounds") {
+          sections.push({
+            label: "Histamine tolerance & quality of life",
+            sectionDefKey: "sectionHistamine",
+          });
+        }
         return sections;
       }, [])
     )
@@ -447,6 +457,10 @@
       { label: "Glycemic load & GI distribution", sectionDefKey: "sectionGlycemic" },
       { label: "Calcification & vascular balance", sectionDefKey: "sectionCalcification" },
       { label: "TMAO balance", sectionDefKey: "sectionTmao" },
+      {
+        label: "Methylation & homocysteine balance",
+        sectionDefKey: "sectionHomocysteine",
+      },
     ]);
 
   var LONGEVITY_BONE_FROM_MICRO = [
@@ -517,6 +531,18 @@
 
   var LONGEVITY_CALCIFICATION_FIELD_KEYS = ["phosphorus"];
 
+  var LONGEVITY_HOMOCYSTEINE_FROM_MICRO = [
+    { microKey: "folate", label: "Folate (B9) — remethylation" },
+    { microKey: "vitaminB12", label: "Vitamin B12 — remethylation" },
+    { microKey: "vitaminB6", label: "Vitamin B6 — transsulfuration" },
+    { microKey: "riboflavin", label: "Riboflavin (B2) — MTHFR/FAD support" },
+  ];
+
+  var LONGEVITY_HOMOCYSTEINE_FROM_LONGEVITY = [
+    { key: "choline", label: "Choline — alternate methyl donor" },
+    { key: "betaine", label: "Betaine — alternate methyl donor" },
+  ];
+
   var LONGEVITY_COMPOUNDS_FROM_MICRO = [
     { microKey: "iodine", label: "Iodine", limiting: false },
     { microKey: "fiber", label: "Fiber (prebiotic)", limiting: false },
@@ -539,6 +565,26 @@
     { key: "resveratrol", label: "Resveratrol (grapes, berries)" },
   ];
 
+  var LONGEVITY_HISTAMINE_FROM_MICRO = [
+    { microKey: "vitaminC", label: "Vitamin C — histamine breakdown support" },
+    { microKey: "vitaminB6", label: "Vitamin B6 — histamine enzyme support" },
+    { microKey: "folate", label: "Folate (B9) — HNMT methylation support" },
+    { microKey: "vitaminB12", label: "Vitamin B12 — SAMe/methylation support" },
+    { microKey: "riboflavin", label: "Riboflavin (B2) — methylation cofactor" },
+    { microKey: "magnesium", label: "Magnesium — nervous-system tolerance" },
+    { microKey: "zinc", label: "Zinc — immune and gut barrier support" },
+  ];
+
+  var LONGEVITY_HISTAMINE_FROM_LONGEVITY = [
+    { key: "copper", label: "Copper — DAO cofactor" },
+    { key: "methionine", label: "Methionine — SAMe building block" },
+    { key: "polyphenols", label: "Polyphenols — mast-cell support" },
+    { key: "flavonoids", label: "Flavonoids — mast-cell support" },
+  ];
+
+  var LONGEVITY_HISTAMINE_EPA_DHA_LABEL =
+    "EPA + DHA — inflammatory tone support";
+
   var LONGEVITY_PUFA_ANTIOXIDANT_SUPPORT_FROM_MICRO = [
     { microKey: "vitaminC", label: "Vitamin C — regenerates vitamin E" },
   ];
@@ -554,6 +600,26 @@
       label: "Carotenoids (beta-carotene, lycopene) — antioxidant support",
     },
   ];
+
+  function longevitySupportRowFromLongevityKey(key, label, weekLongevity) {
+    var field = longevityFieldByKey(key);
+    if (!field) return "";
+    var value = weekLongevity[key] || 0;
+    var pct = avgDailyLongevityPct(key, value);
+    return longevityRowHtml(
+      label,
+      value > 0 ? fmtNum(avgDailyLongevity(key, value)) + " " + field.unit : "—",
+      pct == null || isNaN(pct) ? "—" : fmtNum(pct) + "%",
+      pct,
+      "",
+      false,
+      key,
+      false,
+      null,
+      key,
+      "longevity"
+    );
+  }
 
   /** Micro keys where high % DV is undesirable on the longevity panel */
   var LONGEVITY_MICRO_LIMITING_KEYS = {
@@ -642,6 +708,13 @@
     { key: "vitaminK2", label: "Vitamin K2", unit: "mcg", code: "k2", group: "compounds" },
     { key: "selenium", label: "Selenium", unit: "mcg", code: "se", group: "compounds" },
     { key: "copper", label: "Copper", unit: "mcg", code: "cu", group: "compounds" },
+    {
+      key: "methionine",
+      label: "Methionine",
+      unit: "g",
+      code: "met",
+      group: "compounds",
+    },
     {
       key: "polyphenols",
       label: "Polyphenols",
@@ -1322,6 +1395,9 @@
     );
     lines.push(
       "  - longevity.copper: shellfish, nuts, liver, dark chocolate (mcg)"
+    );
+    lines.push(
+      "  - longevity.methionine: protein-rich foods such as poultry, fish, eggs, beef, pork, dairy, soy, sesame, Brazil nuts (g; SAMe precursor, omit if unknown)"
     );
     lines.push(
       "  - longevity.transFat: 0 for whole/natural foods; fried fast food, movie-theater buttery popcorn, and some pastries may have 0.1–4 g — use label data when available (g)"
@@ -2109,6 +2185,9 @@
     }
     if (pufaAntioxidantTipModalEl && !pufaAntioxidantTipModalEl.hidden) {
       closePufaAntioxidantTipModal();
+    }
+    if (histamineTipModalEl && !histamineTipModalEl.hidden) {
+      closeHistamineTipModal();
     }
     if (activeMicroId) {
       saveMicrosFromForm();
@@ -3044,6 +3123,52 @@
     updateBodyModalOpen();
   }
 
+  function openHistamineTipModal() {
+    if (!histamineTipModalEl) return;
+
+    if (activeImportId) closeImportModal();
+    if (importAllModalEl && !importAllModalEl.hidden) closeImportAllModal();
+    if (importAllMealsModalEl && !importAllMealsModalEl.hidden) {
+      closeImportAllMealsModal();
+    }
+    if (microGapsModalEl && !microGapsModalEl.hidden) closeMicroGapsModal();
+    if (microDefModalEl && !microDefModalEl.hidden) closeMicroDefModal();
+    if (phosphorusBinderModalEl && !phosphorusBinderModalEl.hidden) {
+      closePhosphorusBinderModal();
+    }
+    if (caffeineTipModalEl && !caffeineTipModalEl.hidden) closeCaffeineTipModal();
+    if (fatsCholesterolTipModalEl && !fatsCholesterolTipModalEl.hidden) {
+      closeFatsCholesterolTipModal();
+    }
+    if (tmaoProtectorsTipModalEl && !tmaoProtectorsTipModalEl.hidden) {
+      closeTmaoProtectorsTipModal();
+    }
+    if (fiberColonTipModalEl && !fiberColonTipModalEl.hidden) {
+      closeFiberColonTipModal();
+    }
+    if (pufaAntioxidantTipModalEl && !pufaAntioxidantTipModalEl.hidden) {
+      closePufaAntioxidantTipModal();
+    }
+    if (activeMicroId) {
+      saveMicrosFromForm();
+      closeMicroModal();
+    }
+    if (activeLongevityId) {
+      saveLongevityFromForm();
+      closeLongevityModal();
+    }
+
+    histamineTipModalEl.hidden = false;
+    updateBodyModalOpen();
+    if (histamineTipModalDoneBtn) histamineTipModalDoneBtn.focus();
+  }
+
+  function closeHistamineTipModal() {
+    if (!histamineTipModalEl) return;
+    histamineTipModalEl.hidden = true;
+    updateBodyModalOpen();
+  }
+
   function fatsCholesterolTipHtml() {
     return (
       '<aside class="dashboard__longevity-processed-note dashboard__longevity-processed-note--section" role="note">' +
@@ -3083,6 +3208,17 @@
       '<p class="dashboard__longevity-processed-note-text">' +
       "PUFAs are essential for cell membranes and signaling—eating more raises your vitamin E need (about 0.6 mg per gram PUFA). They are fragile: fats you absorb can oxidize during normal metabolism, not only when oil goes bad from heat, air, or storage. Vitamin E (alpha-tocopherol) helps protect them. Some whole foods pair PUFA with vitamin E (sunflower seeds, almonds); refined or overheated oils often do not, and how you store and cook oils matters… " +
       '<button type="button" class="dashboard__longevity-tip-link" data-action="open-pufa-antioxidant-tip-modal">Read more</button>' +
+      "</p>" +
+      "</aside>"
+    );
+  }
+
+  function histamineTipHtml() {
+    return (
+      '<aside class="dashboard__longevity-processed-note dashboard__longevity-processed-note--section" role="note">' +
+      '<p class="dashboard__longevity-processed-note-text">' +
+      "<strong>DAO, HNMT, and histamine:</strong> Histamine is useful for immune defense and stomach-acid signaling, but buildup can trigger allergy-like symptoms when release, food load, or breakdown gets out of balance. DAO handles food histamine in the gut; HNMT clears intracellular histamine and depends on methylation capacity. Copper, B vitamins, vitamin C, zinc, magnesium, protein, and fresh-food habits can support tolerance… " +
+      '<button type="button" class="dashboard__longevity-tip-link" data-action="open-histamine-tip-modal">Read more</button>' +
       "</p>" +
       "</aside>"
     );
@@ -3317,6 +3453,7 @@
       (tmaoProtectorsTipModalEl && !tmaoProtectorsTipModalEl.hidden) ||
       (fiberColonTipModalEl && !fiberColonTipModalEl.hidden) ||
       (pufaAntioxidantTipModalEl && !pufaAntioxidantTipModalEl.hidden) ||
+      (histamineTipModalEl && !histamineTipModalEl.hidden) ||
       (settingsModalEl && !settingsModalEl.hidden) ||
       (tdeeCalculatorModalEl && !tdeeCalculatorModalEl.hidden) ||
       (tdeeHintModalEl && !tdeeHintModalEl.hidden) ||
@@ -5053,6 +5190,39 @@
       );
     }
 
+    function histamineSectionHtml() {
+      return longevitySectionWrap(
+        "Histamine tolerance & quality of life",
+        "sectionHistamine",
+        '<p class="dashboard__longevity-note">Histamine tolerance affects quality of life through headaches, flushing, congestion, hives, sleep disruption, GI symptoms, and exercise tolerance. Food histamine is too storage- and fermentation-dependent to score here, so this section tracks breakdown and inflammatory-tolerance supports instead.</p>' +
+          histamineTipHtml(),
+        longevityListOpen() +
+          longevitySubgroupHtml("Breakdown & tolerance support", "aim") +
+          LONGEVITY_HISTAMINE_FROM_MICRO.map(function (item) {
+            return longevityRowFromMicroKey(
+              item.microKey,
+              item.label,
+              false,
+              weekMicro
+            );
+          }).join("") +
+          LONGEVITY_HISTAMINE_FROM_LONGEVITY.map(function (item) {
+            return longevitySupportRowFromLongevityKey(item.key, item.label, weekLongevity);
+          }).join("") +
+          longevityRowHtml(
+            LONGEVITY_HISTAMINE_EPA_DHA_LABEL,
+            derived.epaPlusDha > 0 ? fmtNum(derived.epaPlusDha) + " g" : "—",
+            derived.epaPlusDha > 0 ? "combined" : "—",
+            null,
+            "dashboard__longevity-row--computed",
+            false,
+            "epaPlusDha",
+            false
+          ) +
+          longevityListClose()
+      );
+    }
+
     LONGEVITY_GROUPS.forEach(function (group) {
       if (group.id === "glutathione") {
         html += longevitySectionWrap(
@@ -5123,6 +5293,9 @@
       body += longevityListClose();
       var noteHtml = group.id === "fats" ? fatsCholesterolTipHtml() : "";
       html += longevitySectionWrap(group.label, group.sectionDefKey, noteHtml, body);
+      if (group.id === "compounds") {
+        html += histamineSectionHtml();
+      }
       if (group.id === "omega") {
         html += pufaAntioxidantSectionHtml();
       }
@@ -5228,6 +5401,27 @@
           "epaPlusDha",
           false
         ) +
+        longevityListClose()
+    );
+
+    html += longevitySectionWrap(
+      "Methylation & homocysteine balance",
+      "sectionHomocysteine",
+      '<p class="dashboard__longevity-note">Homocysteine is a blood marker, not a food nutrient. This section groups the nutrients that help recycle or clear it through one-carbon metabolism; high homocysteine is tied to vascular aging, stroke risk, endothelial dysfunction, and cognitive aging.</p>',
+      longevityListOpen() +
+        longevitySubgroupHtml("B-vitamin support — higher % DV is better", "aim") +
+        LONGEVITY_HOMOCYSTEINE_FROM_MICRO.map(function (item) {
+          return longevityRowFromMicroKey(
+            item.microKey,
+            item.label,
+            false,
+            weekMicro
+          );
+        }).join("") +
+        longevitySubgroupHtml("Alternate methyl donors — balance with TMAO", "aim") +
+        LONGEVITY_HOMOCYSTEINE_FROM_LONGEVITY.map(function (item) {
+          return longevitySupportRowFromLongevityKey(item.key, item.label, weekLongevity);
+        }).join("") +
         longevityListClose()
     );
 
@@ -8519,6 +8713,10 @@
         openPufaAntioxidantTipModal();
         return;
       }
+      if (e.target.closest('[data-action="open-histamine-tip-modal"]')) {
+        openHistamineTipModal();
+        return;
+      }
       var longevitySourcesBtn = e.target.closest("[data-longevity-sources]");
       if (longevitySourcesBtn) {
         e.preventDefault();
@@ -8690,6 +8888,18 @@
     pufaAntioxidantTipModalEl.addEventListener("click", function (e) {
       if (e.target.closest('[data-action="close-pufa-antioxidant-tip-modal"]')) {
         closePufaAntioxidantTipModal();
+      }
+    });
+  }
+
+  if (histamineTipModalDoneBtn) {
+    histamineTipModalDoneBtn.addEventListener("click", closeHistamineTipModal);
+  }
+
+  if (histamineTipModalEl) {
+    histamineTipModalEl.addEventListener("click", function (e) {
+      if (e.target.closest('[data-action="close-histamine-tip-modal"]')) {
+        closeHistamineTipModal();
       }
     });
   }
