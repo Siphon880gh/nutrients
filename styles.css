@@ -1675,6 +1675,24 @@ button.dashboard__micro-day-name:focus-visible {
   margin: 0;
 }
 
+.dashboard__panel-disclaimer-btn {
+  display: block;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.dashboard__panel-disclaimer-btn:hover .dashboard__longevity-disclaimer-text {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
 .dashboard__longevity-legend {
   display: flex;
   flex-wrap: wrap;
@@ -2009,6 +2027,26 @@ button.dashboard__micro-day-name:focus-visible {
 .dashboard__longevity-row--computed {
   border-left: 3px solid #c8d4e6;
   background: #f8fafc;
+}
+
+.dashboard__longevity-row--jump {
+  border-left: 3px solid #b8c8dc;
+  background: #f8fafc;
+}
+
+button.dashboard__longevity-name.dashboard__longevity-nav-jump-btn {
+  color: #3d6ea8;
+}
+
+button.dashboard__longevity-name.dashboard__longevity-nav-jump-btn:hover,
+button.dashboard__longevity-name.dashboard__longevity-nav-jump-btn:focus-visible {
+  color: #2a5588;
+  text-decoration: underline;
+}
+
+.dashboard__longevity-pct--jump {
+  color: #3d6ea8;
+  font-weight: 600;
 }
 
 .dashboard__longevity-name {

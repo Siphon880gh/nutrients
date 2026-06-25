@@ -948,6 +948,49 @@
       "This balance matters most after 40, during menopause, with low sun exposure, or when family history includes osteoporosis."
     ]
   },
+  "sectionStressResilience": {
+    "enough": [
+      "Stress resilience belongs in longevity because chronic stress accelerates cardiovascular aging, sleep disruption, immune drift, and cognitive burnout—not just bad weeks.",
+      "Adaptogen herbs and mushrooms—ashwagandha, rhodiola, holy basil, reishi, cordyceps, lion's mane—are studied for HPA-axis modulation and stress tolerance, but active compounds vary by product and dose. This section tracks underlying nutrients from food instead: magnesium, vitamin C, pantothenic acid (B5), B6, folate, B12, zinc, and tyrosine feed adrenal cofactors, catecholamine synthesis, and methylation that help prevent the depletion pattern sometimes called adrenal fatigue.",
+      "EPA and DHA, polyphenols, flavonoids, and CoQ10 support inflammatory tone and cellular energy when stress is high. These repeat values from your micro and longevity entries so you can spot diet gaps—not a substitute for medical evaluation of burnout, anxiety disorders, or cortisol disorders."
+    ],
+    "foodSources": [
+      "Magnesium — leafy greens, nuts, seeds, legumes",
+      "Vitamin C — citrus, peppers, berries, broccoli",
+      "B5 — mushrooms, avocado, eggs, chicken",
+      "B vitamins — whole grains, legumes, eggs, meat",
+      "Zinc — oysters, pumpkin seeds, beef, legumes",
+      "Tyrosine — poultry, fish, soy, dairy",
+      "Adaptogen herbs — ashwagandha, rhodiola, holy basil (tea/supplements)",
+      "Adaptogen mushrooms — reishi, cordyceps, lion's mane, shiitake"
+    ]
+  },
+  "sectionSleepHealth": {
+    "enough": [
+      "Sleep health belongs in longevity because quality of life depends on rest: falling asleep easily, staying asleep through the night, and waking refreshed enough to function the next day.",
+      "The older you get, uninterrupted sleep usually gets harder—lighter sleep, more nighttime waking, and earlier mornings are common. Nutrition cannot replace sleep hygiene, but gaps in magnesium, tryptophan, glycine, vitamin B6, or vitamin D can make those patterns worse when intake is low.",
+      "Magnesium supports muscle relaxation and calmer nervous-system signaling; tryptophan feeds serotonin and melatonin synthesis; glycine acts as an inhibitory neurotransmitter linked to sleep onset; vitamin B6 helps convert tryptophan along that pathway; vitamin D deficiency is linked with poor sleep depth and daytime fatigue. These repeat values from your micro entries so you can spot diet gaps—not a substitute for medical evaluation of insomnia or sleep apnea."
+    ]
+  },
+  "sectionInsulinResistance": {
+    "enough": [
+      "Insulin resistance is when cells respond less well to insulin—blood sugar stays higher, the pancreas pumps more insulin, and over years that pattern raises type 2 diabetes and cardiovascular risk.",
+      "Aim nutrients here: magnesium and fiber blunt glucose spikes; vitamin D, zinc, biotin, and chromium support glucose handling when intake is low; EPA and DHA and monounsaturated fat (olive oil, avocado) support a lower-inflammatory fat pattern; polyphenols and flavonoids from berries, tea, cocoa, and vegetables add modest metabolic support.",
+      "Watch nutrients: saturated fat, cholesterol, trans fat, excess omega-6, refined carbs, and added sugar—especially when those foods are calorie-dense and dominate the week. That pattern can support fat gain and worsening insulin sensitivity over time.",
+      "Use the carb quality and glycemic load sections for GI, daily glycemic load, and refined-carb detail—the carb spike side of this pattern."
+    ],
+    "foodSources": [
+      "Magnesium — leafy greens, nuts, seeds, legumes, whole grains",
+      "Fiber — beans, berries, vegetables, intact grains",
+      "Vitamin D — fatty fish, egg yolks, fortified dairy",
+      "Chromium — broccoli, whole grains, brewer's yeast",
+      "EPA & DHA — salmon, sardines, mackerel, herring",
+      "Monounsaturated fat — olive oil, avocado, almonds",
+      "Polyphenols & flavonoids — berries, tea, cocoa, onions, grapes",
+      "Lower-insulin-load pattern — beans, berries, intact grains, fish, vegetables",
+      "Watch calorie density — fried foods, pastries, processed meats, sugary drinks"
+    ]
+  },
   "sectionMitochondrial": {
     "enough": [
       "Mitochondrial health is cellular energy health—NAD+, FAD, coenzyme A, and CoQ10 keep the electron transport chain running so ATP can fuel repair, immunity, and cognition.",

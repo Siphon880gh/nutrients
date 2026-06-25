@@ -260,6 +260,7 @@
   var dayHighlightsEnabled = true;
   var dashboardMacroPctView = false;
   var weekTotalOpen = false;
+  var panelDisclaimerDismissed = false;
   var microRequirementsOpen = false;
   var microConditionExpanded = false;
   var microConditionFocus = null;
@@ -273,6 +274,10 @@
   var longevityNavListBuilt = false;
   var longevityNavSuppressSpy = false;
   var longevityNavScrollSettleTimer = null;
+  var longevityNavHashUpdating = false;
+  var longevityNavPendingHashSection = null;
+  var longevityNavPushDepth = 0;
+  var LONGEVITY_HASH_PREFIX = "longevity/";
   var activeLongevityId = null;
   var longevitySaveTimer;
   var lastWeekTotals = null;
@@ -333,6 +338,8 @@
     sectionFiber: { label: "Fiber & colon health" },
     sectionThyroid: { label: "Thyroid health" },
     sectionBoneDensity: { label: "Bone density" },
+    sectionStressResilience: { label: "Stress resilience" },
+    sectionSleepHealth: { label: "Sleep health" },
     sectionCalcification: { label: "Calcification & vascular balance" },
     sectionHomocysteine: { label: "Methylation & homocysteine balance" },
     sectionDerived: { label: "Derived scores" },
@@ -340,6 +347,7 @@
     sectionHistamine: { label: "Histamine tolerance & quality of life" },
     sectionPufaAntioxidant: { label: "Fat oxidation & antioxidant protection" },
     sectionGlycemic: { label: "Glycemic load & GI distribution" },
+    sectionInsulinResistance: { label: "Insulin resistance / sensitivity" },
     sectionMitochondrial: { label: "Mitochondrial health & cellular energy" },
     sectionCellularAging: { label: "Cellular aging & senomorphics" },
   };
@@ -503,14 +511,23 @@
     { label: "Fiber & colon health", sectionDefKey: "sectionFiber" },
     { label: "Thyroid health", sectionDefKey: "sectionThyroid" },
     { label: "Bone density", sectionDefKey: "sectionBoneDensity" },
+    { label: "Stress resilience", sectionDefKey: "sectionStressResilience" },
+    { label: "Sleep health", sectionDefKey: "sectionSleepHealth" },
+    {
+      label: "Insulin resistance / sensitivity",
+      sectionDefKey: "sectionInsulinResistance",
+    },
     {
       label: "Mitochondrial health & cellular energy",
       sectionDefKey: "sectionMitochondrial",
     },
     { label: "Cellular aging & senomorphics", sectionDefKey: "sectionCellularAging" },
+    { label: "Carb quality", sectionDefKey: "sectionCarb" },
+    { label: "Glycemic load & GI distribution", sectionDefKey: "sectionGlycemic" },
   ]
     .concat(
       LONGEVITY_GROUPS.reduce(function (sections, group) {
+        if (group.id === "carb") return sections;
         sections.push({ label: group.label, sectionDefKey: group.sectionDefKey });
         if (group.id === "omega") {
           sections.push({
@@ -528,7 +545,6 @@
       }, [])
     )
     .concat([
-      { label: "Glycemic load & GI distribution", sectionDefKey: "sectionGlycemic" },
       { label: "Calcification & vascular balance", sectionDefKey: "sectionCalcification" },
       { label: "TMAO balance", sectionDefKey: "sectionTmao" },
       {
@@ -549,6 +565,64 @@
     { microKey: "calcium", label: "Calcium", limiting: false },
     { microKey: "magnesium", label: "Magnesium", limiting: false },
     { microKey: "vitaminD", label: "Vitamin D", limiting: false },
+  ];
+
+  var LONGEVITY_STRESS_FROM_MICRO = [
+    { microKey: "magnesium", label: "Magnesium — HPA-axis & nervous-system calm", limiting: false },
+    { microKey: "vitaminC", label: "Vitamin C — adrenal antioxidant support", limiting: false },
+    {
+      microKey: "pantothenicAcid",
+      label: "Pantothenic acid (B5) — coenzyme A & adrenal cofactors",
+      limiting: false,
+    },
+    { microKey: "vitaminB6", label: "Vitamin B6 — neurotransmitter synthesis", limiting: false },
+    { microKey: "folate", label: "Folate (B9) — methylation support", limiting: false },
+    { microKey: "vitaminB12", label: "Vitamin B12 — methylation support", limiting: false },
+    { microKey: "zinc", label: "Zinc — immunity under stress", limiting: false },
+    { microKey: "tyrosine", label: "Tyrosine — catecholamine precursor", limiting: false },
+    { microKey: "vitaminD", label: "Vitamin D", limiting: false },
+  ];
+
+  var LONGEVITY_STRESS_FROM_LONGEVITY = [
+    { key: "polyphenols", label: "Polyphenols — adaptogenic herb support", limiting: false },
+    { key: "flavonoids", label: "Flavonoids — adaptogenic herb support", limiting: false },
+    { key: "epa", label: "EPA", limiting: false },
+    { key: "dha", label: "DHA", limiting: false },
+    { key: "coq10", label: "Coenzyme Q10 — cellular energy under load", limiting: false },
+  ];
+
+  var LONGEVITY_SLEEP_FROM_MICRO = [
+    { microKey: "magnesium", label: "Magnesium", limiting: false },
+    { microKey: "tryptophan", label: "Tryptophan — serotonin & melatonin precursor", limiting: false },
+    { microKey: "glycine", label: "Glycine", limiting: false },
+    { microKey: "vitaminB6", label: "Vitamin B6 — serotonin synthesis", limiting: false },
+    { microKey: "vitaminD", label: "Vitamin D", limiting: false },
+  ];
+
+  var LONGEVITY_INSULIN_FROM_MICRO = [
+    { microKey: "magnesium", label: "Magnesium — blood sugar & insulin signaling", limiting: false },
+    { microKey: "fiber", label: "Fiber — blunts glucose spikes", limiting: false },
+    { microKey: "vitaminD", label: "Vitamin D", limiting: false },
+    { microKey: "chromium", label: "Chromium — glucose metabolism support", limiting: false },
+    { microKey: "zinc", label: "Zinc — insulin signaling support", limiting: false },
+    { microKey: "biotin", label: "Biotin (B7) — glucose metabolism", limiting: false },
+  ];
+
+  var LONGEVITY_INSULIN_AIM_FROM_LONGEVITY = [
+    { key: "epa", label: "EPA", limiting: false },
+    { key: "dha", label: "DHA", limiting: false },
+    { key: "monounsaturatedFat", label: "Monounsaturated fat", limiting: false },
+    { key: "polyphenols", label: "Polyphenols", limiting: false },
+    { key: "flavonoids", label: "Flavonoids", limiting: false },
+  ];
+
+  var LONGEVITY_INSULIN_WATCH_FROM_LONGEVITY = [
+    { key: "saturatedFat", label: "Saturated fat", limiting: true },
+    { key: "cholesterol", label: "Cholesterol", limiting: true },
+    { key: "refinedCarbs", label: "Refined carbohydrates", limiting: true },
+    { key: "addedSugar", label: "Added sugar", limiting: true },
+    { key: "transFat", label: "Trans fat", limiting: true },
+    { key: "omega6", label: "Omega-6 (total)", limiting: true },
   ];
 
   var LONGEVITY_MITO_FROM_MICRO = [
@@ -3804,6 +3878,14 @@
     updateBodyModalOpen();
   }
 
+  function dismissPanelDisclaimer() {
+    if (panelDisclaimerDismissed) return;
+    panelDisclaimerDismissed = true;
+    document.querySelectorAll(".dashboard__panel-disclaimer").forEach(function (el) {
+      el.hidden = true;
+    });
+  }
+
   function fatsCholesterolTipHtml() {
     return (
       '<aside class="dashboard__longevity-processed-note dashboard__longevity-processed-note--section" role="note">' +
@@ -3843,6 +3925,17 @@
       '<p class="dashboard__longevity-processed-note-text">' +
       "As you get older—especially after 60—thyroid function is particularly sensitive to variations in iodine intake. Iodine deficiency plays an important role in hypothyroidism (enlarged thyroid and slowed metabolism). <strong>What to track:</strong> iodine is the priority; selenium, iron, zinc, and tyrosine help iodine support T4/T3 production… " +
       '<button type="button" class="dashboard__longevity-tip-link" data-longevity-def="sectionThyroid" aria-haspopup="dialog">Read more</button>' +
+      "</p>" +
+      "</aside>"
+    );
+  }
+
+  function stressResilienceTipHtml() {
+    return (
+      '<aside class="dashboard__longevity-processed-note dashboard__longevity-processed-note--section" role="note">' +
+      '<p class="dashboard__longevity-processed-note-text">' +
+      "<strong>Adaptogens, cortisol, and adrenal support:</strong> Chronic stress drains magnesium, B vitamins, and vitamin C faster than calm periods. Adaptogen herbs and mushrooms—ashwagandha, rhodiola, holy basil, reishi, cordyceps—are studied for stress tolerance, but this section tracks the underlying nutrients from food that support cortisol balance and help prevent the depletion pattern sometimes called adrenal fatigue… " +
+      '<button type="button" class="dashboard__longevity-tip-link" data-longevity-def="sectionStressResilience" aria-haspopup="dialog">Read more</button>' +
       "</p>" +
       "</aside>"
     );
@@ -5405,6 +5498,21 @@
     );
   }
 
+  function longevityNavJumpRowHtml(sectionDefKey, label) {
+    return (
+      '<div class="dashboard__longevity-row dashboard__longevity-row--jump" role="listitem">' +
+      '<button type="button" class="dashboard__longevity-name dashboard__longevity-nav-jump-btn" data-longevity-nav-jump="' +
+      escapeAttr(sectionDefKey) +
+      '">' +
+      escapeHtml(label) +
+      "</button>" +
+      '<span class="dashboard__longevity-amt">—</span>' +
+      '<span class="dashboard__longevity-pct dashboard__longevity-pct--jump" aria-hidden="true">→</span>' +
+      '<div class="dashboard__longevity-bar dashboard__longevity-bar--empty" aria-hidden="true"></div>' +
+      "</div>"
+    );
+  }
+
   function longevitySectionWrap(title, sectionDefKey, noteHtml, bodyHtml) {
     var sectionId = sectionDefKey
       ? ' id="longevity-section-' + escapeAttr(sectionDefKey) + '"'
@@ -5801,6 +5909,81 @@
     );
 
     html += longevitySectionWrap(
+      "Stress resilience",
+      "sectionStressResilience",
+      '<p class="dashboard__longevity-note">Chronic stress drains magnesium, B vitamins, and vitamin C; these nutrients support cortisol balance, adrenal cofactors, and HPA-axis resilience when intake is low.</p>' +
+        stressResilienceTipHtml(),
+      longevityListOpen() +
+        longevitySubgroupHtml("From your micro entries", "micro") +
+        LONGEVITY_STRESS_FROM_MICRO.map(function (item) {
+          return longevityRowFromMicroKey(
+            item.microKey,
+            item.label,
+            !!item.limiting,
+            weekMicro
+          );
+        }).join("") +
+        longevitySubgroupHtml("From your longevity entries", "compounds") +
+        LONGEVITY_STRESS_FROM_LONGEVITY.map(function (item) {
+          var field = longevityFieldByKey(item.key);
+          if (!field) return "";
+          return longevityRowFromLongevityField(field, weekLongevity);
+        }).join("") +
+        longevityListClose()
+    );
+
+    html += longevitySectionWrap(
+      "Sleep health",
+      "sectionSleepHealth",
+      '<p class="dashboard__longevity-note">Quality of life depends on rest, and uninterrupted sleep usually gets harder with age; these nutrients support the pathways that help when intake is low.</p>',
+      longevityListOpen() +
+        longevitySubgroupHtml("From your micro entries", "micro") +
+        LONGEVITY_SLEEP_FROM_MICRO.map(function (item) {
+          return longevityRowFromMicroKey(
+            item.microKey,
+            item.label,
+            !!item.limiting,
+            weekMicro
+          );
+        }).join("") +
+        longevityListClose()
+    );
+
+    html += longevitySectionWrap(
+      "Insulin resistance / sensitivity",
+      "sectionInsulinResistance",
+      '<p class="dashboard__longevity-note">Aim for magnesium, fiber, vitamin D, omega-3s, and monounsaturated fat; watch saturated fat, refined carbs, and added sugar. When calorie-dense sources of those fats and fast carbs dominate, that pattern can support fat gain and insulin resistance over time—not from any single meal, but from years of excess.</p>',
+      longevityListOpen() +
+        longevitySubgroupHtml("Aim — higher % DV is better", "aim") +
+        LONGEVITY_INSULIN_FROM_MICRO.map(function (item) {
+          return longevityRowFromMicroKey(
+            item.microKey,
+            item.label,
+            !!item.limiting,
+            weekMicro
+          );
+        }).join("") +
+        LONGEVITY_INSULIN_AIM_FROM_LONGEVITY.map(function (item) {
+          var field = longevityFieldByKey(item.key);
+          if (!field) return "";
+          return longevityRowFromLongevityField(field, weekLongevity);
+        }).join("") +
+        longevitySubgroupHtml("Watch — lower % DV is better", "limit") +
+        LONGEVITY_INSULIN_WATCH_FROM_LONGEVITY.map(function (item) {
+          var field = longevityFieldByKey(item.key);
+          if (!field) return "";
+          return longevityRowFromLongevityField(field, weekLongevity);
+        }).join("") +
+        longevitySubgroupHtml(
+          "Jump to other areas that need to be optimized for insulin resistance / sensitivity",
+          "neutral"
+        ) +
+        longevityNavJumpRowHtml("sectionCarb", "Carb quality") +
+        longevityNavJumpRowHtml("sectionGlycemic", "Glycemic load & GI distribution") +
+        longevityListClose()
+    );
+
+    html += longevitySectionWrap(
       "Mitochondrial health & cellular energy",
       "sectionMitochondrial",
       '<p class="dashboard__longevity-note">B vitamins build <button type="button" class="dashboard__longevity-tip-link" data-longevity-def="nad" aria-haspopup="dialog">NAD</button> and related cofactors (FAD, coenzyme A); magnesium and iron support ATP production; manganese supports mitochondrial antioxidant defense via manganese superoxide dismutase (MnSOD); CoQ10 (is also a nutrient) carries electrons in mitochondria. These repeat values from your micro and longevity entries so you can spot gaps in cellular fuel—not just general % DV.</p>',
@@ -5844,6 +6027,9 @@
         }).join("") +
         longevityListClose()
     );
+
+    html += carbSectionHtml();
+    html += glycemicSectionHtml();
 
     var pufaRatio = derived.pufaVitaminERatio;
     var pufaProtection = derived.pufaVitaminEProtection;
@@ -5897,6 +6083,81 @@
       );
     }
 
+    function carbSectionHtml() {
+      var groupFields = LONGEVITY_FIELDS.filter(function (field) {
+        return field.group === "carb";
+      });
+      if (!groupFields.length) return "";
+      return longevitySectionWrap(
+        "Carb quality",
+        "sectionCarb",
+        "",
+        longevityListOpen() +
+          longevityRowsGroupedByLimit(groupFields, weekLongevity) +
+          longevityListClose()
+      );
+    }
+
+    function glycemicSectionHtml() {
+      return longevitySectionWrap(
+        "Glycemic load & GI distribution",
+        "sectionGlycemic",
+        '<p class="dashboard__longevity-note">GL = GI × carbs per serving ÷ 100 — a meal-impact score, not blood glucose or a vitamin % DV.</p>',
+        longevityGlycemicListOpen() +
+          (function () {
+            var gi = derived.giSummary;
+            var avgGi = gi ? gi.avgGi : null;
+            var giPct = giLimitPctFromAvg(avgGi);
+            var pctText = giTierSummaryLabel(avgGi);
+            if (gi && gi.highShare > 0) {
+              pctText += " · " + gi.highShare + "% high GI carbs";
+            }
+            return (
+              longevitySubgroupHtml(
+                "Glycemic index — carb-weighted from matched foods",
+                "micro"
+              ) +
+              longevityRowHtml(
+                "Glycemic index",
+                avgGi == null || isNaN(avgGi) ? "—" : fmtNum(avgGi) + " avg GI",
+                pctText,
+                giPct,
+                "dashboard__longevity-row--computed",
+                true,
+                "glycemicIndex",
+                false,
+                null,
+                "glycemicLoad",
+                "glycemicLoad"
+              )
+            );
+          })() +
+          longevitySubgroupHtml("Watch — lower glycemic load is better", "limit") +
+          (function () {
+            var glMax = longevityDvStatus.glycemicLoadMaxPerDay;
+            var gl = derived.weekGl;
+            var glPct = gl > 0 && glMax > 0 ? (gl / glMax) * 100 : null;
+            return longevityRowHtml(
+              "Avg daily glycemic load",
+              gl > 0 ? fmtNum(gl) + " GL" : "—",
+              glPct == null || isNaN(glPct)
+                ? "—"
+                : fmtNum(glPct) + "% of " + fmtNum(glMax),
+              glPct,
+              "dashboard__longevity-row--computed",
+              true,
+              "glycemicLoad",
+              false,
+              glycemicLoadTargetPctHtml(glPct, glMax),
+              "glycemicLoad",
+              "glycemicLoad"
+            );
+          })() +
+          longevityListClose() +
+          renderLongevityGiBuckets(derived.giBuckets)
+      );
+    }
+
     function histamineSectionHtml() {
       return longevitySectionWrap(
         "Histamine tolerance & quality of life",
@@ -5931,6 +6192,7 @@
     }
 
     LONGEVITY_GROUPS.forEach(function (group) {
+      if (group.id === "carb") return;
       if (group.id === "glutathione") {
         html += longevitySectionWrap(
           "Glutathione support",
@@ -6003,64 +6265,6 @@
         html += pufaAntioxidantSectionHtml();
       }
     });
-
-    html += longevitySectionWrap(
-      "Glycemic load & GI distribution",
-      "sectionGlycemic",
-      '<p class="dashboard__longevity-note">GL = GI × carbs per serving ÷ 100 — a meal-impact score, not blood glucose or a vitamin % DV.</p>',
-      longevityGlycemicListOpen() +
-        (function () {
-          var gi = derived.giSummary;
-          var avgGi = gi ? gi.avgGi : null;
-          var giPct = giLimitPctFromAvg(avgGi);
-          var pctText = giTierSummaryLabel(avgGi);
-          if (gi && gi.highShare > 0) {
-            pctText += " · " + gi.highShare + "% high GI carbs";
-          }
-          return (
-            longevitySubgroupHtml(
-              "Glycemic index — carb-weighted from matched foods",
-              "micro"
-            ) +
-            longevityRowHtml(
-              "Glycemic index",
-              avgGi == null || isNaN(avgGi) ? "—" : fmtNum(avgGi) + " avg GI",
-              pctText,
-              giPct,
-              "dashboard__longevity-row--computed",
-              true,
-              "glycemicIndex",
-              false,
-              null,
-              "glycemicLoad",
-              "glycemicLoad"
-            )
-          );
-        })() +
-        longevitySubgroupHtml("Watch — lower glycemic load is better", "limit") +
-        (function () {
-          var glMax = longevityDvStatus.glycemicLoadMaxPerDay;
-          var gl = derived.weekGl;
-          var glPct = gl > 0 && glMax > 0 ? (gl / glMax) * 100 : null;
-          return longevityRowHtml(
-            "Avg daily glycemic load",
-            gl > 0 ? fmtNum(gl) + " GL" : "—",
-            glPct == null || isNaN(glPct)
-              ? "—"
-              : fmtNum(glPct) + "% of " + fmtNum(glMax),
-            glPct,
-            "dashboard__longevity-row--computed",
-            true,
-            "glycemicLoad",
-            false,
-            glycemicLoadTargetPctHtml(glPct, glMax),
-            "glycemicLoad",
-            "glycemicLoad"
-          );
-        })() +
-        longevityListClose() +
-        renderLongevityGiBuckets(derived.giBuckets)
-    );
 
     html += longevitySectionWrap(
       "Calcification & vascular balance",
@@ -6157,6 +6361,14 @@
     );
 
     dashboardLongevityContentEl.innerHTML = html;
+    if (longevityNavPendingHashSection) {
+      var pendingKey = longevityNavPendingHashSection;
+      longevityNavPendingHashSection = null;
+      var pendingIndex = longevityNavIndexForSection(pendingKey);
+      if (pendingIndex >= 0) {
+        scrollToLongevityNavSection(pendingKey, pendingIndex, "auto");
+      }
+    }
     syncLongevityNav(true);
   }
 
@@ -6212,7 +6424,92 @@
     }
   }
 
-  function scrollToLongevityNavSection(sectionDefKey, index) {
+  function longevityNavIndexForSection(sectionDefKey) {
+    for (var i = 0; i < LONGEVITY_NAV_SECTIONS.length; i++) {
+      if (LONGEVITY_NAV_SECTIONS[i].sectionDefKey === sectionDefKey) return i;
+    }
+    return -1;
+  }
+
+  function longevitySectionFromHash(hash) {
+    var raw = String(hash || window.location.hash || "").replace(/^#/, "");
+    if (raw.indexOf(LONGEVITY_HASH_PREFIX) !== 0) return null;
+    var key = raw.slice(LONGEVITY_HASH_PREFIX.length);
+    if (!key || longevityNavIndexForSection(key) < 0) return null;
+    return key;
+  }
+
+  function longevityHashForSection(sectionDefKey) {
+    return "#" + LONGEVITY_HASH_PREFIX + sectionDefKey;
+  }
+
+  function longevityNavUrlForSection(sectionDefKey) {
+    return window.location.pathname + window.location.search + longevityHashForSection(sectionDefKey);
+  }
+
+  function setLongevityNavHash(sectionDefKey, replace) {
+    if (longevityNavHashUpdating || !sectionDefKey) return;
+    if (longevityNavIndexForSection(sectionDefKey) < 0) return;
+    var url = longevityNavUrlForSection(sectionDefKey);
+    var state = { longevityNav: sectionDefKey };
+    longevityNavHashUpdating = true;
+    if (replace) {
+      history.replaceState(state, "", url);
+    } else {
+      history.pushState(state, "", url);
+      longevityNavPushDepth += 1;
+    }
+    longevityNavHashUpdating = false;
+  }
+
+  function clearLongevityNavHash() {
+    if (longevityNavHashUpdating) return;
+    if (!window.location.hash || window.location.hash.indexOf("#" + LONGEVITY_HASH_PREFIX) !== 0) {
+      return;
+    }
+    longevityNavHashUpdating = true;
+    history.replaceState(null, "", window.location.pathname + window.location.search);
+    longevityNavHashUpdating = false;
+  }
+
+  function handleLongevityNavFromUrl() {
+    if (longevityNavHashUpdating) return;
+    var sectionKey = longevitySectionFromHash();
+    if (!sectionKey && history.state && history.state.longevityNav) {
+      sectionKey = history.state.longevityNav;
+    }
+    if (!sectionKey) return;
+    var index = longevityNavIndexForSection(sectionKey);
+    if (index < 0) return;
+    if (!longevityPanelOpen) {
+      longevityNavPendingHashSection = sectionKey;
+      setLongevityPanelOpen(true);
+      return;
+    }
+    scrollToLongevityNavSection(sectionKey, index);
+  }
+
+  function navigateLongevityNavTo(sectionDefKey, index, options) {
+    options = options || {};
+    var idx =
+      typeof index === "number" && index >= 0 ? index : longevityNavIndexForSection(sectionDefKey);
+    if (idx < 0) return;
+    setLongevityNavHash(sectionDefKey, !options.push);
+    scrollToLongevityNavSection(sectionDefKey, idx, options.behavior || "smooth");
+  }
+
+  function longevityNavCanGoBack() {
+    return longevityPanelOpen && longevityNavPushDepth > 0;
+  }
+
+  function applyInitialLongevityHash() {
+    var sectionKey = longevitySectionFromHash();
+    if (!sectionKey) return;
+    longevityNavPendingHashSection = sectionKey;
+    setLongevityPanelOpen(true);
+  }
+
+  function scrollToLongevityNavSection(sectionDefKey, index, scrollBehavior) {
     setLongevityNavExpanded(false);
     var sectionEl =
       longevityNavSectionEl(sectionDefKey) ||
@@ -6231,7 +6528,10 @@
       longevityNavActiveIndex = index;
       updateLongevityNavUi(index);
     }
-    window.scrollTo({ top: Math.max(0, top), behavior: "smooth" });
+    window.scrollTo({
+      top: Math.max(0, top),
+      behavior: scrollBehavior || "smooth",
+    });
   }
 
   function getLongevityNavActiveIndex() {
@@ -6356,6 +6656,10 @@
     }
     if (force || nextIndex !== longevityNavActiveIndex) {
       updateLongevityNavUi(nextIndex);
+      if (!longevityNavSuppressSpy && longevityPanelOpen) {
+        var activeSection = LONGEVITY_NAV_SECTIONS[nextIndex];
+        if (activeSection) setLongevityNavHash(activeSection.sectionDefKey, true);
+      }
     }
     syncLongevityNavVisibility();
   }
@@ -6379,6 +6683,15 @@
 
   function initLongevityNav() {
     buildLongevityNavAllList();
+    window.addEventListener("popstate", function () {
+      if (longevityNavHashUpdating) return;
+      if (longevityNavPushDepth > 0) longevityNavPushDepth -= 1;
+      handleLongevityNavFromUrl();
+    });
+    window.addEventListener("hashchange", function () {
+      if (longevityNavHashUpdating) return;
+      handleLongevityNavFromUrl();
+    });
     window.addEventListener("scroll", scheduleLongevityNavSync, { passive: true });
     window.addEventListener("resize", function () {
       syncLongevityNavHeightVar();
@@ -6392,7 +6705,7 @@
           dashboardLongevityNavPrevEl.getAttribute("data-longevity-nav-index"),
           10
         );
-        if (key) scrollToLongevityNavSection(key, index);
+        if (key) navigateLongevityNavTo(key, index, { push: true });
       });
     }
 
@@ -6403,7 +6716,7 @@
           dashboardLongevityNavNextEl.getAttribute("data-longevity-nav-index"),
           10
         );
-        if (key) scrollToLongevityNavSection(key, index);
+        if (key) navigateLongevityNavTo(key, index, { push: true });
       });
     }
 
@@ -6419,9 +6732,10 @@
         var btn = e.target.closest(".dashboard__longevity-nav-all-link");
         if (!btn) return;
         e.preventDefault();
-        scrollToLongevityNavSection(
+        navigateLongevityNavTo(
           btn.getAttribute("data-longevity-nav-key"),
-          parseInt(btn.getAttribute("data-longevity-nav-index"), 10)
+          parseInt(btn.getAttribute("data-longevity-nav-index"), 10),
+          { push: true }
         );
       });
     }
@@ -6446,6 +6760,8 @@
       renderLongevityPanel();
     } else {
       setLongevityNavExpanded(false);
+      clearLongevityNavHash();
+      longevityNavPushDepth = 0;
       syncLongevityNavVisibility();
     }
   }
@@ -9220,6 +9536,11 @@
       closeMicroDefModal();
       return;
     }
+    if (longevityNavCanGoBack()) {
+      e.preventDefault();
+      history.back();
+      return;
+    }
     if (activeImportId) {
       closeImportModal();
       return;
@@ -9569,8 +9890,20 @@
 
   if (dashboardMicroPanelEl) {
     dashboardMicroPanelEl.addEventListener("click", function (e) {
+      if (e.target.closest('[data-action="dismiss-panel-disclaimer"]')) {
+        dismissPanelDisclaimer();
+        return;
+      }
       if (e.target.closest('[data-action="open-caffeine-tip-modal"]')) {
         openCaffeineTipModal();
+      }
+    });
+  }
+
+  if (dashboardLongevityPanelEl) {
+    dashboardLongevityPanelEl.addEventListener("click", function (e) {
+      if (e.target.closest('[data-action="dismiss-panel-disclaimer"]')) {
+        dismissPanelDisclaimer();
       }
     });
   }
@@ -9614,6 +9947,14 @@
       var microBtn = e.target.closest("[data-micro-def]");
       if (microBtn) {
         openMicroDefModal(microBtn.getAttribute("data-micro-def"));
+        return;
+      }
+      var navJumpBtn = e.target.closest("[data-longevity-nav-jump]");
+      if (navJumpBtn) {
+        e.preventDefault();
+        var jumpKey = navJumpBtn.getAttribute("data-longevity-nav-jump");
+        var jumpIndex = longevityNavIndexForSection(jumpKey);
+        navigateLongevityNavTo(jumpKey, jumpIndex, { push: true });
         return;
       }
       var longevityBtn = e.target.closest("[data-longevity-def]");
@@ -10117,6 +10458,7 @@
     renderKeywords();
     initLongevityNav();
     refreshAll();
+    applyInitialLongevityHash();
     maybeShowStarterGuideImportStep();
   }
 

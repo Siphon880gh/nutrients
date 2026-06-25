@@ -1,15 +1,52 @@
 {
   "name": "qa-definitions-food",
-  "description": "QA food micronutrient definitions with AI. Use when auditing samples/definitions-food.json for foods with 0 or missing high-priority nutrients, tracking checked nutrient-food pairs in a hash table.",
-  "purpose": "Use AI to double-check foods that currently show 0 or missing values for important nutrients in a food definitions sample file. Only review unchecked nutrient-food pairs, then record whether each value is confirmed zero, updated, or skipped.",
+  "description": "QA food micronutrient definitions with AI. Use when auditing samples/definitions-food.json for foods with 0 or missing nutrients, tracking checked nutrient-food pairs in a hash table.",
+  "purpose": "Use AI to double-check foods that currently show 0 or missing values for selected nutrients in a food definitions sample file. Only review unchecked nutrient-food pairs, then record whether each value is confirmed zero, updated, or skipped.",
   "onInvoke": [
-    "Explain the purpose: this tool helps QA food definition data by rotating through important nutrients, finding foods where that nutrient is 0 or missing, and asking AI to review only pairs that have not already been checked.",
+    "Explain the purpose: this tool helps QA food definition data by finding foods where a nutrient is 0 or missing, asking AI to verify only pairs not already checked, and recording confirmed_zero, updated, or skipped in a progress hash table.",
     "Find JSON files under samples/ that look like food definition samples.",
     "If exactly one sample exists, ask the user: \"Are you QA'ing samples/definitions-food.json?\"",
     "If more than one sample exists, ask the user to choose which sample file to audit.",
-    "Ask which nutrients/vitamins the user wants to audit, or whether to use the default eight nutrients.",
-    "After the user answers, start the QA workflow for the selected sample and nutrient list."
+    "If the user has not already stated which nutrient scope they want, STOP and run intentClarification before starting the workflow. Do not guess.",
+    "After sample file and nutrient scope are confirmed, start the QA workflow for the selected sample and nutrient list."
   ],
+  "intentClarification": {
+    "when": "User asks to QA food definitions but has not named a specific nutrient, default set, or micro-panel scope.",
+    "prompt": "Which nutrients should I QA? Pick one:",
+    "options": [
+      {
+        "id": "single",
+        "label": "One nutrient",
+        "followUp": "Which nutrient? (e.g. magnesium, vitamin D, fiber)",
+        "resolveTo": "A single nutrient from defaultNutrients, microPanelAllNutrients, or a custom key the user names."
+      },
+      {
+        "id": "default",
+        "label": "Default eight nutrients",
+        "followUp": null,
+        "resolveTo": "defaultNutrients"
+      },
+      {
+        "id": "microPanel",
+        "label": "All micro requirements panel nutrients",
+        "followUp": "This is a large pass (~46 nutrients). Proceed with all microPanelAllNutrients?",
+        "resolveTo": "microPanelAllNutrients"
+      },
+      {
+        "id": "custom",
+        "label": "Custom list",
+        "followUp": "Which nutrients? List names or keys (comma-separated).",
+        "resolveTo": "User-provided list matched to known nutrient keys."
+      }
+    ],
+    "implicitIntentHints": [
+      "run qa on all the food",
+      "make sure foods get nutrients listed if they have it",
+      "check missing micros",
+      "audit definitions-food"
+    ],
+    "implicitIntentDefault": "If the user describes a broad audit without naming nutrients, ask whether they mean default eight or all micro requirements panel nutrients before proceeding."
+  },
   "currentKnownSamples": [
     "samples/definitions-food.json"
   ],
@@ -63,6 +100,18 @@
       "prompt": "Fiber is very important. For all food without Fiber please double check if they have Fiber"
     }
   ],
+  "microPanelAllNutrients": {
+    "source": "MICRO_ALL_FIELDS in app.js (micro requirements panel)",
+    "keys": [
+      "fiber", "sodium", "potassium", "calcium", "iron", "magnesium", "zinc", "selenium", "copper",
+      "manganese", "chromium", "iodine", "vitaminA", "vitaminD", "vitaminE", "vitaminK", "thiamin",
+      "riboflavin", "niacin", "pantothenicAcid", "vitaminB6", "biotin", "folate", "vitaminB12", "vitaminC",
+      "phosphorus", "choline", "molybdenum", "fluoride", "chloride",
+      "histidine", "isoleucine", "leucine", "lysine", "methionine", "phenylalanine", "threonine",
+      "tryptophan", "valine", "arginine", "cysteine", "glutamine", "glycine", "proline", "tyrosine", "taurine"
+    ],
+    "promptTemplate": "{label} is tracked in the micro requirements panel. For all food without {label} please double check if they have {label}"
+  },
   "needsCheckRule": {
     "scope": "food.micros[nutrientKey]",
     "condition": "value is null, undefined, missing, or exactly 0",
@@ -106,6 +155,8 @@
   },
   "promptTemplate": "{nutrientPrompt}.\n\nThese foods currently show {nutrientLabel} = 0 or missing. Estimate {nutrientLabel} ({unit}) per the portion implied by the exact food name. If truly negligible, use 0.\n\nFoods to verify:\n{foodList}\n\nRespond with JSON only, no markdown fences:\n{\n  \"results\": [\n    { \"name\": \"<exact food name>\", \"value\": <number>, \"confirmed_zero\": <boolean>, \"source_note\": \"<brief rationale>\" }\n  ]\n}",
   "notes": [
+    "Do not start QA until both sample file and nutrient scope are confirmed.",
+    "If intent is unclear, use intentClarification.options — do not assume default eight or micro panel all.",
     "Use the exact food name from the selected sample file for hash keys and AI prompts.",
     "Do not ask AI about non-zero nutrient values unless the user explicitly asks for a broader audit.",
     "Legitimate zeros should be recorded as confirmed_zero rather than changed.",
