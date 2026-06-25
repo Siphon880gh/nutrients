@@ -108,6 +108,13 @@
     "sectionHomocysteine": "#a8505a",
     "sectionVascularBloodPressure": "#a8505a",
     "sectionVascularBrain": "#a8505a",
-    "sectionDashDiet": "#6a8a72"
+    "sectionDashDiet": "#6a8a72",
+    "sectionFemaleHormonesPms": "#deb0c4",
+    "sectionFemaleHormonesIron": "#deb0c4",
+    "sectionFemaleHormonesEstrogen": "#deb0c4",
+    "sectionFemaleHormonesPostMenopause": "#deb0c4",
+    "sectionMaleHormonesTestosterone": "#9ebde0",
+    "sectionMaleHormonesProstate": "#9ebde0",
+    "sectionMaleHormonesEstrogenBalance": "#9ebde0"
   }
 }

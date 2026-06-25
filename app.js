@@ -360,6 +360,13 @@
     sectionFatGain: { label: "Fat gain" },
     sectionMitochondrial: { label: "Mitochondrial health & cellular energy" },
     sectionCellularAging: { label: "Cellular aging & senomorphics" },
+    sectionFemaleHormonesPms: { label: "Female Hormones - PMS & cycle balance" },
+    sectionFemaleHormonesIron: { label: "Female Hormones - Iron & menstruation" },
+    sectionFemaleHormonesEstrogen: { label: "Female Hormones - Estrogen metabolism" },
+    sectionFemaleHormonesPostMenopause: { label: "Female Hormones - Post-menopause" },
+    sectionMaleHormonesTestosterone: { label: "Male Hormones - Testosterone support" },
+    sectionMaleHormonesProstate: { label: "Male Hormones - Prostate health" },
+    sectionMaleHormonesEstrogenBalance: { label: "Male Hormones - Estrogen balance (Belly fat)" },
   };
 
   var MICRO_CONDITION_FOCUS = {
@@ -515,7 +522,51 @@
     { id: "carb", label: "Carb quality", sectionDefKey: "sectionCarb" },
   ];
 
-  var LONGEVITY_NAV_SECTIONS = [
+  var FEMALE_HORMONE_NAV_SECTIONS = [
+    {
+      label: "Female Hormones - PMS & cycle balance",
+      sectionDefKey: "sectionFemaleHormonesPms",
+    },
+    {
+      label: "Female Hormones - Iron & menstruation",
+      sectionDefKey: "sectionFemaleHormonesIron",
+    },
+    {
+      label: "Female Hormones - Estrogen metabolism",
+      sectionDefKey: "sectionFemaleHormonesEstrogen",
+    },
+    {
+      label: "Female Hormones - Post-menopause",
+      sectionDefKey: "sectionFemaleHormonesPostMenopause",
+    },
+  ];
+
+  var MALE_HORMONE_NAV_SECTIONS = [
+    {
+      label: "Male Hormones - Testosterone support",
+      sectionDefKey: "sectionMaleHormonesTestosterone",
+    },
+    {
+      label: "Male Hormones - Prostate health",
+      sectionDefKey: "sectionMaleHormonesProstate",
+    },
+    {
+      label: "Male Hormones - Estrogen balance (Belly fat)",
+      sectionDefKey: "sectionMaleHormonesEstrogenBalance",
+    },
+  ];
+
+  function getLongevityHormoneNavSections() {
+    return demographic === "female"
+      ? FEMALE_HORMONE_NAV_SECTIONS
+      : MALE_HORMONE_NAV_SECTIONS;
+  }
+
+  function getLongevityNavSections() {
+    return LONGEVITY_NAV_SECTIONS_CORE.concat(getLongevityHormoneNavSections());
+  }
+
+  var LONGEVITY_NAV_SECTIONS_CORE = [
     { label: "Micronutrients from food", sectionDefKey: "sectionMicronutrients" },
     { label: "Derived scores", sectionDefKey: "sectionDerived" },
     { label: "Fiber & colon health", sectionDefKey: "sectionFiber" },
@@ -718,6 +769,114 @@
     { key: "curcumin", label: "Curcumin", limiting: false },
     { key: "epa", label: "EPA", limiting: false },
     { key: "dha", label: "DHA", limiting: false },
+  ];
+
+  var LONGEVITY_FEMALE_PMS_FROM_MICRO = [
+    { microKey: "magnesium", label: "Magnesium — mood & cramping", limiting: false },
+    { microKey: "vitaminB6", label: "Vitamin B6 — neurotransmitters & PMS", limiting: false },
+    { microKey: "calcium", label: "Calcium — luteal-phase mood support", limiting: false },
+    { microKey: "vitaminE", label: "Vitamin E — breast tenderness support", limiting: false },
+    { microKey: "zinc", label: "Zinc — hormone synthesis & mood", limiting: false },
+    { microKey: "tryptophan", label: "Tryptophan — serotonin precursor", limiting: false },
+    { microKey: "vitaminD", label: "Vitamin D — cycle regulation support", limiting: false },
+  ];
+
+  var LONGEVITY_FEMALE_PMS_FROM_LONGEVITY = [
+    { key: "epa", label: "EPA — inflammation & mood", limiting: false },
+    { key: "dha", label: "DHA — inflammation & mood", limiting: false },
+  ];
+
+  var LONGEVITY_FEMALE_IRON_FROM_MICRO = [
+    {
+      microKey: "iron",
+      label: "Iron — menstrual blood loss (18 mg/day DV for women)",
+      limiting: false,
+    },
+    { microKey: "vitaminC", label: "Vitamin C — non-heme iron absorption", limiting: false },
+    { microKey: "folate", label: "Folate (B9) — red blood cell production", limiting: false },
+    { microKey: "vitaminB12", label: "Vitamin B12 — red blood cell production", limiting: false },
+    { microKey: "copper", label: "Copper — iron metabolism cofactor", limiting: false },
+    { microKey: "riboflavin", label: "Riboflavin (B2) — iron utilization", limiting: false },
+  ];
+
+  var LONGEVITY_FEMALE_ESTROGEN_FROM_MICRO = [
+    { microKey: "fiber", label: "Fiber — binds excess estrogen in the gut", limiting: false },
+    { microKey: "vitaminB6", label: "Vitamin B6 — estrogen metabolism support", limiting: false },
+    { microKey: "folate", label: "Folate (B9) — methylation & estrogen clearance", limiting: false },
+  ];
+
+  var LONGEVITY_FEMALE_ESTROGEN_FROM_LONGEVITY = [
+    {
+      key: "sulforaphane",
+      label: "Sulforaphane — broccoli & crucifers (Nrf2, estrogen balance)",
+      limiting: false,
+    },
+  ];
+
+  var LONGEVITY_FEMALE_POST_MENO_FROM_MICRO = [
+    { microKey: "calcium", label: "Calcium — bone loss after estrogen drop", limiting: false },
+    { microKey: "vitaminD", label: "Vitamin D — bone & muscle support", limiting: false },
+    { microKey: "magnesium", label: "Magnesium — bone & sleep support", limiting: false },
+    { microKey: "vitaminK", label: "Vitamin K — bone matrix mineralization", limiting: false },
+    { microKey: "fiber", label: "Fiber — cardiometabolic support", limiting: false },
+    { microKey: "vitaminB6", label: "Vitamin B6 — mood & homocysteine support", limiting: false },
+    { microKey: "vitaminB12", label: "Vitamin B12 — nerve & blood support", limiting: false },
+  ];
+
+  var LONGEVITY_FEMALE_POST_MENO_FROM_LONGEVITY = [
+    {
+      key: "sulforaphane",
+      label: "Sulforaphane — broccoli & crucifers (estrogen metabolism)",
+      limiting: false,
+    },
+    { key: "epa", label: "EPA — heart & inflammation support", limiting: false },
+    { key: "dha", label: "DHA — brain & heart support", limiting: false },
+    { key: "polyphenols", label: "Polyphenols — vascular & cognitive support", limiting: false },
+  ];
+
+  var LONGEVITY_MALE_TESTOSTERONE_FROM_MICRO = [
+    { microKey: "zinc", label: "Zinc — testosterone synthesis", limiting: false },
+    { microKey: "magnesium", label: "Magnesium — free testosterone support", limiting: false },
+    { microKey: "vitaminD", label: "Vitamin D — androgen receptor signaling", limiting: false },
+    { microKey: "selenium", label: "Selenium — antioxidant support for gonads", limiting: false },
+    { microKey: "vitaminB6", label: "Vitamin B6 — steroid hormone metabolism", limiting: false },
+    { microKey: "iron", label: "Iron — oxygen delivery & energy (avoid excess)", limiting: false },
+  ];
+
+  var LONGEVITY_MALE_TESTOSTERONE_FROM_LONGEVITY = [
+    { key: "monounsaturatedFat", label: "Monounsaturated fat — healthy androgen pattern", limiting: false },
+    { key: "epa", label: "EPA — inflammation control", limiting: false },
+    { key: "dha", label: "DHA — inflammation control", limiting: false },
+  ];
+
+  var LONGEVITY_MALE_PROSTATE_FROM_MICRO = [
+    { microKey: "selenium", label: "Selenium — prostate antioxidant defense", limiting: false },
+    { microKey: "vitaminD", label: "Vitamin D — prostate cell regulation", limiting: false },
+    { microKey: "zinc", label: "Zinc — prostate tissue concentration", limiting: false },
+    { microKey: "vitaminE", label: "Vitamin E — oxidative stress in prostate tissue", limiting: false },
+  ];
+
+  var LONGEVITY_MALE_PROSTATE_FROM_LONGEVITY = [
+    {
+      key: "sulforaphane",
+      label: "Sulforaphane — broccoli (prostate cell defense studies)",
+      limiting: false,
+    },
+    { key: "epa", label: "EPA — inflammation modulation", limiting: false },
+    { key: "dha", label: "DHA — inflammation modulation", limiting: false },
+  ];
+
+  var LONGEVITY_MALE_ESTROGEN_FROM_MICRO = [
+    { microKey: "fiber", label: "Fiber — clears estrogen metabolites", limiting: false },
+    { microKey: "zinc", label: "Zinc — supports healthy aromatase balance", limiting: false },
+  ];
+
+  var LONGEVITY_MALE_ESTROGEN_FROM_LONGEVITY = [
+    {
+      key: "sulforaphane",
+      label: "Sulforaphane — broccoli (blocks excess aromatization)",
+      limiting: false,
+    },
   ];
 
   var LONGEVITY_GLUTATHIONE_FROM_MICRO = [
@@ -4333,6 +4492,207 @@
     );
   }
 
+  function femaleHormonesPmsTipHtml() {
+    return (
+      '<aside class="dashboard__longevity-processed-note dashboard__longevity-processed-note--section" role="note">' +
+      '<p class="dashboard__longevity-processed-note-text">' +
+      "<strong>PMS & cycle balance:</strong> Magnesium, vitamin B6, and calcium are the most studied food-level supports for mood swings, cramping, and breast tenderness before your period. EPA and DHA from fish add anti-inflammatory support when intake is low—not a cure, but gaps here are common and easy to track… " +
+      '<button type="button" class="dashboard__longevity-tip-link" data-longevity-def="sectionFemaleHormonesPms" aria-haspopup="dialog">Read more</button>' +
+      "</p>" +
+      "</aside>"
+    );
+  }
+
+  function femaleHormonesIronTipHtml() {
+    return (
+      '<aside class="dashboard__longevity-processed-note dashboard__longevity-processed-note--section" role="note">' +
+      '<p class="dashboard__longevity-processed-note-text">' +
+      "<strong>Iron & menstruation:</strong> Premenopausal women lose iron every cycle—your dashboard uses an 18 mg/day iron DV (vs 8 mg for men). Pair plant iron with vitamin C; folate, B12, and riboflavin build red blood cells. Heavy periods, fatigue, or cold hands may mean you need more from food before supplements… " +
+      '<button type="button" class="dashboard__longevity-tip-link" data-longevity-def="sectionFemaleHormonesIron" aria-haspopup="dialog">Read more</button>' +
+      "</p>" +
+      "</aside>"
+    );
+  }
+
+  function femaleHormonesEstrogenTipHtml() {
+    return (
+      '<aside class="dashboard__longevity-processed-note dashboard__longevity-processed-note--section" role="note">' +
+      '<p class="dashboard__longevity-processed-note-text">' +
+      "<strong>Broccoli & estrogen metabolism:</strong> Sulforaphane from broccoli, Brussels sprouts, and kale activates Nrf2 and supports healthy estrogen breakdown—not blocking estrogen entirely, but helping your liver and gut clear excess. Chop crucifers and let them sit 5–10 minutes before cooking to boost sulforaphane… " +
+      '<button type="button" class="dashboard__longevity-tip-link" data-longevity-def="sectionFemaleHormonesEstrogen" aria-haspopup="dialog">Read more</button>' +
+      "</p>" +
+      "</aside>"
+    );
+  }
+
+  function femaleHormonesPostMenopauseTipHtml() {
+    return (
+      '<aside class="dashboard__longevity-processed-note dashboard__longevity-processed-note--section" role="note">' +
+      '<p class="dashboard__longevity-processed-note-text">' +
+      "<strong>After menopause:</strong> Ovarian estrogen falls sharply—bone loss accelerates, cardiovascular risk shifts, and hot flashes or sleep disruption may persist. Calcium, vitamin D, magnesium, and vitamin K matter more for bone; fiber and fish oil support heart and brain aging. Sulforaphane from crucifers still supports estrogen metabolite balance when ovarian production is low… " +
+      '<button type="button" class="dashboard__longevity-tip-link" data-longevity-def="sectionFemaleHormonesPostMenopause" aria-haspopup="dialog">Read more</button>' +
+      "</p>" +
+      "</aside>"
+    );
+  }
+
+  function maleHormonesTestosteroneTipHtml() {
+    return (
+      '<aside class="dashboard__longevity-processed-note dashboard__longevity-processed-note--section" role="note">' +
+      '<p class="dashboard__longevity-processed-note-text">' +
+      "<strong>Testosterone from food:</strong> Zinc, magnesium, and vitamin D are the core micronutrients tied to healthy testosterone production and free-testosterone balance. Very low fat or chronic calorie deficit can suppress androgens too—monounsaturated fats from olive oil and avocado support a healthier pattern than excess saturated fat… " +
+      '<button type="button" class="dashboard__longevity-tip-link" data-longevity-def="sectionMaleHormonesTestosterone" aria-haspopup="dialog">Read more</button>' +
+      "</p>" +
+      "</aside>"
+    );
+  }
+
+  function maleHormonesProstateTipHtml() {
+    return (
+      '<aside class="dashboard__longevity-processed-note dashboard__longevity-processed-note--section" role="note">' +
+      '<p class="dashboard__longevity-processed-note-text">' +
+      "<strong>Broccoli & prostate health:</strong> Sulforaphane from broccoli and other crucifers is one of the best-studied food compounds for prostate cell defense—it activates Nrf2 antioxidant pathways. Selenium, vitamin D, and zinc concentrate in prostate tissue; fish oil adds anti-inflammatory support. This tracks diet gaps, not PSA screening… " +
+      '<button type="button" class="dashboard__longevity-tip-link" data-longevity-def="sectionMaleHormonesProstate" aria-haspopup="dialog">Read more</button>' +
+      "</p>" +
+      "</aside>"
+    );
+  }
+
+  function maleHormonesEstrogenBalanceTipHtml() {
+    return (
+      '<aside class="dashboard__longevity-processed-note dashboard__longevity-processed-note--section" role="note">' +
+      '<p class="dashboard__longevity-processed-note-text">' +
+      "<strong>Men need estrogen balance too:</strong> Aromatase converts testosterone to estrogen—belly fat and aging raise that conversion. Sulforaphane from broccoli supports healthy estrogen metabolite ratios; fiber helps clear metabolites in the gut; zinc supports aromatase balance. Low testosterone with high body fat often means too much estrogen relative to androgens… " +
+      '<button type="button" class="dashboard__longevity-tip-link" data-longevity-def="sectionMaleHormonesEstrogenBalance" aria-haspopup="dialog">Read more</button>' +
+      "</p>" +
+      "</aside>"
+    );
+  }
+
+  function longevityHormoneSectionHtml(
+    title,
+    sectionDefKey,
+    noteHtml,
+    tipHtml,
+    microItems,
+    longevityItems,
+    weekMicro,
+    weekLongevity,
+    extraBodyHtml
+  ) {
+    var body =
+      longevityListOpen() +
+      longevitySubgroupHtml("From your micro entries", "micro") +
+      microItems
+        .map(function (item) {
+          return longevityRowFromMicroKey(
+            item.microKey,
+            item.label,
+            !!item.limiting,
+            weekMicro
+          );
+        })
+        .join("");
+    if (longevityItems && longevityItems.length) {
+      body +=
+        longevitySubgroupHtml("From your longevity entries", "compounds") +
+        longevityItems
+          .map(function (item) {
+            return longevityRowFromLongevityOrMicro(item, weekLongevity, weekMicro);
+          })
+          .join("");
+    }
+    body += extraBodyHtml || "";
+    body += longevityListClose();
+    return longevitySectionWrap(title, sectionDefKey, noteHtml + tipHtml, body);
+  }
+
+  function renderFemaleHormoneSectionsHtml(weekLongevity, weekMicro) {
+    return (
+      longevityHormoneSectionHtml(
+        "Female Hormones - PMS & cycle balance",
+        "sectionFemaleHormonesPms",
+        '<p class="dashboard__longevity-note">Premenstrual mood swings, cramping, breast tenderness, and sleep disruption often worsen when magnesium, B6, calcium, or omega-3 intake runs low. These repeat values from your micro and longevity entries so you can spot diet gaps—not a substitute for medical evaluation of endometriosis, PCOS, or severe PMDD.</p>',
+        femaleHormonesPmsTipHtml(),
+        LONGEVITY_FEMALE_PMS_FROM_MICRO,
+        LONGEVITY_FEMALE_PMS_FROM_LONGEVITY,
+        weekMicro,
+        weekLongevity
+      ) +
+      longevityHormoneSectionHtml(
+        "Female Hormones - Iron & menstruation",
+        "sectionFemaleHormonesIron",
+        '<p class="dashboard__longevity-note">Menstrual blood loss is the main reason women need roughly twice the iron of men (18 mg vs 8 mg/day on your dashboard). Low iron blunts energy, thyroid function, and hormone balance; vitamin C at meals doubles non-heme iron absorption from plants.</p>',
+        femaleHormonesIronTipHtml(),
+        LONGEVITY_FEMALE_IRON_FROM_MICRO,
+        [],
+        weekMicro,
+        weekLongevity
+      ) +
+      longevityHormoneSectionHtml(
+        "Female Hormones - Estrogen metabolism",
+        "sectionFemaleHormonesEstrogen",
+        '<p class="dashboard__longevity-note">Your liver and gut clear estrogen metabolites every day—fiber binds excess in the intestine, B vitamins support methylation, and sulforaphane from broccoli and crucifers activates Nrf2 pathways linked to healthier estrogen breakdown. Several weekly crucifer servings are a practical target.</p>',
+        femaleHormonesEstrogenTipHtml(),
+        LONGEVITY_FEMALE_ESTROGEN_FROM_MICRO,
+        LONGEVITY_FEMALE_ESTROGEN_FROM_LONGEVITY,
+        weekMicro,
+        weekLongevity
+      ) +
+      longevityHormoneSectionHtml(
+        "Female Hormones - Post-menopause",
+        "sectionFemaleHormonesPostMenopause",
+        "",
+        femaleHormonesPostMenopauseTipHtml(),
+        LONGEVITY_FEMALE_POST_MENO_FROM_MICRO,
+        LONGEVITY_FEMALE_POST_MENO_FROM_LONGEVITY,
+        weekMicro,
+        weekLongevity,
+        longevitySubgroupHtml("Jump to related longevity areas", "neutral") +
+          longevityNavJumpRowHtml("sectionBoneDensity", "Bone density") +
+          longevityNavJumpRowHtml(
+            "sectionVascularBloodPressure",
+            "Vascular - Blood Pressure"
+          )
+      )
+    );
+  }
+
+  function renderMaleHormoneSectionsHtml(weekLongevity, weekMicro) {
+    return (
+      longevityHormoneSectionHtml(
+        "Male Hormones - Testosterone support",
+        "sectionMaleHormonesTestosterone",
+        '<p class="dashboard__longevity-note">Testosterone naturally declines with age, but chronic low intake of zinc, magnesium, or vitamin D, very low dietary fat, or excess body fat can worsen the pattern. These nutrients support synthesis and free-testosterone balance—they do not replace medical evaluation of hypogonadism.</p>',
+        maleHormonesTestosteroneTipHtml(),
+        LONGEVITY_MALE_TESTOSTERONE_FROM_MICRO,
+        LONGEVITY_MALE_TESTOSTERONE_FROM_LONGEVITY,
+        weekMicro,
+        weekLongevity
+      ) +
+      longevityHormoneSectionHtml(
+        "Male Hormones - Prostate health",
+        "sectionMaleHormonesProstate",
+        '<p class="dashboard__longevity-note">Prostate enlargement and cancer risk rise with age. Sulforaphane from broccoli and crucifers is among the best-studied food compounds for prostate cell defense; selenium, vitamin D, and zinc concentrate in prostate tissue. Track diet gaps here alongside regular medical screening—not instead of it.</p>',
+        maleHormonesProstateTipHtml(),
+        LONGEVITY_MALE_PROSTATE_FROM_MICRO,
+        LONGEVITY_MALE_PROSTATE_FROM_LONGEVITY,
+        weekMicro,
+        weekLongevity
+      ) +
+      longevityHormoneSectionHtml(
+        "Male Hormones - Estrogen balance (Belly fat)",
+        "sectionMaleHormonesEstrogenBalance",
+        '<p class="dashboard__longevity-note">Men convert testosterone to estrogen via aromatase—belly fat and aging increase that conversion, which can lower relative androgen tone and affect body composition. Broccoli sulforaphane, fiber, and zinc support healthier estrogen metabolite ratios and aromatase balance.</p>',
+        maleHormonesEstrogenBalanceTipHtml(),
+        LONGEVITY_MALE_ESTROGEN_FROM_MICRO,
+        LONGEVITY_MALE_ESTROGEN_FROM_LONGEVITY,
+        weekMicro,
+        weekLongevity
+      )
+    );
+  }
+
   function openLongevityDefModal(key, returnTo, stackOnForm) {
     if (!microDefModalEl || !key) return;
 
@@ -6862,6 +7222,12 @@
         longevityListClose()
     );
 
+    if (demographic === "female") {
+      html += renderFemaleHormoneSectionsHtml(weekLongevity, weekMicro);
+    } else {
+      html += renderMaleHormoneSectionsHtml(weekLongevity, weekMicro);
+    }
+
     dashboardLongevityContentEl.innerHTML = html;
     if (longevityNavPendingHashSection) {
       var pendingKey = longevityNavPendingHashSection;
@@ -6891,9 +7257,17 @@
     );
   }
 
+  function resetLongevityNavList() {
+    longevityNavListBuilt = false;
+    if (dashboardLongevityNavAllListEl) {
+      dashboardLongevityNavAllListEl.innerHTML = "";
+    }
+  }
+
   function buildLongevityNavAllList() {
     if (!dashboardLongevityNavAllListEl || longevityNavListBuilt) return;
-    dashboardLongevityNavAllListEl.innerHTML = LONGEVITY_NAV_SECTIONS.map(function (section, index) {
+    var navSections = getLongevityNavSections();
+    dashboardLongevityNavAllListEl.innerHTML = navSections.map(function (section, index) {
       return (
         '<li class="dashboard__longevity-nav-all-item">' +
         '<button type="button" class="dashboard__longevity-nav-all-link" data-longevity-nav-index="' +
@@ -6927,8 +7301,9 @@
   }
 
   function longevityNavIndexForSection(sectionDefKey) {
-    for (var i = 0; i < LONGEVITY_NAV_SECTIONS.length; i++) {
-      if (LONGEVITY_NAV_SECTIONS[i].sectionDefKey === sectionDefKey) return i;
+    var navSections = getLongevityNavSections();
+    for (var i = 0; i < navSections.length; i++) {
+      if (navSections[i].sectionDefKey === sectionDefKey) return i;
     }
     return -1;
   }
@@ -7054,7 +7429,7 @@
 
   function updateLongevityNavUi(activeIndex) {
     if (!dashboardLongevityNavEl) return;
-    var sections = LONGEVITY_NAV_SECTIONS;
+    var sections = getLongevityNavSections();
     if (!sections.length) return;
     var index = Math.max(0, Math.min(activeIndex, sections.length - 1));
     longevityNavActiveIndex = index;
@@ -7146,7 +7521,7 @@
     syncLongevityNavHeightVar();
     var nextIndex = getLongevityNavActiveIndex();
     if (force && longevityNavActiveIndex >= 0) {
-      var pinnedSection = LONGEVITY_NAV_SECTIONS[longevityNavActiveIndex];
+      var pinnedSection = getLongevityNavSections()[longevityNavActiveIndex];
       var pinnedEl =
         pinnedSection && longevityNavSectionEl(pinnedSection.sectionDefKey);
       if (pinnedEl) {
@@ -7159,7 +7534,7 @@
     if (force || nextIndex !== longevityNavActiveIndex) {
       updateLongevityNavUi(nextIndex);
       if (!longevityNavSuppressSpy && longevityPanelOpen) {
-        var activeSection = LONGEVITY_NAV_SECTIONS[nextIndex];
+        var activeSection = getLongevityNavSections()[nextIndex];
         if (activeSection) setLongevityNavHash(activeSection.sectionDefKey, true);
       }
     }
@@ -7933,10 +8308,17 @@
   }
 
   function setDemographic(id) {
+    var prevDemographic = demographic;
     demographic = normalizeDemographic(id);
     saveDemographic();
     renderDemographicUi();
     renderMicroRequirements();
+    if (prevDemographic !== demographic) {
+      resetLongevityNavList();
+      if (longevityPanelOpen) {
+        renderLongevityPanel();
+      }
+    }
     if (weekTotalOpen && lastWeekTotals) {
       renderWeekSummary(lastWeekTotals);
     }

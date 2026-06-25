@@ -1575,8 +1575,6 @@ button.dashboard__micro-day-name:focus-visible {
   border: 1px solid #e4e4e0;
   border-radius: 5px;
   background: #fafaf8;
-  max-height: 11rem;
-  overflow-y: auto;
 }
 
 .dashboard__longevity-nav-all-list[hidden] {

@@ -1195,5 +1195,144 @@
       "A week dominated by high-GI staples means repeated insulin surges that promote belly fat, fatty liver, and the fatigue–craving cycle that makes healthy eating harder.",
       "Shifting toward beans, berries, intact grains, and smaller starch portions is one of the most direct dietary ways to prevent type 2 diabetes and metabolic decline."
     ]
+  },
+  "sectionFemaleHormonesPms": {
+    "tooLow": [
+      "Low magnesium, vitamin B6, or calcium intake is linked with worse premenstrual mood swings, cramping, breast tenderness, and sleep disruption in several trials—not universal, but common enough to track.",
+      "Very low omega-3 (EPA/DHA) may add inflammatory tone that worsens luteal-phase symptoms when fish intake is rare."
+    ],
+    "enough": [
+      "PMS & cycle balance belongs in longevity because decades of monthly symptom burden affects mood, sleep, work, and exercise consistency—not just a few bad days each month.",
+      "Magnesium supports muscle relaxation and nervous-system calm; vitamin B6 helps synthesize serotonin and GABA-related chemistry; calcium may blunt luteal-phase mood shifts; vitamin E supports breast tenderness in some studies; zinc and tryptophan feed hormone and neurotransmitter pathways when intake is low.",
+      "EPA and DHA from fatty fish add anti-inflammatory support that complements micronutrients. These repeat values from your micro and longevity entries so you can spot diet gaps—not a substitute for medical evaluation of endometriosis, PCOS, or severe PMDD."
+    ],
+    "foodSources": [
+      "Magnesium — leafy greens, nuts, seeds, legumes, dark chocolate",
+      "Vitamin B6 — chickpeas, salmon, chicken, potatoes, bananas",
+      "Calcium — yogurt, cheese, fortified plant milk, leafy greens",
+      "Vitamin E — almonds, sunflower seeds, avocado, olive oil",
+      "Zinc — oysters, pumpkin seeds, beef, legumes",
+      "Tryptophan — turkey, eggs, soy, dairy, oats",
+      "EPA & DHA — salmon, sardines, mackerel, herring"
+    ]
+  },
+  "sectionFemaleHormonesIron": {
+    "tooLow": [
+      "Premenopausal women lose iron every menstrual cycle—your dashboard uses 18 mg/day iron DV (vs 8 mg for men). Chronic low intake causes fatigue, cold intolerance, hair thinning, and can blunt thyroid and hormone balance.",
+      "Plant iron without vitamin C at the same meal absorbs poorly; tea and coffee at meals further block absorption."
+    ],
+    "enough": [
+      "Iron & menstruation belongs in longevity because low iron is one of the most common correctable nutrient gaps in premenopausal women—and it affects energy, cognition, exercise tolerance, and thyroid cofactor status for decades.",
+      "Pair non-heme iron (beans, lentils, spinach, fortified grains) with vitamin C (citrus, peppers, berries) at the same meal. Folate, B12, riboflavin, and copper support red blood cell production alongside iron itself.",
+      "Heavy periods, athletes, and vegetarians often need deliberate food planning before supplements. Heme iron from lean meat and shellfish absorbs more easily but still benefits from a balanced plate."
+    ],
+    "foodSources": [
+      "Heme iron — lean beef, lamb, shellfish, sardines",
+      "Non-heme iron — lentils, beans, spinach, tofu, fortified cereal",
+      "Vitamin C — citrus, bell peppers, strawberries, broccoli",
+      "Folate — leafy greens, legumes, asparagus, fortified grains",
+      "Vitamin B12 — fish, eggs, dairy, fortified nutritional yeast",
+      "Riboflavin — dairy, eggs, almonds, mushrooms",
+      "Copper — nuts, seeds, shellfish, dark chocolate"
+    ]
+  },
+  "sectionFemaleHormonesEstrogen": {
+    "tooLow": [
+      "Low fiber and infrequent cruciferous vegetables mean fewer tools for clearing estrogen metabolites through the gut and liver pathways.",
+      "Low sulforaphane usually means broccoli, kale, and Brussels sprouts are rare—missing one of the best-studied food compounds for healthy estrogen metabolism."
+    ],
+    "enough": [
+      "Estrogen metabolism belongs in longevity because how you break down and clear estrogen metabolites affects breast tissue, cycle symptoms, and long-term hormone balance—not just reproductive years.",
+      "Fiber binds excess estrogen in the gut so it is excreted rather than reabsorbed. Folate and vitamin B6 support methylation steps in liver estrogen clearance.",
+      "Sulforaphane from broccoli, Brussels sprouts, kale, and cabbage activates Nrf2 antioxidant defenses and supports healthier estrogen metabolite ratios in research—not by blocking all estrogen, but by helping process it. Chop crucifers and let them sit 5–10 minutes before cooking to maximize sulforaphane; broccoli sprouts are especially rich."
+    ],
+    "foodSources": [
+      "Broccoli & broccoli sprouts (top sulforaphane source)",
+      "Brussels sprouts & kale",
+      "Cabbage & bok choy",
+      "Arugula & mustard greens",
+      "Fiber — beans, oats, berries, vegetables",
+      "Folate — leafy greens, legumes, asparagus",
+      "Vitamin B6 — chickpeas, salmon, potatoes, bananas"
+    ]
+  },
+  "sectionFemaleHormonesPostMenopause": {
+    "tooLow": [
+      "After menopause, ovarian estrogen falls sharply—bone loss accelerates, hot flashes and sleep disruption may persist, and cardiovascular risk shifts toward patterns more common in men.",
+      "Low calcium, vitamin D, magnesium, or vitamin K speeds bone loss when estrogen no longer protects trabecular bone."
+    ],
+    "enough": [
+      "Post-menopause belongs in longevity because the hormone transition changes bone, heart, brain, and body-composition trajectories for decades—not a brief adjustment period.",
+      "Calcium, vitamin D, magnesium, and vitamin K work together for bone mineralization and muscle function; see Bone density for the same tracked values in another context.",
+      "Fiber and polyphenols support cardiometabolic health when estrogen's vascular protection fades. EPA and DHA from fish support heart and brain aging.",
+      "Sulforaphane from crucifers still supports estrogen metabolite balance when ovarian production is low—several weekly servings of broccoli, kale, or cabbage remain practical targets."
+    ],
+    "foodSources": [
+      "Calcium — yogurt, cheese, fortified plant milk, leafy greens",
+      "Vitamin D — fatty fish, egg yolks, fortified dairy",
+      "Magnesium — nuts, seeds, legumes, leafy greens",
+      "Vitamin K — kale, spinach, broccoli, natto",
+      "Fiber — beans, vegetables, intact grains",
+      "EPA & DHA — salmon, sardines, mackerel",
+      "Sulforaphane — broccoli, Brussels sprouts, kale"
+    ]
+  },
+  "sectionMaleHormonesTestosterone": {
+    "tooLow": [
+      "Low zinc, magnesium, or vitamin D intake is linked with lower testosterone production and poorer free-testosterone balance in observational and intervention studies—especially when combined with very low fat intake or excess body fat.",
+      "Chronic calorie deficit and ultra-low-fat diets can suppress androgen signaling even when micronutrients look adequate on paper."
+    ],
+    "enough": [
+      "Testosterone support belongs in longevity because androgen tone affects muscle mass, bone density, mood, metabolic rate, and body composition across decades—not just libido.",
+      "Zinc is concentrated in gonadal tissue and supports testosterone synthesis; magnesium supports free testosterone by reducing sex-hormone-binding globulin in some trials; vitamin D supports androgen receptor signaling; selenium provides antioxidant defense; vitamin B6 supports steroid hormone metabolism.",
+      "Monounsaturated fats from olive oil and avocado support a healthier fat pattern than excess saturated fat. EPA and DHA modulate inflammation that can interfere with Leydig cell function. These track diet gaps—not a substitute for medical evaluation of hypogonadism."
+    ],
+    "foodSources": [
+      "Zinc — oysters, beef, pumpkin seeds, legumes",
+      "Magnesium — nuts, seeds, leafy greens, legumes",
+      "Vitamin D — fatty fish, egg yolks, fortified dairy",
+      "Selenium — Brazil nuts, fish, eggs, sunflower seeds",
+      "Vitamin B6 — chicken, salmon, chickpeas, potatoes",
+      "Monounsaturated fat — olive oil, avocado, almonds",
+      "EPA & DHA — salmon, sardines, mackerel"
+    ]
+  },
+  "sectionMaleHormonesProstate": {
+    "tooLow": [
+      "Infrequent cruciferous vegetables means low sulforaphane—one of the best-studied food compounds for prostate cell defense in human and cell research.",
+      "Low selenium, vitamin D, or zinc may reduce antioxidant and regulatory support in prostate tissue when intake is chronically low."
+    ],
+    "enough": [
+      "Prostate health belongs in longevity because benign enlargement and cancer risk rise with age—nutrition cannot replace screening, but diet patterns matter over decades.",
+      "Sulforaphane from broccoli, Brussels sprouts, and kale activates Nrf2 pathways linked to prostate cell defense in research. Chop broccoli and let it sit before cooking; broccoli sprouts are especially concentrated.",
+      "Selenium, vitamin D, and zinc concentrate in prostate tissue and support antioxidant and cell-regulation pathways. Vitamin E contributes oxidative defense. EPA and DHA add anti-inflammatory support. Track food gaps here alongside regular medical care."
+    ],
+    "foodSources": [
+      "Broccoli & broccoli sprouts (sulforaphane)",
+      "Brussels sprouts, kale & cabbage",
+      "Brazil nuts (selenium)",
+      "Fatty fish & egg yolks (vitamin D)",
+      "Oysters, pumpkin seeds & beef (zinc)",
+      "Almonds & sunflower seeds (vitamin E)",
+      "Salmon & sardines (EPA & DHA)"
+    ]
+  },
+  "sectionMaleHormonesEstrogenBalance": {
+    "tooLow": [
+      "Low fiber and infrequent crucifers reduce tools for clearing estrogen metabolites—relevant for men because aromatase converts testosterone to estrogen, especially with belly fat and aging.",
+      "Low zinc may worsen aromatase balance when intake is chronically low."
+    ],
+    "enough": [
+      "Estrogen balance belongs in longevity for men because relative estrogen excess—not just low testosterone—drives gynecomastia, belly fat, and lower androgen tone as aromatase activity rises with age and adiposity.",
+      "Sulforaphane from broccoli and crucifers supports healthier estrogen metabolite ratios via Nrf2 and liver detox pathways. Fiber binds metabolites in the gut; zinc supports aromatase balance.",
+      "Body composition still dominates—nutrition supports the pathways, but excess visceral fat remains the main driver of aromatization. These repeat tracked values so you can spot diet gaps alongside strength training and weight management."
+    ],
+    "foodSources": [
+      "Broccoli & broccoli sprouts (sulforaphane)",
+      "Brussels sprouts, kale & cabbage",
+      "Fiber — beans, oats, vegetables, intact grains",
+      "Zinc — oysters, beef, pumpkin seeds",
+      "Crucifer prep tip — chop, rest 5–10 min, then cook lightly"
+    ]
   }
 }
