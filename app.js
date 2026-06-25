@@ -115,6 +115,8 @@
   var phosphorusBinderModalDoneBtn = document.getElementById(
     "phosphorus-binder-modal-done"
   );
+  var microTipCaffeineEl = document.getElementById("micro-tip-caffeine");
+  var microTipCataractsEl = document.getElementById("micro-tip-cataracts");
   var caffeineTipModalEl = document.getElementById("caffeine-tip-modal");
   var caffeineTipModalDoneBtn = document.getElementById("caffeine-tip-modal-done");
   var fatsCholesterolTipModalEl = document.getElementById("fats-cholesterol-tip-modal");
@@ -4564,6 +4566,12 @@
           btn.classList.toggle("dashboard__micro-condition-link--active", selected);
           btn.setAttribute("aria-selected", selected ? "true" : "false");
         });
+    }
+    if (microTipCaffeineEl) {
+      microTipCaffeineEl.hidden = active;
+    }
+    if (microTipCataractsEl) {
+      microTipCataractsEl.hidden = microConditionFocus !== "cataractsPrevention";
     }
   }
 

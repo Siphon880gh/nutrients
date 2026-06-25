@@ -281,8 +281,9 @@
   },
   "vitaminA": {
     "tooLow": [
-      "Low vitamin A causes night blindness, dry eyes, poor skin healing, and greater infection risk; severe deficiency is rare in developed countries.",
-      "Fat malabsorption or very low animal/vegetable intake (preformed A or beta-carotene) are typical causes."
+      "Clinical vitamin A deficiency is rare in the United States—fewer than 1% of the population shows severe deficiency levels in blood tests—but a significant portion of Americans fall short of meeting optimal daily dietary requirements.",
+      "When intake is genuinely low, symptoms include night blindness, dry eyes, poor skin healing, and greater infection risk. Fat malabsorption or very low animal/vegetable intake (preformed A or beta-carotene) are typical causes.",
+      "Meeting daily requirements has become harder over time. Studies show that overall dietary intake and crop concentration of vitamin A (and its precursor, beta-carotene) have decreased over the past several decades. This decline comes from two main areas: soil and crop quality reducing nutrient density in produce, and dietary shifts—long-term population studies show a significant drop in average dietary vitamin A intake, largely driven by adults consuming fewer animal products (such as liver and dairy) and less beta-carotene-rich produce (like carrots)."
     ],
     "enough": [
       "Vitamin A (retinol and carotenoids) supports night vision, immune barriers in gut/lungs/skin, and cell growth—reducing infection severity and poor wound healing.",
@@ -310,6 +311,7 @@
       "Helps mucous membranes stay healthy, reducing dry-eye and vaginal dryness when overall nutrition is sound."
     ],
     "cataractsPrevention": [
+      "While vitamins cannot reverse or cure an existing cataract, a balanced diet including vitamin A, vitamin C, vitamin E, and carotenoids (like lutein and zeaxanthin) is linked to a reduced risk of cataract development and progression.",
       "Vitamin A (retinol and carotenoids) supports corneal and retinal health; beta-carotene from colorful produce also feeds the broader carotenoid network that protects eye tissues.",
       "Food sources—sweet potato, leafy greens, eggs—supply vision-supporting A without the cataract-unrelated risks of megadose preformed A supplements."
     ]
