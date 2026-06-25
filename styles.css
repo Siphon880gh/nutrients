@@ -3463,6 +3463,35 @@ button.dashboard__longevity-name:focus-visible {
   background: rgba(26, 26, 26, 0.55);
 }
 
+#micro-sources-modal.modal--stacked,
+#longevity-sources-modal.modal--stacked {
+  z-index: 120;
+}
+
+#micro-sources-modal.modal--stacked .modal__backdrop,
+#longevity-sources-modal.modal--stacked .modal__backdrop {
+  background: rgba(26, 26, 26, 0.55);
+}
+
+.modal__header-tools {
+  flex-shrink: 0;
+  display: flex;
+  align-items: stretch;
+  gap: 0.4rem;
+}
+
+.modal__tool-btn--icon {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.modal__tool-btn-icon {
+  flex-shrink: 0;
+  display: block;
+  fill: currentColor;
+}
+
 .modal[hidden] {
   display: none;
 }

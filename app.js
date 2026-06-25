@@ -115,6 +115,7 @@
   var microDefModalFooterEl = document.getElementById("micro-def-modal-footer");
   var microDefModalBackBtn = document.getElementById("micro-def-modal-back");
   var microDefModalDoneBtn = document.getElementById("micro-def-modal-done");
+  var microDefModalSourcesBtn = document.getElementById("micro-def-sources-btn");
   var microDefFullscreenToggleBtn = document.getElementById(
     "micro-def-fullscreen-toggle"
   );
@@ -282,6 +283,8 @@
   var defModalReturnSources = null;
   /** When set, def modal sits above micro/longevity form modal; closing returns focus to that form. */
   var defModalStackedForm = null;
+  /** When set, sources modal sits above the nutrient description modal. */
+  var sourcesModalStackedOnDef = null;
   var activeMicroSourcesKey = null;
   var activeMicroSourcesScope = "week";
   var activeLongevitySourcesKey = null;
@@ -2588,6 +2591,90 @@
     }
   }
 
+  function defModalSourcesTarget() {
+    if (activeMicroDefKey) {
+      if (!microFieldByKey(activeMicroDefKey)) return null;
+      return { modal: "micro", key: activeMicroDefKey, scope: "week" };
+    }
+    if (activeLongevityDefKey) {
+      var key = activeLongevityDefKey;
+      if (key === "glycemicLoad") {
+        return { modal: "longevity", key: key, kind: "glycemicLoad" };
+      }
+      if (LONGEVITY_DERIVED_DEFS[key] || LONGEVITY_SECTION_DEFS[key]) {
+        return null;
+      }
+      if (longevityFieldByKey(key)) {
+        return { modal: "longevity", key: key, kind: "longevity" };
+      }
+      if (microFieldByKey(key)) {
+        return { modal: "micro", key: key, scope: "week" };
+      }
+      return null;
+    }
+    return null;
+  }
+
+  function syncDefModalSourcesBtn() {
+    if (!microDefModalSourcesBtn) return;
+    var target = defModalSourcesTarget();
+    if (!target) {
+      microDefModalSourcesBtn.hidden = true;
+      return;
+    }
+    microDefModalSourcesBtn.hidden = false;
+    microDefModalSourcesBtn.setAttribute("data-def-sources-modal", target.modal);
+    microDefModalSourcesBtn.setAttribute("data-def-sources-key", target.key);
+    if (target.scope) {
+      microDefModalSourcesBtn.setAttribute("data-def-sources-scope", target.scope);
+    } else {
+      microDefModalSourcesBtn.removeAttribute("data-def-sources-scope");
+    }
+    if (target.kind) {
+      microDefModalSourcesBtn.setAttribute("data-def-sources-kind", target.kind);
+    } else {
+      microDefModalSourcesBtn.removeAttribute("data-def-sources-kind");
+    }
+  }
+
+  function focusMicroDefModal() {
+    if (microDefModalSourcesBtn && !microDefModalSourcesBtn.hidden) {
+      microDefModalSourcesBtn.focus();
+    } else if (microDefModalDoneBtn) {
+      microDefModalDoneBtn.focus();
+    }
+  }
+
+  function openSourcesFromDefModal() {
+    if (!microDefModalSourcesBtn || microDefModalSourcesBtn.hidden) return;
+    var modal = microDefModalSourcesBtn.getAttribute("data-def-sources-modal");
+    var key = microDefModalSourcesBtn.getAttribute("data-def-sources-key");
+    if (!modal || !key) return;
+    if (modal === "micro") {
+      openMicroSourcesModal(
+        key,
+        microDefModalSourcesBtn.getAttribute("data-def-sources-scope") || "week",
+        true
+      );
+    } else {
+      openLongevitySourcesModal(
+        key,
+        microDefModalSourcesBtn.getAttribute("data-def-sources-kind") || "longevity",
+        true
+      );
+    }
+  }
+
+  function setSourcesModalStackedOnDef(on) {
+    sourcesModalStackedOnDef = on ? true : null;
+    if (microSourcesModalEl) {
+      microSourcesModalEl.classList.toggle("modal--stacked", !!on);
+    }
+    if (longevitySourcesModalEl) {
+      longevitySourcesModalEl.classList.toggle("modal--stacked", !!on);
+    }
+  }
+
   function returnFromDefModalToSources() {
     if (!defModalReturnSources) return;
     var returnTo = defModalReturnSources;
@@ -2597,6 +2684,7 @@
     if (microDefModalEl) microDefModalEl.hidden = true;
     setDefModalReturnSources(null);
     setDefModalStackedForm(null);
+    if (microDefModalSourcesBtn) microDefModalSourcesBtn.hidden = true;
     updateBodyModalOpen();
     if (returnTo.kind === "micro") {
       openMicroSourcesModal(returnTo.key, returnTo.scope);
@@ -2615,6 +2703,7 @@
     microDefModalEl.hidden = true;
     setDefModalReturnSources(null);
     setDefModalStackedForm(null);
+    if (microDefModalSourcesBtn) microDefModalSourcesBtn.hidden = true;
     updateBodyModalOpen();
     if (stackedForm === "micro" && microFormEl) {
       var microInput = microFormEl.querySelector(
@@ -2661,7 +2750,8 @@
     );
   }
 
-  function closeOtherModalsForSources() {
+  function closeOtherModalsForSources(opts) {
+    opts = opts || {};
     if (activeImportId) closeImportModal();
     if (importAllModalEl && !importAllModalEl.hidden) closeImportAllModal();
     if (importAllMealsModalEl && !importAllMealsModalEl.hidden) {
@@ -2669,7 +2759,7 @@
     }
     if (microGapsModalEl && !microGapsModalEl.hidden) closeMicroGapsModal();
     if (healthTimelineModalEl && !healthTimelineModalEl.hidden) closeHealthTimelineModal();
-    if (microDefModalEl && !microDefModalEl.hidden) closeMicroDefModal();
+    if (!opts.keepDefModal && microDefModalEl && !microDefModalEl.hidden) closeMicroDefModal();
     if (microSourcesModalEl && !microSourcesModalEl.hidden) closeMicroSourcesModal();
     if (longevitySourcesModalEl && !longevitySourcesModalEl.hidden) {
       closeLongevitySourcesModal();
@@ -2693,13 +2783,15 @@
     if (histamineTipModalEl && !histamineTipModalEl.hidden) {
       closeHistamineTipModal();
     }
-    if (activeMicroId) {
-      saveMicrosFromForm();
-      closeMicroModal();
-    }
-    if (activeLongevityId) {
-      saveLongevityFromForm();
-      closeLongevityModal();
+    if (!opts.keepFormModals) {
+      if (activeMicroId) {
+        saveMicrosFromForm();
+        closeMicroModal();
+      }
+      if (activeLongevityId) {
+        saveLongevityFromForm();
+        closeLongevityModal();
+      }
     }
   }
 
@@ -3153,6 +3245,11 @@
     var btn = microBtn || longevityBtn;
     if (!btn || !titleEl || !titleEl.contains(btn)) return false;
     e.preventDefault();
+    if (sourcesModalStackedOnDef) {
+      closeModal();
+      focusMicroDefModal();
+      return true;
+    }
     var returnTo = getReturnTo ? getReturnTo() : null;
     closeModal();
     if (microBtn) {
@@ -3213,7 +3310,7 @@
     longevitySourcesBodyEl.innerHTML = html;
   }
 
-  function openLongevitySourcesModal(nutrientKey, kind) {
+  function openLongevitySourcesModal(nutrientKey, kind, stackOnDef) {
     if (!longevitySourcesModalEl || !nutrientKey || !kind) return;
     var label;
     if (kind === "micro") {
@@ -3228,7 +3325,10 @@
       label = longevityField.label;
     }
 
-    closeOtherModalsForSources();
+    closeOtherModalsForSources({
+      keepDefModal: !!stackOnDef,
+      keepFormModals: !!stackOnDef && !!defModalStackedForm,
+    });
     activeLongevitySourcesKey = nutrientKey;
     activeLongevitySourcesKind = kind;
     setLongevitySourcesFullscreen(false);
@@ -3247,6 +3347,7 @@
           : "Full week (Mon–Sun) — matched foods ranked by amount";
     }
     renderLongevitySourcesBody();
+    setSourcesModalStackedOnDef(!!stackOnDef);
     longevitySourcesModalEl.hidden = false;
     updateBodyModalOpen();
     if (longevitySourcesModalDoneBtn) longevitySourcesModalDoneBtn.focus();
@@ -3254,11 +3355,16 @@
 
   function closeLongevitySourcesModal() {
     if (!longevitySourcesModalEl) return;
+    var stackedOnDef = sourcesModalStackedOnDef;
     activeLongevitySourcesKey = null;
     activeLongevitySourcesKind = null;
     setLongevitySourcesFullscreen(false);
     longevitySourcesModalEl.hidden = true;
+    setSourcesModalStackedOnDef(false);
     updateBodyModalOpen();
+    if (stackedOnDef && microDefModalEl && !microDefModalEl.hidden) {
+      focusMicroDefModal();
+    }
   }
 
   function longevitySourcesIconHtml(nutrientKey, kind) {
@@ -3316,12 +3422,15 @@
     microSourcesBodyEl.innerHTML = html;
   }
 
-  function openMicroSourcesModal(microKey, scope) {
+  function openMicroSourcesModal(microKey, scope, stackOnDef) {
     if (!microSourcesModalEl || !microKey) return;
     var field = microFieldByKey(microKey);
     if (!field) return;
 
-    closeOtherModalsForSources();
+    closeOtherModalsForSources({
+      keepDefModal: !!stackOnDef,
+      keepFormModals: !!stackOnDef && !!defModalStackedForm,
+    });
     activeMicroSourcesKey = microKey;
     activeMicroSourcesScope = scope || "week";
     setMicroSourcesFullscreen(false);
@@ -3335,6 +3444,7 @@
       );
     }
     renderMicroSourcesBody();
+    setSourcesModalStackedOnDef(!!stackOnDef);
     microSourcesModalEl.hidden = false;
     updateBodyModalOpen();
     if (microSourcesScopeEl) microSourcesScopeEl.focus();
@@ -3342,11 +3452,16 @@
 
   function closeMicroSourcesModal() {
     if (!microSourcesModalEl) return;
+    var stackedOnDef = sourcesModalStackedOnDef;
     activeMicroSourcesKey = null;
     activeMicroSourcesScope = "week";
     setMicroSourcesFullscreen(false);
     microSourcesModalEl.hidden = true;
+    setSourcesModalStackedOnDef(false);
     updateBodyModalOpen();
+    if (stackedOnDef && microDefModalEl && !microDefModalEl.hidden) {
+      focusMicroDefModal();
+    }
   }
 
   function microSourcesIconHtml(microKey, defaultDayId) {
@@ -3805,6 +3920,7 @@
     renderLongevityDefBody(key);
     setDefModalReturnSources(returnTo || null);
     setDefModalStackedForm(stackOnForm || null);
+    syncDefModalSourcesBtn();
     microDefModalEl.hidden = false;
     updateBodyModalOpen();
     if (defModalReturnSources && microDefModalBackBtn) {
@@ -3863,6 +3979,7 @@
     renderMicroDefBody(key);
     setDefModalReturnSources(returnTo || null);
     setDefModalStackedForm(stackOnForm || null);
+    syncDefModalSourcesBtn();
     microDefModalEl.hidden = false;
     updateBodyModalOpen();
     if (defModalReturnSources && microDefModalBackBtn) {
@@ -9547,6 +9664,13 @@
 
   if (microDefModalDoneBtn) {
     microDefModalDoneBtn.addEventListener("click", closeMicroDefModal);
+  }
+
+  if (microDefModalSourcesBtn) {
+    microDefModalSourcesBtn.addEventListener("click", function (e) {
+      e.preventDefault();
+      openSourcesFromDefModal();
+    });
   }
 
   if (phosphorusBinderModalDoneBtn) {

@@ -535,7 +535,17 @@
           <h3 id="micro-def-modal-title" class="modal__title"></h3>
           <p class="modal__subtitle">General effects, then sex-specific benefits</p>
         </div>
-        <button type="button" id="micro-def-fullscreen-toggle" class="modal__tool-btn" aria-pressed="false" aria-label="Read in full screen">Full screen</button>
+        <div class="modal__header-tools">
+          <button type="button" id="micro-def-sources-btn" class="modal__tool-btn modal__tool-btn--icon" hidden aria-label="Show my food ranked by amount">
+            <svg class="modal__tool-btn-icon" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" focusable="false">
+              <rect x="1" y="8" width="3" height="7" rx="0.5"></rect>
+              <rect x="6.5" y="4" width="3" height="11" rx="0.5"></rect>
+              <rect x="12" y="1" width="3" height="14" rx="0.5"></rect>
+            </svg>
+            <span>My Food</span>
+          </button>
+          <button type="button" id="micro-def-fullscreen-toggle" class="modal__tool-btn" aria-pressed="false" aria-label="Read in full screen">Full screen</button>
+        </div>
       </header>
       <div id="micro-def-body" class="micro-def__body"></div>
       <footer id="micro-def-modal-footer" class="modal__footer">
