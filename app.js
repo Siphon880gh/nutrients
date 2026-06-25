@@ -280,6 +280,8 @@
   var activeMicroDefKey = null;
   var activeLongevityDefKey = null;
   var defModalReturnSources = null;
+  /** When set, def modal sits above micro/longevity form modal; closing returns focus to that form. */
+  var defModalStackedForm = null;
   var activeMicroSourcesKey = null;
   var activeMicroSourcesScope = "week";
   var activeLongevitySourcesKey = null;
@@ -544,6 +546,7 @@
     { microKey: "biotin", label: "Biotin (B7)", limiting: false },
     { microKey: "magnesium", label: "Magnesium", limiting: false },
     { microKey: "iron", label: "Iron", limiting: false },
+    { microKey: "manganese", label: "Manganese", limiting: false },
   ];
 
   var LONGEVITY_MITO_FROM_LONGEVITY = [{ key: "coq10", label: "Coenzyme Q10", limiting: false }];
@@ -2034,6 +2037,20 @@
     });
   }
 
+  function foodSourceGroupsArray(raw) {
+    if (!Array.isArray(raw.foodSourceGroups)) return [];
+    return raw.foodSourceGroups
+      .map(function (group) {
+        if (!group || typeof group !== "object") return null;
+        var heading =
+          typeof group.heading === "string" ? group.heading.trim() : "";
+        var items = stringArray(group.items);
+        if (!heading || !items.length) return null;
+        return { heading: heading, items: items };
+      })
+      .filter(Boolean);
+  }
+
   function microConditionDefFields(raw) {
     var fields = {};
     Object.keys(MICRO_CONDITION_FOCUS).forEach(function (id) {
@@ -2048,6 +2065,7 @@
       entry.tooHigh.length ||
       entry.enough.length ||
       entry.foodSources.length ||
+      entry.foodSourceGroups.length ||
       entry.male.length ||
       entry.female.length
     ) {
@@ -2070,6 +2088,7 @@
           tooHigh: stringArray(raw.tooHigh),
           enough: stringArray(raw.enough),
           foodSources: stringArray(raw.foodSources),
+          foodSourceGroups: foodSourceGroupsArray(raw),
           male: stringArray(raw.male),
           female: stringArray(raw.female),
         },
@@ -2148,6 +2167,7 @@
       entry.tooHigh.length ||
       entry.enough.length ||
       entry.foodSources.length ||
+      entry.foodSourceGroups.length ||
       entry.targetReference.length
     ) {
       return true;
@@ -2169,6 +2189,7 @@
           tooHigh: stringArray(raw.tooHigh),
           enough: stringArray(raw.enough),
           foodSources: stringArray(raw.foodSources),
+          foodSourceGroups: foodSourceGroupsArray(raw),
           targetReference: stringArray(raw.targetReference),
         },
         microConditionDefFields(raw)
@@ -2220,18 +2241,43 @@
     return metaMap[sexId] || fallback;
   }
 
-  function microDefFoodSourcesHtml(sources) {
-    if (!sources.length) return "";
+  function microDefFoodSourcesListHtml(items) {
     return (
-      '<section class="micro-def__sources">' +
-      '<h4 class="micro-def__sources-heading">Food sources</h4>' +
       '<ul class="micro-def__sources-list">' +
-      sources
+      items
         .map(function (item) {
           return "<li>" + escapeHtml(item) + "</li>";
         })
         .join("") +
-      "</ul>" +
+      "</ul>"
+    );
+  }
+
+  function microDefFoodSourcesHtml(sources, groups) {
+    if (groups && groups.length) {
+      return (
+        '<section class="micro-def__sources">' +
+        '<h4 class="micro-def__sources-heading">Food sources</h4>' +
+        groups
+          .map(function (group) {
+            return (
+              '<div class="micro-def__sources-group">' +
+              '<h5 class="micro-def__sources-subheading">' +
+              escapeHtml(group.heading) +
+              "</h5>" +
+              microDefFoodSourcesListHtml(group.items) +
+              "</div>"
+            );
+          })
+          .join("") +
+        "</section>"
+      );
+    }
+    if (!sources.length) return "";
+    return (
+      '<section class="micro-def__sources">' +
+      '<h4 class="micro-def__sources-heading">Food sources</h4>' +
+      microDefFoodSourcesListHtml(sources) +
       "</section>"
     );
   }
@@ -2330,8 +2376,8 @@
       html += "</section>";
     }
 
-    if (def.foodSources.length) {
-      html += microDefFoodSourcesHtml(def.foodSources);
+    if (def.foodSourceGroups.length || def.foodSources.length) {
+      html += microDefFoodSourcesHtml(def.foodSources, def.foodSourceGroups);
     }
 
     microDefBodyEl.innerHTML =
@@ -2494,8 +2540,8 @@
         "</section>";
     }
 
-    if (def.foodSources.length) {
-      html += microDefFoodSourcesHtml(def.foodSources);
+    if (def.foodSourceGroups.length || def.foodSources.length) {
+      html += microDefFoodSourcesHtml(def.foodSources, def.foodSourceGroups);
     }
 
     microDefBodyEl.innerHTML =
@@ -2535,6 +2581,13 @@
     }
   }
 
+  function setDefModalStackedForm(kind) {
+    defModalStackedForm = kind || null;
+    if (microDefModalEl) {
+      microDefModalEl.classList.toggle("modal--stacked", !!kind);
+    }
+  }
+
   function returnFromDefModalToSources() {
     if (!defModalReturnSources) return;
     var returnTo = defModalReturnSources;
@@ -2543,6 +2596,7 @@
     setMicroDefFullscreen(false);
     if (microDefModalEl) microDefModalEl.hidden = true;
     setDefModalReturnSources(null);
+    setDefModalStackedForm(null);
     updateBodyModalOpen();
     if (returnTo.kind === "micro") {
       openMicroSourcesModal(returnTo.key, returnTo.scope);
@@ -2553,12 +2607,26 @@
 
   function closeMicroDefModal() {
     if (!microDefModalEl) return;
+    var stackedForm = defModalStackedForm;
+    var stackedKey = activeMicroDefKey || activeLongevityDefKey;
     activeMicroDefKey = null;
     activeLongevityDefKey = null;
     setMicroDefFullscreen(false);
     microDefModalEl.hidden = true;
     setDefModalReturnSources(null);
+    setDefModalStackedForm(null);
     updateBodyModalOpen();
+    if (stackedForm === "micro" && microFormEl) {
+      var microInput = microFormEl.querySelector(
+        stackedKey ? '[data-micro-key="' + stackedKey + '"]' : "input"
+      );
+      if (microInput) microInput.focus();
+    } else if (stackedForm === "longevity" && longevityFormEl) {
+      var longevityInput = longevityFormEl.querySelector(
+        stackedKey ? '[data-longevity-key="' + stackedKey + '"]' : "input"
+      );
+      if (longevityInput) longevityInput.focus();
+    }
   }
 
   function updateSourcesFullscreenToggle(btn, on) {
@@ -3690,7 +3758,7 @@
     );
   }
 
-  function openLongevityDefModal(key, returnTo) {
+  function openLongevityDefModal(key, returnTo, stackOnForm) {
     if (!microDefModalEl || !key) return;
 
     if (activeImportId) closeImportModal();
@@ -3716,13 +3784,16 @@
     if (pufaAntioxidantTipModalEl && !pufaAntioxidantTipModalEl.hidden) {
       closePufaAntioxidantTipModal();
     }
-    if (activeMicroId) {
-      saveMicrosFromForm();
-      closeMicroModal();
-    }
-    if (activeLongevityId) {
-      saveLongevityFromForm();
-      closeLongevityModal();
+    if (microDefModalEl && !microDefModalEl.hidden) closeMicroDefModal();
+    if (!stackOnForm) {
+      if (activeMicroId) {
+        saveMicrosFromForm();
+        closeMicroModal();
+      }
+      if (activeLongevityId) {
+        saveLongevityFromForm();
+        closeLongevityModal();
+      }
     }
 
     activeMicroDefKey = null;
@@ -3733,6 +3804,7 @@
     }
     renderLongevityDefBody(key);
     setDefModalReturnSources(returnTo || null);
+    setDefModalStackedForm(stackOnForm || null);
     microDefModalEl.hidden = false;
     updateBodyModalOpen();
     if (defModalReturnSources && microDefModalBackBtn) {
@@ -3742,7 +3814,7 @@
     }
   }
 
-  function openMicroDefModal(key, returnTo) {
+  function openMicroDefModal(key, returnTo, stackOnForm) {
     if (!microDefModalEl || !key) return;
     var field = microFieldByKey(key);
     if (!field) return;
@@ -3771,13 +3843,15 @@
     if (pufaAntioxidantTipModalEl && !pufaAntioxidantTipModalEl.hidden) {
       closePufaAntioxidantTipModal();
     }
-    if (activeMicroId) {
-      saveMicrosFromForm();
-      closeMicroModal();
-    }
-    if (activeLongevityId) {
-      saveLongevityFromForm();
-      closeLongevityModal();
+    if (!stackOnForm) {
+      if (activeMicroId) {
+        saveMicrosFromForm();
+        closeMicroModal();
+      }
+      if (activeLongevityId) {
+        saveLongevityFromForm();
+        closeLongevityModal();
+      }
     }
 
     activeLongevityDefKey = null;
@@ -3788,6 +3862,7 @@
     }
     renderMicroDefBody(key);
     setDefModalReturnSources(returnTo || null);
+    setDefModalStackedForm(stackOnForm || null);
     microDefModalEl.hidden = false;
     updateBodyModalOpen();
     if (defModalReturnSources && microDefModalBackBtn) {
@@ -5573,7 +5648,7 @@
     html += longevitySectionWrap(
       "Mitochondrial health & cellular energy",
       "sectionMitochondrial",
-      '<p class="dashboard__longevity-note">B vitamins build <button type="button" class="dashboard__longevity-tip-link" data-longevity-def="nad" aria-haspopup="dialog">NAD</button> and related cofactors (FAD, coenzyme A); magnesium and iron support ATP production; CoQ10 (is also a nutrient) carries electrons in mitochondria. These repeat values from your micro and longevity entries so you can spot gaps in cellular fuel—not just general % DV.</p>',
+      '<p class="dashboard__longevity-note">B vitamins build <button type="button" class="dashboard__longevity-tip-link" data-longevity-def="nad" aria-haspopup="dialog">NAD</button> and related cofactors (FAD, coenzyme A); magnesium and iron support ATP production; manganese supports mitochondrial antioxidant defense via manganese superoxide dismutase (MnSOD); CoQ10 (is also a nutrient) carries electrons in mitochondria. These repeat values from your micro and longevity entries so you can spot gaps in cellular fuel—not just general % DV.</p>',
       longevityListOpen() +
         longevitySubgroupHtml("From your micro entries", "micro") +
         LONGEVITY_MITO_FROM_MICRO.map(function (item) {
@@ -7506,11 +7581,13 @@
   function microFormFieldHtml(field) {
     return (
       '<label class="micro-form__field">' +
-      '<span class="micro-form__label">' +
+      '<button type="button" class="micro-form__label micro-form__label-link" data-micro-def="' +
+      escapeAttr(field.key) +
+      '" aria-haspopup="dialog">' +
       escapeHtml(field.label) +
       " (" +
       escapeHtml(field.code) +
-      ')</span><span class="micro-form__unit">' +
+      ')</button><span class="micro-form__unit">' +
       escapeHtml(field.unit) +
       "</span>" +
       '<input type="number" class="micro-form__input" min="0" step="0.1" inputmode="decimal" ' +
@@ -8822,6 +8899,12 @@
 
   if (microFormEl) {
     microFormEl.addEventListener("input", scheduleMicroSave);
+    microFormEl.addEventListener("click", function (e) {
+      var microBtn = e.target.closest("[data-micro-def]");
+      if (!microBtn) return;
+      e.preventDefault();
+      openMicroDefModal(microBtn.getAttribute("data-micro-def"), null, "micro");
+    });
   }
 
   if (microModalDoneBtn) {
@@ -9245,7 +9328,11 @@
       var longevityBtn = e.target.closest("[data-longevity-def]");
       if (!longevityBtn) return;
       e.preventDefault();
-      openLongevityDefModal(longevityBtn.getAttribute("data-longevity-def"));
+      openLongevityDefModal(
+        longevityBtn.getAttribute("data-longevity-def"),
+        null,
+        "longevity"
+      );
     });
   }
 

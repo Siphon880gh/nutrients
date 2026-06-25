@@ -74,15 +74,37 @@
       "Too much potassium from supplements or salt substitutes can be dangerous, especially with kidney disease or certain blood pressure medications.",
       "Food potassium from vegetables, beans, and fruit is rarely a problem for healthy kidneys."
     ],
-    "foodSources": [
-      "Potatoes (with skin)",
-      "Bananas",
-      "Beans & lentils",
-      "Spinach & leafy greens",
-      "Yogurt & milk",
-      "Avocado",
-      "Tomatoes & tomato sauce",
-      "Salmon"
+    "foodSourceGroups": [
+      {
+        "heading": "High potassium source fruits",
+        "items": [
+          "Bananas",
+          "Avocado",
+          "Oranges & orange juice",
+          "Dried apricots",
+          "Melons (cantaloupe, honeydew)"
+        ]
+      },
+      {
+        "heading": "High potassium source vegetables",
+        "items": [
+          "Potatoes (with skin)",
+          "Spinach & leafy greens",
+          "Tomatoes & tomato sauce",
+          "Sweet potatoes",
+          "Beet greens",
+          "Winter squash"
+        ]
+      },
+      {
+        "heading": "High potassium foods that are neither fruits nor vegetables",
+        "items": [
+          "Beans & lentils",
+          "Yogurt & milk",
+          "Salmon & other fish",
+          "Nuts (almonds, pistachios)"
+        ]
+      }
     ],
     "male": [
       "Higher targets (about 3,400 mg/day) reflect larger body size and typical needs for blood-pressure and workout recovery support.",
@@ -469,14 +491,15 @@
     ],
     "enough": [
       "Iodine is essential for thyroid hormones that regulate metabolism, body temperature, and brain development—preventing goiter, fatigue, and cognitive sluggishness when intake is steady.",
-      "Iodized table salt, seafood, and dairy are common sources—a little goes a long way for most adults."
+      "Iodized salt is standard table salt with trace iodine added—usually as potassium iodide. Salt iodization is a simple, highly effective public-health measure designed to prevent deficiency and support healthy thyroid function. About ¼ teaspoon of iodized salt provides roughly 52% of the daily value.",
+      "Seafood, dairy, and eggs are other dependable sources; most adults need only small amounts day to day."
     ],
     "tooHigh": [
       "Excess iodine from high-dose supplements or daily seaweed megadoses can trigger or worsen thyroid dysfunction—especially in people with autoimmune thyroid disease.",
       "Iodized salt in normal cooking amounts is rarely a problem; watch concentrated supplements."
     ],
     "foodSources": [
-      "Iodized table salt",
+      "Iodized table salt (Morton Iodized Salt, 26 oz—widely in stores)",
       "Cod & seaweed",
       "Yogurt & milk",
       "Eggs",

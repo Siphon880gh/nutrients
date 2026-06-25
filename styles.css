@@ -1170,6 +1170,20 @@ button.dashboard__micro-name:focus-visible {
   color: #2a4a6e;
 }
 
+.micro-def__sources-group + .micro-def__sources-group {
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid #c5d4e2;
+}
+
+.micro-def__sources-subheading {
+  margin: 0 0 0.4rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #3a5a7e;
+  line-height: 1.35;
+}
+
 .micro-def__sources-list {
   margin: 0;
   padding: 0;
@@ -3441,6 +3455,14 @@ button.dashboard__longevity-name:focus-visible {
   padding: 1rem;
 }
 
+#micro-def-modal.modal--stacked {
+  z-index: 110;
+}
+
+#micro-def-modal.modal--stacked .modal__backdrop {
+  background: rgba(26, 26, 26, 0.55);
+}
+
 .modal[hidden] {
   display: none;
 }
@@ -3550,6 +3572,10 @@ body.modal-open {
 
 #micro-def-modal.modal--fullscreen .micro-def__sources-heading {
   font-size: 1rem;
+}
+
+#micro-def-modal.modal--fullscreen .micro-def__sources-subheading {
+  font-size: 0.95rem;
 }
 
 #micro-def-modal.modal--fullscreen .micro-def__sources-list li {
@@ -3670,6 +3696,30 @@ button.modal__title-link:focus-visible {
   font-size: 0.72rem;
   font-weight: 600;
   color: #5c5c5c;
+}
+
+button.micro-form__label-link {
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  color: #2a5a8a;
+  text-decoration: underline;
+  text-decoration-color: rgba(42, 90, 138, 0.35);
+  text-underline-offset: 0.12em;
+}
+
+button.micro-form__label-link:hover {
+  color: #1a4570;
+  text-decoration-color: currentColor;
+}
+
+button.micro-form__label-link:focus-visible {
+  outline: 2px solid #3d6b9e;
+  outline-offset: 2px;
+  border-radius: 2px;
 }
 
 .micro-form__unit {
