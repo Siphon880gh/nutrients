@@ -13,7 +13,7 @@ The app runs from static files: `index.html`, `styles.css`, and `app.js`. Food d
 
 ## QA Food Definitions Tool
 
-Use `.skills/qa-definitions-food.json` to audit food definition nutrients with AI.
+Use `.agents/skills/qa-definitions-food.json` to audit food definition nutrients with AI.
 
 The tool explains its purpose when invoked, asks which sample file to QA, asks whether to use the default nutrient set or a custom list, then rotates through nutrient-food pairs that still need review.
 
@@ -36,3 +36,8 @@ The QA flow only asks AI about foods where the selected nutrient is `0` or missi
 ```
 
 The default progress file is `samples/definitions-food-qa-checked.json`.
+
+Example prompt with the definitions file opened:
+```
+Use qa skill that's found locally and make sure the food definitions have Manganese amounts if a food has it.
+```

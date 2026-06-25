@@ -44,8 +44,9 @@
     refinedCarbs: 0,
   };
 
-  /** Micro keys shown in longevity panel but stored under food.micros */
-  var FROM_MICRO_KEYS = ["calcium", "magnesium", "vitaminD"];
+  /** Micro keys shown in longevity panel — values always stored under food.micros.
+   *  vitaminE, vitaminK, selenium, copper use longevity: true to reference micros. */
+  var FROM_MICRO_KEYS = ["calcium", "magnesium", "vitaminD", "vitaminE", "vitaminK", "selenium", "copper"];
 
   function getDailyLongevityDv(key) {
     var dv = DAILY_LONGEVITY_DV[key];

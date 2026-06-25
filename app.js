@@ -257,6 +257,7 @@
   var microConditionFocus = null;
   var showMicroDailyDv = false;
   var microViewDaily = false;
+  var microMoreExpanded = false;
   var longevityPanelOpen = false;
   var longevityNavExpanded = false;
   var longevityNavActiveIndex = 0;
@@ -366,6 +367,10 @@
       nutrients: [
         "vitaminD",
         "vitaminC",
+        "vitaminE",
+        "vitaminK",
+        "selenium",
+        "copper",
         "magnesium",
         "niacin",
         "riboflavin",
@@ -380,8 +385,6 @@
         "coq10",
         "epa",
         "dha",
-        "vitaminE",
-        "selenium",
         "polyphenols",
         "flavonoids",
         "resveratrol",
@@ -395,20 +398,19 @@
         "zinc",
         "biotin",
         "vitaminD",
+        "vitaminE",
+        "selenium",
         "folate",
         "vitaminB12",
         "vitaminC",
       ],
-      longevityNutrients: ["selenium"],
     },
     cataractsPrevention: {
       label: "Cataracts prevention",
-      nutrients: ["vitaminC", "vitaminA", "zinc"],
+      nutrients: ["vitaminC", "vitaminA", "zinc", "vitaminE", "selenium"],
       longevityNutrients: [
-        "vitaminE",
         "lutein",
         "carotenoids",
-        "selenium",
         "epa",
         "dha",
       ],
@@ -423,10 +425,15 @@
     { key: "iron", label: "Iron", unit: "mg", code: "fe" },
     { key: "magnesium", label: "Magnesium", unit: "mg", code: "mg" },
     { key: "zinc", label: "Zinc", unit: "mg", code: "zn" },
+    { key: "selenium", label: "Selenium", unit: "mcg", code: "se" },
+    { key: "copper", label: "Copper", unit: "mcg", code: "cu" },
+    { key: "manganese", label: "Manganese", unit: "mg", code: "mn" },
     { key: "chromium", label: "Chromium", unit: "mcg", code: "cr" },
     { key: "iodine", label: "Iodine", unit: "mcg", code: "i" },
     { key: "vitaminA", label: "Vitamin A", unit: "mcg", code: "a" },
     { key: "vitaminD", label: "Vitamin D", unit: "mcg", code: "d" },
+    { key: "vitaminE", label: "Vitamin E", unit: "mg", code: "e" },
+    { key: "vitaminK", label: "Vitamin K", unit: "mcg", code: "vk" },
     { key: "vitaminB12", label: "Vitamin B12", unit: "mcg", code: "b12" },
     { key: "thiamin", label: "Thiamin (B1)", unit: "mg", code: "b1" },
     { key: "riboflavin", label: "Riboflavin (B2)", unit: "mg", code: "b2" },
@@ -437,6 +444,32 @@
     { key: "folate", label: "Folate (B9)", unit: "mcg", code: "fol" },
     { key: "biotin", label: "Biotin (B7)", unit: "mcg", code: "b7" },
   ];
+
+  var MICRO_EXTENDED_FIELDS = [
+    { key: "phosphorus", label: "Phosphorus", unit: "mg", code: "p" },
+    { key: "choline", label: "Choline", unit: "mg", code: "ch" },
+    { key: "molybdenum", label: "Molybdenum", unit: "mcg", code: "mo" },
+    { key: "fluoride", label: "Fluoride", unit: "mg", code: "fl" },
+    { key: "chloride", label: "Chloride", unit: "mg", code: "cl" },
+    { key: "histidine", label: "Histidine", unit: "mg", code: "his", group: "amino" },
+    { key: "isoleucine", label: "Isoleucine", unit: "mg", code: "ile", group: "amino" },
+    { key: "leucine", label: "Leucine", unit: "mg", code: "leu", group: "amino" },
+    { key: "lysine", label: "Lysine", unit: "mg", code: "lys", group: "amino" },
+    { key: "methionine", label: "Methionine", unit: "mg", code: "met", group: "amino" },
+    { key: "phenylalanine", label: "Phenylalanine", unit: "mg", code: "phe", group: "amino" },
+    { key: "threonine", label: "Threonine", unit: "mg", code: "thr", group: "amino" },
+    { key: "tryptophan", label: "Tryptophan", unit: "mg", code: "trp", group: "amino" },
+    { key: "valine", label: "Valine", unit: "mg", code: "val", group: "amino" },
+    { key: "arginine", label: "Arginine", unit: "mg", code: "arg", group: "amino" },
+    { key: "cysteine", label: "Cysteine", unit: "mg", code: "cys", group: "amino" },
+    { key: "glutamine", label: "Glutamine", unit: "mg", code: "gln", group: "amino" },
+    { key: "glycine", label: "Glycine", unit: "mg", code: "gly", group: "amino" },
+    { key: "proline", label: "Proline", unit: "mg", code: "pro", group: "amino" },
+    { key: "tyrosine", label: "Tyrosine", unit: "mg", code: "tyr", group: "amino" },
+    { key: "taurine", label: "Taurine", unit: "mg", code: "tau", group: "amino" },
+  ];
+
+  var MICRO_ALL_FIELDS = MICRO_FIELDS.concat(MICRO_EXTENDED_FIELDS);
 
   var LONGEVITY_GROUPS = [
     { id: "fats", label: "Fats & cholesterol", sectionDefKey: "sectionFats" },
@@ -821,6 +854,65 @@
 
   var CARB_QUALITY_KEYS = ["glycemicIndex", "addedSugar", "refinedCarbs"];
 
+  /** Micro-panel fields that also exist in LONGEVITY_FIELDS (micros holds value; longevity uses true). */
+  function microPanelLongevityBridgeFields() {
+    var longevityKeySet = {};
+    LONGEVITY_FIELDS.forEach(function (field) {
+      longevityKeySet[field.key] = true;
+    });
+    return MICRO_ALL_FIELDS.filter(function (field) {
+      return longevityKeySet[field.key];
+    });
+  }
+
+  function longevityKeysAlsoInMicroMap() {
+    var map = {};
+    microPanelLongevityBridgeFields().forEach(function (field) {
+      map[field.key] = true;
+    });
+    return map;
+  }
+
+  var LONGEVITY_KEYS_ALSO_IN_MICRO = longevityKeysAlsoInMicroMap();
+
+  /** longevity field unit → micro field unit (e.g. methionine g → mg). */
+  var LONGEVITY_TO_MICRO_SCALE = { methionine: 1000 };
+
+  function syncSharedMicroLongevity(micros, longevity) {
+    var changed = false;
+    Object.keys(LONGEVITY_KEYS_ALSO_IN_MICRO).forEach(function (key) {
+      var lv = longevity[key];
+      if (lv === true) return;
+      if (lv === "" || lv == null) return;
+      var n = parseFloat(lv);
+      if (isNaN(n)) {
+        longevity[key] = "";
+        changed = true;
+        return;
+      }
+      var mv = micros[key];
+      if (mv === "" || mv == null) {
+        var scale = LONGEVITY_TO_MICRO_SCALE[key] || 1;
+        micros[key] = n * scale;
+        changed = true;
+      }
+      longevity[key] = true;
+      changed = true;
+    });
+    return changed;
+  }
+
+  function resolveLongevityValue(kw, key) {
+    var v = kw.longevity[key];
+    if (v === true || (LONGEVITY_KEYS_ALSO_IN_MICRO[key] && (v === "" || v == null))) {
+      var mv = kw.micros ? kw.micros[key] : undefined;
+      if (mv === "" || mv == null) return "";
+      var n = parseFloat(mv);
+      return isNaN(n) ? "" : n;
+    }
+    return v;
+  }
+
   function escapeHtml(text) {
     return String(text)
       .replace(/&/g, "&amp;")
@@ -850,7 +942,7 @@
 
   function blankMicros() {
     var micros = {};
-    MICRO_FIELDS.forEach(function (field) {
+    MICRO_ALL_FIELDS.forEach(function (field) {
       micros[field.key] = "";
     });
     return micros;
@@ -859,7 +951,7 @@
   function normalizeMicros(raw) {
     var micros = blankMicros();
     if (!raw || typeof raw !== "object") return micros;
-    MICRO_FIELDS.forEach(function (field) {
+    MICRO_ALL_FIELDS.forEach(function (field) {
       var v = raw[field.key];
       if (v === "" || v == null) {
         micros[field.key] = "";
@@ -873,7 +965,7 @@
 
   function hasMicrosFilled(micros) {
     if (!micros) return false;
-    return MICRO_FIELDS.some(function (field) {
+    return MICRO_ALL_FIELDS.some(function (field) {
       var v = micros[field.key];
       return v !== "" && v != null;
     });
@@ -887,11 +979,15 @@
     return longevity;
   }
 
-  function normalizeLongevity(raw) {
+  function normalizeLongevity(raw, micros) {
     var longevity = blankLongevity();
     if (!raw || typeof raw !== "object") return longevity;
     LONGEVITY_FIELDS.forEach(function (field) {
       var v = raw[field.key];
+      if (v === true && LONGEVITY_KEYS_ALSO_IN_MICRO[field.key]) {
+        longevity[field.key] = true;
+        return;
+      }
       if (v === "" || v == null) {
         longevity[field.key] = "";
       } else {
@@ -917,11 +1013,25 @@
 
   function applyLongevityImportToKeyword(kw, data) {
     if (data.longevity && typeof data.longevity === "object" && !Array.isArray(data.longevity)) {
-      var merged = normalizeLongevity(kw.longevity);
+      var merged = normalizeLongevity(kw.longevity, kw.micros);
       LONGEVITY_FIELDS.forEach(function (field) {
-        if (field.key in data.longevity) {
-          var n = parseFloat(data.longevity[field.key]);
-          merged[field.key] = isNaN(n) ? "" : n;
+        if (!(field.key in data.longevity)) return;
+        var raw = data.longevity[field.key];
+        if (raw === true && LONGEVITY_KEYS_ALSO_IN_MICRO[field.key]) {
+          merged[field.key] = true;
+          return;
+        }
+        var n = parseFloat(raw);
+        if (isNaN(n)) return;
+        if (LONGEVITY_KEYS_ALSO_IN_MICRO[field.key]) {
+          var mv = kw.micros[field.key];
+          if (mv === "" || mv == null) {
+            var scale = LONGEVITY_TO_MICRO_SCALE[field.key] || 1;
+            kw.micros[field.key] = n * scale;
+          }
+          merged[field.key] = true;
+        } else {
+          merged[field.key] = n;
         }
       });
       kw.longevity = merged;
@@ -1009,7 +1119,7 @@
 
   function filledMicroCodes(micros) {
     var codes = [];
-    MICRO_FIELDS.forEach(function (field) {
+    MICRO_ALL_FIELDS.forEach(function (field) {
       var v = micros[field.key];
       if (v !== "" && v != null) {
         codes.push(field.code);
@@ -1108,7 +1218,7 @@
     if (kw.fats !== "" && kw.fats != null) obj.fats = kw.fats;
 
     var micros = {};
-    MICRO_FIELDS.forEach(function (field) {
+    MICRO_ALL_FIELDS.forEach(function (field) {
       var v = kw.micros[field.key];
       if (v !== "" && v != null) {
         micros[field.key] = v;
@@ -1122,6 +1232,10 @@
     var carbQuality = {};
     LONGEVITY_FIELDS.forEach(function (field) {
       var v = kw.longevity[field.key];
+      if (v === true && LONGEVITY_KEYS_ALSO_IN_MICRO[field.key]) {
+        longevity[field.key] = true;
+        return;
+      }
       if (v === "" || v == null) return;
       if (CARB_QUALITY_KEYS.indexOf(field.key) >= 0) {
         carbQuality[field.key] = v;
@@ -1195,7 +1309,7 @@
       typeof data.micros === "object" &&
       !Array.isArray(data.micros)
     ) {
-      MICRO_FIELDS.forEach(function (field) {
+      MICRO_ALL_FIELDS.forEach(function (field) {
         if (field.key in data.micros) {
           kw.micros[field.key] = storedMacroValue(data.micros[field.key]);
         }
@@ -1203,6 +1317,7 @@
     }
 
     applyLongevityImportToKeyword(kw, data);
+    syncSharedMicroLongevity(kw.micros, kw.longevity);
   }
 
   function findKeywordIndexByName(name) {
@@ -1328,7 +1443,7 @@
 
   function jsonSchemaExample() {
     var micros = {};
-    MICRO_FIELDS.forEach(function (field) {
+    MICRO_ALL_FIELDS.forEach(function (field) {
       micros[field.key] = 0;
     });
     var longevity = {};
@@ -1336,6 +1451,8 @@
     LONGEVITY_FIELDS.forEach(function (field) {
       if (CARB_QUALITY_KEYS.indexOf(field.key) >= 0) {
         carbQuality[field.key] = 0;
+      } else if (LONGEVITY_KEYS_ALSO_IN_MICRO[field.key]) {
+        longevity[field.key] = true;
       } else {
         longevity[field.key] = 0;
       }
@@ -1355,19 +1472,50 @@
     );
   }
 
+  function sharedMicroLongevityKeyList() {
+    return microPanelLongevityBridgeFields().map(function (field) {
+      return field.key;
+    });
+  }
+
   function nutrientListForPrompt() {
+    var bridgeFields = microPanelLongevityBridgeFields();
     var lines = [
       "Macronutrients (grams): protein, carbs, fats",
-      "Micronutrients — include only those you can estimate; omit unknown keys:",
+      "Micronutrients (micro requirements panel) — include only those you can estimate; omit unknown keys:",
     ];
-    MICRO_FIELDS.forEach(function (field) {
+    MICRO_ALL_FIELDS.forEach(function (field) {
       lines.push("  - micros." + field.key + ": " + field.label + " (" + field.unit + ")");
     });
+    if (bridgeFields.length) {
+      lines.push("");
+      lines.push(
+        "If a nutrient belongs to both .micros and .longevity: Always put the numeric amount in micros first; in longevity set the same key to true only (so we know to look up at micro):"
+      );
+      bridgeFields.forEach(function (field) {
+        lines.push(
+          "  - micros." +
+            field.key +
+            ": " +
+            field.label +
+            " (" +
+            field.unit +
+            ") → longevity." +
+            field.key +
+            ": true"
+        );
+      });
+      lines.push(
+        'Example: "micros": {"copper": 450, "choline": 105, "selenium": 40}, "longevity": {"copper": true, "choline": true, "selenium": true}'
+      );
+    }
+    lines.push("");
     lines.push(
-      "Longevity / fats / omegas / compounds — omit unknown keys; use longevity object:"
+      "Longevity-only nutrients — numeric values go in longevity only (omit unknown keys):"
     );
     LONGEVITY_FIELDS.forEach(function (field) {
       if (CARB_QUALITY_KEYS.indexOf(field.key) >= 0) return;
+      if (LONGEVITY_KEYS_ALSO_IN_MICRO[field.key]) return;
       lines.push(
         "  - longevity." + field.key + ": " + field.label + " (" + field.unit + ")"
       );
@@ -1386,10 +1534,25 @@
       "  - micros.zinc: oysters, beef, pumpkin seeds, chickpeas, chicken (mg)"
     );
     lines.push(
+      "  - micros.selenium: Brazil nuts, tuna, sardines, chicken, eggs (mcg)"
+    );
+    lines.push(
+      "  - micros.copper: shellfish, dark chocolate, cashews, lentils, mushrooms (mcg)"
+    );
+    lines.push(
+      "  - micros.manganese: mussels, pecans, oats, pineapple, spinach (mg)"
+    );
+    lines.push(
       "  - micros.chromium: broccoli, grape juice, whole grains, brewer's yeast (mcg; often low in foods)"
     );
     lines.push(
       "  - micros.iodine: iodized table salt ~45 mcg/g salt; also fish, dairy, eggs"
+    );
+    lines.push(
+      "  - micros.vitaminE: sunflower seeds, almonds, spinach, avocado, olive oil (mg)"
+    );
+    lines.push(
+      "  - micros.vitaminK: kale, spinach, broccoli, natto, egg yolks (mcg)"
     );
     lines.push(
       "  - micros.thiamin: pork, fortified grains, legumes, sunflower seeds (mg)"
@@ -1413,10 +1576,7 @@
       "  - micros.biotin: eggs, salmon, nuts, seeds, sweet potato, liver"
     );
     lines.push(
-      "  - longevity.copper: shellfish, nuts, liver, dark chocolate (mcg)"
-    );
-    lines.push(
-      "  - longevity.methionine: protein-rich foods such as poultry, fish, eggs, beef, pork, dairy, soy, sesame, Brazil nuts (g; SAMe precursor, omit if unknown)"
+      "  - micros.methionine: poultry, fish, eggs, beef, pork, dairy, soy, sesame, Brazil nuts (mg; SAMe precursor)"
     );
     lines.push(
       "  - longevity.transFat: 0 for whole/natural foods; fried fast food, movie-theater buttery popcorn, and some pastries may have 0.1–4 g — use label data when available (g)"
@@ -1428,16 +1588,16 @@
       "  - longevity.lutein: spinach, kale, corn, egg yolks (mg; fat-soluble—better absorbed with oil or egg fat)"
     );
     lines.push(
-      "  - longevity.choline: egg yolks, liver, meat, fish (mg; high in eggs)"
+      "  - micros.phosphorus: dairy, meat, fish, legumes, seeds (mg)"
+    );
+    lines.push(
+      "  - micros.choline: egg yolks, liver, meat, fish (mg; high in eggs)"
     );
     lines.push(
       "  - longevity.carnitine: highest in beef/lamb; moderate in pork/chicken; very low in plants (mg)"
     );
     lines.push(
       "  - longevity.betaine: wheat bran, beets, spinach; some supplements (mg)"
-    );
-    lines.push(
-      "  - longevity.phosphorus: whole foods are fine; do not inflate — processed foods may have phosphate additives"
     );
     lines.push(
       "  - longevity EPA/DHA/ALA: fatty fish for EPA & DHA; flax/chia/walnuts for ALA"
@@ -1467,6 +1627,8 @@
       'Use the portion in the name field (e.g. "' +
       nameExample +
       '"). Omit any nutrient keys you cannot estimate.\n\n' +
+      "Rule: amounts for the micro requirements panel belong in micros. " +
+      "When the same nutrient key also appears in longevity, store the number in micros only and set longevity[key] to true.\n\n" +
       jsonSchemaExample() +
       "\n\n" +
       nutrientListForPrompt()
@@ -1538,8 +1700,9 @@
     var lines = [];
     var deficiencies = [];
 
-    MICRO_FIELDS.forEach(function (field) {
+    MICRO_ALL_FIELDS.forEach(function (field) {
       var total = week[field.key];
+      if (!total && field.group === "amino") return;
       var pct = avgDailyMicroPct(field.key, total);
       var avgDaily = total / DAYS.length;
       var amtText =
@@ -1664,7 +1827,7 @@
   function normalizeMicroDefinitions(data) {
     var out = {};
     if (!data || typeof data !== "object") return out;
-    MICRO_FIELDS.forEach(function (field) {
+    MICRO_ALL_FIELDS.forEach(function (field) {
       var raw = data[field.key];
       if (!raw || typeof raw !== "object") return;
       var entry = Object.assign(
@@ -1800,8 +1963,8 @@
   }
 
   function microFieldByKey(key) {
-    for (var i = 0; i < MICRO_FIELDS.length; i++) {
-      if (MICRO_FIELDS[i].key === key) return MICRO_FIELDS[i];
+    for (var i = 0; i < MICRO_ALL_FIELDS.length; i++) {
+      if (MICRO_ALL_FIELDS[i].key === key) return MICRO_ALL_FIELDS[i];
     }
     return null;
   }
@@ -2577,7 +2740,7 @@
         if (!hits) return;
 
         var v =
-          kind === "micro" ? kw.micros[nutrientKey] : kw.longevity[nutrientKey];
+          kind === "micro" ? kw.micros[nutrientKey] : resolveLongevityValue(kw, nutrientKey);
         if (v === "" || v == null) return;
         var perServing = parseFloat(v);
         if (isNaN(perServing) || perServing <= 0) return;
@@ -3808,7 +3971,7 @@
 
   function emptyMicroTotals() {
     var totals = {};
-    MICRO_FIELDS.forEach(function (field) {
+    MICRO_ALL_FIELDS.forEach(function (field) {
       totals[field.key] = 0;
     });
     return totals;
@@ -3828,7 +3991,7 @@
       var hits = countKeyword(text, name);
       if (!hits) return;
 
-      MICRO_FIELDS.forEach(function (field) {
+      MICRO_ALL_FIELDS.forEach(function (field) {
         var v = kw.micros[field.key];
         if (v === "" || v == null) return;
         totals[field.key] += hits * parseFloat(v);
@@ -3913,7 +4076,7 @@
 
   function addMicroTotals(a, b) {
     var out = emptyMicroTotals();
-    MICRO_FIELDS.forEach(function (field) {
+    MICRO_ALL_FIELDS.forEach(function (field) {
       out[field.key] = a[field.key] + b[field.key];
     });
     return out;
@@ -3953,7 +4116,7 @@
 
       LONGEVITY_FIELDS.forEach(function (field) {
         if (field.key === "glycemicIndex") return;
-        var v = kw.longevity[field.key];
+        var v = resolveLongevityValue(kw, field.key);
         if (v === "" || v == null) return;
         totals[field.key] += hits * parseFloat(v);
       });
@@ -4413,15 +4576,27 @@
 
   function microConditionDisplayFields() {
     if (!microConditionFocus) {
-      return MICRO_FIELDS.map(function (field) {
+      var fields = MICRO_FIELDS.map(function (field) {
         return { source: "micro", field: field };
       });
+      if (microMoreExpanded) {
+        MICRO_EXTENDED_FIELDS.forEach(function (field) {
+          fields.push({ source: "micro", field: field });
+        });
+      }
+      return fields;
     }
     var meta = MICRO_CONDITION_FOCUS[microConditionFocus];
     if (!meta) {
-      return MICRO_FIELDS.map(function (field) {
+      var fields2 = MICRO_FIELDS.map(function (field) {
         return { source: "micro", field: field };
       });
+      if (microMoreExpanded) {
+        MICRO_EXTENDED_FIELDS.forEach(function (field) {
+          fields2.push({ source: "micro", field: field });
+        });
+      }
+      return fields2;
     }
     var out = [];
     (meta.nutrients || []).forEach(function (key) {
@@ -4921,6 +5096,16 @@
     );
   }
 
+  function longevityRowFromLongevityOrMicro(item, weekLongevity, weekMicro) {
+    var key = item.key;
+    if (LONGEVITY_KEYS_ALSO_IN_MICRO[key] && weekMicro[key] > 0) {
+      return longevityRowFromMicroKey(key, item.label, !!item.limiting, weekMicro);
+    }
+    var field = longevityFieldByKey(key);
+    if (!field) return "";
+    return longevityRowFromLongevityField(field, weekLongevity);
+  }
+
   function longevityRowsGroupedByLimit(fields, weekLongevity) {
     var watch = [];
     var aim = [];
@@ -5175,9 +5360,7 @@
         }).join("") +
         longevitySubgroupHtml("From your longevity entries", "compounds") +
         LONGEVITY_CELLULAR_AGING_FROM_LONGEVITY.map(function (item) {
-          var field = longevityFieldByKey(item.key);
-          if (!field) return "";
-          return longevityRowFromLongevityField(field, weekLongevity);
+          return longevityRowFromLongevityOrMicro(item, weekLongevity, weekMicro);
         }).join("") +
         longevityListClose()
     );
@@ -5228,28 +5411,7 @@
             );
           }).join("") +
           LONGEVITY_PUFA_ANTIOXIDANT_SUPPORT_FROM_LONGEVITY.map(function (item) {
-            var field = longevityFieldByKey(item.key);
-            if (!field) return "";
-            return longevityRowHtml(
-              item.label,
-              weekLongevity[item.key] > 0
-                ? fmtNum(avgDailyLongevity(item.key, weekLongevity[item.key])) +
-                  " " +
-                  field.unit
-                : "—",
-              (function () {
-                var pct = avgDailyLongevityPct(item.key, weekLongevity[item.key] || 0);
-                return pct == null || isNaN(pct) ? "—" : fmtNum(pct) + "%";
-              })(),
-              avgDailyLongevityPct(item.key, weekLongevity[item.key] || 0),
-              "",
-              false,
-              item.key,
-              false,
-              null,
-              item.key,
-              "longevity"
-            );
+            return longevityRowFromLongevityOrMicro(item, weekLongevity, weekMicro);
           }).join("") +
           longevityListClose()
       );
@@ -5272,7 +5434,7 @@
             );
           }).join("") +
           LONGEVITY_HISTAMINE_FROM_LONGEVITY.map(function (item) {
-            return longevitySupportRowFromLongevityKey(item.key, item.label, weekLongevity);
+            return longevityRowFromLongevityOrMicro(item, weekLongevity, weekMicro);
           }).join("") +
           longevityRowHtml(
             LONGEVITY_HISTAMINE_EPA_DHA_LABEL,
@@ -5306,9 +5468,7 @@
             }).join("") +
             longevitySubgroupHtml("From your longevity entries", "compounds") +
             LONGEVITY_GLUTATHIONE_FROM_LONGEVITY.map(function (item) {
-              var field = longevityFieldByKey(item.key);
-              if (!field) return "";
-              return longevityRowFromLongevityField(field, weekLongevity);
+              return longevityRowFromLongevityOrMicro(item, weekLongevity, weekMicro);
             }).join("") +
             longevityListClose()
         );
@@ -5331,9 +5491,7 @@
             }).join("") +
             longevitySubgroupHtml("From your longevity entries", "compounds") +
             LONGEVITY_DNA_REPAIR_FROM_LONGEVITY.map(function (item) {
-              var field = longevityFieldByKey(item.key);
-              if (!field) return "";
-              return longevityRowFromLongevityField(field, weekLongevity);
+              return longevityRowFromLongevityOrMicro(item, weekLongevity, weekMicro);
             }).join("") +
             longevityListClose()
         );
@@ -6822,9 +6980,12 @@
           if (!isNaN(n) && n >= nextId) nextId = n + 1;
         }
       });
+      var migrated = false;
       keywords = data.map(function (item) {
-        var longevity = normalizeLongevity(item.longevity);
+        var micros = normalizeMicros(item.micros);
+        var longevity = normalizeLongevity(item.longevity, micros);
         longevity = mergeCarbQualityIntoLongevity(longevity, item.carbQuality);
+        if (syncSharedMicroLongevity(micros, longevity)) migrated = true;
         return {
           id:
             item.id != null && item.id !== "" ? String(item.id) : makeId(),
@@ -6832,11 +6993,11 @@
           protein: item.protein === "" || item.protein == null ? "" : item.protein,
           carbs: item.carbs === "" || item.carbs == null ? "" : item.carbs,
           fats: item.fats === "" || item.fats == null ? "" : item.fats,
-          micros: normalizeMicros(item.micros),
+          micros: micros,
           longevity: longevity,
         };
       });
-      if (ensureUniqueKeywordIds()) {
+      if (migrated || ensureUniqueKeywordIds()) {
         saveFoodDefinitions();
       }
     } catch (e) {
@@ -6915,6 +7076,14 @@
     });
 
     keywords[i].micros = micros;
+    Object.keys(LONGEVITY_KEYS_ALSO_IN_MICRO).forEach(function (key) {
+      var v = micros[key];
+      if (v !== "" && v != null && !isNaN(parseFloat(v))) {
+        keywords[i].longevity[key] = true;
+      } else if (keywords[i].longevity[key] === true) {
+        keywords[i].longevity[key] = "";
+      }
+    });
     saveFoodDefinitions();
     updateMicroButton(activeMicroId);
     refreshAll();
@@ -6933,10 +7102,22 @@
       if (!input) return;
       var v = input.value.trim();
       if (v === "") {
-        longevity[field.key] = "";
+        if (LONGEVITY_KEYS_ALSO_IN_MICRO[field.key]) {
+          keywords[i].micros[field.key] = "";
+          longevity[field.key] = "";
+        } else {
+          longevity[field.key] = "";
+        }
       } else {
         var n = parseFloat(v);
-        longevity[field.key] = isNaN(n) ? "" : n;
+        if (isNaN(n)) {
+          longevity[field.key] = "";
+        } else if (LONGEVITY_KEYS_ALSO_IN_MICRO[field.key]) {
+          keywords[i].micros[field.key] = n;
+          longevity[field.key] = true;
+        } else {
+          longevity[field.key] = n;
+        }
       }
     });
 
@@ -6948,7 +7129,7 @@
 
   function populateMicroForm(kw) {
     if (!microFormEl || !kw) return;
-    MICRO_FIELDS.forEach(function (field) {
+    MICRO_ALL_FIELDS.forEach(function (field) {
       var input = microFormEl.querySelector('[data-micro-key="' + field.key + '"]');
       if (input) {
         input.value = microInputValue(kw.micros[field.key]);
@@ -7007,7 +7188,7 @@
         '[data-longevity-key="' + field.key + '"]'
       );
       if (input) {
-        input.value = microInputValue(kw.longevity[field.key]);
+        input.value = microInputValue(resolveLongevityValue(kw, field.key));
       }
     });
   }
@@ -7052,26 +7233,39 @@
     if (first) first.focus();
   }
 
+  function microFormFieldHtml(field) {
+    return (
+      '<label class="micro-form__field">' +
+      '<span class="micro-form__label">' +
+      escapeHtml(field.label) +
+      " (" +
+      escapeHtml(field.code) +
+      ')</span><span class="micro-form__unit">' +
+      escapeHtml(field.unit) +
+      "</span>" +
+      '<input type="number" class="micro-form__input" min="0" step="0.1" inputmode="decimal" ' +
+      'data-micro-key="' +
+      escapeAttr(field.key) +
+      '" placeholder="0">' +
+      "</label>"
+    );
+  }
+
   function initMicroForm() {
     if (!microFormEl) return;
 
-    microFormEl.innerHTML = MICRO_FIELDS.map(function (field) {
-      return (
-        '<label class="micro-form__field">' +
-        '<span class="micro-form__label">' +
-        escapeHtml(field.label) +
-        " (" +
-        escapeHtml(field.code) +
-        ')</span><span class="micro-form__unit">' +
-        escapeHtml(field.unit) +
-        "</span>" +
-        '<input type="number" class="micro-form__input" min="0" step="0.1" inputmode="decimal" ' +
-        'data-micro-key="' +
-        escapeAttr(field.key) +
-        '" placeholder="0">' +
-        "</label>"
-      );
-    }).join("");
+    var html = MICRO_FIELDS.map(microFormFieldHtml).join("");
+    var minerals = MICRO_EXTENDED_FIELDS.filter(function (f) { return !f.group; });
+    var aminos = MICRO_EXTENDED_FIELDS.filter(function (f) { return f.group === "amino"; });
+    if (minerals.length) {
+      html += '<div class="micro-form__separator">Additional trace minerals</div>';
+      html += minerals.map(microFormFieldHtml).join("");
+    }
+    if (aminos.length) {
+      html += '<div class="micro-form__separator">Amino acids</div>';
+      html += aminos.map(microFormFieldHtml).join("");
+    }
+    microFormEl.innerHTML = html;
   }
 
   function initLongevityForm() {
@@ -8774,6 +8968,18 @@
   if (dashboardMicroDailyGridEl) {
     dashboardMicroDailyGridEl.addEventListener("click", handleMicroPanelSourcesClick);
     dashboardMicroDailyGridEl.addEventListener("click", handleMicroDefClick);
+  }
+
+  var microMoreToggleEl = document.getElementById("dashboard-micro-more-toggle");
+  if (microMoreToggleEl) {
+    microMoreToggleEl.addEventListener("click", function () {
+      microMoreExpanded = !microMoreExpanded;
+      microMoreToggleEl.setAttribute("aria-expanded", microMoreExpanded ? "true" : "false");
+      microMoreToggleEl.textContent = microMoreExpanded
+        ? "Less"
+        : "More vitamins, minerals & amino acids";
+      if (microRequirementsOpen) renderMicroRequirements();
+    });
   }
 
   if (dashboardMicroPanelEl) {

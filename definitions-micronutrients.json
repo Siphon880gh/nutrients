@@ -794,5 +794,475 @@
       "Some studies link adequate chromium to better insulin sensitivity; needs are slightly lower (about 25 mcg/day).",
       "Whole-food sources are preferable to high-dose chromium picolinate supplements."
     ]
+  },
+  "selenium": {
+    "tooLow": [
+      "Low selenium weakens thyroid hormone conversion (T4→T3), impairs immune defense, and may increase oxidative damage to cells over time.",
+      "Severe deficiency is rare in developed countries but can occur with very restricted diets, certain GI conditions, or in regions with selenium-poor soil."
+    ],
+    "enough": [
+      "Selenium supports thyroid function, immune defense, and antioxidant enzymes (glutathione peroxidase and thioredoxin reductase) that protect cells from oxidative damage.",
+      "Just 1–2 Brazil nuts daily can meet selenium needs; seafood, meat, and eggs are reliable sources."
+    ],
+    "tooHigh": [
+      "Chronic excess selenium (selenosis) causes garlic breath, brittle nails, hair loss, and nerve damage—mostly from high-dose supplements, not food.",
+      "Upper limit is 400 mcg/day; avoid stacking multiple selenium-containing supplements."
+    ],
+    "foodSources": [
+      "Brazil nuts (1–2 daily)",
+      "Tuna & sardines",
+      "Chicken & turkey",
+      "Eggs",
+      "Cottage cheese",
+      "Mushrooms",
+      "Sunflower seeds"
+    ],
+    "male": [
+      "Supports sperm motility and thyroid-driven energy metabolism; athletes may benefit from adequate selenium for recovery.",
+      "Adequate selenium with vitamin E supports antioxidant defense during heavy training."
+    ],
+    "female": [
+      "Important for thyroid health, which affects cycle regularity, energy, and metabolism.",
+      "Adequate selenium supports immune function during pregnancy and may reduce preeclampsia risk."
+    ],
+    "antiAging": [
+      "Selenium powers glutathione peroxidase—one of the body's primary antioxidant enzyme systems that neutralizes peroxides before they damage DNA and mitochondrial membranes.",
+      "Low selenium accelerates oxidative aging; adequate intake from Brazil nuts, seafood, and eggs supports cellular defense without the risks of megadose supplements."
+    ],
+    "cataractsPrevention": [
+      "Selenium supports glutathione peroxidase in lens tissue—an enzyme that neutralizes hydrogen peroxide and lipid peroxides linked with cataract formation.",
+      "Brazil nuts, seafood, and eggs supply selenium without the risks of high-dose supplements; works alongside vitamins C and E for eye antioxidant defense."
+    ]
+  },
+  "copper": {
+    "tooLow": [
+      "Low copper impairs iron metabolism (causing anemia despite adequate iron), weakens connective tissue, and may cause neurological symptoms.",
+      "Very low intake, excess zinc supplements, or malabsorption can deplete copper stores."
+    ],
+    "enough": [
+      "Copper supports iron absorption, collagen/elastin formation, energy production in mitochondria, and immune function.",
+      "It is also a cofactor for superoxide dismutase (SOD)—a key antioxidant enzyme—and for dopamine β-hydroxylase in neurotransmitter synthesis."
+    ],
+    "tooHigh": [
+      "Excess copper from supplements or contaminated water can cause liver damage, nausea, and oxidative stress.",
+      "Wilson's disease is a genetic condition of copper overload; most people with varied diets don't need copper supplements."
+    ],
+    "foodSources": [
+      "Liver & shellfish",
+      "Dark chocolate (70%+)",
+      "Cashews & sesame seeds",
+      "Lentils & chickpeas",
+      "Shiitake mushrooms",
+      "Avocado",
+      "Potatoes"
+    ],
+    "male": [
+      "Supports connective tissue and joint health during heavy training; works with zinc for immune defense.",
+      "High-dose zinc supplements without copper can deplete copper—balance matters."
+    ],
+    "female": [
+      "Supports collagen for skin and bone health; important alongside iron for preventing anemia.",
+      "Oral contraceptives can raise serum copper; most women cover needs from a varied diet."
+    ],
+    "antiAging": [
+      "Copper is required for cytochrome c oxidase (Complex IV in mitochondria) and for copper/zinc SOD—both protect against the oxidative damage that drives cellular aging.",
+      "Balance with zinc is key; neither too much nor too little supports longevity."
+    ]
+  },
+  "manganese": {
+    "tooLow": [
+      "Low manganese is rare but can impair bone formation, glucose metabolism, and antioxidant defense (manganese SOD).",
+      "Very refined diets without whole grains, nuts, or tea may provide insufficient manganese."
+    ],
+    "enough": [
+      "Manganese supports bone formation, blood clotting, and mitochondrial antioxidant defense via manganese superoxide dismutase (MnSOD).",
+      "Also involved in carbohydrate and amino acid metabolism; whole grains, nuts, and tea are top sources."
+    ],
+    "tooHigh": [
+      "Excess manganese from supplements or contaminated water can be neurotoxic—causing tremors and cognitive issues resembling Parkinson's.",
+      "Food manganese is safe; supplementation beyond food levels is rarely warranted."
+    ],
+    "foodSources": [
+      "Mussels & clams",
+      "Pecans & almonds",
+      "Oats & brown rice",
+      "Pineapple",
+      "Spinach & sweet potato",
+      "Black tea & green tea",
+      "Chickpeas & lentils"
+    ],
+    "male": [
+      "Supports bone density and connective tissue integrity during physical training.",
+      "Whole grains and nuts in a varied diet typically cover the 2.3 mg/day target."
+    ],
+    "female": [
+      "Important for bone health alongside calcium and vitamin D; needs are about 1.8 mg/day.",
+      "Tea drinkers often get adequate manganese without trying."
+    ],
+    "antiAging": [
+      "Manganese SOD (MnSOD) is the primary antioxidant enzyme inside mitochondria—it neutralizes superoxide radicals right where they're produced during energy generation.",
+      "Adequate manganese from whole grains, nuts, and legumes supports this frontline mitochondrial defense against aging."
+    ]
+  },
+  "vitaminE": {
+    "tooLow": [
+      "Low vitamin E weakens cell membrane protection against oxidative damage—showing up as muscle weakness, vision issues, and impaired immunity over time.",
+      "Fat malabsorption conditions, very low-fat diets, and genetic disorders can cause deficiency."
+    ],
+    "enough": [
+      "Vitamin E (primarily alpha-tocopherol) protects cell membranes from lipid peroxidation, supports immune function, and works with vitamin C to regenerate antioxidant capacity.",
+      "Nuts, seeds, and plant oils are the richest sources; adequate fat intake helps absorption."
+    ],
+    "tooHigh": [
+      "High-dose vitamin E supplements (above 400 IU) may increase bleeding risk and have shown mixed results in trials—food sources are preferred.",
+      "Excess can interfere with vitamin K-dependent blood clotting."
+    ],
+    "foodSources": [
+      "Sunflower seeds & almonds",
+      "Hazelnuts & peanuts",
+      "Spinach & Swiss chard",
+      "Avocado",
+      "Olive oil & sunflower oil",
+      "Butternut squash",
+      "Wheat germ"
+    ],
+    "male": [
+      "Supports recovery from oxidative stress during intense exercise; protects PUFA-rich cell membranes in muscle tissue.",
+      "Works with selenium for antioxidant enzyme systems."
+    ],
+    "female": [
+      "Supports skin health, immune defense, and may ease menstrual discomfort in some women.",
+      "Important during pregnancy for fetal development; food sources are safer than high-dose supplements."
+    ],
+    "antiAging": [
+      "Vitamin E is the primary fat-soluble antioxidant protecting cell membranes from the lipid peroxidation chain reaction that damages mitochondria, neurons, and cardiovascular tissue.",
+      "Works in tandem with vitamin C (which regenerates oxidized vitamin E) and selenium (which powers glutathione enzymes)—together they form the core antioxidant triad against aging."
+    ],
+    "hairLoss": [
+      "Vitamin E protects scalp lipids from oxidative damage and supports blood flow to hair follicles; deficiency can weaken the lipid environment hair needs to grow.",
+      "Nuts, seeds, and avocado supply vitamin E alongside healthy fats that support follicle health."
+    ],
+    "cataractsPrevention": [
+      "Vitamin E protects lens cell membranes from lipid peroxidation—a key mechanism in age-related cataract formation.",
+      "Works with vitamin C (which regenerates spent vitamin E) to maintain antioxidant defense in eye tissues; nuts, seeds, and avocado are practical food sources."
+    ]
+  },
+  "vitaminK": {
+    "tooLow": [
+      "Low vitamin K impairs blood clotting (easy bruising, excessive bleeding) and weakens bone mineralization over time.",
+      "Newborns are routinely given vitamin K at birth; adults on blood thinners or with fat malabsorption may be at risk."
+    ],
+    "enough": [
+      "Vitamin K activates clotting factors and osteocalcin (for bone mineralization), and K2 specifically directs calcium into bones and away from arteries.",
+      "K1 comes from leafy greens; K2 from fermented foods, egg yolks, and animal products—both forms matter for longevity."
+    ],
+    "tooHigh": [
+      "Food vitamin K is safe; very high supplemental K2 may interact with blood thinners (warfarin)—consult a clinician if on anticoagulants.",
+      "Toxicity from food is essentially unknown."
+    ],
+    "foodSources": [
+      "Kale & spinach (K1)",
+      "Broccoli & Brussels sprouts (K1)",
+      "Natto (K2, fermented soy)",
+      "Egg yolks (K2)",
+      "Hard cheeses (K2)",
+      "Chicken & liver (K2)",
+      "Sauerkraut (K2)"
+    ],
+    "male": [
+      "Supports bone density and may reduce arterial calcification risk—especially with adequate vitamin D and calcium.",
+      "K2 (MK-7 from natto, MK-4 from animal foods) has the longest-studied cardiovascular benefits."
+    ],
+    "female": [
+      "Critical for bone health alongside calcium and vitamin D—especially important post-menopause when bone loss accelerates.",
+      "Adequate K2 helps direct calcium to bones rather than soft tissue."
+    ],
+    "antiAging": [
+      "Vitamin K2 activates matrix Gla protein (MGP) which prevents calcium from depositing in arteries—arterial calcification is a hallmark of vascular aging.",
+      "K1 supports clotting; K2 supports the calcium-routing system that keeps bones strong and arteries flexible with age."
+    ]
+  },
+  "phosphorus": {
+    "tooLow": [
+      "Low phosphorus (hypophosphatemia) causes muscle weakness, bone pain, and impaired energy metabolism—rare from diet alone but possible with antacid overuse or refeeding syndrome.",
+      "Alcoholism and certain kidney conditions can deplete phosphorus."
+    ],
+    "enough": [
+      "Phosphorus is the second most abundant mineral in the body—essential for bone structure (as hydroxyapatite with calcium), ATP energy currency, DNA/RNA backbone, and cell membrane phospholipids.",
+      "Most diets easily meet needs from dairy, meat, legumes, and grains."
+    ],
+    "tooHigh": [
+      "Excess phosphorus (often from processed food additives) can pull calcium from bones and promote vascular calcification—especially concerning with impaired kidney function.",
+      "High phosphorus with low calcium intake accelerates bone loss over time."
+    ],
+    "foodSources": [
+      "Dairy (milk, yogurt, cheese)",
+      "Chicken & turkey",
+      "Salmon & sardines",
+      "Lentils & beans",
+      "Pumpkin seeds & sunflower seeds",
+      "Whole grains",
+      "Eggs"
+    ],
+    "male": [
+      "Supports bone density and ATP production for energy during training.",
+      "Most men easily meet the 700 mg/day target from protein-rich diets."
+    ],
+    "female": [
+      "Important for bone structure alongside calcium; needs stay at 700 mg/day.",
+      "Excessive phosphorus from processed foods without adequate calcium can undermine bone health."
+    ],
+    "antiAging": [
+      "Phosphorus is required for every ATP molecule the body produces—without it, cells cannot store or transfer energy.",
+      "Balance matters: excess phosphorus (from food additives) accelerates vascular calcification and may shorten lifespan via FGF23 signaling."
+    ]
+  },
+  "choline": {
+    "tooLow": [
+      "Low choline impairs liver function (fatty liver), brain development, and cell membrane integrity—it's essential but often under-consumed.",
+      "Muscle damage, memory issues, and elevated homocysteine can signal inadequate choline intake."
+    ],
+    "enough": [
+      "Choline builds cell membranes (phosphatidylcholine), supports neurotransmitter synthesis (acetylcholine for memory and muscle control), and provides methyl groups for DNA regulation.",
+      "Eggs are the richest common source; liver, fish, and cruciferous vegetables also contribute."
+    ],
+    "tooHigh": [
+      "Very high choline intake (above 3500 mg/day) can cause fishy body odor, sweating, low blood pressure, and liver toxicity.",
+      "Gut bacteria convert excess choline to TMAO—a metabolite linked to cardiovascular risk at high levels."
+    ],
+    "foodSources": [
+      "Eggs (yolk is richest)",
+      "Liver & beef",
+      "Salmon & cod",
+      "Chicken & turkey",
+      "Soybeans & quinoa",
+      "Broccoli & Brussels sprouts",
+      "Peanuts"
+    ],
+    "male": [
+      "Higher target (550 mg/day) supports muscle function and liver health; athletes may benefit from adequate choline for endurance.",
+      "Works with folate and B12 in methylation; shortfall is common without eggs or liver."
+    ],
+    "female": [
+      "Critical during pregnancy for fetal brain development; needs rise to 450 mg/day pregnant, 550 mg lactating.",
+      "Many women fall short of the 425 mg/day target—eggs and cruciferous vegetables help close the gap."
+    ],
+    "antiAging": [
+      "Choline supports methylation alongside folate and B12—the epigenetic maintenance system that keeps gene expression patterns stable as cells age.",
+      "Adequate choline protects against fatty liver and supports acetylcholine production for cognitive function into older age."
+    ]
+  },
+  "molybdenum": {
+    "tooLow": [
+      "Molybdenum deficiency is extremely rare from diet—only documented in people on long-term parenteral nutrition without supplementation.",
+      "Theoretically, low molybdenum would impair sulfite detoxification and purine metabolism."
+    ],
+    "enough": [
+      "Molybdenum is a cofactor for enzymes that process sulfites, purines, and certain drugs—supporting detoxification and uric acid production.",
+      "Legumes, grains, and nuts easily cover the 45 mcg/day target in most diets."
+    ],
+    "tooHigh": [
+      "Very high molybdenum (above 2 mg/day from supplements) may interfere with copper absorption and raise uric acid.",
+      "Food sources are safe; supplementation is rarely needed."
+    ],
+    "foodSources": [
+      "Lentils & black beans",
+      "Lima beans & peas",
+      "Oats & rice",
+      "Almonds & peanuts",
+      "Yogurt",
+      "Eggs",
+      "Sunflower seeds"
+    ],
+    "male": [
+      "Supports sulfite oxidase and xanthine oxidase enzymes; easily met from a varied diet with legumes and grains.",
+      "No special considerations beyond general adequacy."
+    ],
+    "female": [
+      "Same 45 mcg/day target as men; deficiency is essentially unheard of with normal eating patterns.",
+      "Legumes, whole grains, and dairy cover needs without supplementation."
+    ]
+  },
+  "fluoride": {
+    "tooLow": [
+      "Low fluoride increases dental caries risk—fluoride strengthens tooth enamel against acid attacks from bacteria.",
+      "In areas without fluoridated water, topical fluoride (toothpaste) becomes more important."
+    ],
+    "enough": [
+      "Fluoride hardens tooth enamel and may support bone mineral density at adequate intakes.",
+      "Fluoridated water, tea, and seafood are the main dietary sources."
+    ],
+    "tooHigh": [
+      "Excess fluoride (fluorosis) can cause tooth mottling in children and, in extreme cases, skeletal fluorosis.",
+      "Avoid swallowing fluoride toothpaste; supplementation beyond water fluoridation is rarely needed."
+    ],
+    "foodSources": [
+      "Fluoridated tap water",
+      "Black tea & green tea",
+      "Crab & shrimp",
+      "Oatmeal",
+      "Raisins",
+      "Wine",
+      "Potatoes (with skin)"
+    ],
+    "male": [
+      "Supports dental health; about 4 mg/day adequate intake for adult men.",
+      "Tea drinkers often get significant fluoride without supplementation."
+    ],
+    "female": [
+      "Adequate intake about 3 mg/day; supports dental and possibly bone health.",
+      "Fluoridated water and tea are primary sources."
+    ]
+  },
+  "chloride": {
+    "tooLow": [
+      "Low chloride is rare from diet but can occur with prolonged vomiting, diarrhea, or certain diuretics—causing metabolic alkalosis.",
+      "Symptoms include muscle cramps, weakness, and irregular heartbeat."
+    ],
+    "enough": [
+      "Chloride maintains fluid balance, supports stomach acid production (HCl for digestion), and helps nerve signal transmission.",
+      "Nearly always consumed alongside sodium (as table salt, NaCl); tracking sodium effectively tracks chloride."
+    ],
+    "tooHigh": [
+      "Excess chloride follows excess sodium—the same blood pressure concerns apply.",
+      "Reducing processed food and added salt addresses both sodium and chloride excess."
+    ],
+    "foodSources": [
+      "Table salt (sodium chloride)",
+      "Seaweed",
+      "Tomatoes",
+      "Celery",
+      "Olives",
+      "Rye bread",
+      "Lettuce"
+    ],
+    "male": [
+      "Adequate intake about 2300 mg/day; effectively matched with sodium recommendations.",
+      "Athletes losing heavy sweat may need more—replaced via normal salted foods or electrolyte drinks."
+    ],
+    "female": [
+      "Same 2300 mg/day adequate intake; concerns mirror sodium guidance.",
+      "Rarely a standalone concern—address through overall sodium balance."
+    ]
+  },
+  "histidine": {
+    "enough": [
+      "Histidine is an essential amino acid that produces histamine (immune signaling), carnosine (muscle buffer), and supports hemoglobin structure.",
+      "Found in meat, fish, dairy, and legumes; deficiency is rare with adequate protein intake."
+    ],
+    "foodSources": ["Beef & poultry", "Tuna & salmon", "Soybeans", "Cheese", "Rice", "Wheat germ", "Beans"]
+  },
+  "isoleucine": {
+    "enough": [
+      "Isoleucine is a branched-chain amino acid (BCAA) essential for muscle repair, energy regulation during exercise, and immune function.",
+      "Works with leucine and valine for muscle protein synthesis; found in eggs, meat, dairy, and soy."
+    ],
+    "foodSources": ["Chicken & turkey", "Eggs", "Cheese & cottage cheese", "Fish", "Lentils", "Seaweed", "Spirulina"]
+  },
+  "leucine": {
+    "enough": [
+      "Leucine is the most potent BCAA trigger for muscle protein synthesis (mTOR activation)—critical for building and maintaining muscle mass.",
+      "Higher leucine meals (2.5–3 g per serving) maximize the muscle-building signal; important for athletes and older adults preventing sarcopenia."
+    ],
+    "foodSources": ["Chicken breast", "Beef & pork", "Tuna & salmon", "Eggs", "Soybeans & tofu", "Dairy (whey, cheese)", "Peanuts"]
+  },
+  "lysine": {
+    "enough": [
+      "Lysine supports collagen synthesis, calcium absorption, immune function, and carnitine production for fat metabolism.",
+      "Often the limiting amino acid in grain-based diets; legumes and animal foods are rich sources."
+    ],
+    "foodSources": ["Beef & chicken", "Fish & shellfish", "Eggs & dairy", "Soybeans & tofu", "Lentils & beans", "Pumpkin seeds", "Quinoa"]
+  },
+  "methionine": {
+    "enough": [
+      "Methionine is an essential sulfur-containing amino acid that initiates protein synthesis, provides methyl groups (as SAMe), and supports glutathione production.",
+      "Balance matters: adequate methionine supports detoxification, but very high intake without glycine may raise homocysteine."
+    ],
+    "foodSources": ["Eggs", "Fish & chicken", "Beef & pork", "Brazil nuts & sesame seeds", "Dairy", "Oats", "Spinach"]
+  },
+  "phenylalanine": {
+    "enough": [
+      "Phenylalanine is an essential amino acid converted to tyrosine, which then becomes dopamine, norepinephrine, and epinephrine—key neurotransmitters for focus and mood.",
+      "Adequate in most protein-containing diets; people with PKU (phenylketonuria) must restrict it."
+    ],
+    "foodSources": ["Meat & poultry", "Fish & eggs", "Dairy & cheese", "Soybeans & tofu", "Nuts & seeds", "Lentils & beans", "Whole grains"]
+  },
+  "threonine": {
+    "enough": [
+      "Threonine supports mucin production in the gut lining, collagen and elastin formation, and immune antibody production.",
+      "Found in most animal proteins and legumes; important for gut barrier integrity."
+    ],
+    "foodSources": ["Chicken & turkey", "Beef", "Fish", "Eggs & dairy", "Lentils", "Sesame seeds", "Wheat germ"]
+  },
+  "tryptophan": {
+    "enough": [
+      "Tryptophan is the precursor to serotonin (mood, sleep) and niacin (NAD production)—making it uniquely important for mental health and energy.",
+      "Often the least abundant essential amino acid in food; turkey, dairy, and seeds are good sources."
+    ],
+    "foodSources": ["Turkey & chicken", "Milk & cheese", "Eggs", "Pumpkin seeds", "Peanuts & almonds", "Salmon & tuna", "Tofu & soy"]
+  },
+  "valine": {
+    "enough": [
+      "Valine is a BCAA that supports muscle metabolism, tissue repair, and energy production during exercise.",
+      "Works alongside leucine and isoleucine; found in meat, dairy, legumes, and whole grains."
+    ],
+    "foodSources": ["Beef & chicken", "Fish", "Cheese & yogurt", "Soybeans", "Peanuts", "Mushrooms", "Whole grains"]
+  },
+  "arginine": {
+    "enough": [
+      "Arginine produces nitric oxide (vasodilation for blood flow), supports immune function, and aids wound healing—conditionally essential during growth or stress.",
+      "May support exercise performance via improved blood flow; found in nuts, seeds, and meat."
+    ],
+    "foodSources": ["Turkey & chicken", "Pumpkin seeds", "Peanuts & almonds", "Soybeans", "Lentils & chickpeas", "Dairy", "Beef"]
+  },
+  "cysteine": {
+    "enough": [
+      "Cysteine is a sulfur-containing amino acid critical for glutathione synthesis (the body's master antioxidant), keratin (hair/nails), and detoxification.",
+      "Conditionally essential—synthesized from methionine but demand increases during illness, oxidative stress, or heavy training."
+    ],
+    "foodSources": ["Chicken & turkey", "Eggs", "Garlic & onion", "Broccoli & Brussels sprouts", "Yogurt & cheese", "Oats", "Lentils"]
+  },
+  "glutamine": {
+    "enough": [
+      "Glutamine is the most abundant amino acid in the body—fuels immune cells, maintains gut barrier integrity, and supports muscle recovery after intense exercise.",
+      "Conditionally essential during critical illness, surgery, or prolonged intense training when demand exceeds synthesis."
+    ],
+    "foodSources": ["Beef & chicken", "Fish", "Eggs & dairy", "Cabbage & beets", "Beans & lentils", "Tofu", "Bone broth"]
+  },
+  "glycine": {
+    "enough": [
+      "Glycine supports collagen synthesis (skin, joints, tendons), glutathione production, creatine formation, and acts as an inhibitory neurotransmitter promoting sleep quality.",
+      "Research suggests 10+ g/day may improve sleep onset and collagen repair—far above typical dietary intake of 3–5 g."
+    ],
+    "foodSources": ["Bone broth & gelatin", "Pork skin & chicken skin", "Beef & chicken", "Fish", "Eggs", "Legumes", "Spinach & kale"]
+  },
+  "proline": {
+    "enough": [
+      "Proline is a major component of collagen (makes up ~15% of its structure)—supporting skin elasticity, joint health, wound healing, and arterial integrity.",
+      "Conditionally essential during wound healing or intense collagen turnover; bone broth and gelatin are concentrated sources."
+    ],
+    "foodSources": ["Bone broth & gelatin", "Egg whites", "Dairy (especially casein)", "Beef & chicken", "Cabbage", "Asparagus", "Mushrooms"]
+  },
+  "tyrosine": {
+    "enough": [
+      "Tyrosine is the direct precursor to dopamine, norepinephrine, epinephrine, and thyroid hormones—conditionally essential during stress when demand outpaces synthesis from phenylalanine.",
+      "Supports mental performance under stress, cold, or sleep deprivation."
+    ],
+    "foodSources": ["Chicken & turkey", "Fish & shrimp", "Eggs & dairy", "Soybeans & tofu", "Peanuts & almonds", "Avocado", "Bananas"],
+    "adhd": [
+      "Tyrosine is the amino acid that tyrosine hydroxylase converts into L-DOPA—the immediate precursor to dopamine. When brain tyrosine availability drops (stress, poor sleep, stimulant medication), dopamine synthesis is directly rate-limited.",
+      "Protein-rich meals providing tyrosine support baseline dopamine production; some clinicians suggest tyrosine supplementation (500–2000 mg) for focus under acute stress, though long-term benefit over food sources is less clear."
+    ]
+  },
+  "taurine": {
+    "enough": [
+      "Taurine supports bile acid conjugation (fat digestion), heart muscle function, retinal health, and acts as an antioxidant in mitochondria.",
+      "Recent longevity research shows taurine declines with age and supplementation extended lifespan in animal models; human trials are ongoing."
+    ],
+    "foodSources": ["Shellfish (scallops, mussels)", "Dark meat chicken & turkey", "Beef & pork", "Fish (tuna, salmon)", "Eggs", "Dairy", "Seaweed"],
+    "antiAging": [
+      "Taurine levels decline significantly with age; a 2023 Science study showed taurine supplementation extended lifespan in mice and improved healthspan markers (bone density, muscle, immune function).",
+      "Acts as a mitochondrial antioxidant and supports bile acid metabolism—both decline with aging. Shellfish, dark poultry meat, and fish are the richest food sources."
+    ]
   }
 }

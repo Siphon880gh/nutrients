@@ -193,6 +193,27 @@ Critical hooks (do not rename without updating the element lookups near the top 
 - New modal: copy `.modal` + `hidden` + backdrop `data-action` close pattern from existing modals; wire close in the global Escape handler.
 - Starter guide is not a `.modal`; use fixed positioning + scroll/resize listeners (see core doc). Keep `z-index` above modals if stacking changes.
 
+## Shared longevity ↔ micro nutrients
+
+Bridge keys are derived at runtime: `microPanelLongevityBridgeFields()` intersects `MICRO_ALL_FIELDS` (micro requirements panel) with `LONGEVITY_FIELDS` → `LONGEVITY_KEYS_ALSO_IN_MICRO` (currently **vitaminE**, **vitaminK**, **selenium**, **copper**, **phosphorus**, **choline**, **methionine**). The AI import prompt lists each bridge field with label/unit and `micros → longevity: true`.
+
+**Data convention** — the numeric value lives in `food.micros`; `food.longevity` stores `true` as a reference marker:
+
+```json
+{
+  "micros": { "copper": 450, "selenium": 40, "vitaminE": 2.5, "vitaminK": 1, "phosphorus": 280, "choline": 105 },
+  "longevity": { "copper": true, "selenium": true, "vitaminE": true, "vitaminK": true, "phosphorus": true, "choline": true }
+}
+```
+
+**Runtime** — `resolveLongevityValue(kw, key)` returns the micro value when `kw.longevity[key] === true`; callers that accumulate or display longevity totals use it instead of reading `kw.longevity[key]` directly.
+
+**Form save** — `saveLongevityFromForm` writes shared-key values to `kw.micros` and sets `kw.longevity` to `true`. `saveMicrosFromForm` writes directly to `kw.micros`; the longevity `true` marker picks up the new value automatically.
+
+**Export / import** — `exportFoodObject` preserves `true` in the longevity section. `applyLongevityImportToKeyword` accepts `true` or a numeric value; when numeric, it moves the value to micros and sets longevity to `true`. `syncSharedMicroLongevity` runs on load and import to migrate legacy numeric longevity-only values.
+
+**Copper unit** — copper uses **mcg** throughout (`MICRO_FIELDS`, `LONGEVITY_FIELDS`, `DAILY_LONGEVITY_DV: 900`, `DAILY_MICRO_DV: 900`).
+
 ## File size hint
 
 | File | ~Lines | Load when |
