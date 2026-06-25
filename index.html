@@ -39,6 +39,7 @@
             <p id="dashboard-micro-hint" class="dashboard__micro-hint"><span id="dashboard-micro-hint-text">Average daily intake vs your demographic daily values (Mon–Sun). DV's will be low if you dont fill up all days.</span></p>
             <div class="dashboard__micro-hint-actions">
               <button type="button" id="micro-gaps-ai-open" class="dashboard__micro-hint-action-btn dashboard__micro-hint-ai" aria-label="Ask AI to help fill in the gaps"><span class="dashboard__micro-hint-action-icon" aria-hidden="true">✨</span><span>Ask AI to help fill gaps</span></button>
+              <button type="button" id="health-timeline-ai-open" class="dashboard__micro-hint-action-btn dashboard__micro-hint-ai" aria-label="Ask AI what happens to your health if you keep eating like this weekly"><span class="dashboard__micro-hint-action-icon" aria-hidden="true">✨</span><span>Ask AI: health timeline</span></button>
               <div class="dashboard__micro-condition-wrap">
                 <div class="dashboard__micro-condition-controls">
                   <button type="button" id="dashboard-micro-condition-toggle" class="dashboard__micro-hint-action-btn dashboard__micro-condition-toggle" aria-expanded="false" aria-controls="dashboard-micro-condition-list" aria-haspopup="listbox">
@@ -457,6 +458,32 @@
       <footer class="modal__footer modal__footer--split">
         <button type="button" id="import-cancel" class="modal__secondary">Cancel</button>
         <button type="button" id="import-apply" class="modal__done">Import</button>
+      </footer>
+    </div>
+  </div>
+
+  <div id="health-timeline-modal" class="modal" hidden>
+    <div class="modal__backdrop" data-action="close-health-timeline-modal"></div>
+    <div class="modal__panel modal__panel--wide" role="dialog" aria-modal="true" aria-labelledby="health-timeline-modal-title">
+      <header class="modal__header">
+        <h3 id="health-timeline-modal-title" class="modal__title">Health timeline from your nutrients</h3>
+        <p class="modal__subtitle">What if you keep eating like this every week?</p>
+      </header>
+      <div class="import-modal__body">
+        <p class="import-modal__hint">Builds a prompt from your current week averages and % DV (micro + longevity). Copy it, then use ChatGPT or Claude for a timeline of likely health effects by body system.</p>
+        <div class="import-ai-panel micro-gaps-modal__panel">
+          <p class="import-ai-panel__preview-label">Prompt preview</p>
+          <pre id="health-timeline-ai-preview" class="import-ai-panel__preview import-ai-panel__preview--tall"></pre>
+          <div class="import-ai-panel__actions">
+            <button type="button" id="health-timeline-ai-copy" class="import-ai-panel__copy">Copy prompt</button>
+            <span class="import-ai-panel__open-label">Open in</span>
+            <a href="https://chatgpt.com/" target="_blank" rel="noopener noreferrer" id="health-timeline-open-chatgpt" class="import-ai-panel__service">ChatGPT</a>
+            <a href="https://claude.ai/new" target="_blank" rel="noopener noreferrer" id="health-timeline-open-claude" class="import-ai-panel__service">Claude</a>
+          </div>
+        </div>
+      </div>
+      <footer class="modal__footer">
+        <button type="button" id="health-timeline-modal-done" class="modal__done">Done</button>
       </footer>
     </div>
   </div>

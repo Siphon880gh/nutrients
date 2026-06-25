@@ -102,6 +102,13 @@
   var microGapsOpenChatgptEl = document.getElementById("micro-gaps-open-chatgpt");
   var microGapsOpenClaudeEl = document.getElementById("micro-gaps-open-claude");
   var microGapsModalDoneBtn = document.getElementById("micro-gaps-modal-done");
+  var healthTimelineAiOpenBtn = document.getElementById("health-timeline-ai-open");
+  var healthTimelineModalEl = document.getElementById("health-timeline-modal");
+  var healthTimelineAiPreviewEl = document.getElementById("health-timeline-ai-preview");
+  var healthTimelineAiCopyBtn = document.getElementById("health-timeline-ai-copy");
+  var healthTimelineOpenChatgptEl = document.getElementById("health-timeline-open-chatgpt");
+  var healthTimelineOpenClaudeEl = document.getElementById("health-timeline-open-claude");
+  var healthTimelineModalDoneBtn = document.getElementById("health-timeline-modal-done");
   var microDefModalEl = document.getElementById("micro-def-modal");
   var microDefModalTitleEl = document.getElementById("micro-def-modal-title");
   var microDefBodyEl = document.getElementById("micro-def-body");
@@ -1793,6 +1800,211 @@
     updateBodyModalOpen();
   }
 
+  function buildHealthTimelineLongevityLines() {
+    var weekLongevity = weekLongevityTotals();
+    var weekMicro = weekMicroTotals();
+    var derived = computeLongevityDerived(weekLongevity, weekMicro);
+    var lines = [];
+    var concerns = [];
+
+    LONGEVITY_FIELDS.forEach(function (field) {
+      var total = weekLongevity[field.key];
+      if (!total && LONGEVITY_KEYS_ALSO_IN_MICRO[field.key]) {
+        total = weekMicro[field.key];
+      }
+      if (!total) return;
+      var avgDaily = total / DAYS.length;
+      var pct = avgDailyLongevityPct(field.key, total);
+      var pctText =
+        pct == null || isNaN(pct) ? "—" : fmtNum(pct) + "% DV";
+      lines.push(field.label);
+      lines.push(fmtNum(avgDaily) + " " + field.unit + "/day avg");
+      lines.push(pctText);
+
+      if (field.limiting && pct != null && !isNaN(pct) && pct >= 100) {
+        concerns.push(field.label + " (" + fmtNum(pct) + "% of limit)");
+      } else if (!field.limiting && pct != null && !isNaN(pct) && pct < 100) {
+        concerns.push(field.label + " (" + fmtNum(pct) + "% DV)");
+      }
+    });
+
+    if (derived.omega6To3 != null) {
+      lines.push("Omega-6 : Omega-3 ratio");
+      lines.push(fmtNum(derived.omega6To3) + " : 1");
+      lines.push(
+        derived.omega6To3 >
+          (longevityDvStatus.omega6To3IdealMax || DEFAULT_LONGEVITY_STATUS.omega6To3IdealMax)
+          ? "above ideal"
+          : "within ideal range"
+      );
+    }
+    if (derived.transFatG > 0) {
+      lines.push("Trans fat");
+      lines.push(fmtNum(derived.transFatG) + " g/day avg");
+      var transMax =
+        longevityDvStatus.transFatMaxGPerDay ||
+        DEFAULT_LONGEVITY_STATUS.transFatMaxGPerDay;
+      lines.push(
+        derived.transFatG > transMax ? "above " + transMax + " g/day limit" : "within limit"
+      );
+    }
+    if (derived.weekGl > 0) {
+      lines.push("Glycemic load");
+      lines.push(fmtNum(derived.weekGl) + "/day avg");
+      var glMax =
+        longevityDvStatus.glycemicLoadMaxPerDay ||
+        DEFAULT_LONGEVITY_STATUS.glycemicLoadMaxPerDay;
+      lines.push(
+        derived.weekGl > glMax ? "above " + glMax + "/day reference" : "within reference"
+      );
+    }
+    if (derived.epaPlusDha > 0) {
+      lines.push("EPA + DHA");
+      lines.push(fmtNum(derived.epaPlusDha) + " g/day avg");
+    }
+
+    return { lines: lines, concerns: concerns };
+  }
+
+  function buildHealthTimelineAiPrompt() {
+    var microSnapshot = buildMicroGapsSnapshotLines();
+    var longevitySnapshot = buildHealthTimelineLongevityLines();
+    var demo = demographicLabelForPrompt();
+    var parts = [
+      "I track meals Mon–Sun in a weekly log. The numbers below are my average daily intake compared to daily values for a " +
+        demo +
+        " profile. Assume I keep eating roughly like this every week.",
+      "",
+    ];
+
+    if (microConditionFocus && MICRO_CONDITION_FOCUS[microConditionFocus]) {
+      parts.push(
+        "Health focus I care about: " +
+          MICRO_CONDITION_FOCUS[microConditionFocus].label +
+          "."
+      );
+      parts.push("");
+    }
+
+    parts.push("Micronutrients (average daily vs demographic DV, Mon–Sun):");
+    parts.push("");
+    parts.push(microSnapshot.lines.join("\n"));
+    parts.push("");
+
+    if (longevitySnapshot.lines.length) {
+      parts.push("Longevity & wellness nutrients (average daily):");
+      parts.push("");
+      parts.push(longevitySnapshot.lines.join("\n"));
+      parts.push("");
+    }
+
+    var riskNotes = [];
+    if (microSnapshot.deficiencies.length) {
+      riskNotes.push(
+        "Below 100% DV: " + microSnapshot.deficiencies.join(", ")
+      );
+    }
+    if (longevitySnapshot.concerns.length) {
+      riskNotes.push(
+        "Longevity concerns: " + longevitySnapshot.concerns.join(", ")
+      );
+    }
+    if (riskNotes.length) {
+      parts.push(riskNotes.join(". ") + ".");
+      parts.push("");
+    }
+
+    parts.push(
+      "If I continue eating like this weekly, what would likely happen to my health over time?"
+    );
+    parts.push("");
+    parts.push(
+      "Give me a timeline of health effects from weeks → months → years → decades. Go through body systems one by one (cardiovascular, metabolic/diabetes, brain & cognition, bones & muscles, immune, gut & colon, kidneys, skin & hair, eyes, and any others relevant to my pattern). Focus on bad health outcomes and risks driven by my current nutrient pattern—especially deficiencies, excesses, and unfavorable ratios in the data above."
+    );
+    parts.push("");
+    parts.push(
+      "End with two final sections:",
+      "1. Nutrients I would not panic about — nutrients that look low or imperfect in my data but are unlikely to cause meaningful harm at my current intake, or where the gap is minor enough not to worry about.",
+      "2. Bottom line / Summary — a short plain-language takeaway: overall risk level if I keep this pattern, the 2–3 changes that would matter most, and what is going reasonably well."
+    );
+    parts.push("");
+    parts.push(
+      "This is educational—not a diagnosis. Reply in plain language (no JSON). Use clear sections and a simple timeline format."
+    );
+
+    return parts.join("\n");
+  }
+
+  function renderHealthTimelineAiPreview() {
+    if (!healthTimelineAiPreviewEl) return;
+    healthTimelineAiPreviewEl.textContent = buildHealthTimelineAiPrompt();
+  }
+
+  function copyHealthTimelinePromptToClipboard(done) {
+    var text = buildHealthTimelineAiPrompt();
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(done).catch(done);
+    } else if (done) {
+      done();
+    }
+  }
+
+  function openHealthTimelineAiService(url) {
+    copyHealthTimelinePromptToClipboard(function () {
+      window.open(url, "_blank", "noopener,noreferrer");
+    });
+  }
+
+  function closeHealthTimelineModal() {
+    if (!healthTimelineModalEl) return;
+    healthTimelineModalEl.hidden = true;
+    updateBodyModalOpen();
+  }
+
+  function openHealthTimelineModal() {
+    if (!healthTimelineModalEl) return;
+
+    if (activeImportId) closeImportModal();
+    if (importAllModalEl && !importAllModalEl.hidden) closeImportAllModal();
+    if (importAllMealsModalEl && !importAllMealsModalEl.hidden) {
+      closeImportAllMealsModal();
+    }
+    if (microGapsModalEl && !microGapsModalEl.hidden) closeMicroGapsModal();
+    if (healthTimelineModalEl && !healthTimelineModalEl.hidden) closeHealthTimelineModal();
+    if (microDefModalEl && !microDefModalEl.hidden) closeMicroDefModal();
+    if (phosphorusBinderModalEl && !phosphorusBinderModalEl.hidden) {
+      closePhosphorusBinderModal();
+    }
+    if (caffeineTipModalEl && !caffeineTipModalEl.hidden) closeCaffeineTipModal();
+    if (fatsCholesterolTipModalEl && !fatsCholesterolTipModalEl.hidden) {
+      closeFatsCholesterolTipModal();
+    }
+    if (tmaoProtectorsTipModalEl && !tmaoProtectorsTipModalEl.hidden) {
+      closeTmaoProtectorsTipModal();
+    }
+    if (fiberColonTipModalEl && !fiberColonTipModalEl.hidden) {
+      closeFiberColonTipModal();
+    }
+    if (pufaAntioxidantTipModalEl && !pufaAntioxidantTipModalEl.hidden) {
+      closePufaAntioxidantTipModal();
+    }
+    if (activeMicroId) {
+      saveMicrosFromForm();
+      closeMicroModal();
+    }
+    if (activeLongevityId) {
+      saveLongevityFromForm();
+      closeLongevityModal();
+    }
+
+    renderHealthTimelineAiPreview();
+    healthTimelineModalEl.hidden = false;
+    updateBodyModalOpen();
+    if (healthTimelineModalDoneBtn) {
+      healthTimelineModalDoneBtn.focus();
+    }
+  }
+
   function stringArray(val) {
     if (!Array.isArray(val)) return [];
     return val.filter(function (s) {
@@ -2366,6 +2578,7 @@
       closeImportAllMealsModal();
     }
     if (microGapsModalEl && !microGapsModalEl.hidden) closeMicroGapsModal();
+    if (healthTimelineModalEl && !healthTimelineModalEl.hidden) closeHealthTimelineModal();
     if (microDefModalEl && !microDefModalEl.hidden) closeMicroDefModal();
     if (microSourcesModalEl && !microSourcesModalEl.hidden) closeMicroSourcesModal();
     if (longevitySourcesModalEl && !longevitySourcesModalEl.hidden) {
@@ -3073,6 +3286,7 @@
       closeImportAllMealsModal();
     }
     if (microGapsModalEl && !microGapsModalEl.hidden) closeMicroGapsModal();
+    if (healthTimelineModalEl && !healthTimelineModalEl.hidden) closeHealthTimelineModal();
     if (microDefModalEl && !microDefModalEl.hidden) closeMicroDefModal();
     if (caffeineTipModalEl && !caffeineTipModalEl.hidden) closeCaffeineTipModal();
     if (fatsCholesterolTipModalEl && !fatsCholesterolTipModalEl.hidden) {
@@ -3116,6 +3330,7 @@
       closeImportAllMealsModal();
     }
     if (microGapsModalEl && !microGapsModalEl.hidden) closeMicroGapsModal();
+    if (healthTimelineModalEl && !healthTimelineModalEl.hidden) closeHealthTimelineModal();
     if (microDefModalEl && !microDefModalEl.hidden) closeMicroDefModal();
     if (phosphorusBinderModalEl && !phosphorusBinderModalEl.hidden) {
       closePhosphorusBinderModal();
@@ -3161,6 +3376,7 @@
       closeImportAllMealsModal();
     }
     if (microGapsModalEl && !microGapsModalEl.hidden) closeMicroGapsModal();
+    if (healthTimelineModalEl && !healthTimelineModalEl.hidden) closeHealthTimelineModal();
     if (microDefModalEl && !microDefModalEl.hidden) closeMicroDefModal();
     if (phosphorusBinderModalEl && !phosphorusBinderModalEl.hidden) {
       closePhosphorusBinderModal();
@@ -3204,6 +3420,7 @@
       closeImportAllMealsModal();
     }
     if (microGapsModalEl && !microGapsModalEl.hidden) closeMicroGapsModal();
+    if (healthTimelineModalEl && !healthTimelineModalEl.hidden) closeHealthTimelineModal();
     if (microDefModalEl && !microDefModalEl.hidden) closeMicroDefModal();
     if (phosphorusBinderModalEl && !phosphorusBinderModalEl.hidden) {
       closePhosphorusBinderModal();
@@ -3247,6 +3464,7 @@
       closeImportAllMealsModal();
     }
     if (microGapsModalEl && !microGapsModalEl.hidden) closeMicroGapsModal();
+    if (healthTimelineModalEl && !healthTimelineModalEl.hidden) closeHealthTimelineModal();
     if (microDefModalEl && !microDefModalEl.hidden) closeMicroDefModal();
     if (phosphorusBinderModalEl && !phosphorusBinderModalEl.hidden) {
       closePhosphorusBinderModal();
@@ -3290,6 +3508,7 @@
       closeImportAllMealsModal();
     }
     if (microGapsModalEl && !microGapsModalEl.hidden) closeMicroGapsModal();
+    if (healthTimelineModalEl && !healthTimelineModalEl.hidden) closeHealthTimelineModal();
     if (microDefModalEl && !microDefModalEl.hidden) closeMicroDefModal();
     if (phosphorusBinderModalEl && !phosphorusBinderModalEl.hidden) {
       closePhosphorusBinderModal();
@@ -3333,6 +3552,7 @@
       closeImportAllMealsModal();
     }
     if (microGapsModalEl && !microGapsModalEl.hidden) closeMicroGapsModal();
+    if (healthTimelineModalEl && !healthTimelineModalEl.hidden) closeHealthTimelineModal();
     if (microDefModalEl && !microDefModalEl.hidden) closeMicroDefModal();
     if (phosphorusBinderModalEl && !phosphorusBinderModalEl.hidden) {
       closePhosphorusBinderModal();
@@ -3457,6 +3677,7 @@
       closeImportAllMealsModal();
     }
     if (microGapsModalEl && !microGapsModalEl.hidden) closeMicroGapsModal();
+    if (healthTimelineModalEl && !healthTimelineModalEl.hidden) closeHealthTimelineModal();
     if (phosphorusBinderModalEl && !phosphorusBinderModalEl.hidden) {
       closePhosphorusBinderModal();
     }
@@ -3510,6 +3731,7 @@
       closeImportAllMealsModal();
     }
     if (microGapsModalEl && !microGapsModalEl.hidden) closeMicroGapsModal();
+    if (healthTimelineModalEl && !healthTimelineModalEl.hidden) closeHealthTimelineModal();
     if (microDefModalEl && !microDefModalEl.hidden) closeMicroDefModal();
     if (phosphorusBinderModalEl && !phosphorusBinderModalEl.hidden) {
       closePhosphorusBinderModal();
@@ -3561,6 +3783,7 @@
     if (importAllMealsModalEl && !importAllMealsModalEl.hidden) {
       closeImportAllMealsModal();
     }
+    if (healthTimelineModalEl && !healthTimelineModalEl.hidden) closeHealthTimelineModal();
     if (microDefModalEl && !microDefModalEl.hidden) closeMicroDefModal();
     if (phosphorusBinderModalEl && !phosphorusBinderModalEl.hidden) {
       closePhosphorusBinderModal();
@@ -3645,6 +3868,7 @@
       (importAllMealsModalEl && !importAllMealsModalEl.hidden) ||
       (importAllModalEl && !importAllModalEl.hidden) ||
       (microGapsModalEl && !microGapsModalEl.hidden) ||
+      (healthTimelineModalEl && !healthTimelineModalEl.hidden) ||
       (microDefModalEl && !microDefModalEl.hidden) ||
       (microSourcesModalEl && !microSourcesModalEl.hidden) ||
       (longevitySourcesModalEl && !longevitySourcesModalEl.hidden) ||
@@ -3713,6 +3937,7 @@
     }
     if (microDefModalEl && !microDefModalEl.hidden) closeMicroDefModal();
     if (microGapsModalEl && !microGapsModalEl.hidden) closeMicroGapsModal();
+    if (healthTimelineModalEl && !healthTimelineModalEl.hidden) closeHealthTimelineModal();
 
     fetch(IMPORT_SAMPLE_FOODS_URL)
       .then(function (res) {
@@ -4880,6 +5105,9 @@
 
     if (microGapsModalEl && !microGapsModalEl.hidden) {
       renderMicroGapsAiPreview();
+    }
+    if (healthTimelineModalEl && !healthTimelineModalEl.hidden) {
+      renderHealthTimelineAiPreview();
     }
   }
 
@@ -8547,6 +8775,48 @@
     microGapsAiOpenBtn.addEventListener("click", openMicroGapsModal);
   }
 
+  if (healthTimelineAiOpenBtn) {
+    healthTimelineAiOpenBtn.addEventListener("click", openHealthTimelineModal);
+  }
+
+  if (healthTimelineModalDoneBtn) {
+    healthTimelineModalDoneBtn.addEventListener("click", closeHealthTimelineModal);
+  }
+
+  if (healthTimelineModalEl) {
+    healthTimelineModalEl.addEventListener("click", function (e) {
+      if (e.target.closest('[data-action="close-health-timeline-modal"]')) {
+        closeHealthTimelineModal();
+      }
+    });
+  }
+
+  if (healthTimelineAiCopyBtn) {
+    healthTimelineAiCopyBtn.addEventListener("click", function () {
+      copyHealthTimelinePromptToClipboard(function () {
+        var prev = healthTimelineAiCopyBtn.textContent;
+        healthTimelineAiCopyBtn.textContent = "Copied!";
+        window.setTimeout(function () {
+          healthTimelineAiCopyBtn.textContent = prev;
+        }, 1500);
+      });
+    });
+  }
+
+  if (healthTimelineOpenChatgptEl) {
+    healthTimelineOpenChatgptEl.addEventListener("click", function (e) {
+      e.preventDefault();
+      openHealthTimelineAiService(CHATGPT_URL);
+    });
+  }
+
+  if (healthTimelineOpenClaudeEl) {
+    healthTimelineOpenClaudeEl.addEventListener("click", function (e) {
+      e.preventDefault();
+      openHealthTimelineAiService(CLAUDE_URL);
+    });
+  }
+
   if (microGapsModalDoneBtn) {
     microGapsModalDoneBtn.addEventListener("click", closeMicroGapsModal);
   }
@@ -8601,6 +8871,10 @@
     }
     if (importAllModalEl && !importAllModalEl.hidden) {
       closeImportAllModal();
+      return;
+    }
+    if (healthTimelineModalEl && !healthTimelineModalEl.hidden) {
+      closeHealthTimelineModal();
       return;
     }
     if (microGapsModalEl && !microGapsModalEl.hidden) {
