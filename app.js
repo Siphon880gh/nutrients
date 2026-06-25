@@ -441,15 +441,15 @@
     { key: "vitaminD", label: "Vitamin D", unit: "mcg", code: "d" },
     { key: "vitaminE", label: "Vitamin E", unit: "mg", code: "e" },
     { key: "vitaminK", label: "Vitamin K", unit: "mcg", code: "vk" },
-    { key: "vitaminB12", label: "Vitamin B12", unit: "mcg", code: "b12" },
     { key: "thiamin", label: "Thiamin (B1)", unit: "mg", code: "b1" },
     { key: "riboflavin", label: "Riboflavin (B2)", unit: "mg", code: "b2" },
     { key: "niacin", label: "Niacin (B3)", unit: "mg", code: "b3" },
     { key: "pantothenicAcid", label: "Pantothenic acid (B5)", unit: "mg", code: "b5" },
     { key: "vitaminB6", label: "Vitamin B6", unit: "mg", code: "b6" },
-    { key: "vitaminC", label: "Vitamin C", unit: "mg", code: "c" },
-    { key: "folate", label: "Folate (B9)", unit: "mcg", code: "fol" },
     { key: "biotin", label: "Biotin (B7)", unit: "mcg", code: "b7" },
+    { key: "folate", label: "Folate (B9)", unit: "mcg", code: "fol" },
+    { key: "vitaminB12", label: "Vitamin B12", unit: "mcg", code: "b12" },
+    { key: "vitaminC", label: "Vitamin C", unit: "mg", code: "c" },
   ];
 
   var MICRO_EXTENDED_FIELDS = [
@@ -537,13 +537,13 @@
   ];
 
   var LONGEVITY_MITO_FROM_MICRO = [
-    { microKey: "niacin", label: "Niacin (B3) — NAD precursor", limiting: false },
-    { microKey: "riboflavin", label: "Riboflavin (B2)", limiting: false },
-    { microKey: "pantothenicAcid", label: "Pantothenic acid (B5)", limiting: false },
     { microKey: "thiamin", label: "Thiamin (B1)", limiting: false },
+    { microKey: "riboflavin", label: "Riboflavin (B2)", limiting: false },
+    { microKey: "niacin", label: "Niacin (B3) — NAD precursor", limiting: false },
+    { microKey: "pantothenicAcid", label: "Pantothenic acid (B5)", limiting: false },
+    { microKey: "biotin", label: "Biotin (B7)", limiting: false },
     { microKey: "magnesium", label: "Magnesium", limiting: false },
     { microKey: "iron", label: "Iron", limiting: false },
-    { microKey: "biotin", label: "Biotin (B7)", limiting: false },
   ];
 
   var LONGEVITY_MITO_FROM_LONGEVITY = [{ key: "coq10", label: "Coenzyme Q10", limiting: false }];
@@ -579,11 +579,11 @@
 
   var LONGEVITY_DNA_REPAIR_FROM_MICRO = [
     { microKey: "vitaminC", label: "Vitamin C — antioxidant defense", limiting: false },
+    { microKey: "riboflavin", label: "Riboflavin (B2) — redox support", limiting: false },
+    { microKey: "niacin", label: "Niacin (B3) — NAD for repair enzymes", limiting: false },
+    { microKey: "vitaminB6", label: "Vitamin B6 — methylation support", limiting: false },
     { microKey: "folate", label: "Folate (B9) — nucleotide synthesis", limiting: false },
     { microKey: "vitaminB12", label: "Vitamin B12 — methylation support", limiting: false },
-    { microKey: "vitaminB6", label: "Vitamin B6 — methylation support", limiting: false },
-    { microKey: "niacin", label: "Niacin (B3) — NAD for repair enzymes", limiting: false },
-    { microKey: "riboflavin", label: "Riboflavin (B2) — redox support", limiting: false },
     { microKey: "magnesium", label: "Magnesium — DNA polymerase cofactor", limiting: false },
     { microKey: "zinc", label: "Zinc — DNA repair protein cofactor", limiting: false },
   ];
@@ -599,10 +599,10 @@
   var LONGEVITY_CALCIFICATION_FIELD_KEYS = ["phosphorus"];
 
   var LONGEVITY_HOMOCYSTEINE_FROM_MICRO = [
+    { microKey: "riboflavin", label: "Riboflavin (B2) — MTHFR/FAD support" },
+    { microKey: "vitaminB6", label: "Vitamin B6 — transsulfuration" },
     { microKey: "folate", label: "Folate (B9) — remethylation" },
     { microKey: "vitaminB12", label: "Vitamin B12 — remethylation" },
-    { microKey: "vitaminB6", label: "Vitamin B6 — transsulfuration" },
-    { microKey: "riboflavin", label: "Riboflavin (B2) — MTHFR/FAD support" },
   ];
 
   var LONGEVITY_HOMOCYSTEINE_FROM_LONGEVITY = [
@@ -620,9 +620,9 @@
   var LONGEVITY_TMAO_LOWERING_FROM_MICRO = [
     { microKey: "fiber", label: "Fiber (prebiotic)" },
     { microKey: "vitaminD", label: "Vitamin D" },
+    { microKey: "vitaminB6", label: "Vitamin B6" },
     { microKey: "folate", label: "Folate (B9)" },
     { microKey: "vitaminB12", label: "Vitamin B12" },
-    { microKey: "vitaminB6", label: "Vitamin B6" },
   ];
 
   var LONGEVITY_TMAO_LOWERING_LONGEVITY = [
@@ -634,10 +634,10 @@
 
   var LONGEVITY_HISTAMINE_FROM_MICRO = [
     { microKey: "vitaminC", label: "Vitamin C — histamine breakdown support" },
+    { microKey: "riboflavin", label: "Riboflavin (B2) — methylation cofactor" },
     { microKey: "vitaminB6", label: "Vitamin B6 — histamine enzyme support" },
     { microKey: "folate", label: "Folate (B9) — HNMT methylation support" },
     { microKey: "vitaminB12", label: "Vitamin B12 — SAMe/methylation support" },
-    { microKey: "riboflavin", label: "Riboflavin (B2) — methylation cofactor" },
     { microKey: "magnesium", label: "Magnesium — nervous-system tolerance" },
     { microKey: "zinc", label: "Zinc — immune and gut barrier support" },
   ];
