@@ -91,6 +91,7 @@
     "sectionStressResilience": "#6d7a68",
     "sectionSleepHealth": "#6b7894",
     "sectionInsulinResistance": "#5a7a94",
+    "sectionFatGain": "#948870",
     "sectionMitochondrial": "#6d5cad",
     "sectionCellularAging": "#6d5cad",
     "sectionFats": "#a67c00",
@@ -104,6 +105,9 @@
     "sectionGlycemic": "#3d6ea8",
     "sectionCalcification": "#a8505a",
     "sectionTmao": "#a8505a",
-    "sectionHomocysteine": "#a8505a"
+    "sectionHomocysteine": "#a8505a",
+    "sectionVascularBloodPressure": "#a8505a",
+    "sectionVascularBrain": "#a8505a",
+    "sectionDashDiet": "#6a8a72"
   }
 }

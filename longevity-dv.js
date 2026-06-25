@@ -6,7 +6,7 @@
   /** Keys aligned with LONGEVITY_FIELDS in app.js (stored nutrients only). */
   var DAILY_LONGEVITY_DV = {
     saturatedFat: 20,
-    monounsaturatedFat: 0,
+    monounsaturatedFat: 25,
     polyunsaturatedFat: 0,
     transFat: 0,
     cholesterol: 300,
@@ -28,6 +28,7 @@
     copper: 900,
     methionine: 0,
     polyphenols: 650,
+    nitrate: 400,
     flavonoids: 400,
     carotenoids: 0,
     lutein: 10,

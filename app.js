@@ -143,6 +143,8 @@
   );
   var histamineTipModalEl = document.getElementById("histamine-tip-modal");
   var histamineTipModalDoneBtn = document.getElementById("histamine-tip-modal-done");
+  var dashDietTipModalEl = document.getElementById("dash-diet-tip-modal");
+  var dashDietTipModalDoneBtn = document.getElementById("dash-diet-tip-modal-done");
   var settingsOpenBtn = document.getElementById("settings-open");
   var settingsModalEl = document.getElementById("settings-modal");
   var settingsModalDoneBtn = document.getElementById("settings-modal-done");
@@ -324,6 +326,10 @@
       label: "Vitamin E : PUFA protection",
       limiting: false,
     },
+    potassiumToSodium: {
+      label: "Potassium : sodium ratio",
+      limiting: false,
+    },
   };
 
   var LONGEVITY_SECTION_DEFS = {
@@ -342,12 +348,16 @@
     sectionSleepHealth: { label: "Sleep health" },
     sectionCalcification: { label: "Calcification & vascular balance" },
     sectionHomocysteine: { label: "Methylation & homocysteine balance" },
+    sectionVascularBloodPressure: { label: "Vascular - Blood Pressure" },
+    sectionVascularBrain: { label: "Vascular - Cerebral Blood Pressure" },
+    sectionDashDiet: { label: "DASH diet" },
     sectionDerived: { label: "Derived scores" },
     sectionTmao: { label: "TMAO balance" },
     sectionHistamine: { label: "Histamine tolerance & quality of life" },
     sectionPufaAntioxidant: { label: "Fat oxidation & antioxidant protection" },
     sectionGlycemic: { label: "Glycemic load & GI distribution" },
     sectionInsulinResistance: { label: "Insulin resistance / sensitivity" },
+    sectionFatGain: { label: "Fat gain" },
     sectionMitochondrial: { label: "Mitochondrial health & cellular energy" },
     sectionCellularAging: { label: "Cellular aging & senomorphics" },
   };
@@ -517,6 +527,7 @@
       label: "Insulin resistance / sensitivity",
       sectionDefKey: "sectionInsulinResistance",
     },
+    { label: "Fat gain", sectionDefKey: "sectionFatGain" },
     {
       label: "Mitochondrial health & cellular energy",
       sectionDefKey: "sectionMitochondrial",
@@ -550,6 +561,15 @@
       {
         label: "Methylation & homocysteine balance",
         sectionDefKey: "sectionHomocysteine",
+      },
+      { label: "DASH diet", sectionDefKey: "sectionDashDiet" },
+      {
+        label: "Vascular - Blood Pressure",
+        sectionDefKey: "sectionVascularBloodPressure",
+      },
+      {
+        label: "Vascular - Cerebral Blood Pressure",
+        sectionDefKey: "sectionVascularBrain",
       },
     ]);
 
@@ -623,6 +643,52 @@
     { key: "addedSugar", label: "Added sugar", limiting: true },
     { key: "transFat", label: "Trans fat", limiting: true },
     { key: "omega6", label: "Omega-6 (total)", limiting: true },
+  ];
+
+  var LONGEVITY_FAT_GAIN_AGING_FROM_MICRO = [
+    { microKey: "fiber", label: "Fiber — satiety & metabolic support", limiting: false },
+    { microKey: "magnesium", label: "Magnesium — glucose & insulin signaling", limiting: false },
+    { microKey: "vitaminD", label: "Vitamin D — body composition support", limiting: false },
+    { microKey: "chromium", label: "Chromium — glucose metabolism support", limiting: false },
+    { microKey: "leucine", label: "Leucine — muscle retention with age", limiting: false },
+  ];
+
+  var LONGEVITY_FAT_GAIN_AGING_FROM_LONGEVITY = [
+    { key: "epa", label: "EPA", limiting: false },
+    { key: "dha", label: "DHA", limiting: false },
+    { key: "monounsaturatedFat", label: "Monounsaturated fat", limiting: false },
+    { key: "polyphenols", label: "Polyphenols", limiting: false },
+    { key: "flavonoids", label: "Flavonoids", limiting: false },
+  ];
+
+  var LONGEVITY_FAT_GAIN_ENERGY_FROM_MICRO = [
+    { microKey: "thiamin", label: "Thiamin (B1) — glucose → ATP", limiting: false },
+    { microKey: "riboflavin", label: "Riboflavin (B2) — FAD for oxidation", limiting: false },
+    { microKey: "niacin", label: "Niacin (B3) — NAD+ for fuel oxidation", limiting: false },
+    {
+      microKey: "pantothenicAcid",
+      label: "Pantothenic acid (B5) — coenzyme A",
+      limiting: false,
+    },
+    { microKey: "biotin", label: "Biotin (B7) — carboxylase cofactor", limiting: false },
+    { microKey: "magnesium", label: "Magnesium — ATP stability", limiting: false },
+    { microKey: "iron", label: "Iron — cytochrome electron transport", limiting: false },
+    { microKey: "manganese", label: "Manganese — mitochondrial MnSOD", limiting: false },
+  ];
+
+  var LONGEVITY_FAT_GAIN_ENERGY_FROM_LONGEVITY = [
+    { key: "carnitine", label: "L-Carnitine — fatty-acid shuttle to mitochondria", limiting: false },
+    { key: "coq10", label: "Coenzyme Q10 — mitochondrial electron transport", limiting: false },
+  ];
+
+  var LONGEVITY_FAT_GAIN_GLP_FROM_MICRO = [
+    { microKey: "fiber", label: "Fiber — prebiotic for gut GLP-1 support", limiting: false },
+  ];
+
+  var LONGEVITY_FAT_GAIN_GLP_FROM_LONGEVITY = [
+    { key: "polyphenols", label: "Polyphenols — microbiome & incretin support", limiting: false },
+    { key: "flavonoids", label: "Flavonoids — microbiome & incretin support", limiting: false },
+    { key: "resveratrol", label: "Resveratrol — gut incretin signaling", limiting: false },
   ];
 
   var LONGEVITY_MITO_FROM_MICRO = [
@@ -700,6 +766,57 @@
     { key: "betaine", label: "Betaine — alternate methyl donor" },
   ];
 
+  var LONGEVITY_VASCULAR_WATCH_FROM_LONGEVITY = [
+    { key: "cholesterol", label: "Cholesterol — lipid-related vessel risk" },
+    { key: "saturatedFat", label: "Saturated fat — lipid-related vessel risk" },
+    { key: "transFat", label: "Trans fat — vessel risk" },
+  ];
+
+  var LONGEVITY_VASCULAR_AIM_FROM_MICRO = [
+    { microKey: "magnesium", label: "Magnesium — modest BP & vessel support" },
+    { microKey: "fiber", label: "Fiber — DASH / plant pattern" },
+  ];
+
+  var LONGEVITY_VASCULAR_AIM_FROM_LONGEVITY = [
+    { key: "nitrate", label: "Nitrate — systemic & brain BP" },
+    { key: "flavonoids", label: "Flavonoids — endothelial support" },
+    { key: "polyphenols", label: "Polyphenols — vascular support" },
+    { key: "monounsaturatedFat", label: "Monounsaturated fat — olive-oil pattern" },
+  ];
+
+  var LONGEVITY_VASCULAR_LOWER_PRIORITY_FROM_MICRO = [
+    { microKey: "vitaminD", label: "Vitamin D — observational BP links" },
+  ];
+
+  var LONGEVITY_VASCULAR_LOWER_PRIORITY_FROM_LONGEVITY = [
+    { key: "vitaminK", label: "Vitamin K — calcium routing" },
+    { key: "vitaminK2", label: "Vitamin K2 — arterial calcification" },
+    { key: "coq10", label: "CoQ10 — trial data mostly supplemental" },
+  ];
+
+  var LONGEVITY_DASH_AIM_FROM_MICRO = [
+    {
+      microKey: "calcium",
+      label: "Calcium — ~1,250 mg/day DASH target",
+      limiting: false,
+    },
+    {
+      microKey: "potassium",
+      label: "Potassium — ~4,700 mg/day DASH target",
+      limiting: false,
+    },
+    {
+      microKey: "magnesium",
+      label: "Magnesium — ~500 mg/day DASH target",
+      limiting: false,
+    },
+    { microKey: "fiber", label: "Fiber — DASH plant pattern", limiting: false },
+  ];
+
+  var LONGEVITY_DASH_WATCH_FROM_LONGEVITY = [
+    { key: "saturatedFat", label: "Saturated fat — keep moderate on DASH" },
+  ];
+
   var LONGEVITY_COMPOUNDS_FROM_MICRO = [
     { microKey: "fiber", label: "Fiber (prebiotic)", limiting: false },
   ];
@@ -774,6 +891,115 @@
       null,
       key,
       "longevity"
+    );
+  }
+
+  function vascularRowsFromMicroItems(items, limiting, weekMicro) {
+    return items
+      .map(function (item) {
+        return longevityRowFromMicroKey(
+          item.microKey,
+          item.label,
+          !!limiting,
+          weekMicro
+        );
+      })
+      .join("");
+  }
+
+  function vascularRowsFromLongevityItems(items, weekLongevity, weekMicro) {
+    return items
+      .map(function (item) {
+        return longevityRowFromLongevityOrMicro(item, weekLongevity, weekMicro);
+      })
+      .join("");
+  }
+
+  function vascularEpaDhaRowHtml(derived, label) {
+    return longevityRowHtml(
+      label || "EPA + DHA — vascular & brain vessel support",
+      derived.epaPlusDha > 0 ? fmtNum(derived.epaPlusDha) + " g" : "—",
+      derived.epaPlusDha > 0 ? "combined" : "—",
+      null,
+      "dashboard__longevity-row--computed",
+      false,
+      "epaPlusDha",
+      false
+    );
+  }
+
+  function vascularPotassiumSodiumRatioRowHtml(derived) {
+    var kNa = derived.potassiumToSodium;
+    var kNaIdeal =
+      longevityDvStatus.potassiumToSodiumIdealMin ||
+      DEFAULT_LONGEVITY_STATUS.potassiumToSodiumIdealMin;
+    var kNaAmt = kNa == null || isNaN(kNa) ? "—" : fmtNum(kNa) + ":1";
+    var kNaStatus =
+      kNa == null || isNaN(kNa)
+        ? "—"
+        : kNa >= kNaIdeal
+          ? "At target"
+          : "Below " + kNaIdeal + ":1 target";
+    var kNaPct =
+      kNa != null && !isNaN(kNa) && kNaIdeal > 0
+        ? Math.min(100, (kNa / kNaIdeal) * 100)
+        : null;
+    return longevityRowHtml(
+      "Potassium : sodium (sodium reduction matters more in practice)",
+      kNaAmt,
+      kNaStatus,
+      kNaPct,
+      "dashboard__longevity-row--computed",
+      false,
+      "potassiumToSodium",
+      false
+    );
+  }
+
+  function vascularPrimaryAimRowsHtml(weekLongevity, weekMicro, derived, opts) {
+    opts = opts || {};
+    var html =
+      longevityRowFromMicroKey(
+        "potassium",
+        opts.potassiumLabel || "Potassium",
+        false,
+        weekMicro
+      ) +
+      (opts.includePotassiumRatio ? vascularPotassiumSodiumRatioRowHtml(derived) : "") +
+      vascularRowsFromMicroItems(LONGEVITY_VASCULAR_AIM_FROM_MICRO, false, weekMicro) +
+      vascularRowsFromLongevityItems(
+        LONGEVITY_VASCULAR_AIM_FROM_LONGEVITY,
+        weekLongevity,
+        weekMicro
+      ) +
+      vascularEpaDhaRowHtml(derived, opts.epaDhaLabel);
+    return html;
+  }
+
+  function vascularLowerPriorityRowsHtml(weekLongevity, weekMicro) {
+    return (
+      vascularRowsFromMicroItems(
+        LONGEVITY_VASCULAR_LOWER_PRIORITY_FROM_MICRO,
+        false,
+        weekMicro
+      ) +
+      vascularRowsFromLongevityItems(
+        LONGEVITY_VASCULAR_LOWER_PRIORITY_FROM_LONGEVITY,
+        weekLongevity,
+        weekMicro
+      )
+    );
+  }
+
+  function dashDietAimRowsHtml(weekMicro) {
+    return vascularRowsFromMicroItems(LONGEVITY_DASH_AIM_FROM_MICRO, false, weekMicro);
+  }
+
+  function dashDietWatchRowsHtml(weekLongevity, weekMicro) {
+    return vascularRowsFromLongevityItems(
+      LONGEVITY_DASH_WATCH_FROM_LONGEVITY,
+      weekLongevity,
+      weekMicro
     );
   }
 
@@ -876,6 +1102,13 @@
       label: "Polyphenols",
       unit: "mg",
       code: "poly",
+      group: "compounds",
+    },
+    {
+      key: "nitrate",
+      label: "Nitrate",
+      unit: "mg",
+      code: "no3",
       group: "compounds",
     },
     { key: "flavonoids", label: "Flavonoids", unit: "mg", code: "flav", group: "compounds" },
@@ -1703,6 +1936,9 @@
       "  - longevity.carotenoids: carrots, sweet potato, spinach, kale, tomatoes, red bell pepper, mango (mg; fat-soluble—pair with oil for absorption)"
     );
     lines.push(
+      "  - longevity.nitrate: spinach, arugula, beet, celery, lettuce, bok choy (~250 mg/100g spinach; ~110 mg/100g celery; mg NO₃)"
+    );
+    lines.push(
       "  - longevity.lutein: spinach, kale, corn, egg yolks (mg; fat-soluble—better absorbed with oil or egg fat)"
     );
     lines.push(
@@ -2095,6 +2331,9 @@
     }
     if (fiberColonTipModalEl && !fiberColonTipModalEl.hidden) {
       closeFiberColonTipModal();
+    }
+    if (dashDietTipModalEl && !dashDietTipModalEl.hidden) {
+      closeDashDietTipModal();
     }
     if (pufaAntioxidantTipModalEl && !pufaAntioxidantTipModalEl.hidden) {
       closePufaAntioxidantTipModal();
@@ -2860,6 +3099,9 @@
     if (fiberColonTipModalEl && !fiberColonTipModalEl.hidden) {
       closeFiberColonTipModal();
     }
+    if (dashDietTipModalEl && !dashDietTipModalEl.hidden) {
+      closeDashDietTipModal();
+    }
     if (pufaAntioxidantTipModalEl && !pufaAntioxidantTipModalEl.hidden) {
       closePufaAntioxidantTipModal();
     }
@@ -3586,6 +3828,9 @@
     if (fiberColonTipModalEl && !fiberColonTipModalEl.hidden) {
       closeFiberColonTipModal();
     }
+    if (dashDietTipModalEl && !dashDietTipModalEl.hidden) {
+      closeDashDietTipModal();
+    }
     if (pufaAntioxidantTipModalEl && !pufaAntioxidantTipModalEl.hidden) {
       closePufaAntioxidantTipModal();
     }
@@ -3632,6 +3877,9 @@
     if (fiberColonTipModalEl && !fiberColonTipModalEl.hidden) {
       closeFiberColonTipModal();
     }
+    if (dashDietTipModalEl && !dashDietTipModalEl.hidden) {
+      closeDashDietTipModal();
+    }
     if (pufaAntioxidantTipModalEl && !pufaAntioxidantTipModalEl.hidden) {
       closePufaAntioxidantTipModal();
     }
@@ -3676,6 +3924,9 @@
     if (fiberColonTipModalEl && !fiberColonTipModalEl.hidden) {
       closeFiberColonTipModal();
     }
+    if (dashDietTipModalEl && !dashDietTipModalEl.hidden) {
+      closeDashDietTipModal();
+    }
     if (pufaAntioxidantTipModalEl && !pufaAntioxidantTipModalEl.hidden) {
       closePufaAntioxidantTipModal();
     }
@@ -3719,6 +3970,9 @@
     }
     if (fiberColonTipModalEl && !fiberColonTipModalEl.hidden) {
       closeFiberColonTipModal();
+    }
+    if (dashDietTipModalEl && !dashDietTipModalEl.hidden) {
+      closeDashDietTipModal();
     }
     if (pufaAntioxidantTipModalEl && !pufaAntioxidantTipModalEl.hidden) {
       closePufaAntioxidantTipModal();
@@ -3811,6 +4065,9 @@
     if (fiberColonTipModalEl && !fiberColonTipModalEl.hidden) {
       closeFiberColonTipModal();
     }
+    if (dashDietTipModalEl && !dashDietTipModalEl.hidden) {
+      closeDashDietTipModal();
+    }
     if (activeMicroId) {
       saveMicrosFromForm();
       closeMicroModal();
@@ -3855,6 +4112,9 @@
     if (fiberColonTipModalEl && !fiberColonTipModalEl.hidden) {
       closeFiberColonTipModal();
     }
+    if (dashDietTipModalEl && !dashDietTipModalEl.hidden) {
+      closeDashDietTipModal();
+    }
     if (pufaAntioxidantTipModalEl && !pufaAntioxidantTipModalEl.hidden) {
       closePufaAntioxidantTipModal();
     }
@@ -3875,6 +4135,56 @@
   function closeHistamineTipModal() {
     if (!histamineTipModalEl) return;
     histamineTipModalEl.hidden = true;
+    updateBodyModalOpen();
+  }
+
+  function openDashDietTipModal() {
+    if (!dashDietTipModalEl) return;
+
+    if (activeImportId) closeImportModal();
+    if (importAllModalEl && !importAllModalEl.hidden) closeImportAllModal();
+    if (importAllMealsModalEl && !importAllMealsModalEl.hidden) {
+      closeImportAllMealsModal();
+    }
+    if (microGapsModalEl && !microGapsModalEl.hidden) closeMicroGapsModal();
+    if (healthTimelineModalEl && !healthTimelineModalEl.hidden) closeHealthTimelineModal();
+    if (microDefModalEl && !microDefModalEl.hidden) closeMicroDefModal();
+    if (phosphorusBinderModalEl && !phosphorusBinderModalEl.hidden) {
+      closePhosphorusBinderModal();
+    }
+    if (caffeineTipModalEl && !caffeineTipModalEl.hidden) closeCaffeineTipModal();
+    if (fatsCholesterolTipModalEl && !fatsCholesterolTipModalEl.hidden) {
+      closeFatsCholesterolTipModal();
+    }
+    if (tmaoProtectorsTipModalEl && !tmaoProtectorsTipModalEl.hidden) {
+      closeTmaoProtectorsTipModal();
+    }
+    if (fiberColonTipModalEl && !fiberColonTipModalEl.hidden) {
+      closeFiberColonTipModal();
+    }
+    if (pufaAntioxidantTipModalEl && !pufaAntioxidantTipModalEl.hidden) {
+      closePufaAntioxidantTipModal();
+    }
+    if (histamineTipModalEl && !histamineTipModalEl.hidden) {
+      closeHistamineTipModal();
+    }
+    if (activeMicroId) {
+      saveMicrosFromForm();
+      closeMicroModal();
+    }
+    if (activeLongevityId) {
+      saveLongevityFromForm();
+      closeLongevityModal();
+    }
+
+    dashDietTipModalEl.hidden = false;
+    updateBodyModalOpen();
+    if (dashDietTipModalDoneBtn) dashDietTipModalDoneBtn.focus();
+  }
+
+  function closeDashDietTipModal() {
+    if (!dashDietTipModalEl) return;
+    dashDietTipModalEl.hidden = true;
     updateBodyModalOpen();
   }
 
@@ -3914,6 +4224,17 @@
       '<p class="dashboard__longevity-processed-note-text">' +
       "Adequate fiber supports colon health—high intake lowers colorectal cancer risk (about 10% per extra 10 g/day) and helps prevent other common conditions like diverticulitis, constipation, and hemorrhoids. The opposite pattern—low fiber with frequent red meat—raises those risks. Aim for 100%+ DV from beans, whole grains, vegetables, and fruit… " +
       '<button type="button" class="dashboard__longevity-tip-link" data-action="open-fiber-colon-tip-modal">Read more</button>' +
+      "</p>" +
+      "</aside>"
+    );
+  }
+
+  function dashDietTipHtml() {
+    return (
+      '<aside class="dashboard__longevity-processed-note dashboard__longevity-processed-note--section" role="note">' +
+      '<p class="dashboard__longevity-processed-note-text">' +
+      "The DASH diet pairs calcium with potassium and magnesium, emphasizes fiber from vegetables and whole grains, and keeps saturated fat moderate—together they relax blood vessels, promote heart health, and regulate fluid balance. The plan targets about 1,250 mg of calcium daily from low-fat dairy, leafy greens, and fortified foods… " +
+      '<button type="button" class="dashboard__longevity-tip-link" data-action="open-dash-diet-tip-modal">Read more</button>' +
       "</p>" +
       "</aside>"
     );
@@ -3986,6 +4307,32 @@
     );
   }
 
+  function vascularSodiumPotassiumTipHtml() {
+    return (
+      '<aside class="dashboard__longevity-processed-note dashboard__longevity-processed-note--section" role="note">' +
+      '<p class="dashboard__longevity-processed-note-text">' +
+      "<strong>Lowering sodium, raising potassium:</strong> Potassium-rich foods (fruit, beans, greens, yogurt) can help offset sodium’s blood-pressure effects, but cutting sodium itself is still the main lever—under 2,300 mg/day, or 1,500 mg if you already have high blood pressure. Naturally occurring nitrates in food (especially beets, spinach, arugula, celery) convert to nitric oxide, which widens blood vessels, improves blood flow, and lowers blood pressure—systemically and in the brain… " +
+      '<button type="button" class="dashboard__longevity-tip-link" data-longevity-def="sectionVascularBloodPressure" aria-haspopup="dialog">Read more</button>' +
+      "</p>" +
+      "</aside>"
+    );
+  }
+
+  function vascularBloodPressureTipHtml() {
+    return vascularSodiumPotassiumTipHtml();
+  }
+
+  function vascularBrainTipHtml() {
+    return (
+      '<aside class="dashboard__longevity-processed-note dashboard__longevity-processed-note--section" role="note">' +
+      '<p class="dashboard__longevity-processed-note-text">' +
+      "<strong>Small-vessel brain health:</strong> Higher blood pressure and worse lipids over years can damage small vessels in the brain. Microvascular changes on a CT head indicate damage to the brain’s smallest blood vessels—often called microvascular ischemic disease or small vessel disease—and typically represent long-term effects of aging, chronic high blood pressure, or diabetes, appearing as wear and tear in the brain’s white matter. In older adults, that pattern is often discussed alongside slower processing, word-finding trouble, and memory lapses that can look like ordinary aging but may partly reflect small-vessel injury over decades—not something this dashboard diagnoses." +
+      "</p>" +
+      "</aside>" +
+      vascularSodiumPotassiumTipHtml()
+    );
+  }
+
   function openLongevityDefModal(key, returnTo, stackOnForm) {
     if (!microDefModalEl || !key) return;
 
@@ -4008,6 +4355,9 @@
     }
     if (fiberColonTipModalEl && !fiberColonTipModalEl.hidden) {
       closeFiberColonTipModal();
+    }
+    if (dashDietTipModalEl && !dashDietTipModalEl.hidden) {
+      closeDashDietTipModal();
     }
     if (pufaAntioxidantTipModalEl && !pufaAntioxidantTipModalEl.hidden) {
       closePufaAntioxidantTipModal();
@@ -4069,6 +4419,9 @@
     if (fiberColonTipModalEl && !fiberColonTipModalEl.hidden) {
       closeFiberColonTipModal();
     }
+    if (dashDietTipModalEl && !dashDietTipModalEl.hidden) {
+      closeDashDietTipModal();
+    }
     if (pufaAntioxidantTipModalEl && !pufaAntioxidantTipModalEl.hidden) {
       closePufaAntioxidantTipModal();
     }
@@ -4124,6 +4477,9 @@
     }
     if (fiberColonTipModalEl && !fiberColonTipModalEl.hidden) {
       closeFiberColonTipModal();
+    }
+    if (dashDietTipModalEl && !dashDietTipModalEl.hidden) {
+      closeDashDietTipModal();
     }
     if (pufaAntioxidantTipModalEl && !pufaAntioxidantTipModalEl.hidden) {
       closePufaAntioxidantTipModal();
@@ -4204,6 +4560,7 @@
       (fatsCholesterolTipModalEl && !fatsCholesterolTipModalEl.hidden) ||
       (tmaoProtectorsTipModalEl && !tmaoProtectorsTipModalEl.hidden) ||
       (fiberColonTipModalEl && !fiberColonTipModalEl.hidden) ||
+      (dashDietTipModalEl && !dashDietTipModalEl.hidden) ||
       (pufaAntioxidantTipModalEl && !pufaAntioxidantTipModalEl.hidden) ||
       (histamineTipModalEl && !histamineTipModalEl.hidden) ||
       (settingsModalEl && !settingsModalEl.hidden) ||
@@ -4835,9 +5192,13 @@
     var pufaVitaminEProtection =
       pufaG > 0 && pufaTarget > 0 ? (vitEMg / (pufaG * pufaTarget)) * 100 : null;
     var giBuckets = giBucketsFromWeek();
+    var sodiumMg = (weekMicro.sodium || 0) / DAYS.length;
+    var potassiumMg = (weekMicro.potassium || 0) / DAYS.length;
+    var ratioKNa = sodiumMg > 0 ? potassiumMg / sodiumMg : null;
     return {
       omega6To3: ratioO6O3,
       satToUnsat: ratioSatUnsat,
+      potassiumToSodium: ratioKNa,
       epaPlusDha: avg("epa") + avg("dha"),
       transFatG: avg("transFat"),
       pufaG: pufaG,
@@ -4890,6 +5251,7 @@
     limitingTiers: DEFAULT_LIMITING_TIERS,
     transFatMaxGPerDay: 0.5,
     omega6To3IdealMax: 4,
+    potassiumToSodiumIdealMin: 2,
     pufaVitaminEAlphaTocopherolPerGram: 0.6,
     glycemicLoadMaxPerDay: 100,
     glycemicLoadModerateMaxPerDay: 120,
@@ -4938,6 +5300,9 @@
       omega6To3IdealMax:
         parseFloat(raw.omega6To3IdealMax) ||
         DEFAULT_LONGEVITY_STATUS.omega6To3IdealMax,
+      potassiumToSodiumIdealMin:
+        parseFloat(raw.potassiumToSodiumIdealMin) ||
+        DEFAULT_LONGEVITY_STATUS.potassiumToSodiumIdealMin,
       pufaVitaminEAlphaTocopherolPerGram:
         parseFloat(raw.pufaVitaminEAlphaTocopherolPerGram) ||
         DEFAULT_LONGEVITY_STATUS.pufaVitaminEAlphaTocopherolPerGram,
@@ -5984,6 +6349,72 @@
     );
 
     html += longevitySectionWrap(
+      "Fat gain",
+      "sectionFatGain",
+      '<p class="dashboard__longevity-note">Age-related fat gain is driven by muscle loss, slower metabolism, gradual loss of insulin sensitivity (cells need more insulin over time), poor sleep, and chronic cortisol—not just calories. These nutrients support the pathways that help you burn fuel and stay leaner over decades; jump links below cover related areas outside this list.</p>',
+      longevityListOpen() +
+        longevitySubgroupHtml("Nutrients that support fat from aging", "aim") +
+        LONGEVITY_FAT_GAIN_AGING_FROM_MICRO.map(function (item) {
+          return longevityRowFromMicroKey(
+            item.microKey,
+            item.label,
+            !!item.limiting,
+            weekMicro
+          );
+        }).join("") +
+        LONGEVITY_FAT_GAIN_AGING_FROM_LONGEVITY.map(function (item) {
+          var field = longevityFieldByKey(item.key);
+          if (!field) return "";
+          return longevityRowFromLongevityField(field, weekLongevity);
+        }).join("") +
+        longevitySubgroupHtml(
+          "Nutrients that support using food for energy rather than storing it as fat",
+          "aim"
+        ) +
+        LONGEVITY_FAT_GAIN_ENERGY_FROM_MICRO.map(function (item) {
+          return longevityRowFromMicroKey(
+            item.microKey,
+            item.label,
+            !!item.limiting,
+            weekMicro
+          );
+        }).join("") +
+        LONGEVITY_FAT_GAIN_ENERGY_FROM_LONGEVITY.map(function (item) {
+          var field = longevityFieldByKey(item.key);
+          if (!field) return "";
+          return longevityRowFromLongevityField(field, weekLongevity);
+        }).join("") +
+        longevitySubgroupHtml("Gut producing GLP-like compounds", "aim") +
+        LONGEVITY_FAT_GAIN_GLP_FROM_MICRO.map(function (item) {
+          return longevityRowFromMicroKey(
+            item.microKey,
+            item.label,
+            !!item.limiting,
+            weekMicro
+          );
+        }).join("") +
+        LONGEVITY_FAT_GAIN_GLP_FROM_LONGEVITY.map(function (item) {
+          var field = longevityFieldByKey(item.key);
+          if (!field) return "";
+          return longevityRowFromLongevityField(field, weekLongevity);
+        }).join("") +
+        longevitySubgroupHtml("Jump to related areas for fat gain", "neutral") +
+        longevityNavJumpRowHtml(
+          "sectionInsulinResistance",
+          "Insulin resistance / sensitivity"
+        ) +
+        longevityNavJumpRowHtml(
+          "sectionSleepHealth",
+          "Sleep health — poor sleep can promote fat gain"
+        ) +
+        longevityNavJumpRowHtml(
+          "sectionStressResilience",
+          "Stress resilience — cortisol can promote fat gain"
+        ) +
+        longevityListClose()
+    );
+
+    html += longevitySectionWrap(
       "Mitochondrial health & cellular energy",
       "sectionMitochondrial",
       '<p class="dashboard__longevity-note">B vitamins build <button type="button" class="dashboard__longevity-tip-link" data-longevity-def="nad" aria-haspopup="dialog">NAD</button> and related cofactors (FAD, coenzyme A); magnesium and iron support ATP production; manganese supports mitochondrial antioxidant defense via manganese superoxide dismutase (MnSOD); CoQ10 (is also a nutrient) carries electrons in mitochondria. These repeat values from your micro and longevity entries so you can spot gaps in cellular fuel—not just general % DV.</p>',
@@ -6357,6 +6788,77 @@
         LONGEVITY_HOMOCYSTEINE_FROM_LONGEVITY.map(function (item) {
           return longevitySupportRowFromLongevityKey(item.key, item.label, weekLongevity);
         }).join("") +
+        longevityListClose()
+    );
+
+    html += longevitySectionWrap(
+      "DASH diet",
+      "sectionDashDiet",
+      '<p class="dashboard__longevity-note">DASH (Dietary Approaches to Stop Hypertension) targets calcium (~1,250 mg/day), potassium (~4,700 mg/day), and magnesium (~500 mg/day), plus ample fiber from vegetables, legumes, and whole grains, while keeping saturated fat moderate. These minerals and fiber work together to relax blood vessels, support heart health, and regulate fluid balance.</p>' +
+        dashDietTipHtml(),
+      longevityListOpen() +
+        longevitySubgroupHtml("DASH diet — aim higher % DV is better", "aim") +
+        dashDietAimRowsHtml(weekMicro) +
+        longevitySubgroupHtml("DASH diet — watch lower % DV is better", "limit") +
+        dashDietWatchRowsHtml(weekLongevity, weekMicro) +
+        longevityListClose()
+    );
+
+    var kNa = derived.potassiumToSodium;
+    var kNaIdeal =
+      longevityDvStatus.potassiumToSodiumIdealMin ||
+      DEFAULT_LONGEVITY_STATUS.potassiumToSodiumIdealMin;
+    var kNaAmt = kNa == null || isNaN(kNa) ? "—" : fmtNum(kNa) + ":1";
+    var kNaStatus =
+      kNa == null || isNaN(kNa)
+        ? "—"
+        : kNa >= kNaIdeal
+          ? "At target"
+          : "Below " + kNaIdeal + ":1 target";
+    var kNaPct =
+      kNa != null && !isNaN(kNa) && kNaIdeal > 0
+        ? Math.min(100, (kNa / kNaIdeal) * 100)
+        : null;
+
+    html += longevitySectionWrap(
+      "Vascular - Blood Pressure",
+      "sectionVascularBloodPressure",
+      '<p class="dashboard__longevity-note">Potassium can help offset some sodium effects by balancing intake and relaxing blood vessels. In theory, a good target is about twice as much potassium as sodium while keeping sodium under the daily limit—assuming no kidney disease and no ACE inhibitors or other meds that retain potassium. Food\'s naturally occurring nitrates get converted into nitric oxide, which helps widen blood vessels, improve blood flow, and lower blood pressure—both systemically and in the brain; beets are among the best sources.</p>' +
+        vascularBloodPressureTipHtml(),
+      longevityListOpen() +
+        longevitySubgroupHtml("Watch — lower % DV is better", "limit") +
+        longevityRowFromMicroKey("sodium", "Sodium (main one to control)", true, weekMicro) +
+        vascularRowsFromLongevityItems(
+          LONGEVITY_VASCULAR_WATCH_FROM_LONGEVITY,
+          weekLongevity,
+          weekMicro
+        ) +
+        longevitySubgroupHtml("Aim — higher % DV is better", "aim") +
+        vascularPrimaryAimRowsHtml(weekLongevity, weekMicro, derived, {
+          includePotassiumRatio: true,
+        }) +
+        longevitySubgroupHtml("DASH diet — aim higher % DV is better", "aim") +
+        dashDietAimRowsHtml(weekMicro) +
+        longevitySubgroupHtml("DASH diet — watch lower % DV is better", "limit") +
+        dashDietWatchRowsHtml(weekLongevity, weekMicro) +
+        longevitySubgroupHtml(
+          "Lower priority — modest or mixed evidence",
+          "neutral"
+        ) +
+        vascularLowerPriorityRowsHtml(weekLongevity, weekMicro) +
+        longevityListClose()
+    );
+
+    html += longevitySectionWrap(
+      "Vascular - Cerebral Blood Pressure",
+      "sectionVascularBrain",
+      vascularBrainTipHtml(),
+      longevityListOpen() +
+        '<p class="dashboard__longevity-note">Nutrition for cerebral small vessels follows the same pattern as systemic blood pressure—track the rows in Vascular - Blood Pressure and keep systemic pressure steady so it does not propagate to the brain’s smallest vessels.</p>' +
+        longevityNavJumpRowHtml(
+          "sectionVascularBloodPressure",
+          "Vascular - Blood Pressure"
+        ) +
         longevityListClose()
     );
 
@@ -9934,6 +10436,10 @@
         openHistamineTipModal();
         return;
       }
+      if (e.target.closest('[data-action="open-dash-diet-tip-modal"]')) {
+        openDashDietTipModal();
+        return;
+      }
       var longevitySourcesBtn = e.target.closest("[data-longevity-sources]");
       if (longevitySourcesBtn) {
         e.preventDefault();
@@ -10132,6 +10638,18 @@
     histamineTipModalEl.addEventListener("click", function (e) {
       if (e.target.closest('[data-action="close-histamine-tip-modal"]')) {
         closeHistamineTipModal();
+      }
+    });
+  }
+
+  if (dashDietTipModalDoneBtn) {
+    dashDietTipModalDoneBtn.addEventListener("click", closeDashDietTipModal);
+  }
+
+  if (dashDietTipModalEl) {
+    dashDietTipModalEl.addEventListener("click", function (e) {
+      if (e.target.closest('[data-action="close-dash-diet-tip-modal"]')) {
+        closeDashDietTipModal();
       }
     });
   }

@@ -991,6 +991,25 @@
       "Watch calorie density — fried foods, pastries, processed meats, sugary drinks"
     ]
   },
+  "sectionFatGain": {
+    "enough": [
+      "Fat gain belongs in longevity because visceral fat and muscle loss accelerate with age—slower metabolism, lower activity, gradual loss of insulin sensitivity (cells need more insulin over time), poor sleep, and chronic cortisol all push the same direction over decades, not just from overeating.",
+      "Nutrients that support fat from aging: fiber and magnesium blunt glucose swings; vitamin D, chromium, and leucine support body composition and muscle retention; EPA, DHA, monounsaturated fat, polyphenols, and flavonoids support a lower-inflammatory fat pattern when intake is low.",
+      "Nutrients that support using food for energy rather than storing it as fat: B vitamins build NAD+, FAD, and coenzyme A for fuel oxidation; magnesium and iron support ATP and cytochromes; carnitine shuttles fatty acids into mitochondria; CoQ10 carries electrons in the respiratory chain.",
+      "Gut GLP-like compounds: soluble fiber feeds bacteria that produce short-chain fatty acids and stimulate incretin signaling (GLP-1-like effects)—polyphenols, flavonoids, and resveratrol from plants further reshape the microbiome toward lower fat storage. Fermented foods help but are not counted here.",
+      "Jump to insulin resistance / sensitivity, sleep health, and stress resilience for related patterns—poor sleep and cortisol both promote fat gain independent of this nutrient list."
+    ],
+    "foodSources": [
+      "Fiber — beans, oats, berries, vegetables, intact grains",
+      "Leucine — chicken, fish, eggs, dairy, soy",
+      "B vitamins — whole grains, legumes, eggs, meat",
+      "Carnitine — beef, lamb, fish, dairy (moderate portions)",
+      "CoQ10 — organ meats, fatty fish, nuts",
+      "Polyphenols & flavonoids — berries, tea, cocoa, onions, grapes",
+      "Resveratrol — grapes, berries, peanuts",
+      "GLP-supporting pattern — beans, vegetables, fermented foods, olive oil"
+    ]
+  },
   "sectionMitochondrial": {
     "enough": [
       "Mitochondrial health is cellular energy health—NAD+, FAD, coenzyme A, and CoQ10 keep the electron transport chain running so ATP can fuel repair, immunity, and cognition.",
@@ -1068,6 +1087,87 @@
       "Why methylation matters here: methylation is a foundational biochemical process where a small methyl group (H₃C) is added to DNA, proteins, or other molecules. It occurs billions of times per second and governs health in several key ways—gene expression (silencing or activating genes so a single DNA set can produce different cell types and suppress mutated or viral DNA), mental health and brain function (building serotonin, dopamine, and melatonin), detoxification (allowing the liver to neutralize environmental toxins, heavy metals, and excess hormones like estrogen), cellular energy and repair (managing DNA repair, cellular aging, and creatine production for muscle energy), and cardiovascular health (recycling homocysteine so it does not accumulate and damage blood vessels).",
       "Folate and B12 drive the main methylation pathway that recycles homocysteine back to methionine; B6 routes excess homocysteine toward glutathione-related sulfur metabolism; riboflavin supports FAD-dependent MTHFR activity, especially when folate handling is genetically slower. To function properly, this methylation cycle relies on an ongoing supply of folate, B12, B6, and choline from your diet.",
       "Choline and betaine can support an alternate methylation route, but they overlap with TMAO biology. Food-level intake is useful; high-dose betaine supplements for homocysteine should be weighed against TMAO risk."
+    ]
+  },
+  "sectionVascularBloodPressure": {
+    "enough": [
+      "Potassium can help offset some sodium effects because it is linked with lower blood pressure, partly by helping balance sodium and relax blood vessel tension. In theory, a good target is about twice as much potassium as sodium while keeping sodium under the daily limit. This assumes no kidney disease and no ACE inhibitors or other medications that retain potassium.",
+      "There is not a strict magic ratio conventionally because the main focus is reducing sodium—it is easy to overeat. Guidelines usually recommend staying under 2,300 mg sodium daily, or closer to 1,500 mg if you already have high blood pressure. Potassium is often targeted around 3,500–4,700 mg/day.",
+      "Magnesium and fiber are core DASH-pattern nutrients—magnesium supports modest BP lowering in meta-analyses; fiber supports weight, gut health, and potassium-rich plant eating.",
+      "Food's naturally occurring nitrates get converted into nitric oxide, which helps widen blood vessels, improve blood flow, and lower blood pressure—both systemically and in the brain. Beets are among the best natural dietary sources of inorganic nitrates.",
+      "Flavonoids, polyphenols, and monounsaturated fat (olive-oil pattern) support endothelial function and align with Mediterranean/DASH eating. EPA and DHA from fish support vascular anti-inflammatory tone—in the brain as well as systemically.",
+      "Watch cholesterol, saturated fat, and trans fat too—unfavorable lipid patterns feed the same wear-and-tear pathway in systemic and cerebral small vessels.",
+      "Good potassium foods include fruits, beans, potatoes, leafy greens, and yogurt.",
+      "For sodium reduction, look up salt-swap strategies and herbs or condiments that can replace salt. Example: the same volume of Tajín usually has less sodium than the same volume of table salt because it is a chili-lime seasoning blend, not 100% salt.",
+      "You can also consider potassium-enriched salt alternatives, which replace some sodium with potassium. Potassium salts like Nu-Salt or Morton Salt Substitute use potassium chloride, which is sodium-free and mimics salty flavor, though they can have a bitter aftertaste. Avoid these if you have kidney disease or take certain medications.",
+      "However, you may not want to fully replace salt if you are low on iodine and use iodized salt as an easy iodine source. In that case you can use iodized salt and then use the alternatives at other times.",
+      "Lower-priority rows (vitamin D, vitamin K/K2, CoQ10) have modest, mixed, or mostly supplemental evidence for BP itself—they are still worth tracking in context but should not distract from sodium, potassium, plants, and fish. See the DASH diet section for calcium tracking."
+    ]
+  },
+  "sectionDashDiet": {
+    "enough": [
+      "DASH (Dietary Approaches to Stop Hypertension) is an eating pattern built around minerals, fiber, and moderate saturated fat—not a single supplement stack.",
+      "The plan targets about 1,250 mg of calcium daily from 2 to 3 servings of low-fat dairy, dark leafy greens, and calcium-fortified foods; about 4,700 mg potassium from fruit, beans, potatoes, and greens; about 500 mg magnesium from nuts, legumes, whole grains, and leafy vegetables; and ample fiber from the vegetables, fruits, and whole grains that make up most of the pattern.",
+      "Calcium helps regulate smooth-muscle contraction in blood vessel walls; potassium and magnesium relax vessels and balance sodium; fiber supports weight, gut health, and potassium-rich plant eating. Keeping saturated fat moderate—lean proteins and low-fat dairy instead of fatty meats and full-fat cheese—aligns with the original DASH trials.",
+      "Food sources beat megadose calcium pills for most people. Spread calcium through the day, pair with vitamin D, and use the Read more tip for serving examples. Avoid potassium salt substitutes if you have kidney disease or take potassium-retaining medications."
+    ],
+    "foodSources": [
+      "Low-fat milk & yogurt",
+      "Part-skim cheese",
+      "Kale, broccoli & bok choy",
+      "Calcium-set tofu",
+      "Almonds",
+      "Beans, potatoes & fruit (potassium)",
+      "Nuts, legumes & whole grains (magnesium & fiber)",
+      "Whole grains & vegetables (fiber)",
+      "Lean poultry & fish over fatty red meat (lower sat fat)"
+    ]
+  },
+  "sectionVascularBrain": {
+    "enough": [
+      "Higher blood pressure and worse lipids over years can damage small vessels in the brain.",
+      "Microvascular changes on a CT head indicate damage to the brain’s smallest blood vessels, often referred to as microvascular ischemic disease or small vessel disease. These changes typically represent the long-term effects of aging, chronic high blood pressure, or diabetes, and appear on a scan as wear and tear in the brain's white matter. In older adults, that pattern is often discussed alongside slower processing, word-finding trouble, and memory lapses that can look like ordinary aging but may partly reflect small-vessel injury over decades—not something food tracking alone can diagnose.",
+      "Nutrition for cerebral small vessels follows the same food pattern as systemic blood pressure—sodium, potassium, lipids, plants, nitrates, and fish oil matter for both. Keeping systemic pressure in range helps keep elevated pressure from reaching the brain’s smallest vessels.",
+      "Use Vascular - Blood Pressure for nutrient tracking; this section explains why cerebral small-vessel health belongs in longevity, not a separate nutrient list."
+    ]
+  },
+  "nitrate": {
+    "tooLow": [
+      "Very low nitrate intake usually means few leafy greens, beets, or celery—missing an easy whole-food path to nitric oxide support for both systemic and brain blood vessels.",
+      "Heavy reliance on peeled, boiled, or nitrate-poor vegetables reduces this pathway even when overall vegetable intake looks adequate."
+    ],
+    "enough": [
+      "Food's naturally occurring nitrates get converted into nitric oxide, which helps widen blood vessels, improve blood flow, and lower blood pressure—systemically and in the brain's small vessels.",
+      "Oral bacteria reduce dietary nitrate (NO₃) to nitrite; your body then converts it to nitric oxide (NO), which relaxes vessel smooth muscle. That pathway supports systemic blood pressure and cerebral small vessels alike—see Vascular - Blood Pressure for tracking.",
+      "Beets are among the best natural dietary sources of inorganic nitrates—beet-juice trials often use ~400 mg nitrate and show acute BP lowering. Spinach, arugula, celery, lettuce, and bok choy are also rich (often 100–250+ mg per 100 g). Reference intake here uses ~400 mg/day.",
+      "Chewing (not sipping through a straw that bypasses the mouth) and avoiding antibacterial mouthwash right before nitrate-rich meals may help the oral conversion step."
+    ],
+    "foodSources": [
+      "Beet & beet juice (top source)",
+      "Spinach & arugula",
+      "Celery & lettuce",
+      "Bok choy & Swiss chard",
+      "Radish & cabbage",
+      "Kohlrabi & turnip greens"
+    ]
+  },
+  "potassiumToSodium": {
+    "tooHigh": [
+      "Ratios well below 2:1 usually mean sodium is high relative to potassium—even if potassium intake looks acceptable on its own.",
+      "Western diets often run 1:1 or worse because processed and restaurant foods add sodium while fruit and vegetable potassium lags."
+    ],
+    "enough": [
+      "A potassium : sodium ratio around 2:1 or higher is a useful food-level check when sodium is kept under guideline limits—about twice as much potassium as sodium by weight.",
+      "This ratio is secondary to cutting sodium itself, which is the main lever guidelines emphasize for blood pressure.",
+      "Raising potassium from whole foods (fruit, beans, greens, yogurt) while lowering added salt improves the ratio without relying on potassium salt substitutes—important if you have kidney disease or take potassium-retaining medications."
+    ],
+    "foodSources": [
+      "Raise potassium: fruit, beans, potatoes, greens",
+      "Lower sodium: cook at home, read labels",
+      "Salt swaps: herbs, citrus, chili-lime blends",
+      "Limit: deli meat, fast food, salty snacks",
+      "Potassium salt substitutes only if medically safe",
+      "Keep iodized salt if you need iodine"
     ]
   },
   "sectionTmao": {
