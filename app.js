@@ -575,17 +575,17 @@
     { label: "Stress resilience", sectionDefKey: "sectionStressResilience" },
     { label: "Sleep health", sectionDefKey: "sectionSleepHealth" },
     {
-      label: "Insulin resistance / sensitivity",
-      sectionDefKey: "sectionInsulinResistance",
-    },
-    { label: "Fat gain", sectionDefKey: "sectionFatGain" },
-    {
       label: "Mitochondrial health & cellular energy",
       sectionDefKey: "sectionMitochondrial",
     },
     { label: "Cellular aging & senomorphics", sectionDefKey: "sectionCellularAging" },
     { label: "Carb quality", sectionDefKey: "sectionCarb" },
     { label: "Glycemic load & GI distribution", sectionDefKey: "sectionGlycemic" },
+    {
+      label: "Insulin resistance / sensitivity",
+      sectionDefKey: "sectionInsulinResistance",
+    },
+    { label: "Fat gain", sectionDefKey: "sectionFatGain" },
   ]
     .concat(
       LONGEVITY_GROUPS.reduce(function (sections, group) {
@@ -613,7 +613,6 @@
         label: "Methylation & homocysteine balance",
         sectionDefKey: "sectionHomocysteine",
       },
-      { label: "DASH diet", sectionDefKey: "sectionDashDiet" },
       {
         label: "Vascular - Blood Pressure",
         sectionDefKey: "sectionVascularBloodPressure",
@@ -1159,6 +1158,16 @@
       LONGEVITY_DASH_WATCH_FROM_LONGEVITY,
       weekLongevity,
       weekMicro
+    );
+  }
+
+  function dashDietSubsectionHtml(weekMicro, weekLongevity) {
+    return (
+      dashDietTipHtml() +
+      longevitySubgroupHtml("DASH diet — aim higher % DV is better", "aim") +
+      dashDietAimRowsHtml(weekMicro) +
+      longevitySubgroupHtml("DASH diet — watch lower % DV is better", "limit") +
+      dashDietWatchRowsHtml(weekLongevity, weekMicro)
     );
   }
 
@@ -6675,6 +6684,54 @@
     );
 
     html += longevitySectionWrap(
+      "Mitochondrial health & cellular energy",
+      "sectionMitochondrial",
+      '<p class="dashboard__longevity-note">B vitamins build <button type="button" class="dashboard__longevity-tip-link" data-longevity-def="nad" aria-haspopup="dialog">NAD</button> and related cofactors (FAD, coenzyme A); magnesium and iron support ATP production; manganese supports mitochondrial antioxidant defense via manganese superoxide dismutase (MnSOD); CoQ10 (is also a nutrient) carries electrons in mitochondria. These repeat values from your micro and longevity entries so you can spot gaps in cellular fuel—not just general % DV.</p>',
+      longevityListOpen() +
+        longevitySubgroupHtml("From your micro entries", "micro") +
+        LONGEVITY_MITO_FROM_MICRO.map(function (item) {
+          return longevityRowFromMicroKey(
+            item.microKey,
+            item.label,
+            !!item.limiting,
+            weekMicro
+          );
+        }).join("") +
+        longevitySubgroupHtml("From your longevity entries", "compounds") +
+        LONGEVITY_MITO_FROM_LONGEVITY.map(function (item) {
+          var field = longevityFieldByKey(item.key);
+          if (!field) return "";
+          return longevityRowFromLongevityField(field, weekLongevity);
+        }).join("") +
+        longevityListClose()
+    );
+
+    html += longevitySectionWrap(
+      "Cellular aging & senomorphics",
+      "sectionCellularAging",
+      '<p class="dashboard__longevity-note">Vitamin D downregulates chronic age-related inflammation; vitamin C and E neutralize free radicals that damage DNA. Essential vitamins act like a shield against oxidative stress—the senomorphic side of longevity. See the note below on food vs supplement senolytics.</p>' +
+        senomorphicsTipHtml(),
+      longevityListOpen() +
+        longevitySubgroupHtml("From your micro entries", "micro") +
+        LONGEVITY_CELLULAR_AGING_FROM_MICRO.map(function (item) {
+          return longevityRowFromMicroKey(
+            item.microKey,
+            item.label,
+            !!item.limiting,
+            weekMicro
+          );
+        }).join("") +
+        longevitySubgroupHtml("From your longevity entries", "compounds") +
+        LONGEVITY_CELLULAR_AGING_FROM_LONGEVITY.map(function (item) {
+          return longevityRowFromLongevityOrMicro(item, weekLongevity, weekMicro);
+        }).join("") +
+        longevityListClose()
+    );
+
+    html += carbSectionHtml();
+    html += glycemicSectionHtml();
+
+    html += longevitySectionWrap(
       "Insulin resistance / sensitivity",
       "sectionInsulinResistance",
       '<p class="dashboard__longevity-note">Aim for magnesium, fiber, vitamin D, omega-3s, and monounsaturated fat; watch saturated fat, refined carbs, and added sugar. When calorie-dense sources of those fats and fast carbs dominate, that pattern can support fat gain and insulin resistance over time—not from any single meal, but from years of excess.</p>',
@@ -6773,54 +6830,6 @@
         ) +
         longevityListClose()
     );
-
-    html += longevitySectionWrap(
-      "Mitochondrial health & cellular energy",
-      "sectionMitochondrial",
-      '<p class="dashboard__longevity-note">B vitamins build <button type="button" class="dashboard__longevity-tip-link" data-longevity-def="nad" aria-haspopup="dialog">NAD</button> and related cofactors (FAD, coenzyme A); magnesium and iron support ATP production; manganese supports mitochondrial antioxidant defense via manganese superoxide dismutase (MnSOD); CoQ10 (is also a nutrient) carries electrons in mitochondria. These repeat values from your micro and longevity entries so you can spot gaps in cellular fuel—not just general % DV.</p>',
-      longevityListOpen() +
-        longevitySubgroupHtml("From your micro entries", "micro") +
-        LONGEVITY_MITO_FROM_MICRO.map(function (item) {
-          return longevityRowFromMicroKey(
-            item.microKey,
-            item.label,
-            !!item.limiting,
-            weekMicro
-          );
-        }).join("") +
-        longevitySubgroupHtml("From your longevity entries", "compounds") +
-        LONGEVITY_MITO_FROM_LONGEVITY.map(function (item) {
-          var field = longevityFieldByKey(item.key);
-          if (!field) return "";
-          return longevityRowFromLongevityField(field, weekLongevity);
-        }).join("") +
-        longevityListClose()
-    );
-
-    html += longevitySectionWrap(
-      "Cellular aging & senomorphics",
-      "sectionCellularAging",
-      '<p class="dashboard__longevity-note">Vitamin D downregulates chronic age-related inflammation; vitamin C and E neutralize free radicals that damage DNA. Essential vitamins act like a shield against oxidative stress—the senomorphic side of longevity. See the note below on food vs supplement senolytics.</p>' +
-        senomorphicsTipHtml(),
-      longevityListOpen() +
-        longevitySubgroupHtml("From your micro entries", "micro") +
-        LONGEVITY_CELLULAR_AGING_FROM_MICRO.map(function (item) {
-          return longevityRowFromMicroKey(
-            item.microKey,
-            item.label,
-            !!item.limiting,
-            weekMicro
-          );
-        }).join("") +
-        longevitySubgroupHtml("From your longevity entries", "compounds") +
-        LONGEVITY_CELLULAR_AGING_FROM_LONGEVITY.map(function (item) {
-          return longevityRowFromLongevityOrMicro(item, weekLongevity, weekMicro);
-        }).join("") +
-        longevityListClose()
-    );
-
-    html += carbSectionHtml();
-    html += glycemicSectionHtml();
 
     var pufaRatio = derived.pufaVitaminERatio;
     var pufaProtection = derived.pufaVitaminEProtection;
@@ -7151,19 +7160,6 @@
         longevityListClose()
     );
 
-    html += longevitySectionWrap(
-      "DASH diet",
-      "sectionDashDiet",
-      '<p class="dashboard__longevity-note">DASH (Dietary Approaches to Stop Hypertension) targets calcium (~1,250 mg/day), potassium (~4,700 mg/day), and magnesium (~500 mg/day), plus ample fiber from vegetables, legumes, and whole grains, while keeping saturated fat moderate. These minerals and fiber work together to relax blood vessels, support heart health, and regulate fluid balance.</p>' +
-        dashDietTipHtml(),
-      longevityListOpen() +
-        longevitySubgroupHtml("DASH diet — aim higher % DV is better", "aim") +
-        dashDietAimRowsHtml(weekMicro) +
-        longevitySubgroupHtml("DASH diet — watch lower % DV is better", "limit") +
-        dashDietWatchRowsHtml(weekLongevity, weekMicro) +
-        longevityListClose()
-    );
-
     var kNa = derived.potassiumToSodium;
     var kNaIdeal =
       longevityDvStatus.potassiumToSodiumIdealMin ||
@@ -7197,10 +7193,7 @@
         vascularPrimaryAimRowsHtml(weekLongevity, weekMicro, derived, {
           includePotassiumRatio: true,
         }) +
-        longevitySubgroupHtml("DASH diet — aim higher % DV is better", "aim") +
-        dashDietAimRowsHtml(weekMicro) +
-        longevitySubgroupHtml("DASH diet — watch lower % DV is better", "limit") +
-        dashDietWatchRowsHtml(weekLongevity, weekMicro) +
+        dashDietSubsectionHtml(weekMicro, weekLongevity) +
         longevitySubgroupHtml(
           "Lower priority — modest or mixed evidence",
           "neutral"
