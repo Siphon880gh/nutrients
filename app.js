@@ -331,6 +331,7 @@
     sectionCarb: { label: "Carb quality" },
     sectionMicronutrients: { label: "Micronutrients from food" },
     sectionFiber: { label: "Fiber & colon health" },
+    sectionThyroid: { label: "Thyroid health" },
     sectionBoneDensity: { label: "Bone density" },
     sectionCalcification: { label: "Calcification & vascular balance" },
     sectionHomocysteine: { label: "Methylation & homocysteine balance" },
@@ -500,6 +501,7 @@
     { label: "Micronutrients from food", sectionDefKey: "sectionMicronutrients" },
     { label: "Derived scores", sectionDefKey: "sectionDerived" },
     { label: "Fiber & colon health", sectionDefKey: "sectionFiber" },
+    { label: "Thyroid health", sectionDefKey: "sectionThyroid" },
     { label: "Bone density", sectionDefKey: "sectionBoneDensity" },
     {
       label: "Mitochondrial health & cellular energy",
@@ -535,6 +537,14 @@
       },
     ]);
 
+  var LONGEVITY_THYROID_FROM_MICRO = [
+    { microKey: "iodine", label: "Iodine", limiting: false },
+    { microKey: "selenium", label: "Selenium — T4→T3 conversion", limiting: false },
+    { microKey: "iron", label: "Iron — thyroid peroxidase", limiting: false },
+    { microKey: "zinc", label: "Zinc — T3 production", limiting: false },
+    { microKey: "tyrosine", label: "Tyrosine — hormone precursor", limiting: false },
+  ];
+
   var LONGEVITY_BONE_FROM_MICRO = [
     { microKey: "calcium", label: "Calcium", limiting: false },
     { microKey: "magnesium", label: "Magnesium", limiting: false },
@@ -547,8 +557,8 @@
     { microKey: "niacin", label: "Niacin (B3) — NAD precursor", limiting: false },
     { microKey: "pantothenicAcid", label: "Pantothenic acid (B5)", limiting: false },
     { microKey: "biotin", label: "Biotin (B7)", limiting: false },
-    { microKey: "magnesium", label: "Magnesium", limiting: false },
     { microKey: "iron", label: "Iron", limiting: false },
+    { microKey: "magnesium", label: "Magnesium", limiting: false },
     { microKey: "manganese", label: "Manganese", limiting: false },
   ];
 
@@ -617,7 +627,6 @@
   ];
 
   var LONGEVITY_COMPOUNDS_FROM_MICRO = [
-    { microKey: "iodine", label: "Iodine", limiting: false },
     { microKey: "fiber", label: "Fiber (prebiotic)", limiting: false },
   ];
 
@@ -3828,6 +3837,17 @@
     );
   }
 
+  function thyroidHealthTipHtml() {
+    return (
+      '<aside class="dashboard__longevity-processed-note dashboard__longevity-processed-note--section" role="note">' +
+      '<p class="dashboard__longevity-processed-note-text">' +
+      "As you get older—especially after 60—thyroid function is particularly sensitive to variations in iodine intake. Iodine deficiency plays an important role in hypothyroidism (enlarged thyroid and slowed metabolism). <strong>What to track:</strong> iodine is the priority; selenium, iron, zinc, and tyrosine help iodine support T4/T3 production… " +
+      '<button type="button" class="dashboard__longevity-tip-link" data-longevity-def="sectionThyroid" aria-haspopup="dialog">Read more</button>' +
+      "</p>" +
+      "</aside>"
+    );
+  }
+
   function pufaAntioxidantTipHtml() {
     return (
       '<aside class="dashboard__longevity-processed-note dashboard__longevity-processed-note--section" role="note">' +
@@ -5742,6 +5762,24 @@
       longevityListOpen() +
         longevitySubgroupHtml("From your micro entries", "micro") +
         longevityRowFromMicroKey("fiber", "Fiber", false, weekMicro) +
+        longevityListClose()
+    );
+
+    html += longevitySectionWrap(
+      "Thyroid health",
+      "sectionThyroid",
+      '<p class="dashboard__longevity-note">Same iodine and cofactor values as your micro entries—grouped here because thyroid needs tighten with age, especially after 60.</p>' +
+        thyroidHealthTipHtml(),
+      longevityListOpen() +
+        longevitySubgroupHtml("From your micro entries", "micro") +
+        LONGEVITY_THYROID_FROM_MICRO.map(function (item) {
+          return longevityRowFromMicroKey(
+            item.microKey,
+            item.label,
+            !!item.limiting,
+            weekMicro
+          );
+        }).join("") +
         longevityListClose()
     );
 

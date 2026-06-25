@@ -86,6 +86,7 @@
   },
   "longevityNavTopicColors": {
     "sectionFiber": "#707680",
+    "sectionThyroid": "#8a8780",
     "sectionBoneDensity": "#8a8780",
     "sectionMitochondrial": "#6d5cad",
     "sectionCellularAging": "#6d5cad",

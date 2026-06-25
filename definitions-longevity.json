@@ -917,6 +917,30 @@
       "Aim for 100%+ DV (about 38 g/day for men, 25 g/day for women). Insoluble fiber shortens colon transit time; soluble fiber feeds gut bacteria that produce protective butyrate."
     ]
   },
+  "sectionThyroid": {
+    "tooLow": [
+      "As you get older—especially after 60—thyroid function is particularly sensitive to variations in iodine intake. Iodine deficiency plays an important role in hypothyroidism: an enlarged thyroid (goiter), slowed metabolism, fatigue, cold intolerance, and cognitive sluggishness.",
+      "Low selenium, iron, or zinc can limit how well iodine supports hormone production even when iodine intake looks adequate on paper."
+    ],
+    "enough": [
+      "Iodine is the main nutrient to track for thyroid health—steady intake from iodized salt, dairy, eggs, and seafood prevents the deficiency pattern that becomes more consequential after 60.",
+      "Iodine is not the whole story: selenium helps convert T4 to active T3 and protects the thyroid gland during hormone synthesis; iron supports thyroid peroxidase; zinc is needed for T3 production; tyrosine is the amino-acid building block for thyroid hormones. Track iodine first, then these cofactors if you avoid iodized salt, eat little seafood, or notice low-thyroid signs.",
+      "Food-level iodine is usually safer than high-dose supplements—excess iodine from megadose seaweed or concentrated pills can also disrupt thyroid function, especially with autoimmune thyroid disease."
+    ],
+    "tooHigh": [
+      "Excess iodine from high-dose supplements or daily seaweed megadoses can trigger or worsen thyroid dysfunction—especially in people with autoimmune thyroid disease.",
+      "Iodized salt in normal cooking amounts is rarely a problem; watch concentrated supplements and very large seaweed portions."
+    ],
+    "foodSources": [
+      "Iodized table salt",
+      "Seafood & seaweed",
+      "Yogurt & milk",
+      "Eggs",
+      "Brazil nuts (selenium)",
+      "Shellfish & lean meat (zinc, iron)",
+      "Soy, chicken & fish (tyrosine)"
+    ]
+  },
   "sectionBoneDensity": {
     "enough": [
       "Calcium, vitamin D, and magnesium work together to mineralize bone, maintain muscle strength, and support immune defense—reducing fracture and fall risk as you age.",
