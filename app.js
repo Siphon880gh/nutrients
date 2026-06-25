@@ -4924,6 +4924,12 @@
       "</button>" +
       microConditionSourcesIconHtml(entry) +
       "</span>" +
+      '<div class="dashboard__micro-stats">' +
+      '<span class="dashboard__micro-pct"' +
+      microPctInlineStyle(pct) +
+      ">" +
+      escapeHtml(pctText) +
+      "</span>" +
       '<span class="dashboard__micro-amt">' +
       escapeHtml(amtText) +
       "</span>";
@@ -4935,13 +4941,7 @@
         ) +
         "</span>";
     }
-    html +=
-      '<span class="dashboard__micro-pct"' +
-      microPctInlineStyle(pct) +
-      ">" +
-      escapeHtml(pctText) +
-      "</span>" +
-      "</div>";
+    html += "</div></div>";
     return html;
   }
 
@@ -5044,7 +5044,7 @@
         "</button>" +
         microConditionSourcesIconHtml(entry, dayId) +
         "</span>" +
-        '<div class="dashboard__micro-day-meta">' +
+        '<div class="dashboard__micro-day-stats">' +
         '<span class="dashboard__micro-day-pct"' +
         microPctInlineStyle(pct) +
         ">" +

@@ -690,9 +690,8 @@ body {
 
 .dashboard__micro-row {
   display: grid;
-  grid-template-columns: 1fr auto;
   grid-template-rows: auto auto;
-  gap: 0.2rem 0.65rem;
+  gap: 0.25rem 0;
   padding: 0.5rem 0.6rem;
   border-radius: 5px;
   font-size: 0.8rem;
@@ -703,15 +702,19 @@ body {
 
 .dashboard__micro-name-wrap {
   grid-column: 1;
-  display: inline-flex;
+  grid-row: 1;
+  display: flex;
   align-items: center;
   gap: 0.3rem;
   min-width: 0;
 }
 
 .dashboard__micro-name {
-  flex: 1;
+  flex: 1 1 auto;
   min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   font-weight: 600;
   color: #333;
 }
@@ -725,6 +728,9 @@ button.dashboard__micro-name {
   color: #333;
   text-align: left;
   cursor: pointer;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 button.dashboard__micro-name:hover {
@@ -777,13 +783,15 @@ button.dashboard__micro-name:focus-visible {
   display: flex;
   align-items: center;
   gap: 0.3rem;
-  flex: 1;
   min-width: 0;
 }
 
 .dashboard__micro-day-name-wrap .dashboard__micro-day-name {
   flex: 1;
   min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .micro-sources-modal__toolbar {
@@ -1208,19 +1216,23 @@ button.dashboard__micro-name:focus-visible {
   color: #5c5c5c;
 }
 
+.dashboard__micro-stats {
+  grid-column: 1;
+  grid-row: 2;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.15rem 0.65rem;
+  align-items: baseline;
+}
+
 .dashboard__micro-amt {
   grid-column: 2;
-  grid-row: 1 / span 2;
-  align-self: center;
+  grid-row: 1;
   text-align: right;
   font-variant-numeric: tabular-nums;
   color: #5c5c5c;
   font-size: 0.74rem;
-}
-
-.dashboard__micro-row--show-dv .dashboard__micro-amt {
-  grid-row: 1;
-  align-self: end;
+  white-space: nowrap;
 }
 
 .dashboard__micro-dv-req {
@@ -1230,11 +1242,15 @@ button.dashboard__micro-name:focus-visible {
   font-variant-numeric: tabular-nums;
   color: #7a7a7a;
   font-size: 0.68rem;
+  white-space: nowrap;
 }
 
 .dashboard__micro-pct {
   grid-column: 1;
+  grid-row: 1;
+  min-width: 0;
   font-variant-numeric: tabular-nums;
+  white-space: nowrap;
 }
 
 .dashboard__micro-daily-grid {
@@ -1267,9 +1283,8 @@ button.dashboard__micro-name:focus-visible {
 
 .dashboard__micro-day-row {
   display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 0.6rem;
+  flex-direction: column;
+  gap: 0.2rem;
   padding: 0.4rem 0.1rem;
   font-size: 0.74rem;
   line-height: 1.35;
@@ -1317,31 +1332,40 @@ button.dashboard__micro-day-name:focus-visible {
   border-radius: 3px;
 }
 
-.dashboard__micro-day-meta {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 0.12rem;
-  flex-shrink: 0;
-  text-align: right;
+.dashboard__micro-day-stats {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.12rem 0.5rem;
+  align-items: baseline;
 }
 
 .dashboard__micro-day-pct {
+  grid-column: 1;
+  grid-row: 1;
   font-variant-numeric: tabular-nums;
   font-size: 0.72rem;
   font-weight: 600;
+  white-space: nowrap;
 }
 
 .dashboard__micro-day-amt {
+  grid-column: 2;
+  grid-row: 1;
   font-variant-numeric: tabular-nums;
   color: #5c5c5c;
   font-size: 0.7rem;
+  text-align: right;
+  white-space: nowrap;
 }
 
 .dashboard__micro-day-dv-req {
+  grid-column: 2;
+  grid-row: 2;
   font-variant-numeric: tabular-nums;
   color: #7a7a7a;
   font-size: 0.66rem;
+  text-align: right;
+  white-space: nowrap;
 }
 
 .dashboard__longevity-panel {
