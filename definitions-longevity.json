@@ -997,9 +997,10 @@
   },
   "sectionHomocysteine": {
     "enough": [
-      "Homocysteine is a blood marker created during methionine metabolism, not something you eat directly. High levels are tied to vascular aging, stroke and cardiovascular risk, endothelial dysfunction, and cognitive aging.",
-      "Folate and B12 help recycle homocysteine back to methionine; B6 helps route it toward glutathione-related sulfur metabolism; riboflavin supports FAD-dependent MTHFR activity, especially when folate handling is genetically slower.",
-      "Choline and betaine can support the alternate methylation route, but they overlap with TMAO biology. Food-level intake is useful; high-dose betaine supplements for homocysteine should be weighed against TMAO risk."
+      "Homocysteine (Hcy) is an amino acid in your blood that helps create proteins. Vitamin B12, vitamin B6, and folate (B9) break it down to generate other chemicals your body needs. When those cofactors are low, homocysteine accumulates—and high levels damage the arterial lining, accelerate vascular aging, and raise risk for stroke, endothelial dysfunction, and cognitive decline.",
+      "Why methylation matters here: methylation is a foundational biochemical process where a small methyl group (H₃C) is added to DNA, proteins, or other molecules. It occurs billions of times per second and governs health in several key ways—gene expression (silencing or activating genes so a single DNA set can produce different cell types and suppress mutated or viral DNA), mental health and brain function (building serotonin, dopamine, and melatonin), detoxification (allowing the liver to neutralize environmental toxins, heavy metals, and excess hormones like estrogen), cellular energy and repair (managing DNA repair, cellular aging, and creatine production for muscle energy), and cardiovascular health (recycling homocysteine so it does not accumulate and damage blood vessels).",
+      "Folate and B12 drive the main methylation pathway that recycles homocysteine back to methionine; B6 routes excess homocysteine toward glutathione-related sulfur metabolism; riboflavin supports FAD-dependent MTHFR activity, especially when folate handling is genetically slower. To function properly, this methylation cycle relies on an ongoing supply of folate, B12, B6, and choline from your diet.",
+      "Choline and betaine can support an alternate methylation route, but they overlap with TMAO biology. Food-level intake is useful; high-dose betaine supplements for homocysteine should be weighed against TMAO risk."
     ]
   },
   "sectionTmao": {

@@ -5492,7 +5492,7 @@
     html += longevitySectionWrap(
       "Methylation & homocysteine balance",
       "sectionHomocysteine",
-      '<p class="dashboard__longevity-note">Homocysteine is a blood marker, not a food nutrient. This section groups the nutrients that help recycle or clear it through one-carbon metabolism; high homocysteine is tied to vascular aging, stroke risk, endothelial dysfunction, and cognitive aging.</p>',
+      '<p class="dashboard__longevity-note">Homocysteine (Hcy) is an amino acid your body uses to help create proteins. Vitamin B12, B6, and folate break it down through methylation—a foundational process that also governs gene expression, neurotransmitter production, detoxification, and cellular repair. When those cofactors run low, homocysteine accumulates and damages arterial walls, accelerating vascular aging, stroke risk, and cognitive decline.</p>',
       longevityListOpen() +
         longevitySubgroupHtml("B-vitamin support — higher % DV is better", "aim") +
         LONGEVITY_HOMOCYSTEINE_FROM_MICRO.map(function (item) {
