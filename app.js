@@ -947,6 +947,26 @@
     return "kw-" + nextId++ + "-" + Date.now();
   }
 
+  function keywordIdCounter(id) {
+    var match = String(id).match(/^kw-(\d+)-/);
+    if (!match) return NaN;
+    var n = parseInt(match[1], 10);
+    return isNaN(n) ? NaN : n;
+  }
+
+  function isValidKeywordId(id) {
+    return /^kw-\d+-/.test(String(id));
+  }
+
+  function syncNextIdFromKeywords() {
+    var max = 0;
+    keywords.forEach(function (kw) {
+      var n = keywordIdCounter(kw.id);
+      if (!isNaN(n) && n > max) max = n;
+    });
+    nextId = max + 1;
+  }
+
   function blankMicros() {
     var micros = {};
     MICRO_ALL_FIELDS.forEach(function (field) {
@@ -1419,6 +1439,7 @@
       next.push(keywordFromImportItem(items[i], i));
     }
     keywords = next;
+    ensureUniqueKeywordIds();
     saveFoodDefinitions();
   }
 
@@ -1436,6 +1457,7 @@
         keywords.push(keywordFromImportItem(items[i], i));
       }
     }
+    ensureUniqueKeywordIds();
     saveFoodDefinitions();
   }
 
@@ -7202,12 +7224,6 @@
       if (!raw) return;
       var data = JSON.parse(raw);
       if (!Array.isArray(data)) return;
-      data.forEach(function (item) {
-        if (item && item.id && String(item.id).match(/\d+/)) {
-          var n = parseInt(String(item.id).replace(/\D/g, ""), 10);
-          if (!isNaN(n) && n >= nextId) nextId = n + 1;
-        }
-      });
       var migrated = false;
       keywords = data.map(function (item) {
         var micros = normalizeMicros(item.micros);
@@ -7228,6 +7244,7 @@
       if (migrated || ensureUniqueKeywordIds()) {
         saveFoodDefinitions();
       }
+      syncNextIdFromKeywords();
     } catch (e) {
       keywords = [];
     }
@@ -7365,9 +7382,29 @@
     });
   }
 
-  function openMicroModal(id) {
+  function clearMicroSaveTimer() {
+    clearTimeout(microSaveTimer);
+  }
+
+  function clearLongevitySaveTimer() {
+    clearTimeout(longevitySaveTimer);
+  }
+
+  function resolveKeywordIndex(id, rowIndex) {
+    if (
+      rowIndex != null &&
+      rowIndex >= 0 &&
+      rowIndex < keywords.length &&
+      String(keywords[rowIndex].id) === String(id)
+    ) {
+      return rowIndex;
+    }
+    return findIndex(id);
+  }
+
+  function openMicroModal(id, rowIndex) {
     if (!microModalEl || !microFormEl) return;
-    var i = findIndex(id);
+    var i = resolveKeywordIndex(id, rowIndex);
     if (i < 0) return;
 
     if (activeImportId) {
@@ -7377,10 +7414,12 @@
     if (microDefModalEl && !microDefModalEl.hidden) closeMicroDefModal();
 
     if (activeMicroId && activeMicroId !== id) {
+      clearMicroSaveTimer();
       saveMicrosFromForm();
     }
 
-    activeMicroId = id;
+    clearMicroSaveTimer();
+    activeMicroId = String(keywords[i].id);
     var kw = keywords[i];
 
     if (microModalFoodEl) {
@@ -7421,23 +7460,26 @@
     });
   }
 
-  function openLongevityModal(id) {
+  function openLongevityModal(id, rowIndex) {
     if (!longevityModalEl || !longevityFormEl) return;
-    var i = findIndex(id);
+    var i = resolveKeywordIndex(id, rowIndex);
     if (i < 0) return;
 
     if (activeImportId) closeImportModal();
     if (activePositionId) closeKeywordPositionModal();
     if (microDefModalEl && !microDefModalEl.hidden) closeMicroDefModal();
     if (activeMicroId && activeMicroId !== id) {
+      clearMicroSaveTimer();
       saveMicrosFromForm();
       closeMicroModal();
     }
     if (activeLongevityId && activeLongevityId !== id) {
+      clearLongevitySaveTimer();
       saveLongevityFromForm();
     }
 
-    activeLongevityId = id;
+    clearLongevitySaveTimer();
+    activeLongevityId = String(keywords[i].id);
     var kw = keywords[i];
 
     if (longevityModalFoodEl) {
@@ -7555,19 +7597,46 @@
     keywords.forEach(function (kw) {
       var original = kw.id != null ? String(kw.id) : "";
       var id = original;
-      if (!id || seen[id]) {
+      if (!id || seen[id] || !isValidKeywordId(id)) {
         id = makeId();
       }
       if (id !== original) changed = true;
       seen[id] = true;
       kw.id = id;
     });
+    syncNextIdFromKeywords();
     return changed;
   }
 
   function keywordRowIndex(row) {
     if (!keywordsListEl || !row) return -1;
     return Array.prototype.indexOf.call(keywordsListEl.children, row);
+  }
+
+  function keywordIdFromRow(row) {
+    if (!row) return "";
+    var id = row.getAttribute("data-id");
+    return id != null && id !== "" ? String(id) : "";
+  }
+
+  function keywordIndexFromRow(row) {
+    if (!row) return -1;
+    var rowId = keywordIdFromRow(row);
+    var domIndex = keywordRowIndex(row);
+    if (
+      rowId &&
+      domIndex >= 0 &&
+      domIndex < keywords.length &&
+      String(keywords[domIndex].id) === rowId
+    ) {
+      return domIndex;
+    }
+    if (rowId) {
+      var byId = findIndex(rowId);
+      if (byId >= 0) return byId;
+    }
+    if (domIndex >= 0 && domIndex < keywords.length) return domIndex;
+    return -1;
   }
 
   function syncAllFieldsFromDom() {
@@ -7737,7 +7806,7 @@
   }
 
   function syncFieldFromDom(row) {
-    var i = keywordRowIndex(row);
+    var i = keywordIndexFromRow(row);
     if (i < 0 || i >= keywords.length) return;
 
     var nameEl = row.querySelector('[data-field="name"]');
@@ -8655,17 +8724,17 @@
       if (!btn || btn.disabled) return;
       var row = btn.closest(".keywords__row");
       if (!row) return;
-      var index = keywordRowIndex(row);
+      var index = keywordIndexFromRow(row);
       if (index < 0 || index >= keywords.length) return;
-      var id = keywords[index].id;
+      var id = keywordIdFromRow(row) || String(keywords[index].id);
       var action = btn.getAttribute("data-action");
 
       if (action === "up") moveKeywordByIndex(index, -1);
       else if (action === "down") moveKeywordByIndex(index, 1);
       else if (action === "position") openKeywordPositionModalByIndex(index);
       else if (action === "delete") removeKeywordByIndex(index);
-      else if (action === "micros") openMicroModal(id);
-      else if (action === "longevity") openLongevityModal(id);
+      else if (action === "micros") openMicroModal(id, index);
+      else if (action === "longevity") openLongevityModal(id, index);
       else if (action === "import") openImportModalByIndex(index);
     });
   }
