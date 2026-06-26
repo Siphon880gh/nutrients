@@ -115,12 +115,33 @@
     return typeof dv === "number" && dv > 0 ? dv : 0;
   }
 
+  /**
+   * Water-soluble micros with poor body storage. Weekly average ÷ 7 can hide
+   * day-to-day gaps, so the dashboard marks these with a daily-intake icon.
+   */
+  var DAILY_INTAKE_MICRO_KEYS = [
+    "vitaminC",
+    "thiamin",
+    "riboflavin",
+    "niacin",
+    "pantothenicAcid",
+    "vitaminB6",
+    "biotin",
+    "folate",
+  ];
+
+  function requiresDailyIntake(microKey) {
+    return DAILY_INTAKE_MICRO_KEYS.indexOf(microKey) !== -1;
+  }
+
   global.NutrientsDemographicDv = {
     DEFAULT_DEMOGRAPHIC: DEFAULT_DEMOGRAPHIC,
     META: META,
     CALORIE_BASELINE: CALORIE_BASELINE,
     DAILY_MICRO_DV: DAILY_MICRO_DV,
+    DAILY_INTAKE_MICRO_KEYS: DAILY_INTAKE_MICRO_KEYS,
     normalizeDemographic: normalizeDemographic,
     getDailyMicroDv: getDailyMicroDv,
+    requiresDailyIntake: requiresDailyIntake,
   };
 })(typeof window !== "undefined" ? window : this);

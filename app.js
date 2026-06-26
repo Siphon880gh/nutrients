@@ -240,6 +240,13 @@
   var exportAllMealsBtn = document.getElementById("export-all-meals");
   var importAllMealsBtn = document.getElementById("import-all-meals");
   var dayHighlightsToggleBtn = document.getElementById("day-highlights-toggle");
+  var dayFoodNotesEl = document.getElementById("day-food-notes");
+  var dayFoodNotesLabelsEl = document.getElementById("day-food-notes-labels");
+  var dayFoodNotesPopoverEl = document.getElementById("day-food-notes-popover");
+  var dayFoodNotesPinned = false;
+  var dayFoodNotesActiveIndex = -1;
+  var dayFoodNotesMatches = [];
+  var dayFoodNotesHideTimer = null;
   var activeMicroId = null;
   var activeImportId = null;
   var activeImportIndex = -1;
@@ -284,6 +291,8 @@
   var longevitySaveTimer;
   var lastWeekTotals = null;
   var microDefinitions = {};
+  var foodNotesDefinitions = [];
+  var FOOD_NOTES_URL = "definitions-food-notes.json";
   var longevityDefinitions = {};
   var activeMicroDefKey = null;
   var activeLongevityDefKey = null;
@@ -316,6 +325,8 @@
   );
   var microSourcesFullscreen = false;
   var longevitySourcesFullscreen = false;
+  var microDailyIntakePopoverEl = document.getElementById("micro-daily-intake-popover");
+  var microDailyIntakePopoverAnchor = null;
 
   var LONGEVITY_DERIVED_DEFS = {
     omega6To3: { label: "Omega-6 : Omega-3 ratio", limiting: true },
@@ -2610,6 +2621,41 @@
       });
   }
 
+  function normalizeFoodNotesDefinitions(data) {
+    var list = Array.isArray(data) ? data : data && data.notes ? data.notes : [];
+    var out = [];
+    list.forEach(function (item) {
+      if (!item || typeof item !== "object") return;
+      var label = typeof item.label === "string" ? item.label.trim() : "";
+      var pattern = typeof item.pattern === "string" ? item.pattern.trim() : "";
+      var note = typeof item.note === "string" ? item.note.trim() : "";
+      if (!label || !pattern || !note) return;
+      try {
+        new RegExp(pattern, "i");
+      } catch (e) {
+        return;
+      }
+      out.push({ label: label, pattern: pattern, note: note });
+    });
+    return out;
+  }
+
+  function loadFoodNotesDefinitions(done) {
+    fetch(FOOD_NOTES_URL, { cache: "no-store" })
+      .then(function (res) {
+        if (!res.ok) throw new Error("food notes fetch failed");
+        return res.json();
+      })
+      .then(function (data) {
+        foodNotesDefinitions = normalizeFoodNotesDefinitions(data);
+        if (done) done();
+      })
+      .catch(function () {
+        foodNotesDefinitions = [];
+        if (done) done();
+      });
+  }
+
   function longevityDefKeyList() {
     var keys = LONGEVITY_FIELDS.map(function (field) {
       return field.key;
@@ -3973,6 +4019,60 @@
       '<rect x="12" y="1" width="3" height="14" rx="0.5"></rect>' +
       "</svg></button>"
     );
+  }
+
+  function microDailyIntakeIconHtml() {
+    return (
+      '<button type="button" class="dashboard__micro-daily-intake-btn" data-micro-daily-intake="1" ' +
+      'aria-label="Requires daily intake" aria-expanded="false" aria-controls="micro-daily-intake-popover">' +
+      '<svg class="dashboard__micro-daily-intake-icon icon-day" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" focusable="false">' +
+      '<rect x="5.5" y="4" width="5" height="8" rx="0.5"></rect>' +
+      '<line x1="3" y1="8" x2="13" y2="8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></line>' +
+      "</svg></button>"
+    );
+  }
+
+  function appendMicroDailyIntakeIconHtml(html, microKey) {
+    if (!microRequiresDailyIntake(microKey)) return html;
+    return html + microDailyIntakeIconHtml();
+  }
+
+  function positionMicroDailyIntakePopover(anchor) {
+    if (!microDailyIntakePopoverEl || !anchor) return;
+    var rect = anchor.getBoundingClientRect();
+    microDailyIntakePopoverEl.style.left = Math.max(8, rect.left) + "px";
+    microDailyIntakePopoverEl.style.top = rect.bottom + 6 + "px";
+  }
+
+  function hideMicroDailyIntakePopover() {
+    if (!microDailyIntakePopoverEl) return;
+    microDailyIntakePopoverEl.hidden = true;
+    if (microDailyIntakePopoverAnchor) {
+      microDailyIntakePopoverAnchor.setAttribute("aria-expanded", "false");
+      microDailyIntakePopoverAnchor = null;
+    }
+  }
+
+  function showMicroDailyIntakePopover(btn) {
+    if (!microDailyIntakePopoverEl || !btn) return;
+    if (microDailyIntakePopoverAnchor === btn && !microDailyIntakePopoverEl.hidden) {
+      hideMicroDailyIntakePopover();
+      return;
+    }
+    hideMicroDailyIntakePopover();
+    microDailyIntakePopoverAnchor = btn;
+    positionMicroDailyIntakePopover(btn);
+    microDailyIntakePopoverEl.hidden = false;
+    btn.setAttribute("aria-expanded", "true");
+  }
+
+  function handleMicroDailyIntakeClick(e) {
+    var btn = e.target.closest("[data-micro-daily-intake]");
+    if (!btn) return false;
+    e.preventDefault();
+    e.stopPropagation();
+    showMicroDailyIntakePopover(btn);
+    return true;
   }
 
   function openPhosphorusBinderModal() {
@@ -5587,6 +5687,12 @@
     return 0;
   }
 
+  function microRequiresDailyIntake(key) {
+    return demographicDv && demographicDv.requiresDailyIntake
+      ? demographicDv.requiresDailyIntake(key)
+      : false;
+  }
+
   function dailyMicroPct(key, amount) {
     var dv = dailyDv(key);
     if (!dv) return null;
@@ -5921,11 +6027,15 @@
   }
 
   function microConditionSourcesIconHtml(entry, dayId) {
+    var key = entry.field.key;
     if (entry.source === "longevity") {
-      if (entry.field.key === "glycemicIndex") return "";
-      return longevitySourcesIconHtml(entry.field.key, "longevity");
+      if (key === "glycemicIndex") return "";
+      return appendMicroDailyIntakeIconHtml(
+        longevitySourcesIconHtml(key, "longevity"),
+        key
+      );
     }
-    return microSourcesIconHtml(entry.field.key, dayId);
+    return appendMicroDailyIntakeIconHtml(microSourcesIconHtml(key, dayId), key);
   }
 
   function microConditionRowHtml(entry, weekMicro, weekLongevity) {
@@ -6146,6 +6256,7 @@
   function renderMicroRequirements() {
     if (!dashboardMicroListEl) return;
 
+    hideMicroDailyIntakePopover();
     syncMicroDailyDvToggleUi();
     syncMicroViewToggleUi();
     syncMicroHintText();
@@ -6332,7 +6443,10 @@
       nameHtml =
         '<span class="dashboard__longevity-name-wrap">' +
         nameHtml +
-        longevitySourcesIconHtml(sourcesKey, sourcesKind) +
+        appendMicroDailyIntakeIconHtml(
+          longevitySourcesIconHtml(sourcesKey, sourcesKind),
+          sourcesKey
+        ) +
         "</span>";
     }
     return (
@@ -6497,6 +6611,7 @@
   function renderLongevityPanel() {
     if (!dashboardLongevityContentEl) return;
 
+    hideMicroDailyIntakePopover();
     var weekLongevity = weekLongevityTotals();
     var weekMicro = weekMicroTotals();
     var derived = computeLongevityDerived(weekLongevity, weekMicro);
@@ -8624,6 +8739,183 @@
     });
     renderDashboard();
     updateDayClearButtons();
+    updateDayFoodNotesUi();
+  }
+
+  function allDayMealsText() {
+    return DAYS.map(function (day) {
+      var el = document.getElementById(day.id);
+      return el ? el.value : "";
+    }).join("\n");
+  }
+
+  function detectedFoodNotes() {
+    var text = allDayMealsText();
+    if (!text.trim() || !foodNotesDefinitions.length) return [];
+    return foodNotesDefinitions.filter(function (defn) {
+      try {
+        return new RegExp(defn.pattern, "i").test(text);
+      } catch (e) {
+        return false;
+      }
+    });
+  }
+
+  function dayFoodNotesLabelsHtml(matches) {
+    var parts = [];
+    matches.forEach(function (defn, index) {
+      if (index > 0) {
+        parts.push('<span class="week__food-notes-sep">,&nbsp;</span>');
+      }
+      parts.push(
+        '<button type="button" class="week__food-notes-label" data-note-index="' +
+          index +
+          '" aria-expanded="false" aria-controls="day-food-notes-popover">' +
+          escapeHtml(defn.label) +
+          "</button>"
+      );
+    });
+    return parts.join("");
+  }
+
+  function positionDayFoodNotesPopover(triggerEl) {
+    if (!dayFoodNotesPopoverEl || !triggerEl || !dayFoodNotesEl) return;
+    var wrapRect = dayFoodNotesEl.getBoundingClientRect();
+    var rect = triggerEl.getBoundingClientRect();
+    dayFoodNotesPopoverEl.style.left = Math.max(0, rect.left - wrapRect.left) + "px";
+  }
+
+  function clearDayFoodNotesHideTimer() {
+    if (dayFoodNotesHideTimer) {
+      clearTimeout(dayFoodNotesHideTimer);
+      dayFoodNotesHideTimer = null;
+    }
+  }
+
+  function scheduleDayFoodNotesHide() {
+    clearDayFoodNotesHideTimer();
+    dayFoodNotesHideTimer = setTimeout(function () {
+      hideDayFoodNotesPopover(false);
+    }, 120);
+  }
+
+  function syncDayFoodNotesLabelExpanded() {
+    if (!dayFoodNotesLabelsEl) return;
+    dayFoodNotesLabelsEl.querySelectorAll(".week__food-notes-label").forEach(function (btn) {
+      var index = parseInt(btn.getAttribute("data-note-index"), 10);
+      var expanded =
+        !dayFoodNotesPopoverEl.hidden &&
+        (dayFoodNotesPinned || dayFoodNotesActiveIndex === index);
+      btn.setAttribute("aria-expanded", expanded ? "true" : "false");
+    });
+  }
+
+  function showDayFoodNotesPopoverForIndex(index, triggerEl) {
+    if (!dayFoodNotesPopoverEl || index < 0 || index >= dayFoodNotesMatches.length) return;
+    clearDayFoodNotesHideTimer();
+    dayFoodNotesActiveIndex = index;
+    var defn = dayFoodNotesMatches[index];
+    dayFoodNotesPopoverEl.innerHTML =
+      '<p class="week__food-notes-entry-text">' + escapeHtml(defn.note) + "</p>";
+    positionDayFoodNotesPopover(triggerEl);
+    dayFoodNotesPopoverEl.hidden = false;
+    syncDayFoodNotesLabelExpanded();
+  }
+
+  function hideDayFoodNotesPopover(force) {
+    if (!dayFoodNotesPopoverEl) return;
+    if (!force && dayFoodNotesPinned) return;
+    clearDayFoodNotesHideTimer();
+    dayFoodNotesPopoverEl.hidden = true;
+    dayFoodNotesActiveIndex = -1;
+    syncDayFoodNotesLabelExpanded();
+  }
+
+  function bindDayFoodNotesLabelEvents() {
+    if (!dayFoodNotesLabelsEl) return;
+    dayFoodNotesLabelsEl.querySelectorAll(".week__food-notes-label").forEach(function (btn) {
+      btn.addEventListener("mouseenter", function () {
+        showDayFoodNotesPopoverForIndex(
+          parseInt(btn.getAttribute("data-note-index"), 10),
+          btn
+        );
+      });
+      btn.addEventListener("click", function (e) {
+        e.stopPropagation();
+        var index = parseInt(btn.getAttribute("data-note-index"), 10);
+        if (dayFoodNotesPinned && dayFoodNotesActiveIndex === index) {
+          dayFoodNotesPinned = false;
+          hideDayFoodNotesPopover(true);
+          return;
+        }
+        dayFoodNotesPinned = true;
+        showDayFoodNotesPopoverForIndex(index, btn);
+      });
+    });
+  }
+
+  function initDayFoodNotesEvents() {
+    if (!dayFoodNotesEl || dayFoodNotesEl._foodNotesEventsBound) return;
+    dayFoodNotesEl._foodNotesEventsBound = true;
+
+    dayFoodNotesEl.addEventListener("mouseleave", function () {
+      scheduleDayFoodNotesHide();
+    });
+
+    if (dayFoodNotesPopoverEl) {
+      dayFoodNotesPopoverEl.addEventListener("mouseenter", function () {
+        clearDayFoodNotesHideTimer();
+      });
+      dayFoodNotesPopoverEl.addEventListener("mouseleave", function () {
+        scheduleDayFoodNotesHide();
+      });
+    }
+
+    document.addEventListener("click", function (e) {
+      if (!dayFoodNotesEl || dayFoodNotesEl.hidden) return;
+      if (dayFoodNotesEl.contains(e.target)) return;
+      dayFoodNotesPinned = false;
+      hideDayFoodNotesPopover(true);
+    });
+
+    window.addEventListener("resize", function () {
+      if (!dayFoodNotesPopoverEl || dayFoodNotesPopoverEl.hidden || dayFoodNotesActiveIndex < 0) {
+        return;
+      }
+      var activeBtn = dayFoodNotesLabelsEl.querySelector(
+        '.week__food-notes-label[data-note-index="' + dayFoodNotesActiveIndex + '"]'
+      );
+      if (activeBtn) positionDayFoodNotesPopover(activeBtn);
+    });
+  }
+
+  function updateDayFoodNotesUi() {
+    if (!dayFoodNotesEl || !dayFoodNotesLabelsEl || !dayFoodNotesPopoverEl) return;
+    var matches = detectedFoodNotes();
+    if (!matches.length) {
+      dayFoodNotesMatches = [];
+      dayFoodNotesEl.hidden = true;
+      dayFoodNotesPinned = false;
+      hideDayFoodNotesPopover(true);
+      dayFoodNotesLabelsEl.innerHTML = "";
+      dayFoodNotesPopoverEl.innerHTML = "";
+      return;
+    }
+    dayFoodNotesMatches = matches;
+    dayFoodNotesEl.hidden = false;
+    dayFoodNotesLabelsEl.innerHTML = dayFoodNotesLabelsHtml(matches);
+    bindDayFoodNotesLabelEvents();
+    if (dayFoodNotesPinned && dayFoodNotesActiveIndex >= 0) {
+      var pinnedBtn = dayFoodNotesLabelsEl.querySelector(
+        '.week__food-notes-label[data-note-index="' + dayFoodNotesActiveIndex + '"]'
+      );
+      if (pinnedBtn) {
+        showDayFoodNotesPopoverForIndex(dayFoodNotesActiveIndex, pinnedBtn);
+        return;
+      }
+      dayFoodNotesPinned = false;
+    }
+    hideDayFoodNotesPopover(true);
   }
 
   function saveFoodDefinitions() {
@@ -10047,6 +10339,7 @@
     renderDashboard();
     saveDayNotes();
     updateDayClearButtons();
+    updateDayFoodNotesUi();
   }
 
   function confirmClearDay(dayId) {
@@ -10708,6 +11001,7 @@
   function handleMicroDefClick(e) {
     if (e.target.closest("[data-micro-sources]")) return;
     if (e.target.closest("[data-longevity-sources]")) return;
+    if (e.target.closest("[data-micro-daily-intake]")) return;
     var microBtn = e.target.closest("[data-micro-def]");
     if (microBtn) {
       openMicroDefModal(microBtn.getAttribute("data-micro-def"));
@@ -10720,6 +11014,7 @@
   }
 
   function handleMicroPanelSourcesClick(e) {
+    if (handleMicroDailyIntakeClick(e)) return;
     var longevityBtn = e.target.closest("[data-longevity-sources]");
     if (longevityBtn) {
       e.preventDefault();
@@ -10787,6 +11082,7 @@
 
   if (dashboardLongevityContentEl) {
     dashboardLongevityContentEl.addEventListener("click", function (e) {
+      if (handleMicroDailyIntakeClick(e)) return;
       if (e.target.closest('[data-action="open-phosphorus-binder-modal"]')) {
         openPhosphorusBinderModal();
         return;
@@ -11219,6 +11515,24 @@
     });
   }
 
+  if (dayFoodNotesEl) {
+    initDayFoodNotesEvents();
+  }
+
+  document.addEventListener("click", function (e) {
+    if (!microDailyIntakePopoverAnchor) return;
+    if (e.target.closest("[data-micro-daily-intake]")) return;
+    hideMicroDailyIntakePopover();
+  });
+
+  window.addEventListener(
+    "scroll",
+    function () {
+      hideMicroDailyIntakePopover();
+    },
+    true
+  );
+
   function bindStarterGuideScrollResize() {
     if (starterGuideScrollResizeBound) return;
     starterGuideScrollResizeBound = true;
@@ -11356,12 +11670,13 @@
   }
 
   loadAppConfig(function () {
-    var pending = 2;
+    var pending = 3;
     function definitionsReady() {
       pending -= 1;
       if (pending === 0) boot();
     }
     loadMicroDefinitions(definitionsReady);
     loadLongevityDefinitions(definitionsReady);
+    loadFoodNotesDefinitions(definitionsReady);
   });
 })();

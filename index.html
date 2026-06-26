@@ -114,6 +114,9 @@
         </div>
         <div id="dashboard-micro-daily-grid" class="dashboard__micro-daily-grid" hidden></div>
       </div>
+      <div id="micro-daily-intake-popover" class="dashboard__micro-daily-intake-popover" role="tooltip" hidden>
+        <p class="dashboard__micro-daily-intake-popover-text">This requires daily intake because storage is poor. You cannot simply average it over a day.</p>
+      </div>
       <div id="dashboard-longevity-panel" class="dashboard__longevity-panel" hidden>
         <p class="dashboard__longevity-hint">Weekly average per day (Mon–Sun). Micronutrients repeat from your micro entries so you can reason in one place. Green bars = good for “aim” nutrients; red bars on limit nutrients mean you are high. Click <em>explain</em> on a heading or nutrient for detail.</p>
         <aside class="dashboard__longevity-disclaimer dashboard__panel-disclaimer" role="note">
@@ -171,6 +174,11 @@
           </svg>
           <span class="visually-hidden">Food highlighting</span>
         </button>
+        <span id="day-food-notes" class="week__food-notes" hidden>
+          <span class="week__food-notes-lead">Notes available for:</span>
+          <span id="day-food-notes-labels" class="week__food-notes-labels"></span>
+          <div id="day-food-notes-popover" class="week__food-notes-popover" role="tooltip" hidden></div>
+        </span>
       </p>
       <div class="week__days-actions">
         <button type="button" id="export-all-meals" class="week__meals-bulk">Export all</button>

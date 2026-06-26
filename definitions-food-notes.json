@@ -1,0 +1,9 @@
+{
+  "notes": [
+    {
+      "label": "Egg",
+      "pattern": "\\beggs?\\b",
+      "note": "There is no nutritional difference between white and brown eggs. Both provide identical levels of protein, vitamins, and minerals. The shell color is determined solely by the breed of the hen."
+    }
+  ]
+}

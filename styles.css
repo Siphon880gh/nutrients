@@ -779,6 +779,67 @@ button.dashboard__micro-name:focus-visible {
   fill: currentColor;
 }
 
+.dashboard__micro-daily-intake-btn {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.35rem;
+  height: 1.35rem;
+  padding: 0;
+  border: 1px solid #d8d8d4;
+  border-radius: 4px;
+  background: #fff;
+  color: #7a6a4a;
+  cursor: pointer;
+  margin-left: 3px;
+}
+
+.dashboard__micro-daily-intake-btn:hover,
+.dashboard__micro-daily-intake-btn[aria-expanded="true"] {
+  background: #faf6ef;
+  border-color: #c9b896;
+  color: #5c4a2a;
+}
+
+.dashboard__micro-daily-intake-btn:focus-visible {
+  outline: 2px solid #3d6b9e;
+  outline-offset: 1px;
+}
+
+.dashboard__micro-daily-intake-icon {
+  display: block;
+  fill: currentColor;
+}
+
+.dashboard__micro-daily-intake-icon line {
+  fill: none;
+}
+
+.dashboard__micro-daily-intake-popover {
+  position: fixed;
+  z-index: 120;
+  min-width: 12rem;
+  max-width: min(18rem, calc(100vw - 2rem));
+  padding: 0.6rem 0.7rem;
+  font-size: 0.78rem;
+  line-height: 1.45;
+  color: #444;
+  background: #fff;
+  border: 1px solid #d8dce2;
+  border-radius: 6px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+  pointer-events: none;
+}
+
+.dashboard__micro-daily-intake-popover[hidden] {
+  display: none;
+}
+
+.dashboard__micro-daily-intake-popover-text {
+  margin: 0;
+}
+
 .dashboard__micro-day-name-wrap {
   display: flex;
   align-items: center;
@@ -2480,11 +2541,14 @@ button.dashboard__longevity-name:focus-visible {
   gap: 0.75rem;
   flex-wrap: wrap;
   margin-bottom: 0.5rem;
+  position: relative;
+  z-index: 10;
 }
 
 .week__days-hint {
   display: inline-flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 0.35rem;
   margin: 0;
   font-size: 0.8rem;
@@ -2495,7 +2559,93 @@ button.dashboard__longevity-name:focus-visible {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
+  justify-content: flex-end;
   gap: 0.35rem 0.5rem;
+}
+
+.week__food-notes {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.2rem;
+}
+
+.week__food-notes:not([hidden]) {
+  gap: 0.35rem;
+}
+
+.week__food-notes:not([hidden])::before {
+  content: "";
+  align-self: stretch;
+  width: 1px;
+  background: #c8c8c4;
+  flex-shrink: 0;
+}
+
+.week__food-notes[hidden] {
+  display: none;
+}
+
+.week__food-notes-lead {
+  color: #8a8a8a;
+}
+
+.week__food-notes-labels {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.week__food-notes-sep {
+  color: #8a8a8a;
+  white-space: pre;
+}
+
+.week__food-notes-label {
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  font-size: inherit;
+  color: #8a8a8a;
+  text-decoration: underline;
+  text-decoration-color: rgba(138, 138, 138, 0.45);
+  text-underline-offset: 2px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.week__food-notes-label:hover,
+.week__food-notes-label:focus-visible,
+.week__food-notes-label[aria-expanded="true"] {
+  color: #5c5c5c;
+  text-decoration-color: rgba(92, 92, 92, 0.55);
+}
+
+.week__food-notes-popover {
+  position: absolute;
+  top: calc(100% + 0.35rem);
+  left: 0;
+  z-index: 30;
+  min-width: 14rem;
+  max-width: min(22rem, calc(100vw - 2rem));
+  padding: 0.65rem 0.75rem;
+  font-size: 0.78rem;
+  line-height: 1.45;
+  color: #444;
+  background: #fff;
+  border: 1px solid #d8dce2;
+  border-radius: 6px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+}
+
+.week__food-notes-popover[hidden] {
+  display: none;
+}
+
+.week__food-notes-entry-text {
+  margin: 0;
 }
 
 .week__highlight-toggle {
@@ -4627,6 +4777,7 @@ button.longevity-form__label-link:focus-visible {
   .dashboard__micro-hint-actions,
   .dashboard__micro-hint-ai,
   .dashboard__micro-sources-btn,
+  .dashboard__micro-daily-intake-btn,
   .dashboard__card-toggle,
   .dashboard__longevity-nav,
   .dashboard__longevity-section-link {
@@ -4708,6 +4859,7 @@ body.print-preview .dashboard__toggles,
 body.print-preview .week__days-actions,
 body.print-preview .day__clear,
 body.print-preview .day__suggest,
+body.print-preview .week__food-notes,
 body.print-preview .starter-guide,
 body.print-preview .keywords,
 body.print-preview .demographic,
@@ -4716,6 +4868,7 @@ body.print-preview .dashboard__micro-intro-actions,
 body.print-preview .dashboard__micro-hint-actions,
 body.print-preview .dashboard__micro-hint-ai,
 body.print-preview .dashboard__micro-sources-btn,
+body.print-preview .dashboard__micro-daily-intake-btn,
 body.print-preview .dashboard__card-toggle,
 body.print-preview .dashboard__longevity-section-link {
   display: none !important;
