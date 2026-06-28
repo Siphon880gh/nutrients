@@ -15,15 +15,16 @@ Parent overview: [AGENTS_CODE_REFERENCE.md](./AGENTS_CODE_REFERENCE.md)
 | Table UI | `renderKeywords`, `syncFieldFromDom`, `moveKeyword`, `removeKeyword`, `addKeyword`, reorder toggle (`loadKeywordReorderOpen`), move-to-position modal |
 | Matching | `countKeyword`, `keywordNames`, `buildHighlightRegex`, `keywordMatchPattern`, `escapeRegex` |
 | Macro totals | `totalsFromText`, `addTotals`, `renderDashboard`, `dashboardCardHtml`, `dashboardMacroPctView`, `macroPctFromTotals`, `renderWeekSummary`, `setWeekTotalOpen` |
-| Micro totals / DV | `microTotalsFromText`, `weekMicroTotals`, `renderMicroRequirements`, `renderMicroWeeklyList`, `renderMicroDailyGrid`, `setMicroViewDaily`, `dailyDv`, `microConditionDisplayFields`, `setMicroConditionFocus` |
+| Micro totals / DV | `microTotalsFromText`, `weekMicroTotals`, `renderMicroRequirements`, `renderMicroWeeklyList`, `renderMicroDailyGrid`, `setMicroViewDaily`, `dailyDv`, `microRequiresDailyIntake`, `microConditionDisplayFields`, `setMicroConditionFocus` |
 | Longevity | `longevityTotalsFromText`, `renderLongevityPanel`, `renderLongevityGiBuckets`, `setLongevityPanelOpen`, longevity nav (`buildLongevityNavAllList`, `scrollLongevityNavToSection`), blank/normalize/merge helpers (below) |
-| Ranked food sources | `microContributionsFromText`, `microContributionsForScope`, `longevityContributionsFromWeek`, `glycemicLoadContributionsFromWeek`, `nutrientSourcesListHtml`, `openMicroSourcesModal`, `openLongevitySourcesModal`, `microSourcesIconHtml`, `longevitySourcesIconHtml` |
+| Ranked food sources | `microContributionsFromText`, `microContributionsForScope`, `longevityContributionsFromWeek`, `glycemicLoadContributionsFromWeek`, `nutrientSourcesListHtml`, `openMicroSourcesModal`, `openLongevitySourcesModal`, `microSourcesIconHtml`, `longevitySourcesIconHtml`, `microDailyIntakeIconHtml`, `appendMicroDailyIntakeIconHtml`, `showMicroDailyIntakePopover`, `hideMicroDailyIntakePopover`, `handleMicroDailyIntakeClick` |
 | Settings / TDEE | `openSettingsModal`, `loadTdee`, `saveTdee`, `getTdee`, `getTdeeBaseline`, `openTdeeCalculatorModal`, `calcMifflinStJeor`, `openTdeeHintModal`, `openMacroSplitHintModal`, `renderMacroSplitCarousel`, `MACRO_BODY_TYPES` |
 | Definition modals | `openMicroDefModal`, `renderMicroDefBody`, `openLongevityDefModal`, `renderLongevityDefBody`, `setMicroDefFullscreen`, `setDefModalReturnSources`, `returnFromDefModalToSources`, `microDefConditionSectionHtml`, `loadMicroDefinitions`, `loadLongevityDefinitions` |
 | % DV tiers | `loadAppConfig`, `tierForMicroPct`, `tierForLongevityPct`, `tierForPctInList`, `pctInlineStyle` |
-| Demographic | `loadDemographic`, `saveDemographic`, `setDemographic`, `renderDemographicUi` (updates `#settings-demographic-icon`); targets in `demographic-dv.js` (`DAILY_MICRO_DV`, `CALORIE_BASELINE`) |
+| Demographic | `loadDemographic`, `saveDemographic`, `setDemographic`, `renderDemographicUi` (updates `#settings-demographic-icon`); targets in `demographic-dv.js` (`DAILY_MICRO_DV`, `CALORIE_BASELINE`, `DAILY_INTAKE_MICRO_KEYS`, `requiresDailyIntake`) |
 | Highlights | `updateDayHighlights`, `highlightedHtml`, `refreshAll`, `syncScroll` |
 | Food-name suggestions | `updateDaySuggest`, `foodSuggestMatches`, `applyDayFoodSuggest`, `hideDaySuggest`, `DAY_SUGGEST_MAX` |
+| Food notes (toolbar) | `loadFoodNotesDefinitions`, `normalizeFoodNotesDefinitions`, `detectedFoodNotes`, `updateDayFoodNotesUi`, `dayFoodNotesLabelsHtml`, `showDayFoodNotesPopoverForIndex`, `initDayFoodNotesEvents`, `foodNotesDefinitions`, `FOOD_NOTES_URL` |
 | Starter guide | `maybeShowStarterGuideImportStep`, `advanceStarterGuideAfterImport`, `showStarterGuideStep`, `repositionStarterGuide`, `dismissStarterGuide`, `hideStarterGuide`, `starterGuideEligible`, `starterGuideStep` |
 | Day editor height | `loadDayEditorHeight`, `saveDayEditorHeight`, `applyDayEditorHeight`, `bindDayEditorResize`, `clampDayEditorHeight` |
 | Persistence | `saveFoodDefinitions`, `loadFoodDefinitions`, `saveDayNotes`, `loadDayNotes` |
@@ -96,6 +97,7 @@ new RegExp("\\b" + escapeRegex(name) + "\\b", "gi")
 - **Weekly average view** (default): average daily amount = week sum ÷ `DAYS.length` (7). **% DV** = `(avgDaily / dailyDv(key)) × 100` where `dailyDv` calls `NutrientsDemographicDv.getDailyMicroDv(demographic, key)` from `demographic-dv.js` (e.g. female iron 18 mg, male 8 mg). Rendered by `renderMicroWeeklyList` into `#dashboard-micro-list`.
 - **Condition focus** (`MICRO_CONDITION_FOCUS`, `#dashboard-micro-condition-toggle`): filters rows to condition-relevant micros (+ optional longevity keys for ADHD); adds a **Focus:** section at top of explain modals when JSON has matching condition key. Session-only (not persisted).
 - **My food** bar-chart button on each row (`microSourcesIconHtml`, `data-micro-sources`) opens `#micro-sources-modal` — ranked matched foods with per-hit calculations; scope select (week or single day).
+- **Daily intake icon** — pill button (`.dashboard__micro-daily-intake-btn`, `data-micro-daily-intake`) appears next to **My food** when `NutrientsDemographicDv.requiresDailyIntake(key)` is true (keys listed in `DAILY_INTAKE_MICRO_KEYS` in `demographic-dv.js` — water-soluble vitamins except B12, steady electrolytes/minerals, fiber, choline, essential amino acids, ALA). Click toggles `#micro-daily-intake-popover` (fixed tooltip) explaining that poor body storage makes weekly ÷7 averaging misleading; does not open the sources modal. Hidden on re-render, outside click, and scroll (`hideMicroDailyIntakePopover`).
 - **Each-day view** (`setMicroViewDaily(true)`): `renderMicroDailyGrid` builds a per-day grid into `#dashboard-micro-daily-grid`.
 - **Show DV targets** (`showMicroDailyDv`, `#dashboard-micro-dv-toggle`): appends the daily requirement text (`microDailyDvText`).
 - **% DV color/weight** from `config.json` `microDvStatus.tiers` via `tierForMicroPct` / `microPctInlineStyle`.
@@ -115,7 +117,7 @@ Toggle/view state is session-only; demographic choice is persisted.
 - **Derived scores** (`LONGEVITY_DERIVED_DEFS`): omega-6:omega-3 ratio, saturated:unsaturated ratio, EPA+DHA, glycemic load.
 - **Glycemic load & GI distribution** — `renderLongevityGiBuckets`; GL rows use color by GI tier.
 - **Section nav** — sticky `#dashboard-longevity-nav` (prev/next + “All topics”) scroll-spies `#dashboard-longevity-content` sections.
-- **My food** icons on rows (`longevitySourcesIconHtml`, `data-longevity-sources`) open `#longevity-sources-modal` with ranked contributions; glycemic load uses special GL-per-serving ranking.
+- **My food** icons on rows (`longevitySourcesIconHtml`, `data-longevity-sources`) open `#longevity-sources-modal` with ranked contributions; glycemic load uses special GL-per-serving ranking. Rows whose `sourcesKey` is in `DAILY_INTAKE_MICRO_KEYS` also get the daily-intake pill icon (same popover as the micro panel).
 
 **% DV** uses `NutrientsLongevityDv.getDailyLongevityDv(key)` from `longevity-dv.js`. **`limiting: true`** fields (e.g. saturated fat, omega-6, added sugar, sodium via `LONGEVITY_MICRO_LIMITING_KEYS`) use the inverted `longevityStatus.limitingTiers` so a high % is red, not green. Coloring via `tierForLongevityPct` / `longevityPctInlineStyle`. Section + nutrient headings carry `data-longevity-def` / `data-micro-def` for the explain modals.
 
@@ -204,6 +206,51 @@ Fetched by `loadAppConfig` at boot (before definitions). Shapes:
 
 On fetch failure, `DEFAULT_MICRO_DV_STATUS` / `DEFAULT_LONGEVITY_STATUS` are used.
 
+## Food notes (`definitions-food-notes.json`)
+
+Fetched at boot by `loadFoodNotesDefinitions` (parallel with micro/longevity defs). **Not persisted** — rules live in the JSON file only.
+
+**Config shape:**
+
+```json
+{
+  "notes": [
+    {
+      "label": "Egg",
+      "pattern": "\\beggs?\\b",
+      "note": "Plain-text hint shown in the toolbar popover."
+    }
+  ]
+}
+```
+
+| Field | Role |
+|-------|------|
+| `label` | Shown in toolbar as an underlined link (`Notes available for: Egg, …`) |
+| `pattern` | Regex tested against **all day meal text** (Mon–Sun joined); compiled with `"i"` flag |
+| `note` | Popover body (escaped via `escapeHtml`) |
+
+**Normalize** — `normalizeFoodNotesDefinitions`: accepts `{ notes: [...] }` or a bare array; drops entries missing `label` / `pattern` / `note` or with invalid regex.
+
+**Detect** — `detectedFoodNotes()` → `allDayMealsText()` then `foodNotesDefinitions.filter(defn => new RegExp(defn.pattern, "i").test(text))`. Order follows config file order.
+
+**Render** — `updateDayFoodNotesUi()` (called from `refreshAll` and `applyDayNoteChange`):
+
+- No matches → `#day-food-notes` gets `hidden`, popover cleared.
+- Matches → `#day-food-notes-labels` innerHTML from `dayFoodNotesLabelsHtml` (one `.week__food-notes-label` button per match; comma separators via `.week__food-notes-sep`).
+- Popover `#day-food-notes-popover` shows a single note for the hovered or pinned label.
+
+**Interaction** — `initDayFoodNotesEvents` (once at bind time):
+
+- `mouseenter` on a label → `showDayFoodNotesPopoverForIndex` (positions popover under that label via `positionDayFoodNotesPopover`).
+- `click` on a label → toggle pin (`dayFoodNotesPinned`); click outside or second click unpins.
+- `mouseleave` on `#day-food-notes` / popover → `scheduleDayFoodNotesHide` (120 ms delay so the cursor can move into the popover).
+- `window.resize` → repositions popover if open.
+
+**State** — `dayFoodNotesMatches`, `dayFoodNotesActiveIndex`, `dayFoodNotesPinned`, `dayFoodNotesHideTimer`.
+
+UI markup + CSS: [AGENTS_CODE_REFERENCE-ui.md](./AGENTS_CODE_REFERENCE-ui.md)
+
 ## Highlighting (logic side)
 
 **`updateDayHighlights(textarea)`**:
@@ -277,6 +324,7 @@ All seven `.day__editor` boxes share one height.
 |------|----------------|
 | Sum micros into per-day cards | `dashboardCardHtml` + `microTotalsFromText` per day |
 | Change micro DV profile | `demographic-dv.js` → `DAILY_MICRO_DV`; keys must match `MICRO_FIELDS` |
+| Mark micro as daily-intake-only | `demographic-dv.js` → `DAILY_INTAKE_MICRO_KEYS` (+ `requiresDailyIntake`); dashboard adds pill icon via `appendMicroDailyIntakeIconHtml` |
 | Change longevity DV targets | `longevity-dv.js` → `DAILY_LONGEVITY_DV`; keys must match `LONGEVITY_FIELDS` |
 | New demographic option | `META`, `DAILY_MICRO_DV`, HTML options, `normalizeDemographic` in `demographic-dv.js` |
 | Edit % DV colors | `config.json` (`microDvStatus`, `longevityStatus`) |

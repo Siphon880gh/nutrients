@@ -2894,11 +2894,28 @@ button.dashboard__longevity-name:focus-visible {
   font-size: 0.8125rem;
   line-height: 1.35;
   text-align: left;
-  white-space: nowrap;
   overflow: hidden;
-  text-overflow: ellipsis;
   cursor: pointer;
   color: #444;
+}
+
+.day__suggest-item-label {
+  display: block;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  transition: font-size 0.18s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .day__suggest-item-label {
+    transition: none;
+  }
+}
+
+.day__suggest-item--fitted .day__suggest-item-label {
+  text-overflow: clip;
 }
 
 .day__suggest-item:hover {

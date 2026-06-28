@@ -174,6 +174,7 @@ Bulk array example:
 - New AI provider: add link in HTML + listener beside ChatGPT/Claude block at end of `app.js` (both import and micro-gaps panels).
 - `carbQuality` is an import/export alias only; do not add a separate in-memory `carbQuality` store — fold into `longevity` via `mergeCarbQualityIntoLongevity`.
 - **Condition notes in JSON:** `definitions-micronutrients.json` / `definitions-longevity.json` entries may include keys matching `MICRO_CONDITION_FOCUS` ids (`coffeeTeaUser`, `adhd`, `anemia`) — string arrays shown in explain modals when that condition is focused ([core doc](./AGENTS_CODE_REFERENCE-core.md)).
+- **Food notes JSON:** `definitions-food-notes.json` — `{ notes: [{ label, pattern, note }] }`; regex matched against all day-meal text; not imported/exported with meals ([core doc](./AGENTS_CODE_REFERENCE-core.md)).
 
 ## Related CSS
 

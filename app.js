@@ -10222,14 +10222,77 @@
     return (
       '<button type="button" class="day__suggest-item" data-food-name="' +
       escapeAttr(name) +
-      '" role="option">' +
+      '" role="option" title="' +
+      escapeAttr(name) +
+      '">' +
+      '<span class="day__suggest-item-label">' +
       (before ? '<span class="day__suggest-rest">' + before + "</span>" : "") +
       '<span class="day__suggest-match">' +
       matched +
       "</span>" +
       (after ? '<span class="day__suggest-rest">' + after + "</span>" : "") +
-      "</button>"
+      "</span></button>"
     );
+  }
+
+  function daySuggestItemLabelWidth(btn) {
+    var style = getComputedStyle(btn);
+    return (
+      btn.clientWidth -
+      parseFloat(style.paddingLeft) -
+      parseFloat(style.paddingRight)
+    );
+  }
+
+  function fitDaySuggestItemLabel(btn) {
+    var label = btn.querySelector(".day__suggest-item-label");
+    if (!label) return;
+    resetDaySuggestItemLabel(btn);
+    if (label.scrollWidth <= daySuggestItemLabelWidth(btn)) return;
+    var baseSize = parseFloat(getComputedStyle(label).fontSize);
+    var ratio = daySuggestItemLabelWidth(btn) / label.scrollWidth;
+    var minSize = baseSize * 0.62;
+    label.style.fontSize = Math.max(minSize, baseSize * ratio * 0.96) + "px";
+    btn.classList.add("day__suggest-item--fitted");
+  }
+
+  function resetDaySuggestItemLabel(btn) {
+    var label = btn.querySelector(".day__suggest-item-label");
+    if (!label) return;
+    label.style.fontSize = "";
+    btn.classList.remove("day__suggest-item--fitted");
+  }
+
+  function resetAllDaySuggestItemLabels(suggestEl) {
+    if (!suggestEl) return;
+    suggestEl.querySelectorAll(".day__suggest-item").forEach(
+      resetDaySuggestItemLabel
+    );
+    suggestEl._daySuggestHoverItem = null;
+  }
+
+  function updateDaySuggestItemHover(suggestEl, target) {
+    var btn =
+      target && target.closest ? target.closest(".day__suggest-item") : null;
+    if (btn && !suggestEl.contains(btn)) btn = null;
+
+    if (suggestEl._daySuggestHoverItem === btn) return;
+
+    resetAllDaySuggestItemLabels(suggestEl);
+    if (!btn) return;
+    suggestEl._daySuggestHoverItem = btn;
+    fitDaySuggestItemLabel(btn);
+  }
+
+  function bindDaySuggestHover(el) {
+    if (el._daySuggestHoverBound) return;
+    el._daySuggestHoverBound = true;
+    el.addEventListener("mousemove", function (e) {
+      updateDaySuggestItemHover(el, e.target);
+    });
+    el.addEventListener("mouseleave", function () {
+      resetAllDaySuggestItemLabels(el);
+    });
   }
 
   function hideAllDaySuggests() {
@@ -10251,7 +10314,10 @@
 
   function ensureDaySuggestEl(editor) {
     var el = editor.querySelector(".day__suggest");
-    if (el) return el;
+    if (el) {
+      bindDaySuggestHover(el);
+      return el;
+    }
 
     el = document.createElement("div");
     el.className = "day__suggest";
@@ -10281,6 +10347,7 @@
       if (!btn) return;
       applyDayFoodSuggest(textarea, btn.getAttribute("data-food-name"));
     });
+    bindDaySuggestHover(el);
     editor.appendChild(el);
     return el;
   }
@@ -10331,6 +10398,7 @@
     hideAllDaySuggests();
     var suggestEl = ensureDaySuggestEl(editor);
     suggestEl.innerHTML = daySuggestPanelHtml(matches);
+    suggestEl._daySuggestHoverItem = null;
     suggestEl.hidden = false;
   }
 

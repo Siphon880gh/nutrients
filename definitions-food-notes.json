@@ -4,6 +4,11 @@
       "label": "Egg",
       "pattern": "\\beggs?\\b",
       "note": "There is no nutritional difference between white and brown eggs. Both provide identical levels of protein, vitamins, and minerals. The shell color is determined solely by the breed of the hen."
+    },
+    {
+      "label": "Pork Zongzi",
+      "pattern": "\\bpork zongzi\\b",
+      "note": "Pork Zongzi contains salted duck egg yolk. This is a Cantonese-style Zongzi served in Hong Kong and Guangdong."
     }
   ]
 }

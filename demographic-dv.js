@@ -116,10 +116,18 @@
   }
 
   /**
-   * Water-soluble micros with poor body storage. Weekly average ÷ 7 can hide
-   * day-to-day gaps, so the dashboard marks these with a daily-intake icon.
+   * Micro/longevity keys where weekly ÷7 averaging can hide day-to-day gaps:
+   * water-soluble vitamins (not B12), steady electrolytes/minerals, fiber,
+   * choline, essential amino acids, and ALA. See DAILY_INTAKE_MICRO_KEYS.
    */
   var DAILY_INTAKE_MICRO_KEYS = [
+    "fiber",
+    "sodium",
+    "potassium",
+    "chloride",
+    "magnesium",
+    "zinc",
+    "choline",
     "vitaminC",
     "thiamin",
     "riboflavin",
@@ -128,6 +136,16 @@
     "vitaminB6",
     "biotin",
     "folate",
+    "histidine",
+    "isoleucine",
+    "leucine",
+    "lysine",
+    "methionine",
+    "phenylalanine",
+    "threonine",
+    "tryptophan",
+    "valine",
+    "ala",
   ];
 
   function requiresDailyIntake(microKey) {
