@@ -49,6 +49,7 @@
   var dashboardMicroToggleEl = document.getElementById("dashboard-micro-toggle");
   var dashboardMicroPanelEl = document.getElementById("dashboard-micro-panel");
   var dashboardMicroListEl = document.getElementById("dashboard-micro-list");
+  var dashboardMicroMoreWrapEl = document.querySelector(".dashboard__micro-more-wrap");
   var dashboardMicroDailyGridEl = document.getElementById("dashboard-micro-daily-grid");
   var dashboardMicroHintTextEl = document.getElementById("dashboard-micro-hint-text");
   var dashboardMicroConditionToggleEl = document.getElementById(
@@ -503,6 +504,15 @@
         "epa",
         "dha",
       ],
+    },
+  };
+
+  var MICRO_INTAKE_FILTER = {
+    wellAbsorbed: {
+      label: "Well absorbed / average the week",
+    },
+    poorlyAbsorbed: {
+      label: "Poorly absorbed / take daily",
     },
   };
 
@@ -6481,29 +6491,39 @@
       : "Average daily intake vs FDA % DV or IOM bw min (Mon–Sun)." + weightNote;
   }
 
+  function microBaseDisplayFields() {
+    var fields = MICRO_FIELDS.map(function (field) {
+      return { source: "micro", field: field };
+    });
+    if (microMoreExpanded) {
+      MICRO_EXTENDED_FIELDS.forEach(function (field) {
+        fields.push({ source: "micro", field: field });
+      });
+    }
+    return fields;
+  }
+
+  function microFilterMeta(id) {
+    return (
+      (id && MICRO_CONDITION_FOCUS[id]) ||
+      (id && MICRO_INTAKE_FILTER[id]) ||
+      null
+    );
+  }
+
   function microConditionDisplayFields() {
     if (!microConditionFocus) {
-      var fields = MICRO_FIELDS.map(function (field) {
-        return { source: "micro", field: field };
+      return microBaseDisplayFields();
+    }
+    if (MICRO_INTAKE_FILTER[microConditionFocus]) {
+      var wantsDaily = microConditionFocus === "poorlyAbsorbed";
+      return microBaseDisplayFields().filter(function (entry) {
+        return microRequiresDailyIntake(entry.field.key) === wantsDaily;
       });
-      if (microMoreExpanded) {
-        MICRO_EXTENDED_FIELDS.forEach(function (field) {
-          fields.push({ source: "micro", field: field });
-        });
-      }
-      return fields;
     }
     var meta = MICRO_CONDITION_FOCUS[microConditionFocus];
     if (!meta) {
-      var fields2 = MICRO_FIELDS.map(function (field) {
-        return { source: "micro", field: field };
-      });
-      if (microMoreExpanded) {
-        MICRO_EXTENDED_FIELDS.forEach(function (field) {
-          fields2.push({ source: "micro", field: field });
-        });
-      }
-      return fields2;
+      return microBaseDisplayFields();
     }
     var out = [];
     (meta.nutrients || []).forEach(function (key) {
@@ -6619,9 +6639,10 @@
       );
     }
     if (dashboardMicroConditionLabelEl) {
+      var filterMeta = microFilterMeta(microConditionFocus);
       dashboardMicroConditionLabelEl.textContent = active
-        ? "Focus: " + MICRO_CONDITION_FOCUS[microConditionFocus].label
-        : "Focus on conditions";
+        ? "Filter: " + filterMeta.label
+        : "Filter";
     }
     if (dashboardMicroConditionClearEl) {
       dashboardMicroConditionClearEl.hidden = !active;
@@ -6650,7 +6671,7 @@
   }
 
   function setMicroConditionFocus(id) {
-    microConditionFocus = id && MICRO_CONDITION_FOCUS[id] ? id : null;
+    microConditionFocus = id && microFilterMeta(id) ? id : null;
     setMicroConditionExpanded(false);
     syncMicroConditionUi();
     if (microRequirementsOpen) {
@@ -6759,6 +6780,9 @@
 
     if (dashboardMicroListEl) {
       dashboardMicroListEl.hidden = microViewDaily;
+    }
+    if (dashboardMicroMoreWrapEl) {
+      dashboardMicroMoreWrapEl.hidden = microViewDaily;
     }
     if (dashboardMicroDailyGridEl) {
       dashboardMicroDailyGridEl.hidden = !microViewDaily;

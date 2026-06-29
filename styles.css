@@ -354,6 +354,22 @@ body {
   margin: 0;
 }
 
+.dashboard__micro-condition-group-label {
+  display: block;
+  padding: 0.45rem 0.5rem 0.2rem;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: #888;
+}
+
+.dashboard__micro-condition-group:not(:first-child) .dashboard__micro-condition-group-label {
+  padding-top: 0.65rem;
+  margin-top: 0.15rem;
+  border-top: 1px solid #ececea;
+}
+
 .dashboard__micro-condition-link {
   display: block;
   width: 100%;
@@ -655,11 +671,19 @@ body {
   gap: 0.5rem 1.1rem;
 }
 
+.dashboard__micro-list[hidden] {
+  display: none;
+}
+
 .dashboard__micro-more-wrap {
   margin-top: 0.6rem;
   padding-top: 0.5rem;
   border-top: 1px dashed #d8d8d4;
   text-align: center;
+}
+
+.dashboard__micro-more-wrap[hidden] {
+  display: none;
 }
 
 .dashboard__micro-more-toggle {

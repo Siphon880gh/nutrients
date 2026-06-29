@@ -46,13 +46,25 @@
                     <svg class="dashboard__micro-condition-icon" viewBox="0 0 16 16" width="13" height="13" aria-hidden="true" focusable="false">
                       <path fill="currentColor" d="M8 2.25C4.55 2.25 1.68 4.73 1 8c.68 3.27 3.55 5.75 7 5.75S14.32 11.27 15 8c-.68-3.27-3.45-5.75-7-5.75zm0 9.5A3.75 3.75 0 1 1 8 4.25 3.75 3.75 0 0 1 8 11.75zm0-6A2.25 2.25 0 1 0 5.75 8 2.25 2.25 0 0 0 8 5.75z"></path>
                     </svg>
-                    <span id="dashboard-micro-condition-label">Focus on conditions</span>
+                    <span id="dashboard-micro-condition-label">Filter</span>
                   </button>
-                  <button type="button" id="dashboard-micro-condition-clear" class="dashboard__micro-condition-clear" hidden aria-label="Clear condition focus">×</button>
+                  <button type="button" id="dashboard-micro-condition-clear" class="dashboard__micro-condition-clear" hidden aria-label="Clear filter">×</button>
                 </div>
                 <ul id="dashboard-micro-condition-list" class="dashboard__micro-condition-list" role="listbox" hidden>
                   <li id="dashboard-micro-condition-clear-item" class="dashboard__micro-condition-item dashboard__micro-condition-item--clear" role="presentation" hidden>
-                    <button type="button" class="dashboard__micro-condition-link dashboard__micro-condition-link--clear" role="option" data-micro-condition="">Clear focus</button>
+                    <button type="button" class="dashboard__micro-condition-link dashboard__micro-condition-link--clear" role="option" data-micro-condition="">Clear filter</button>
+                  </li>
+                  <li class="dashboard__micro-condition-group" role="presentation">
+                    <span class="dashboard__micro-condition-group-label">Nutrition Intake</span>
+                  </li>
+                  <li class="dashboard__micro-condition-item" role="presentation">
+                    <button type="button" class="dashboard__micro-condition-link" role="option" data-micro-condition="wellAbsorbed">Well absorbed / average the week</button>
+                  </li>
+                  <li class="dashboard__micro-condition-item" role="presentation">
+                    <button type="button" class="dashboard__micro-condition-link" role="option" data-micro-condition="poorlyAbsorbed">Poorly absorbed / take daily</button>
+                  </li>
+                  <li class="dashboard__micro-condition-group" role="presentation">
+                    <span class="dashboard__micro-condition-group-label">Conditions</span>
                   </li>
                   <li class="dashboard__micro-condition-item" role="presentation">
                     <button type="button" class="dashboard__micro-condition-link" role="option" data-micro-condition="coffeeTeaUser">Chronic coffee / tea / energy drink user</button>
