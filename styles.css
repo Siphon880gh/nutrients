@@ -2800,6 +2800,40 @@ button.dashboard__longevity-name:focus-visible {
 
 .week__food-notes-entry-text {
   margin: 0;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+  overflow: hidden;
+}
+
+.week__food-notes-entry-text p {
+  margin: 0 0 0.65rem;
+}
+
+.week__food-notes-entry-text p:last-child {
+  margin-bottom: 0;
+}
+
+.week__food-notes-read-more {
+  display: inline-block;
+  padding: 0;
+  margin: 0.35rem 0 0;
+  font: inherit;
+  font-weight: 600;
+  color: #2a5f9e;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.week__food-notes-read-more:hover {
+  color: #1a4078;
+}
+
+.week__food-notes-read-more[hidden] {
+  display: none;
 }
 
 .week__highlight-toggle {
@@ -3055,6 +3089,7 @@ button.dashboard__longevity-name:focus-visible {
 
 .day__suggest-item-label {
   display: block;
+  box-sizing: border-box;
   max-width: 100%;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -3069,6 +3104,8 @@ button.dashboard__longevity-name:focus-visible {
 }
 
 .day__suggest-item--fitted .day__suggest-item-label {
+  padding-inline: 2px;
+  overflow: visible;
   text-overflow: clip;
 }
 

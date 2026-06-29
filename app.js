@@ -147,6 +147,10 @@
   var histamineTipModalDoneBtn = document.getElementById("histamine-tip-modal-done");
   var dashDietTipModalEl = document.getElementById("dash-diet-tip-modal");
   var dashDietTipModalDoneBtn = document.getElementById("dash-diet-tip-modal-done");
+  var foodNoteModalEl = document.getElementById("food-note-modal");
+  var foodNoteModalTitleEl = document.getElementById("food-note-modal-title");
+  var foodNoteModalBodyEl = document.getElementById("food-note-modal-body");
+  var foodNoteModalDoneBtn = document.getElementById("food-note-modal-done");
   var settingsOpenBtn = document.getElementById("settings-open");
   var settingsModalEl = document.getElementById("settings-modal");
   var settingsModalDoneBtn = document.getElementById("settings-modal-done");
@@ -2578,6 +2582,7 @@
       closePhosphorusBinderModal();
     }
     if (caffeineTipModalEl && !caffeineTipModalEl.hidden) closeCaffeineTipModal();
+    if (foodNoteModalEl && !foodNoteModalEl.hidden) closeFoodNoteModal();
     if (fatsCholesterolTipModalEl && !fatsCholesterolTipModalEl.hidden) {
       closeFatsCholesterolTipModal();
     }
@@ -3400,6 +3405,7 @@
       closePhosphorusBinderModal();
     }
     if (caffeineTipModalEl && !caffeineTipModalEl.hidden) closeCaffeineTipModal();
+    if (foodNoteModalEl && !foodNoteModalEl.hidden) closeFoodNoteModal();
     if (fatsCholesterolTipModalEl && !fatsCholesterolTipModalEl.hidden) {
       closeFatsCholesterolTipModal();
     }
@@ -4363,6 +4369,7 @@
     if (healthTimelineModalEl && !healthTimelineModalEl.hidden) closeHealthTimelineModal();
     if (microDefModalEl && !microDefModalEl.hidden) closeMicroDefModal();
     if (caffeineTipModalEl && !caffeineTipModalEl.hidden) closeCaffeineTipModal();
+    if (foodNoteModalEl && !foodNoteModalEl.hidden) closeFoodNoteModal();
     if (fatsCholesterolTipModalEl && !fatsCholesterolTipModalEl.hidden) {
       closeFatsCholesterolTipModal();
     }
@@ -4447,6 +4454,60 @@
     updateBodyModalOpen();
   }
 
+  function openFoodNoteModal(label, note) {
+    if (!foodNoteModalEl || !foodNoteModalTitleEl || !foodNoteModalBodyEl) return;
+
+    if (activeImportId) closeImportModal();
+    if (importAllModalEl && !importAllModalEl.hidden) closeImportAllModal();
+    if (importAllMealsModalEl && !importAllMealsModalEl.hidden) {
+      closeImportAllMealsModal();
+    }
+    if (microGapsModalEl && !microGapsModalEl.hidden) closeMicroGapsModal();
+    if (healthTimelineModalEl && !healthTimelineModalEl.hidden) closeHealthTimelineModal();
+    if (microDefModalEl && !microDefModalEl.hidden) closeMicroDefModal();
+    if (phosphorusBinderModalEl && !phosphorusBinderModalEl.hidden) {
+      closePhosphorusBinderModal();
+    }
+    if (caffeineTipModalEl && !caffeineTipModalEl.hidden) closeCaffeineTipModal();
+    if (foodNoteModalEl && !foodNoteModalEl.hidden) closeFoodNoteModal();
+    if (fatsCholesterolTipModalEl && !fatsCholesterolTipModalEl.hidden) {
+      closeFatsCholesterolTipModal();
+    }
+    if (tmaoProtectorsTipModalEl && !tmaoProtectorsTipModalEl.hidden) {
+      closeTmaoProtectorsTipModal();
+    }
+    if (fiberColonTipModalEl && !fiberColonTipModalEl.hidden) {
+      closeFiberColonTipModal();
+    }
+    if (dashDietTipModalEl && !dashDietTipModalEl.hidden) {
+      closeDashDietTipModal();
+    }
+    if (pufaAntioxidantTipModalEl && !pufaAntioxidantTipModalEl.hidden) {
+      closePufaAntioxidantTipModal();
+    }
+    if (histamineTipModalEl && !histamineTipModalEl.hidden) closeHistamineTipModal();
+    if (activeMicroId) {
+      saveMicrosFromForm();
+      closeMicroModal();
+    }
+    if (activeLongevityId) {
+      saveLongevityFromForm();
+      closeLongevityModal();
+    }
+
+    foodNoteModalTitleEl.textContent = label || "";
+    foodNoteModalBodyEl.innerHTML = foodNoteBodyHtml(note);
+    foodNoteModalEl.hidden = false;
+    updateBodyModalOpen();
+    if (foodNoteModalDoneBtn) foodNoteModalDoneBtn.focus();
+  }
+
+  function closeFoodNoteModal() {
+    if (!foodNoteModalEl) return;
+    foodNoteModalEl.hidden = true;
+    updateBodyModalOpen();
+  }
+
   function openFatsCholesterolTipModal() {
     if (!fatsCholesterolTipModalEl) return;
 
@@ -4462,6 +4523,7 @@
       closePhosphorusBinderModal();
     }
     if (caffeineTipModalEl && !caffeineTipModalEl.hidden) closeCaffeineTipModal();
+    if (foodNoteModalEl && !foodNoteModalEl.hidden) closeFoodNoteModal();
     if (tmaoProtectorsTipModalEl && !tmaoProtectorsTipModalEl.hidden) {
       closeTmaoProtectorsTipModal();
     }
@@ -4509,6 +4571,7 @@
       closePhosphorusBinderModal();
     }
     if (caffeineTipModalEl && !caffeineTipModalEl.hidden) closeCaffeineTipModal();
+    if (foodNoteModalEl && !foodNoteModalEl.hidden) closeFoodNoteModal();
     if (fatsCholesterolTipModalEl && !fatsCholesterolTipModalEl.hidden) {
       closeFatsCholesterolTipModal();
     }
@@ -4556,6 +4619,7 @@
       closePhosphorusBinderModal();
     }
     if (caffeineTipModalEl && !caffeineTipModalEl.hidden) closeCaffeineTipModal();
+    if (foodNoteModalEl && !foodNoteModalEl.hidden) closeFoodNoteModal();
     if (fatsCholesterolTipModalEl && !fatsCholesterolTipModalEl.hidden) {
       closeFatsCholesterolTipModal();
     }
@@ -4600,6 +4664,7 @@
       closePhosphorusBinderModal();
     }
     if (caffeineTipModalEl && !caffeineTipModalEl.hidden) closeCaffeineTipModal();
+    if (foodNoteModalEl && !foodNoteModalEl.hidden) closeFoodNoteModal();
     if (fatsCholesterolTipModalEl && !fatsCholesterolTipModalEl.hidden) {
       closeFatsCholesterolTipModal();
     }
@@ -4647,6 +4712,7 @@
       closePhosphorusBinderModal();
     }
     if (caffeineTipModalEl && !caffeineTipModalEl.hidden) closeCaffeineTipModal();
+    if (foodNoteModalEl && !foodNoteModalEl.hidden) closeFoodNoteModal();
     if (fatsCholesterolTipModalEl && !fatsCholesterolTipModalEl.hidden) {
       closeFatsCholesterolTipModal();
     }
@@ -4697,6 +4763,7 @@
       closePhosphorusBinderModal();
     }
     if (caffeineTipModalEl && !caffeineTipModalEl.hidden) closeCaffeineTipModal();
+    if (foodNoteModalEl && !foodNoteModalEl.hidden) closeFoodNoteModal();
     if (fatsCholesterolTipModalEl && !fatsCholesterolTipModalEl.hidden) {
       closeFatsCholesterolTipModal();
     }
@@ -5092,6 +5159,7 @@
       closePhosphorusBinderModal();
     }
     if (caffeineTipModalEl && !caffeineTipModalEl.hidden) closeCaffeineTipModal();
+    if (foodNoteModalEl && !foodNoteModalEl.hidden) closeFoodNoteModal();
     if (fatsCholesterolTipModalEl && !fatsCholesterolTipModalEl.hidden) {
       closeFatsCholesterolTipModal();
     }
@@ -5155,6 +5223,7 @@
       closePhosphorusBinderModal();
     }
     if (caffeineTipModalEl && !caffeineTipModalEl.hidden) closeCaffeineTipModal();
+    if (foodNoteModalEl && !foodNoteModalEl.hidden) closeFoodNoteModal();
     if (fatsCholesterolTipModalEl && !fatsCholesterolTipModalEl.hidden) {
       closeFatsCholesterolTipModal();
     }
@@ -5214,6 +5283,7 @@
       closePhosphorusBinderModal();
     }
     if (caffeineTipModalEl && !caffeineTipModalEl.hidden) closeCaffeineTipModal();
+    if (foodNoteModalEl && !foodNoteModalEl.hidden) closeFoodNoteModal();
     if (fatsCholesterolTipModalEl && !fatsCholesterolTipModalEl.hidden) {
       closeFatsCholesterolTipModal();
     }
@@ -5308,6 +5378,7 @@
       (dashDietTipModalEl && !dashDietTipModalEl.hidden) ||
       (pufaAntioxidantTipModalEl && !pufaAntioxidantTipModalEl.hidden) ||
       (histamineTipModalEl && !histamineTipModalEl.hidden) ||
+      (foodNoteModalEl && !foodNoteModalEl.hidden) ||
       (settingsModalEl && !settingsModalEl.hidden) ||
       (tdeeCalculatorModalEl && !tdeeCalculatorModalEl.hidden) ||
       (tdeeHintModalEl && !tdeeHintModalEl.hidden) ||
@@ -9409,6 +9480,15 @@
     });
   }
 
+  function foodNoteBodyHtml(note) {
+    var text = typeof note === "string" ? note.trim() : "";
+    if (!text) return "";
+    if (text.indexOf("<") !== -1) {
+      return text.replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, "");
+    }
+    return "<p>" + escapeHtml(text) + "</p>";
+  }
+
   function dayFoodNotesLabelsHtml(matches) {
     var parts = [];
     matches.forEach(function (defn, index) {
@@ -9464,9 +9544,19 @@
     dayFoodNotesActiveIndex = index;
     var defn = dayFoodNotesMatches[index];
     dayFoodNotesPopoverEl.innerHTML =
-      '<p class="week__food-notes-entry-text">' + escapeHtml(defn.note) + "</p>";
+      '<div class="week__food-notes-entry">' +
+      '<div class="week__food-notes-entry-text">' +
+      foodNoteBodyHtml(defn.note) +
+      "</div>" +
+      '<button type="button" class="week__food-notes-read-more" hidden>Read more</button>' +
+      "</div>";
     positionDayFoodNotesPopover(triggerEl);
     dayFoodNotesPopoverEl.hidden = false;
+    var textEl = dayFoodNotesPopoverEl.querySelector(".week__food-notes-entry-text");
+    var readMoreBtn = dayFoodNotesPopoverEl.querySelector(".week__food-notes-read-more");
+    if (textEl && readMoreBtn) {
+      readMoreBtn.hidden = textEl.scrollHeight <= textEl.clientHeight;
+    }
     syncDayFoodNotesLabelExpanded();
   }
 
@@ -9516,6 +9606,16 @@
       });
       dayFoodNotesPopoverEl.addEventListener("mouseleave", function () {
         scheduleDayFoodNotesHide();
+      });
+      dayFoodNotesPopoverEl.addEventListener("click", function (e) {
+        var readMoreBtn = e.target.closest(".week__food-notes-read-more");
+        if (!readMoreBtn) return;
+        e.stopPropagation();
+        if (dayFoodNotesActiveIndex < 0 || dayFoodNotesActiveIndex >= dayFoodNotesMatches.length) {
+          return;
+        }
+        var defn = dayFoodNotesMatches[dayFoodNotesActiveIndex];
+        openFoodNoteModal(defn.label, defn.note);
       });
     }
 
@@ -10883,12 +10983,46 @@
     );
   }
 
+  var DAY_SUGGEST_LABEL_INSET = 1;
+
   function daySuggestItemLabelWidth(btn) {
     var style = getComputedStyle(btn);
     return (
       btn.clientWidth -
       parseFloat(style.paddingLeft) -
-      parseFloat(style.paddingRight)
+      parseFloat(style.paddingRight) -
+      DAY_SUGGEST_LABEL_INSET * 2
+    );
+  }
+
+  function daySuggestItemLabelOverflow(btn) {
+    var label = btn.querySelector(".day__suggest-item-label");
+    if (!label) return 0;
+    var labelStyle = getComputedStyle(label);
+    var labelRect = label.getBoundingClientRect();
+    var contentRight = labelRect.right - parseFloat(labelStyle.paddingRight) - 1;
+    var contentLeft = labelRect.left + parseFloat(labelStyle.paddingLeft) + 1;
+    var walker = document.createTreeWalker(label, NodeFilter.SHOW_TEXT);
+    var firstText = null;
+    var lastText = null;
+    while (walker.nextNode()) {
+      if (!walker.currentNode.nodeValue) continue;
+      if (!firstText) firstText = walker.currentNode;
+      lastText = walker.currentNode;
+    }
+    if (!lastText || !lastText.length) return 0;
+    var startRange = document.createRange();
+    startRange.setStart(firstText, 0);
+    startRange.setEnd(firstText, 1);
+    var endRange = document.createRange();
+    endRange.setStart(lastText, lastText.length - 1);
+    endRange.setEnd(lastText, lastText.length);
+    var startRect = startRange.getBoundingClientRect();
+    var endRect = endRange.getBoundingClientRect();
+    return Math.max(
+      endRect.right - contentRight,
+      contentLeft - startRect.left,
+      0
     );
   }
 
@@ -10896,18 +11030,32 @@
     var label = btn.querySelector(".day__suggest-item-label");
     if (!label) return;
     resetDaySuggestItemLabel(btn);
-    if (label.scrollWidth <= daySuggestItemLabelWidth(btn)) return;
-    var baseSize = parseFloat(getComputedStyle(label).fontSize);
-    var ratio = daySuggestItemLabelWidth(btn) / label.scrollWidth;
-    var minSize = baseSize * 0.62;
-    label.style.fontSize = Math.max(minSize, baseSize * ratio * 0.96) + "px";
+    btn.style.minWidth = btn.offsetWidth + "px";
+    var maxWidth = daySuggestItemLabelWidth(btn);
+    if (label.scrollWidth <= maxWidth) {
+      btn.style.minWidth = "";
+      return;
+    }
     btn.classList.add("day__suggest-item--fitted");
+    maxWidth = daySuggestItemLabelWidth(btn);
+    var baseSize = parseFloat(getComputedStyle(label).fontSize);
+    var absoluteMin = baseSize * 0.45;
+    var size = Math.max(absoluteMin, baseSize * (maxWidth / label.scrollWidth));
+    label.style.transition = "none";
+    label.style.fontSize = size + "px";
+    while (daySuggestItemLabelOverflow(btn) > 0 && size > absoluteMin + 0.25) {
+      size -= 0.25;
+      label.style.fontSize = size + "px";
+    }
+    label.style.transition = "";
   }
 
   function resetDaySuggestItemLabel(btn) {
     var label = btn.querySelector(".day__suggest-item-label");
     if (!label) return;
     label.style.fontSize = "";
+    label.style.transition = "";
+    btn.style.minWidth = "";
     btn.classList.remove("day__suggest-item--fitted");
   }
 
@@ -11966,6 +12114,18 @@
     caffeineTipModalEl.addEventListener("click", function (e) {
       if (e.target.closest('[data-action="close-caffeine-tip-modal"]')) {
         closeCaffeineTipModal();
+      }
+    });
+  }
+
+  if (foodNoteModalDoneBtn) {
+    foodNoteModalDoneBtn.addEventListener("click", closeFoodNoteModal);
+  }
+
+  if (foodNoteModalEl) {
+    foodNoteModalEl.addEventListener("click", function (e) {
+      if (e.target.closest('[data-action="close-food-note-modal"]')) {
+        closeFoodNoteModal();
       }
     });
   }

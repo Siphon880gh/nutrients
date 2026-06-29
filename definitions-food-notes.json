@@ -9,6 +9,12 @@
       "label": "Pork Zongzi",
       "pattern": "\\bpork zongzi\\b",
       "note": "Pork Zongzi contains salted duck egg yolk. This is a Cantonese-style Zongzi served in Hong Kong and Guangdong."
+    },
+
+    {
+      "label": "Peanut Butter",
+      "pattern": "\\bpeanut.*butter\\b",
+      "note": "<p>Measuring peanut butter with a tablespoon can be annoying because it sticks inside the spoon and is hard to clean since a tablespoon is deep and concave.</p><p>A simpler method is to use your regular eating spoon which is more shallow and less concave. Ahead of time, figure out how much peanut butter from your regular spoon equals 1 tablespoon. You can do this by scooping peanut butter with your regular spoon, then transferring it into a measuring tablespoon.</p><p>For example, with my regular spoon, 2 lightly heaping spoonfuls — with the peanut butter raised no more than about 2 mm — equals about 1 tablespoon.</p><p>You will still need to clean the spoon afterward, but it is much easier than cleaning a measuring tablespoon because a regular spoon is usually less deep and less concave. To clean it well, you may need to dip it into a cup of water with one pump of soap a few times, let it sit briefly between dips, and scrub off the peanut butter.</p>"
     }
   ]
 }
