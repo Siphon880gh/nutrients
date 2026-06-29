@@ -246,9 +246,11 @@
   var exportAllFoodsBtn = document.getElementById("export-all-foods");
   var importAllFoodsBtn = document.getElementById("import-all-foods");
   var importSampleFoodsBtn = document.getElementById("import-sample-foods");
+  var sortFoodsAlphabeticallyBtn = document.getElementById("sort-foods-alphabetically");
   var exportAllFoodsTopBtn = document.getElementById("export-all-foods-top");
   var importAllFoodsTopBtn = document.getElementById("import-all-foods-top");
   var importSampleFoodsTopBtn = document.getElementById("import-sample-foods-top");
+  var sortFoodsAlphabeticallyTopBtn = document.getElementById("sort-foods-alphabetically-top");
   var starterGuideEl = document.getElementById("starter-guide");
   var starterGuideTextEl = document.getElementById("starter-guide-text");
   var starterGuideDismissEl = document.getElementById("starter-guide-dismiss");
@@ -10274,6 +10276,24 @@
     refreshAll();
   }
 
+  function sortKeywordsAlphabetically() {
+    if (keywords.length < 2) return;
+    syncAllFieldsFromDom();
+    if (activePositionId) closeKeywordPositionModal();
+    keywords.sort(function (a, b) {
+      var nameA = a && a.name ? String(a.name).trim().toLowerCase() : "";
+      var nameB = b && b.name ? String(b.name).trim().toLowerCase() : "";
+      if (!nameA && !nameB) return 0;
+      if (!nameA) return 1;
+      if (!nameB) return -1;
+      return nameA.localeCompare(nameB);
+    });
+    keywordsPageIndex = 0;
+    saveFoodDefinitions();
+    renderKeywords();
+    refreshAll();
+  }
+
   function addKeyword() {
     keywords.push(blankKeyword());
     saveFoodDefinitions();
@@ -11867,6 +11887,14 @@
     keywordsPageLastBtn.addEventListener("click", function () {
       goKeywordsPage(keywordsPageCount() - 1);
     });
+  }
+
+  if (sortFoodsAlphabeticallyBtn) {
+    sortFoodsAlphabeticallyBtn.addEventListener("click", sortKeywordsAlphabetically);
+  }
+
+  if (sortFoodsAlphabeticallyTopBtn) {
+    sortFoodsAlphabeticallyTopBtn.addEventListener("click", sortKeywordsAlphabetically);
   }
 
   if (exportAllFoodsBtn) {
