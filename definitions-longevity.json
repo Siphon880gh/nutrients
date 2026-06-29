@@ -431,6 +431,11 @@
     ]
   },
   "copper": {
+    "dashboardTracking": [
+      "On this dashboard, track copper against its own daily value (% DV)—that is the primary signal.",
+      "Copper supports iron metabolism; low copper can look like iron deficiency even when iron intake is adequate. Watch both nutrients on their own % DV bars, not as a combined ratio.",
+      "Chronic high-dose zinc is what most often depletes copper—not iron from food."
+    ],
     "tooLow": [
       "Low copper can weaken connective tissue, iron metabolism, and antioxidant enzymes over time.",
       "Very high zinc intake without balance can interfere with copper absorption."
@@ -636,6 +641,29 @@
     "antiAging": [
       "CoQ10 is the mitochondrial electron shuttle between complexes I/II and III—tissue levels fall with age and statin use, reducing cellular energy capacity.",
       "Adequate CoQ10 from organ meats, fish, and nuts supports ATP production and may blunt the oxidative stress that damages mitochondrial DNA over time."
+    ]
+  },
+  "taurine": {
+    "tooLow": [
+      "Taurine is synthesized in the body, but blood and tissue levels fall with age; strict plant-based diets supply little from food.",
+      "Low intake is rarely a classical deficiency, but animal-rich foods are the practical way to offset age-related decline."
+    ],
+    "enough": [
+      "Taurine supports bile acid conjugation, heart muscle function, retinal health, and acts as a mitochondrial antioxidant.",
+      "Shellfish, dark poultry meat, beef, fish, eggs, and dairy are the richest food sources."
+    ],
+    "foodSources": [
+      "Shellfish (scallops, mussels)",
+      "Dark meat chicken & turkey",
+      "Beef & pork",
+      "Fish (tuna, salmon)",
+      "Eggs",
+      "Dairy",
+      "Seaweed"
+    ],
+    "antiAging": [
+      "Taurine levels decline significantly with age; a 2023 Science study showed taurine supplementation extended lifespan in mice and improved healthspan markers (bone density, muscle, immune function).",
+      "Acts as a mitochondrial antioxidant and supports bile acid metabolism—both decline with aging. Human trials are ongoing; food-first shellfish, dark poultry, and fish are the practical targets."
     ]
   },
   "sulforaphane": {

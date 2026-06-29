@@ -152,14 +152,53 @@
     return DAILY_INTAKE_MICRO_KEYS.indexOf(microKey) !== -1;
   }
 
+  /**
+   * IOM (2005) estimated average requirement for indispensable amino acids,
+   * mg/kg body weight/day (adults 19+). The IOM was reorganized as the Health
+   * and Medicine Division (HMD) of the National Academies in 2015.
+   * Sulfur (Met+Cys) and aromatic (Phe+Tyr) pairs are split for per-nutrient tracking.
+   */
+  var IOM_BW_MIN_MG_PER_KG = {
+    histidine: 14,
+    isoleucine: 20,
+    leucine: 39,
+    lysine: 30,
+    methionine: 10.4,
+    phenylalanine: 14,
+    threonine: 15,
+    tryptophan: 5,
+    tyrosine: 19,
+    valine: 24,
+  };
+
+  function getIomBwMinMgPerKg(microKey) {
+    var mgPerKg = IOM_BW_MIN_MG_PER_KG[microKey];
+    return typeof mgPerKg === "number" && mgPerKg > 0 ? mgPerKg : 0;
+  }
+
+  function hasIomBwMin(microKey) {
+    return getIomBwMinMgPerKg(microKey) > 0;
+  }
+
+  /** Daily IOM body-weight minimum in the micro nutrient's unit (mg). */
+  function getIomBwMinDaily(microKey, weightKg) {
+    var mgPerKg = getIomBwMinMgPerKg(microKey);
+    if (!mgPerKg || typeof weightKg !== "number" || weightKg <= 0) return 0;
+    return mgPerKg * weightKg;
+  }
+
   global.NutrientsDemographicDv = {
     DEFAULT_DEMOGRAPHIC: DEFAULT_DEMOGRAPHIC,
     META: META,
     CALORIE_BASELINE: CALORIE_BASELINE,
     DAILY_MICRO_DV: DAILY_MICRO_DV,
     DAILY_INTAKE_MICRO_KEYS: DAILY_INTAKE_MICRO_KEYS,
+    IOM_BW_MIN_MG_PER_KG: IOM_BW_MIN_MG_PER_KG,
     normalizeDemographic: normalizeDemographic,
     getDailyMicroDv: getDailyMicroDv,
     requiresDailyIntake: requiresDailyIntake,
+    getIomBwMinMgPerKg: getIomBwMinMgPerKg,
+    hasIomBwMin: hasIomBwMin,
+    getIomBwMinDaily: getIomBwMinDaily,
   };
 })(typeof window !== "undefined" ? window : this);

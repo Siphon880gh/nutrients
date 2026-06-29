@@ -11,6 +11,7 @@
   var STORAGE_KEY = "nutrients-food-definitions";
   var STORAGE_KEY_LEGACY = "nutrients-keywords";
   var STORAGE_KEY_DEMOGRAPHIC = "nutrients-demographic";
+  var STORAGE_KEY_BODY_WEIGHT_KG = "nutrients-body-weight-kg";
   var STORAGE_KEY_TDEE = "nutrients-tdee";
   var STORAGE_KEY_DAYS = "nutrients-day-notes";
   var STORAGE_KEY_DAY_EDITOR_HEIGHT = "nutrients-day-editor-height";
@@ -150,6 +151,9 @@
   var settingsModalDoneBtn = document.getElementById("settings-modal-done");
   var settingsDemographicIconEl = document.getElementById("settings-demographic-icon");
   var settingsTdeeEl = document.getElementById("settings-tdee");
+  var settingsWeightEl = document.getElementById("settings-weight");
+  var settingsWeightKgBtn = document.getElementById("settings-weight-kg");
+  var settingsWeightLbBtn = document.getElementById("settings-weight-lb");
   var settingsTdeeCalcOpenBtn = document.getElementById("settings-tdee-calc-open");
   var tdeeCalculatorModalEl = document.getElementById("tdee-calculator-modal");
   var tdeeCalculatorCancelBtn = document.getElementById("tdee-calculator-cancel");
@@ -261,6 +265,8 @@
   var microSaveTimer;
   var demographic = DEFAULT_DEMOGRAPHIC;
   var userTdee = null;
+  var userBodyWeightKg = null;
+  var settingsWeightUnit = "lb";
   var tdeeCalcSex = DEFAULT_DEMOGRAPHIC;
   var tdeeCalcWeightUnit = "lb";
   var tdeeCalcHeightUnit = "ft";
@@ -327,6 +333,39 @@
   var longevitySourcesFullscreen = false;
   var microDailyIntakePopoverEl = document.getElementById("micro-daily-intake-popover");
   var microDailyIntakePopoverAnchor = null;
+  var targetRefPopoverEl = document.getElementById("target-ref-popover");
+  var targetRefPopoverTextEl = document.getElementById("target-ref-popover-text");
+  var targetRefPopoverAnchor = null;
+
+  var TARGET_REF_POPOVER_TEXT = {
+    fda:
+      "FDA Daily Value — the daily reference behind % DV on U.S. nutrition labels for vitamins and minerals. The FDA factors in absorbability: for example, plant vitamin A is expressed as retinol activity equivalents (RAE), which reflects lower absorption from vegetables than from preformed vitamin A in animal foods. This app uses sex-specific targets from Settings where needs differ from a single label number.",
+    iom_bw:
+      "IOM bw min — estimated average requirement from the Institute of Medicine (2005) protein and amino acid report: mg/kg body weight × your weight in Settings. It is a minimum target, not a maximum. This nutrient does not have a FDA % DV. The IOM was reorganized as the Health and Medicine Division (HMD) of the National Academies in 2015.",
+    iom_bw_set:
+      "Set body weight in Settings to calculate IOM bw min (IOM 2005 EAR × your weight)—a minimum, not a maximum. The Institute of Medicine is now the Health and Medicine Division (HMD) of the National Academies (2015).",
+    study_max:
+      "Study max — a published human safety review or risk assessment gives an observed safe level, NOAEL, or OSL for supplemental intake. This is not an FDA or IOM/HMD daily value, and it is a ceiling-style reference: lower % is safer as you approach the study level.",
+    study_min:
+      "Study min — a published human study or review gives a minimum-style intake target. This is not an FDA or IOM/HMD daily value.",
+    no_ref:
+      "No ref — no standalone FDA Daily Value, IOM/HMD body-weight requirement, or solid human study minimum/maximum was found for this nutrient. Some amino acids are conditionally essential or part of combined pathways, but this app leaves them unscored rather than inventing a target.",
+  };
+
+  var TARGET_REF_POPOVER_DETAILS = {
+    arginine: {
+      text: "Arginine: Shao & Hathcock, Regulatory Toxicology and Pharmacology (2008), “Risk assessment for the amino acids taurine, L-glutamine and L-arginine.” The study used an Observed Safe Level / Highest Observed Intake approach and selected 20 g/day as the OSL for normal healthy adults.",
+      url: "https://pubmed.ncbi.nlm.nih.gov/18325648/",
+    },
+    glutamine: {
+      text: "Glutamine: Shao & Hathcock, Regulatory Toxicology and Pharmacology (2008), “Risk assessment for the amino acids taurine, L-glutamine and L-arginine.” The study used an Observed Safe Level / Highest Observed Intake approach and selected 14 g/day as the OSL for normal healthy adults.",
+      url: "https://pubmed.ncbi.nlm.nih.gov/18325648/",
+    },
+    taurine: {
+      text: "Taurine: Shao & Hathcock, Regulatory Toxicology and Pharmacology (2008), “Risk assessment for the amino acids taurine, L-glutamine and L-arginine.” The study used an Observed Safe Level / Highest Observed Intake approach and selected 3 g/day as the OSL for normal healthy adults.",
+      url: "https://pubmed.ncbi.nlm.nih.gov/18325648/",
+    },
+  };
 
   var LONGEVITY_DERIVED_DEFS = {
     omega6To3: { label: "Omega-6 : Omega-3 ratio", limiting: true },
@@ -429,6 +468,7 @@
         "folate",
         "vitaminB6",
         "vitaminB12",
+        "taurine",
       ],
       longevityNutrients: [
         "coq10",
@@ -472,10 +512,10 @@
     { key: "potassium", label: "Potassium", unit: "mg", code: "k" },
     { key: "calcium", label: "Calcium", unit: "mg", code: "ca" },
     { key: "iron", label: "Iron", unit: "mg", code: "fe" },
+    { key: "copper", label: "Copper", unit: "mcg", code: "cu" },
     { key: "magnesium", label: "Magnesium", unit: "mg", code: "mg" },
     { key: "zinc", label: "Zinc", unit: "mg", code: "zn" },
     { key: "selenium", label: "Selenium", unit: "mcg", code: "se" },
-    { key: "copper", label: "Copper", unit: "mcg", code: "cu" },
     { key: "manganese", label: "Manganese", unit: "mg", code: "mn" },
     { key: "chromium", label: "Chromium", unit: "mcg", code: "cr" },
     { key: "iodine", label: "Iodine", unit: "mcg", code: "i" },
@@ -761,6 +801,11 @@
     { microKey: "iron", label: "Iron", limiting: false },
     { microKey: "magnesium", label: "Magnesium", limiting: false },
     { microKey: "manganese", label: "Manganese", limiting: false },
+    {
+      microKey: "taurine",
+      label: "Taurine — mitochondrial antioxidant",
+      limiting: false,
+    },
   ];
 
   var LONGEVITY_MITO_FROM_LONGEVITY = [{ key: "coq10", label: "Coenzyme Q10", limiting: false }];
@@ -768,6 +813,11 @@
   var LONGEVITY_CELLULAR_AGING_FROM_MICRO = [
     { microKey: "vitaminD", label: "Vitamin D", limiting: false },
     { microKey: "vitaminC", label: "Vitamin C", limiting: false },
+    {
+      microKey: "taurine",
+      label: "Taurine — declines with age",
+      limiting: false,
+    },
   ];
 
   var LONGEVITY_CELLULAR_AGING_FROM_LONGEVITY = [
@@ -1340,6 +1390,13 @@
       code: "bet",
       group: "compounds",
       limiting: true,
+    },
+    {
+      key: "taurine",
+      label: "Taurine",
+      unit: "mg",
+      code: "tau",
+      group: "compounds",
     },
     { key: "glycemicIndex", label: "Glycemic index", unit: "GI", code: "gi", group: "glycemic" },
     {
@@ -2106,7 +2163,8 @@
       "  - micros.biotin: eggs, salmon, nuts, seeds, sweet potato, liver"
     );
     lines.push(
-      "  - micros.methionine: poultry, fish, eggs, beef, pork, dairy, soy, sesame, Brazil nuts (mg; SAMe precursor)"
+      "  - micros.methionine: poultry, fish, eggs, beef, pork, dairy, soy, sesame, Brazil nuts (mg; SAMe precursor)",
+      "  - micros.taurine: shellfish, dark poultry meat, beef, fish, eggs, dairy (mg; declines with age)"
     );
     lines.push(
       "  - longevity.transFat: 0 for whole/natural foods; fried fast food, movie-theater buttery popcorn, and some pastries may have 0.1–4 g — use label data when available (g)"
@@ -2236,21 +2294,29 @@
     MICRO_ALL_FIELDS.forEach(function (field) {
       var total = week[field.key];
       if (!total && field.group === "amino") return;
-      var pct = avgDailyMicroPct(field.key, total);
       var avgDaily = total / DAYS.length;
+      var target = microNutrientTargetPct(field.key, avgDaily);
+      var pct = target.pct;
       var amtText =
         total > 0
           ? fmtNum(avgDaily) + " " + field.unit + "/day avg"
           : "0 " + field.unit + "/day avg";
-      var pctText =
-        pct == null || isNaN(pct) ? "—" : fmtNum(pct) + "% DV";
 
       lines.push(field.label);
       lines.push(amtText);
-      lines.push(pctText);
+      lines.push(
+        target.kindLabel ? target.text + " · " + target.kindLabel : target.text
+      );
 
-      if (pct != null && !isNaN(pct) && pct < 100) {
-        deficiencies.push(field.label + " (" + fmtNum(pct) + "% DV)");
+      if (
+        pct != null &&
+        !isNaN(pct) &&
+        ((target.limiting && pct > 100) || (!target.limiting && pct < 100))
+      ) {
+        var gapLabel = target.kindLabel
+          ? fmtNum(pct) + "% " + target.kindLabel
+          : fmtNum(pct) + "%";
+        deficiencies.push(field.label + " (" + gapLabel + ")");
       }
     });
 
@@ -2568,6 +2634,7 @@
       entry.tooLow.length ||
       entry.tooHigh.length ||
       entry.enough.length ||
+      entry.dashboardTracking.length ||
       entry.foodSources.length ||
       entry.foodSourceGroups.length ||
       entry.male.length ||
@@ -2591,6 +2658,7 @@
           tooLow: stringArray(raw.tooLow),
           tooHigh: stringArray(raw.tooHigh),
           enough: stringArray(raw.enough),
+          dashboardTracking: stringArray(raw.dashboardTracking),
           foodSources: stringArray(raw.foodSources),
           foodSourceGroups: foodSourceGroupsArray(raw),
           male: stringArray(raw.male),
@@ -2705,6 +2773,7 @@
       entry.tooLow.length ||
       entry.tooHigh.length ||
       entry.enough.length ||
+      entry.dashboardTracking.length ||
       entry.foodSources.length ||
       entry.foodSourceGroups.length ||
       entry.targetReference.length
@@ -2727,6 +2796,7 @@
           tooLow: stringArray(raw.tooLow),
           tooHigh: stringArray(raw.tooHigh),
           enough: stringArray(raw.enough),
+          dashboardTracking: stringArray(raw.dashboardTracking),
           foodSources: stringArray(raw.foodSources),
           foodSourceGroups: foodSourceGroupsArray(raw),
           targetReference: stringArray(raw.targetReference),
@@ -2878,6 +2948,14 @@
     }
 
     var html = microDefConditionSectionHtml(key, def);
+
+    if (def.dashboardTracking.length) {
+      html +=
+        '<section class="micro-def__section">' +
+        '<h4 class="micro-def__heading">Tracking on this dashboard</h4>' +
+        microDefParagraphsHtml(def.dashboardTracking) +
+        "</section>";
+    }
 
     if (def.tooLow.length) {
       html +=
@@ -3037,6 +3115,14 @@
         '<section class="micro-def__section">' +
         '<h4 class="micro-def__heading">Daily target reference</h4>' +
         microDefParagraphsHtml(def.targetReference) +
+        "</section>";
+    }
+
+    if (def.dashboardTracking.length) {
+      html +=
+        '<section class="micro-def__section">' +
+        '<h4 class="micro-def__heading">Tracking on this dashboard</h4>' +
+        microDefParagraphsHtml(def.dashboardTracking) +
         "</section>";
     }
 
@@ -3598,29 +3684,33 @@
     var femaleDv = microDvForDemographic(field.key, "female");
     var weekCount = DAYS.length;
     var sameBySex = maleDv === femaleDv;
+    var iomMgPerKg = iomBwMinMgPerKg(field.key);
+    var weightKg = getBodyWeightKg();
+    var studyMax = studyMaxMicroRef(field.key);
+    var noStandaloneRef = microHasNoStandaloneRef(field.key);
 
     var html = '<div class="micro-sources-modal__reqs">';
 
-    if (!maleDv && !femaleDv) {
+    if (!maleDv && !femaleDv && !iomMgPerKg && !studyMax && !noStandaloneRef) {
       html +=
         '<p class="micro-sources-modal__req-note">No daily reference set for this nutrient.</p></div>';
       return html;
     }
 
-    if (sameBySex) {
+    if (sameBySex && (maleDv || femaleDv)) {
       var dv = maleDv || femaleDv;
       html +=
         '<div class="micro-sources-modal__req-row">' +
-        '<span class="micro-sources-modal__req-label">Daily requirement</span>' +
+        '<span class="micro-sources-modal__req-label">Daily requirement (FDA DV)</span>' +
         '<span class="micro-sources-modal__req-val">' +
         escapeHtml(microDvAmountText(dv, field.unit)) +
         "</span></div>" +
         '<div class="micro-sources-modal__req-row">' +
-        '<span class="micro-sources-modal__req-label">Weekly requirement</span>' +
+        '<span class="micro-sources-modal__req-label">Weekly requirement (FDA DV)</span>' +
         '<span class="micro-sources-modal__req-val">' +
         escapeHtml(microDvAmountText(dv * weekCount, field.unit)) +
         "</span></div>";
-    } else {
+    } else if (maleDv || femaleDv) {
       var metaMap = demographicDv ? demographicDv.META : {};
       var maleMeta = metaMap.male || { icon: "♂", label: "Male" };
       var femaleMeta = metaMap.female || { icon: "♀", label: "Female" };
@@ -3651,6 +3741,47 @@
           "</span></div></div>";
       });
       html += "</div>";
+    }
+
+    if (iomMgPerKg) {
+      html +=
+        '<p class="micro-sources-modal__req-note">IOM bw min (2005 EAR): ' +
+        escapeHtml(fmtNum(iomMgPerKg) + " mg/kg body weight/day") +
+        ".</p>";
+      if (!weightKg) {
+        html +=
+          '<p class="micro-sources-modal__req-note">Set body weight in Settings to see your daily IOM bw min.</p>';
+      } else {
+        var iomDaily = iomBwMinDaily(field.key);
+        html +=
+          '<div class="micro-sources-modal__req-row">' +
+          '<span class="micro-sources-modal__req-label">Daily IOM bw min</span>' +
+          '<span class="micro-sources-modal__req-val">' +
+          escapeHtml(microDvAmountText(iomDaily, field.unit)) +
+          "</span></div>" +
+          '<div class="micro-sources-modal__req-row">' +
+          '<span class="micro-sources-modal__req-label">Weekly IOM bw min</span>' +
+          '<span class="micro-sources-modal__req-val">' +
+          escapeHtml(microDvAmountText(iomDaily * weekCount, field.unit)) +
+          "</span></div>";
+      }
+    }
+
+    if (studyMax) {
+      html +=
+        '<p class="micro-sources-modal__req-note">Study max: ' +
+        escapeHtml(studyMax.source) +
+        ". This is a study-derived ceiling reference, not an FDA or IOM daily value.</p>" +
+        '<div class="micro-sources-modal__req-row">' +
+        '<span class="micro-sources-modal__req-label">Daily study max</span>' +
+        '<span class="micro-sources-modal__req-val">' +
+        escapeHtml(microDvAmountText(studyMax.amount, field.unit)) +
+        "</span></div>";
+    }
+
+    if (noStandaloneRef) {
+      html +=
+        '<p class="micro-sources-modal__req-note">No standalone FDA, IOM/HMD, or human-study daily minimum/maximum is set for this nutrient. It is shown unscored.</p>';
     }
 
     html += "</div>";
@@ -4073,6 +4204,141 @@
     e.stopPropagation();
     showMicroDailyIntakePopover(btn);
     return true;
+  }
+
+  function targetRefKindKey(kindLabel) {
+    if (kindLabel === "FDA DV") return "fda";
+    if (kindLabel === "IOM bw min · set weight") return "iom_bw_set";
+    if (kindLabel === "IOM bw min") return "iom_bw";
+    if (kindLabel === "Study max") return "study_max";
+    if (kindLabel === "Study min") return "study_min";
+    if (kindLabel === "No ref") return "no_ref";
+    return "";
+  }
+
+  function targetKindLabelHtml(kindLabel, extraClass, nutrientKey) {
+    if (!kindLabel) return "";
+    var key = targetRefKindKey(kindLabel);
+    if (!key) {
+      return (
+        '<span class="' + escapeAttr(extraClass) + '">' + escapeHtml(kindLabel) + "</span>"
+      );
+    }
+    return (
+      '<button type="button" class="dashboard__target-ref ' +
+      escapeAttr(extraClass) +
+      '" data-target-ref="' +
+      escapeAttr(key) +
+      '" data-target-ref-nutrient="' +
+      escapeAttr(nutrientKey || "") +
+      '" aria-describedby="target-ref-popover">' +
+      escapeHtml(kindLabel) +
+      "</button>"
+    );
+  }
+
+  function positionTargetRefPopover(anchor) {
+    if (!targetRefPopoverEl || !anchor) return;
+    var rect = anchor.getBoundingClientRect();
+    targetRefPopoverEl.style.left = Math.max(8, rect.left) + "px";
+    targetRefPopoverEl.style.top = rect.bottom + 6 + "px";
+  }
+
+  function hideTargetRefPopover() {
+    if (!targetRefPopoverEl) return;
+    targetRefPopoverEl.hidden = true;
+    targetRefPopoverAnchor = null;
+  }
+
+  function targetRefDetailHtml(detail) {
+    if (!detail) return "";
+    var text = typeof detail === "string" ? detail : detail.text;
+    if (!text) return "";
+    var html =
+      '<p class="dashboard__target-ref-popover-copy dashboard__target-ref-popover-copy--detail">' +
+      escapeHtml(text);
+    if (detail.url) {
+      html +=
+        ' <a href="' +
+        escapeAttr(detail.url) +
+        '" target="_blank" rel="noopener noreferrer">Journal link</a>';
+    }
+    html += "</p>";
+    return html;
+  }
+
+  function showTargetRefPopover(btn) {
+    if (!targetRefPopoverEl || !targetRefPopoverTextEl || !btn) return;
+    var key = btn.getAttribute("data-target-ref");
+    var text = key ? TARGET_REF_POPOVER_TEXT[key] : "";
+    if (!text) return;
+    var nutrientKey = btn.getAttribute("data-target-ref-nutrient") || "";
+    var detail = nutrientKey ? TARGET_REF_POPOVER_DETAILS[nutrientKey] : "";
+    targetRefPopoverTextEl.innerHTML =
+      '<p class="dashboard__target-ref-popover-copy">' +
+      escapeHtml(text) +
+      "</p>" +
+      targetRefDetailHtml(detail);
+    targetRefPopoverAnchor = btn;
+    positionTargetRefPopover(btn);
+    targetRefPopoverEl.hidden = false;
+  }
+
+  function toggleTargetRefPopover(btn) {
+    if (!btn) return;
+    if (
+      targetRefPopoverAnchor === btn &&
+      targetRefPopoverEl &&
+      !targetRefPopoverEl.hidden
+    ) {
+      hideTargetRefPopover();
+      return;
+    }
+    showTargetRefPopover(btn);
+  }
+
+  function bindTargetRefPopover(container) {
+    if (!container || container._targetRefBound) return;
+    container._targetRefBound = true;
+
+    container.addEventListener("click", function (e) {
+      var btn = e.target.closest(".dashboard__target-ref");
+      if (!btn || !container.contains(btn)) return;
+      e.preventDefault();
+      e.stopPropagation();
+      toggleTargetRefPopover(btn);
+    });
+  }
+
+  function initTargetRefPopoverEvents() {
+    bindTargetRefPopover(dashboardMicroListEl);
+    bindTargetRefPopover(dashboardMicroDailyGridEl);
+    bindTargetRefPopover(dashboardLongevityContentEl);
+
+    document.addEventListener("click", function (e) {
+      if (!targetRefPopoverEl || targetRefPopoverEl.hidden) return;
+      if (
+        e.target.closest(".dashboard__target-ref") ||
+        e.target.closest("#target-ref-popover")
+      ) {
+        return;
+      }
+      hideTargetRefPopover();
+    });
+
+    window.addEventListener(
+      "scroll",
+      function () {
+        hideTargetRefPopover();
+      },
+      true
+    );
+
+    window.addEventListener("resize", function () {
+      if (targetRefPopoverAnchor && !targetRefPopoverEl.hidden) {
+        positionTargetRefPopover(targetRefPopoverAnchor);
+      }
+    });
   }
 
   function openPhosphorusBinderModal() {
@@ -5703,6 +5969,254 @@
     return dailyMicroPct(key, weekTotal / DAYS.length);
   }
 
+  function iomBwMinMgPerKg(key) {
+    if (demographicDv && demographicDv.getIomBwMinMgPerKg) {
+      return demographicDv.getIomBwMinMgPerKg(key);
+    }
+    return 0;
+  }
+
+  function getBodyWeightKg() {
+    return userBodyWeightKg != null && userBodyWeightKg > 0 ? userBodyWeightKg : null;
+  }
+
+  function iomBwMinDaily(key) {
+    var weightKg = getBodyWeightKg();
+    if (!weightKg) return 0;
+    if (demographicDv && demographicDv.getIomBwMinDaily) {
+      return demographicDv.getIomBwMinDaily(key, weightKg);
+    }
+    return 0;
+  }
+
+  function iomBwMinPct(key, dailyAmount) {
+    var min = iomBwMinDaily(key);
+    if (!min) return null;
+    return (dailyAmount / min) * 100;
+  }
+
+  function formatTargetPctNumber(pct) {
+    if (pct == null || isNaN(pct)) return "—";
+    return fmtNum(pct) + "%";
+  }
+
+  var STUDY_MAX_MICRO_REFS = {
+    arginine: {
+      amount: 20000,
+      source: "Shao & Hathcock 2008 OSL",
+    },
+    glutamine: {
+      amount: 14000,
+      source: "Shao & Hathcock 2008 OSL",
+    },
+    taurine: {
+      amount: 3000,
+      source: "Shao & Hathcock 2008 OSL",
+    },
+  };
+
+  var NO_STANDALONE_REF_MICRO_KEYS = {
+    cysteine: true,
+    glycine: true,
+    proline: true,
+  };
+
+  function studyMaxMicroRef(key) {
+    var ref = STUDY_MAX_MICRO_REFS[key];
+    return ref && typeof ref.amount === "number" && ref.amount > 0 ? ref : null;
+  }
+
+  function microHasNoStandaloneRef(key) {
+    return !!NO_STANDALONE_REF_MICRO_KEYS[key];
+  }
+
+  function microTargetReqAmountText(key) {
+    var field = microFieldByKey(key);
+    var unit = field ? field.unit : "mg";
+    var dv = dailyDv(key);
+    if (dv) return fmtNum(dv) + " " + unit + "/day";
+    if (iomBwMinMgPerKg(key)) {
+      if (!getBodyWeightKg()) return "";
+      return fmtNum(iomBwMinDaily(key)) + " " + unit + "/day";
+    }
+    var studyMax = studyMaxMicroRef(key);
+    if (studyMax) return fmtNum(studyMax.amount) + " " + unit + "/day";
+    return "";
+  }
+
+  /** FDA % DV when set; otherwise IOM bw min % or study max % when available. */
+  function microNutrientTargetPct(key, dailyAmount) {
+    var dvPct = dailyMicroPct(key, dailyAmount);
+    if (dvPct != null) {
+      return {
+        pct: dvPct,
+        text: formatTargetPctNumber(dvPct),
+        kind: "dv",
+        kindLabel: "FDA DV",
+        reqAmount: microTargetReqAmountText(key),
+        limiting: false,
+        refKey: key,
+      };
+    }
+    if (iomBwMinMgPerKg(key)) {
+      if (!getBodyWeightKg()) {
+        return {
+          pct: null,
+          text: "—",
+          kind: "iom",
+          kindLabel: "IOM bw min · set weight",
+          reqAmount: "",
+          limiting: false,
+          refKey: key,
+        };
+      }
+      var iomPct = iomBwMinPct(key, dailyAmount);
+      return {
+        pct: iomPct,
+        text: formatTargetPctNumber(iomPct),
+        kind: "iom",
+        kindLabel: "IOM bw min",
+        reqAmount: microTargetReqAmountText(key),
+        limiting: false,
+        refKey: key,
+      };
+    }
+    var studyMax = studyMaxMicroRef(key);
+    if (studyMax) {
+      var maxPct = studyMax.amount > 0 ? (dailyAmount / studyMax.amount) * 100 : null;
+      return {
+        pct: maxPct,
+        text: formatTargetPctNumber(maxPct),
+        kind: "studyMax",
+        kindLabel: "Study max",
+        reqAmount: microTargetReqAmountText(key),
+        limiting: true,
+        refKey: key,
+      };
+    }
+    if (microHasNoStandaloneRef(key)) {
+      return {
+        pct: null,
+        text: "—",
+        kind: "none",
+        kindLabel: "No ref",
+        reqAmount: "",
+        limiting: false,
+        refKey: key,
+      };
+    }
+    return { pct: null, text: "—", kind: "none", kindLabel: "", reqAmount: "", limiting: false, refKey: key };
+  }
+
+  function microTargetReqText(field) {
+    var amount = microTargetReqAmountText(field.key);
+    return amount || "—";
+  }
+
+  function longevityTargetReqText(field) {
+    var dv = dailyLongevityDv(field.key);
+    if (dv) return fmtNum(dv) + " " + field.unit + "/day";
+    if (LONGEVITY_KEYS_ALSO_IN_MICRO[field.key]) {
+      var amount = microTargetReqAmountText(field.key);
+      if (amount) return amount;
+    }
+    return "—";
+  }
+
+  function microRowTargetDisplay(field, dailyAmount, source, weekMicro) {
+    if (source === "longevity") {
+      var lvDv = dailyLongevityDv(field.key);
+      if (lvDv) {
+        var lvPct = (dailyAmount / lvDv) * 100;
+        return {
+          pct: lvPct,
+          text: formatTargetPctNumber(lvPct),
+          kindLabel: "FDA DV",
+          reqAmount: fmtNum(lvDv) + " " + field.unit + "/day",
+          reqText: longevityTargetReqText(field),
+          limiting: false,
+          refKey: field.key,
+        };
+      }
+      if (LONGEVITY_KEYS_ALSO_IN_MICRO[field.key]) {
+        var microField = microFieldByKey(field.key) || field;
+        var microDaily =
+          weekMicro && weekMicro[field.key] > 0
+            ? weekMicro[field.key] / DAYS.length
+            : dailyAmount;
+        var bridged = microNutrientTargetPct(field.key, microDaily);
+        return {
+          pct: bridged.pct,
+          text: bridged.text,
+          kindLabel: bridged.kindLabel,
+          reqAmount: microTargetReqAmountText(field.key),
+          reqText: microTargetReqText(microField),
+          limiting: !!bridged.limiting,
+          refKey: bridged.refKey || field.key,
+        };
+      }
+      return { pct: null, text: "—", kindLabel: "", reqAmount: "", reqText: "—", limiting: false, refKey: field.key };
+    }
+    var target = microNutrientTargetPct(field.key, dailyAmount);
+    return {
+      pct: target.pct,
+      text: target.text,
+      kindLabel: target.kindLabel,
+      reqAmount: target.reqAmount,
+      reqText: microTargetReqText(field),
+      limiting: !!target.limiting,
+      refKey: target.refKey || field.key,
+    };
+  }
+
+  function tierForMicroTargetPct(pct, limiting) {
+    return limiting
+      ? tierForPctInList(pct, DEFAULT_LIMITING_TIERS)
+      : tierForMicroPct(pct);
+  }
+
+  function microTargetPctInlineStyle(targetDisplay) {
+    return pctInlineStyle(
+      targetDisplay.pct,
+      tierForMicroTargetPct(targetDisplay.pct, !!targetDisplay.limiting)
+    );
+  }
+
+  function microTargetStatsHtml(targetDisplay, amtText, options) {
+    options = options || {};
+    var statsClass = options.statsClass || "dashboard__micro-stats";
+    var pctClass = options.pctClass || "dashboard__micro-pct";
+    var amtClass = options.amtClass || "dashboard__micro-amt";
+    var kindClass = options.kindClass || "dashboard__micro-target-kind";
+    var reqClass = options.reqClass || "dashboard__micro-dv-req";
+    var pctStyle =
+      options.pctStyle != null ? options.pctStyle : microTargetPctInlineStyle(targetDisplay);
+
+    var html = '<div class="' + statsClass + '">';
+    html +=
+      '<span class="' +
+      pctClass +
+      '"' +
+      pctStyle +
+      ">" +
+      escapeHtml(targetDisplay.text) +
+      "</span>";
+    html += '<span class="' + amtClass + '">' + escapeHtml(amtText) + "</span>";
+    if (targetDisplay.kindLabel) {
+      html += targetKindLabelHtml(targetDisplay.kindLabel, kindClass, targetDisplay.refKey);
+    }
+    if (showMicroDailyDv && targetDisplay.reqAmount) {
+      html +=
+        '<span class="' +
+        reqClass +
+        '">' +
+        escapeHtml(targetDisplay.reqAmount) +
+        "</span>";
+    }
+    html += "</div>";
+    return html;
+  }
+
   var DEFAULT_MICRO_DV_STATUS = {
     tiers: [
       { id: "green", minPercent: 100, color: "#1a7a36", fontWeight: 400 },
@@ -5918,9 +6432,7 @@
   }
 
   function microDailyDvText(field) {
-    var dv = dailyDv(field.key);
-    if (!dv) return "—";
-    return fmtNum(dv) + " " + field.unit + "/day req";
+    return microTargetReqText(field);
   }
 
   function syncMicroDailyDvToggleUi() {
@@ -5930,8 +6442,8 @@
       showMicroDailyDv ? "true" : "false"
     );
     dashboardMicroDvToggleEl.textContent = showMicroDailyDv
-      ? "Hide DV targets"
-      : "Show DV targets";
+      ? "Hide targets"
+      : "Show targets";
   }
 
   function syncMicroViewToggleUi() {
@@ -5961,9 +6473,12 @@
 
   function syncMicroHintText() {
     if (!dashboardMicroHintTextEl) return;
+    var weightNote = getBodyWeightKg()
+      ? " Nutrients without FDA % DV show IOM bw min (IOM 2005 amino acid EARs × your weight)."
+      : " Set body weight in Settings for IOM bw min on nutrients without FDA % DV.";
     dashboardMicroHintTextEl.textContent = microViewDaily
-      ? "Per-day intake vs your demographic daily values (Mon–Sun)."
-      : "Average daily intake vs your demographic daily values (Mon–Sun). DV's will be low if you dont fill up all days.";
+      ? "Per-day intake vs FDA % DV or IOM bw min (Mon–Sun)." + weightNote
+      : "Average daily intake vs FDA % DV or IOM bw min (Mon–Sun)." + weightNote;
   }
 
   function microConditionDisplayFields() {
@@ -6044,12 +6559,16 @@
     var total = isLongevity
       ? weekLongevity[field.key] || 0
       : weekMicro[field.key] || 0;
-    var pct = isLongevity
-      ? avgDailyLongevityPct(field.key, total)
-      : avgDailyMicroPct(field.key, total);
-    var pctText = pct == null || isNaN(pct) ? "—" : fmtNum(pct) + "% DV";
+    var dailyAmount = total / DAYS.length;
+    var targetDisplay = microRowTargetDisplay(
+      field,
+      dailyAmount,
+      entry.source,
+      weekMicro
+    );
+    var pct = targetDisplay.pct;
     var amtText = microConditionAmtText(entry, total, false);
-    var tier = tierForMicroPct(pct);
+    var tier = tierForMicroTargetPct(pct, !!targetDisplay.limiting);
     var tierAttr = tier ? ' data-dv-tier="' + escapeAttr(tier.id) + '"' : "";
     var rowCls =
       "dashboard__micro-row dashboard__micro-row--clickable" +
@@ -6073,24 +6592,8 @@
       "</button>" +
       microConditionSourcesIconHtml(entry) +
       "</span>" +
-      '<div class="dashboard__micro-stats">' +
-      '<span class="dashboard__micro-pct"' +
-      microPctInlineStyle(pct) +
-      ">" +
-      escapeHtml(pctText) +
-      "</span>" +
-      '<span class="dashboard__micro-amt">' +
-      escapeHtml(amtText) +
-      "</span>";
-    if (showMicroDailyDv) {
-      html +=
-        '<span class="dashboard__micro-dv-req">' +
-        escapeHtml(
-          isLongevity ? longevityDailyDvText(field) : microDailyDvText(field)
-        ) +
-        "</span>";
-    }
-    html += "</div></div>";
+      microTargetStatsHtml(targetDisplay, amtText);
+    html += "</div>";
     return html;
   }
 
@@ -6163,14 +6666,15 @@
       var total = isLongevity
         ? longevityTotals[field.key] || 0
         : microTotals[field.key] || 0;
-      var pct = isLongevity
-        ? dailyLongevityDv(field.key)
-          ? (total / dailyLongevityDv(field.key)) * 100
-          : null
-        : dailyMicroPct(field.key, total);
-      var pctText = pct == null || isNaN(pct) ? "—" : fmtNum(pct) + "% DV";
+      var targetDisplay = microRowTargetDisplay(
+        field,
+        total,
+        entry.source,
+        microTotals
+      );
+      var pct = targetDisplay.pct;
       var amtText = microConditionAmtText(entry, total, true);
-      var tier = tierForMicroPct(pct);
+      var tier = tierForMicroTargetPct(pct, !!targetDisplay.limiting);
       var tierAttr = tier ? ' data-dv-tier="' + escapeAttr(tier.id) + '"' : "";
       var rowCls =
         "dashboard__micro-day-row dashboard__micro-day-row--clickable" +
@@ -6193,24 +6697,14 @@
         "</button>" +
         microConditionSourcesIconHtml(entry, dayId) +
         "</span>" +
-        '<div class="dashboard__micro-day-stats">' +
-        '<span class="dashboard__micro-day-pct"' +
-        microPctInlineStyle(pct) +
-        ">" +
-        escapeHtml(pctText) +
-        "</span>" +
-        '<span class="dashboard__micro-day-amt">' +
-        escapeHtml(amtText) +
-        "</span>";
-      if (showMicroDailyDv) {
-        rows +=
-          '<span class="dashboard__micro-day-dv-req">' +
-          escapeHtml(
-            isLongevity ? longevityDailyDvText(field) : microDailyDvText(field)
-          ) +
-          "</span>";
-      }
-      rows += "</div></div>";
+        microTargetStatsHtml(targetDisplay, amtText, {
+          statsClass: "dashboard__micro-day-stats",
+          pctClass: "dashboard__micro-day-pct",
+          amtClass: "dashboard__micro-day-amt",
+          kindClass: "dashboard__micro-day-target-kind",
+          reqClass: "dashboard__micro-day-dv-req",
+        }) +
+        "</div>";
     });
 
     return (
@@ -6257,6 +6751,7 @@
     if (!dashboardMicroListEl) return;
 
     hideMicroDailyIntakePopover();
+    hideTargetRefPopover();
     syncMicroDailyDvToggleUi();
     syncMicroViewToggleUi();
     syncMicroHintText();
@@ -6417,7 +6912,9 @@
     useMicroDef,
     pctHtml,
     sourcesKey,
-    sourcesKind
+    sourcesKind,
+    kindLabel,
+    kindRefKey
   ) {
     var tier = tierForLongevityPct(pct, !!limiting);
     var tierAttr = tier ? ' data-dv-tier="' + escapeAttr(tier.id) + '"' : "";
@@ -6449,6 +6946,25 @@
         ) +
         "</span>";
     }
+    var pctInner = pctHtml || escapeHtml(pctText);
+    var pctBlock =
+      '<span class="dashboard__longevity-pct-wrap">' +
+      '<span class="dashboard__longevity-pct"' +
+      longevityPctInlineStyle(pct, !!limiting) +
+      ">" +
+      pctInner +
+      "</span>";
+    if (kindLabel) {
+      pctBlock +=
+        '<span class="dashboard__longevity-target-kind-wrap">' +
+        targetKindLabelHtml(
+          kindLabel,
+          "dashboard__longevity-target-kind",
+          kindRefKey || defKey || sourcesKey
+        ) +
+        "</span>";
+    }
+    pctBlock += "</span>";
     return (
       '<div class="' +
       rowCls +
@@ -6459,20 +6975,19 @@
       '<span class="dashboard__longevity-amt">' +
       escapeHtml(amtText) +
       "</span>" +
-      '<span class="dashboard__longevity-pct"' +
-      longevityPctInlineStyle(pct, !!limiting) +
-      ">" +
-      (pctHtml || escapeHtml(pctText)) +
-      "</span>" +
+      pctBlock +
       longevityBarHtml(pct, !!limiting) +
       "</div>"
     );
   }
 
-  function longevityRowFromLongevityField(field, weekLongevity) {
+  function longevityRowFromLongevityField(field, weekLongevity, weekMicro) {
+    weekMicro = weekMicro || {};
     var total = weekLongevity[field.key];
-    var pct = avgDailyLongevityPct(field.key, total);
-    var pctText = pct == null || isNaN(pct) ? "—" : fmtNum(pct) + "%";
+    var daily = avgDailyLongevity(field.key, total);
+    var target = microRowTargetDisplay(field, daily, "longevity", weekMicro);
+    var pct = target.pct;
+    var pctText = target.text;
     var amtText =
       total > 0
         ? fmtNum(avgDailyLongevity(field.key, total)) + " " + field.unit
@@ -6483,12 +6998,14 @@
       pctText,
       pct,
       "",
-      !!field.limiting,
+      !!field.limiting || !!target.limiting,
       field.key,
       false,
       null,
       field.key,
-      "longevity"
+      "longevity",
+      target.kindLabel,
+      target.refKey
     );
   }
 
@@ -6496,21 +7013,25 @@
     var field = microFieldByKey(microKey);
     var unit = field ? field.unit : "";
     var total = weekMicro[microKey] || 0;
-    var pct = avgDailyMicroPct(microKey, total);
-    var pctText = pct == null || isNaN(pct) ? "—" : fmtNum(pct) + "%";
-    var amtText = total > 0 ? fmtNum(total / DAYS.length) + " " + unit : "—";
+    var daily = total / DAYS.length;
+    var target = microNutrientTargetPct(microKey, daily);
+    var pct = target.pct;
+    var pctText = target.text;
+    var amtText = total > 0 ? fmtNum(daily) + " " + unit : "—";
     return longevityRowHtml(
       label || (field ? field.label : microKey),
       amtText,
       pctText,
       pct,
       "dashboard__longevity-row--from-micro",
-      !!limiting,
+      !!limiting || !!target.limiting,
       microKey,
       true,
       null,
       microKey,
-      "micro"
+      "micro",
+      target.kindLabel,
+      target.refKey
     );
   }
 
@@ -6521,27 +7042,30 @@
     }
     var field = longevityFieldByKey(key);
     if (!field) return "";
-    return longevityRowFromLongevityField(field, weekLongevity);
+    return longevityRowFromLongevityField(field, weekLongevity, weekMicro);
   }
 
-  function longevityRowsGroupedByLimit(fields, weekLongevity) {
+  function longevityRowsGroupedByLimit(fields, weekLongevity, weekMicro) {
+    weekMicro = weekMicro || {};
     var watch = [];
     var aim = [];
     fields.forEach(function (field) {
-      if (field.limiting) watch.push(field);
+      if (field.limiting || (LONGEVITY_KEYS_ALSO_IN_MICRO[field.key] && studyMaxMicroRef(field.key))) {
+        watch.push(field);
+      }
       else aim.push(field);
     });
     var html = "";
     if (watch.length) {
       html += longevitySubgroupHtml("Watch — lower % DV is better", "limit");
       watch.forEach(function (field) {
-        html += longevityRowFromLongevityField(field, weekLongevity);
+        html += longevityRowFromLongevityField(field, weekLongevity, weekMicro);
       });
     }
     if (aim.length) {
       html += longevitySubgroupHtml("Aim — higher % DV is better", "aim");
       aim.forEach(function (field) {
-        html += longevityRowFromLongevityField(field, weekLongevity);
+        html += longevityRowFromLongevityField(field, weekLongevity, weekMicro);
       });
     }
     return html;
@@ -6609,6 +7133,7 @@
   }
 
   function renderLongevityPanel() {
+    hideTargetRefPopover();
     if (!dashboardLongevityContentEl) return;
 
     hideMicroDailyIntakePopover();
@@ -6776,7 +7301,7 @@
         LONGEVITY_STRESS_FROM_LONGEVITY.map(function (item) {
           var field = longevityFieldByKey(item.key);
           if (!field) return "";
-          return longevityRowFromLongevityField(field, weekLongevity);
+          return longevityRowFromLongevityField(field, weekLongevity, weekMicro);
         }).join("") +
         longevityListClose()
     );
@@ -6816,7 +7341,7 @@
         LONGEVITY_MITO_FROM_LONGEVITY.map(function (item) {
           var field = longevityFieldByKey(item.key);
           if (!field) return "";
-          return longevityRowFromLongevityField(field, weekLongevity);
+          return longevityRowFromLongevityField(field, weekLongevity, weekMicro);
         }).join("") +
         longevityListClose()
     );
@@ -6863,13 +7388,13 @@
         LONGEVITY_INSULIN_AIM_FROM_LONGEVITY.map(function (item) {
           var field = longevityFieldByKey(item.key);
           if (!field) return "";
-          return longevityRowFromLongevityField(field, weekLongevity);
+          return longevityRowFromLongevityField(field, weekLongevity, weekMicro);
         }).join("") +
         longevitySubgroupHtml("Watch — lower % DV is better", "limit") +
         LONGEVITY_INSULIN_WATCH_FROM_LONGEVITY.map(function (item) {
           var field = longevityFieldByKey(item.key);
           if (!field) return "";
-          return longevityRowFromLongevityField(field, weekLongevity);
+          return longevityRowFromLongevityField(field, weekLongevity, weekMicro);
         }).join("") +
         longevitySubgroupHtml(
           "Jump to other areas that need to be optimized for insulin resistance / sensitivity",
@@ -6897,7 +7422,7 @@
         LONGEVITY_FAT_GAIN_AGING_FROM_LONGEVITY.map(function (item) {
           var field = longevityFieldByKey(item.key);
           if (!field) return "";
-          return longevityRowFromLongevityField(field, weekLongevity);
+          return longevityRowFromLongevityField(field, weekLongevity, weekMicro);
         }).join("") +
         longevitySubgroupHtml(
           "Nutrients that support using food for energy rather than storing it as fat",
@@ -6914,7 +7439,7 @@
         LONGEVITY_FAT_GAIN_ENERGY_FROM_LONGEVITY.map(function (item) {
           var field = longevityFieldByKey(item.key);
           if (!field) return "";
-          return longevityRowFromLongevityField(field, weekLongevity);
+          return longevityRowFromLongevityField(field, weekLongevity, weekMicro);
         }).join("") +
         longevitySubgroupHtml("Gut producing GLP-like compounds", "aim") +
         LONGEVITY_FAT_GAIN_GLP_FROM_MICRO.map(function (item) {
@@ -6928,7 +7453,7 @@
         LONGEVITY_FAT_GAIN_GLP_FROM_LONGEVITY.map(function (item) {
           var field = longevityFieldByKey(item.key);
           if (!field) return "";
-          return longevityRowFromLongevityField(field, weekLongevity);
+          return longevityRowFromLongevityField(field, weekLongevity, weekMicro);
         }).join("") +
         longevitySubgroupHtml("Jump to related areas for fat gain", "neutral") +
         longevityNavJumpRowHtml(
@@ -6959,8 +7484,8 @@
             var pufaField = longevityFieldByKey("polyunsaturatedFat");
             var vitEField = longevityFieldByKey("vitaminE");
             var rows = "";
-            if (pufaField) rows += longevityRowFromLongevityField(pufaField, weekLongevity);
-            if (vitEField) rows += longevityRowFromLongevityField(vitEField, weekLongevity);
+            if (pufaField) rows += longevityRowFromLongevityField(pufaField, weekLongevity, weekMicro);
+            if (vitEField) rows += longevityRowFromLongevityField(vitEField, weekLongevity, weekMicro);
             return rows;
           })() +
           longevitySubgroupHtml("Protection score — higher is better", "aim") +
@@ -7008,7 +7533,7 @@
         "sectionCarb",
         "",
         longevityListOpen() +
-          longevityRowsGroupedByLimit(groupFields, weekLongevity) +
+          longevityRowsGroupedByLimit(groupFields, weekLongevity, weekMicro) +
           longevityListClose()
       );
     }
@@ -7158,7 +7683,7 @@
         return field.group === group.id;
       });
       if (!groupFields.length) return;
-      var body = longevityListOpen() + longevityRowsGroupedByLimit(groupFields, weekLongevity);
+      var body = longevityListOpen() + longevityRowsGroupedByLimit(groupFields, weekLongevity, weekMicro);
       if (group.id === "compounds") {
         body += longevitySubgroupHtml("Also from your micro entries", "micro");
         LONGEVITY_COMPOUNDS_FROM_MICRO.forEach(function (item) {
@@ -7191,7 +7716,7 @@
         LONGEVITY_CALCIFICATION_FIELD_KEYS.map(function (key) {
           var field = longevityFieldByKey(key);
           if (!field) return "";
-          return longevityRowFromLongevityField(field, weekLongevity);
+          return longevityRowFromLongevityField(field, weekLongevity, weekMicro);
         }).join("") +
         longevityListClose()
     );
@@ -7206,7 +7731,7 @@
         LONGEVITY_TMAO_PRECURSOR_KEYS.map(function (key) {
           var field = longevityFieldByKey(key);
           if (!field) return "";
-          return longevityRowFromLongevityField(field, weekLongevity);
+          return longevityRowFromLongevityField(field, weekLongevity, weekMicro);
         }).join("") +
         longevitySubgroupHtml("↓ Protectors — higher % DV is better", "aim") +
         LONGEVITY_TMAO_LOWERING_FROM_MICRO.map(function (item) {
@@ -7825,6 +8350,83 @@
     return userTdee != null && userTdee > 0 ? userTdee : null;
   }
 
+  function saveBodyWeight() {
+    try {
+      if (userBodyWeightKg == null || userBodyWeightKg <= 0) {
+        localStorage.removeItem(STORAGE_KEY_BODY_WEIGHT_KG);
+      } else {
+        localStorage.setItem(STORAGE_KEY_BODY_WEIGHT_KG, String(userBodyWeightKg));
+      }
+    } catch (e) {
+      /* ignore */
+    }
+  }
+
+  function loadBodyWeight() {
+    try {
+      var raw = localStorage.getItem(STORAGE_KEY_BODY_WEIGHT_KG);
+      if (raw == null || raw === "") {
+        userBodyWeightKg = null;
+        return;
+      }
+      var n = parseFloat(raw);
+      userBodyWeightKg = !isNaN(n) && n > 0 ? n : null;
+    } catch (e) {
+      userBodyWeightKg = null;
+    }
+  }
+
+  function settingsWeightKgFromInput() {
+    if (!settingsWeightEl) return NaN;
+    var w = parseFloat(settingsWeightEl.value);
+    if (isNaN(w) || w <= 0) return NaN;
+    return settingsWeightUnit === "lb" ? w * 0.453592 : w;
+  }
+
+  function syncSettingsWeightInput() {
+    if (!settingsWeightEl) return;
+    if (userBodyWeightKg == null || userBodyWeightKg <= 0) {
+      settingsWeightEl.value = "";
+      return;
+    }
+    var display =
+      settingsWeightUnit === "lb"
+        ? userBodyWeightKg / 0.453592
+        : userBodyWeightKg;
+    settingsWeightEl.value = String(Math.round(display * 10) / 10);
+  }
+
+  function setSettingsWeightUnit(unit) {
+    settingsWeightUnit = unit === "lb" ? "lb" : "kg";
+    if (settingsWeightKgBtn) {
+      settingsWeightKgBtn.classList.toggle(
+        "tdee-calc__unit-btn--active",
+        settingsWeightUnit === "kg"
+      );
+      settingsWeightKgBtn.setAttribute(
+        "aria-pressed",
+        settingsWeightUnit === "kg" ? "true" : "false"
+      );
+    }
+    if (settingsWeightLbBtn) {
+      settingsWeightLbBtn.classList.toggle(
+        "tdee-calc__unit-btn--active",
+        settingsWeightUnit === "lb"
+      );
+      settingsWeightLbBtn.setAttribute(
+        "aria-pressed",
+        settingsWeightUnit === "lb" ? "true" : "false"
+      );
+    }
+    syncSettingsWeightInput();
+  }
+
+  function readSettingsWeightFromInput() {
+    var kg = settingsWeightKgFromInput();
+    userBodyWeightKg = isNaN(kg) ? null : kg;
+    saveBodyWeight();
+  }
+
   function syncSettingsTdeeInput() {
     if (!settingsTdeeEl) return;
     settingsTdeeEl.value = userTdee != null && userTdee > 0 ? String(Math.round(userTdee)) : "";
@@ -7852,6 +8454,8 @@
   function openSettingsModal() {
     if (!settingsModalEl) return;
     syncSettingsTdeeInput();
+    setSettingsWeightUnit(settingsWeightUnit);
+    syncSettingsWeightInput();
     settingsModalEl.hidden = false;
     updateBodyModalOpen();
     if (settingsTdeeEl) {
@@ -7862,10 +8466,17 @@
   function closeSettingsModal() {
     if (!settingsModalEl) return;
     readSettingsTdeeFromInput();
+    readSettingsWeightFromInput();
     settingsModalEl.hidden = true;
     updateBodyModalOpen();
     if (weekTotalOpen && lastWeekTotals) {
       renderWeekSummary(lastWeekTotals);
+    }
+    if (microRequirementsOpen) {
+      renderMicroRequirements();
+    }
+    if (longevityPanelOpen) {
+      renderLongevityPanel();
     }
   }
 
@@ -8028,6 +8639,13 @@
     setTdeeCalcHeightUnit(tdeeCalcHeightUnit);
     setTdeeCalcResistanceMode(tdeeCalcResistanceMode);
     syncTdeeCalcCardioUi();
+    if (userBodyWeightKg && tdeeCalcWeightEl) {
+      var display =
+        tdeeCalcWeightUnit === "lb"
+          ? userBodyWeightKg / 0.453592
+          : userBodyWeightKg;
+      tdeeCalcWeightEl.value = String(Math.round(display * 10) / 10);
+    }
     updateTdeeCalculatorResult();
     tdeeCalculatorModalEl.hidden = false;
     updateBodyModalOpen();
@@ -8044,6 +8662,12 @@
     if (tdeeCalcLastResult == null) return;
     userTdee = tdeeCalcLastResult;
     saveTdee();
+    var kg = tdeeCalcWeightKg();
+    if (!isNaN(kg) && kg > 0) {
+      userBodyWeightKg = kg;
+      saveBodyWeight();
+      syncSettingsWeightInput();
+    }
     syncSettingsTdeeInput();
     closeTdeeCalculatorModal();
     if (weekTotalOpen && lastWeekTotals) {
@@ -11070,6 +11694,7 @@
     if (e.target.closest("[data-micro-sources]")) return;
     if (e.target.closest("[data-longevity-sources]")) return;
     if (e.target.closest("[data-micro-daily-intake]")) return;
+    if (e.target.closest(".dashboard__target-ref")) return;
     var microBtn = e.target.closest("[data-micro-def]");
     if (microBtn) {
       openMicroDefModal(microBtn.getAttribute("data-micro-def"));
@@ -11439,6 +12064,22 @@
     settingsTdeeEl.addEventListener("change", readSettingsTdeeFromInput);
   }
 
+  if (settingsWeightKgBtn) {
+    settingsWeightKgBtn.addEventListener("click", function () {
+      setSettingsWeightUnit("kg");
+    });
+  }
+
+  if (settingsWeightLbBtn) {
+    settingsWeightLbBtn.addEventListener("click", function () {
+      setSettingsWeightUnit("lb");
+    });
+  }
+
+  if (settingsWeightEl) {
+    settingsWeightEl.addEventListener("change", readSettingsWeightFromInput);
+  }
+
   if (settingsTdeeCalcOpenBtn) {
     settingsTdeeCalcOpenBtn.addEventListener("click", openTdeeCalculatorModal);
   }
@@ -11727,11 +12368,14 @@
     loadDayEditorHeight();
     loadDemographic();
     loadTdee();
+    loadBodyWeight();
     renderDemographicUi();
     syncDayHighlightsToggleUi();
     syncSettingsTdeeInput();
+    setSettingsWeightUnit(settingsWeightUnit);
     renderKeywords();
     initLongevityNav();
+    initTargetRefPopoverEvents();
     refreshAll();
     applyInitialLongevityHash();
     maybeShowStarterGuideImportStep();

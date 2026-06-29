@@ -10,7 +10,7 @@ const samplePath = path.join(__dirname, "../samples/definitions-food.json");
 const checkedPath = path.join(__dirname, "../samples/definitions-food-qa-checked.json");
 
 const MICRO_KEYS = [
-  "fiber", "sodium", "potassium", "calcium", "iron", "magnesium", "zinc", "selenium", "copper",
+  "fiber", "sodium", "potassium", "calcium", "iron", "copper", "magnesium", "zinc", "selenium",
   "manganese", "chromium", "iodine", "vitaminA", "vitaminD", "vitaminE", "vitaminK", "vitaminB12",
   "thiamin", "riboflavin", "niacin", "pantothenicAcid", "vitaminB6", "vitaminC", "folate", "biotin",
   "phosphorus", "choline", "molybdenum", "fluoride", "chloride",

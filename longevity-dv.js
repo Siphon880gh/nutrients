@@ -40,6 +40,7 @@
     choline: 550,
     carnitine: 0,
     betaine: 0,
+    taurine: 0,
     glycemicIndex: 0,
     addedSugar: 50,
     refinedCarbs: 0,

@@ -86,7 +86,7 @@
             </div>
             <div class="dashboard__micro-toggle-group" role="group" aria-label="Display options">
               <span class="dashboard__micro-toggle-label">Targets</span>
-              <button type="button" id="dashboard-micro-dv-toggle" class="dashboard__micro-segment dashboard__micro-segment--solo" aria-pressed="false">Show DV targets</button>
+              <button type="button" id="dashboard-micro-dv-toggle" class="dashboard__micro-segment dashboard__micro-segment--solo" aria-pressed="false">Show targets</button>
             </div>
           </div>
         </div>
@@ -116,6 +116,9 @@
       </div>
       <div id="micro-daily-intake-popover" class="dashboard__micro-daily-intake-popover" role="tooltip" hidden>
         <p class="dashboard__micro-daily-intake-popover-text">This requires daily intake because storage is poor. You cannot simply average it over a week.</p>
+      </div>
+      <div id="target-ref-popover" class="dashboard__target-ref-popover" role="tooltip" hidden>
+        <div id="target-ref-popover-text" class="dashboard__target-ref-popover-text"></div>
       </div>
       <div id="dashboard-longevity-panel" class="dashboard__longevity-panel" hidden>
         <p class="dashboard__longevity-hint">Weekly average per day (Mon–Sun). Micronutrients repeat from your micro entries so you can reason in one place. Green bars = good for “aim” nutrients; red bars on limit nutrients mean you are high. Click <em>explain</em> on a heading or nutrient for detail.</p>
@@ -1153,6 +1156,22 @@
               <span class="demographic__option-icon" aria-hidden="true">♀</span>
               <span class="demographic__option-label">Female</span>
             </button>
+          </div>
+        </section>
+        <section class="settings-modal__section" aria-labelledby="settings-weight-heading">
+          <h4 id="settings-weight-heading" class="settings-modal__heading">Weight</h4>
+          <p class="settings-modal__hint">Used for <strong>IOM bw min</strong> on micro nutrients that have no FDA %&nbsp;DV. Targets use estimated average requirements from the Institute of Medicine (2005) protein and amino acid report—now maintained by the Health and Medicine Division (HMD) of the National Academies (physicians, nutrition scientists, and researchers)—as mg/kg body weight × your weight.</p>
+          <div class="settings-modal__tdee-row">
+            <div class="tdee-calc__unit-group">
+              <label class="settings-modal__field" for="settings-weight">
+                <span class="settings-modal__field-label">Body weight</span>
+                <input type="number" id="settings-weight" class="settings-modal__input" min="0" step="0.1" inputmode="decimal" placeholder="e.g. 170">
+              </label>
+              <div class="tdee-calc__unit-toggle" role="group" aria-label="Weight unit">
+                <button type="button" id="settings-weight-kg" class="tdee-calc__unit-btn" aria-pressed="false">kg</button>
+                <button type="button" id="settings-weight-lb" class="tdee-calc__unit-btn tdee-calc__unit-btn--active" aria-pressed="true">lb</button>
+              </div>
+            </div>
           </div>
         </section>
         <section class="settings-modal__section" aria-labelledby="settings-tdee-heading">

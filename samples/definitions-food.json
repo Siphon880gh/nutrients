@@ -945,7 +945,7 @@
 			"phosphorus": 0,
 			"choline": 0,
 			"manganese": 0,
-			"molybdenum": 0,
+			"molybdenum": 5,
 			"fluoride": 0,
 			"chloride": 622.65,
 			"histidine": 0,
@@ -1038,7 +1038,7 @@
 			"phosphorus": 0,
 			"choline": 0,
 			"manganese": 0,
-			"molybdenum": 0,
+			"molybdenum": 5,
 			"fluoride": 0,
 			"chloride": 933.82,
 			"histidine": 0,
@@ -1131,7 +1131,7 @@
 			"phosphorus": 0,
 			"choline": 0,
 			"manganese": 0,
-			"molybdenum": 0,
+			"molybdenum": 5,
 			"fluoride": 0,
 			"chloride": 1867.79,
 			"histidine": 0,
@@ -1224,7 +1224,7 @@
 			"phosphorus": 0,
 			"choline": 0,
 			"manganese": 0,
-			"molybdenum": 0,
+			"molybdenum": 5,
 			"fluoride": 0,
 			"chloride": 2490.29,
 			"histidine": 0,
@@ -2672,7 +2672,7 @@
 			"glycine": 60,
 			"proline": 83,
 			"tyrosine": 45,
-			"taurine": 0
+			"taurine": 12
 		},
 		"longevity": {
 			"saturatedFat": 0.02,
@@ -3964,7 +3964,7 @@
 			"glycine": 29,
 			"proline": 37,
 			"tyrosine": 33,
-			"taurine": 0
+			"taurine": 10
 		},
 		"longevity": {
 			"saturatedFat": 0.02,
@@ -7855,7 +7855,7 @@
 			"glycine": 160,
 			"proline": 220,
 			"tyrosine": 120,
-			"taurine": 0
+			"taurine": 32
 		},
 		"longevity": {
 			"saturatedFat": 4.3,
@@ -7949,7 +7949,7 @@
 			"glycine": 80,
 			"proline": 110,
 			"tyrosine": 60,
-			"taurine": 0
+			"taurine": 16
 		},
 		"longevity": {
 			"saturatedFat": 2.1,
@@ -8111,15 +8111,15 @@
 			"niacin": 0,
 			"pantothenicAcid": 0,
 			"chromium": 0,
-			"vitaminE": 0,
-			"vitaminK": 0,
+			"vitaminE": 0.2,
+			"vitaminK": 2,
 			"selenium": 0.01,
 			"copper": 0,
 			"phosphorus": 1.2,
 			"choline": 0,
 			"manganese": 0,
 			"iodine": 0,
-			"molybdenum": 0,
+			"molybdenum": 4,
 			"fluoride": 0,
 			"chloride": 25,
 			"histidine": 0,
@@ -8193,7 +8193,7 @@
 			"iodine": 0,
 			"vitaminK": 8.4,
 			"phosphorus": 0,
-			"molybdenum": 0,
+			"molybdenum": 5,
 			"fluoride": 0,
 			"chloride": 25,
 			"histidine": 0,

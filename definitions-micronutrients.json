@@ -154,6 +154,11 @@
     ]
   },
   "iron": {
+    "dashboardTracking": [
+      "On this dashboard, track iron against its own daily value (% DV)—that is the primary signal.",
+      "Iron and copper work together: copper helps mobilize iron for use. But iron from food does not deplete copper the way chronic high-dose zinc can. There is no standard iron-to-copper ratio to aim for.",
+      "If copper % DV runs low while iron looks fine, iron may not be usable—check both minerals on their own bars, not as a combined ratio."
+    ],
     "tooLow": [
       "Low iron depletes ferritin first, then causes fatigue, weakness, pale skin, brittle nails, restless legs, and poor exercise tolerance.",
       "In women, heavy periods, pregnancy, or low red-meat/legume intake are frequent causes; men should investigate unexplained low iron with a clinician."
@@ -254,6 +259,11 @@
     ]
   },
   "zinc": {
+    "dashboardTracking": [
+      "On this dashboard, track zinc against its own daily value (% DV)—that is the primary signal.",
+      "The main mineral interaction to watch is zinc versus copper: chronic high-dose zinc supplements can lower copper absorption. This app tracks each on its own % DV rather than a zinc-to-copper ratio, which has no standard food-based target.",
+      "Food zinc rarely causes copper problems; supplement megadoses are the usual trigger."
+    ],
     "tooLow": [
       "Low zinc weakens taste/smell, slows wound healing, increases infections, and can cause hair thinning and skin issues.",
       "Plant-heavy diets without legumes/nuts/seeds, or high phytate intake without soaking, raise deficiency risk."
@@ -857,6 +867,11 @@
     ]
   },
   "copper": {
+    "dashboardTracking": [
+      "On this dashboard, track copper against its own daily value (% DV)—that is the primary signal.",
+      "Copper supports iron metabolism; low copper can look like iron deficiency even when iron intake is adequate. Watch both nutrients on their own % DV bars, not as a combined ratio.",
+      "Chronic high-dose zinc is what most often depletes copper—not iron from food."
+    ],
     "tooLow": [
       "Low copper impairs iron metabolism (causing anemia despite adequate iron), weakens connective tissue, and may cause neurological symptoms.",
       "Very low intake, excess zinc supplements, or malabsorption can deplete copper stores."
