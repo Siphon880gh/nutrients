@@ -443,10 +443,6 @@
   };
 
   var MICRO_CONDITION_FOCUS = {
-    coffeeTeaUser: {
-      label: "Chronic coffee / tea / energy drink user",
-      nutrients: ["iron", "zinc", "calcium", "magnesium", "vitaminC"],
-    },
     adhd: {
       label: "ADHD",
       nutrients: [
@@ -503,6 +499,34 @@
         "curcumin",
       ],
     },
+    bowelMovementsAltered: {
+      label: "Bowel movements altered",
+      nutrients: [
+        "thiamin",
+        "vitaminA",
+        "fiber",
+        "magnesium",
+        "vitaminD",
+        "zinc",
+        "folate",
+        "vitaminB12",
+        "potassium",
+      ],
+    },
+    cataractsPrevention: {
+      label: "Cataracts prevention",
+      nutrients: ["vitaminC", "vitaminA", "zinc", "vitaminE", "selenium"],
+      longevityNutrients: [
+        "lutein",
+        "carotenoids",
+        "epa",
+        "dha",
+      ],
+    },
+    coffeeTeaUser: {
+      label: "Chronic coffee / tea / energy drink user",
+      nutrients: ["iron", "zinc", "calcium", "magnesium", "vitaminC"],
+    },
     hairLoss: {
       label: "Hair loss",
       nutrients: [
@@ -515,16 +539,6 @@
         "folate",
         "vitaminB12",
         "vitaminC",
-      ],
-    },
-    cataractsPrevention: {
-      label: "Cataracts prevention",
-      nutrients: ["vitaminC", "vitaminA", "zinc", "vitaminE", "selenium"],
-      longevityNutrients: [
-        "lutein",
-        "carotenoids",
-        "epa",
-        "dha",
       ],
     },
   };

@@ -28,6 +28,10 @@
     "female": [
       "Adequate fiber supports hormone clearance via the gut and can ease constipation common with cycle shifts or pregnancy.",
       "Helps fullness and blood-sugar stability, which many women find useful for energy and cravings across the month."
+    ],
+    "bowelMovementsAltered": [
+      "Fiber is the first-line dietary lever for bowel regularity—too little often means hard, infrequent stools; gradual increases with water soften and bulk stool without harsh laxatives.",
+      "Sudden large fiber jumps can temporarily cause bloating, gas, or loose stools—raise intake slowly when trying to fix altered bowel movements."
     ]
   },
   "sodium": {
@@ -113,6 +117,10 @@
     "female": [
       "Adequate potassium supports blood pressure and may reduce bloating when sodium is high.",
       "Important across the lifespan; needs stay meaningful even with smaller calorie targets than men."
+    ],
+    "bowelMovementsAltered": [
+      "Potassium is lost heavily with chronic diarrhea or vomiting—low levels weaken smooth muscle function in the gut and can prolong irregular bowel patterns.",
+      "Bananas, potatoes, beans, and leafy greens replenish potassium alongside fluids when altered bowel movements involve watery or frequent stools."
     ]
   },
   "calcium": {
@@ -256,6 +264,10 @@
       "Magnesium is required for ATP stability in mitochondria—without it, cells cannot hold or use energy efficiently, which shows up as fatigue and metabolic drift with age.",
       "Low magnesium worsens insulin resistance, blood pressure, and sleep—patterns that accelerate vascular and cognitive aging over decades.",
       "Greens, nuts, seeds, and legumes supply the mitochondrial cofactor most refined diets under-deliver."
+    ],
+    "bowelMovementsAltered": [
+      "Low magnesium is a common hidden contributor to constipation; food magnesium (greens, nuts, seeds) and well-tolerated forms like glycinate support softer, more regular stools.",
+      "High-dose magnesium supplements (especially oxide or citrate) can loosen stools or cause diarrhea—worth knowing if bowel movements are already too loose."
     ]
   },
   "zinc": {
@@ -308,6 +320,10 @@
     "cataractsPrevention": [
       "Zinc is a cofactor for lens antioxidant enzymes (including copper/zinc superoxide dismutase) that help neutralize oxidative damage linked with cataract formation.",
       "Adequate zinc from oysters, meat, legumes, and seeds supports eye tissue repair without the copper-depleting risks of chronic high-dose zinc pills."
+    ],
+    "bowelMovementsAltered": [
+      "Zinc supports intestinal lining repair and immune balance in the gut; deficiency weakens barrier function and can worsen diarrhea and malabsorption.",
+      "Chronic diarrhea depletes zinc, creating a cycle—restoring intake from oysters, meat, legumes, and seeds helps break it when bowel movements stay altered."
     ]
   },
   "vitaminA": {
@@ -345,6 +361,12 @@
       "While vitamins cannot reverse or cure an existing cataract, a balanced diet including vitamin A, vitamin C, vitamin E, and carotenoids (like lutein and zeaxanthin) is linked to a reduced risk of cataract development and progression.",
       "Vitamin A (retinol and carotenoids) supports corneal and retinal health; beta-carotene from colorful produce also feeds the broader carotenoid network that protects eye tissues.",
       "Food sources—sweet potato, leafy greens, eggs—supply vision-supporting A without the cataract-unrelated risks of megadose preformed A supplements."
+    ],
+    "bowelMovementsAltered": [
+      "Vitamin A is crucial for a healthy gut barrier. It maintains the physical integrity of the intestinal lining by promoting the expression of tight junction proteins (like ZO-1, claudin-1, and occludin). It also directs mucosal immune cells to the gut and helps beneficial bacteria produce protective retinoic acid.",
+      "Metabolized into retinoic acid, vitamin A physically seals the gaps between intestinal cells—strengthening tight junctions and preventing leaky gut (intestinal permeability), which stops harmful pathogens and pro-inflammatory molecules (like LPS) from entering the bloodstream.",
+      "Vitamin A prevents gut dysbiosis by supporting the growth of beneficial bacteria and maintaining a diverse microbial community.",
+      "It directs critical innate immune cells to the intestines and aids in the formation of regulatory T cells (Tregs), which suppress harmful inflammation in the gut—helpful when bowel habits swing toward diarrhea or cramping from gut inflammation."
     ]
   },
   "vitaminD": {
@@ -390,6 +412,10 @@
     "hairLoss": [
       "Low vitamin D is linked with telogen effluvium and some forms of alopecia; follicles have vitamin D receptors and need adequate status for normal cycling.",
       "Fatty fish, fortified dairy, safe sun, and tested supplementation are the usual routes when blood levels run low—especially in winter or with limited outdoor time."
+    ],
+    "bowelMovementsAltered": [
+      "Vitamin D receptors are abundant in gut tissue; adequate D supports a balanced microbiome (more Bacteroides, less Firmicutes in some studies) and mucosal immunity that keeps inflammation-driven diarrhea or irregularity in check.",
+      "Deficiency is linked with IBS-like symptoms and greater gut permeability in some cohorts—fatty fish, fortified dairy, and tested supplementation are typical fixes."
     ]
   },
   "vitaminB12": {
@@ -438,6 +464,10 @@
     "hairLoss": [
       "B12 deficiency can trigger megaloblastic anemia and diffuse hair shedding that feels like stress-related loss—test B12 when iron is normal but shedding persists.",
       "Vegans, older adults, and people on metformin or long-term acid suppressants are higher-risk groups for B12-driven fatigue and hair changes."
+    ],
+    "bowelMovementsAltered": [
+      "B12 deficiency from low stomach acid, metformin, or vegan diets can present with diarrhea or constipation alongside fatigue and neuropathy—gut motility changes are an underrecognized clue.",
+      "Correcting B12 when deficient often stabilizes digestion that had drifted toward loose or sluggish bowel habits."
     ]
   },
   "vitaminC": {
@@ -612,6 +642,10 @@
     "hairLoss": [
       "Folate supports rapid cell division in the hair bulb; low folate alongside B12 can cause anemia-like shedding and brittle regrowth.",
       "Active folate forms (L-methylfolate) matter when MTHFR variants slow conversion—folate status is worth checking when B12 and iron look normal."
+    ],
+    "bowelMovementsAltered": [
+      "Folate deficiency alongside B12 can cause megaloblastic changes that affect the GI tract—mouth soreness, diarrhea, or poor absorption feeding back on bowels.",
+      "Celiac disease, IBD, and chronic diarrhea impair folate absorption; leafy greens, legumes, and fortified grains help when gut inflammation drives altered stool patterns."
     ]
   },
   "biotin": {
@@ -686,6 +720,10 @@
     "antiAging": [
       "Thiamin (B1) is required for pyruvate dehydrogenase—the step that feeds carbohydrate breakdown into the mitochondrial Krebs cycle.",
       "Low thiamin traps cells in low-energy metabolism and raises lactic acid, a pattern that accelerates fatigue and vascular stress with age."
+    ],
+    "bowelMovementsAltered": [
+      "Severe thiamin (B1) deficiency causes beriberi, which disrupts autonomic nerve control of the digestive tract—leading to constipation, loss of appetite, indigestion, and in wet beriberi, abdominal distension.",
+      "Adequate thiamin keeps the nerve signals that drive normal gut motility and appetite functioning; beriberi-class deficiency is a classic cause of altered bowel habits alongside fatigue and weakness."
     ]
   },
   "riboflavin": {
