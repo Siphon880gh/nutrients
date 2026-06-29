@@ -295,6 +295,21 @@
         </div>
       </div>
 
+      <div class="keywords__filter">
+        <label for="keywords-search" class="keywords__filter-label">Search</label>
+        <div class="keywords__filter-controls">
+          <input
+            type="search"
+            id="keywords-search"
+            class="keywords__filter-input"
+            placeholder="Filter by food name"
+            autocomplete="off"
+            spellcheck="false"
+          >
+          <button type="button" id="keywords-search-clear" class="keywords__filter-clear" hidden aria-label="Clear search">×</button>
+        </div>
+      </div>
+
       <div class="keywords__panel">
         <table id="keywords-table" class="keywords__table">
           <thead>
@@ -354,6 +369,31 @@
           </thead>
           <tbody id="keywords-list"></tbody>
         </table>
+
+        <nav id="keywords-pagination" class="keywords__pagination" aria-label="Food definitions pages" hidden>
+          <div class="keywords__pagination-size">
+            <label for="keywords-page-size" class="keywords__page-size-label">Show</label>
+            <select id="keywords-page-size" class="keywords__page-size">
+              <option value="10">10</option>
+              <option value="25" selected>25</option>
+              <option value="50">50</option>
+              <option value="100">100</option>
+              <option value="0">All</option>
+            </select>
+            <span class="keywords__page-size-suffix">per page</span>
+          </div>
+          <div id="keywords-pagination-nav" class="keywords__pagination-nav">
+            <button type="button" id="keywords-page-first" class="keywords__page-btn">First</button>
+            <button type="button" id="keywords-page-prev" class="keywords__page-btn">Previous</button>
+            <p id="keywords-page-status" class="keywords__page-status" aria-live="polite"></p>
+            <button type="button" id="keywords-page-next" class="keywords__page-btn">Next</button>
+            <button type="button" id="keywords-page-last" class="keywords__page-btn">Last</button>
+          </div>
+        </nav>
+
+        <p id="keywords-filter-empty" class="keywords__filter-empty" hidden>
+          No foods match your search.
+        </p>
 
         <p id="keywords-empty" class="keywords__empty" hidden>
           No food definitions yet. Recommended:

@@ -18,6 +18,8 @@
   var STORAGE_KEY_DAY_HIGHLIGHTS = "nutrients-day-highlights";
   var STORAGE_KEY_REORDER = "nutrients-keywords-reorder-open";
   var STORAGE_KEY_CALORIES = "nutrients-keywords-calories-open";
+  var STORAGE_KEY_KEYWORDS_PAGE_SIZE = "nutrients-keywords-page-size";
+  var KEYWORDS_DEFAULT_PAGE_SIZE = 25;
   var demographicDv =
     typeof NutrientsDemographicDv !== "undefined" ? NutrientsDemographicDv : null;
   var longevityDv =
@@ -35,8 +37,22 @@
   var keywordsTableEl = document.getElementById("keywords-table");
   var keywordsReorderToggleEl = document.getElementById("keywords-reorder-toggle");
   var keywordsEmptyEl = document.getElementById("keywords-empty");
+  var keywordsPaginationEl = document.getElementById("keywords-pagination");
+  var keywordsPaginationNavEl = document.getElementById("keywords-pagination-nav");
+  var keywordsPageSizeEl = document.getElementById("keywords-page-size");
+  var keywordsPageStatusEl = document.getElementById("keywords-page-status");
+  var keywordsPageFirstBtn = document.getElementById("keywords-page-first");
+  var keywordsPagePrevBtn = document.getElementById("keywords-page-prev");
+  var keywordsPageNextBtn = document.getElementById("keywords-page-next");
+  var keywordsPageLastBtn = document.getElementById("keywords-page-last");
+  var keywordsSearchEl = document.getElementById("keywords-search");
+  var keywordsSearchClearBtn = document.getElementById("keywords-search-clear");
+  var keywordsFilterEmptyEl = document.getElementById("keywords-filter-empty");
   var keywordReorderOpen = false;
   var keywordCaloriesOpen = false;
+  var keywordsPageIndex = 0;
+  var keywordsPageSize = KEYWORDS_DEFAULT_PAGE_SIZE;
+  var keywordsFilterQuery = "";
   var keywordsCaloriesToggleEls = document.querySelectorAll(
     ".keywords__macro-toggle[data-action='toggle-calories']"
   );
@@ -10261,6 +10277,15 @@
   function addKeyword() {
     keywords.push(blankKeyword());
     saveFoodDefinitions();
+    if (keywordsPageSize > 0) {
+      var visibleTotal = keywordsFilteredIndices().length;
+      keywordsPageIndex = Math.max(
+        0,
+        Math.ceil(visibleTotal / keywordsPageSize) - 1
+      );
+    } else {
+      keywordsPageIndex = 0;
+    }
     renderKeywords();
     refreshAll();
     var lastRow = keywordsListEl.lastElementChild;
@@ -10399,12 +10424,208 @@
     setKeywordCaloriesOpen(!keywordCaloriesOpen);
   }
 
+  function keywordsFilterNormalized() {
+    return keywordsFilterQuery.trim().toLowerCase();
+  }
+
+  function keywordMatchesFilter(kw) {
+    var query = keywordsFilterNormalized();
+    if (!query) return true;
+    var name = kw && kw.name ? String(kw.name).trim().toLowerCase() : "";
+    return name.indexOf(query) !== -1;
+  }
+
+  function keywordsFilteredIndices() {
+    var out = [];
+    for (var i = 0; i < keywords.length; i++) {
+      if (keywordMatchesFilter(keywords[i])) out.push(i);
+    }
+    return out;
+  }
+
+  function updateKeywordsSearchUi() {
+    var active = keywordsFilterNormalized().length > 0;
+    if (keywordsSearchClearBtn) keywordsSearchClearBtn.hidden = !active;
+  }
+
+  function setKeywordsFilterQuery(query, options) {
+    var opts = options || {};
+    if (!opts.skipSync) syncAllFieldsFromDom();
+    keywordsFilterQuery = query == null ? "" : String(query);
+    if (keywordsSearchEl && keywordsSearchEl.value !== keywordsFilterQuery) {
+      keywordsSearchEl.value = keywordsFilterQuery;
+    }
+    keywordsPageIndex = 0;
+    clampKeywordsPageIndex();
+    updateKeywordsSearchUi();
+    renderKeywords();
+  }
+
+  function clearKeywordsFilter() {
+    setKeywordsFilterQuery("");
+    if (keywordsSearchEl) keywordsSearchEl.focus();
+  }
+
+  function keywordsEffectivePageSize() {
+    var total = keywordsFilteredIndices().length;
+    if (!keywordsPageSize || keywordsPageSize <= 0) {
+      return total || 1;
+    }
+    return keywordsPageSize;
+  }
+
+  function keywordsPageCount() {
+    var total = keywordsFilteredIndices().length;
+    if (!total) return 0;
+    if (!keywordsPageSize || keywordsPageSize <= 0) return 1;
+    return Math.ceil(total / keywordsPageSize);
+  }
+
+  function clampKeywordsPageIndex() {
+    var pages = keywordsPageCount();
+    if (pages === 0) {
+      keywordsPageIndex = 0;
+      return;
+    }
+    if (keywordsPageIndex < 0) keywordsPageIndex = 0;
+    if (keywordsPageIndex >= pages) keywordsPageIndex = pages - 1;
+  }
+
+  function keywordsPageBounds() {
+    var indices = keywordsFilteredIndices();
+    if (!indices.length) return { start: 0, end: 0, indices: [] };
+    clampKeywordsPageIndex();
+    var size = keywordsEffectivePageSize();
+    var start = keywordsPageIndex * size;
+    var end = Math.min(indices.length, start + size);
+    return {
+      start: start,
+      end: end,
+      indices: indices.slice(start, end),
+    };
+  }
+
+  function loadKeywordsPageSize() {
+    try {
+      var raw = localStorage.getItem(STORAGE_KEY_KEYWORDS_PAGE_SIZE);
+      if (raw == null || raw === "") return;
+      var size = parseInt(raw, 10);
+      if (size === 0 || size === 10 || size === 25 || size === 50 || size === 100) {
+        keywordsPageSize = size;
+      }
+    } catch (e) {
+      keywordsPageSize = KEYWORDS_DEFAULT_PAGE_SIZE;
+    }
+  }
+
+  function saveKeywordsPageSize() {
+    try {
+      localStorage.setItem(STORAGE_KEY_KEYWORDS_PAGE_SIZE, String(keywordsPageSize));
+    } catch (e) {
+      /* ignore */
+    }
+  }
+
+  function syncKeywordsPageSizeSelect() {
+    if (!keywordsPageSizeEl) return;
+    keywordsPageSizeEl.value = String(keywordsPageSize);
+  }
+
+  function updateKeywordsPaginationUi() {
+    var allTotal = keywords.length;
+    var visibleTotal = keywordsFilteredIndices().length;
+    var filtered = keywordsFilterNormalized().length > 0;
+    var showPagination = allTotal > 0;
+
+    if (keywordsPaginationEl) {
+      keywordsPaginationEl.hidden = !showPagination;
+    }
+
+    if (!showPagination) return;
+
+    syncKeywordsPageSizeSelect();
+    updateKeywordsSearchUi();
+
+    var pages = keywordsPageCount();
+    var showNav = pages > 1;
+
+    if (keywordsPaginationNavEl) {
+      keywordsPaginationNavEl.hidden = !showNav || visibleTotal === 0;
+    }
+
+    if (keywordsPageStatusEl) {
+      if (visibleTotal === 0 && filtered) {
+        keywordsPageStatusEl.textContent = "0 matching of " + allTotal;
+      } else if (showNav) {
+        var bounds = keywordsPageBounds();
+        var status =
+          bounds.start +
+          1 +
+          "\u2013" +
+          bounds.end +
+          " of " +
+          visibleTotal +
+          (filtered ? " matching" : "");
+        if (filtered) status += " (" + allTotal + " total)";
+        status +=
+          " \u00b7 page " + (keywordsPageIndex + 1) + " of " + pages;
+        keywordsPageStatusEl.textContent = status;
+      } else if (filtered) {
+        keywordsPageStatusEl.textContent =
+          visibleTotal +
+          " matching of " +
+          allTotal +
+          " food definition" +
+          (allTotal === 1 ? "" : "s");
+      } else {
+        keywordsPageStatusEl.textContent =
+          allTotal + " food definition" + (allTotal === 1 ? "" : "s");
+      }
+    }
+
+    var onFirst = keywordsPageIndex <= 0;
+    var onLast = keywordsPageIndex >= pages - 1;
+
+    if (keywordsPageFirstBtn) keywordsPageFirstBtn.disabled = onFirst;
+    if (keywordsPagePrevBtn) keywordsPagePrevBtn.disabled = onFirst;
+    if (keywordsPageNextBtn) keywordsPageNextBtn.disabled = onLast;
+    if (keywordsPageLastBtn) keywordsPageLastBtn.disabled = onLast;
+  }
+
+  function goKeywordsPage(index) {
+    syncAllFieldsFromDom();
+    keywordsPageIndex = index;
+    clampKeywordsPageIndex();
+    renderKeywords();
+  }
+
+  function changeKeywordsPageSize(size) {
+    syncAllFieldsFromDom();
+    var oldBounds = keywordsPageBounds();
+    keywordsPageSize = size;
+    saveKeywordsPageSize();
+    if (keywordsPageSize > 0) {
+      keywordsPageIndex = Math.floor(oldBounds.start / keywordsPageSize);
+    } else {
+      keywordsPageIndex = 0;
+    }
+    clampKeywordsPageIndex();
+    renderKeywords();
+  }
+
   function renderKeywords() {
     if (!keywordsListEl) return;
 
+    clampKeywordsPageIndex();
+    var bounds = keywordsPageBounds();
+    var filtered = keywordsFilterNormalized().length > 0;
+    var visibleTotal = keywordsFilteredIndices().length;
+
     keywordsListEl.innerHTML = "";
 
-    keywords.forEach(function (kw, index) {
+    for (var ri = 0; ri < bounds.indices.length; ri++) {
+      var index = bounds.indices[ri];
+      var kw = keywords[index];
       var tr = document.createElement("tr");
       tr.className = "keywords__row";
       tr.setAttribute("data-id", kw.id);
@@ -10489,14 +10710,23 @@
         "</td>";
 
       keywordsListEl.appendChild(tr);
-    });
+    }
 
     if (keywordsEmptyEl) {
       keywordsEmptyEl.hidden = keywords.length > 0;
     }
 
+    if (keywordsFilterEmptyEl) {
+      keywordsFilterEmptyEl.hidden = !(keywords.length > 0 && filtered && visibleTotal === 0);
+    }
+
+    if (keywordsTableEl) {
+      keywordsTableEl.hidden = keywords.length > 0 && filtered && visibleTotal === 0;
+    }
+
     updateKeywordReorderUi();
     updateKeywordCaloriesUi();
+    updateKeywordsPaginationUi();
   }
 
   function dayById(id) {
@@ -11597,6 +11827,48 @@
     addKeywordBtn.addEventListener("click", addKeyword);
   }
 
+  if (keywordsSearchEl) {
+    keywordsSearchEl.addEventListener("input", function () {
+      setKeywordsFilterQuery(keywordsSearchEl.value);
+    });
+  }
+
+  if (keywordsSearchClearBtn) {
+    keywordsSearchClearBtn.addEventListener("click", clearKeywordsFilter);
+  }
+
+  if (keywordsPageSizeEl) {
+    keywordsPageSizeEl.addEventListener("change", function () {
+      var size = parseInt(keywordsPageSizeEl.value, 10);
+      if (isNaN(size)) return;
+      changeKeywordsPageSize(size);
+    });
+  }
+
+  if (keywordsPageFirstBtn) {
+    keywordsPageFirstBtn.addEventListener("click", function () {
+      goKeywordsPage(0);
+    });
+  }
+
+  if (keywordsPagePrevBtn) {
+    keywordsPagePrevBtn.addEventListener("click", function () {
+      goKeywordsPage(keywordsPageIndex - 1);
+    });
+  }
+
+  if (keywordsPageNextBtn) {
+    keywordsPageNextBtn.addEventListener("click", function () {
+      goKeywordsPage(keywordsPageIndex + 1);
+    });
+  }
+
+  if (keywordsPageLastBtn) {
+    keywordsPageLastBtn.addEventListener("click", function () {
+      goKeywordsPage(keywordsPageCount() - 1);
+    });
+  }
+
   if (exportAllFoodsBtn) {
     exportAllFoodsBtn.addEventListener("click", exportAllFoods);
   }
@@ -12547,6 +12819,7 @@
     loadFoodDefinitions();
     loadKeywordReorderOpen();
     loadKeywordCaloriesOpen();
+    loadKeywordsPageSize();
     loadDayNotes();
     loadDayHighlightsPreference();
     loadDayEditorHeight();
