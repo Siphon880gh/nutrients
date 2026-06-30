@@ -11250,90 +11250,120 @@
       '" role="option" title="' +
       escapeAttr(name) +
       '">' +
+      '<span class="day__suggest-item-chevron day__suggest-item-chevron--left" data-action="scroll-suggest-left" role="button" tabindex="-1" aria-label="Show start of food name">‹</span>' +
+      '<span class="day__suggest-item-viewport">' +
       '<span class="day__suggest-item-label">' +
       (before ? '<span class="day__suggest-rest">' + before + "</span>" : "") +
       '<span class="day__suggest-match">' +
       matched +
       "</span>" +
       (after ? '<span class="day__suggest-rest">' + after + "</span>" : "") +
-      "</span></button>"
+      "</span></span>" +
+      '<span class="day__suggest-item-chevron day__suggest-item-chevron--right" data-action="scroll-suggest-right" role="button" tabindex="-1" aria-label="Show end of food name">›</span>' +
+      "</button>"
     );
   }
 
-  var DAY_SUGGEST_LABEL_INSET = 1;
-
-  function daySuggestItemLabelWidth(btn) {
-    var style = getComputedStyle(btn);
-    return (
-      btn.clientWidth -
-      parseFloat(style.paddingLeft) -
-      parseFloat(style.paddingRight) -
-      DAY_SUGGEST_LABEL_INSET * 2
-    );
+  function daySuggestItemViewport(btn) {
+    return btn.querySelector(".day__suggest-item-viewport");
   }
 
-  function daySuggestItemLabelOverflow(btn) {
-    var label = btn.querySelector(".day__suggest-item-label");
-    if (!label) return 0;
-    var labelStyle = getComputedStyle(label);
-    var labelRect = label.getBoundingClientRect();
-    var contentRight = labelRect.right - parseFloat(labelStyle.paddingRight) - 1;
-    var contentLeft = labelRect.left + parseFloat(labelStyle.paddingLeft) + 1;
-    var walker = document.createTreeWalker(label, NodeFilter.SHOW_TEXT);
-    var firstText = null;
-    var lastText = null;
-    while (walker.nextNode()) {
-      if (!walker.currentNode.nodeValue) continue;
-      if (!firstText) firstText = walker.currentNode;
-      lastText = walker.currentNode;
+  function daySuggestItemLabelEl(btn) {
+    return btn.querySelector(".day__suggest-item-label");
+  }
+
+  function daySuggestItemScrollOverflow(btn) {
+    var viewport = daySuggestItemViewport(btn);
+    if (!viewport) return 0;
+    return Math.max(0, viewport.scrollWidth - viewport.clientWidth);
+  }
+
+  function daySuggestItemScrollTo(btn, left, smooth) {
+    var viewport = daySuggestItemViewport(btn);
+    if (!viewport) return;
+    var maxLeft = daySuggestItemScrollOverflow(btn);
+    var nextLeft = Math.max(0, Math.min(left, maxLeft));
+    if (
+      smooth &&
+      !window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    ) {
+      viewport.scrollTo({ left: nextLeft, behavior: "smooth" });
+    } else {
+      viewport.scrollLeft = nextLeft;
     }
-    if (!lastText || !lastText.length) return 0;
-    var startRange = document.createRange();
-    startRange.setStart(firstText, 0);
-    startRange.setEnd(firstText, 1);
-    var endRange = document.createRange();
-    endRange.setStart(lastText, lastText.length - 1);
-    endRange.setEnd(lastText, lastText.length);
-    var startRect = startRange.getBoundingClientRect();
-    var endRect = endRange.getBoundingClientRect();
-    return Math.max(
-      endRect.right - contentRight,
-      contentLeft - startRect.left,
-      0
+  }
+
+  function daySuggestItemUpdateChevrons(btn) {
+    if (!btn.classList.contains("day__suggest-item--scrollable")) return;
+    var viewport = daySuggestItemViewport(btn);
+    var leftChevron = btn.querySelector(".day__suggest-item-chevron--left");
+    var rightChevron = btn.querySelector(".day__suggest-item-chevron--right");
+    if (!viewport || !leftChevron || !rightChevron) return;
+    var overflow = daySuggestItemScrollOverflow(btn);
+    var sl = viewport.scrollLeft;
+    leftChevron.classList.toggle("day__suggest-item-chevron--disabled", sl <= 1);
+    rightChevron.classList.toggle(
+      "day__suggest-item-chevron--disabled",
+      overflow <= 1 || sl >= overflow - 1
     );
   }
 
-  function fitDaySuggestItemLabel(btn) {
-    var label = btn.querySelector(".day__suggest-item-label");
-    if (!label) return;
+  function autoScrollDaySuggestItem(btn) {
+    var viewport = daySuggestItemViewport(btn);
+    if (!viewport || daySuggestItemScrollOverflow(btn) <= 0) return;
+    var match = btn.querySelector(".day__suggest-match");
+    if (match) {
+      var vpRect = viewport.getBoundingClientRect();
+      var matchRect = match.getBoundingClientRect();
+      if (matchRect.right > vpRect.right - 2) {
+        daySuggestItemScrollTo(
+          btn,
+          viewport.scrollLeft + (matchRect.right - vpRect.right) + 4,
+          true
+        );
+        return;
+      }
+      if (matchRect.left < vpRect.left + 2) {
+        daySuggestItemScrollTo(
+          btn,
+          viewport.scrollLeft - (vpRect.left - matchRect.left) - 4,
+          true
+        );
+        return;
+      }
+    }
+    daySuggestItemScrollTo(btn, daySuggestItemScrollOverflow(btn), true);
+  }
+
+  function activateDaySuggestItemScroll(btn) {
+    var viewport = daySuggestItemViewport(btn);
+    var label = daySuggestItemLabelEl(btn);
+    if (!viewport || !label) return;
     resetDaySuggestItemLabel(btn);
-    var maxWidth = daySuggestItemLabelWidth(btn);
-    if (label.scrollWidth <= maxWidth) {
-      return;
-    }
     btn.classList.add("day__suggest-item--fitted");
-    maxWidth = daySuggestItemLabelWidth(btn);
-    if (label.scrollWidth <= maxWidth) {
+    if (label.scrollWidth <= viewport.clientWidth) {
+      btn.classList.remove("day__suggest-item--fitted");
       return;
     }
-    var baseSize = parseFloat(getComputedStyle(label).fontSize);
-    var absoluteMin = Math.max(baseSize * 0.75, 11);
-    var size = Math.max(absoluteMin, baseSize * (maxWidth / label.scrollWidth));
-    label.style.transition = "none";
-    label.style.fontSize = size + "px";
-    while (daySuggestItemLabelOverflow(btn) > 0 && size > absoluteMin + 0.25) {
-      size -= 0.25;
-      label.style.fontSize = size + "px";
-    }
-    label.style.transition = "";
+    btn.classList.add("day__suggest-item--scrollable");
+    daySuggestItemUpdateChevrons(btn);
+    requestAnimationFrame(function () {
+      requestAnimationFrame(function () {
+        autoScrollDaySuggestItem(btn);
+        window.setTimeout(function () {
+          daySuggestItemUpdateChevrons(btn);
+        }, 220);
+      });
+    });
   }
 
   function resetDaySuggestItemLabel(btn) {
-    var label = btn.querySelector(".day__suggest-item-label");
-    if (!label) return;
-    label.style.fontSize = "";
-    label.style.transition = "";
-    btn.classList.remove("day__suggest-item--fitted");
+    var viewport = daySuggestItemViewport(btn);
+    if (viewport) viewport.scrollLeft = 0;
+    btn.classList.remove(
+      "day__suggest-item--fitted",
+      "day__suggest-item--scrollable"
+    );
   }
 
   function resetAllDaySuggestItemLabels(suggestEl) {
@@ -11354,7 +11384,7 @@
     resetAllDaySuggestItemLabels(suggestEl);
     if (!btn) return;
     suggestEl._daySuggestHoverItem = btn;
-    fitDaySuggestItemLabel(btn);
+    activateDaySuggestItemScroll(btn);
   }
 
   function bindDaySuggestHover(el) {
@@ -11366,6 +11396,24 @@
     el.addEventListener("mouseleave", function () {
       resetAllDaySuggestItemLabels(el);
     });
+    el.addEventListener(
+      "touchstart",
+      function (e) {
+        var btn = e.target.closest(".day__suggest-item");
+        if (!btn || !el.contains(btn)) return;
+        updateDaySuggestItemHover(el, btn);
+      },
+      { passive: true }
+    );
+    el.addEventListener(
+      "scroll",
+      function (e) {
+        if (!e.target.classList.contains("day__suggest-item-viewport")) return;
+        var btn = e.target.closest(".day__suggest-item");
+        if (btn) daySuggestItemUpdateChevrons(btn);
+      },
+      true
+    );
   }
 
   function hideAllDaySuggests() {
@@ -11414,6 +11462,28 @@
       if (!textarea) return;
       if (e.target.closest('[data-action="dismiss-suggest"]')) {
         dismissDaySuggest(textarea);
+        return;
+      }
+      if (e.target.closest('[data-action="scroll-suggest-left"]')) {
+        e.stopPropagation();
+        var leftBtn = e.target.closest(".day__suggest-item");
+        if (leftBtn) {
+          daySuggestItemScrollTo(leftBtn, 0, false);
+          daySuggestItemUpdateChevrons(leftBtn);
+        }
+        return;
+      }
+      if (e.target.closest('[data-action="scroll-suggest-right"]')) {
+        e.stopPropagation();
+        var rightBtn = e.target.closest(".day__suggest-item");
+        if (rightBtn) {
+          daySuggestItemScrollTo(
+            rightBtn,
+            daySuggestItemScrollOverflow(rightBtn),
+            false
+          );
+          daySuggestItemUpdateChevrons(rightBtn);
+        }
         return;
       }
       var btn = e.target.closest("[data-food-name]");
