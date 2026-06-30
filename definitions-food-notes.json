@@ -7,7 +7,7 @@
     },
     {
       "label": "Pork Zongzi",
-      "pattern": "\\bpork zongzi\\b",
+      "pattern": "\\bzongzi.*pork\\b",
       "note": "Pork Zongzi contains salted duck egg yolk. This is a Cantonese-style Zongzi served in Hong Kong and Guangdong."
     },
     {
@@ -19,6 +19,11 @@
       "label": "Jamba Juice Smoothie",
       "pattern": "\\bjamba.*juice.*smoothie\\b",
       "note": "<p>You want to pair fats with your smoothie to absorb fat-soluble Vitamins A, D, E, K. For 1 cup of carrot juice, eat about 1 teaspoon of peanut butter minimum.</p>"
+    },
+    {
+      "label": "Salad Kit",
+      "pattern": "\\bsalad.*kit\\b",
+      "note": "<p>A chopped salad kit from Ralphs or Trader Joe’s usually contains several cups of salad. For one meal, about 1.75 to 2 cups is a good serving size, especially if you add bread or another side.</p><p>The dressing can be portioned out separately. After opening, you can store the small dressing packet in a snack-size Ziploc bag to prevent leaks. The smaller topping bags can usually stay inside the salad kit without issue because they are dry and less likely to spill like liquid dressing.</p><p>To keep the main salad bag closed and fresh, fold it over and secure it with a rubber band.</p>"
     }
   ]
 }
