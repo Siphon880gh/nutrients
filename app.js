@@ -11307,16 +11307,17 @@
     var label = btn.querySelector(".day__suggest-item-label");
     if (!label) return;
     resetDaySuggestItemLabel(btn);
-    btn.style.minWidth = btn.offsetWidth + "px";
     var maxWidth = daySuggestItemLabelWidth(btn);
     if (label.scrollWidth <= maxWidth) {
-      btn.style.minWidth = "";
       return;
     }
     btn.classList.add("day__suggest-item--fitted");
     maxWidth = daySuggestItemLabelWidth(btn);
+    if (label.scrollWidth <= maxWidth) {
+      return;
+    }
     var baseSize = parseFloat(getComputedStyle(label).fontSize);
-    var absoluteMin = baseSize * 0.45;
+    var absoluteMin = Math.max(baseSize * 0.75, 11);
     var size = Math.max(absoluteMin, baseSize * (maxWidth / label.scrollWidth));
     label.style.transition = "none";
     label.style.fontSize = size + "px";
@@ -11332,7 +11333,6 @@
     if (!label) return;
     label.style.fontSize = "";
     label.style.transition = "";
-    btn.style.minWidth = "";
     btn.classList.remove("day__suggest-item--fitted");
   }
 

@@ -3103,7 +3103,13 @@ button.dashboard__longevity-name:focus-visible {
   }
 }
 
+.day__suggest-item--fitted {
+  width: max-content;
+  max-width: 100%;
+}
+
 .day__suggest-item--fitted .day__suggest-item-label {
+  max-width: none;
   padding-inline: 2px;
   overflow: visible;
   text-overflow: clip;
