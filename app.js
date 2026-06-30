@@ -1547,6 +1547,19 @@
     return KEYWORD_BOUNDARY_BEFORE + escapedName + KEYWORD_BOUNDARY_AFTER;
   }
 
+  var KEYWORD_SERVING_MULTIPLIER_RE = /^\s*\*\s*(\d+(?:\.\d+)?)/;
+
+  function keywordServingMultiplier(text, afterIndex) {
+    var m = text.slice(afterIndex).match(KEYWORD_SERVING_MULTIPLIER_RE);
+    if (!m) return 1;
+    var n = parseFloat(m[1]);
+    return n > 0 && isFinite(n) ? n : 1;
+  }
+
+  function stripKeywordServingMultiplier(text) {
+    return String(text).replace(/\s*\*\s*\d+(?:\.\d+)?\s*$/, "").trim();
+  }
+
   function makeId() {
     return "kw-" + nextId++ + "-" + Date.now();
   }
@@ -5682,7 +5695,7 @@
     var count = 0;
     var match;
     while ((match = re.exec(text)) !== null) {
-      count += 1;
+      count += keywordServingMultiplier(text, match.index + match[0].length);
       if (match[0].length === 0) {
         re.lastIndex += 1;
       }
@@ -11156,7 +11169,7 @@
   }
 
   function lineMatchesFoodDefinition(text) {
-    var key = String(text).trim().toLowerCase();
+    var key = stripKeywordServingMultiplier(text).toLowerCase();
     if (!key) return false;
     for (var i = 0; i < keywords.length; i++) {
       if (keywords[i].name.trim().toLowerCase() === key) return true;

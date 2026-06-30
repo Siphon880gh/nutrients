@@ -67,9 +67,6 @@
                     <span class="dashboard__micro-condition-group-label">Conditions</span>
                   </li>
                   <li class="dashboard__micro-condition-item" role="presentation">
-                    <button type="button" class="dashboard__micro-condition-link" role="option" data-micro-condition="coffeeTeaUser">Chronic coffee / tea / energy drink user</button>
-                  </li>
-                  <li class="dashboard__micro-condition-item" role="presentation">
                     <button type="button" class="dashboard__micro-condition-link" role="option" data-micro-condition="adhd">ADHD</button>
                   </li>
                   <li class="dashboard__micro-condition-item" role="presentation">
@@ -79,13 +76,16 @@
                     <button type="button" class="dashboard__micro-condition-link" role="option" data-micro-condition="antiAging">Anti-aging & longevity</button>
                   </li>
                   <li class="dashboard__micro-condition-item" role="presentation">
-                    <button type="button" class="dashboard__micro-condition-link" role="option" data-micro-condition="hairLoss">Hair loss</button>
+                    <button type="button" class="dashboard__micro-condition-link" role="option" data-micro-condition="bowelMovementsAltered">Bowel movements altered</button>
                   </li>
                   <li class="dashboard__micro-condition-item" role="presentation">
                     <button type="button" class="dashboard__micro-condition-link" role="option" data-micro-condition="cataractsPrevention">Cataracts prevention</button>
                   </li>
                   <li class="dashboard__micro-condition-item" role="presentation">
-                    <button type="button" class="dashboard__micro-condition-link" role="option" data-micro-condition="bowelMovementsAltered">Bowel movements altered</button>
+                    <button type="button" class="dashboard__micro-condition-link" role="option" data-micro-condition="coffeeTeaUser">Chronic coffee / tea / energy drink user</button>
+                  </li>
+                  <li class="dashboard__micro-condition-item" role="presentation">
+                    <button type="button" class="dashboard__micro-condition-link" role="option" data-micro-condition="hairLoss">Hair loss</button>
                   </li>
                 </ul>
               </div>
@@ -191,24 +191,28 @@
 
     <div class="week__days-toolbar">
       <p class="week__days-hint">
-        Day meals are saved in this browser.
-        <button type="button" id="day-highlights-toggle" class="week__highlight-toggle" aria-pressed="true" aria-label="Turn food highlighting off">
-          <svg class="week__highlight-toggle-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-            <path d="M15.7 3.3a1.8 1.8 0 0 1 2.5 0l2.5 2.5a1.8 1.8 0 0 1 0 2.5l-8.3 8.3-5.1 1.2 1.2-5.1 8.2-8.4ZM5.2 19.3h13.6a1 1 0 1 1 0 2H5.2a1 1 0 1 1 0-2Z"></path>
-          </svg>
-          <span class="visually-hidden">Food highlighting</span>
-        </button>
-        <span id="day-food-notes" class="week__food-notes" hidden>
-          <span class="week__food-notes-lead">Notes available for:</span>
-          <span id="day-food-notes-labels" class="week__food-notes-labels"></span>
-          <div id="day-food-notes-popover" class="week__food-notes-popover" role="tooltip" hidden></div>
-        </span>
+        Day meals are saved in this browser. You can add a multiplier at the end of a food (Eg. <code>* 2</code>)
       </p>
       <div class="week__days-actions">
         <button type="button" id="export-all-meals" class="week__meals-bulk">Export all</button>
         <button type="button" id="import-all-meals" class="week__meals-bulk">Import all</button>
         <button type="button" id="clear-all-days" class="week__clear-all">Clear all days</button>
       </div>
+    </div>
+    <div style="font-size:80%;">
+      <div style="color: #8a8a8a; vertical-align: top; display:inline-flex;">
+        <span class="visually-hidden-off" onclick="this.nextElementSibling.click();">Food highlighting:&nbsp;</span>
+        <button type="button" id="day-highlights-toggle" class="week__highlight-toggle" aria-pressed="true" aria-label="Turn food highlighting off">
+          <svg class="week__highlight-toggle-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path d="M15.7 3.3a1.8 1.8 0 0 1 2.5 0l2.5 2.5a1.8 1.8 0 0 1 0 2.5l-8.3 8.3-5.1 1.2 1.2-5.1 8.2-8.4ZM5.2 19.3h13.6a1 1 0 1 1 0 2H5.2a1 1 0 1 1 0-2Z"></path>
+          </svg>
+        </button>
+      </div>
+      <span id="day-food-notes" class="week__food-notes" hidden>
+        <span class="week__food-notes-lead">Notes available for:</span>
+        <span id="day-food-notes-labels" class="week__food-notes-labels"></span>
+        <div id="day-food-notes-popover" class="week__food-notes-popover" role="tooltip" hidden></div>
+      </span>
     </div>
 
     <div class="week__grid" role="group" aria-label="Monday through Sunday meals">
