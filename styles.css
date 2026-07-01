@@ -4592,10 +4592,32 @@ button.longevity-form__label-link:focus-visible {
 }
 
 .import-ai-panel__service {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.22rem;
   font-size: 0.78rem;
   font-weight: 500;
   color: #5c5c5c;
   text-decoration: none;
+}
+
+.import-ai-panel__service-icon {
+  flex: 0 0 auto;
+  display: block;
+  width: 0.9em;
+  height: 0.9em;
+  fill: currentColor;
+  opacity: 0.86;
+  vertical-align: middle;
+  margin-right: 2px;
+}
+
+.import-ai-panel__service-icon--chatgpt {
+  color: #16a37f;
+}
+
+.import-ai-panel__service-icon--claude {
+  color: #cc785c;
 }
 
 .import-ai-panel__service:hover {
