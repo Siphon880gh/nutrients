@@ -1158,37 +1158,6 @@
       "Legumes, whole grains, and dairy cover needs without supplementation."
     ]
   },
-  "fluoride": {
-    "tooLow": [
-      "Low fluoride increases dental caries risk—fluoride strengthens tooth enamel against acid attacks from bacteria.",
-      "In areas without fluoridated water, topical fluoride (toothpaste) becomes more important."
-    ],
-    "enough": [
-      "Fluoride hardens tooth enamel and may support bone mineral density at adequate intakes.",
-      "Fluoridated water, tea, and seafood are the main dietary sources."
-    ],
-    "tooHigh": [
-      "Excess fluoride (fluorosis) can cause tooth mottling in children and, in extreme cases, skeletal fluorosis.",
-      "Avoid swallowing fluoride toothpaste; supplementation beyond water fluoridation is rarely needed."
-    ],
-    "foodSources": [
-      "Fluoridated tap water",
-      "Black tea & green tea",
-      "Crab & shrimp",
-      "Oatmeal",
-      "Raisins",
-      "Wine",
-      "Potatoes (with skin)"
-    ],
-    "male": [
-      "Supports dental health; about 4 mg/day adequate intake for adult men.",
-      "Tea drinkers often get significant fluoride without supplementation."
-    ],
-    "female": [
-      "Adequate intake about 3 mg/day; supports dental and possibly bone health.",
-      "Fluoridated water and tea are primary sources."
-    ]
-  },
   "chloride": {
     "tooLow": [
       "Low chloride is rare from diet but can occur with prolonged vomiting, diarrhea, or certain diuretics—causing metabolic alkalosis.",

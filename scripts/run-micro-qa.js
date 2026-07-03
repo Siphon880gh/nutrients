@@ -13,7 +13,7 @@ const MICRO_KEYS = [
   "fiber", "sodium", "potassium", "calcium", "iron", "copper", "magnesium", "zinc", "selenium",
   "manganese", "chromium", "iodine", "vitaminA", "vitaminD", "vitaminE", "vitaminK", "vitaminB12",
   "thiamin", "riboflavin", "niacin", "pantothenicAcid", "vitaminB6", "vitaminC", "folate", "biotin",
-  "phosphorus", "choline", "molybdenum", "fluoride", "chloride",
+  "phosphorus", "choline", "molybdenum", "chloride",
   "histidine", "isoleucine", "leucine", "lysine", "methionine", "phenylalanine", "threonine",
   "tryptophan", "valine", "arginine", "cysteine", "glutamine", "glycine", "proline", "tyrosine", "taurine",
 ];
@@ -209,23 +209,23 @@ const FOOD_PATCHES = {
 const CATEGORY_DEFAULTS = {
   salt: {
     chloride: null, // computed from sodium
-    molybdenum: 0, fluoride: 0,
+    molybdenum: 0,
   },
   supplement: {
     selenium: 0, iodine: 0, vitaminD: 0, vitaminB12: 0, vitaminE: 0, vitaminK: 0,
-    phosphorus: 0, choline: 0, molybdenum: 0, fluoride: 0, chloride: 0,
+    phosphorus: 0, choline: 0, molybdenum: 0, chloride: 0,
   },
   energy: {
     selenium: 0, iodine: 0, vitaminD: 0, vitaminB12: 0, vitaminE: 0, vitaminK: 0,
-    phosphorus: 0, choline: 0, molybdenum: 0, fluoride: 0, chloride: 0, fiber: 0,
+    phosphorus: 0, choline: 0, molybdenum: 0, chloride: 0, fiber: 0,
   },
   oil: {
     selenium: 0, iodine: 0, vitaminD: 0, vitaminB12: 0, vitaminK: 0, phosphorus: 0,
-    choline: 0, molybdenum: 0, fluoride: 0, chloride: 0, fiber: 0, vitaminC: 0,
+    choline: 0, molybdenum: 0, chloride: 0, fiber: 0, vitaminC: 0,
   },
   egg: {
     selenium: 15, vitaminB12: 0.5, iodine: 24, phosphorus: 86, vitaminD: 1.1, vitaminE: 0.5,
-    molybdenum: 8, fluoride: 0,
+    molybdenum: 8,
   },
   seafood: {
     selenium: 35, vitaminB12: 2, iodine: 25, phosphorus: 200, vitaminD: 5, vitaminE: 1.5,
@@ -237,7 +237,7 @@ const CATEGORY_DEFAULTS = {
   },
   dairy: {
     selenium: 8, vitaminB12: 1, iodine: 35, phosphorus: 200, vitaminD: 1, vitaminE: 0.05,
-    molybdenum: 8, fluoride: 0.05,
+    molybdenum: 8,
   },
   grain: {
     selenium: 12, phosphorus: 120, molybdenum: 20, vitaminB12: 0, iodine: 0, vitaminD: 0,
@@ -306,11 +306,6 @@ function estimateNutrient(food, key) {
     }
     const trace = cat === "dairy" ? 150 : cat === "meat" ? 80 : cat === "veg" ? 40 : 25;
     return { value: roundVal("chloride", trace), verdict: trace > 0 ? "updated" : "confirmed_zero" };
-  }
-
-  if (key === "fluoride") {
-    const v = cat === "dairy" ? 0.05 : cat === "grain" ? 0.02 : 0;
-    return { value: v, verdict: v === 0 ? "confirmed_zero" : "updated" };
   }
 
   if (key === "molybdenum") {

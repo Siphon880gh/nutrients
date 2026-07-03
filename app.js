@@ -65,7 +65,6 @@
   var dashboardMicroToggleEl = document.getElementById("dashboard-micro-toggle");
   var dashboardMicroPanelEl = document.getElementById("dashboard-micro-panel");
   var dashboardMicroListEl = document.getElementById("dashboard-micro-list");
-  var dashboardMicroMoreWrapEl = document.querySelector(".dashboard__micro-more-wrap");
   var dashboardMicroDailyGridEl = document.getElementById("dashboard-micro-daily-grid");
   var dashboardMicroHintTextEl = document.getElementById("dashboard-micro-hint-text");
   var dashboardMicroConditionToggleEl = document.getElementById(
@@ -584,7 +583,6 @@
     { key: "phosphorus", label: "Phosphorus", unit: "mg", code: "p" },
     { key: "choline", label: "Choline", unit: "mg", code: "ch" },
     { key: "molybdenum", label: "Molybdenum", unit: "mcg", code: "mo" },
-    { key: "fluoride", label: "Fluoride", unit: "mg", code: "fl" },
     { key: "chloride", label: "Chloride", unit: "mg", code: "cl" },
     { key: "histidine", label: "Histidine", unit: "mg", code: "his", group: "amino" },
     { key: "isoleucine", label: "Isoleucine", unit: "mg", code: "ile", group: "amino" },
@@ -6896,9 +6894,6 @@
 
     if (dashboardMicroListEl) {
       dashboardMicroListEl.hidden = microViewDaily;
-    }
-    if (dashboardMicroMoreWrapEl) {
-      dashboardMicroMoreWrapEl.hidden = microViewDaily;
     }
     if (dashboardMicroDailyGridEl) {
       dashboardMicroDailyGridEl.hidden = !microViewDaily;

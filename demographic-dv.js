@@ -61,7 +61,6 @@
       phosphorus: 700,
       choline: 550,
       molybdenum: 45,
-      fluoride: 4,
       chloride: 2300,
     },
     female: {
@@ -93,7 +92,6 @@
       phosphorus: 700,
       choline: 425,
       molybdenum: 45,
-      fluoride: 3,
       chloride: 2300,
     },
   };
