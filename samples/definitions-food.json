@@ -14116,7 +14116,7 @@
 		}
 	},
 	{
-		"name": "Multivitamin - Men 1 tablet (Adjusted)",
+		"name": "Multivitamin - Centrum, Men 1 tablet (Adjusted)",
 		"protein": 0,
 		"carbs": 0,
 		"fats": 0,
@@ -14159,7 +14159,7 @@
 		}
 	},
 	{
-		"name": "Multivitamin - Women 1 tablet (Adjusted)",
+		"name": "Multivitamin - Centrum, Women 1 tablet (Adjusted)",
 		"protein": 0,
 		"carbs": 0,
 		"fats": 0,
@@ -14202,7 +14202,7 @@
 		}
 	},
 	{
-		"name": "Multivitamin - Men 50+ (Silver) 1 tablet (Adjusted)",
+		"name": "Multivitamin - Centrum, Men 50+ (Silver) 1 tablet (Adjusted)",
 		"protein": 0,
 		"carbs": 0,
 		"fats": 0,
@@ -14245,7 +14245,7 @@
 		}
 	},
 	{
-		"name": "Multivitamin - Women 50+ (Silver) 1 tablet (Adjusted)",
+		"name": "Multivitamin - Centrum, Women 50+ (Silver) 1 tablet (Adjusted)",
 		"protein": 0,
 		"carbs": 0,
 		"fats": 0,
@@ -14279,6 +14279,45 @@
 			"vitaminK": true,
 			"selenium": true,
 			"copper": true
+		},
+		"carbQuality": {
+			"glycemicIndex": 0,
+			"addedSugar": 0,
+			"refinedCarbs": 0,
+			"netCarbs": 0
+		}
+	},
+	{
+		"name": "MegaRed Omega-3 Krill Oil 500 mg 1 softgel",
+		"protein": 0,
+		"carbs": 0,
+		"fats": 0.5,
+		"longevity": {
+			"cholesterol": 5,
+			"omega3": 0.115,
+			"epa": 0.064,
+			"dha": 0.03,
+			"carotenoids": 0.025
+		},
+		"carbQuality": {
+			"glycemicIndex": 0,
+			"addedSugar": 0,
+			"refinedCarbs": 0,
+			"netCarbs": 0
+		}
+	},
+	{
+		"name": "Nature Made Cod Liver Oil 530 mg 1 softgel",
+		"protein": 0,
+		"carbs": 0,
+		"fats": 0.5,
+		"micros": {
+			"vitaminA": 375,
+			"vitaminD": 3.25
+		},
+		"longevity": {
+			"cholesterol": 5,
+			"omega3": 0.049
 		},
 		"carbQuality": {
 			"glycemicIndex": 0,
