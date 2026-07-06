@@ -269,6 +269,7 @@
   var dayFoodNotesEl = document.getElementById("day-food-notes");
   var dayFoodNotesLabelsEl = document.getElementById("day-food-notes-labels");
   var dayFoodNotesPopoverEl = document.getElementById("day-food-notes-popover");
+  var dayUnmatchedLinesEl = document.getElementById("day-unmatched-lines");
   var dayFoodNotesPinned = false;
   var dayFoodNotesActiveIndex = -1;
   var dayFoodNotesMatches = [];
@@ -5883,6 +5884,20 @@
     return html;
   }
 
+  var SERVING_MULTIPLIER_HTML_RE = /(\s*\*\s*\d+(?:\.\d+)?)/g;
+
+  function highlightServingMultipliersHtml(html) {
+    return String(html).replace(
+      SERVING_MULTIPLIER_HTML_RE,
+      '<mark class="hl hl--multiplier">$1</mark>'
+    );
+  }
+
+  function highlightedDayHtml(text, foodRegex) {
+    var html = foodRegex ? highlightedHtml(text, foodRegex) : escapeHtml(text);
+    return highlightServingMultipliersHtml(html);
+  }
+
   function countKeyword(text, name) {
     var re = new RegExp(keywordMatchPattern(escapeRegex(name)), "gi");
     var count = 0;
@@ -9698,85 +9713,102 @@
     backdrop.scrollLeft = textarea.scrollLeft;
   }
 
-  var dayInputMirrorEl = null;
-
-  function syncDayInputMirrorStyles(textarea) {
-    if (!dayInputMirrorEl) return;
-    var style = window.getComputedStyle(textarea);
-    var mirror = dayInputMirrorEl;
-    mirror.style.position = "absolute";
-    mirror.style.visibility = "hidden";
-    mirror.style.pointerEvents = "none";
-    mirror.style.top = "0";
-    mirror.style.left = "-9999px";
-    mirror.style.height = "auto";
-    mirror.style.overflow = "hidden";
-    mirror.style.width = textarea.clientWidth + "px";
-    mirror.style.boxSizing = style.boxSizing;
-    mirror.style.padding = style.padding;
-    mirror.style.border = style.border;
-    mirror.style.font = style.font;
-    mirror.style.lineHeight = style.lineHeight;
-    mirror.style.letterSpacing = style.letterSpacing;
-    mirror.style.whiteSpace = style.whiteSpace;
-    mirror.style.wordWrap = style.wordWrap;
-    mirror.style.overflowWrap = style.overflowWrap;
-    mirror.style.tabSize = style.tabSize;
-  }
-
-  function getDayInputMirror(textarea) {
-    if (!dayInputMirrorEl) {
-      dayInputMirrorEl = document.createElement("div");
-      dayInputMirrorEl.setAttribute("aria-hidden", "true");
-      dayInputMirrorEl.className = "day__input-mirror";
-      document.body.appendChild(dayInputMirrorEl);
-    }
-    syncDayInputMirrorStyles(textarea);
-    return dayInputMirrorEl;
-  }
-
-  function dayInputMirrorCoords(mirror, text, pos, fallbackLineHeight) {
-    mirror.textContent = text.substring(0, pos);
-    var span = document.createElement("span");
-    span.textContent = text.charAt(pos) || ".";
-    mirror.appendChild(span);
-    var coords = {
-      top: span.offsetTop,
-      left: span.offsetLeft,
-      height: span.offsetHeight || fallbackLineHeight,
-    };
-    mirror.removeChild(span);
-    return coords;
-  }
-
-  function syncDayInputTextOffset(textarea) {
+  function setDayEditorMode(textarea, mode) {
     var editor = textarea.closest(".day__editor");
     if (!editor) return;
-    var backdrop = editor.querySelector(".day__backdrop");
-    if (!backdrop || !textarea.value) {
-      editor.style.removeProperty("--day-input-text-offset");
+    editor.classList.remove(
+      "day__editor--editing",
+      "day__editor--viewing",
+      "day__editor--plain"
+    );
+    editor.classList.add("day__editor--" + mode);
+  }
+
+  function updateDayEditorMode(textarea) {
+    if (!textarea) return;
+    if (!dayHighlightsEnabled) {
+      setDayEditorMode(textarea, "plain");
       return;
     }
-
-    syncScroll(textarea, backdrop);
-
-    var bdRect = backdropCaretRect(backdrop, 0);
-    if (!bdRect) return;
-
-    var style = window.getComputedStyle(textarea);
-    var lineHeight = parseFloat(style.lineHeight) || 16;
-    var mirror = getDayInputMirror(textarea);
-    var coords = dayInputMirrorCoords(mirror, textarea.value, 0, lineHeight);
-    var rect = textarea.getBoundingClientRect();
-    var padTop = parseFloat(style.paddingTop);
-    var mirrorTop = rect.top + padTop + coords.top - textarea.scrollTop;
-    var offset = Math.round((mirrorTop - bdRect.top) * 10) / 10;
-
-    if (Math.abs(offset) < 0.5) {
-      editor.style.removeProperty("--day-input-text-offset");
-    } else {
-      editor.style.setProperty("--day-input-text-offset", offset + "px");
+    if (document.activeElement === textarea) {
+      setDayEditorMode(textarea, "editing");
+      return;
     }
+    setDayEditorMode(textarea, "viewing");
+    updateDayHighlights(textarea);
+  }
+
+  function unmatchedDayLines(text) {
+    var lines = String(text || "").split("\n");
+    var unmatched = [];
+    lines.forEach(function (line, index) {
+      if (!line.trim()) return;
+      if (!lineMatchesFoodDefinition(line)) {
+        unmatched.push({ lineNum: index + 1, text: line.trim() });
+      }
+    });
+    return unmatched;
+  }
+
+  function allUnmatchedDayLines() {
+    var items = [];
+    DAYS.forEach(function (day) {
+      var el = document.getElementById(day.id);
+      if (!el) return;
+      unmatchedDayLines(el.value).forEach(function (item) {
+        items.push({
+          dayLabel: day.label.toUpperCase(),
+          lineNum: item.lineNum,
+          text: item.text,
+        });
+      });
+    });
+    return items;
+  }
+
+  function weekUnmatchedLinesHtml(items) {
+    if (!items.length) return "";
+    return (
+      '<span class="week__unmatched-lines-lead">Unmatched:</span> ' +
+      items
+        .map(function (item) {
+          return (
+            '<span class="week__unmatched-lines-item">' +
+            escapeHtml(item.dayLabel) +
+            " line " +
+            item.lineNum +
+            " — " +
+            escapeHtml(item.text) +
+            "</span>"
+          );
+        })
+        .join('<span class="week__unmatched-lines-sep"> · </span>')
+    );
+  }
+
+  function anyDayTextareaFocused() {
+    for (var i = 0; i < DAYS.length; i++) {
+      var el = document.getElementById(DAYS[i].id);
+      if (el && document.activeElement === el) return true;
+    }
+    return false;
+  }
+
+  function updateWeekUnmatchedLines() {
+    if (!dayUnmatchedLinesEl) return;
+    if (!dayHighlightsEnabled || anyDayTextareaFocused()) {
+      dayUnmatchedLinesEl.hidden = true;
+      dayUnmatchedLinesEl.innerHTML = "";
+      return;
+    }
+    var items = allUnmatchedDayLines();
+    if (!items.length) {
+      dayUnmatchedLinesEl.hidden = true;
+      dayUnmatchedLinesEl.innerHTML = "";
+      return;
+    }
+    dayUnmatchedLinesEl.innerHTML = weekUnmatchedLinesHtml(items);
+    dayUnmatchedLinesEl.hidden = false;
   }
 
   function backdropCaretRect(backdrop, pos) {
@@ -9830,25 +9862,19 @@
     var editor = textarea.closest(".day__editor");
     if (!editor) return null;
     var backdrop = editor.querySelector(".day__backdrop");
-    if (backdrop) syncScroll(textarea, backdrop);
+    if (!backdrop) return null;
+    syncScroll(textarea, backdrop);
 
-    var style = window.getComputedStyle(textarea);
-    var rect = textarea.getBoundingClientRect();
-    var padTop = parseFloat(style.paddingTop);
-    var padLeft = parseFloat(style.paddingLeft);
-    var lineHeight = parseFloat(style.lineHeight) || 16;
-    var relY = clientY - rect.top - padTop + textarea.scrollTop;
-    var relX = clientX - rect.left - padLeft + textarea.scrollLeft;
-
-    var mirror = getDayInputMirror(textarea);
     var text = textarea.value;
     var bestPos = text.length;
     var bestScore = Infinity;
 
     for (var pos = 0; pos <= text.length; pos++) {
-      var coords = dayInputMirrorCoords(mirror, text, pos, lineHeight);
-      var dy = relY - coords.top;
-      var dx = relX - coords.left;
+      var rect = backdropCaretRect(backdrop, pos);
+      if (!rect) continue;
+      var midY = rect.top + rect.height / 2;
+      var dy = clientY - midY;
+      var dx = clientX - rect.left;
       var score = dy * dy * 4 + dx * dx;
       if (score < bestScore) {
         bestScore = score;
@@ -9871,23 +9897,37 @@
     if (!backdrop) return;
 
     if (!dayHighlightsEnabled) {
-      backdrop.textContent = textarea.value;
+      backdrop.textContent = "";
+      return;
+    }
+
+    if (!textarea.value) {
+      var placeholder = textarea.getAttribute("placeholder") || "";
+      backdrop.innerHTML = placeholder
+        ? '<span class="day__backdrop-placeholder">' +
+          escapeHtml(placeholder) +
+          "</span>"
+        : "";
       syncScroll(textarea, backdrop);
-      syncDayInputTextOffset(textarea);
       return;
     }
 
     var regex = buildHighlightRegex(keywordNames());
-    backdrop.innerHTML = highlightedHtml(textarea.value, regex);
+    backdrop.innerHTML = highlightedDayHtml(textarea.value, regex);
     syncScroll(textarea, backdrop);
-    syncDayInputTextOffset(textarea);
   }
 
   function refreshAll() {
     DAYS.forEach(function (day) {
       var el = document.getElementById(day.id);
-      if (el) updateDayHighlights(el);
+      if (!el) return;
+      if (document.activeElement === el) {
+        updateDayHighlights(el);
+      } else {
+        updateDayEditorMode(el);
+      }
     });
+    updateWeekUnmatchedLines();
     renderDashboard();
     updateDayClearButtons();
     updateDayFoodNotesUi();
@@ -11236,8 +11276,10 @@
     syncDayHighlightsToggleUi();
     DAYS.forEach(function (day) {
       var el = document.getElementById(day.id);
-      if (el) updateDayHighlights(el);
+      if (!el) return;
+      updateDayEditorMode(el);
     });
+    updateWeekUnmatchedLines();
   }
 
   function clampDayEditorHeight(px) {
@@ -11250,10 +11292,6 @@
     var height = clampDayEditorHeight(px);
     document.querySelectorAll(".day__editor").forEach(function (editor) {
       editor.style.height = height + "px";
-    });
-    DAYS.forEach(function (day) {
-      var el = document.getElementById(day.id);
-      if (el && el.value) syncDayInputTextOffset(el);
     });
     return height;
   }
@@ -12055,38 +12093,37 @@
   }
 
   function bindDay(textarea) {
-    var backdrop = textarea.closest(".day__editor").querySelector(".day__backdrop");
+    var editor = textarea.closest(".day__editor");
+    var backdrop = editor.querySelector(".day__backdrop");
 
-    textarea.addEventListener("mousedown", function (e) {
-      if (e.button !== 0 || e.detail > 1) return;
-      var pos = caretIndexFromBackdropPoint(textarea, e.clientX, e.clientY);
-      if (pos == null) return;
-      e.preventDefault();
-      if (e.shiftKey) {
-        var anchor =
-          textarea._daySelectAnchor != null
-            ? textarea._daySelectAnchor
-            : textarea.selectionStart;
-        setDayInputSelection(
-          textarea,
-          Math.min(anchor, pos),
-          Math.max(anchor, pos)
-        );
-      } else {
+    updateDayEditorMode(textarea);
+
+    textarea.addEventListener("focus", function () {
+      setDayEditorMode(textarea, "editing");
+      updateWeekUnmatchedLines();
+    });
+    textarea.addEventListener("blur", function () {
+      textarea._daySelectAnchor = null;
+      hideDaySuggest(textarea);
+      updateDayEditorMode(textarea);
+      updateWeekUnmatchedLines();
+    });
+
+    if (backdrop) {
+      backdrop.addEventListener("mousedown", function (e) {
+        if (!dayHighlightsEnabled || e.button !== 0) return;
+        if (editor.classList.contains("day__editor--editing")) return;
+        e.preventDefault();
+        var pos = caretIndexFromBackdropPoint(textarea, e.clientX, e.clientY);
+        setDayEditorMode(textarea, "editing");
+        if (pos == null) {
+          textarea.focus();
+          return;
+        }
         textarea._daySelectAnchor = pos;
         setDayInputSelection(textarea, pos, pos);
-      }
-    });
-    textarea.addEventListener("mousemove", function (e) {
-      if (e.buttons !== 1 || textarea._daySelectAnchor == null) return;
-      var pos = caretIndexFromBackdropPoint(textarea, e.clientX, e.clientY);
-      if (pos == null) return;
-      setDayInputSelection(
-        textarea,
-        Math.min(textarea._daySelectAnchor, pos),
-        Math.max(textarea._daySelectAnchor, pos)
-      );
-    });
+      });
+    }
 
     textarea.addEventListener("input", function () {
       applyDayNoteChange(textarea);
@@ -12098,22 +12135,16 @@
     textarea.addEventListener("click", function () {
       updateDaySuggest(textarea);
     });
-    textarea.addEventListener("blur", function () {
-      textarea._daySelectAnchor = null;
-      hideDaySuggest(textarea);
-    });
     textarea.addEventListener("keydown", function (e) {
       if (e.key !== "Escape") return;
-      var editor = textarea.closest(".day__editor");
-      var suggestEl = editor && editor.querySelector(".day__suggest");
+      var suggestEl = editor.querySelector(".day__suggest");
       if (!suggestEl || suggestEl.hidden) return;
       e.preventDefault();
       dismissDaySuggest(textarea);
     });
     textarea.addEventListener("scroll", function () {
       syncScroll(textarea, backdrop);
-      var editor = textarea.closest(".day__editor");
-      var suggestEl = editor && editor.querySelector(".day__suggest");
+      var suggestEl = editor.querySelector(".day__suggest");
       if (suggestEl && !suggestEl.hidden) {
         positionDaySuggest(textarea, suggestEl);
       }

@@ -207,7 +207,7 @@
         <button type="button" id="clear-all-days" class="week__clear-all">Clear all days</button>
       </div>
     </div>
-    <div style="font-size:80%;">
+    <div class="week__highlight-bar">
       <div style="color: #8a8a8a; vertical-align: top; display:inline-flex;">
         <span class="visually-hidden-off" onclick="this.nextElementSibling.click();">Food highlighting:&nbsp;</span>
         <button type="button" id="day-highlights-toggle" class="week__highlight-toggle" aria-pressed="true" aria-label="Turn food highlighting off">
@@ -221,6 +221,7 @@
         <span id="day-food-notes-labels" class="week__food-notes-labels"></span>
         <div id="day-food-notes-popover" class="week__food-notes-popover" role="tooltip" hidden></div>
       </span>
+      <div id="day-unmatched-lines" class="week__unmatched-lines" hidden role="alert"></div>
     </div>
 
     <div class="week__grid" role="group" aria-label="Monday through Sunday meals">
