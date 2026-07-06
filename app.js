@@ -9474,6 +9474,84 @@
     backdrop.scrollLeft = textarea.scrollLeft;
   }
 
+  function backdropCaretRect(backdrop, pos) {
+    if (!backdrop) return null;
+
+    var textLen = backdrop.textContent.length;
+    if (pos < 0) return null;
+    if (pos > textLen) pos = textLen;
+
+    var node = null;
+    var offset = 0;
+    var count = 0;
+
+    function walk(el) {
+      if (node) return;
+      if (el.nodeType === 3) {
+        if (count + el.length >= pos) {
+          node = el;
+          offset = pos - count;
+          return;
+        }
+        count += el.length;
+        return;
+      }
+      for (var i = 0; i < el.childNodes.length; i++) {
+        walk(el.childNodes[i]);
+      }
+    }
+
+    walk(backdrop);
+
+    if (!node) {
+      if (pos !== 0) return null;
+      var box = backdrop.getBoundingClientRect();
+      var pad = getComputedStyle(backdrop);
+      return {
+        left: box.left + parseFloat(pad.paddingLeft),
+        top: box.top + parseFloat(pad.paddingTop),
+        height: parseFloat(pad.lineHeight) || 16,
+        width: 0,
+      };
+    }
+
+    var range = document.createRange();
+    range.setStart(node, Math.min(offset, node.length));
+    range.collapse(true);
+    return range.getBoundingClientRect();
+  }
+
+  function caretIndexFromBackdropPoint(textarea, clientX, clientY) {
+    var editor = textarea.closest(".day__editor");
+    if (!editor) return null;
+    var backdrop = editor.querySelector(".day__backdrop");
+    if (!backdrop) return null;
+
+    var text = textarea.value;
+    var bestPos = text.length;
+    var bestScore = Infinity;
+
+    for (var pos = 0; pos <= text.length; pos++) {
+      var rect = backdropCaretRect(backdrop, pos);
+      if (!rect) continue;
+      var midY = rect.top + rect.height / 2;
+      var dy = clientY - midY;
+      var dx = clientX - rect.left;
+      var score = dy * dy * 4 + dx * dx;
+      if (score < bestScore) {
+        bestScore = score;
+        bestPos = pos;
+      }
+    }
+
+    return bestPos;
+  }
+
+  function setDayInputSelection(textarea, start, end) {
+    textarea.focus();
+    textarea.setSelectionRange(start, end);
+  }
+
   function updateDayHighlights(textarea) {
     var editor = textarea.closest(".day__editor");
     if (!editor) return;
@@ -11590,6 +11668,37 @@
   function bindDay(textarea) {
     var backdrop = textarea.closest(".day__editor").querySelector(".day__backdrop");
 
+    textarea.addEventListener("mousedown", function (e) {
+      if (e.button !== 0 || e.detail > 1) return;
+      var pos = caretIndexFromBackdropPoint(textarea, e.clientX, e.clientY);
+      if (pos == null) return;
+      e.preventDefault();
+      if (e.shiftKey) {
+        var anchor =
+          textarea._daySelectAnchor != null
+            ? textarea._daySelectAnchor
+            : textarea.selectionStart;
+        setDayInputSelection(
+          textarea,
+          Math.min(anchor, pos),
+          Math.max(anchor, pos)
+        );
+      } else {
+        textarea._daySelectAnchor = pos;
+        setDayInputSelection(textarea, pos, pos);
+      }
+    });
+    textarea.addEventListener("mousemove", function (e) {
+      if (e.buttons !== 1 || textarea._daySelectAnchor == null) return;
+      var pos = caretIndexFromBackdropPoint(textarea, e.clientX, e.clientY);
+      if (pos == null) return;
+      setDayInputSelection(
+        textarea,
+        Math.min(textarea._daySelectAnchor, pos),
+        Math.max(textarea._daySelectAnchor, pos)
+      );
+    });
+
     textarea.addEventListener("input", function () {
       applyDayNoteChange(textarea);
       updateDaySuggest(textarea);
@@ -11601,6 +11710,7 @@
       updateDaySuggest(textarea);
     });
     textarea.addEventListener("blur", function () {
+      textarea._daySelectAnchor = null;
       hideDaySuggest(textarea);
     });
     textarea.addEventListener("keydown", function (e) {

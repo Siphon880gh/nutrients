@@ -2972,12 +2972,13 @@ button.dashboard__longevity-name:focus-visible {
   position: absolute;
   inset: 0;
   padding: 0.65rem 0.75rem;
-  overflow: auto;
+  overflow: hidden;
   pointer-events: none;
   font: inherit;
   line-height: 1.5;
   white-space: pre-wrap;
   word-wrap: break-word;
+  overflow-wrap: break-word;
   color: #1a1a1a;
 }
 
@@ -2985,6 +2986,9 @@ button.dashboard__longevity-name:focus-visible {
   background: #ffd966;
   color: #5c3d00;
   border-radius: 2px;
+  padding: 0;
+  margin: 0;
+  line-height: inherit;
 }
 
 .day__input {
@@ -2996,7 +3000,7 @@ button.dashboard__longevity-name:focus-visible {
   min-height: 0;
   padding: 0.65rem 0.75rem;
   border: none;
-  border-radius: 6px;
+  border-radius: 0;
   background: transparent;
   color: transparent;
   caret-color: #1a1a1a;
@@ -3005,6 +3009,9 @@ button.dashboard__longevity-name:focus-visible {
   resize: none;
   white-space: pre-wrap;
   word-wrap: break-word;
+  overflow-wrap: break-word;
+  -webkit-appearance: none;
+  appearance: none;
 }
 
 .day__input::placeholder {
