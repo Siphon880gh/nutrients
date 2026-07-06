@@ -5,8 +5,8 @@
       "Over years, chronically low fiber is linked with higher LDL cholesterol, diverticular disease, and colorectal cancer risk in population studies."
     ],
     "enough": [
-      "Adequate fiber feeds beneficial gut microbes—the main prebiotic effect—steadies digestion, and helps you feel full on fewer calories, supporting weight stability and metabolic health.",
-      "Soluble fiber (oats, beans, fruit) can lower LDL cholesterol and may reduce gut production of TMAO from animal foods; insoluble fiber (whole grains, vegetables) adds bulk and regularity, protecting colon health."
+      "Adequate total fiber (soluble + insoluble) feeds beneficial gut microbes, steadies digestion, and helps you feel full on fewer calories.",
+      "Track both soluble and insoluble fiber in your food entries—their % DV shares add up to your total fiber target."
     ],
     "tooHigh": [
       "Sudden large increases in fiber without enough water can cause bloating, gas, and cramping—raise intake gradually.",
@@ -22,7 +22,7 @@
       "Popcorn (air-popped)"
     ],
     "male": [
-      "Higher targets (about 38 g/day) match larger average calorie needs and support heart health and weight management.",
+      "Higher targets (about 38 g/day total) match larger average calorie needs and support heart health and weight management.",
       "Helps reduce diverticular disease risk and supports stable energy when eating higher-protein or higher-fat meals."
     ],
     "female": [
@@ -32,6 +32,76 @@
     "bowelMovementsAltered": [
       "Fiber is the first-line dietary lever for bowel regularity—too little often means hard, infrequent stools; gradual increases with water soften and bulk stool without harsh laxatives.",
       "Sudden large fiber jumps can temporarily cause bloating, gas, or loose stools—raise intake slowly when trying to fix altered bowel movements."
+    ]
+  },
+  "solubleFiber": {
+    "tooLow": [
+      "Low soluble fiber means less gel-forming bulk in the gut, which can blunt blood sugar less after meals and feed fewer beneficial gut bacteria.",
+      "Over time, low soluble fiber is linked with higher LDL cholesterol in population studies."
+    ],
+    "enough": [
+      "Soluble fiber (oats, beans, barley, apples, citrus) forms a gel that slows digestion, lowers LDL cholesterol, and feeds gut microbes that produce protective short-chain fatty acids.",
+      "Soluble fiber may also reduce gut production of TMAO from animal foods and supports hormone clearance via the gut."
+    ],
+    "tooHigh": [
+      "Sudden large increases in soluble fiber without enough water can cause bloating and gas—raise intake gradually.",
+      "Very high soluble fiber alone without enough insoluble bulk may not fully support colon transit time."
+    ],
+    "foodSources": [
+      "Oats & barley",
+      "Beans & lentils",
+      "Apples & citrus",
+      "Berries",
+      "Chia & flax seeds",
+      "Psyllium",
+      "Brussels sprouts"
+    ],
+    "male": [
+      "Men benefit from soluble fiber for LDL and blood-sugar support alongside higher calorie intake.",
+      "Pair with insoluble sources for full colon and metabolic coverage."
+    ],
+    "female": [
+      "Soluble fiber supports hormone clearance via the gut and blood-sugar stability across the cycle.",
+      "Oats, beans, and fruit are practical daily sources."
+    ],
+    "bowelMovementsAltered": [
+      "Soluble fiber softens stool by absorbing water—helpful when stools are hard, but raise intake gradually.",
+      "Works best combined with insoluble fiber and adequate hydration."
+    ]
+  },
+  "insolubleFiber": {
+    "tooLow": [
+      "Low insoluble fiber means less bulk in stool, which can slow transit and contribute to constipation.",
+      "Over years, low insoluble fiber with low total fiber is linked with higher colorectal cancer and diverticular disease risk."
+    ],
+    "enough": [
+      "Insoluble fiber (whole grains, wheat bran, vegetables, fruit skins) adds bulk, shortens colon transit time, and supports regular bowel movements.",
+      "It complements soluble fiber—together they cover both prebiotic and motility benefits."
+    ],
+    "tooHigh": [
+      "Sudden large increases in insoluble fiber without enough water can cause cramping and bloating.",
+      "Very high bran intake without gradual adaptation may temporarily worsen symptoms."
+    ],
+    "foodSources": [
+      "Whole-grain bread",
+      "Wheat bran & Grape-Nuts",
+      "Brown rice",
+      "Broccoli & carrots",
+      "Celery & cucumbers",
+      "Popcorn (air-popped)",
+      "Potato skins"
+    ],
+    "male": [
+      "Insoluble fiber shortens colon transit time—a key lever for colon health at higher calorie intake.",
+      "Whole grains and vegetables are reliable sources."
+    ],
+    "female": [
+      "Insoluble fiber adds bulk that supports regularity, especially helpful during cycle-related constipation.",
+      "Whole grains and vegetables should make up much of daily intake."
+    ],
+    "bowelMovementsAltered": [
+      "Insoluble fiber adds bulk and speeds transit—first-line support when stools are infrequent or hard.",
+      "Increase gradually with water to avoid gas or cramping."
     ]
   },
   "sodium": {

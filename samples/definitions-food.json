@@ -5,7 +5,6 @@
     "carbs": 19.5,
     "fats": 10.5,
     "micros": {
-      "fiber": 3,
       "sodium": 0,
       "potassium": 210,
       "calcium": 29.8,
@@ -50,7 +49,9 @@
       "glycine": 300,
       "proline": 412.8,
       "tyrosine": 225,
-      "taurine": 0
+      "taurine": 0,
+      "solubleFiber": 1.4,
+      "insolubleFiber": 1.6
     },
     "longevity": {
       "saturatedFat": 1.5,
@@ -89,7 +90,6 @@
     "carbs": 32.5,
     "fats": 17.5,
     "micros": {
-      "fiber": 5,
       "sodium": 0,
       "potassium": 350,
       "calcium": 49.8,
@@ -134,7 +134,9 @@
       "glycine": 500,
       "proline": 688,
       "tyrosine": 375,
-      "taurine": 0
+      "taurine": 0,
+      "solubleFiber": 2.3,
+      "insolubleFiber": 2.7
     },
     "longevity": {
       "saturatedFat": 2.5,
@@ -173,7 +175,6 @@
     "carbs": 23.5,
     "fats": 71.8,
     "micros": {
-      "fiber": 12.4,
       "sodium": 26,
       "potassium": 1029,
       "calcium": 134,
@@ -218,7 +219,9 @@
       "glycine": 1508,
       "proline": 2074,
       "tyrosine": 1131,
-      "taurine": 0
+      "taurine": 0,
+      "solubleFiber": 5.6,
+      "insolubleFiber": 6.8
     },
     "longevity": {
       "saturatedFat": 10.2,
@@ -267,7 +270,6 @@
     "carbs": 0,
     "fats": 0,
     "micros": {
-      "fiber": 0,
       "sodium": 697.65,
       "potassium": 0.15,
       "calcium": 0.42,
@@ -312,7 +314,9 @@
       "glycine": 0,
       "proline": 0,
       "tyrosine": 0,
-      "taurine": 0
+      "taurine": 0,
+      "solubleFiber": 0,
+      "insolubleFiber": 0
     },
     "longevity": {
       "saturatedFat": 0,
@@ -360,7 +364,6 @@
     "carbs": 0,
     "fats": 0,
     "micros": {
-      "fiber": 0,
       "sodium": 1046.475,
       "potassium": 0.225,
       "calcium": 0.63,
@@ -405,7 +408,9 @@
       "glycine": 0,
       "proline": 0,
       "tyrosine": 0,
-      "taurine": 0
+      "taurine": 0,
+      "solubleFiber": 0,
+      "insolubleFiber": 0
     },
     "longevity": {
       "saturatedFat": 0,
@@ -453,7 +458,6 @@
     "carbs": 0,
     "fats": 0,
     "micros": {
-      "fiber": 0,
       "sodium": 1395.3,
       "potassium": 0.3,
       "calcium": 0.84,
@@ -498,7 +502,9 @@
       "glycine": 0,
       "proline": 0,
       "tyrosine": 0,
-      "taurine": 0
+      "taurine": 0,
+      "solubleFiber": 0,
+      "insolubleFiber": 0
     },
     "longevity": {
       "saturatedFat": 0,
@@ -546,7 +552,6 @@
     "carbs": 0,
     "fats": 0,
     "micros": {
-      "fiber": 0,
       "sodium": 2092.95,
       "potassium": 0.45,
       "calcium": 1.26,
@@ -591,7 +596,9 @@
       "glycine": 0,
       "proline": 0,
       "tyrosine": 0,
-      "taurine": 0
+      "taurine": 0,
+      "solubleFiber": 0,
+      "insolubleFiber": 0
     },
     "longevity": {
       "saturatedFat": 0,
@@ -639,7 +646,6 @@
     "carbs": 0,
     "fats": 0,
     "micros": {
-      "fiber": 0,
       "sodium": 2790.6,
       "potassium": 0.6,
       "calcium": 1.68,
@@ -684,7 +690,9 @@
       "glycine": 0,
       "proline": 0,
       "tyrosine": 0,
-      "taurine": 0
+      "taurine": 0,
+      "solubleFiber": 0,
+      "insolubleFiber": 0
     },
     "longevity": {
       "saturatedFat": 0,
@@ -732,7 +740,6 @@
     "carbs": 0,
     "fats": 0,
     "micros": {
-      "fiber": 0,
       "sodium": 403.8,
       "potassium": 22.5,
       "calcium": 51,
@@ -777,7 +784,9 @@
       "glycine": 0,
       "proline": 0,
       "tyrosine": 0,
-      "taurine": 0
+      "taurine": 0,
+      "solubleFiber": 0,
+      "insolubleFiber": 0
     },
     "longevity": {
       "saturatedFat": 0,
@@ -825,7 +834,6 @@
     "carbs": 0,
     "fats": 0,
     "micros": {
-      "fiber": 0,
       "sodium": 605.6,
       "potassium": 33.8,
       "calcium": 76.5,
@@ -870,7 +878,9 @@
       "glycine": 0,
       "proline": 0,
       "tyrosine": 0,
-      "taurine": 0
+      "taurine": 0,
+      "solubleFiber": 0,
+      "insolubleFiber": 0
     },
     "longevity": {
       "saturatedFat": 0,
@@ -918,7 +928,6 @@
     "carbs": 0,
     "fats": 0,
     "micros": {
-      "fiber": 0,
       "sodium": 1211.3,
       "potassium": 67.5,
       "calcium": 153,
@@ -963,7 +972,9 @@
       "glycine": 0,
       "proline": 0,
       "tyrosine": 0,
-      "taurine": 0
+      "taurine": 0,
+      "solubleFiber": 0,
+      "insolubleFiber": 0
     },
     "longevity": {
       "saturatedFat": 0,
@@ -1011,7 +1022,6 @@
     "carbs": 0,
     "fats": 0,
     "micros": {
-      "fiber": 0,
       "sodium": 1615,
       "potassium": 90,
       "calcium": 204,
@@ -1056,7 +1066,9 @@
       "glycine": 0,
       "proline": 0,
       "tyrosine": 0,
-      "taurine": 0
+      "taurine": 0,
+      "solubleFiber": 0,
+      "insolubleFiber": 0
     },
     "longevity": {
       "saturatedFat": 0,
@@ -1104,7 +1116,6 @@
     "carbs": 44,
     "fats": 13,
     "micros": {
-      "fiber": 20,
       "sodium": 960,
       "potassium": 690,
       "calcium": 210,
@@ -1149,7 +1160,9 @@
       "glycine": 840,
       "proline": 1155,
       "tyrosine": 630,
-      "taurine": 0
+      "taurine": 0,
+      "solubleFiber": 9,
+      "insolubleFiber": 11
     },
     "longevity": {
       "saturatedFat": 3,
@@ -1198,7 +1211,6 @@
     "carbs": 19,
     "fats": 28,
     "micros": {
-      "fiber": 12,
       "sodium": 750,
       "potassium": 550,
       "calcium": 220,
@@ -1243,7 +1255,9 @@
       "glycine": 1440,
       "proline": 1920,
       "tyrosine": 1120,
-      "taurine": 256
+      "taurine": 256,
+      "solubleFiber": 5.4,
+      "insolubleFiber": 6.6
     },
     "longevity": {
       "saturatedFat": 12,
@@ -1267,7 +1281,6 @@
     "carbs": 77,
     "fats": 18,
     "micros": {
-      "fiber": 2,
       "sodium": 880,
       "potassium": 950,
       "calcium": 78,
@@ -1312,7 +1325,9 @@
       "glycine": 2205,
       "proline": 2940,
       "tyrosine": 1715,
-      "taurine": 392
+      "taurine": 392,
+      "solubleFiber": 0.9,
+      "insolubleFiber": 1.1
     },
     "longevity": {
       "saturatedFat": 5,
@@ -1337,7 +1352,6 @@
     "carbs": 37,
     "fats": 20,
     "micros": {
-      "fiber": 6,
       "sodium": 530,
       "potassium": 811,
       "calcium": 78,
@@ -1382,7 +1396,9 @@
       "glycine": 1450,
       "proline": 1595,
       "tyrosine": 928,
-      "taurine": 1305
+      "taurine": 1305,
+      "solubleFiber": 2.7,
+      "insolubleFiber": 3.3
     },
     "longevity": {
       "saturatedFat": 4,
@@ -1407,7 +1423,6 @@
     "carbs": 0,
     "fats": 19,
     "micros": {
-      "fiber": 0,
       "sodium": 400,
       "potassium": 430,
       "calcium": 10,
@@ -1452,7 +1467,9 @@
       "glycine": 1150,
       "proline": 1265,
       "tyrosine": 736,
-      "taurine": 1035
+      "taurine": 1035,
+      "solubleFiber": 0,
+      "insolubleFiber": 0
     },
     "longevity": {
       "saturatedFat": 3.1,
@@ -1501,7 +1518,6 @@
     "carbs": 0.3,
     "fats": 4.2,
     "micros": {
-      "fiber": 0,
       "sodium": 62,
       "potassium": 60,
       "calcium": 25,
@@ -1546,7 +1562,9 @@
       "glycine": 138,
       "proline": 248,
       "tyrosine": 220,
-      "taurine": 11
+      "taurine": 11,
+      "solubleFiber": 0,
+      "insolubleFiber": 0
     },
     "longevity": {
       "saturatedFat": 1.3,
@@ -1595,7 +1613,6 @@
     "carbs": 1.2,
     "fats": 16.8,
     "micros": {
-      "fiber": 0,
       "sodium": 248,
       "potassium": 240,
       "calcium": 100,
@@ -1640,7 +1657,9 @@
       "glycine": 550,
       "proline": 990,
       "tyrosine": 880,
-      "taurine": 44
+      "taurine": 44,
+      "solubleFiber": 0,
+      "insolubleFiber": 0
     },
     "longevity": {
       "saturatedFat": 5.2,
@@ -1689,7 +1708,6 @@
     "carbs": 0.9,
     "fats": 12.6,
     "micros": {
-      "fiber": 0,
       "sodium": 186,
       "potassium": 180,
       "calcium": 75,
@@ -1734,7 +1752,9 @@
       "glycine": 413,
       "proline": 743,
       "tyrosine": 660,
-      "taurine": 33
+      "taurine": 33,
+      "solubleFiber": 0,
+      "insolubleFiber": 0
     },
     "longevity": {
       "saturatedFat": 3.9,
@@ -1783,7 +1803,6 @@
     "carbs": 10.1,
     "fats": 0.4,
     "micros": {
-      "fiber": 2.1,
       "sodium": 2,
       "potassium": 215,
       "calcium": 23,
@@ -1828,7 +1847,9 @@
       "glycine": 32,
       "proline": 44,
       "tyrosine": 24,
-      "taurine": 0
+      "taurine": 0,
+      "solubleFiber": 0.9,
+      "insolubleFiber": 1.2
     },
     "longevity": {
       "saturatedFat": 0.02,
@@ -1877,7 +1898,6 @@
     "carbs": 9.2,
     "fats": 0.3,
     "micros": {
-      "fiber": 1.3,
       "sodium": 2,
       "potassium": 198,
       "calcium": 23,
@@ -1922,7 +1942,9 @@
       "glycine": 28,
       "proline": 38,
       "tyrosine": 21,
-      "taurine": 0
+      "taurine": 0,
+      "solubleFiber": 0.6,
+      "insolubleFiber": 0.7
     },
     "longevity": {
       "saturatedFat": 0.02,
@@ -1971,7 +1993,6 @@
     "carbs": 12.8,
     "fats": 0.2,
     "micros": {
-      "fiber": 1.1,
       "sodium": 2,
       "potassium": 255,
       "calcium": 14,
@@ -2016,7 +2037,9 @@
       "glycine": 32,
       "proline": 44,
       "tyrosine": 24,
-      "taurine": 0
+      "taurine": 0,
+      "solubleFiber": 0.5,
+      "insolubleFiber": 0.6
     },
     "longevity": {
       "saturatedFat": 0.01,
@@ -2065,7 +2088,6 @@
     "carbs": 11.5,
     "fats": 0.2,
     "micros": {
-      "fiber": 0.7,
       "sodium": 2,
       "potassium": 235,
       "calcium": 14,
@@ -2110,7 +2132,9 @@
       "glycine": 28,
       "proline": 38,
       "tyrosine": 21,
-      "taurine": 0
+      "taurine": 0,
+      "solubleFiber": 0.3,
+      "insolubleFiber": 0.4
     },
     "longevity": {
       "saturatedFat": 0.01,
@@ -2159,7 +2183,6 @@
     "carbs": 25.1,
     "fats": 0.3,
     "micros": {
-      "fiber": 4.4,
       "sodium": 2,
       "potassium": 195,
       "calcium": 11,
@@ -2204,7 +2227,9 @@
       "glycine": 20,
       "proline": 28,
       "tyrosine": 15,
-      "taurine": 0
+      "taurine": 0,
+      "solubleFiber": 2,
+      "insolubleFiber": 2.4
     },
     "longevity": {
       "saturatedFat": 0.05,
@@ -2253,7 +2278,6 @@
     "carbs": 22,
     "fats": 0.3,
     "micros": {
-      "fiber": 2.1,
       "sodium": 2,
       "potassium": 180,
       "calcium": 11,
@@ -2298,7 +2322,9 @@
       "glycine": 16,
       "proline": 22,
       "tyrosine": 12,
-      "taurine": 0
+      "taurine": 0,
+      "solubleFiber": 0.9,
+      "insolubleFiber": 1.2
     },
     "longevity": {
       "saturatedFat": 0.05,
@@ -2347,7 +2373,6 @@
     "carbs": 29,
     "fats": 0.45,
     "micros": {
-      "fiber": 3.9,
       "sodium": 1.18,
       "potassium": 450,
       "calcium": 5.9,
@@ -2392,7 +2417,9 @@
       "glycine": 60,
       "proline": 83,
       "tyrosine": 45,
-      "taurine": 0
+      "taurine": 0,
+      "solubleFiber": 1.8,
+      "insolubleFiber": 2.1
     },
     "longevity": {
       "saturatedFat": 0.13,
@@ -2441,7 +2468,6 @@
     "carbs": 26.95,
     "fats": 0.39,
     "micros": {
-      "fiber": 3.07,
       "sodium": 1.18,
       "potassium": 422.44,
       "calcium": 5.9,
@@ -2486,7 +2512,9 @@
       "glycine": 52,
       "proline": 71,
       "tyrosine": 39,
-      "taurine": 0
+      "taurine": 0,
+      "solubleFiber": 1.4,
+      "insolubleFiber": 1.7
     },
     "longevity": {
       "saturatedFat": 0.13,
@@ -2535,7 +2563,6 @@
     "carbs": 16,
     "fats": 0.2,
     "micros": {
-      "fiber": 3.5,
       "sodium": 0,
       "potassium": 250,
       "calcium": 52,
@@ -2580,7 +2607,9 @@
       "glycine": 52,
       "proline": 72,
       "tyrosine": 39,
-      "taurine": 0
+      "taurine": 0,
+      "solubleFiber": 1.6,
+      "insolubleFiber": 1.9
     },
     "longevity": {
       "saturatedFat": 0.02,
@@ -2629,7 +2658,6 @@
     "carbs": 15.4,
     "fats": 0.2,
     "micros": {
-      "fiber": 3.1,
       "sodium": 0,
       "potassium": 237,
       "calcium": 52,
@@ -2674,7 +2702,9 @@
       "glycine": 48,
       "proline": 66,
       "tyrosine": 36,
-      "taurine": 0
+      "taurine": 0,
+      "solubleFiber": 1.4,
+      "insolubleFiber": 1.7
     },
     "longevity": {
       "saturatedFat": 0.02,
@@ -2723,7 +2753,6 @@
     "carbs": 14,
     "fats": 0.4,
     "micros": {
-      "fiber": 2.2,
       "sodium": 0,
       "potassium": 285,
       "calcium": 9,
@@ -2768,7 +2797,9 @@
       "glycine": 56,
       "proline": 77,
       "tyrosine": 42,
-      "taurine": 0
+      "taurine": 0,
+      "solubleFiber": 0.7,
+      "insolubleFiber": 1.5
     },
     "longevity": {
       "saturatedFat": 0.03,
@@ -2817,7 +2848,6 @@
     "carbs": 13,
     "fats": 0.3,
     "micros": {
-      "fiber": 1.5,
       "sodium": 0,
       "potassium": 270,
       "calcium": 9,
@@ -2862,7 +2892,9 @@
       "glycine": 52,
       "proline": 72,
       "tyrosine": 39,
-      "taurine": 0
+      "taurine": 0,
+      "solubleFiber": 0.5,
+      "insolubleFiber": 1
     },
     "longevity": {
       "saturatedFat": 0.03,
@@ -2911,7 +2943,6 @@
     "carbs": 27.1,
     "fats": 0.3,
     "micros": {
-      "fiber": 5.5,
       "sodium": 2,
       "potassium": 206,
       "calcium": 12,
@@ -2956,7 +2987,9 @@
       "glycine": 24,
       "proline": 33,
       "tyrosine": 18,
-      "taurine": 0
+      "taurine": 0,
+      "solubleFiber": 2.5,
+      "insolubleFiber": 3
     },
     "longevity": {
       "saturatedFat": 0.02,
@@ -3005,7 +3038,6 @@
     "carbs": 24.5,
     "fats": 0.2,
     "micros": {
-      "fiber": 2.5,
       "sodium": 2,
       "potassium": 188,
       "calcium": 12,
@@ -3050,7 +3082,9 @@
       "glycine": 20,
       "proline": 28,
       "tyrosine": 15,
-      "taurine": 0
+      "taurine": 0,
+      "solubleFiber": 1.1,
+      "insolubleFiber": 1.4
     },
     "longevity": {
       "saturatedFat": 0.02,
@@ -3099,7 +3133,6 @@
     "carbs": 7.5,
     "fats": 0.2,
     "micros": {
-      "fiber": 0.9,
       "sodium": 0,
       "potassium": 104,
       "calcium": 4,
@@ -3144,7 +3177,9 @@
       "glycine": 18,
       "proline": 25,
       "tyrosine": 14,
-      "taurine": 0
+      "taurine": 0,
+      "solubleFiber": 0.3,
+      "insolubleFiber": 0.6
     },
     "longevity": {
       "saturatedFat": 0.01,
@@ -3193,7 +3228,6 @@
     "carbs": 7,
     "fats": 0.2,
     "micros": {
-      "fiber": 0.5,
       "sodium": 0,
       "potassium": 96,
       "calcium": 4,
@@ -3238,7 +3272,9 @@
       "glycine": 14,
       "proline": 20,
       "tyrosine": 11,
-      "taurine": 0
+      "taurine": 0,
+      "solubleFiber": 0.2,
+      "insolubleFiber": 0.3
     },
     "longevity": {
       "saturatedFat": 0.01,
@@ -3287,7 +3323,6 @@
     "carbs": 29.3,
     "fats": 0.6,
     "micros": {
-      "fiber": 9.9,
       "sodium": 2,
       "potassium": 333,
       "calcium": 22,
@@ -3332,7 +3367,9 @@
       "glycine": 56,
       "proline": 77,
       "tyrosine": 42,
-      "taurine": 0
+      "taurine": 0,
+      "solubleFiber": 4.5,
+      "insolubleFiber": 5.4
     },
     "longevity": {
       "saturatedFat": 0.04,
@@ -3381,7 +3418,6 @@
     "carbs": 26.5,
     "fats": 0.5,
     "micros": {
-      "fiber": 4.5,
       "sodium": 2,
       "potassium": 305,
       "calcium": 22,
@@ -3426,7 +3462,9 @@
       "glycine": 48,
       "proline": 66,
       "tyrosine": 36,
-      "taurine": 0
+      "taurine": 0,
+      "solubleFiber": 2,
+      "insolubleFiber": 2.5
     },
     "longevity": {
       "saturatedFat": 0.04,
@@ -3475,7 +3513,6 @@
     "carbs": 22.1,
     "fats": 0.3,
     "micros": {
-      "fiber": 2.9,
       "sodium": 0,
       "potassium": 306,
       "calcium": 18,
@@ -3520,7 +3557,9 @@
       "glycine": 60,
       "proline": 83,
       "tyrosine": 45,
-      "taurine": 12
+      "taurine": 12,
+      "solubleFiber": 1.3,
+      "insolubleFiber": 1.6
     },
     "longevity": {
       "saturatedFat": 0.02,
@@ -3569,7 +3608,6 @@
     "carbs": 21.5,
     "fats": 0.3,
     "micros": {
-      "fiber": 2.5,
       "sodium": 0,
       "potassium": 306,
       "calcium": 18,
@@ -3614,7 +3652,9 @@
       "glycine": 56,
       "proline": 77,
       "tyrosine": 42,
-      "taurine": 12
+      "taurine": 12,
+      "solubleFiber": 1.1,
+      "insolubleFiber": 1.4
     },
     "longevity": {
       "saturatedFat": 0.02,
@@ -3663,7 +3703,6 @@
     "carbs": 6,
     "fats": 0.4,
     "micros": {
-      "fiber": 0,
       "sodium": 60,
       "potassium": 240,
       "calcium": 187,
@@ -3708,7 +3747,9 @@
       "glycine": 340,
       "proline": 1105,
       "tyrosine": 646,
-      "taurine": 85
+      "taurine": 85,
+      "solubleFiber": 0,
+      "insolubleFiber": 0
     },
     "longevity": {
       "saturatedFat": 0.3,
@@ -3757,7 +3798,6 @@
     "carbs": 26,
     "fats": 1.5,
     "micros": {
-      "fiber": 0,
       "sodium": 85,
       "potassium": 260,
       "calcium": 200,
@@ -3802,7 +3842,9 @@
       "glycine": 100,
       "proline": 325,
       "tyrosine": 190,
-      "taurine": 25
+      "taurine": 25,
+      "solubleFiber": 0,
+      "insolubleFiber": 0
     },
     "longevity": {
       "saturatedFat": 1,
@@ -3829,7 +3871,6 @@
     "carbs": 20.5,
     "fats": 1.8,
     "micros": {
-      "fiber": 2.8,
       "sodium": 139.2,
       "potassium": 177.2,
       "calcium": 100,
@@ -3874,7 +3915,9 @@
       "glycine": 140,
       "proline": 193,
       "tyrosine": 105,
-      "taurine": 0
+      "taurine": 0,
+      "solubleFiber": 0.6,
+      "insolubleFiber": 2.2
     },
     "longevity": {
       "saturatedFat": 0.45,
@@ -3901,7 +3944,6 @@
     "carbs": 48,
     "fats": 1,
     "micros": {
-      "fiber": 9,
       "sodium": 240,
       "potassium": 340,
       "calcium": 30,
@@ -3946,7 +3988,9 @@
       "glycine": 200,
       "proline": 275,
       "tyrosine": 150,
-      "taurine": 0
+      "taurine": 0,
+      "solubleFiber": 2,
+      "insolubleFiber": 7
     },
     "longevity": {
       "saturatedFat": 0,
@@ -3975,7 +4019,6 @@
     "carbs": 47,
     "fats": 1,
     "micros": {
-      "fiber": 7,
       "sodium": 280,
       "potassium": 260,
       "calcium": 20,
@@ -4020,7 +4063,9 @@
       "glycine": 240,
       "proline": 330,
       "tyrosine": 180,
-      "taurine": 0
+      "taurine": 0,
+      "solubleFiber": 1.5,
+      "insolubleFiber": 5.5
     },
     "longevity": {
       "saturatedFat": 0,
@@ -4046,7 +4091,6 @@
     "carbs": 49,
     "fats": 1,
     "micros": {
-      "fiber": 8,
       "sodium": 0,
       "potassium": 210,
       "calcium": 20,
@@ -4091,7 +4135,9 @@
       "glycine": 280,
       "proline": 385,
       "tyrosine": 210,
-      "taurine": 0
+      "taurine": 0,
+      "solubleFiber": 1.8,
+      "insolubleFiber": 6.2
     },
     "longevity": {
       "saturatedFat": 0,
@@ -4117,7 +4163,6 @@
     "carbs": 0,
     "fats": 11.5,
     "micros": {
-      "fiber": 0,
       "sodium": 225,
       "potassium": 500,
       "calcium": 75,
@@ -4162,7 +4207,9 @@
       "glycine": 1409,
       "proline": 1878,
       "tyrosine": 1096,
-      "taurine": 250
+      "taurine": 250,
+      "solubleFiber": 0,
+      "insolubleFiber": 0
     },
     "longevity": {
       "saturatedFat": 3.2,
@@ -4211,7 +4258,6 @@
     "carbs": 9,
     "fats": 20,
     "micros": {
-      "fiber": 0,
       "sodium": 680,
       "potassium": 180,
       "calcium": 286,
@@ -4256,7 +4302,9 @@
       "glycine": 475,
       "proline": 855,
       "tyrosine": 760,
-      "taurine": 38
+      "taurine": 38,
+      "solubleFiber": 0,
+      "insolubleFiber": 0
     },
     "longevity": {
       "saturatedFat": 12,
@@ -4299,7 +4347,6 @@
     "carbs": 12.2,
     "fats": 4.8,
     "micros": {
-      "fiber": 0,
       "sodium": 105,
       "potassium": 366,
       "calcium": 293,
@@ -4344,7 +4391,9 @@
       "glycine": 162,
       "proline": 527,
       "tyrosine": 308,
-      "taurine": 41
+      "taurine": 41,
+      "solubleFiber": 0,
+      "insolubleFiber": 0
     },
     "longevity": {
       "saturatedFat": 3.1,
@@ -4393,7 +4442,6 @@
     "carbs": 10,
     "fats": 24,
     "micros": {
-      "fiber": 0.3,
       "sodium": 1100,
       "potassium": 520,
       "calcium": 25,
@@ -4438,7 +4486,9 @@
       "glycine": 1890,
       "proline": 2520,
       "tyrosine": 1470,
-      "taurine": 336
+      "taurine": 336,
+      "solubleFiber": 0.1,
+      "insolubleFiber": 0.2
     },
     "longevity": {
       "saturatedFat": 6,
@@ -4478,7 +4528,6 @@
     "carbs": 13,
     "fats": 8,
     "micros": {
-      "fiber": 0.6,
       "sodium": 480,
       "potassium": 130,
       "calcium": 45,
@@ -4523,7 +4572,9 @@
       "glycine": 550,
       "proline": 605,
       "tyrosine": 352,
-      "taurine": 495
+      "taurine": 495,
+      "solubleFiber": 0.2,
+      "insolubleFiber": 0.4
     },
     "longevity": {
       "saturatedFat": 1.3,
@@ -4565,7 +4616,6 @@
     "carbs": 0,
     "fats": 14,
     "micros": {
-      "fiber": 0,
       "sodium": 0,
       "potassium": 0,
       "calcium": 0,
@@ -4610,7 +4660,9 @@
       "glycine": 0,
       "proline": 0,
       "tyrosine": 0,
-      "taurine": 0
+      "taurine": 0,
+      "solubleFiber": 0,
+      "insolubleFiber": 0
     },
     "longevity": {
       "saturatedFat": 1.6,
@@ -4642,7 +4694,6 @@
     "carbs": 0.14,
     "fats": 0,
     "micros": {
-      "fiber": 0,
       "sodium": 0.75,
       "potassium": 10.9,
       "calcium": 1,
@@ -4687,7 +4738,9 @@
       "glycine": 0,
       "proline": 0,
       "tyrosine": 0,
-      "taurine": 0
+      "taurine": 0,
+      "solubleFiber": 0,
+      "insolubleFiber": 0
     },
     "longevity": {
       "saturatedFat": 0,
@@ -4716,7 +4769,6 @@
     "carbs": 0,
     "fats": 13.6,
     "micros": {
-      "fiber": 0,
       "sodium": 0,
       "potassium": 0,
       "calcium": 0,
@@ -4761,7 +4813,9 @@
       "glycine": 0,
       "proline": 0,
       "tyrosine": 0,
-      "taurine": 0
+      "taurine": 0,
+      "solubleFiber": 0,
+      "insolubleFiber": 0
     },
     "longevity": {
       "saturatedFat": 11.8,
@@ -4786,7 +4840,6 @@
     "carbs": 5,
     "fats": 9,
     "micros": {
-      "fiber": 4,
       "sodium": 4,
       "potassium": 291,
       "calcium": 10,
@@ -4831,7 +4884,9 @@
       "glycine": 40,
       "proline": 55,
       "tyrosine": 30,
-      "taurine": 0
+      "taurine": 0,
+      "solubleFiber": 1.8,
+      "insolubleFiber": 2.2
     },
     "longevity": {
       "saturatedFat": 1,
@@ -4861,7 +4916,6 @@
     "carbs": 7.8,
     "fats": 0.1,
     "micros": {
-      "fiber": 2.3,
       "sodium": 64,
       "potassium": 267,
       "calcium": 13,
@@ -4906,7 +4960,9 @@
       "glycine": 29,
       "proline": 37,
       "tyrosine": 33,
-      "taurine": 10
+      "taurine": 10,
+      "solubleFiber": 0.5,
+      "insolubleFiber": 1.8
     },
     "longevity": {
       "saturatedFat": 0.02,
@@ -4956,7 +5012,6 @@
     "carbs": 10.5,
     "fats": 0.2,
     "micros": {
-      "fiber": 3.7,
       "sodium": 99,
       "potassium": 303,
       "calcium": 41,
@@ -4991,7 +5046,9 @@
       "cysteine": 10,
       "glycine": 34,
       "proline": 31,
-      "tyrosine": 25
+      "tyrosine": 25,
+      "solubleFiber": 0.8,
+      "insolubleFiber": 2.9
     },
     "longevity": {
       "saturatedFat": 0.04,
@@ -5037,7 +5094,6 @@
     "carbs": 5.8,
     "fats": 0.2,
     "micros": {
-      "fiber": 1.7,
       "sodium": 42,
       "potassium": 195,
       "calcium": 20,
@@ -5082,7 +5138,9 @@
       "glycine": 24,
       "proline": 33,
       "tyrosine": 18,
-      "taurine": 0
+      "taurine": 0,
+      "solubleFiber": 0.4,
+      "insolubleFiber": 1.3
     },
     "longevity": {
       "saturatedFat": 0.02,
@@ -5131,7 +5189,6 @@
     "carbs": 1.2,
     "fats": 0.1,
     "micros": {
-      "fiber": 0.6,
       "sodium": 32,
       "potassium": 104,
       "calcium": 16,
@@ -5176,7 +5233,9 @@
       "glycine": 12,
       "proline": 17,
       "tyrosine": 9,
-      "taurine": 0
+      "taurine": 0,
+      "solubleFiber": 0.1,
+      "insolubleFiber": 0.5
     },
     "longevity": {
       "saturatedFat": 0.02,
@@ -5226,7 +5285,6 @@
     "carbs": 7.3,
     "fats": 0.2,
     "micros": {
-      "fiber": 1,
       "sodium": 4,
       "potassium": 295,
       "calcium": 23,
@@ -5271,7 +5329,9 @@
       "glycine": 52,
       "proline": 72,
       "tyrosine": 39,
-      "taurine": 0
+      "taurine": 0,
+      "solubleFiber": 0.2,
+      "insolubleFiber": 0.8
     },
     "longevity": {
       "saturatedFat": 0.04,
@@ -5315,12 +5375,106 @@
     }
   },
   {
+    "name": "Eggplant 1 cup cooked",
+    "protein": 0.82,
+    "carbs": 8.6,
+    "fats": 0.23,
+    "micros": {
+      "sodium": 1,
+      "potassium": 122,
+      "calcium": 6,
+      "iron": 0.25,
+      "magnesium": 11,
+      "zinc": 0.12,
+      "vitaminA": 2,
+      "vitaminD": 0,
+      "vitaminB12": 0,
+      "vitaminB6": 0.08,
+      "vitaminC": 1.3,
+      "folate": 14,
+      "biotin": 0,
+      "thiamin": 0.02,
+      "riboflavin": 0.02,
+      "niacin": 0.59,
+      "pantothenicAcid": 0.07,
+      "chromium": 0,
+      "vitaminE": 0.4,
+      "vitaminK": 3,
+      "selenium": 0.1,
+      "copper": 60,
+      "phosphorus": 15,
+      "choline": 6,
+      "manganese": 0.11,
+      "iodine": 0,
+      "molybdenum": 4,
+      "fluoride": 0,
+      "chloride": 40,
+      "histidine": 18,
+      "isoleucine": 34,
+      "leucine": 59,
+      "lysine": 39,
+      "methionine": 15,
+      "phenylalanine": 33,
+      "threonine": 29,
+      "tryptophan": 8,
+      "valine": 39,
+      "arginine": 45,
+      "cysteine": 10,
+      "glutamine": 107,
+      "glycine": 33,
+      "proline": 45,
+      "tyrosine": 25,
+      "taurine": 0,
+      "solubleFiber": 0.8,
+      "insolubleFiber": 1.7
+    },
+    "longevity": {
+      "saturatedFat": 0.04,
+      "monounsaturatedFat": 0.02,
+      "polyunsaturatedFat": 0.09,
+      "transFat": 0,
+      "cholesterol": 0,
+      "omega3": 0.01,
+      "omega6": 0.08,
+      "omega9": 0.02,
+      "ala": 0.01,
+      "epa": 0,
+      "dha": 0,
+      "linoleicAcid": 0.08,
+      "arachidonicAcid": 0,
+      "oleicAcid": 0.02,
+      "palmitoleicAcid": 0,
+      "vitaminE": true,
+      "vitaminK": true,
+      "vitaminK1": 3,
+      "vitaminK2": 0,
+      "selenium": true,
+      "polyphenols": 60,
+      "flavonoids": 20,
+      "carotenoids": 0.02,
+      "curcumin": 0,
+      "resveratrol": 0,
+      "coq10": 0,
+      "sulforaphane": 0,
+      "phosphorus": true,
+      "choline": true,
+      "copper": true,
+      "lutein": 0,
+      "methionine": true
+    },
+    "carbQuality": {
+      "glycemicIndex": 15,
+      "addedSugar": 0,
+      "refinedCarbs": 0,
+      "netCarbs": 6.1
+    }
+  },
+  {
     "name": "Chopped Salad Kit with Dressing - Taylor Farms Maple Bourbon Bacon 1.75 cups",
     "protein": 5.25,
     "carbs": 17.5,
     "fats": 21,
     "micros": {
-      "fiber": 3.5,
       "sodium": 420,
       "potassium": 437.5,
       "calcium": 70,
@@ -5361,7 +5515,9 @@
       "glycine": 273,
       "proline": 221,
       "tyrosine": 158,
-      "taurine": 3
+      "taurine": 3,
+      "solubleFiber": 1.1,
+      "insolubleFiber": 2.4
     },
     "longevity": {
       "saturatedFat": 3.5,
@@ -5411,7 +5567,6 @@
     "carbs": 17.5,
     "fats": 19.25,
     "micros": {
-      "fiber": 3.5,
       "sodium": 560,
       "potassium": 385,
       "calcium": 87.5,
@@ -5453,7 +5608,9 @@
       "glycine": 160,
       "proline": 165,
       "tyrosine": 105,
-      "taurine": 1
+      "taurine": 1,
+      "solubleFiber": 1.1,
+      "insolubleFiber": 2.4
     },
     "longevity": {
       "saturatedFat": 3.5,
@@ -5502,7 +5659,6 @@
     "carbs": 15.75,
     "fats": 22.75,
     "micros": {
-      "fiber": 3.5,
       "sodium": 315,
       "potassium": 455,
       "calcium": 87.5,
@@ -5544,7 +5700,9 @@
       "glycine": 350,
       "proline": 310,
       "tyrosine": 245,
-      "taurine": 1.5
+      "taurine": 1.5,
+      "solubleFiber": 1.1,
+      "insolubleFiber": 2.4
     },
     "longevity": {
       "saturatedFat": 3.5,
@@ -5594,7 +5752,6 @@
     "carbs": 14,
     "fats": 21,
     "micros": {
-      "fiber": 3.5,
       "sodium": 385,
       "potassium": 385,
       "calcium": 157.5,
@@ -5636,7 +5793,9 @@
       "glycine": 320,
       "proline": 390,
       "tyrosine": 260,
-      "taurine": 2
+      "taurine": 2,
+      "solubleFiber": 1.1,
+      "insolubleFiber": 2.4
     },
     "longevity": {
       "saturatedFat": 5.25,
@@ -5686,7 +5845,6 @@
     "carbs": 12,
     "fats": 9,
     "micros": {
-      "fiber": 3,
       "sodium": 210,
       "potassium": 270,
       "calcium": 30,
@@ -5727,7 +5885,9 @@
       "glycine": 220,
       "proline": 170,
       "tyrosine": 150,
-      "taurine": 0
+      "taurine": 0,
+      "solubleFiber": 1.4,
+      "insolubleFiber": 1.6
     },
     "longevity": {
       "saturatedFat": 1.5,
@@ -5777,7 +5937,6 @@
     "carbs": 9.33,
     "fats": 16.33,
     "micros": {
-      "fiber": 2.33,
       "sodium": 303.33,
       "potassium": 221.67,
       "calcium": 105,
@@ -5819,7 +5978,9 @@
       "glycine": 190,
       "proline": 360,
       "tyrosine": 180,
-      "taurine": 3
+      "taurine": 3,
+      "solubleFiber": 0.7,
+      "insolubleFiber": 1.6
     },
     "longevity": {
       "saturatedFat": 3.5,
@@ -5869,7 +6030,6 @@
     "carbs": 37,
     "fats": 0.2,
     "micros": {
-      "fiber": 3.6,
       "sodium": 17,
       "potassium": 952,
       "calcium": 28,
@@ -5914,7 +6074,9 @@
       "glycine": 172,
       "proline": 237,
       "tyrosine": 129,
-      "taurine": 0
+      "taurine": 0,
+      "solubleFiber": 0.8,
+      "insolubleFiber": 2.8
     },
     "longevity": {
       "saturatedFat": 0.05,
@@ -5944,7 +6106,6 @@
     "carbs": 31,
     "fats": 0.2,
     "micros": {
-      "fiber": 3.4,
       "sodium": 12,
       "potassium": 820,
       "calcium": 18,
@@ -5989,7 +6150,9 @@
       "glycine": 124,
       "proline": 171,
       "tyrosine": 93,
-      "taurine": 0
+      "taurine": 0,
+      "solubleFiber": 0.7,
+      "insolubleFiber": 2.7
     },
     "longevity": {
       "saturatedFat": 0.05,
@@ -6019,7 +6182,6 @@
     "carbs": 26,
     "fats": 0.1,
     "micros": {
-      "fiber": 2.4,
       "sodium": 14,
       "potassium": 676,
       "calcium": 16,
@@ -6064,7 +6226,9 @@
       "glycine": 140,
       "proline": 193,
       "tyrosine": 105,
-      "taurine": 0
+      "taurine": 0,
+      "solubleFiber": 0.5,
+      "insolubleFiber": 1.9
     },
     "longevity": {
       "saturatedFat": 0.03,
@@ -6094,7 +6258,6 @@
     "carbs": 24,
     "fats": 0.1,
     "micros": {
-      "fiber": 3.8,
       "sodium": 41,
       "potassium": 542,
       "calcium": 38,
@@ -6139,7 +6302,9 @@
       "glycine": 84,
       "proline": 116,
       "tyrosine": 63,
-      "taurine": 0
+      "taurine": 0,
+      "solubleFiber": 0.8,
+      "insolubleFiber": 3
     },
     "longevity": {
       "saturatedFat": 0.02,
@@ -6171,7 +6336,6 @@
     "carbs": 29,
     "fats": 11,
     "micros": {
-      "fiber": 2.5,
       "sodium": 200,
       "potassium": 315,
       "calcium": 22,
@@ -6216,7 +6380,9 @@
       "glycine": 56,
       "proline": 77,
       "tyrosine": 42,
-      "taurine": 0
+      "taurine": 0,
+      "solubleFiber": 0.6,
+      "insolubleFiber": 1.9
     },
     "longevity": {
       "saturatedFat": 1.8,
@@ -6248,7 +6414,6 @@
     "carbs": 44,
     "fats": 17,
     "micros": {
-      "fiber": 3.8,
       "sodium": 300,
       "potassium": 480,
       "calcium": 34,
@@ -6293,7 +6458,9 @@
       "glycine": 84,
       "proline": 116,
       "tyrosine": 63,
-      "taurine": 0
+      "taurine": 0,
+      "solubleFiber": 0.8,
+      "insolubleFiber": 3
     },
     "longevity": {
       "saturatedFat": 2.8,
@@ -6325,7 +6492,6 @@
     "carbs": 63,
     "fats": 24,
     "micros": {
-      "fiber": 5.5,
       "sodium": 430,
       "potassium": 685,
       "calcium": 48,
@@ -6370,7 +6536,9 @@
       "glycine": 120,
       "proline": 165,
       "tyrosine": 90,
-      "taurine": 0
+      "taurine": 0,
+      "solubleFiber": 1.2,
+      "insolubleFiber": 4.3
     },
     "longevity": {
       "saturatedFat": 4,
@@ -6402,7 +6570,6 @@
     "carbs": 35,
     "fats": 9,
     "micros": {
-      "fiber": 3,
       "sodium": 350,
       "potassium": 650,
       "calcium": 45,
@@ -6447,7 +6614,9 @@
       "glycine": 160,
       "proline": 220,
       "tyrosine": 120,
-      "taurine": 0
+      "taurine": 0,
+      "solubleFiber": 0.7,
+      "insolubleFiber": 2.3
     },
     "longevity": {
       "saturatedFat": 5.5,
@@ -6477,7 +6646,6 @@
     "carbs": 34,
     "fats": 9,
     "micros": {
-      "fiber": 3.2,
       "sodium": 340,
       "potassium": 720,
       "calcium": 42,
@@ -6522,7 +6690,9 @@
       "glycine": 152,
       "proline": 209,
       "tyrosine": 114,
-      "taurine": 0
+      "taurine": 0,
+      "solubleFiber": 0.7,
+      "insolubleFiber": 2.5
     },
     "longevity": {
       "saturatedFat": 5.5,
@@ -6552,7 +6722,6 @@
     "carbs": 17,
     "fats": 4.5,
     "micros": {
-      "fiber": 2,
       "sodium": 90,
       "potassium": 115,
       "calcium": 80,
@@ -6597,7 +6766,9 @@
       "glycine": 945,
       "proline": 1260,
       "tyrosine": 735,
-      "taurine": 168
+      "taurine": 168,
+      "solubleFiber": 0.9,
+      "insolubleFiber": 1.1
     },
     "longevity": {
       "saturatedFat": 3.5,
@@ -6623,7 +6794,6 @@
     "carbs": 4,
     "fats": 3,
     "micros": {
-      "fiber": 2,
       "sodium": 230,
       "potassium": 180,
       "calcium": 650,
@@ -6668,7 +6838,9 @@
       "glycine": 1350,
       "proline": 1800,
       "tyrosine": 1050,
-      "taurine": 240
+      "taurine": 240,
+      "solubleFiber": 0.9,
+      "insolubleFiber": 1.1
     },
     "longevity": {
       "saturatedFat": 1,
@@ -6693,7 +6865,6 @@
     "carbs": 7,
     "fats": 3,
     "micros": {
-      "fiber": 2,
       "sodium": 280,
       "potassium": 260,
       "calcium": 540,
@@ -6738,7 +6909,9 @@
       "glycine": 1200,
       "proline": 1650,
       "tyrosine": 900,
-      "taurine": 0
+      "taurine": 0,
+      "solubleFiber": 0.9,
+      "insolubleFiber": 1.1
     },
     "longevity": {
       "saturatedFat": 0.5,
@@ -6764,7 +6937,6 @@
     "carbs": 11,
     "fats": 2,
     "micros": {
-      "fiber": 2,
       "sodium": 240,
       "potassium": 290,
       "calcium": 600,
@@ -6809,7 +6981,9 @@
       "glycine": 800,
       "proline": 1100,
       "tyrosine": 600,
-      "taurine": 0
+      "taurine": 0,
+      "solubleFiber": 0.9,
+      "insolubleFiber": 1.1
     },
     "longevity": {
       "saturatedFat": 0.5,
@@ -6835,7 +7009,6 @@
     "carbs": 0,
     "fats": 0,
     "micros": {
-      "fiber": 0,
       "sodium": 25,
       "potassium": 0,
       "calcium": 0,
@@ -6880,7 +7053,9 @@
       "glycine": 1440,
       "proline": 1920,
       "tyrosine": 1120,
-      "taurine": 256
+      "taurine": 256,
+      "solubleFiber": 0,
+      "insolubleFiber": 0
     },
     "longevity": {
       "saturatedFat": 0,
@@ -6905,7 +7080,6 @@
     "carbs": 22,
     "fats": 9,
     "micros": {
-      "fiber": 12,
       "sodium": 220,
       "potassium": 140,
       "calcium": 140,
@@ -6950,7 +7124,9 @@
       "glycine": 840,
       "proline": 1155,
       "tyrosine": 630,
-      "taurine": 0
+      "taurine": 0,
+      "solubleFiber": 5.4,
+      "insolubleFiber": 6.6
     },
     "longevity": {
       "saturatedFat": 3,
@@ -6976,7 +7152,6 @@
     "carbs": 3.5,
     "fats": 8,
     "micros": {
-      "fiber": 1.5,
       "sodium": 48,
       "potassium": 101,
       "calcium": 9,
@@ -7021,7 +7196,9 @@
       "glycine": 160,
       "proline": 220,
       "tyrosine": 120,
-      "taurine": 0
+      "taurine": 0,
+      "solubleFiber": 0.7,
+      "insolubleFiber": 0.8
     },
     "longevity": {
       "saturatedFat": 1.5,
@@ -7070,7 +7247,6 @@
     "carbs": 7,
     "fats": 16,
     "micros": {
-      "fiber": 3,
       "sodium": 95,
       "potassium": 201,
       "calcium": 18,
@@ -7115,7 +7291,9 @@
       "glycine": 320,
       "proline": 440,
       "tyrosine": 240,
-      "taurine": 0
+      "taurine": 0,
+      "solubleFiber": 1.4,
+      "insolubleFiber": 1.6
     },
     "longevity": {
       "saturatedFat": 3,
@@ -7164,7 +7342,6 @@
     "carbs": 33.5,
     "fats": 4,
     "micros": {
-      "fiber": 1.7,
       "sodium": 321.6,
       "potassium": 187.6,
       "calcium": 23.5,
@@ -7209,7 +7386,9 @@
       "glycine": 418,
       "proline": 557,
       "tyrosine": 325,
-      "taurine": 74
+      "taurine": 74,
+      "solubleFiber": 0.8,
+      "insolubleFiber": 0.9
     },
     "longevity": {
       "saturatedFat": 1.47,
@@ -7258,7 +7437,6 @@
     "carbs": 50,
     "fats": 6,
     "micros": {
-      "fiber": 2.5,
       "sodium": 480,
       "potassium": 280,
       "calcium": 35,
@@ -7303,7 +7481,9 @@
       "glycine": 624,
       "proline": 832,
       "tyrosine": 485,
-      "taurine": 111
+      "taurine": 111,
+      "solubleFiber": 1.1,
+      "insolubleFiber": 1.4
     },
     "longevity": {
       "saturatedFat": 2.2,
@@ -7352,7 +7532,6 @@
     "carbs": 71.5,
     "fats": 8.6,
     "micros": {
-      "fiber": 3.6,
       "sodium": 686.4,
       "potassium": 400.4,
       "calcium": 50.1,
@@ -7397,7 +7576,9 @@
       "glycine": 892,
       "proline": 1190,
       "tyrosine": 694,
-      "taurine": 159
+      "taurine": 159,
+      "solubleFiber": 1.6,
+      "insolubleFiber": 2
     },
     "longevity": {
       "saturatedFat": 3.15,
@@ -7446,7 +7627,6 @@
     "carbs": 52,
     "fats": 14,
     "micros": {
-      "fiber": 2.2,
       "sodium": 950,
       "potassium": 280,
       "calcium": 35,
@@ -7487,7 +7667,9 @@
       "glycine": 720,
       "proline": 690,
       "tyrosine": 520,
-      "taurine": 20
+      "taurine": 20,
+      "solubleFiber": 1,
+      "insolubleFiber": 1.2
     },
     "longevity": {
       "saturatedFat": 3.8,
@@ -7529,12 +7711,11 @@
     }
   },
   {
-    "name": "Rice - White 1 cup",
+    "name": "Rice - White 1 cup cooked",
     "protein": 4.3,
     "carbs": 44.5,
     "fats": 0.44,
     "micros": {
-      "fiber": 0.63,
       "sodium": 1.6,
       "potassium": 55.3,
       "calcium": 15.8,
@@ -7579,7 +7760,9 @@
       "glycine": 172,
       "proline": 237,
       "tyrosine": 129,
-      "taurine": 0
+      "taurine": 0,
+      "solubleFiber": 0.1,
+      "insolubleFiber": 0.5
     },
     "longevity": {
       "saturatedFat": 0.12,
@@ -7601,12 +7784,11 @@
     }
   },
   {
-    "name": "Rice - Brown 1 cup",
+    "name": "Rice - Brown 1 cup cooked",
     "protein": 5.5,
     "carbs": 51.7,
     "fats": 2,
     "micros": {
-      "fiber": 3.2,
       "sodium": 8.1,
       "potassium": 173.7,
       "calcium": 6.1,
@@ -7651,7 +7833,9 @@
       "glycine": 220,
       "proline": 303,
       "tyrosine": 165,
-      "taurine": 0
+      "taurine": 0,
+      "solubleFiber": 0.7,
+      "insolubleFiber": 2.5
     },
     "longevity": {
       "saturatedFat": 0.53,
@@ -7678,7 +7862,6 @@
     "carbs": 39.4,
     "fats": 3.6,
     "micros": {
-      "fiber": 5.2,
       "sodium": 13,
       "potassium": 318.2,
       "calcium": 31.5,
@@ -7723,7 +7906,9 @@
       "glycine": 324,
       "proline": 446,
       "tyrosine": 243,
-      "taurine": 0
+      "taurine": 0,
+      "solubleFiber": 2.3,
+      "insolubleFiber": 2.9
     },
     "longevity": {
       "saturatedFat": 0.43,
@@ -7751,7 +7936,6 @@
     "carbs": 5.1,
     "fats": 0.56,
     "micros": {
-      "fiber": 2.9,
       "sodium": 18.6,
       "potassium": 176.1,
       "calcium": 19.8,
@@ -7796,7 +7980,9 @@
       "glycine": 92,
       "proline": 126,
       "tyrosine": 69,
-      "taurine": 0
+      "taurine": 0,
+      "solubleFiber": 0.6,
+      "insolubleFiber": 2.3
     },
     "longevity": {
       "saturatedFat": 0.09,
@@ -7824,7 +8010,6 @@
     "carbs": 18,
     "fats": 1,
     "micros": {
-      "fiber": 3,
       "sodium": 190,
       "potassium": 100,
       "calcium": 20,
@@ -7869,7 +8054,9 @@
       "glycine": 200,
       "proline": 275,
       "tyrosine": 150,
-      "taurine": 0
+      "taurine": 0,
+      "solubleFiber": 0.7,
+      "insolubleFiber": 2.3
     },
     "longevity": {
       "saturatedFat": 0,
@@ -7896,7 +8083,6 @@
     "carbs": 26,
     "fats": 3,
     "micros": {
-      "fiber": 1,
       "sodium": 250,
       "potassium": 70,
       "calcium": 30,
@@ -7941,7 +8127,9 @@
       "glycine": 200,
       "proline": 275,
       "tyrosine": 150,
-      "taurine": 0
+      "taurine": 0,
+      "solubleFiber": 0.2,
+      "insolubleFiber": 0.8
     },
     "longevity": {
       "saturatedFat": 0,
@@ -7968,7 +8156,6 @@
     "carbs": 13,
     "fats": 1.5,
     "micros": {
-      "fiber": 2,
       "sodium": 85,
       "potassium": 70,
       "calcium": 20,
@@ -8009,7 +8196,9 @@
       "glycine": 115,
       "proline": 300,
       "tyrosine": 85,
-      "taurine": 0
+      "taurine": 0,
+      "solubleFiber": 0.4,
+      "insolubleFiber": 1.6
     },
     "longevity": {
       "saturatedFat": 1,
@@ -8061,7 +8250,6 @@
     "carbs": 25,
     "fats": 1.5,
     "micros": {
-      "fiber": 1,
       "sodium": 230,
       "potassium": 40,
       "calcium": 30,
@@ -8106,7 +8294,9 @@
       "glycine": 160,
       "proline": 220,
       "tyrosine": 120,
-      "taurine": 0
+      "taurine": 0,
+      "solubleFiber": 0.2,
+      "insolubleFiber": 0.8
     },
     "longevity": {
       "saturatedFat": 0,
@@ -8133,7 +8323,6 @@
     "carbs": 83,
     "fats": 16,
     "micros": {
-      "fiber": 3,
       "sodium": 1620,
       "potassium": 320,
       "calcium": 20,
@@ -8178,7 +8367,9 @@
       "glycine": 440,
       "proline": 605,
       "tyrosine": 330,
-      "taurine": 0
+      "taurine": 0,
+      "solubleFiber": 0.7,
+      "insolubleFiber": 2.3
     },
     "longevity": {
       "saturatedFat": 8,
@@ -8205,7 +8396,6 @@
     "carbs": 47,
     "fats": 16,
     "micros": {
-      "fiber": 4,
       "sodium": 550,
       "potassium": 705,
       "calcium": 26,
@@ -8250,7 +8440,9 @@
       "glycine": 225,
       "proline": 300,
       "tyrosine": 175,
-      "taurine": 40
+      "taurine": 40,
+      "solubleFiber": 0.9,
+      "insolubleFiber": 3.1
     },
     "longevity": {
       "saturatedFat": 2.5,
@@ -8278,7 +8470,6 @@
     "carbs": 63,
     "fats": 21,
     "micros": {
-      "fiber": 5,
       "sodium": 740,
       "potassium": 945,
       "calcium": 35,
@@ -8323,7 +8514,9 @@
       "glycine": 315,
       "proline": 420,
       "tyrosine": 245,
-      "taurine": 56
+      "taurine": 56,
+      "solubleFiber": 1.1,
+      "insolubleFiber": 3.9
     },
     "longevity": {
       "saturatedFat": 4,
@@ -8351,7 +8544,6 @@
     "carbs": 37,
     "fats": 57,
     "micros": {
-      "fiber": 2,
       "sodium": 1200,
       "potassium": 710,
       "calcium": 200,
@@ -8396,7 +8588,9 @@
       "glycine": 2205,
       "proline": 2940,
       "tyrosine": 1715,
-      "taurine": 392
+      "taurine": 392,
+      "solubleFiber": 0.6,
+      "insolubleFiber": 1.4
     },
     "longevity": {
       "saturatedFat": 23,
@@ -8426,7 +8620,6 @@
     "carbs": 38,
     "fats": 81,
     "micros": {
-      "fiber": 2,
       "sodium": 1570,
       "potassium": 970,
       "calcium": 250,
@@ -8471,7 +8664,9 @@
       "glycine": 3150,
       "proline": 4200,
       "tyrosine": 2450,
-      "taurine": 560
+      "taurine": 560,
+      "solubleFiber": 0.6,
+      "insolubleFiber": 1.4
     },
     "longevity": {
       "saturatedFat": 34,
@@ -8499,7 +8694,6 @@
     "carbs": 117,
     "fats": 68,
     "micros": {
-      "fiber": 22,
       "sodium": 1450,
       "potassium": 490,
       "calcium": 12,
@@ -8544,7 +8738,9 @@
       "glycine": 760,
       "proline": 1045,
       "tyrosine": 570,
-      "taurine": 0
+      "taurine": 0,
+      "solubleFiber": 4.8,
+      "insolubleFiber": 17.2
     },
     "longevity": {
       "saturatedFat": 46,
@@ -8574,7 +8770,6 @@
     "carbs": 117,
     "fats": 97,
     "micros": {
-      "fiber": 22,
       "sodium": 1450,
       "potassium": 490,
       "calcium": 12,
@@ -8619,7 +8814,9 @@
       "glycine": 760,
       "proline": 1045,
       "tyrosine": 570,
-      "taurine": 0
+      "taurine": 0,
+      "solubleFiber": 4.8,
+      "insolubleFiber": 17.2
     },
     "longevity": {
       "saturatedFat": 64,
@@ -8649,7 +8846,6 @@
     "carbs": 117,
     "fats": 68,
     "micros": {
-      "fiber": 22,
       "sodium": 1450,
       "potassium": 490,
       "calcium": 12,
@@ -8694,7 +8890,9 @@
       "glycine": 760,
       "proline": 1045,
       "tyrosine": 570,
-      "taurine": 0
+      "taurine": 0,
+      "solubleFiber": 4.8,
+      "insolubleFiber": 17.2
     },
     "longevity": {
       "saturatedFat": 46,
@@ -8724,7 +8922,6 @@
     "carbs": 117,
     "fats": 97,
     "micros": {
-      "fiber": 22,
       "sodium": 1450,
       "potassium": 490,
       "calcium": 12,
@@ -8769,7 +8966,9 @@
       "glycine": 760,
       "proline": 1045,
       "tyrosine": 570,
-      "taurine": 0
+      "taurine": 0,
+      "solubleFiber": 4.8,
+      "insolubleFiber": 17.2
     },
     "longevity": {
       "saturatedFat": 64,
@@ -8799,7 +8998,6 @@
     "carbs": 51,
     "fats": 21,
     "micros": {
-      "fiber": 2,
       "sodium": 200,
       "potassium": 180,
       "calcium": 45,
@@ -8844,7 +9042,9 @@
       "glycine": 200,
       "proline": 275,
       "tyrosine": 150,
-      "taurine": 0
+      "taurine": 0,
+      "solubleFiber": 0.4,
+      "insolubleFiber": 1.6
     },
     "longevity": {
       "saturatedFat": 8,
@@ -8873,7 +9073,6 @@
     "carbs": 2,
     "fats": 0,
     "micros": {
-      "fiber": 0,
       "sodium": 5,
       "potassium": 0,
       "calcium": 50,
@@ -8918,7 +9117,9 @@
       "glycine": 0,
       "proline": 0,
       "tyrosine": 0,
-      "taurine": 0
+      "taurine": 0,
+      "solubleFiber": 0,
+      "insolubleFiber": 0
     },
     "longevity": {
       "saturatedFat": 0,
@@ -8941,7 +9142,6 @@
     "carbs": 3,
     "fats": 0,
     "micros": {
-      "fiber": 0,
       "sodium": 190,
       "potassium": 0,
       "calcium": 0,
@@ -8986,7 +9186,9 @@
       "glycine": 0,
       "proline": 0,
       "tyrosine": 0,
-      "taurine": 0
+      "taurine": 0,
+      "solubleFiber": 0,
+      "insolubleFiber": 0
     },
     "longevity": {
       "saturatedFat": 0,
@@ -9009,7 +9211,6 @@
     "carbs": 58,
     "fats": 0,
     "micros": {
-      "fiber": 0,
       "sodium": 370,
       "potassium": 0,
       "calcium": 0,
@@ -9054,7 +9255,9 @@
       "glycine": 0,
       "proline": 0,
       "tyrosine": 0,
-      "taurine": 0
+      "taurine": 0,
+      "solubleFiber": 0,
+      "insolubleFiber": 0
     },
     "longevity": {
       "saturatedFat": 0,
@@ -9077,7 +9280,6 @@
     "carbs": 29,
     "fats": 0,
     "micros": {
-      "fiber": 0,
       "sodium": 105,
       "potassium": 0,
       "calcium": 0,
@@ -9122,7 +9324,9 @@
       "glycine": 0,
       "proline": 0,
       "tyrosine": 0,
-      "taurine": 0
+      "taurine": 0,
+      "solubleFiber": 0,
+      "insolubleFiber": 0
     },
     "longevity": {
       "saturatedFat": 0,
@@ -9145,7 +9349,6 @@
     "carbs": 0,
     "fats": 0,
     "micros": {
-      "fiber": 0,
       "sodium": 0,
       "potassium": 0,
       "calcium": 0,
@@ -9190,7 +9393,9 @@
       "glycine": 0,
       "proline": 0,
       "tyrosine": 0,
-      "taurine": 0
+      "taurine": 0,
+      "solubleFiber": 0,
+      "insolubleFiber": 0
     },
     "longevity": {
       "coq10": 100,
@@ -9214,7 +9419,6 @@
     "carbs": 0,
     "fats": 1,
     "micros": {
-      "fiber": 0,
       "sodium": 0,
       "potassium": 0,
       "calcium": 0,
@@ -9259,7 +9463,9 @@
       "glycine": 0,
       "proline": 0,
       "tyrosine": 0,
-      "taurine": 0
+      "taurine": 0,
+      "solubleFiber": 0,
+      "insolubleFiber": 0
     },
     "longevity": {
       "saturatedFat": 0,
@@ -9295,7 +9501,6 @@
     "carbs": 0,
     "fats": 0.5,
     "micros": {
-      "fiber": 0,
       "sodium": 0,
       "potassium": 0,
       "calcium": 0,
@@ -9340,7 +9545,9 @@
       "glycine": 0,
       "proline": 0,
       "tyrosine": 0,
-      "taurine": 0
+      "taurine": 0,
+      "solubleFiber": 0,
+      "insolubleFiber": 0
     },
     "longevity": {
       "saturatedFat": 0,
@@ -9376,7 +9583,6 @@
     "carbs": 17.1,
     "fats": 29.4,
     "micros": {
-      "fiber": 13.4,
       "sodium": 14,
       "potassium": 970,
       "calcium": 24,
@@ -9421,7 +9627,9 @@
       "glycine": 160,
       "proline": 220,
       "tyrosine": 120,
-      "taurine": 32
+      "taurine": 32,
+      "solubleFiber": 6,
+      "insolubleFiber": 7.4
     },
     "longevity": {
       "saturatedFat": 4.3,
@@ -9470,7 +9678,6 @@
     "carbs": 8.5,
     "fats": 14.7,
     "micros": {
-      "fiber": 6.7,
       "sodium": 7,
       "potassium": 485,
       "calcium": 12,
@@ -9515,7 +9722,9 @@
       "glycine": 80,
       "proline": 110,
       "tyrosine": 60,
-      "taurine": 16
+      "taurine": 16,
+      "solubleFiber": 3,
+      "insolubleFiber": 3.7
     },
     "longevity": {
       "saturatedFat": 2.1,
@@ -9564,7 +9773,6 @@
     "carbs": 11.7,
     "fats": 7.9,
     "micros": {
-      "fiber": 0,
       "sodium": 105,
       "potassium": 322,
       "calcium": 276,
@@ -9609,7 +9817,9 @@
       "glycine": 154,
       "proline": 501,
       "tyrosine": 293,
-      "taurine": 39
+      "taurine": 39,
+      "solubleFiber": 0,
+      "insolubleFiber": 0
     },
     "longevity": {
       "saturatedFat": 4.6,
@@ -9658,7 +9868,6 @@
     "carbs": 0.14,
     "fats": 0,
     "micros": {
-      "fiber": 0,
       "sodium": 1,
       "potassium": 11,
       "calcium": 1,
@@ -9703,7 +9912,9 @@
       "glycine": 0,
       "proline": 0,
       "tyrosine": 0,
-      "taurine": 0
+      "taurine": 0,
+      "solubleFiber": 0,
+      "insolubleFiber": 0
     },
     "longevity": {
       "saturatedFat": 0,
@@ -9732,7 +9943,6 @@
     "carbs": 0,
     "fats": 0,
     "micros": {
-      "fiber": 0,
       "sodium": 0,
       "potassium": 0,
       "calcium": 0,
@@ -9771,7 +9981,9 @@
       "glycine": 0,
       "proline": 0,
       "tyrosine": 0,
-      "taurine": 0
+      "taurine": 0,
+      "solubleFiber": 0,
+      "insolubleFiber": 0
     },
     "longevity": {
       "saturatedFat": 0,
@@ -9823,7 +10035,6 @@
     "carbs": 0,
     "fats": 14,
     "micros": {
-      "fiber": 0,
       "sodium": 0,
       "potassium": 0.1,
       "calcium": 0.1,
@@ -9868,7 +10079,9 @@
       "glycine": 0,
       "proline": 0,
       "tyrosine": 0,
-      "taurine": 0
+      "taurine": 0,
+      "solubleFiber": 0,
+      "insolubleFiber": 0
     },
     "longevity": {
       "saturatedFat": 1.9,
@@ -9914,7 +10127,6 @@
     "carbs": 1,
     "fats": 55,
     "micros": {
-      "fiber": 0,
       "sodium": 1000,
       "potassium": 130,
       "calcium": 10,
@@ -9957,7 +10169,9 @@
       "cysteine": 81,
       "glycine": 140,
       "proline": 140,
-      "tyrosine": 130
+      "tyrosine": 130,
+      "solubleFiber": 0,
+      "insolubleFiber": 0
     },
     "longevity": {
       "saturatedFat": 11.6,
@@ -9991,7 +10205,6 @@
     "carbs": 0.2,
     "fats": 12.8,
     "micros": {
-      "fiber": 0,
       "sodium": 230,
       "potassium": 30,
       "calcium": 2,
@@ -10025,7 +10238,9 @@
       "cysteine": 19,
       "glycine": 33,
       "proline": 33,
-      "tyrosine": 30
+      "tyrosine": 30,
+      "solubleFiber": 0,
+      "insolubleFiber": 0
     },
     "longevity": {
       "saturatedFat": 2.7,
@@ -10059,7 +10274,6 @@
     "carbs": 1.1,
     "fats": 1,
     "micros": {
-      "fiber": 0,
       "sodium": 19.5,
       "potassium": 88.5,
       "calcium": 1.5,
@@ -10099,7 +10313,9 @@
       "glycine": 325,
       "proline": 250,
       "tyrosine": 200,
-      "taurine": 11.25
+      "taurine": 11.25,
+      "solubleFiber": 0,
+      "insolubleFiber": 0
     },
     "longevity": {
       "saturatedFat": 0.33,
@@ -10137,7 +10353,6 @@
     "carbs": 1.07,
     "fats": 3.6,
     "micros": {
-      "fiber": 0,
       "sodium": 35.13,
       "potassium": 99.73,
       "calcium": 2.57,
@@ -10171,7 +10386,9 @@
       "glutamine": 780.33,
       "glycine": 349.67,
       "proline": 346,
-      "tyrosine": 258
+      "tyrosine": 258,
+      "solubleFiber": 0,
+      "insolubleFiber": 0
     },
     "longevity": {
       "saturatedFat": 1.4,
@@ -10203,7 +10420,6 @@
     "carbs": 0.94,
     "fats": 5.44,
     "micros": {
-      "fiber": 0,
       "sodium": 78.2,
       "potassium": 267.75,
       "calcium": 8.5,
@@ -10240,7 +10456,9 @@
       "glutamine": 2639.25,
       "glycine": 1071,
       "proline": 915.45,
-      "tyrosine": 823.65
+      "tyrosine": 823.65,
+      "solubleFiber": 0,
+      "insolubleFiber": 0
     },
     "longevity": {
       "saturatedFat": 1.7,
@@ -10278,7 +10496,6 @@
     "carbs": 0.59,
     "fats": 3.36,
     "micros": {
-      "fiber": 0.38,
       "sodium": 0.15,
       "potassium": 33,
       "calcium": 8,
@@ -10316,7 +10533,9 @@
       "glycine": 36.7,
       "proline": 35.3,
       "tyrosine": 21,
-      "taurine": 0
+      "taurine": 0,
+      "solubleFiber": 0.1,
+      "insolubleFiber": 0.3
     },
     "longevity": {
       "saturatedFat": 0.81,
@@ -10368,7 +10587,6 @@
     "carbs": 43,
     "fats": 0.5,
     "micros": {
-      "fiber": 3,
       "sodium": 90,
       "potassium": 750,
       "calcium": 78,
@@ -10413,7 +10631,9 @@
       "glutamine": 390,
       "glycine": 120,
       "proline": 165,
-      "tyrosine": 90
+      "tyrosine": 90,
+      "solubleFiber": 1.4,
+      "insolubleFiber": 1.6
     },
     "longevity": {
       "saturatedFat": 0,
@@ -10462,7 +10682,6 @@
     "carbs": 66,
     "fats": 1,
     "micros": {
-      "fiber": 4,
       "sodium": 120,
       "potassium": 1031,
       "calcium": 104,
@@ -10507,7 +10726,9 @@
       "glutamine": 520,
       "glycine": 160,
       "proline": 220,
-      "tyrosine": 120
+      "tyrosine": 120,
+      "solubleFiber": 1.8,
+      "insolubleFiber": 2.2
     },
     "longevity": {
       "saturatedFat": 0,
@@ -10556,7 +10777,6 @@
     "carbs": 90,
     "fats": 1.5,
     "micros": {
-      "fiber": 6,
       "sodium": 150,
       "potassium": 1313,
       "calcium": 130,
@@ -10601,7 +10821,9 @@
       "glutamine": 650,
       "glycine": 200,
       "proline": 275,
-      "tyrosine": 150
+      "tyrosine": 150,
+      "solubleFiber": 2.7,
+      "insolubleFiber": 3.3
     },
     "longevity": {
       "saturatedFat": 0,
@@ -10650,7 +10872,6 @@
     "carbs": 45,
     "fats": 0,
     "micros": {
-      "fiber": 13,
       "sodium": 330,
       "potassium": 1504,
       "calcium": 200,
@@ -10695,7 +10916,9 @@
       "glutamine": 520,
       "glycine": 160,
       "proline": 220,
-      "tyrosine": 120
+      "tyrosine": 120,
+      "solubleFiber": 5.9,
+      "insolubleFiber": 7.1
     },
     "longevity": {
       "saturatedFat": 0,
@@ -10744,7 +10967,6 @@
     "carbs": 62,
     "fats": 0,
     "micros": {
-      "fiber": 18,
       "sodium": 450,
       "potassium": 2068,
       "calcium": 275,
@@ -10789,7 +11011,9 @@
       "glutamine": 780,
       "glycine": 240,
       "proline": 330,
-      "tyrosine": 180
+      "tyrosine": 180,
+      "solubleFiber": 8.1,
+      "insolubleFiber": 9.9
     },
     "longevity": {
       "saturatedFat": 0,
@@ -10838,7 +11062,6 @@
     "carbs": 79,
     "fats": 0,
     "micros": {
-      "fiber": 23,
       "sodium": 570,
       "potassium": 2632,
       "calcium": 350,
@@ -10883,7 +11106,9 @@
       "glutamine": 1040,
       "glycine": 320,
       "proline": 440,
-      "tyrosine": 240
+      "tyrosine": 240,
+      "solubleFiber": 10.4,
+      "insolubleFiber": 12.6
     },
     "longevity": {
       "saturatedFat": 0,
@@ -10932,7 +11157,6 @@
     "carbs": 57,
     "fats": 1,
     "micros": {
-      "fiber": 5,
       "sodium": 50,
       "potassium": 987,
       "calcium": 195,
@@ -10954,7 +11178,9 @@
       "folate": 140,
       "vitaminC": 180,
       "phosphorus": 84,
-      "choline": 21
+      "choline": 21,
+      "solubleFiber": 2.3,
+      "insolubleFiber": 2.7
     },
     "longevity": {
       "saturatedFat": 0,
@@ -10999,7 +11225,6 @@
     "carbs": 76,
     "fats": 1,
     "micros": {
-      "fiber": 6,
       "sodium": 55,
       "potassium": 1175,
       "calcium": 195,
@@ -11021,7 +11246,9 @@
       "folate": 184,
       "vitaminC": 189,
       "phosphorus": 110,
-      "choline": 28
+      "choline": 28,
+      "solubleFiber": 2.7,
+      "insolubleFiber": 3.3
     },
     "longevity": {
       "saturatedFat": 0,
@@ -11066,7 +11293,6 @@
     "carbs": 96,
     "fats": 1.5,
     "micros": {
-      "fiber": 8,
       "sodium": 70,
       "potassium": 1470,
       "calcium": 245,
@@ -11088,7 +11314,9 @@
       "folate": 233,
       "vitaminC": 236,
       "phosphorus": 140,
-      "choline": 35
+      "choline": 35,
+      "solubleFiber": 3.6,
+      "insolubleFiber": 4.4
     },
     "longevity": {
       "saturatedFat": 0,
@@ -11133,7 +11361,6 @@
     "carbs": 2,
     "fats": 14,
     "micros": {
-      "fiber": 0,
       "sodium": 260,
       "potassium": 20,
       "calcium": 0,
@@ -11178,7 +11405,9 @@
       "glycine": 0,
       "proline": 0,
       "tyrosine": 0,
-      "taurine": 0
+      "taurine": 0,
+      "solubleFiber": 0,
+      "insolubleFiber": 0
     },
     "longevity": {
       "saturatedFat": 2.5,
@@ -11226,7 +11455,6 @@
     "carbs": 5,
     "fats": 6,
     "micros": {
-      "fiber": 2,
       "sodium": 130,
       "potassium": 80,
       "calcium": 10,
@@ -11271,7 +11499,9 @@
       "glycine": 80,
       "proline": 110,
       "tyrosine": 60,
-      "taurine": 0
+      "taurine": 0,
+      "solubleFiber": 0.9,
+      "insolubleFiber": 1.1
     },
     "longevity": {
       "saturatedFat": 1,
@@ -11320,7 +11550,6 @@
     "carbs": 0,
     "fats": 3.3,
     "micros": {
-      "fiber": 0,
       "sodium": 30,
       "potassium": 1,
       "calcium": 0.4,
@@ -11365,7 +11594,9 @@
       "glycine": 0,
       "proline": 0,
       "tyrosine": 0,
-      "taurine": 0
+      "taurine": 0,
+      "solubleFiber": 0,
+      "insolubleFiber": 0
     },
     "longevity": {
       "saturatedFat": 0.5,
@@ -11413,7 +11644,6 @@
     "carbs": 0,
     "fats": 10,
     "micros": {
-      "fiber": 0,
       "sodium": 90,
       "potassium": 3,
       "calcium": 1,
@@ -11458,7 +11688,9 @@
       "glycine": 0,
       "proline": 0,
       "tyrosine": 0,
-      "taurine": 0
+      "taurine": 0,
+      "solubleFiber": 0,
+      "insolubleFiber": 0
     },
     "longevity": {
       "saturatedFat": 1.5,
@@ -11506,7 +11738,6 @@
     "carbs": 0.3,
     "fats": 0.2,
     "micros": {
-      "fiber": 0.2,
       "sodium": 55,
       "potassium": 3,
       "calcium": 1,
@@ -11551,7 +11782,9 @@
       "glycine": 0,
       "proline": 0,
       "tyrosine": 0,
-      "taurine": 0
+      "taurine": 0,
+      "solubleFiber": 0.1,
+      "insolubleFiber": 0.1
     },
     "longevity": {
       "saturatedFat": 0,
@@ -11599,7 +11832,6 @@
     "carbs": 0.8,
     "fats": 0.6,
     "micros": {
-      "fiber": 0.5,
       "sodium": 177,
       "potassium": 22,
       "calcium": 9,
@@ -11644,7 +11876,9 @@
       "glycine": 0,
       "proline": 0,
       "tyrosine": 0,
-      "taurine": 0
+      "taurine": 0,
+      "solubleFiber": 0.2,
+      "insolubleFiber": 0.3
     },
     "longevity": {
       "saturatedFat": 0,
@@ -11692,7 +11926,6 @@
     "carbs": 3,
     "fats": 0,
     "micros": {
-      "fiber": 0,
       "sodium": 280,
       "potassium": 40,
       "calcium": 5,
@@ -11737,7 +11970,9 @@
       "glycine": 0,
       "proline": 0,
       "tyrosine": 0,
-      "taurine": 0
+      "taurine": 0,
+      "solubleFiber": 0,
+      "insolubleFiber": 0
     },
     "longevity": {
       "saturatedFat": 0,
@@ -11785,7 +12020,6 @@
     "carbs": 11,
     "fats": 1.75,
     "micros": {
-      "fiber": 1.5,
       "sodium": 100,
       "potassium": 45,
       "calcium": 15,
@@ -11830,7 +12064,9 @@
       "glycine": 40,
       "proline": 55,
       "tyrosine": 30,
-      "taurine": 0
+      "taurine": 0,
+      "solubleFiber": 0.5,
+      "insolubleFiber": 1
     },
     "longevity": {
       "saturatedFat": 0,
@@ -11879,7 +12115,6 @@
     "carbs": 22,
     "fats": 3.5,
     "micros": {
-      "fiber": 3,
       "sodium": 200,
       "potassium": 90,
       "calcium": 30,
@@ -11924,7 +12159,9 @@
       "glycine": 80,
       "proline": 110,
       "tyrosine": 60,
-      "taurine": 0
+      "taurine": 0,
+      "solubleFiber": 0.9,
+      "insolubleFiber": 2.1
     },
     "longevity": {
       "saturatedFat": 0,
@@ -11973,7 +12210,6 @@
     "carbs": 16.5,
     "fats": 2.625,
     "micros": {
-      "fiber": 2.25,
       "sodium": 150,
       "potassium": 67.5,
       "calcium": 22.5,
@@ -12018,7 +12254,9 @@
       "glycine": 60,
       "proline": 82.5,
       "tyrosine": 45,
-      "taurine": 0
+      "taurine": 0,
+      "solubleFiber": 0.7,
+      "insolubleFiber": 1.6
     },
     "longevity": {
       "saturatedFat": 0,
@@ -12067,7 +12305,6 @@
     "carbs": 19.25,
     "fats": 3.0625,
     "micros": {
-      "fiber": 2.625,
       "sodium": 175,
       "potassium": 78.75,
       "calcium": 26.25,
@@ -12112,7 +12349,9 @@
       "glycine": 70,
       "proline": 96.25,
       "tyrosine": 52.5,
-      "taurine": 0
+      "taurine": 0,
+      "solubleFiber": 0.8,
+      "insolubleFiber": 1.8
     },
     "longevity": {
       "saturatedFat": 0,
@@ -12161,7 +12400,6 @@
     "carbs": 22,
     "fats": 3.5,
     "micros": {
-      "fiber": 3,
       "sodium": 200,
       "potassium": 90,
       "calcium": 30,
@@ -12206,7 +12444,9 @@
       "glycine": 80,
       "proline": 110,
       "tyrosine": 60,
-      "taurine": 0
+      "taurine": 0,
+      "solubleFiber": 0.9,
+      "insolubleFiber": 2.1
     },
     "longevity": {
       "saturatedFat": 0,
@@ -12255,7 +12495,6 @@
     "carbs": 10.6,
     "fats": 4,
     "micros": {
-      "fiber": 2.6,
       "sodium": 126,
       "potassium": 34,
       "calcium": 0,
@@ -12300,7 +12539,9 @@
       "glycine": 54,
       "proline": 74,
       "tyrosine": 40,
-      "taurine": 0
+      "taurine": 0,
+      "solubleFiber": 0.6,
+      "insolubleFiber": 2
     },
     "longevity": {
       "saturatedFat": 3.3,
@@ -12349,7 +12590,6 @@
     "carbs": 5.3,
     "fats": 2,
     "micros": {
-      "fiber": 1.3,
       "sodium": 63,
       "potassium": 17,
       "calcium": 0,
@@ -12394,7 +12634,9 @@
       "glycine": 27,
       "proline": 37,
       "tyrosine": 20,
-      "taurine": 0
+      "taurine": 0,
+      "solubleFiber": 0.3,
+      "insolubleFiber": 1
     },
     "longevity": {
       "saturatedFat": 1.7,

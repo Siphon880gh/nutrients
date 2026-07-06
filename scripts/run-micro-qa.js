@@ -10,7 +10,7 @@ const samplePath = path.join(__dirname, "../samples/definitions-food.json");
 const checkedPath = path.join(__dirname, "../samples/definitions-food-qa-checked.json");
 
 const MICRO_KEYS = [
-  "fiber", "sodium", "potassium", "calcium", "iron", "copper", "magnesium", "zinc", "selenium",
+  "solubleFiber", "insolubleFiber", "sodium", "potassium", "calcium", "iron", "copper", "magnesium", "zinc", "selenium",
   "manganese", "chromium", "iodine", "vitaminA", "vitaminD", "vitaminE", "vitaminK", "vitaminB12",
   "thiamin", "riboflavin", "niacin", "pantothenicAcid", "vitaminB6", "vitaminC", "folate", "biotin",
   "phosphorus", "choline", "molybdenum", "chloride",
@@ -52,7 +52,7 @@ const AMINO_PER_G = {
 
 function roundVal(key, n) {
   if (n === 0) return 0;
-  if (key === "fiber") return Math.round(n * 10) / 10;
+  if (key === "solubleFiber" || key === "insolubleFiber" || key === "fiber") return Math.round(n * 10) / 10;
   if (["vitaminA", "vitaminD", "vitaminK", "folate", "biotin", "selenium", "copper", "chromium", "iodine", "molybdenum", "vitaminB12"].includes(key)) {
     return Math.round(n * 10) / 10;
   }
@@ -167,10 +167,10 @@ const FOOD_PATCHES = {
   "Quest Protein Bar": { selenium: 8, vitaminB12: 0.4, phosphorus: 160, iodine: 5, molybdenum: 10 },
   "Peanut Butter 1 tablespoon": { selenium: 1.5, phosphorus: 54, molybdenum: 8 },
   "Peanut Butter 2 tablespoons": { selenium: 3, phosphorus: 108, molybdenum: 16 },
-  "Rice - White 1 cup": {
+  "Rice - White 1 cup cooked": {
     selenium: 11.7, phosphorus: 208, choline: 5, molybdenum: 12, vitaminB12: 0,
   },
-  "Rice - Brown 1 cup": {
+  "Rice - Brown 1 cup cooked": {
     selenium: 11.7, phosphorus: 208, choline: 5, molybdenum: 35, vitaminB12: 0,
   },
   "Quinoa 1 cup": { selenium: 5.5, phosphorus: 280, molybdenum: 45, vitaminB12: 0 },
@@ -217,11 +217,11 @@ const CATEGORY_DEFAULTS = {
   },
   energy: {
     selenium: 0, iodine: 0, vitaminD: 0, vitaminB12: 0, vitaminE: 0, vitaminK: 0,
-    phosphorus: 0, choline: 0, molybdenum: 0, chloride: 0, fiber: 0,
+    phosphorus: 0,     choline: 0, molybdenum: 0, chloride: 0, solubleFiber: 0, insolubleFiber: 0,
   },
   oil: {
     selenium: 0, iodine: 0, vitaminD: 0, vitaminB12: 0, vitaminK: 0, phosphorus: 0,
-    choline: 0, molybdenum: 0, chloride: 0, fiber: 0, vitaminC: 0,
+    choline: 0, molybdenum: 0, chloride: 0, solubleFiber: 0, insolubleFiber: 0, vitaminC: 0,
   },
   egg: {
     selenium: 15, vitaminB12: 0.5, iodine: 24, phosphorus: 86, vitaminD: 1.1, vitaminE: 0.5,

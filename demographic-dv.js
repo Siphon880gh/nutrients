@@ -119,7 +119,8 @@
    * choline, essential amino acids, and ALA. See DAILY_INTAKE_MICRO_KEYS.
    */
   var DAILY_INTAKE_MICRO_KEYS = [
-    "fiber",
+    "solubleFiber",
+    "insolubleFiber",
     "sodium",
     "potassium",
     "chloride",

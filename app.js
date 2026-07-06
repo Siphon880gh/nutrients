@@ -552,7 +552,8 @@
   };
 
   var MICRO_FIELDS = [
-    { key: "fiber", label: "Fiber", unit: "g", code: "f" },
+    { key: "solubleFiber", label: "Soluble fiber", unit: "g", code: "sf" },
+    { key: "insolubleFiber", label: "Insoluble fiber", unit: "g", code: "if" },
     { key: "sodium", label: "Sodium", unit: "mg", code: "na" },
     { key: "potassium", label: "Potassium", unit: "mg", code: "k" },
     { key: "calcium", label: "Calcium", unit: "mg", code: "ca" },
@@ -603,6 +604,57 @@
   ];
 
   var MICRO_ALL_FIELDS = MICRO_FIELDS.concat(MICRO_EXTENDED_FIELDS);
+
+  var MICRO_FIBER_TOTAL_FIELD = {
+    key: "fiber",
+    label: "Fiber (total)",
+    unit: "g",
+    code: "f",
+  };
+
+  function solubleFiberRatioForFoodName(name) {
+    var n = String(name || "").toLowerCase();
+    if (
+      /oat|barley|hummus|bean|lentil|orgain|quinoa|apple|pear|orange|banana|kiwi|cherr|trail mix|peanut|avocado|guacamole|jamba|plant based|zongzi|sticky rice|leaf wrapped|burrito|turkey taco|pure protein|premier protein|quest protein/.test(
+        n
+      )
+    ) {
+      return 0.45;
+    }
+    if (
+      /grape-nuts|raisin bran|shredded wheat|cheerios|bread|ramen|popcorn|rice|potato|celery|cucumber|carrot|beet|cauliflower|whole wheat|sourdough|fries|smashed potato|green beans|salmon rice/.test(
+        n
+      )
+    ) {
+      return 0.22;
+    }
+    return 0.3;
+  }
+
+  function splitTotalFiber(total, name) {
+    var t = parseFloat(total);
+    if (isNaN(t) || t <= 0) return { solubleFiber: 0, insolubleFiber: 0 };
+    var ratio = solubleFiberRatioForFoodName(name);
+    var soluble = Math.round(t * ratio * 10) / 10;
+    var insoluble = Math.round((t - soluble) * 10) / 10;
+    return { solubleFiber: soluble, insolubleFiber: insoluble };
+  }
+
+  function fiberTotalFromParts(micros) {
+    if (!micros) return 0;
+    var soluble = parseFloat(micros.solubleFiber);
+    var insoluble = parseFloat(micros.insolubleFiber);
+    soluble = isNaN(soluble) ? 0 : soluble;
+    insoluble = isNaN(insoluble) ? 0 : insoluble;
+    if (soluble > 0 || insoluble > 0) return soluble + insoluble;
+    var legacy = parseFloat(micros.fiber);
+    return isNaN(legacy) ? 0 : legacy;
+  }
+
+  function applyFiberTotalToMicroTotals(totals) {
+    totals.fiber = fiberTotalFromParts(totals);
+    return totals;
+  }
 
   var LONGEVITY_GROUPS = [
     { id: "fats", label: "Fats & cholesterol", sectionDefKey: "sectionFats" },
@@ -1602,6 +1654,11 @@
         micros[field.key] = isNaN(n) ? "" : n;
       }
     });
+    if (raw.fiber !== "" && raw.fiber != null && fiberTotalFromParts(micros) === 0) {
+      var split = splitTotalFiber(raw.fiber, "");
+      micros.solubleFiber = split.solubleFiber;
+      micros.insolubleFiber = split.insolubleFiber;
+    }
     return micros;
   }
 
@@ -2885,6 +2942,7 @@
   }
 
   function microFieldByKey(key) {
+    if (key === "fiber") return MICRO_FIBER_TOTAL_FIELD;
     for (var i = 0; i < MICRO_ALL_FIELDS.length; i++) {
       if (MICRO_ALL_FIELDS[i].key === key) return MICRO_ALL_FIELDS[i];
     }
@@ -5742,6 +5800,7 @@
     MICRO_ALL_FIELDS.forEach(function (field) {
       totals[field.key] = 0;
     });
+    totals.fiber = 0;
     return totals;
   }
 
@@ -5766,7 +5825,7 @@
       });
     });
 
-    return totals;
+    return applyFiberTotalToMicroTotals(totals);
   }
 
   function microContributionsFromText(text, microKey) {
@@ -5783,9 +5842,14 @@
       var hits = countKeyword(text, name);
       if (!hits) return;
 
-      var v = kw.micros[microKey];
-      if (v === "" || v == null) return;
-      var perServing = parseFloat(v);
+      var perServing;
+      if (microKey === "fiber") {
+        perServing = fiberTotalFromParts(kw.micros);
+      } else {
+        var v = kw.micros[microKey];
+        if (v === "" || v == null) return;
+        perServing = parseFloat(v);
+      }
       if (isNaN(perServing) || perServing <= 0) return;
 
       list.push({
@@ -5847,7 +5911,7 @@
     MICRO_ALL_FIELDS.forEach(function (field) {
       out[field.key] = a[field.key] + b[field.key];
     });
-    return out;
+    return applyFiberTotalToMicroTotals(out);
   }
 
   function weekMicroTotals() {
@@ -6071,6 +6135,7 @@
   }
 
   function dailyDv(key) {
+    if (key === "solubleFiber" || key === "insolubleFiber") key = "fiber";
     if (demographicDv && demographicDv.getDailyMicroDv) {
       return demographicDv.getDailyMicroDv(demographic, key);
     }
@@ -6692,7 +6757,9 @@
     var isLongevity = entry.source === "longevity";
     var total = isLongevity
       ? weekLongevity[field.key] || 0
-      : weekMicro[field.key] || 0;
+      : field.key === "fiber"
+        ? fiberTotalFromParts(weekMicro)
+        : weekMicro[field.key] || 0;
     var dailyAmount = total / DAYS.length;
     var targetDisplay = microRowTargetDisplay(
       field,
@@ -7147,7 +7214,8 @@
   function longevityRowFromMicroKey(microKey, label, limiting, weekMicro) {
     var field = microFieldByKey(microKey);
     var unit = field ? field.unit : "";
-    var total = weekMicro[microKey] || 0;
+    var total =
+      microKey === "fiber" ? fiberTotalFromParts(weekMicro) : weekMicro[microKey] || 0;
     var daily = total / DAYS.length;
     var target = microNutrientTargetPct(microKey, daily);
     var pct = target.pct;
@@ -11160,6 +11228,7 @@
     if (clearAllBtn) clearAllBtn.disabled = !anyDayHasNotes();
   }
 
+  var DAY_SUGGEST_MIN_CHARS = 2;
   var DAY_SUGGEST_MAX = 8;
 
   function clearDaySuggestDismissed(textarea) {
@@ -11190,11 +11259,19 @@
 
   function daySuggestPanelHtml(matches) {
     return (
+      '<div class="day__suggest-header">' +
       '<button type="button" class="day__suggest-dismiss" data-action="dismiss-suggest" aria-label="Dismiss suggestions for this line">Dismiss</button>' +
+      "</div>" +
       '<div class="day__suggest-list" role="presentation">' +
       matches.map(daySuggestItemHtml).join("") +
       "</div>"
     );
+  }
+
+  function daySuggestRowHeight(suggestEl) {
+    var item = suggestEl && suggestEl.querySelector(".day__suggest-item");
+    if (item) return item.offsetHeight;
+    return 28;
   }
 
   function commonPrefixLen(a, b) {
@@ -11506,10 +11583,58 @@
     suggestEl.innerHTML = "";
   }
 
+  function positionDaySuggest(textarea, suggestEl) {
+    if (!textarea || !suggestEl) return;
+    var editor = textarea.closest(".day__editor");
+    if (!editor) return;
+    var backdrop = editor.querySelector(".day__backdrop");
+    if (!backdrop) return;
+
+    var info = getCurrentLineInfo(textarea);
+    var caretPos = info.lineStart + info.text.length;
+    var rect = backdropCaretRect(backdrop, caretPos);
+    if (!rect) return;
+
+    var editorRect = editor.getBoundingClientRect();
+    var gap = 2;
+    var top = rect.bottom - editorRect.top + gap;
+    var header = suggestEl.querySelector(".day__suggest-header");
+    var headerGap = 6;
+    var headerHeight = header ? header.offsetHeight + headerGap : 0;
+    var rowHeight = daySuggestRowHeight(suggestEl);
+    var minPanelHeight = headerHeight + rowHeight;
+    var available = editor.clientHeight - top;
+
+    if (available < minPanelHeight) {
+      top = Math.max(0, editor.clientHeight - minPanelHeight);
+    }
+
+    suggestEl.style.top = top + "px";
+    suggestEl.style.left = "0";
+    suggestEl.style.right = "0";
+    suggestEl.style.bottom = "0";
+  }
+
+  function bindDaySuggestResize(editor) {
+    if (!editor || editor._daySuggestResizeBound) return;
+    editor._daySuggestResizeBound = true;
+    if (typeof ResizeObserver === "undefined") return;
+    var observer = new ResizeObserver(function () {
+      var textarea = editor.querySelector(".day__input");
+      var suggestEl = editor.querySelector(".day__suggest");
+      if (textarea && suggestEl && !suggestEl.hidden) {
+        positionDaySuggest(textarea, suggestEl);
+      }
+    });
+    observer.observe(editor);
+    editor._daySuggestResizeObserver = observer;
+  }
+
   function ensureDaySuggestEl(editor) {
     var el = editor.querySelector(".day__suggest");
     if (el) {
       bindDaySuggestHover(el);
+      bindDaySuggestResize(editor);
       return el;
     }
 
@@ -11564,6 +11689,7 @@
       applyDayFoodSuggest(textarea, btn.getAttribute("data-food-name"));
     });
     bindDaySuggestHover(el);
+    bindDaySuggestResize(editor);
     editor.appendChild(el);
     return el;
   }
@@ -11594,8 +11720,12 @@
 
     syncDaySuggestDismissedLine(textarea);
 
-    if (!query.trim() || lineMatchesFoodDefinition(info.fullLine)) {
-      if (!query.trim()) clearDaySuggestDismissed(textarea);
+    var queryTrimmed = query.trim();
+    if (
+      queryTrimmed.length < DAY_SUGGEST_MIN_CHARS ||
+      lineMatchesFoodDefinition(info.fullLine)
+    ) {
+      if (!queryTrimmed) clearDaySuggestDismissed(textarea);
       hideDaySuggest(textarea);
       return;
     }
@@ -11616,6 +11746,10 @@
     suggestEl.innerHTML = daySuggestPanelHtml(matches);
     suggestEl._daySuggestHoverItem = null;
     suggestEl.hidden = false;
+    requestAnimationFrame(function () {
+      if (suggestEl.hidden) return;
+      positionDaySuggest(textarea, suggestEl);
+    });
   }
 
   function applyDayNoteChange(textarea) {
@@ -11723,6 +11857,11 @@
     });
     textarea.addEventListener("scroll", function () {
       syncScroll(textarea, backdrop);
+      var editor = textarea.closest(".day__editor");
+      var suggestEl = editor && editor.querySelector(".day__suggest");
+      if (suggestEl && !suggestEl.hidden) {
+        positionDaySuggest(textarea, suggestEl);
+      }
     });
   }
 

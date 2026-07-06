@@ -94,16 +94,22 @@
       "prompt": "Vitamin C is very important. For all food without Vitamin C please double check if they have Vitamin C"
     },
     {
-      "label": "Fiber",
-      "key": "fiber",
+      "label": "Soluble fiber",
+      "key": "solubleFiber",
       "unit": "g",
-      "prompt": "Fiber is very important. For all food without Fiber please double check if they have Fiber"
+      "prompt": "Soluble fiber is very important. For all food without soluble fiber please double check if they have soluble fiber"
+    },
+    {
+      "label": "Insoluble fiber",
+      "key": "insolubleFiber",
+      "unit": "g",
+      "prompt": "Insoluble fiber is very important. For all food without insoluble fiber please double check if they have insoluble fiber"
     }
   ],
   "microPanelAllNutrients": {
     "source": "MICRO_ALL_FIELDS in app.js (micro requirements panel)",
     "keys": [
-      "fiber", "sodium", "potassium", "calcium", "iron", "magnesium", "zinc", "selenium", "copper",
+      "solubleFiber", "insolubleFiber", "sodium", "potassium", "calcium", "iron", "magnesium", "zinc", "selenium", "copper",
       "manganese", "chromium", "iodine", "vitaminA", "vitaminD", "vitaminE", "vitaminK", "thiamin",
       "riboflavin", "niacin", "pantothenicAcid", "vitaminB6", "biotin", "folate", "vitaminB12", "vitaminC",
       "phosphorus", "choline", "molybdenum", "chloride",
