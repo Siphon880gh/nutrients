@@ -386,8 +386,8 @@
       "Fermented foods and animal products supply most dietary K2."
     ],
     "enough": [
-      "K2 may help activate proteins that regulate where calcium deposits; research is strongest in deficiency and CKD contexts.",
-      "Natto, cheese, and egg yolks are notable sources."
+      "Vitamin K2 (menaquinone) is found in fermented foods and animal products. It helps route calcium into bone and teeth and may reduce calcium buildup in arteries—not the same job as vitamin K1, which mainly supports blood clotting.",
+      "Natto, aged cheese, and egg yolks are notable sources. MK-4 clears within hours (spread through the day); MK-7 lasts for days (once-daily is usually enough)."
     ],
     "foodSources": [
       "Natto",
@@ -1013,8 +1013,9 @@
   },
   "sectionBoneDensity": {
     "enough": [
-      "Calcium, vitamin D, and magnesium work together to mineralize bone, maintain muscle strength, and support immune defense—reducing fracture and fall risk as you age.",
-      "Spread calcium through the day with enough vitamin D, magnesium, and weight-bearing activity for best lifelong bone outcomes; peak bone mass in youth and slowing loss after menopause both depend on this trio.",
+      "Calcium, vitamin D, magnesium, and vitamin K work together to mineralize bone, maintain muscle strength, and support immune defense—reducing fracture and fall risk as you age.",
+      "Vitamin K2 (menaquinone) directs calcium into bone matrix rather than soft tissue; K1 from greens supports osteocalcin activation. MK-7 from fermented foods has a long half-life; MK-4 from animal foods clears within hours—spread across meals when possible.",
+      "Spread calcium through the day with enough vitamin D, magnesium, vitamin K, and weight-bearing activity for best lifelong bone outcomes; peak bone mass in youth and slowing loss after menopause all depend on this balance.",
       "This balance matters most after 40, during menopause, with low sun exposure, or when family history includes osteoporosis."
     ]
   },
@@ -1179,7 +1180,9 @@
       "Phosphorus is required for life (ATP, DNA, bone), but when blood phosphate runs high—especially from cola, processed meats, and phosphate additives—the body lowers active vitamin D and shifts calcium away from bone.",
       "That high-phosphate imbalance can harden arteries (vascular calcification) while bones weaken—a double hit seen with heavy soda, fast food, and additive-heavy packaged foods even when calcium and vitamin D intake looks fine on paper.",
       "Whole-food phosphorus from meat, dairy, and legumes is rarely the problem; watch absorbable phosphate from additives. Kidney disease, heavy cola, and processed-meat diets need the closest attention.",
-      "When blood phosphate stays high despite diet changes, clinicians sometimes prescribe mealtime calcium acetate or other binders—synthetic products because food cannot deliver binder-strength doses. That is a monitored treatment, not a substitute for cutting additive phosphate."
+      "When blood phosphate stays high despite diet changes, clinicians sometimes prescribe mealtime calcium acetate or other binders—synthetic products because food cannot deliver binder-strength doses. That is a monitored treatment, not a substitute for cutting additive phosphate.",
+      "Vitamin K2 (menaquinone) is found in fermented foods and animal products. It helps route calcium into bone and teeth and may reduce calcium buildup in arteries—not the same job as vitamin K1 from leafy greens, which mainly supports blood clotting in the liver.",
+      "The sub-forms of K2 matter for timing: MK-4 (menaquinone-4) from meats and dairy clears within a few hours, so spreading food or supplement doses through the day helps keep levels steadier. MK-7 (menaquinone-7) from fermented foods like natto lasts for days, so once-daily food or supplement doses are usually enough. Many commercial natto products have K2 removed—check labels, and choose MK-7 when supplementing."
     ]
   },
   "sectionHomocysteine": {

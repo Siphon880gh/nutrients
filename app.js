@@ -884,7 +884,7 @@
   var LONGEVITY_CALCIFICATION_AIM_FROM_MICRO = [
     { microKey: "vitaminK", label: "Vitamin K — calcium routing", limiting: false },
     { microKey: "vitaminK1", label: "Vitamin K1 — clotting & bone proteins", limiting: false },
-    { microKey: "vitaminK2", label: "Vitamin K2 — arterial calcification guard", limiting: false },
+    { microKey: "vitaminK2", label: "Vitamin K2 (Menaquinone) — arterial calcification guard", limiting: false },
     { microKey: "vitaminK2MK4", label: "MK-4 — animal-source K2 (short half-life)", limiting: false },
     { microKey: "vitaminK2MK7", label: "MK-7 — fermented-food K2 (long half-life)", limiting: false },
   ];
@@ -3342,6 +3342,10 @@
       html += insolubleToSolubleFiberCompareHtml();
     }
 
+    if (key === "vitaminK1" || key === "vitaminK2") {
+      html += vitaminKKeyDifferencesHtml();
+    }
+
     if (def.tooHigh.length) {
       html +=
         '<section class="micro-def__section">' +
@@ -3368,6 +3372,19 @@
 
     microDefBodyEl.innerHTML =
       html || '<p class="micro-def__empty">No description content yet.</p>';
+  }
+
+  function vitaminKKeyDifferencesHtml() {
+    return (
+      '<section class="micro-def__section">' +
+      '<h4 class="micro-def__heading">The Key Differences</h4>' +
+      '<p class="micro-def__p"><strong>Vitamin K1 (Phylloquinone):</strong> Found mainly in leafy greens. Used by the liver for healthy blood clotting—not the same calcium-routing role as K2.</p>' +
+      '<p class="micro-def__p"><strong>Vitamin K2 (Menaquinone):</strong> Found in fermented foods and animal products. Helps route calcium into bone and teeth and may reduce calcium buildup in arteries and soft tissues.</p>' +
+      '<p class="micro-def__p"><strong>The sub-forms of K2:</strong></p>' +
+      '<p class="micro-def__p"><strong>MK-4 (Menaquinone-4):</strong> Found in some meats and dairy. Clears from the body within a few hours—you typically need multiple doses through the day to keep levels stable.</p>' +
+      '<p class="micro-def__p"><strong>MK-7 (Menaquinone-7):</strong> Sourced from fermented foods like natto. Lasts for days, allowing steady once-daily supplementation. Many commercial natto products have K2 removed—when supplementing, choose the MK-7 form.</p>' +
+      "</section>"
+    );
   }
 
   function insolubleToSolubleFiberCompareHtml() {
@@ -3536,6 +3553,10 @@
         "</h4>" +
         microDefParagraphsHtml(def.enough) +
         "</section>";
+    }
+
+    if (key === "vitaminK1" || key === "vitaminK2") {
+      html += vitaminKKeyDifferencesHtml();
     }
 
     if (!limiting && def.tooHigh.length) {
@@ -5366,6 +5387,28 @@
       '<a href="https://www.amazon.com/s?k=calcium+acetate" target="_blank" rel="noopener noreferrer">Calcium acetate</a> ' +
       "is sold as a mealtime phosphate binder; most commercial products are made synthetically because natural food sources do not concentrate enough for binding doses. " +
       '<button type="button" class="dashboard__longevity-tip-link" data-action="open-phosphorus-binder-modal">Calcium acetate dosing &amp; phosphorus details</button>' +
+      "</p>" +
+      "</aside>"
+    );
+  }
+
+  function calcificationVitaminK2TipHtml() {
+    return (
+      '<aside class="dashboard__longevity-processed-note dashboard__longevity-processed-note--section" role="note">' +
+      '<p class="dashboard__longevity-processed-note-text">' +
+      "<strong>Vitamin K2 (menaquinone):</strong> Found in fermented foods and animal products. It helps route calcium into bone and teeth and may reduce calcium buildup in arteries—not the same job as vitamin K1 from leafy greens, which mainly supports blood clotting in the liver… " +
+      '<button type="button" class="dashboard__longevity-tip-link" data-micro-def="vitaminK2" aria-haspopup="dialog">Read more</button>' +
+      "</p>" +
+      "</aside>"
+    );
+  }
+
+  function calcificationVitaminK2SubformsTipHtml() {
+    return (
+      '<aside class="dashboard__longevity-processed-note dashboard__longevity-processed-note--section" role="note">' +
+      '<p class="dashboard__longevity-processed-note-text">' +
+      "<strong>MK-4 vs MK-7:</strong> MK-4 from meat and dairy clears within hours—spread doses through the day. MK-7 from fermented foods like natto lasts for days, so once-daily food or supplement doses are usually enough. Many commercial natto products have K2 removed; when supplementing, choose MK-7… " +
+      '<button type="button" class="dashboard__longevity-tip-link" data-micro-def="vitaminK2" aria-haspopup="dialog">Read more</button>' +
       "</p>" +
       "</aside>"
     );
@@ -8595,8 +8638,10 @@
     html += longevitySectionWrap(
       "Calcification & vascular balance",
       "sectionCalcification",
-      '<p class="dashboard__longevity-note">Phosphorus also appears under compounds above. Excess absorbable phosphate from cola and processed foods can pull calcium into arteries even when calcium and vitamin D intake looks fine. Vitamin K (total), K1, K2, MK-4, and MK-7 are tracked separately so you can view calcium routing under different lenses.</p>' +
-        calcificationPhosphorusTipHtml(),
+      '<p class="dashboard__longevity-note">Phosphorus also appears under compounds above. Excess absorbable phosphate from cola and processed foods can pull calcium into arteries even when calcium and vitamin D intake looks fine. Vitamin K (total), K1, K2 (menaquinone), MK-4, and MK-7 are tracked separately so you can view calcium routing under different lenses.</p>' +
+        calcificationPhosphorusTipHtml() +
+        calcificationVitaminK2TipHtml() +
+        calcificationVitaminK2SubformsTipHtml(),
       longevityListOpen() +
         longevitySubgroupHtml("Aim — higher % DV is better", "aim") +
         LONGEVITY_CALCIFICATION_AIM_FROM_MICRO.map(function (item) {

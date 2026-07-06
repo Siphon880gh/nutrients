@@ -1104,6 +1104,10 @@
     ]
   },
   "vitaminK": {
+    "dashboardTracking": [
+      "Track total vitamin K when food labels or databases do not specify K1 vs K2—this row is scored against the FDA daily value.",
+      "When you know the form split, also log vitamin K1 and/or vitamin K2 separately; those rows are shown unscored because there is no separate FDA DV for each form."
+    ],
     "tooLow": [
       "Low vitamin K impairs blood clotting (easy bruising, excessive bleeding) and weakens bone mineralization over time.",
       "Newborns are routinely given vitamin K at birth; adults on blood thinners or with fat malabsorption may be at risk."
@@ -1139,6 +1143,10 @@
     ]
   },
   "vitaminK1": {
+    "dashboardTracking": [
+      "Log vitamin K1 (phylloquinone) when you know a food is plant-based K—leafy greens, broccoli, and plant oils. Omit when only total vitamin K is listed.",
+      "Shown unscored: there is no separate FDA daily value for K1. Use total vitamin K for % DV when the breakdown is unknown."
+    ],
     "tooLow": [
       "Low K1 (phylloquinone) mainly affects clotting and bone proteins when green vegetable intake is very low.",
       "Consistent leafy greens usually cover K1."
@@ -1170,13 +1178,17 @@
     ]
   },
   "vitaminK2": {
+    "dashboardTracking": [
+      "Log vitamin K2 (menaquinone) when you know a food supplies animal or fermented K2—natto, cheese, egg yolks, liver. Omit when only total vitamin K is listed.",
+      "Shown unscored: there is no separate FDA daily value for K2. MK-4 and MK-7 are tracked separately when you know the menaquinone type."
+    ],
     "tooLow": [
       "Low K2 (menaquinone) is debated for bone and arterial health, especially with high calcium and low K overall.",
       "Fermented foods and animal products supply most dietary K2."
     ],
     "enough": [
-      "K2 may help activate proteins that regulate where calcium deposits; research is strongest in deficiency and CKD contexts.",
-      "Natto, cheese, and egg yolks are notable sources."
+      "Vitamin K2 (menaquinone) is found in fermented foods and animal products. It helps route calcium into bone and teeth and may reduce calcium buildup in arteries—not the same job as vitamin K1, which mainly supports blood clotting.",
+      "Natto, aged cheese, and egg yolks are notable sources. MK-4 clears within hours (spread through the day); MK-7 lasts for days (once-daily is usually enough)."
     ],
     "tooHigh": [
       "Food K2 is safe; very high supplemental K2 may interact with blood thinners (warfarin)—consult a clinician if on anticoagulants."
