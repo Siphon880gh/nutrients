@@ -1444,13 +1444,14 @@ button.dashboard__micro-name:focus-visible {
 }
 
 .dashboard__micro-target-kind {
-  grid-column: 1 / -1;
+  grid-column: 2;
   grid-row: 2;
   font-size: 0.56rem;
   line-height: 1.25;
   color: #8a8a86;
   letter-spacing: 0.01em;
-  text-align: left;
+  text-align: right;
+  white-space: nowrap;
 }
 
 .dashboard__micro-dv-req {
@@ -1578,11 +1579,13 @@ button.dashboard__micro-day-name:focus-visible {
 }
 
 .dashboard__micro-day-target-kind {
-  grid-column: 1 / -1;
+  grid-column: 2;
   grid-row: 2;
   font-size: 0.54rem;
   line-height: 1.25;
   color: #8a8a86;
+  text-align: right;
+  white-space: nowrap;
 }
 
 .dashboard__micro-day-dv-req {

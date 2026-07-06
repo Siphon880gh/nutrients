@@ -22,8 +22,6 @@
     palmitoleicAcid: 0,
     vitaminE: 15,
     vitaminK: 120,
-    vitaminK1: 120,
-    vitaminK2: 120,
     selenium: 55,
     copper: 900,
     methionine: 0,
@@ -48,7 +46,7 @@
 
   /** Micro keys shown in longevity panel — values always stored under food.micros.
    *  vitaminE, vitaminK, selenium, copper use longevity: true to reference micros. */
-  var FROM_MICRO_KEYS = ["calcium", "magnesium", "vitaminD", "vitaminE", "vitaminK", "selenium", "copper"];
+  var FROM_MICRO_KEYS = ["calcium", "magnesium", "vitaminD", "vitaminE", "vitaminK", "vitaminK1", "vitaminK2", "selenium", "copper"];
 
   function getDailyLongevityDv(key) {
     var dv = DAILY_LONGEVITY_DV[key];

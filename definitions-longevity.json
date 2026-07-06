@@ -949,11 +949,15 @@
   "sectionThyroid": {
     "tooLow": [
       "As you get older—especially after 60—thyroid function is particularly sensitive to variations in iodine intake. Iodine deficiency plays an important role in hypothyroidism: an enlarged thyroid (goiter), slowed metabolism, fatigue, cold intolerance, and cognitive sluggishness.",
-      "Low selenium, iron, or zinc can limit how well iodine supports hormone production even when iodine intake looks adequate on paper."
+      "Low selenium, iron, or zinc can limit how well iodine supports hormone production even when iodine intake looks adequate on paper.",
+      "Low omega-3 intake leaves the thyroid more exposed to inflammation and oxidative stress; a high omega-6 : omega-3 ratio from refined seed oils can further skew inflammatory signaling.",
+      "Low vitamin A impairs thyroid receptor activation and T4→T3 conversion—iodine alone cannot fully support thyroid function when vitamin A is inadequate."
     ],
     "enough": [
       "Iodine is the main nutrient to track for thyroid health—steady intake from iodized salt, dairy, eggs, and seafood prevents the deficiency pattern that becomes more consequential after 60.",
       "Iodine is not the whole story: selenium helps convert T4 to active T3 and protects the thyroid gland during hormone synthesis; iron supports thyroid peroxidase; zinc is needed for T3 production; tyrosine is the amino-acid building block for thyroid hormones. Track iodine first, then these cofactors if you avoid iodized salt, eat little seafood, or notice low-thyroid signs.",
+      "Omega-3 fatty acids are highly important for thyroid health. They reduce inflammation and oxidative stress, which helps protect the thyroid gland from damage. EPA and DHA also produce metabolic compounds called resolvins that are crucial for managing autoimmune conditions like Hashimoto's disease. Additionally, they ensure cell membrane integrity for proper hormone signaling.",
+      "Vitamin A is essential for proper thyroid function, largely because it works hand-in-hand with iodine. It helps your body activate thyroid receptors and is required to convert the inactive thyroid hormone T4 into the active energy-boosting form, T3. Without enough Vitamin A, iodine struggles to do its job properly.",
       "Food-level iodine is usually safer than high-dose supplements—excess iodine from megadose seaweed or concentrated pills can also disrupt thyroid function, especially with autoimmune thyroid disease."
     ],
     "tooHigh": [
@@ -967,7 +971,11 @@
       "Eggs",
       "Brazil nuts (selenium)",
       "Shellfish & lean meat (zinc, iron)",
-      "Soy, chicken & fish (tyrosine)"
+      "Soy, chicken & fish (tyrosine)",
+      "Salmon, sardines & mackerel (omega-3)",
+      "Walnuts, flax & chia (ALA omega-3)",
+      "Sweet potato, carrot & leafy greens (vitamin A)",
+      "Liver & cheese (preformed vitamin A)"
     ]
   },
   "sectionBoneDensity": {
@@ -1023,16 +1031,28 @@
   "sectionVisceralFat": {
     "enough": [
       "Visceral fat is the deep abdominal fat wrapped around organs—not the pinchable fat under the skin. It drives insulin resistance, chronic inflammation, and higher risk of type 2 diabetes, heart disease, and fatty liver over decades.",
-      "Research shows specific nutrients can help reduce visceral fat when intake is adequate: fiber improves satiety and gut signaling; protein preserves lean mass and blunts hunger; antioxidants (vitamin C, E, selenium, polyphenols, flavonoids, carotenoids) lower oxidative stress that worsens fat storage patterns.",
-      "Nutrition supports the pattern—exercise, sleep, and stress management do the rest. This section tracks fiber, protein, and antioxidants from your entries so you can see whether your week supports visceral-fat reduction, not just total weight.",
+      "Nutrients that help reduce visceral fat buildup: fiber improves satiety and gut signaling; protein preserves lean mass and blunts hunger; magnesium, vitamin D, chromium, and leucine support insulin sensitivity and body composition; EPA, DHA, and monounsaturated fat support a lower-inflammatory fat-storage pattern when intake is low.",
+      "Antioxidants (vitamin C, E, selenium, polyphenols, flavonoids, carotenoids, curcumin) lower oxidative stress in adipose tissue and liver—oxidative stress worsens where fat gets stored and how easily it is released.",
+      "Nutrients that support mobilizing stored fat—including visceral fat—for energy: B vitamins build NAD+, FAD, and coenzyme A for fuel oxidation; magnesium and iron support ATP and cytochromes; carnitine shuttles fatty acids into mitochondria; CoQ10 carries electrons in the respiratory chain. When these run low, fat tends to stay stored instead of being burned.",
+      "Gut incretin signaling (GLP-1-like): soluble fiber feeds bacteria that produce short-chain fatty acids and stimulate incretin hormones—research links this pattern to lower visceral adiposity. Polyphenols, flavonoids, and resveratrol from plants further reshape the microbiome toward lower fat storage. Fermented foods help but are not tracked here.",
+      "Nutrition supports the pattern—exercise, sleep, and stress management do the rest. This section tracks buildup, antioxidant, mobilization, and incretin-support nutrients from your entries so you can see whether your week supports visceral-fat reduction, not just total weight.",
       "Jump to fat gain and insulin resistance for related metabolic patterns; pair higher fiber and protein with regular movement for the strongest effect."
     ],
     "foodSources": [
       "Fiber — beans, lentils, oats, barley, berries, broccoli, chia, flax",
       "Protein — fish, poultry, eggs, Greek yogurt, tofu, legumes",
+      "Magnesium — leafy greens, nuts, seeds, legumes, whole grains",
+      "Vitamin D — fatty fish, egg yolks, fortified dairy",
+      "Chromium — broccoli, whole grains, brewer's yeast",
+      "Leucine — chicken, fish, eggs, dairy, soy",
+      "EPA & DHA — salmon, sardines, mackerel, herring",
+      "Monounsaturated fat — olive oil, avocado, almonds",
       "Vitamin C — citrus, peppers, broccoli, strawberries",
       "Vitamin E — nuts, seeds, avocado, olive oil",
       "Selenium — Brazil nuts, fish, eggs, whole grains",
+      "B vitamins — whole grains, legumes, eggs, meat",
+      "Carnitine — beef, lamb, fish, dairy (moderate portions)",
+      "CoQ10 — organ meats, fatty fish, nuts",
       "Polyphenols & flavonoids — berries, tea, cocoa, onions, grapes",
       "Carotenoids & lutein — leafy greens, carrots, sweet potato, eggs",
       "Resveratrol — grapes, berries, peanuts",

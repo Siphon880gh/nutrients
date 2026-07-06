@@ -52,7 +52,9 @@
 			"taurine": 0,
 			"solubleFiber": 1.4,
 			"insolubleFiber": 1.6,
-			"fiber": 3
+			"fiber": 3,
+			"vitaminK1": 3,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 1.5,
@@ -76,7 +78,9 @@
 			"lutein": 0,
 			"vitaminK": true,
 			"phosphorus": true,
-			"methionine": true
+			"methionine": true,
+			"vitaminK1": true,
+			"vitaminK2": true
 		},
 		"carbQuality": {
 			"glycemicIndex": 45,
@@ -138,7 +142,9 @@
 			"taurine": 0,
 			"solubleFiber": 2.3,
 			"insolubleFiber": 2.7,
-			"fiber": 5
+			"fiber": 5,
+			"vitaminK1": 5,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 2.5,
@@ -162,7 +168,9 @@
 			"lutein": 0,
 			"vitaminK": true,
 			"phosphorus": true,
-			"methionine": true
+			"methionine": true,
+			"vitaminK1": true,
+			"vitaminK2": true
 		},
 		"carbQuality": {
 			"glycemicIndex": 45,
@@ -224,7 +232,9 @@
 			"taurine": 0,
 			"solubleFiber": 5.6,
 			"insolubleFiber": 6.8,
-			"fiber": 12.4
+			"fiber": 12.4,
+			"vitaminK1": 0,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 10.2,
@@ -244,8 +254,8 @@
 			"palmitoleicAcid": 0.02,
 			"vitaminE": true,
 			"vitaminK": true,
-			"vitaminK1": 0,
-			"vitaminK2": 0,
+			"vitaminK1": true,
+			"vitaminK2": true,
 			"selenium": true,
 			"polyphenols": 230,
 			"flavonoids": 60,
@@ -320,7 +330,9 @@
 			"taurine": 0,
 			"solubleFiber": 0,
 			"insolubleFiber": 0,
-			"fiber": 0
+			"fiber": 0,
+			"vitaminK1": 0,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 0,
@@ -340,8 +352,8 @@
 			"palmitoleicAcid": 0,
 			"vitaminE": true,
 			"vitaminK": true,
-			"vitaminK1": 0,
-			"vitaminK2": 0,
+			"vitaminK1": true,
+			"vitaminK2": true,
 			"selenium": true,
 			"polyphenols": 0,
 			"flavonoids": 0,
@@ -415,7 +427,9 @@
 			"taurine": 0,
 			"solubleFiber": 0,
 			"insolubleFiber": 0,
-			"fiber": 0
+			"fiber": 0,
+			"vitaminK1": 0,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 0,
@@ -435,8 +449,8 @@
 			"palmitoleicAcid": 0,
 			"vitaminE": true,
 			"vitaminK": true,
-			"vitaminK1": 0,
-			"vitaminK2": 0,
+			"vitaminK1": true,
+			"vitaminK2": true,
 			"selenium": true,
 			"polyphenols": 0,
 			"flavonoids": 0,
@@ -510,7 +524,9 @@
 			"taurine": 0,
 			"solubleFiber": 0,
 			"insolubleFiber": 0,
-			"fiber": 0
+			"fiber": 0,
+			"vitaminK1": 0,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 0,
@@ -530,8 +546,8 @@
 			"palmitoleicAcid": 0,
 			"vitaminE": true,
 			"vitaminK": true,
-			"vitaminK1": 0,
-			"vitaminK2": 0,
+			"vitaminK1": true,
+			"vitaminK2": true,
 			"selenium": true,
 			"polyphenols": 0,
 			"flavonoids": 0,
@@ -605,7 +621,9 @@
 			"taurine": 0,
 			"solubleFiber": 0,
 			"insolubleFiber": 0,
-			"fiber": 0
+			"fiber": 0,
+			"vitaminK1": 0,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 0,
@@ -625,8 +643,8 @@
 			"palmitoleicAcid": 0,
 			"vitaminE": true,
 			"vitaminK": true,
-			"vitaminK1": 0,
-			"vitaminK2": 0,
+			"vitaminK1": true,
+			"vitaminK2": true,
 			"selenium": true,
 			"polyphenols": 0,
 			"flavonoids": 0,
@@ -700,7 +718,9 @@
 			"taurine": 0,
 			"solubleFiber": 0,
 			"insolubleFiber": 0,
-			"fiber": 0
+			"fiber": 0,
+			"vitaminK1": 0,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 0,
@@ -720,8 +740,8 @@
 			"palmitoleicAcid": 0,
 			"vitaminE": true,
 			"vitaminK": true,
-			"vitaminK1": 0,
-			"vitaminK2": 0,
+			"vitaminK1": true,
+			"vitaminK2": true,
 			"selenium": true,
 			"polyphenols": 0,
 			"flavonoids": 0,
@@ -795,7 +815,9 @@
 			"taurine": 0,
 			"solubleFiber": 0,
 			"insolubleFiber": 0,
-			"fiber": 0
+			"fiber": 0,
+			"vitaminK1": 0,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 0,
@@ -815,8 +837,8 @@
 			"palmitoleicAcid": 0,
 			"vitaminE": true,
 			"vitaminK": true,
-			"vitaminK1": 0,
-			"vitaminK2": 0,
+			"vitaminK1": true,
+			"vitaminK2": true,
 			"selenium": true,
 			"polyphenols": 0,
 			"flavonoids": 0,
@@ -890,7 +912,9 @@
 			"taurine": 0,
 			"solubleFiber": 0,
 			"insolubleFiber": 0,
-			"fiber": 0
+			"fiber": 0,
+			"vitaminK1": 0,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 0,
@@ -910,8 +934,8 @@
 			"palmitoleicAcid": 0,
 			"vitaminE": true,
 			"vitaminK": true,
-			"vitaminK1": 0,
-			"vitaminK2": 0,
+			"vitaminK1": true,
+			"vitaminK2": true,
 			"selenium": true,
 			"polyphenols": 0,
 			"flavonoids": 0,
@@ -985,7 +1009,9 @@
 			"taurine": 0,
 			"solubleFiber": 0,
 			"insolubleFiber": 0,
-			"fiber": 0
+			"fiber": 0,
+			"vitaminK1": 0,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 0,
@@ -1005,8 +1031,8 @@
 			"palmitoleicAcid": 0,
 			"vitaminE": true,
 			"vitaminK": true,
-			"vitaminK1": 0,
-			"vitaminK2": 0,
+			"vitaminK1": true,
+			"vitaminK2": true,
 			"selenium": true,
 			"polyphenols": 0,
 			"flavonoids": 0,
@@ -1080,7 +1106,9 @@
 			"taurine": 0,
 			"solubleFiber": 0,
 			"insolubleFiber": 0,
-			"fiber": 0
+			"fiber": 0,
+			"vitaminK1": 0,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 0,
@@ -1100,8 +1128,8 @@
 			"palmitoleicAcid": 0,
 			"vitaminE": true,
 			"vitaminK": true,
-			"vitaminK1": 0,
-			"vitaminK2": 0,
+			"vitaminK1": true,
+			"vitaminK2": true,
 			"selenium": true,
 			"polyphenols": 0,
 			"flavonoids": 0,
@@ -1175,7 +1203,9 @@
 			"taurine": 0,
 			"solubleFiber": 9,
 			"insolubleFiber": 11,
-			"fiber": 20
+			"fiber": 20,
+			"vitaminK1": 14,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 3,
@@ -1195,8 +1225,8 @@
 			"palmitoleicAcid": 0.05,
 			"vitaminE": true,
 			"vitaminK": true,
-			"vitaminK1": 14,
-			"vitaminK2": 0,
+			"vitaminK1": true,
+			"vitaminK2": true,
 			"selenium": true,
 			"polyphenols": 80,
 			"flavonoids": 20,
@@ -1486,7 +1516,9 @@
 			"taurine": 1035,
 			"solubleFiber": 0,
 			"insolubleFiber": 0,
-			"fiber": 0
+			"fiber": 0,
+			"vitaminK1": 0,
+			"vitaminK2": 1
 		},
 		"longevity": {
 			"saturatedFat": 3.1,
@@ -1506,8 +1538,8 @@
 			"palmitoleicAcid": 0.9,
 			"vitaminE": true,
 			"vitaminK": true,
-			"vitaminK1": 0,
-			"vitaminK2": 1,
+			"vitaminK1": true,
+			"vitaminK2": true,
 			"selenium": true,
 			"polyphenols": 0,
 			"flavonoids": 0,
@@ -1582,7 +1614,9 @@
 			"taurine": 11,
 			"solubleFiber": 0,
 			"insolubleFiber": 0,
-			"fiber": 0
+			"fiber": 0,
+			"vitaminK1": 0.1,
+			"vitaminK2": 4
 		},
 		"longevity": {
 			"saturatedFat": 1.3,
@@ -1602,8 +1636,8 @@
 			"palmitoleicAcid": 0.08,
 			"vitaminE": true,
 			"vitaminK": true,
-			"vitaminK1": 0.1,
-			"vitaminK2": 4,
+			"vitaminK1": true,
+			"vitaminK2": true,
 			"selenium": true,
 			"polyphenols": 0,
 			"flavonoids": 0,
@@ -1678,7 +1712,9 @@
 			"taurine": 44,
 			"solubleFiber": 0,
 			"insolubleFiber": 0,
-			"fiber": 0
+			"fiber": 0,
+			"vitaminK1": 0.4,
+			"vitaminK2": 16
 		},
 		"longevity": {
 			"saturatedFat": 5.2,
@@ -1698,8 +1734,8 @@
 			"palmitoleicAcid": 0.32,
 			"vitaminE": true,
 			"vitaminK": true,
-			"vitaminK1": 0.4,
-			"vitaminK2": 16,
+			"vitaminK1": true,
+			"vitaminK2": true,
 			"selenium": true,
 			"polyphenols": 0,
 			"flavonoids": 0,
@@ -1774,7 +1810,9 @@
 			"taurine": 33,
 			"solubleFiber": 0,
 			"insolubleFiber": 0,
-			"fiber": 0
+			"fiber": 0,
+			"vitaminK1": 0.3,
+			"vitaminK2": 12
 		},
 		"longevity": {
 			"saturatedFat": 3.9,
@@ -1794,8 +1832,8 @@
 			"palmitoleicAcid": 0.24,
 			"vitaminE": true,
 			"vitaminK": true,
-			"vitaminK1": 0.3,
-			"vitaminK2": 12,
+			"vitaminK1": true,
+			"vitaminK2": true,
 			"selenium": true,
 			"polyphenols": 0,
 			"flavonoids": 0,
@@ -1870,7 +1908,9 @@
 			"taurine": 0,
 			"solubleFiber": 0.9,
 			"insolubleFiber": 1.2,
-			"fiber": 2.1
+			"fiber": 2.1,
+			"vitaminK1": 27.8,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 0.02,
@@ -1890,8 +1930,8 @@
 			"palmitoleicAcid": 0,
 			"vitaminE": true,
 			"vitaminK": true,
-			"vitaminK1": 27.8,
-			"vitaminK2": 0,
+			"vitaminK1": true,
+			"vitaminK2": true,
 			"selenium": true,
 			"polyphenols": 20,
 			"flavonoids": 5,
@@ -1966,7 +2006,9 @@
 			"taurine": 0,
 			"solubleFiber": 0.6,
 			"insolubleFiber": 0.7,
-			"fiber": 1.3
+			"fiber": 1.3,
+			"vitaminK1": 5,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 0.02,
@@ -1986,8 +2028,8 @@
 			"palmitoleicAcid": 0,
 			"vitaminE": true,
 			"vitaminK": true,
-			"vitaminK1": 5,
-			"vitaminK2": 0,
+			"vitaminK1": true,
+			"vitaminK2": true,
 			"selenium": true,
 			"polyphenols": 10,
 			"flavonoids": 2,
@@ -2062,7 +2104,9 @@
 			"taurine": 0,
 			"solubleFiber": 0.5,
 			"insolubleFiber": 0.6,
-			"fiber": 1.1
+			"fiber": 1.1,
+			"vitaminK1": 5,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 0.01,
@@ -2082,8 +2126,8 @@
 			"palmitoleicAcid": 0,
 			"vitaminE": true,
 			"vitaminK": true,
-			"vitaminK1": 5,
-			"vitaminK2": 0,
+			"vitaminK1": true,
+			"vitaminK2": true,
 			"selenium": true,
 			"polyphenols": 18,
 			"flavonoids": 4,
@@ -2158,7 +2202,9 @@
 			"taurine": 0,
 			"solubleFiber": 0.3,
 			"insolubleFiber": 0.4,
-			"fiber": 0.7
+			"fiber": 0.7,
+			"vitaminK1": 2,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 0.01,
@@ -2178,8 +2224,8 @@
 			"palmitoleicAcid": 0,
 			"vitaminE": true,
 			"vitaminK": true,
-			"vitaminK1": 2,
-			"vitaminK2": 0,
+			"vitaminK1": true,
+			"vitaminK2": true,
 			"selenium": true,
 			"polyphenols": 9,
 			"flavonoids": 2,
@@ -2254,7 +2300,9 @@
 			"taurine": 0,
 			"solubleFiber": 2,
 			"insolubleFiber": 2.4,
-			"fiber": 4.4
+			"fiber": 4.4,
+			"vitaminK1": 4,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 0.05,
@@ -2274,8 +2322,8 @@
 			"palmitoleicAcid": 0,
 			"vitaminE": true,
 			"vitaminK": true,
-			"vitaminK1": 4,
-			"vitaminK2": 0,
+			"vitaminK1": true,
+			"vitaminK2": true,
 			"selenium": true,
 			"polyphenols": 180,
 			"flavonoids": 35,
@@ -2350,7 +2398,9 @@
 			"taurine": 0,
 			"solubleFiber": 0.9,
 			"insolubleFiber": 1.2,
-			"fiber": 2.1
+			"fiber": 2.1,
+			"vitaminK1": 1.5,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 0.05,
@@ -2370,8 +2420,8 @@
 			"palmitoleicAcid": 0,
 			"vitaminE": true,
 			"vitaminK": true,
-			"vitaminK1": 1.5,
-			"vitaminK2": 0,
+			"vitaminK1": true,
+			"vitaminK2": true,
 			"selenium": true,
 			"polyphenols": 70,
 			"flavonoids": 12,
@@ -2446,7 +2496,9 @@
 			"taurine": 0,
 			"solubleFiber": 1.8,
 			"insolubleFiber": 2.1,
-			"fiber": 3.9
+			"fiber": 3.9,
+			"vitaminK1": 0.59,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 0.13,
@@ -2466,8 +2518,8 @@
 			"palmitoleicAcid": 0,
 			"vitaminE": true,
 			"vitaminK": true,
-			"vitaminK1": 0.59,
-			"vitaminK2": 0,
+			"vitaminK1": true,
+			"vitaminK2": true,
 			"selenium": true,
 			"polyphenols": 85,
 			"flavonoids": 12,
@@ -2542,7 +2594,9 @@
 			"taurine": 0,
 			"solubleFiber": 1.4,
 			"insolubleFiber": 1.7,
-			"fiber": 3.1
+			"fiber": 3.1,
+			"vitaminK1": 0.59,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 0.13,
@@ -2562,8 +2616,8 @@
 			"palmitoleicAcid": 0,
 			"vitaminE": true,
 			"vitaminK": true,
-			"vitaminK1": 0.59,
-			"vitaminK2": 0,
+			"vitaminK1": true,
+			"vitaminK2": true,
 			"selenium": true,
 			"polyphenols": 70,
 			"flavonoids": 10,
@@ -2638,7 +2692,9 @@
 			"taurine": 0,
 			"solubleFiber": 1.6,
 			"insolubleFiber": 1.9,
-			"fiber": 3.5
+			"fiber": 3.5,
+			"vitaminK1": 0,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 0.02,
@@ -2658,8 +2714,8 @@
 			"palmitoleicAcid": 0,
 			"vitaminE": true,
 			"vitaminK": true,
-			"vitaminK1": 0,
-			"vitaminK2": 0,
+			"vitaminK1": true,
+			"vitaminK2": true,
 			"selenium": true,
 			"polyphenols": 85,
 			"flavonoids": 48,
@@ -2734,7 +2790,9 @@
 			"taurine": 0,
 			"solubleFiber": 1.4,
 			"insolubleFiber": 1.7,
-			"fiber": 3.1
+			"fiber": 3.1,
+			"vitaminK1": 0,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 0.02,
@@ -2754,8 +2812,8 @@
 			"palmitoleicAcid": 0,
 			"vitaminE": true,
 			"vitaminK": true,
-			"vitaminK1": 0,
-			"vitaminK2": 0,
+			"vitaminK1": true,
+			"vitaminK2": true,
 			"selenium": true,
 			"polyphenols": 70,
 			"flavonoids": 40,
@@ -2830,7 +2888,9 @@
 			"taurine": 11,
 			"solubleFiber": 0.7,
 			"insolubleFiber": 1.5,
-			"fiber": 2.2
+			"fiber": 2.2,
+			"vitaminK1": 3,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 0.03,
@@ -2850,8 +2910,8 @@
 			"palmitoleicAcid": 0,
 			"vitaminE": true,
 			"vitaminK": true,
-			"vitaminK1": 3,
-			"vitaminK2": 0,
+			"vitaminK1": true,
+			"vitaminK2": true,
 			"selenium": true,
 			"polyphenols": 60,
 			"flavonoids": 15,
@@ -2926,7 +2986,9 @@
 			"taurine": 10,
 			"solubleFiber": 0.5,
 			"insolubleFiber": 1,
-			"fiber": 1.5
+			"fiber": 1.5,
+			"vitaminK1": 1.5,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 0.03,
@@ -2946,8 +3008,8 @@
 			"palmitoleicAcid": 0,
 			"vitaminE": true,
 			"vitaminK": true,
-			"vitaminK1": 1.5,
-			"vitaminK2": 0,
+			"vitaminK1": true,
+			"vitaminK2": true,
 			"selenium": true,
 			"polyphenols": 35,
 			"flavonoids": 8,
@@ -3022,7 +3084,9 @@
 			"taurine": 0,
 			"solubleFiber": 2.5,
 			"insolubleFiber": 3,
-			"fiber": 5.5
+			"fiber": 5.5,
+			"vitaminK1": 8,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 0.02,
@@ -3042,8 +3106,8 @@
 			"palmitoleicAcid": 0,
 			"vitaminE": true,
 			"vitaminK": true,
-			"vitaminK1": 8,
-			"vitaminK2": 0,
+			"vitaminK1": true,
+			"vitaminK2": true,
 			"selenium": true,
 			"polyphenols": 150,
 			"flavonoids": 30,
@@ -3118,7 +3182,9 @@
 			"taurine": 0,
 			"solubleFiber": 1.1,
 			"insolubleFiber": 1.4,
-			"fiber": 2.5
+			"fiber": 2.5,
+			"vitaminK1": 3,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 0.02,
@@ -3138,8 +3204,8 @@
 			"palmitoleicAcid": 0,
 			"vitaminE": true,
 			"vitaminK": true,
-			"vitaminK1": 3,
-			"vitaminK2": 0,
+			"vitaminK1": true,
+			"vitaminK2": true,
 			"selenium": true,
 			"polyphenols": 70,
 			"flavonoids": 14,
@@ -3214,7 +3280,9 @@
 			"taurine": 4,
 			"solubleFiber": 0.3,
 			"insolubleFiber": 0.6,
-			"fiber": 0.9
+			"fiber": 0.9,
+			"vitaminK1": 4,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 0.01,
@@ -3234,8 +3302,8 @@
 			"palmitoleicAcid": 0,
 			"vitaminE": true,
 			"vitaminK": true,
-			"vitaminK1": 4,
-			"vitaminK2": 0,
+			"vitaminK1": true,
+			"vitaminK2": true,
 			"selenium": true,
 			"polyphenols": 120,
 			"flavonoids": 25,
@@ -3310,7 +3378,9 @@
 			"taurine": 3,
 			"solubleFiber": 0.2,
 			"insolubleFiber": 0.3,
-			"fiber": 0.5
+			"fiber": 0.5,
+			"vitaminK1": 2,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 0.01,
@@ -3330,8 +3400,8 @@
 			"palmitoleicAcid": 0,
 			"vitaminE": true,
 			"vitaminK": true,
-			"vitaminK1": 2,
-			"vitaminK2": 0,
+			"vitaminK1": true,
+			"vitaminK2": true,
 			"selenium": true,
 			"polyphenols": 60,
 			"flavonoids": 12,
@@ -3406,7 +3476,9 @@
 			"taurine": 0,
 			"solubleFiber": 4.5,
 			"insolubleFiber": 5.4,
-			"fiber": 9.9
+			"fiber": 9.9,
+			"vitaminK1": 10,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 0.04,
@@ -3426,8 +3498,8 @@
 			"palmitoleicAcid": 0,
 			"vitaminE": true,
 			"vitaminK": true,
-			"vitaminK1": 10,
-			"vitaminK2": 0,
+			"vitaminK1": true,
+			"vitaminK2": true,
 			"selenium": true,
 			"polyphenols": 120,
 			"flavonoids": 25,
@@ -3502,7 +3574,9 @@
 			"taurine": 0,
 			"solubleFiber": 2,
 			"insolubleFiber": 2.5,
-			"fiber": 4.5
+			"fiber": 4.5,
+			"vitaminK1": 4,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 0.04,
@@ -3522,8 +3596,8 @@
 			"palmitoleicAcid": 0,
 			"vitaminE": true,
 			"vitaminK": true,
-			"vitaminK1": 4,
-			"vitaminK2": 0,
+			"vitaminK1": true,
+			"vitaminK2": true,
 			"selenium": true,
 			"polyphenols": 60,
 			"flavonoids": 12,
@@ -3598,7 +3672,9 @@
 			"taurine": 12,
 			"solubleFiber": 1.3,
 			"insolubleFiber": 1.6,
-			"fiber": 2.9
+			"fiber": 2.9,
+			"vitaminK1": 3,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 0.02,
@@ -3618,8 +3694,8 @@
 			"palmitoleicAcid": 0,
 			"vitaminE": true,
 			"vitaminK": true,
-			"vitaminK1": 3,
-			"vitaminK2": 0,
+			"vitaminK1": true,
+			"vitaminK2": true,
 			"selenium": true,
 			"polyphenols": 220,
 			"flavonoids": 65,
@@ -3694,7 +3770,9 @@
 			"taurine": 12,
 			"solubleFiber": 1.1,
 			"insolubleFiber": 1.4,
-			"fiber": 2.5
+			"fiber": 2.5,
+			"vitaminK1": 2,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 0.02,
@@ -3714,8 +3792,8 @@
 			"palmitoleicAcid": 0,
 			"vitaminE": true,
 			"vitaminK": true,
-			"vitaminK1": 2,
-			"vitaminK2": 0,
+			"vitaminK1": true,
+			"vitaminK2": true,
 			"selenium": true,
 			"polyphenols": 180,
 			"flavonoids": 55,
@@ -3790,7 +3868,9 @@
 			"taurine": 85,
 			"solubleFiber": 0,
 			"insolubleFiber": 0,
-			"fiber": 0
+			"fiber": 0,
+			"vitaminK1": 0,
+			"vitaminK2": 1
 		},
 		"longevity": {
 			"saturatedFat": 0.3,
@@ -3810,8 +3890,8 @@
 			"palmitoleicAcid": 0.01,
 			"vitaminE": true,
 			"vitaminK": true,
-			"vitaminK1": 0,
-			"vitaminK2": 1,
+			"vitaminK1": true,
+			"vitaminK2": true,
 			"selenium": true,
 			"polyphenols": 0,
 			"flavonoids": 0,
@@ -3886,7 +3966,9 @@
 			"taurine": 25,
 			"solubleFiber": 0,
 			"insolubleFiber": 0,
-			"fiber": 0
+			"fiber": 0,
+			"vitaminK1": 0,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 1,
@@ -3898,7 +3980,10 @@
 			"selenium": true,
 			"vitaminE": true,
 			"phosphorus": true,
-			"methionine": true
+			"methionine": true,
+			"vitaminK1": true,
+			"vitaminK2": true,
+			"vitaminK": true
 		},
 		"carbQuality": {
 			"glycemicIndex": 35,
@@ -3960,7 +4045,9 @@
 			"taurine": 0,
 			"solubleFiber": 0.6,
 			"insolubleFiber": 2.2,
-			"fiber": 2.8
+			"fiber": 2.8,
+			"vitaminK1": 0.56,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 0.45,
@@ -3973,7 +4060,9 @@
 			"choline": true,
 			"copper": true,
 			"lutein": 0,
-			"methionine": true
+			"methionine": true,
+			"vitaminK1": true,
+			"vitaminK2": true
 		},
 		"carbQuality": {
 			"addedSugar": 1,
@@ -4034,7 +4123,9 @@
 			"taurine": 0,
 			"solubleFiber": 2,
 			"insolubleFiber": 7,
-			"fiber": 9
+			"fiber": 9,
+			"vitaminK1": 1,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 0,
@@ -4049,7 +4140,9 @@
 			"vitaminE": true,
 			"vitaminK": true,
 			"phosphorus": true,
-			"methionine": true
+			"methionine": true,
+			"vitaminK1": true,
+			"vitaminK2": true
 		},
 		"carbQuality": {
 			"addedSugar": 9,
@@ -4110,7 +4203,9 @@
 			"taurine": 0,
 			"solubleFiber": 1.5,
 			"insolubleFiber": 5.5,
-			"fiber": 7
+			"fiber": 7,
+			"vitaminK1": 1,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 0,
@@ -4122,7 +4217,9 @@
 			"selenium": true,
 			"vitaminK": true,
 			"phosphorus": true,
-			"methionine": true
+			"methionine": true,
+			"vitaminK1": true,
+			"vitaminK2": true
 		},
 		"carbQuality": {
 			"addedSugar": 0,
@@ -4183,7 +4280,9 @@
 			"taurine": 0,
 			"solubleFiber": 1.8,
 			"insolubleFiber": 6.2,
-			"fiber": 8
+			"fiber": 8,
+			"vitaminK1": 1,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 0,
@@ -4195,7 +4294,9 @@
 			"lutein": 0,
 			"selenium": true,
 			"vitaminK": true,
-			"methionine": true
+			"methionine": true,
+			"vitaminK1": true,
+			"vitaminK2": true
 		},
 		"carbQuality": {
 			"addedSugar": 0,
@@ -4256,7 +4357,9 @@
 			"taurine": 250,
 			"solubleFiber": 0,
 			"insolubleFiber": 0,
-			"fiber": 0
+			"fiber": 0,
+			"vitaminK1": 1,
+			"vitaminK2": 2
 		},
 		"longevity": {
 			"saturatedFat": 3.2,
@@ -4276,8 +4379,8 @@
 			"palmitoleicAcid": 0.35,
 			"vitaminE": true,
 			"vitaminK": true,
-			"vitaminK1": 1,
-			"vitaminK2": 2,
+			"vitaminK1": true,
+			"vitaminK2": true,
 			"selenium": true,
 			"polyphenols": 0,
 			"flavonoids": 0,
@@ -4300,7 +4403,7 @@
 		}
 	},
 	{
-		"name": "Starbucks Bacon & Gruyère Egg Bites - 2 bites",
+		"name": "Starbucks Bacon & Gruy\u00e8re Egg Bites - 2 bites",
 		"protein": 19,
 		"carbs": 9,
 		"fats": 20,
@@ -4352,7 +4455,9 @@
 			"taurine": 38,
 			"solubleFiber": 0,
 			"insolubleFiber": 0,
-			"fiber": 0
+			"fiber": 0,
+			"vitaminK1": 1,
+			"vitaminK2": 12
 		},
 		"longevity": {
 			"saturatedFat": 12,
@@ -4372,8 +4477,8 @@
 			"palmitoleicAcid": 0.25,
 			"vitaminE": true,
 			"vitaminK": true,
-			"vitaminK1": 1,
-			"vitaminK2": 12,
+			"vitaminK1": true,
+			"vitaminK2": true,
 			"selenium": true,
 			"coq10": 0.7,
 			"phosphorus": true,
@@ -4442,7 +4547,9 @@
 			"taurine": 41,
 			"solubleFiber": 0,
 			"insolubleFiber": 0,
-			"fiber": 0
+			"fiber": 0,
+			"vitaminK1": 0,
+			"vitaminK2": 2
 		},
 		"longevity": {
 			"saturatedFat": 3.1,
@@ -4462,8 +4569,8 @@
 			"palmitoleicAcid": 0.08,
 			"vitaminE": true,
 			"vitaminK": true,
-			"vitaminK1": 0,
-			"vitaminK2": 2,
+			"vitaminK1": true,
+			"vitaminK2": true,
 			"selenium": true,
 			"polyphenols": 0,
 			"flavonoids": 0,
@@ -4538,7 +4645,8 @@
 			"taurine": 336,
 			"solubleFiber": 0.1,
 			"insolubleFiber": 0.2,
-			"fiber": 0.3
+			"fiber": 0.3,
+			"vitaminK1": 6
 		},
 		"longevity": {
 			"saturatedFat": 6,
@@ -4556,7 +4664,7 @@
 			"palmitoleicAcid": 0.6,
 			"vitaminE": true,
 			"vitaminK": true,
-			"vitaminK1": 6,
+			"vitaminK1": true,
 			"selenium": true,
 			"coq10": 2.5,
 			"phosphorus": true,
@@ -4625,7 +4733,9 @@
 			"taurine": 70,
 			"solubleFiber": 0,
 			"insolubleFiber": 0,
-			"fiber": 0
+			"fiber": 0,
+			"vitaminK1": 0.125,
+			"vitaminK2": 0.125
 		},
 		"longevity": {
 			"saturatedFat": 0.275,
@@ -4645,8 +4755,8 @@
 			"palmitoleicAcid": 0.03,
 			"vitaminE": true,
 			"vitaminK": true,
-			"vitaminK1": 0.125,
-			"vitaminK2": 0.125,
+			"vitaminK1": true,
+			"vitaminK2": true,
 			"selenium": true,
 			"polyphenols": 0,
 			"flavonoids": 0,
@@ -4721,7 +4831,9 @@
 			"taurine": 280,
 			"solubleFiber": 0,
 			"insolubleFiber": 0,
-			"fiber": 0
+			"fiber": 0,
+			"vitaminK1": 0.5,
+			"vitaminK2": 0.5
 		},
 		"longevity": {
 			"saturatedFat": 1.1,
@@ -4741,8 +4853,8 @@
 			"palmitoleicAcid": 0.12,
 			"vitaminE": true,
 			"vitaminK": true,
-			"vitaminK1": 0.5,
-			"vitaminK2": 0.5,
+			"vitaminK1": true,
+			"vitaminK2": true,
 			"selenium": true,
 			"polyphenols": 0,
 			"flavonoids": 0,
@@ -4817,7 +4929,8 @@
 			"taurine": 328,
 			"solubleFiber": 0.2,
 			"insolubleFiber": 0.4,
-			"fiber": 0.6
+			"fiber": 0.6,
+			"vitaminK1": 2
 		},
 		"longevity": {
 			"saturatedFat": 2.8,
@@ -4835,7 +4948,7 @@
 			"palmitoleicAcid": 0.35,
 			"vitaminE": true,
 			"vitaminK": true,
-			"vitaminK1": 2,
+			"vitaminK1": true,
 			"selenium": true,
 			"coq10": 2,
 			"phosphorus": true,
@@ -4904,7 +5017,8 @@
 			"taurine": 495,
 			"solubleFiber": 0.2,
 			"insolubleFiber": 0.4,
-			"fiber": 0.6
+			"fiber": 0.6,
+			"vitaminK1": 5
 		},
 		"longevity": {
 			"saturatedFat": 1.3,
@@ -4924,7 +5038,7 @@
 			"palmitoleicAcid": 0.15,
 			"vitaminE": true,
 			"vitaminK": true,
-			"vitaminK1": 5,
+			"vitaminK1": true,
 			"selenium": true,
 			"coq10": 0.8,
 			"phosphorus": true,
@@ -4993,7 +5107,9 @@
 			"taurine": 0,
 			"solubleFiber": 0,
 			"insolubleFiber": 0,
-			"fiber": 0
+			"fiber": 0,
+			"vitaminK1": 0,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 1.6,
@@ -5010,7 +5126,10 @@
 			"vitaminE": true,
 			"choline": true,
 			"copper": true,
-			"lutein": 0
+			"lutein": 0,
+			"vitaminK1": true,
+			"vitaminK2": true,
+			"vitaminK": true
 		},
 		"carbQuality": {
 			"glycemicIndex": 0,
@@ -5072,7 +5191,9 @@
 			"taurine": 0,
 			"solubleFiber": 0,
 			"insolubleFiber": 0,
-			"fiber": 0
+			"fiber": 0,
+			"vitaminK1": 0,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 0,
@@ -5086,7 +5207,9 @@
 			"phosphorus": true,
 			"choline": true,
 			"copper": true,
-			"lutein": 0
+			"lutein": 0,
+			"vitaminK1": true,
+			"vitaminK2": true
 		},
 		"carbQuality": {
 			"glycemicIndex": 0,
@@ -5148,7 +5271,9 @@
 			"taurine": 0,
 			"solubleFiber": 0,
 			"insolubleFiber": 0,
-			"fiber": 0
+			"fiber": 0,
+			"vitaminK1": 0,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 11.8,
@@ -5158,7 +5283,10 @@
 			"cholesterol": 0,
 			"choline": true,
 			"copper": true,
-			"lutein": 0
+			"lutein": 0,
+			"vitaminK1": true,
+			"vitaminK2": true,
+			"vitaminK": true
 		},
 		"carbQuality": {
 			"glycemicIndex": 0,
@@ -5220,7 +5348,9 @@
 			"taurine": 0,
 			"solubleFiber": 1.8,
 			"insolubleFiber": 2.2,
-			"fiber": 4
+			"fiber": 4,
+			"vitaminK1": 15,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 1,
@@ -5235,7 +5365,9 @@
 			"lutein": 0,
 			"selenium": true,
 			"vitaminK": true,
-			"methionine": true
+			"methionine": true,
+			"vitaminK1": true,
+			"vitaminK2": true
 		},
 		"carbQuality": {
 			"glycemicIndex": 15,
@@ -5297,7 +5429,9 @@
 			"taurine": 10,
 			"solubleFiber": 0.5,
 			"insolubleFiber": 1.8,
-			"fiber": 2.3
+			"fiber": 2.3,
+			"vitaminK1": 0,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 0.02,
@@ -5317,8 +5451,8 @@
 			"palmitoleicAcid": 0,
 			"vitaminE": true,
 			"vitaminK": true,
-			"vitaminK1": 0,
-			"vitaminK2": 0,
+			"vitaminK1": true,
+			"vitaminK2": true,
 			"selenium": true,
 			"polyphenols": 35,
 			"flavonoids": 2,
@@ -5393,7 +5527,9 @@
 			"molybdenum": 6,
 			"chloride": 40,
 			"glutamine": 104,
-			"taurine": 0
+			"taurine": 0,
+			"vitaminK1": 16.9,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 0.04,
@@ -5407,8 +5543,8 @@
 			"linoleicAcid": 0.065,
 			"vitaminE": true,
 			"vitaminK": true,
-			"vitaminK1": 16.9,
-			"vitaminK2": 0,
+			"vitaminK1": true,
+			"vitaminK2": true,
 			"selenium": true,
 			"copper": true,
 			"methionine": true,
@@ -5486,7 +5622,9 @@
 			"taurine": 0,
 			"solubleFiber": 0.4,
 			"insolubleFiber": 1.3,
-			"fiber": 1.7
+			"fiber": 1.7,
+			"vitaminK1": 8,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 0.02,
@@ -5506,8 +5644,8 @@
 			"palmitoleicAcid": 0,
 			"vitaminE": true,
 			"vitaminK": true,
-			"vitaminK1": 8,
-			"vitaminK2": 0,
+			"vitaminK1": true,
+			"vitaminK2": true,
 			"selenium": true,
 			"polyphenols": 15,
 			"flavonoids": 3,
@@ -5582,7 +5720,9 @@
 			"taurine": 0,
 			"solubleFiber": 0.1,
 			"insolubleFiber": 0.5,
-			"fiber": 0.6
+			"fiber": 0.6,
+			"vitaminK1": 12,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 0.02,
@@ -5602,8 +5742,8 @@
 			"palmitoleicAcid": 0,
 			"vitaminE": true,
 			"vitaminK": true,
-			"vitaminK1": 12,
-			"vitaminK2": 0,
+			"vitaminK1": true,
+			"vitaminK2": true,
 			"selenium": true,
 			"polyphenols": 5,
 			"flavonoids": 1,
@@ -5679,7 +5819,9 @@
 			"taurine": 0,
 			"solubleFiber": 0.2,
 			"insolubleFiber": 0.8,
-			"fiber": 1
+			"fiber": 1,
+			"vitaminK1": 33,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 0.04,
@@ -5699,8 +5841,8 @@
 			"palmitoleicAcid": 0,
 			"vitaminE": true,
 			"vitaminK": true,
-			"vitaminK1": 33,
-			"vitaminK2": 0,
+			"vitaminK1": true,
+			"vitaminK2": true,
 			"selenium": true,
 			"polyphenols": 10,
 			"flavonoids": 2,
@@ -5775,7 +5917,9 @@
 			"taurine": 7,
 			"solubleFiber": 0.8,
 			"insolubleFiber": 1.7,
-			"fiber": 2.5
+			"fiber": 2.5,
+			"vitaminK1": 3,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 0.04,
@@ -5795,8 +5939,8 @@
 			"palmitoleicAcid": 0,
 			"vitaminE": true,
 			"vitaminK": true,
-			"vitaminK1": 3,
-			"vitaminK2": 0,
+			"vitaminK1": true,
+			"vitaminK2": true,
 			"selenium": true,
 			"polyphenols": 60,
 			"flavonoids": 20,
@@ -5870,7 +6014,9 @@
 			"fiber": 3.5,
 			"chromium": 0,
 			"iodine": 5,
-			"molybdenum": 8
+			"molybdenum": 8,
+			"vitaminK1": 85.5,
+			"vitaminK2": 0.25
 		},
 		"longevity": {
 			"saturatedFat": 3.5,
@@ -5890,8 +6036,8 @@
 			"palmitoleicAcid": 0.05,
 			"vitaminE": true,
 			"vitaminK": true,
-			"vitaminK1": 85.5,
-			"vitaminK2": 0.25,
+			"vitaminK1": true,
+			"vitaminK2": true,
 			"selenium": true,
 			"copper": true,
 			"methionine": true,
@@ -5966,7 +6112,9 @@
 			"insolubleFiber": 2.4,
 			"fiber": 3.5,
 			"chromium": 0,
-			"molybdenum": 5
+			"molybdenum": 5,
+			"vitaminK1": 152,
+			"vitaminK2": 0.2
 		},
 		"longevity": {
 			"saturatedFat": 3.5,
@@ -5986,8 +6134,8 @@
 			"palmitoleicAcid": 0.03,
 			"vitaminE": true,
 			"vitaminK": true,
-			"vitaminK1": 152,
-			"vitaminK2": 0.2,
+			"vitaminK1": true,
+			"vitaminK2": true,
 			"selenium": true,
 			"copper": true,
 			"methionine": true,
@@ -6061,7 +6209,9 @@
 			"insolubleFiber": 2.4,
 			"fiber": 3.5,
 			"chromium": 0,
-			"molybdenum": 5
+			"molybdenum": 5,
+			"vitaminK1": 109,
+			"vitaminK2": 0.3
 		},
 		"longevity": {
 			"saturatedFat": 3.5,
@@ -6081,8 +6231,8 @@
 			"palmitoleicAcid": 0.04,
 			"vitaminE": true,
 			"vitaminK": true,
-			"vitaminK1": 109,
-			"vitaminK2": 0.3,
+			"vitaminK1": true,
+			"vitaminK2": true,
 			"selenium": true,
 			"copper": true,
 			"methionine": true,
@@ -6157,7 +6307,9 @@
 			"insolubleFiber": 2.4,
 			"fiber": 3.5,
 			"chromium": 0,
-			"molybdenum": 5
+			"molybdenum": 5,
+			"vitaminK1": 104.5,
+			"vitaminK2": 0.5
 		},
 		"longevity": {
 			"saturatedFat": 5.25,
@@ -6177,8 +6329,8 @@
 			"palmitoleicAcid": 0.08,
 			"vitaminE": true,
 			"vitaminK": true,
-			"vitaminK1": 104.5,
-			"vitaminK2": 0.5,
+			"vitaminK1": true,
+			"vitaminK2": true,
 			"selenium": true,
 			"copper": true,
 			"methionine": true,
@@ -6253,7 +6405,9 @@
 			"fiber": 3,
 			"chromium": 0,
 			"iodine": 0,
-			"molybdenum": 20
+			"molybdenum": 20,
+			"vitaminK1": 65,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 1.5,
@@ -6273,8 +6427,8 @@
 			"palmitoleicAcid": 0.03,
 			"vitaminE": true,
 			"vitaminK": true,
-			"vitaminK1": 65,
-			"vitaminK2": 0,
+			"vitaminK1": true,
+			"vitaminK2": true,
 			"selenium": true,
 			"copper": true,
 			"methionine": true,
@@ -6349,7 +6503,9 @@
 			"insolubleFiber": 1.6,
 			"fiber": 2.3,
 			"chromium": 0,
-			"molybdenum": 5
+			"molybdenum": 5,
+			"vitaminK1": 89.5,
+			"vitaminK2": 0.5
 		},
 		"longevity": {
 			"saturatedFat": 3.5,
@@ -6369,8 +6525,8 @@
 			"palmitoleicAcid": 0.05,
 			"vitaminE": true,
 			"vitaminK": true,
-			"vitaminK1": 89.5,
-			"vitaminK2": 0.5,
+			"vitaminK1": true,
+			"vitaminK2": true,
 			"selenium": true,
 			"copper": true,
 			"methionine": true,
@@ -6446,7 +6602,9 @@
 			"taurine": 0,
 			"solubleFiber": 0.8,
 			"insolubleFiber": 2.8,
-			"fiber": 3.6
+			"fiber": 3.6,
+			"vitaminK1": 2,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 0.05,
@@ -6461,7 +6619,9 @@
 			"copper": true,
 			"lutein": 0,
 			"vitaminK": true,
-			"methionine": true
+			"methionine": true,
+			"vitaminK1": true,
+			"vitaminK2": true
 		},
 		"carbQuality": {
 			"glycemicIndex": 85,
@@ -6523,7 +6683,9 @@
 			"taurine": 0,
 			"solubleFiber": 0.5,
 			"insolubleFiber": 1.9,
-			"fiber": 2.4
+			"fiber": 2.4,
+			"vitaminK1": 0.2,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 0.05,
@@ -6538,7 +6700,9 @@
 			"copper": true,
 			"lutein": 0,
 			"vitaminK": true,
-			"methionine": true
+			"methionine": true,
+			"vitaminK1": true,
+			"vitaminK2": true
 		},
 		"carbQuality": {
 			"glycemicIndex": 85,
@@ -6600,7 +6764,9 @@
 			"taurine": 0,
 			"solubleFiber": 0.7,
 			"insolubleFiber": 2.7,
-			"fiber": 3.4
+			"fiber": 3.4,
+			"vitaminK1": 2,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 0.05,
@@ -6615,7 +6781,9 @@
 			"copper": true,
 			"lutein": 0,
 			"vitaminK": true,
-			"methionine": true
+			"methionine": true,
+			"vitaminK1": true,
+			"vitaminK2": true
 		},
 		"carbQuality": {
 			"glycemicIndex": 78,
@@ -6677,7 +6845,9 @@
 			"taurine": 0,
 			"solubleFiber": 0.5,
 			"insolubleFiber": 1.7,
-			"fiber": 2.2
+			"fiber": 2.2,
+			"vitaminK1": 0.2,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 0.05,
@@ -6692,7 +6862,9 @@
 			"copper": true,
 			"lutein": 0,
 			"vitaminK": true,
-			"methionine": true
+			"methionine": true,
+			"vitaminK1": true,
+			"vitaminK2": true
 		},
 		"carbQuality": {
 			"glycemicIndex": 78,
@@ -6754,7 +6926,9 @@
 			"taurine": 0,
 			"solubleFiber": 0.5,
 			"insolubleFiber": 1.9,
-			"fiber": 2.4
+			"fiber": 2.4,
+			"vitaminK1": 2,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 0.03,
@@ -6769,7 +6943,9 @@
 			"copper": true,
 			"lutein": 0,
 			"vitaminK": true,
-			"methionine": true
+			"methionine": true,
+			"vitaminK1": true,
+			"vitaminK2": true
 		},
 		"carbQuality": {
 			"glycemicIndex": 80,
@@ -6831,7 +7007,9 @@
 			"taurine": 0,
 			"solubleFiber": 0.3,
 			"insolubleFiber": 1.3,
-			"fiber": 1.6
+			"fiber": 1.6,
+			"vitaminK1": 0.2,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 0.03,
@@ -6846,7 +7024,9 @@
 			"copper": true,
 			"lutein": 0,
 			"vitaminK": true,
-			"methionine": true
+			"methionine": true,
+			"vitaminK1": true,
+			"vitaminK2": true
 		},
 		"carbQuality": {
 			"glycemicIndex": 80,
@@ -6908,7 +7088,9 @@
 			"taurine": 0,
 			"solubleFiber": 0.8,
 			"insolubleFiber": 3,
-			"fiber": 3.8
+			"fiber": 3.8,
+			"vitaminK1": 2.5,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 0.02,
@@ -6925,7 +7107,9 @@
 			"copper": true,
 			"lutein": 0,
 			"vitaminK": true,
-			"methionine": true
+			"methionine": true,
+			"vitaminK1": true,
+			"vitaminK2": true
 		},
 		"carbQuality": {
 			"glycemicIndex": 54,
@@ -6987,7 +7171,9 @@
 			"taurine": 0,
 			"solubleFiber": 0.7,
 			"insolubleFiber": 2.9,
-			"fiber": 3.6
+			"fiber": 3.6,
+			"vitaminK1": 2,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 0.02,
@@ -7004,7 +7190,9 @@
 			"copper": true,
 			"lutein": 0,
 			"vitaminK": true,
-			"methionine": true
+			"methionine": true,
+			"vitaminK1": true,
+			"vitaminK2": true
 		},
 		"carbQuality": {
 			"glycemicIndex": 54,
@@ -7066,7 +7254,9 @@
 			"taurine": 0,
 			"solubleFiber": 0.6,
 			"insolubleFiber": 1.9,
-			"fiber": 2.5
+			"fiber": 2.5,
+			"vitaminK1": 1.5,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 1.8,
@@ -7083,7 +7273,9 @@
 			"copper": true,
 			"lutein": 0,
 			"vitaminK": true,
-			"methionine": true
+			"methionine": true,
+			"vitaminK1": true,
+			"vitaminK2": true
 		},
 		"carbQuality": {
 			"glycemicIndex": 76,
@@ -7145,7 +7337,9 @@
 			"taurine": 0,
 			"solubleFiber": 0.8,
 			"insolubleFiber": 3,
-			"fiber": 3.8
+			"fiber": 3.8,
+			"vitaminK1": 2,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 2.8,
@@ -7162,7 +7356,9 @@
 			"copper": true,
 			"lutein": 0,
 			"vitaminK": true,
-			"methionine": true
+			"methionine": true,
+			"vitaminK1": true,
+			"vitaminK2": true
 		},
 		"carbQuality": {
 			"glycemicIndex": 76,
@@ -7224,7 +7420,9 @@
 			"taurine": 0,
 			"solubleFiber": 1.2,
 			"insolubleFiber": 4.3,
-			"fiber": 5.5
+			"fiber": 5.5,
+			"vitaminK1": 2.5,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 4,
@@ -7241,7 +7439,9 @@
 			"copper": true,
 			"lutein": 0,
 			"vitaminK": true,
-			"methionine": true
+			"methionine": true,
+			"vitaminK1": true,
+			"vitaminK2": true
 		},
 		"carbQuality": {
 			"glycemicIndex": 76,
@@ -7303,7 +7503,9 @@
 			"taurine": 0,
 			"solubleFiber": 0.7,
 			"insolubleFiber": 2.3,
-			"fiber": 3
+			"fiber": 3,
+			"vitaminK1": 3,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 5.5,
@@ -7318,7 +7520,9 @@
 			"vitaminE": true,
 			"vitaminK": true,
 			"phosphorus": true,
-			"methionine": true
+			"methionine": true,
+			"vitaminK1": true,
+			"vitaminK2": true
 		},
 		"carbQuality": {
 			"glycemicIndex": 75,
@@ -7380,7 +7584,9 @@
 			"taurine": 0,
 			"solubleFiber": 0.5,
 			"insolubleFiber": 1.5,
-			"fiber": 2
+			"fiber": 2,
+			"vitaminK1": 3,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 5.5,
@@ -7395,7 +7601,9 @@
 			"vitaminE": true,
 			"vitaminK": true,
 			"phosphorus": true,
-			"methionine": true
+			"methionine": true,
+			"vitaminK1": true,
+			"vitaminK2": true
 		},
 		"carbQuality": {
 			"glycemicIndex": 75,
@@ -7457,7 +7665,9 @@
 			"taurine": 0,
 			"solubleFiber": 0.7,
 			"insolubleFiber": 2.5,
-			"fiber": 3.2
+			"fiber": 3.2,
+			"vitaminK1": 3,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 5.5,
@@ -7472,7 +7682,9 @@
 			"vitaminE": true,
 			"vitaminK": true,
 			"phosphorus": true,
-			"methionine": true
+			"methionine": true,
+			"vitaminK1": true,
+			"vitaminK2": true
 		},
 		"carbQuality": {
 			"glycemicIndex": 75,
@@ -7534,7 +7746,9 @@
 			"taurine": 0,
 			"solubleFiber": 0.5,
 			"insolubleFiber": 1.7,
-			"fiber": 2.2
+			"fiber": 2.2,
+			"vitaminK1": 3,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 5.5,
@@ -7549,7 +7763,9 @@
 			"vitaminE": true,
 			"vitaminK": true,
 			"phosphorus": true,
-			"methionine": true
+			"methionine": true,
+			"vitaminK1": true,
+			"vitaminK2": true
 		},
 		"carbQuality": {
 			"glycemicIndex": 75,
@@ -7611,7 +7827,9 @@
 			"taurine": 168,
 			"solubleFiber": 0.9,
 			"insolubleFiber": 1.1,
-			"fiber": 2
+			"fiber": 2,
+			"vitaminK1": 0,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 3.5,
@@ -7623,7 +7841,10 @@
 			"copper": true,
 			"lutein": 0,
 			"selenium": true,
-			"methionine": true
+			"methionine": true,
+			"vitaminK1": true,
+			"vitaminK2": true,
+			"vitaminK": true
 		},
 		"carbQuality": {
 			"addedSugar": 0,
@@ -7684,7 +7905,9 @@
 			"taurine": 240,
 			"solubleFiber": 0.9,
 			"insolubleFiber": 1.1,
-			"fiber": 2
+			"fiber": 2,
+			"vitaminK1": 0,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 1,
@@ -7695,7 +7918,10 @@
 			"lutein": 0,
 			"selenium": true,
 			"phosphorus": true,
-			"methionine": true
+			"methionine": true,
+			"vitaminK1": true,
+			"vitaminK2": true,
+			"vitaminK": true
 		},
 		"carbQuality": {
 			"addedSugar": 0,
@@ -7756,7 +7982,9 @@
 			"taurine": 0,
 			"solubleFiber": 0.9,
 			"insolubleFiber": 1.1,
-			"fiber": 2
+			"fiber": 2,
+			"vitaminK1": 0,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 0.5,
@@ -7768,7 +7996,10 @@
 			"selenium": true,
 			"phosphorus": true,
 			"methionine": true,
-			"vitaminE": true
+			"vitaminE": true,
+			"vitaminK1": true,
+			"vitaminK2": true,
+			"vitaminK": true
 		},
 		"carbQuality": {
 			"addedSugar": 0,
@@ -7829,7 +8060,9 @@
 			"taurine": 0,
 			"solubleFiber": 0.9,
 			"insolubleFiber": 1.1,
-			"fiber": 2
+			"fiber": 2,
+			"vitaminK1": 0,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 0.5,
@@ -7841,7 +8074,10 @@
 			"selenium": true,
 			"phosphorus": true,
 			"methionine": true,
-			"vitaminE": true
+			"vitaminE": true,
+			"vitaminK1": true,
+			"vitaminK2": true,
+			"vitaminK": true
 		},
 		"carbQuality": {
 			"addedSugar": 3,
@@ -7902,7 +8138,9 @@
 			"taurine": 256,
 			"solubleFiber": 0,
 			"insolubleFiber": 0,
-			"fiber": 0
+			"fiber": 0,
+			"vitaminK1": 0,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 0,
@@ -7913,7 +8151,10 @@
 			"lutein": 0,
 			"selenium": true,
 			"phosphorus": true,
-			"methionine": true
+			"methionine": true,
+			"vitaminK1": true,
+			"vitaminK2": true,
+			"vitaminK": true
 		},
 		"carbQuality": {
 			"addedSugar": 0,
@@ -7974,7 +8215,9 @@
 			"taurine": 0,
 			"solubleFiber": 5.4,
 			"insolubleFiber": 6.6,
-			"fiber": 12
+			"fiber": 12,
+			"vitaminK1": 0,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 3,
@@ -7986,7 +8229,10 @@
 			"selenium": true,
 			"phosphorus": true,
 			"methionine": true,
-			"vitaminE": true
+			"vitaminE": true,
+			"vitaminK1": true,
+			"vitaminK2": true,
+			"vitaminK": true
 		},
 		"carbQuality": {
 			"addedSugar": 0,
@@ -8047,7 +8293,9 @@
 			"taurine": 0,
 			"solubleFiber": 0.7,
 			"insolubleFiber": 0.8,
-			"fiber": 1.5
+			"fiber": 1.5,
+			"vitaminK1": 0,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 1.5,
@@ -8067,8 +8315,8 @@
 			"palmitoleicAcid": 0,
 			"vitaminE": true,
 			"vitaminK": true,
-			"vitaminK1": 0,
-			"vitaminK2": 0,
+			"vitaminK1": true,
+			"vitaminK2": true,
 			"selenium": true,
 			"polyphenols": 26,
 			"flavonoids": 6.7,
@@ -8143,7 +8391,9 @@
 			"taurine": 0,
 			"solubleFiber": 1.4,
 			"insolubleFiber": 1.6,
-			"fiber": 3
+			"fiber": 3,
+			"vitaminK1": 0,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 3,
@@ -8163,8 +8413,8 @@
 			"palmitoleicAcid": 0,
 			"vitaminE": true,
 			"vitaminK": true,
-			"vitaminK1": 0,
-			"vitaminK2": 0,
+			"vitaminK1": true,
+			"vitaminK2": true,
 			"selenium": true,
 			"polyphenols": 52,
 			"flavonoids": 13.4,
@@ -8239,7 +8489,9 @@
 			"taurine": 74,
 			"solubleFiber": 0.8,
 			"insolubleFiber": 0.9,
-			"fiber": 1.7
+			"fiber": 1.7,
+			"vitaminK1": 1.01,
+			"vitaminK2": 1.34
 		},
 		"longevity": {
 			"saturatedFat": 1.47,
@@ -8259,8 +8511,8 @@
 			"palmitoleicAcid": 0.1,
 			"vitaminE": true,
 			"vitaminK": true,
-			"vitaminK1": 1.01,
-			"vitaminK2": 1.34,
+			"vitaminK1": true,
+			"vitaminK2": true,
 			"selenium": true,
 			"polyphenols": 10.05,
 			"flavonoids": 1.34,
@@ -8335,7 +8587,9 @@
 			"taurine": 111,
 			"solubleFiber": 1.1,
 			"insolubleFiber": 1.4,
-			"fiber": 2.5
+			"fiber": 2.5,
+			"vitaminK1": 1.5,
+			"vitaminK2": 2
 		},
 		"longevity": {
 			"saturatedFat": 2.2,
@@ -8355,8 +8609,8 @@
 			"palmitoleicAcid": 0.15,
 			"vitaminE": true,
 			"vitaminK": true,
-			"vitaminK1": 1.5,
-			"vitaminK2": 2,
+			"vitaminK1": true,
+			"vitaminK2": true,
 			"selenium": true,
 			"polyphenols": 15,
 			"flavonoids": 2,
@@ -8431,7 +8685,9 @@
 			"taurine": 159,
 			"solubleFiber": 1.6,
 			"insolubleFiber": 2,
-			"fiber": 3.6
+			"fiber": 3.6,
+			"vitaminK1": 2.15,
+			"vitaminK2": 2.86
 		},
 		"longevity": {
 			"saturatedFat": 3.15,
@@ -8451,8 +8707,8 @@
 			"palmitoleicAcid": 0.21,
 			"vitaminE": true,
 			"vitaminK": true,
-			"vitaminK1": 2.15,
-			"vitaminK2": 2.86,
+			"vitaminK1": true,
+			"vitaminK2": true,
 			"selenium": true,
 			"polyphenols": 21.45,
 			"flavonoids": 2.86,
@@ -8526,7 +8782,9 @@
 			"fiber": 2.2,
 			"chromium": 0,
 			"iodine": 5,
-			"molybdenum": 8
+			"molybdenum": 8,
+			"vitaminK1": 5,
+			"vitaminK2": 2
 		},
 		"longevity": {
 			"saturatedFat": 3.8,
@@ -8546,8 +8804,8 @@
 			"palmitoleicAcid": 0.3,
 			"vitaminE": true,
 			"vitaminK": true,
-			"vitaminK1": 5,
-			"vitaminK2": 2,
+			"vitaminK1": true,
+			"vitaminK2": true,
 			"selenium": true,
 			"copper": true,
 			"methionine": true,
@@ -8620,7 +8878,9 @@
 			"taurine": 0,
 			"solubleFiber": 0.1,
 			"insolubleFiber": 0.5,
-			"fiber": 0.6
+			"fiber": 0.6,
+			"vitaminK1": 1,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 0.12,
@@ -8632,7 +8892,9 @@
 			"copper": true,
 			"lutein": 0,
 			"vitaminK": true,
-			"methionine": true
+			"methionine": true,
+			"vitaminK1": true,
+			"vitaminK2": true
 		},
 		"carbQuality": {
 			"glycemicIndex": 73,
@@ -8694,7 +8956,9 @@
 			"taurine": 0,
 			"solubleFiber": 0.7,
 			"insolubleFiber": 2.5,
-			"fiber": 3.2
+			"fiber": 3.2,
+			"vitaminK1": 1,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 0.53,
@@ -8706,7 +8970,9 @@
 			"copper": true,
 			"lutein": 0,
 			"vitaminK": true,
-			"methionine": true
+			"methionine": true,
+			"vitaminK1": true,
+			"vitaminK2": true
 		},
 		"carbQuality": {
 			"glycemicIndex": 68,
@@ -8768,7 +9034,9 @@
 			"taurine": 0,
 			"solubleFiber": 2.3,
 			"insolubleFiber": 2.9,
-			"fiber": 5.2
+			"fiber": 5.2,
+			"vitaminK1": 1,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 0.43,
@@ -8781,7 +9049,9 @@
 			"choline": true,
 			"copper": true,
 			"lutein": 98.1,
-			"methionine": true
+			"methionine": true,
+			"vitaminK1": true,
+			"vitaminK2": true
 		},
 		"carbQuality": {
 			"glycemicIndex": 53,
@@ -8843,7 +9113,9 @@
 			"taurine": 0,
 			"solubleFiber": 0.6,
 			"insolubleFiber": 2.3,
-			"fiber": 2.9
+			"fiber": 2.9,
+			"vitaminK1": 17.1,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 0.09,
@@ -8856,7 +9128,9 @@
 			"copper": true,
 			"lutein": 36,
 			"selenium": true,
-			"methionine": true
+			"methionine": true,
+			"vitaminK1": true,
+			"vitaminK2": true
 		},
 		"carbQuality": {
 			"glycemicIndex": 20,
@@ -8918,7 +9192,9 @@
 			"taurine": 0,
 			"solubleFiber": 0.7,
 			"insolubleFiber": 2.3,
-			"fiber": 3
+			"fiber": 3,
+			"vitaminK1": 1,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 0,
@@ -8930,7 +9206,9 @@
 			"selenium": true,
 			"vitaminK": true,
 			"phosphorus": true,
-			"methionine": true
+			"methionine": true,
+			"vitaminK1": true,
+			"vitaminK2": true
 		},
 		"carbQuality": {
 			"glycemicIndex": 69,
@@ -8992,7 +9270,9 @@
 			"taurine": 0,
 			"solubleFiber": 0.2,
 			"insolubleFiber": 0.8,
-			"fiber": 1
+			"fiber": 1,
+			"vitaminK1": 1,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 0,
@@ -9004,7 +9284,9 @@
 			"selenium": true,
 			"vitaminK": true,
 			"phosphorus": true,
-			"methionine": true
+			"methionine": true,
+			"vitaminK1": true,
+			"vitaminK2": true
 		},
 		"carbQuality": {
 			"glycemicIndex": 69,
@@ -9065,7 +9347,9 @@
 			"fiber": 2,
 			"iodine": 0,
 			"molybdenum": 20,
-			"chloride": 25
+			"chloride": 25,
+			"vitaminK1": 1.2,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 1,
@@ -9085,8 +9369,8 @@
 			"palmitoleicAcid": 0,
 			"vitaminE": true,
 			"vitaminK": true,
-			"vitaminK1": 1.2,
-			"vitaminK2": 0,
+			"vitaminK1": true,
+			"vitaminK2": true,
 			"selenium": true,
 			"copper": true,
 			"methionine": true,
@@ -9164,7 +9448,9 @@
 			"taurine": 0,
 			"solubleFiber": 0.2,
 			"insolubleFiber": 0.8,
-			"fiber": 1
+			"fiber": 1,
+			"vitaminK1": 1,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 0,
@@ -9176,7 +9462,9 @@
 			"selenium": true,
 			"vitaminK": true,
 			"phosphorus": true,
-			"methionine": true
+			"methionine": true,
+			"vitaminK1": true,
+			"vitaminK2": true
 		},
 		"carbQuality": {
 			"glycemicIndex": 54,
@@ -9238,7 +9526,9 @@
 			"taurine": 0,
 			"solubleFiber": 0.7,
 			"insolubleFiber": 2.3,
-			"fiber": 3
+			"fiber": 3,
+			"vitaminK1": 1,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 8,
@@ -9250,7 +9540,9 @@
 			"selenium": true,
 			"vitaminK": true,
 			"phosphorus": true,
-			"methionine": true
+			"methionine": true,
+			"vitaminK1": true,
+			"vitaminK2": true
 		},
 		"carbQuality": {
 			"glycemicIndex": 50,
@@ -9312,7 +9604,9 @@
 			"taurine": 40,
 			"solubleFiber": 0.9,
 			"insolubleFiber": 3.1,
-			"fiber": 4
+			"fiber": 4,
+			"vitaminK1": 8,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 2.5,
@@ -9325,7 +9619,9 @@
 			"vitaminE": true,
 			"vitaminK": true,
 			"phosphorus": true,
-			"methionine": true
+			"methionine": true,
+			"vitaminK1": true,
+			"vitaminK2": true
 		},
 		"carbQuality": {
 			"glycemicIndex": 75,
@@ -9387,7 +9683,9 @@
 			"taurine": 56,
 			"solubleFiber": 1.1,
 			"insolubleFiber": 3.9,
-			"fiber": 5
+			"fiber": 5,
+			"vitaminK1": 12,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 4,
@@ -9400,7 +9698,9 @@
 			"vitaminE": true,
 			"vitaminK": true,
 			"phosphorus": true,
-			"methionine": true
+			"methionine": true,
+			"vitaminK1": true,
+			"vitaminK2": true
 		},
 		"carbQuality": {
 			"glycemicIndex": 75,
@@ -9614,7 +9914,9 @@
 			"taurine": 0,
 			"solubleFiber": 4.8,
 			"insolubleFiber": 17.2,
-			"fiber": 22
+			"fiber": 22,
+			"vitaminK1": 5,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 46,
@@ -9629,7 +9931,9 @@
 			"vitaminE": true,
 			"vitaminK": true,
 			"phosphorus": true,
-			"methionine": true
+			"methionine": true,
+			"vitaminK1": true,
+			"vitaminK2": true
 		},
 		"carbQuality": {
 			"glycemicIndex": 55,
@@ -9691,7 +9995,9 @@
 			"taurine": 0,
 			"solubleFiber": 4.8,
 			"insolubleFiber": 17.2,
-			"fiber": 22
+			"fiber": 22,
+			"vitaminK1": 5,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 64,
@@ -9706,7 +10012,9 @@
 			"vitaminE": true,
 			"vitaminK": true,
 			"phosphorus": true,
-			"methionine": true
+			"methionine": true,
+			"vitaminK1": true,
+			"vitaminK2": true
 		},
 		"carbQuality": {
 			"glycemicIndex": 55,
@@ -9768,7 +10076,9 @@
 			"taurine": 0,
 			"solubleFiber": 4.8,
 			"insolubleFiber": 17.2,
-			"fiber": 22
+			"fiber": 22,
+			"vitaminK1": 5,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 46,
@@ -9783,7 +10093,9 @@
 			"vitaminE": true,
 			"vitaminK": true,
 			"phosphorus": true,
-			"methionine": true
+			"methionine": true,
+			"vitaminK1": true,
+			"vitaminK2": true
 		},
 		"carbQuality": {
 			"glycemicIndex": 55,
@@ -9845,7 +10157,9 @@
 			"taurine": 0,
 			"solubleFiber": 4.8,
 			"insolubleFiber": 17.2,
-			"fiber": 22
+			"fiber": 22,
+			"vitaminK1": 5,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 64,
@@ -9860,7 +10174,9 @@
 			"vitaminE": true,
 			"vitaminK": true,
 			"phosphorus": true,
-			"methionine": true
+			"methionine": true,
+			"vitaminK1": true,
+			"vitaminK2": true
 		},
 		"carbQuality": {
 			"glycemicIndex": 55,
@@ -9922,7 +10238,9 @@
 			"taurine": 0,
 			"solubleFiber": 0.4,
 			"insolubleFiber": 1.6,
-			"fiber": 2
+			"fiber": 2,
+			"vitaminK1": 8,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 8,
@@ -9936,7 +10254,9 @@
 			"selenium": true,
 			"phosphorus": true,
 			"methionine": true,
-			"vitaminK": true
+			"vitaminK": true,
+			"vitaminK1": true,
+			"vitaminK2": true
 		},
 		"carbQuality": {
 			"glycemicIndex": 60,
@@ -9998,7 +10318,9 @@
 			"taurine": 0,
 			"solubleFiber": 0,
 			"insolubleFiber": 0,
-			"fiber": 0
+			"fiber": 0,
+			"vitaminK1": 0,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 0,
@@ -10006,7 +10328,10 @@
 			"cholesterol": 0,
 			"choline": true,
 			"copper": true,
-			"lutein": 0
+			"lutein": 0,
+			"vitaminK1": true,
+			"vitaminK2": true,
+			"vitaminK": true
 		},
 		"carbQuality": {
 			"glycemicIndex": 0,
@@ -10068,7 +10393,9 @@
 			"taurine": 0,
 			"solubleFiber": 0,
 			"insolubleFiber": 0,
-			"fiber": 0
+			"fiber": 0,
+			"vitaminK1": 0,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 0,
@@ -10076,7 +10403,10 @@
 			"cholesterol": 0,
 			"choline": true,
 			"copper": true,
-			"lutein": 0
+			"lutein": 0,
+			"vitaminK1": true,
+			"vitaminK2": true,
+			"vitaminK": true
 		},
 		"carbQuality": {
 			"glycemicIndex": 0,
@@ -10138,7 +10468,9 @@
 			"taurine": 0,
 			"solubleFiber": 0,
 			"insolubleFiber": 0,
-			"fiber": 0
+			"fiber": 0,
+			"vitaminK1": 0,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 0,
@@ -10146,7 +10478,10 @@
 			"cholesterol": 0,
 			"choline": true,
 			"copper": true,
-			"lutein": 0
+			"lutein": 0,
+			"vitaminK1": true,
+			"vitaminK2": true,
+			"vitaminK": true
 		},
 		"carbQuality": {
 			"glycemicIndex": 65,
@@ -10208,7 +10543,9 @@
 			"taurine": 0,
 			"solubleFiber": 0,
 			"insolubleFiber": 0,
-			"fiber": 0
+			"fiber": 0,
+			"vitaminK1": 0,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 0,
@@ -10216,7 +10553,10 @@
 			"cholesterol": 0,
 			"choline": true,
 			"copper": true,
-			"lutein": 0
+			"lutein": 0,
+			"vitaminK1": true,
+			"vitaminK2": true,
+			"vitaminK": true
 		},
 		"carbQuality": {
 			"glycemicIndex": 65,
@@ -10278,7 +10618,9 @@
 			"taurine": 48,
 			"solubleFiber": 2,
 			"insolubleFiber": 5.5,
-			"fiber": 7.5
+			"fiber": 7.5,
+			"vitaminK1": 2,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 0.2,
@@ -10290,7 +10632,9 @@
 			"selenium": true,
 			"phosphorus": true,
 			"methionine": true,
-			"vitaminK": true
+			"vitaminK": true,
+			"vitaminK1": true,
+			"vitaminK2": true
 		},
 		"carbQuality": {
 			"glycemicIndex": 35,
@@ -10352,7 +10696,9 @@
 			"taurine": 20,
 			"solubleFiber": 2,
 			"insolubleFiber": 3,
-			"fiber": 5
+			"fiber": 5,
+			"vitaminK1": 12,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 3,
@@ -10372,8 +10718,8 @@
 			"palmitoleicAcid": 0.15,
 			"vitaminE": true,
 			"vitaminK": true,
-			"vitaminK1": 12,
-			"vitaminK2": 0,
+			"vitaminK1": true,
+			"vitaminK2": true,
 			"selenium": true,
 			"polyphenols": 8,
 			"flavonoids": 2,
@@ -10448,7 +10794,9 @@
 			"taurine": 0,
 			"solubleFiber": 0,
 			"insolubleFiber": 0,
-			"fiber": 0
+			"fiber": 0,
+			"vitaminK1": 0,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 0,
@@ -10467,8 +10815,8 @@
 			"oleicAcid": 0,
 			"palmitoleicAcid": 0,
 			"vitaminK": true,
-			"vitaminK1": 0,
-			"vitaminK2": 0,
+			"vitaminK1": true,
+			"vitaminK2": true,
 			"selenium": true,
 			"polyphenols": 320,
 			"flavonoids": 80,
@@ -10543,7 +10891,9 @@
 			"taurine": 0,
 			"solubleFiber": 0,
 			"insolubleFiber": 0,
-			"fiber": 0
+			"fiber": 0,
+			"vitaminK1": 0,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"coq10": 100,
@@ -10552,7 +10902,10 @@
 			"cholesterol": 0,
 			"choline": true,
 			"copper": true,
-			"lutein": 0
+			"lutein": 0,
+			"vitaminK1": true,
+			"vitaminK2": true,
+			"vitaminK": true
 		},
 		"carbQuality": {
 			"glycemicIndex": 0,
@@ -10614,7 +10967,9 @@
 			"taurine": 0,
 			"solubleFiber": 0,
 			"insolubleFiber": 0,
-			"fiber": 0
+			"fiber": 0,
+			"vitaminK1": 0,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 0,
@@ -10635,7 +10990,10 @@
 			"choline": true,
 			"copper": true,
 			"lutein": 0,
-			"vitaminE": true
+			"vitaminE": true,
+			"vitaminK1": true,
+			"vitaminK2": true,
+			"vitaminK": true
 		},
 		"carbQuality": {
 			"glycemicIndex": 0,
@@ -10697,7 +11055,9 @@
 			"taurine": 0,
 			"solubleFiber": 0,
 			"insolubleFiber": 0,
-			"fiber": 0
+			"fiber": 0,
+			"vitaminK1": 0,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 0,
@@ -10718,7 +11078,10 @@
 			"choline": true,
 			"copper": true,
 			"lutein": 0,
-			"vitaminE": true
+			"vitaminE": true,
+			"vitaminK1": true,
+			"vitaminK2": true,
+			"vitaminK": true
 		},
 		"carbQuality": {
 			"glycemicIndex": 0,
@@ -10780,7 +11143,9 @@
 			"taurine": 32,
 			"solubleFiber": 6,
 			"insolubleFiber": 7.4,
-			"fiber": 13.4
+			"fiber": 13.4,
+			"vitaminK1": 42,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 4.3,
@@ -10800,8 +11165,8 @@
 			"palmitoleicAcid": 0.5,
 			"vitaminE": true,
 			"vitaminK": true,
-			"vitaminK1": 42,
-			"vitaminK2": 0,
+			"vitaminK1": true,
+			"vitaminK2": true,
 			"selenium": true,
 			"polyphenols": 30,
 			"flavonoids": 8,
@@ -10876,7 +11241,9 @@
 			"taurine": 16,
 			"solubleFiber": 3,
 			"insolubleFiber": 3.7,
-			"fiber": 6.7
+			"fiber": 6.7,
+			"vitaminK1": 21,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 2.1,
@@ -10896,8 +11263,8 @@
 			"palmitoleicAcid": 0.25,
 			"vitaminE": true,
 			"vitaminK": true,
-			"vitaminK1": 21,
-			"vitaminK2": 0,
+			"vitaminK1": true,
+			"vitaminK2": true,
 			"selenium": true,
 			"polyphenols": 15,
 			"flavonoids": 4,
@@ -10972,7 +11339,9 @@
 			"taurine": 39,
 			"solubleFiber": 0,
 			"insolubleFiber": 0,
-			"fiber": 0
+			"fiber": 0,
+			"vitaminK1": 0,
+			"vitaminK2": 2
 		},
 		"longevity": {
 			"saturatedFat": 4.6,
@@ -10992,8 +11361,8 @@
 			"palmitoleicAcid": 0.1,
 			"vitaminE": true,
 			"vitaminK": true,
-			"vitaminK1": 0,
-			"vitaminK2": 2,
+			"vitaminK1": true,
+			"vitaminK2": true,
 			"selenium": true,
 			"polyphenols": 0,
 			"flavonoids": 0,
@@ -11068,7 +11437,9 @@
 			"taurine": 0,
 			"solubleFiber": 0,
 			"insolubleFiber": 0,
-			"fiber": 0
+			"fiber": 0,
+			"vitaminK1": 2,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 0,
@@ -11082,7 +11453,9 @@
 			"phosphorus": true,
 			"choline": true,
 			"copper": true,
-			"lutein": 0
+			"lutein": 0,
+			"vitaminK1": true,
+			"vitaminK2": true
 		},
 		"carbQuality": {
 			"glycemicIndex": 0,
@@ -11143,7 +11516,9 @@
 			"iodine": 0,
 			"biotin": 0,
 			"molybdenum": 5,
-			"chloride": 25
+			"chloride": 25,
+			"vitaminK1": 0,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 0,
@@ -11163,8 +11538,8 @@
 			"palmitoleicAcid": 0,
 			"vitaminE": true,
 			"vitaminK": true,
-			"vitaminK1": 0,
-			"vitaminK2": 0,
+			"vitaminK1": true,
+			"vitaminK2": true,
 			"selenium": true,
 			"copper": true,
 			"methionine": true,
@@ -11242,7 +11617,9 @@
 			"taurine": 0,
 			"solubleFiber": 0,
 			"insolubleFiber": 0,
-			"fiber": 0
+			"fiber": 0,
+			"vitaminK1": 8.4,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 1.9,
@@ -11273,7 +11650,9 @@
 			"choline": true,
 			"copper": true,
 			"lutein": 0,
-			"methionine": true
+			"methionine": true,
+			"vitaminK1": true,
+			"vitaminK2": true
 		},
 		"carbQuality": {
 			"glycemicIndex": 0,
@@ -11335,7 +11714,9 @@
 			"insolubleFiber": 0,
 			"fiber": 0,
 			"glutamine": 690,
-			"taurine": 37
+			"taurine": 37,
+			"vitaminK1": 0,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 11.6,
@@ -11348,8 +11729,8 @@
 			"dha": 3.94,
 			"vitaminE": true,
 			"vitaminK": true,
-			"vitaminK1": 0,
-			"vitaminK2": 0,
+			"vitaminK1": true,
+			"vitaminK2": true,
 			"selenium": true,
 			"copper": true,
 			"methionine": true,
@@ -11415,7 +11796,9 @@
 			"molybdenum": 5,
 			"chloride": 25,
 			"glutamine": 165,
-			"taurine": 9
+			"taurine": 9,
+			"vitaminK1": 0,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 2.7,
@@ -11428,8 +11811,8 @@
 			"dha": 0.9,
 			"vitaminE": true,
 			"vitaminK": true,
-			"vitaminK1": 0,
-			"vitaminK2": 0,
+			"vitaminK1": true,
+			"vitaminK2": true,
 			"selenium": true,
 			"copper": true,
 			"methionine": true,
@@ -11495,7 +11878,9 @@
 			"molybdenum": 5,
 			"chloride": 638.38,
 			"glutamine": 495,
-			"taurine": 26
+			"taurine": 26,
+			"vitaminK1": 0,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 8.1,
@@ -11508,8 +11893,8 @@
 			"dha": 2.7,
 			"vitaminE": true,
 			"vitaminK": true,
-			"vitaminK1": 0,
-			"vitaminK2": 0,
+			"vitaminK1": true,
+			"vitaminK2": true,
 			"selenium": true,
 			"copper": true,
 			"methionine": true,
@@ -11575,7 +11960,9 @@
 			"chromium": 0,
 			"iodine": 0,
 			"molybdenum": 5,
-			"chloride": 25
+			"chloride": 25,
+			"vitaminK1": 0.44,
+			"vitaminK2": 17.6
 		},
 		"longevity": {
 			"saturatedFat": 0.33,
@@ -11599,7 +11986,9 @@
 			"choline": true,
 			"carnitine": 22.5,
 			"coq10": 1.13,
-			"taurine": true
+			"taurine": true,
+			"vitaminK1": true,
+			"vitaminK2": true
 		},
 		"carbQuality": {
 			"glycemicIndex": 0,
@@ -11659,7 +12048,9 @@
 			"chromium": 0,
 			"iodine": 0,
 			"molybdenum": 5,
-			"chloride": 25
+			"chloride": 25,
+			"vitaminK1": 1.32,
+			"vitaminK2": 52.8
 		},
 		"longevity": {
 			"saturatedFat": 0.99,
@@ -11683,7 +12074,9 @@
 			"choline": true,
 			"carnitine": 67.5,
 			"coq10": 3.39,
-			"taurine": true
+			"taurine": true,
+			"vitaminK1": true,
+			"vitaminK2": true
 		},
 		"carbQuality": {
 			"glycemicIndex": 0,
@@ -11743,7 +12136,9 @@
 			"choline": 0,
 			"molybdenum": 5,
 			"chloride": 25,
-			"taurine": 58
+			"taurine": 58,
+			"vitaminK1": 0,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 1.4,
@@ -11761,7 +12156,10 @@
 			"selenium": true,
 			"copper": true,
 			"methionine": true,
-			"phosphorus": true
+			"phosphorus": true,
+			"vitaminK1": true,
+			"vitaminK2": true,
+			"vitaminK": true
 		},
 		"carbQuality": {
 			"glycemicIndex": 0,
@@ -11821,7 +12219,9 @@
 			"choline": 0,
 			"molybdenum": 5,
 			"chloride": 25,
-			"taurine": 174
+			"taurine": 174,
+			"vitaminK1": 0,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 4.2,
@@ -11839,7 +12239,10 @@
 			"selenium": true,
 			"copper": true,
 			"methionine": true,
-			"phosphorus": true
+			"phosphorus": true,
+			"vitaminK1": true,
+			"vitaminK2": true,
+			"vitaminK": true
 		},
 		"carbQuality": {
 			"glycemicIndex": 0,
@@ -11899,7 +12302,9 @@
 			"biotin": 0,
 			"molybdenum": 8,
 			"chloride": 80,
-			"taurine": 58
+			"taurine": 58,
+			"vitaminK1": 1.0,
+			"vitaminK2": 40.0
 		},
 		"longevity": {
 			"saturatedFat": 0.567,
@@ -11923,7 +12328,9 @@
 			"methionine": true,
 			"phosphorus": true,
 			"choline": true,
-			"betaine": 5.95
+			"betaine": 5.95,
+			"vitaminK1": true,
+			"vitaminK2": true
 		},
 		"carbQuality": {
 			"glycemicIndex": 0,
@@ -11983,7 +12390,9 @@
 			"biotin": 0,
 			"molybdenum": 8,
 			"chloride": 80,
-			"taurine": 175
+			"taurine": 175,
+			"vitaminK1": 1.0,
+			"vitaminK2": 40.0
 		},
 		"longevity": {
 			"saturatedFat": 1.7,
@@ -12007,7 +12416,9 @@
 			"methionine": true,
 			"phosphorus": true,
 			"choline": true,
-			"betaine": 17.85
+			"betaine": 17.85,
+			"vitaminK1": true,
+			"vitaminK2": true
 		},
 		"carbQuality": {
 			"glycemicIndex": 0,
@@ -12067,7 +12478,9 @@
 			"biotin": 0,
 			"molybdenum": 5,
 			"chloride": 25,
-			"glutamine": 108
+			"glutamine": 108,
+			"vitaminK1": 0,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 0.81,
@@ -12087,8 +12500,8 @@
 			"palmitoleicAcid": 0,
 			"vitaminE": true,
 			"vitaminK": true,
-			"vitaminK1": 0,
-			"vitaminK2": 0,
+			"vitaminK1": true,
+			"vitaminK2": true,
 			"selenium": true,
 			"copper": true,
 			"methionine": true,
@@ -12166,7 +12579,9 @@
 			"tyrosine": 90,
 			"solubleFiber": 1.4,
 			"insolubleFiber": 1.6,
-			"fiber": 3
+			"fiber": 3,
+			"vitaminK1": 4,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 0,
@@ -12186,8 +12601,8 @@
 			"palmitoleicAcid": 0,
 			"vitaminE": true,
 			"vitaminK": true,
-			"vitaminK1": 4,
-			"vitaminK2": 0,
+			"vitaminK1": true,
+			"vitaminK2": true,
 			"selenium": true,
 			"polyphenols": 100,
 			"flavonoids": 40,
@@ -12262,7 +12677,9 @@
 			"tyrosine": 120,
 			"solubleFiber": 1.8,
 			"insolubleFiber": 2.2,
-			"fiber": 4
+			"fiber": 4,
+			"vitaminK1": 10,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 0,
@@ -12282,8 +12699,8 @@
 			"palmitoleicAcid": 0,
 			"vitaminE": true,
 			"vitaminK": true,
-			"vitaminK1": 10,
-			"vitaminK2": 0,
+			"vitaminK1": true,
+			"vitaminK2": true,
 			"selenium": true,
 			"polyphenols": 138,
 			"flavonoids": 55,
@@ -12358,7 +12775,9 @@
 			"tyrosine": 150,
 			"solubleFiber": 2.7,
 			"insolubleFiber": 3.3,
-			"fiber": 6
+			"fiber": 6,
+			"vitaminK1": 12,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 0,
@@ -12378,8 +12797,8 @@
 			"palmitoleicAcid": 0,
 			"vitaminE": true,
 			"vitaminK": true,
-			"vitaminK1": 12,
-			"vitaminK2": 0,
+			"vitaminK1": true,
+			"vitaminK2": true,
 			"selenium": true,
 			"polyphenols": 175,
 			"flavonoids": 70,
@@ -12454,7 +12873,9 @@
 			"tyrosine": 120,
 			"solubleFiber": 5.9,
 			"insolubleFiber": 7.1,
-			"fiber": 13
+			"fiber": 13,
+			"vitaminK1": 96,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 0,
@@ -12474,8 +12895,8 @@
 			"palmitoleicAcid": 0,
 			"vitaminE": true,
 			"vitaminK": true,
-			"vitaminK1": 96,
-			"vitaminK2": 0,
+			"vitaminK1": true,
+			"vitaminK2": true,
 			"selenium": true,
 			"polyphenols": 20,
 			"flavonoids": 5,
@@ -12550,7 +12971,9 @@
 			"tyrosine": 180,
 			"solubleFiber": 8.1,
 			"insolubleFiber": 9.9,
-			"fiber": 18
+			"fiber": 18,
+			"vitaminK1": 132,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 0,
@@ -12570,8 +12993,8 @@
 			"palmitoleicAcid": 0,
 			"vitaminE": true,
 			"vitaminK": true,
-			"vitaminK1": 132,
-			"vitaminK2": 0,
+			"vitaminK1": true,
+			"vitaminK2": true,
 			"selenium": true,
 			"polyphenols": 28,
 			"flavonoids": 7,
@@ -12646,7 +13069,9 @@
 			"tyrosine": 240,
 			"solubleFiber": 10.4,
 			"insolubleFiber": 12.6,
-			"fiber": 23
+			"fiber": 23,
+			"vitaminK1": 168,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 0,
@@ -12666,8 +13091,8 @@
 			"palmitoleicAcid": 0,
 			"vitaminE": true,
 			"vitaminK": true,
-			"vitaminK1": 168,
-			"vitaminK2": 0,
+			"vitaminK1": true,
+			"vitaminK2": true,
 			"selenium": true,
 			"polyphenols": 35,
 			"flavonoids": 9,
@@ -12741,7 +13166,9 @@
 			"glycine": 160,
 			"proline": 220,
 			"tyrosine": 120,
-			"taurine": 0
+			"taurine": 0,
+			"vitaminK1": 240,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 0,
@@ -12761,8 +13188,8 @@
 			"palmitoleicAcid": 0.01,
 			"vitaminE": true,
 			"vitaminK": true,
-			"vitaminK1": 240,
-			"vitaminK2": 0,
+			"vitaminK1": true,
+			"vitaminK2": true,
 			"selenium": true,
 			"copper": true,
 			"polyphenols": 250,
@@ -12833,7 +13260,9 @@
 			"glycine": 200,
 			"proline": 275,
 			"tyrosine": 150,
-			"taurine": 0
+			"taurine": 0,
+			"vitaminK1": 315,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 0,
@@ -12853,8 +13282,8 @@
 			"palmitoleicAcid": 0.01,
 			"vitaminE": true,
 			"vitaminK": true,
-			"vitaminK1": 315,
-			"vitaminK2": 0,
+			"vitaminK1": true,
+			"vitaminK2": true,
 			"selenium": true,
 			"copper": true,
 			"polyphenols": 328,
@@ -12925,7 +13354,9 @@
 			"glycine": 280,
 			"proline": 385,
 			"tyrosine": 210,
-			"taurine": 0
+			"taurine": 0,
+			"vitaminK1": 400,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 0,
@@ -12945,8 +13376,8 @@
 			"palmitoleicAcid": 0.02,
 			"vitaminE": true,
 			"vitaminK": true,
-			"vitaminK1": 400,
-			"vitaminK2": 0,
+			"vitaminK1": true,
+			"vitaminK2": true,
 			"selenium": true,
 			"copper": true,
 			"polyphenols": 417,
@@ -13018,7 +13449,9 @@
 			"taurine": 0,
 			"solubleFiber": 0,
 			"insolubleFiber": 0,
-			"fiber": 0
+			"fiber": 0,
+			"vitaminK1": 15,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 2.5,
@@ -13038,8 +13471,8 @@
 			"palmitoleicAcid": 0.1,
 			"vitaminE": true,
 			"vitaminK": true,
-			"vitaminK1": 15,
-			"vitaminK2": 0,
+			"vitaminK1": true,
+			"vitaminK2": true,
 			"selenium": true,
 			"polyphenols": 0,
 			"flavonoids": 0,
@@ -13113,7 +13546,9 @@
 			"taurine": 0,
 			"solubleFiber": 0.9,
 			"insolubleFiber": 1.1,
-			"fiber": 2
+			"fiber": 2,
+			"vitaminK1": 8,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 1,
@@ -13133,8 +13568,8 @@
 			"palmitoleicAcid": 0,
 			"vitaminE": true,
 			"vitaminK": true,
-			"vitaminK1": 8,
-			"vitaminK2": 0,
+			"vitaminK1": true,
+			"vitaminK2": true,
 			"selenium": true,
 			"polyphenols": 30,
 			"flavonoids": 8,
@@ -13209,7 +13644,9 @@
 			"taurine": 0,
 			"solubleFiber": 0,
 			"insolubleFiber": 0,
-			"fiber": 0
+			"fiber": 0,
+			"vitaminK1": 2,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 0.5,
@@ -13229,8 +13666,8 @@
 			"palmitoleicAcid": 0,
 			"vitaminE": true,
 			"vitaminK": true,
-			"vitaminK1": 2,
-			"vitaminK2": 0,
+			"vitaminK1": true,
+			"vitaminK2": true,
 			"selenium": true,
 			"polyphenols": 0,
 			"flavonoids": 0,
@@ -13304,7 +13741,9 @@
 			"taurine": 0,
 			"solubleFiber": 0,
 			"insolubleFiber": 0,
-			"fiber": 0
+			"fiber": 0,
+			"vitaminK1": 5,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 1.5,
@@ -13324,8 +13763,8 @@
 			"palmitoleicAcid": 0,
 			"vitaminE": true,
 			"vitaminK": true,
-			"vitaminK1": 5,
-			"vitaminK2": 0,
+			"vitaminK1": true,
+			"vitaminK2": true,
 			"selenium": true,
 			"polyphenols": 0,
 			"flavonoids": 0,
@@ -13399,7 +13838,9 @@
 			"taurine": 2,
 			"solubleFiber": 0.1,
 			"insolubleFiber": 0.1,
-			"fiber": 0.2
+			"fiber": 0.2,
+			"vitaminK1": 0.1,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 0,
@@ -13419,8 +13860,8 @@
 			"palmitoleicAcid": 0,
 			"vitaminE": true,
 			"vitaminK": true,
-			"vitaminK1": 0.1,
-			"vitaminK2": 0,
+			"vitaminK1": true,
+			"vitaminK2": true,
 			"selenium": true,
 			"polyphenols": 5,
 			"flavonoids": 1,
@@ -13495,7 +13936,9 @@
 			"taurine": 6,
 			"solubleFiber": 0.2,
 			"insolubleFiber": 0.3,
-			"fiber": 0.5
+			"fiber": 0.5,
+			"vitaminK1": 0.3,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 0,
@@ -13515,8 +13958,8 @@
 			"palmitoleicAcid": 0,
 			"vitaminE": true,
 			"vitaminK": true,
-			"vitaminK1": 0.3,
-			"vitaminK2": 0,
+			"vitaminK1": true,
+			"vitaminK2": true,
 			"selenium": true,
 			"polyphenols": 15,
 			"flavonoids": 4,
@@ -13591,7 +14034,9 @@
 			"taurine": 0,
 			"solubleFiber": 0,
 			"insolubleFiber": 0,
-			"fiber": 0
+			"fiber": 0,
+			"vitaminK1": 1,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 0,
@@ -13611,8 +14056,8 @@
 			"palmitoleicAcid": 0,
 			"vitaminE": true,
 			"vitaminK": true,
-			"vitaminK1": 1,
-			"vitaminK2": 0,
+			"vitaminK1": true,
+			"vitaminK2": true,
 			"selenium": true,
 			"polyphenols": 10,
 			"flavonoids": 2,
@@ -13686,7 +14131,9 @@
 			"taurine": 8,
 			"solubleFiber": 0.5,
 			"insolubleFiber": 1,
-			"fiber": 1.5
+			"fiber": 1.5,
+			"vitaminK1": 0.5,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 0,
@@ -13706,8 +14153,8 @@
 			"palmitoleicAcid": 0,
 			"vitaminE": true,
 			"vitaminK": true,
-			"vitaminK1": 0.5,
-			"vitaminK2": 0,
+			"vitaminK1": true,
+			"vitaminK2": true,
 			"selenium": true,
 			"polyphenols": 8,
 			"flavonoids": 2,
@@ -13782,7 +14229,9 @@
 			"taurine": 16,
 			"solubleFiber": 0.9,
 			"insolubleFiber": 2.1,
-			"fiber": 3
+			"fiber": 3,
+			"vitaminK1": 1,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 0,
@@ -13802,8 +14251,8 @@
 			"palmitoleicAcid": 0,
 			"vitaminE": true,
 			"vitaminK": true,
-			"vitaminK1": 1,
-			"vitaminK2": 0,
+			"vitaminK1": true,
+			"vitaminK2": true,
 			"selenium": true,
 			"polyphenols": 16,
 			"flavonoids": 4,
@@ -13878,7 +14327,9 @@
 			"taurine": 12,
 			"solubleFiber": 0.7,
 			"insolubleFiber": 1.6,
-			"fiber": 2.3
+			"fiber": 2.3,
+			"vitaminK1": 0.75,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 0,
@@ -13898,8 +14349,8 @@
 			"palmitoleicAcid": 0,
 			"vitaminE": true,
 			"vitaminK": true,
-			"vitaminK1": 0.75,
-			"vitaminK2": 0,
+			"vitaminK1": true,
+			"vitaminK2": true,
 			"selenium": true,
 			"polyphenols": 12,
 			"flavonoids": 3,
@@ -13974,7 +14425,9 @@
 			"taurine": 14,
 			"solubleFiber": 0.8,
 			"insolubleFiber": 1.8,
-			"fiber": 2.6
+			"fiber": 2.6,
+			"vitaminK1": 0.875,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 0,
@@ -13994,8 +14447,8 @@
 			"palmitoleicAcid": 0,
 			"vitaminE": true,
 			"vitaminK": true,
-			"vitaminK1": 0.875,
-			"vitaminK2": 0,
+			"vitaminK1": true,
+			"vitaminK2": true,
 			"selenium": true,
 			"polyphenols": 14,
 			"flavonoids": 3.5,
@@ -14070,7 +14523,9 @@
 			"taurine": 0,
 			"solubleFiber": 0.9,
 			"insolubleFiber": 2.1,
-			"fiber": 3
+			"fiber": 3,
+			"vitaminK1": 1,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 0,
@@ -14090,8 +14545,8 @@
 			"palmitoleicAcid": 0,
 			"vitaminE": true,
 			"vitaminK": true,
-			"vitaminK1": 1,
-			"vitaminK2": 0,
+			"vitaminK1": true,
+			"vitaminK2": true,
 			"selenium": true,
 			"polyphenols": 16,
 			"flavonoids": 4,
@@ -14166,7 +14621,9 @@
 			"taurine": 0,
 			"solubleFiber": 0.6,
 			"insolubleFiber": 2,
-			"fiber": 2.6
+			"fiber": 2.6,
+			"vitaminK1": 0.6,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 3.3,
@@ -14186,8 +14643,8 @@
 			"palmitoleicAcid": 0,
 			"vitaminE": true,
 			"vitaminK": true,
-			"vitaminK1": 0.6,
-			"vitaminK2": 0,
+			"vitaminK1": true,
+			"vitaminK2": true,
 			"selenium": true,
 			"polyphenols": 5,
 			"flavonoids": 1,
@@ -14262,7 +14719,9 @@
 			"taurine": 0,
 			"solubleFiber": 0.3,
 			"insolubleFiber": 1,
-			"fiber": 1.3
+			"fiber": 1.3,
+			"vitaminK1": 0.3,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 1.7,
@@ -14282,8 +14741,8 @@
 			"palmitoleicAcid": 0,
 			"vitaminE": true,
 			"vitaminK": true,
-			"vitaminK1": 0.3,
-			"vitaminK2": 0,
+			"vitaminK1": true,
+			"vitaminK2": true,
 			"selenium": true,
 			"polyphenols": 3,
 			"flavonoids": 1,
@@ -14358,7 +14817,9 @@
 			"taurine": 0,
 			"solubleFiber": 5,
 			"insolubleFiber": 1,
-			"fiber": 6
+			"fiber": 6,
+			"vitaminK1": 0,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 0,
@@ -14378,7 +14839,10 @@
 			"palmitoleicAcid": 0,
 			"choline": true,
 			"copper": true,
-			"lutein": 0
+			"lutein": 0,
+			"vitaminK1": true,
+			"vitaminK2": true,
+			"vitaminK": true
 		},
 		"carbQuality": {
 			"glycemicIndex": 0,
@@ -14440,7 +14904,9 @@
 			"taurine": 56,
 			"solubleFiber": 2.4,
 			"insolubleFiber": 3.6,
-			"fiber": 6
+			"fiber": 6,
+			"vitaminK1": 37,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 0.09,
@@ -14460,8 +14926,8 @@
 			"palmitoleicAcid": 0,
 			"vitaminE": true,
 			"vitaminK": true,
-			"vitaminK1": 37,
-			"vitaminK2": 0,
+			"vitaminK1": true,
+			"vitaminK2": true,
 			"selenium": true,
 			"polyphenols": 30,
 			"flavonoids": 8,
@@ -14536,7 +15002,9 @@
 			"taurine": 0,
 			"solubleFiber": 0.5,
 			"insolubleFiber": 1.9,
-			"fiber": 2.4
+			"fiber": 2.4,
+			"vitaminK1": 0,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 3.4,
@@ -14556,8 +15024,8 @@
 			"palmitoleicAcid": 4.63,
 			"vitaminE": true,
 			"vitaminK": true,
-			"vitaminK1": 0,
-			"vitaminK2": 0,
+			"vitaminK1": true,
+			"vitaminK2": true,
 			"selenium": true,
 			"polyphenols": 0,
 			"flavonoids": 0,
@@ -14607,13 +15075,17 @@
 			"manganese": 0.35,
 			"chromium": 0.7,
 			"iodine": 138,
-			"molybdenum": 38
+			"molybdenum": 38,
+			"vitaminK1": 36,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"vitaminE": true,
 			"vitaminK": true,
 			"selenium": true,
-			"copper": true
+			"copper": true,
+			"vitaminK1": true,
+			"vitaminK2": true
 		},
 		"carbQuality": {
 			"glycemicIndex": 0,
@@ -14650,13 +15122,17 @@
 			"manganese": 0.35,
 			"chromium": 0.7,
 			"iodine": 138,
-			"molybdenum": 38
+			"molybdenum": 38,
+			"vitaminK1": 36,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"vitaminE": true,
 			"vitaminK": true,
 			"selenium": true,
-			"copper": true
+			"copper": true,
+			"vitaminK1": true,
+			"vitaminK2": true
 		},
 		"carbQuality": {
 			"glycemicIndex": 0,
@@ -14693,13 +15169,17 @@
 			"manganese": 0.35,
 			"chromium": 0.7,
 			"iodine": 138,
-			"molybdenum": 38
+			"molybdenum": 38,
+			"vitaminK1": 36,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"vitaminE": true,
 			"vitaminK": true,
 			"selenium": true,
-			"copper": true
+			"copper": true,
+			"vitaminK1": true,
+			"vitaminK2": true
 		},
 		"carbQuality": {
 			"glycemicIndex": 0,
@@ -14736,13 +15216,17 @@
 			"manganese": 0.35,
 			"chromium": 0.7,
 			"iodine": 138,
-			"molybdenum": 38
+			"molybdenum": 38,
+			"vitaminK1": 36,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"vitaminE": true,
 			"vitaminK": true,
 			"selenium": true,
-			"copper": true
+			"copper": true,
+			"vitaminK1": true,
+			"vitaminK2": true
 		},
 		"carbQuality": {
 			"glycemicIndex": 0,
@@ -14780,7 +15264,9 @@
 			"selenium": 28,
 			"manganese": 0.02,
 			"chromium": 7.5,
-			"fiber": 1.5
+			"fiber": 1.5,
+			"vitaminK1": 16,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 0.5,
@@ -14788,7 +15274,9 @@
 			"polyunsaturatedFat": 0.5,
 			"vitaminE": true,
 			"vitaminK": true,
-			"selenium": true
+			"selenium": true,
+			"vitaminK1": true,
+			"vitaminK2": true
 		},
 		"carbQuality": {
 			"glycemicIndex": 0,
@@ -14826,7 +15314,9 @@
 			"selenium": 14,
 			"manganese": 0.01,
 			"chromium": 3.75,
-			"fiber": 0.75
+			"fiber": 0.75,
+			"vitaminK1": 8,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 0.25,
@@ -14834,7 +15324,9 @@
 			"polyunsaturatedFat": 0.25,
 			"vitaminE": true,
 			"vitaminK": true,
-			"selenium": true
+			"selenium": true,
+			"vitaminK1": true,
+			"vitaminK2": true
 		},
 		"carbQuality": {
 			"glycemicIndex": 0,
@@ -14860,7 +15352,8 @@
 			"addedSugar": 0,
 			"refinedCarbs": 0,
 			"netCarbs": 0
-		}
+		},
+		"micros": {}
 	},
 	{
 		"name": "Nature Made Cod Liver Oil 530 mg 1 softgel",
@@ -14935,7 +15428,9 @@
 			"taurine": 0,
 			"solubleFiber": 0,
 			"insolubleFiber": 0,
-			"fiber": 0
+			"fiber": 0,
+			"vitaminK1": 1,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 7.3,
@@ -14955,8 +15450,8 @@
 			"palmitoleicAcid": 0.2,
 			"vitaminE": true,
 			"vitaminK": true,
-			"vitaminK1": 1,
-			"vitaminK2": 0,
+			"vitaminK1": true,
+			"vitaminK2": true,
 			"selenium": true,
 			"polyphenols": 0,
 			"flavonoids": 0,
@@ -15029,7 +15524,9 @@
 			"tyrosine": 432,
 			"solubleFiber": 0,
 			"insolubleFiber": 0,
-			"fiber": 0
+			"fiber": 0,
+			"vitaminK1": 0.6,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 4.9,
@@ -15046,8 +15543,8 @@
 			"palmitoleicAcid": 0.25,
 			"vitaminE": true,
 			"vitaminK": true,
-			"vitaminK1": 0.6,
-			"vitaminK2": 0,
+			"vitaminK1": true,
+			"vitaminK2": true,
 			"selenium": true,
 			"polyphenols": 0,
 			"flavonoids": 0,
@@ -15120,7 +15617,9 @@
 			"tyrosine": 195,
 			"solubleFiber": 0,
 			"insolubleFiber": 0,
-			"fiber": 0
+			"fiber": 0,
+			"vitaminK1": 0.8,
+			"vitaminK2": 3
 		},
 		"longevity": {
 			"saturatedFat": 3.8,
@@ -15140,8 +15639,8 @@
 			"palmitoleicAcid": 0.11,
 			"vitaminE": true,
 			"vitaminK": true,
-			"vitaminK1": 0.8,
-			"vitaminK2": 3,
+			"vitaminK1": true,
+			"vitaminK2": true,
 			"selenium": true,
 			"polyphenols": 0,
 			"flavonoids": 0,
@@ -15214,7 +15713,9 @@
 			"tyrosine": 315,
 			"solubleFiber": 0,
 			"insolubleFiber": 0,
-			"fiber": 0
+			"fiber": 0,
+			"vitaminK1": 0,
+			"vitaminK2": 2.4
 		},
 		"longevity": {
 			"saturatedFat": 5.4,
@@ -15234,8 +15735,8 @@
 			"palmitoleicAcid": 0.14,
 			"vitaminE": true,
 			"vitaminK": true,
-			"vitaminK1": 0,
-			"vitaminK2": 2.4,
+			"vitaminK1": true,
+			"vitaminK2": true,
 			"selenium": true,
 			"polyphenols": 0,
 			"flavonoids": 0,
@@ -15303,7 +15804,9 @@
 			"tyrosine": 175,
 			"solubleFiber": 0,
 			"insolubleFiber": 0,
-			"fiber": 0
+			"fiber": 0,
+			"vitaminK1": 0,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 0.2,
@@ -15320,8 +15823,8 @@
 			"palmitoleicAcid": 0.05,
 			"vitaminE": true,
 			"vitaminK": true,
-			"vitaminK1": 0,
-			"vitaminK2": 0,
+			"vitaminK1": true,
+			"vitaminK2": true,
 			"selenium": true,
 			"polyphenols": 0,
 			"flavonoids": 0,
@@ -15394,7 +15897,9 @@
 			"tyrosine": 31,
 			"solubleFiber": 0,
 			"insolubleFiber": 0,
-			"fiber": 0
+			"fiber": 0,
+			"vitaminK1": 0,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 0.2,
@@ -15411,8 +15916,8 @@
 			"palmitoleicAcid": 0,
 			"vitaminE": true,
 			"vitaminK": true,
-			"vitaminK1": 0,
-			"vitaminK2": 0,
+			"vitaminK1": true,
+			"vitaminK2": true,
 			"selenium": true,
 			"polyphenols": 0,
 			"flavonoids": 0,
@@ -15485,7 +15990,9 @@
 			"tyrosine": 108,
 			"solubleFiber": 0,
 			"insolubleFiber": 0,
-			"fiber": 0
+			"fiber": 0,
+			"vitaminK1": 0.2,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 0.7,
@@ -15502,8 +16009,8 @@
 			"palmitoleicAcid": 0,
 			"vitaminE": true,
 			"vitaminK": true,
-			"vitaminK1": 0.2,
-			"vitaminK2": 0,
+			"vitaminK1": true,
+			"vitaminK2": true,
 			"selenium": true,
 			"polyphenols": 0,
 			"flavonoids": 0,
@@ -15576,7 +16083,9 @@
 			"tyrosine": 31,
 			"solubleFiber": 0,
 			"insolubleFiber": 0,
-			"fiber": 0
+			"fiber": 0,
+			"vitaminK1": 0.1,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 0.4,
@@ -15593,8 +16102,8 @@
 			"palmitoleicAcid": 0,
 			"vitaminE": true,
 			"vitaminK": true,
-			"vitaminK1": 0.1,
-			"vitaminK2": 0,
+			"vitaminK1": true,
+			"vitaminK2": true,
 			"selenium": true,
 			"polyphenols": 0,
 			"flavonoids": 0,
@@ -15667,7 +16176,9 @@
 			"tyrosine": 108,
 			"solubleFiber": 0,
 			"insolubleFiber": 0,
-			"fiber": 0
+			"fiber": 0,
+			"vitaminK1": 0.2,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 1.5,
@@ -15684,8 +16195,8 @@
 			"palmitoleicAcid": 0.1,
 			"vitaminE": true,
 			"vitaminK": true,
-			"vitaminK1": 0.2,
-			"vitaminK2": 0,
+			"vitaminK1": true,
+			"vitaminK2": true,
 			"selenium": true,
 			"polyphenols": 0,
 			"flavonoids": 0,
@@ -15750,7 +16261,9 @@
 			"glycine": 87,
 			"proline": 128,
 			"tyrosine": 49,
-			"fiber": 2
+			"fiber": 2,
+			"vitaminK1": 984,
+			"vitaminK2": 0
 		},
 		"longevity": {
 			"saturatedFat": 0.08,
@@ -15765,8 +16278,8 @@
 			"linoleicAcid": 0.069,
 			"vitaminE": true,
 			"vitaminK": true,
-			"vitaminK1": 984,
-			"vitaminK2": 0,
+			"vitaminK1": true,
+			"vitaminK2": true,
 			"selenium": true,
 			"carotenoids": 3,
 			"lutein": 3.3,

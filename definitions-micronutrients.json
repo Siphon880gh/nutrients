@@ -1138,6 +1138,68 @@
       "K1 supports clotting; K2 supports the calcium-routing system that keeps bones strong and arteries flexible with age."
     ]
   },
+  "vitaminK1": {
+    "tooLow": [
+      "Low K1 (phylloquinone) mainly affects clotting and bone proteins when green vegetable intake is very low.",
+      "Consistent leafy greens usually cover K1."
+    ],
+    "enough": [
+      "K1 from plants supports clotting and works with vitamin D and calcium for bone metabolism.",
+      "A serving of leafy greens most days is a simple baseline."
+    ],
+    "tooHigh": [
+      "Food K1 is safe; high supplemental K1 may interact with blood thinners (warfarin)—consult a clinician if on anticoagulants."
+    ],
+    "foodSources": [
+      "Spinach & kale",
+      "Collard & turnip greens",
+      "Broccoli",
+      "Brussels sprouts",
+      "Lettuce",
+      "Asparagus",
+      "Parsley"
+    ],
+    "male": [
+      "K1 activates clotting factors and osteocalcin for bone mineralization alongside vitamin D and calcium."
+    ],
+    "female": [
+      "K1 supports bone matrix proteins—especially important when green vegetable intake is inconsistent."
+    ],
+    "antiAging": [
+      "K1 supports the clotting and bone-protein systems that work with vitamin D and calcium as you age."
+    ]
+  },
+  "vitaminK2": {
+    "tooLow": [
+      "Low K2 (menaquinone) is debated for bone and arterial health, especially with high calcium and low K overall.",
+      "Fermented foods and animal products supply most dietary K2."
+    ],
+    "enough": [
+      "K2 may help activate proteins that regulate where calcium deposits; research is strongest in deficiency and CKD contexts.",
+      "Natto, cheese, and egg yolks are notable sources."
+    ],
+    "tooHigh": [
+      "Food K2 is safe; very high supplemental K2 may interact with blood thinners (warfarin)—consult a clinician if on anticoagulants."
+    ],
+    "foodSources": [
+      "Natto",
+      "Gouda & Brie",
+      "Egg yolks",
+      "Chicken & pork",
+      "Beef liver",
+      "Sauerkraut",
+      "Butter (grass-fed, variable)"
+    ],
+    "male": [
+      "K2 (MK-7 from natto, MK-4 from animal foods) may reduce arterial calcification risk when intake is adequate."
+    ],
+    "female": [
+      "K2 helps direct calcium to bones rather than soft tissue—especially relevant post-menopause."
+    ],
+    "antiAging": [
+      "K2 activates matrix Gla protein (MGP) which prevents calcium from depositing in arteries—a hallmark of vascular aging."
+    ]
+  },
   "phosphorus": {
     "tooLow": [
       "Low phosphorus (hypophosphatemia) causes muscle weakness, bone pain, and impaired energy metabolism—rare from diet alone but possible with antacid overuse or refeeding syndrome.",
@@ -1388,6 +1450,11 @@
     "antiAging": [
       "Taurine levels decline significantly with age; a 2023 Science study showed taurine supplementation extended lifespan in mice and improved healthspan markers (bone density, muscle, immune function).",
       "Acts as a mitochondrial antioxidant and supports bile acid metabolism—both decline with aging. Shellfish, dark poultry meat, and fish are the richest food sources."
+    ],
+    "adhd": [
+      "Taurine is the most abundant free amino acid in the brain and acts as a neuromodulator—binding glycine and GABA-A receptors to calm glutamate-driven excitability alongside dopamine and norepinephrine balance.",
+      "ADHD animal models (spontaneously hypertensive rats) show high-dose taurine can reduce hyperactivity and modulate striatal dopamine transporter (DAT) expression and dopamine uptake; low vs high doses can have opposite effects, so food-first intake matters.",
+      "Shellfish, dark poultry, beef, fish, eggs, and dairy are the practical food sources; human ADHD trials are still limited, but taurine is generally well tolerated and worth tracking when stimulant side effects or plant-heavy diets leave little from food."
     ]
   }
 }

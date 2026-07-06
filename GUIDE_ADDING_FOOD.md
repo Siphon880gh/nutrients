@@ -53,7 +53,7 @@ Pick a realistic, easy-to-measure portion and state its unit (oz, g, cup, tbsp, 
 
 | Key (`mg`)                                                                                                                                                 | Key (`mcg`)                                                                                     | Key (`g`)                                     |
 | ---------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- | --------------------------------------------- |
-| `sodium`, `potassium`, `calcium`, `iron`, `magnesium`, `zinc`, `manganese`, `vitaminE`, `thiamin`, `riboflavin`, `niacin`, `pantothenicAcid`, `vitaminB6`, `vitaminC`, `phosphorus`, `choline`, `chloride` | `copper`, `selenium`, `chromium`, `iodine`, `vitaminA`, `vitaminD`, `vitaminK`, `biotin`, `folate`, `vitaminB12`, `molybdenum` | `fiber`, `solubleFiber`, `insolubleFiber`     |
+| `sodium`, `potassium`, `calcium`, `iron`, `magnesium`, `zinc`, `manganese`, `vitaminE`, `thiamin`, `riboflavin`, `niacin`, `pantothenicAcid`, `vitaminB6`, `vitaminC`, `phosphorus`, `choline`, `chloride` | `copper`, `selenium`, `chromium`, `iodine`, `vitaminA`, `vitaminD`, `vitaminK`, `vitaminK1`, `vitaminK2`, `biotin`, `folate`, `vitaminB12`, `molybdenum` | `fiber`, `solubleFiber`, `insolubleFiber`     |
 
 Amino acids (all in **mg**): `histidine`, `isoleucine`, `leucine`, `lysine`, `methionine`, `phenylalanine`, `threonine`, `tryptophan`, `valine`, `arginine`, `cysteine`, `glutamine`, `glycine`, `proline`, `tyrosine`, `taurine`.
 
@@ -63,7 +63,7 @@ Amino acids (all in **mg**): `histidine`, `isoleucine`, `leucine`, `lysine`, `me
 
 - Grams (`g`): `saturatedFat`, `monounsaturatedFat`, `polyunsaturatedFat`, `transFat`, `omega3`, `omega6`, `omega9`, `ala`, `epa`, `dha`, `linoleicAcid`, `arachidonicAcid`, `oleicAcid`, `palmitoleicAcid`, `methionine`
 - Milligrams (`mg`): `cholesterol`, `polyphenols`, `nitrate`, `flavonoids`, `carotenoids`, `lutein`, `curcumin`, `resveratrol`, `coq10`, `sulforaphane`, `phosphorus`, `choline`, `carnitine`, `betaine`, `taurine`
-- Micrograms (`mcg`): `vitaminK`, `vitaminK1`, `vitaminK2`, `selenium`, `copper`
+- Micrograms (`mcg`): `selenium`, `copper`
 
 ### `carbQuality`
 
@@ -76,9 +76,11 @@ Amino acids (all in **mg**): `histidine`, `isoleucine`, `leucine`, `lysine`, `me
 
 ## 4. Shared keys: number in `micros`, `true` in `longevity`
 
-A few nutrients appear in **both** panels: `vitaminE`, `vitaminK`, `selenium`, `copper`, `methionine`, `phosphorus`, `choline`, `taurine`.
+A few nutrients appear in **both** panels: `vitaminE`, `vitaminK`, `vitaminK1`, `vitaminK2`, `selenium`, `copper`, `methionine`, `phosphorus`, `choline`, `taurine`.
 
 Rule: put the **numeric amount in `micros`**, and set the same key in `longevity` to `true`. The app reads the number from `micros` and uses `true` as a "look it up over there" flag.
+
+**Vitamin K breakdown:** keep total `vitaminK` in `micros` (and `vitaminK: true` in `longevity`) for the standard DV lens. When you know the form split, also add `vitaminK1` and/or `vitaminK2` in `micros` (mcg) with `vitaminK1: true` and/or `vitaminK2: true` in `longevity`. K1+K2 does not need to equal total K — they are tracked under different lenses. Omit K1/K2 when the breakdown is unknown.
 
 ```json
 "micros":    { "copper": 214, "selenium": 1, "vitaminE": 0.15 },

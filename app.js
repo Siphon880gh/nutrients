@@ -456,6 +456,7 @@
         "vitaminC",
         "calcium",
         "vitaminB12",
+        "taurine",
       ],
       longevityNutrients: ["epa", "dha"],
     },
@@ -477,6 +478,8 @@
         "vitaminC",
         "vitaminE",
         "vitaminK",
+        "vitaminK1",
+        "vitaminK2",
         "selenium",
         "copper",
         "magnesium",
@@ -572,6 +575,8 @@
     { key: "vitaminD", label: "Vitamin D", unit: "mcg", code: "d" },
     { key: "vitaminE", label: "Vitamin E", unit: "mg", code: "e" },
     { key: "vitaminK", label: "Vitamin K", unit: "mcg", code: "vk" },
+    { key: "vitaminK1", label: "Vitamin K1", unit: "mcg", code: "k1" },
+    { key: "vitaminK2", label: "Vitamin K2", unit: "mcg", code: "k2" },
     { key: "thiamin", label: "Thiamin (B1)", unit: "mg", code: "b1" },
     { key: "riboflavin", label: "Riboflavin (B2)", unit: "mg", code: "b2" },
     { key: "niacin", label: "Niacin (B3)", unit: "mg", code: "b3" },
@@ -848,12 +853,30 @@
     { microKey: "iron", label: "Iron — thyroid peroxidase", limiting: false },
     { microKey: "zinc", label: "Zinc — T3 production", limiting: false },
     { microKey: "tyrosine", label: "Tyrosine — hormone precursor", limiting: false },
+    { microKey: "vitaminA", label: "Vitamin A — T4→T3 & receptor activation", limiting: false },
+  ];
+
+  var LONGEVITY_THYROID_FROM_LONGEVITY = [
+    { key: "omega3", label: "Omega-3 (total) — inflammation & thyroid protection", limiting: false },
+  ];
+
+  var LONGEVITY_THYROID_WATCH_FROM_LONGEVITY = [
+    { key: "omega6", label: "Omega-6 (total)", limiting: true },
   ];
 
   var LONGEVITY_BONE_FROM_MICRO = [
     { microKey: "calcium", label: "Calcium", limiting: false },
     { microKey: "magnesium", label: "Magnesium", limiting: false },
     { microKey: "vitaminD", label: "Vitamin D", limiting: false },
+    { microKey: "vitaminK", label: "Vitamin K — bone matrix mineralization", limiting: false },
+    { microKey: "vitaminK1", label: "Vitamin K1 — osteocalcin activation", limiting: false },
+    { microKey: "vitaminK2", label: "Vitamin K2 — directs calcium to bone", limiting: false },
+  ];
+
+  var LONGEVITY_CALCIFICATION_AIM_FROM_MICRO = [
+    { microKey: "vitaminK", label: "Vitamin K — calcium routing", limiting: false },
+    { microKey: "vitaminK1", label: "Vitamin K1 — clotting & bone proteins", limiting: false },
+    { microKey: "vitaminK2", label: "Vitamin K2 — arterial calcification guard", limiting: false },
   ];
 
   var LONGEVITY_STRESS_FROM_MICRO = [
@@ -927,6 +950,48 @@
     { key: "lutein", label: "Lutein", limiting: false },
     { key: "resveratrol", label: "Resveratrol", limiting: false },
     { key: "curcumin", label: "Curcumin", limiting: false },
+  ];
+
+  var LONGEVITY_VISCERAL_FAT_REDUCE_BUILDUP_FROM_MICRO = [
+    { microKey: "magnesium", label: "Magnesium — glucose & insulin signaling", limiting: false },
+    { microKey: "vitaminD", label: "Vitamin D — body composition support", limiting: false },
+    { microKey: "chromium", label: "Chromium — glucose metabolism support", limiting: false },
+    { microKey: "leucine", label: "Leucine — muscle retention", limiting: false },
+  ];
+
+  var LONGEVITY_VISCERAL_FAT_REDUCE_BUILDUP_FROM_LONGEVITY = [
+    { key: "epa", label: "EPA", limiting: false },
+    { key: "dha", label: "DHA", limiting: false },
+    { key: "monounsaturatedFat", label: "Monounsaturated fat", limiting: false },
+  ];
+
+  var LONGEVITY_VISCERAL_FAT_MOBILIZE_FROM_MICRO = [
+    { microKey: "thiamin", label: "Thiamin (B1) — glucose → ATP", limiting: false },
+    { microKey: "riboflavin", label: "Riboflavin (B2) — FAD for oxidation", limiting: false },
+    { microKey: "niacin", label: "Niacin (B3) — NAD+ for fuel oxidation", limiting: false },
+    {
+      microKey: "pantothenicAcid",
+      label: "Pantothenic acid (B5) — coenzyme A",
+      limiting: false,
+    },
+    { microKey: "biotin", label: "Biotin (B7) — carboxylase cofactor", limiting: false },
+    { microKey: "magnesium", label: "Magnesium — ATP stability", limiting: false },
+    { microKey: "iron", label: "Iron — cytochrome electron transport", limiting: false },
+  ];
+
+  var LONGEVITY_VISCERAL_FAT_MOBILIZE_FROM_LONGEVITY = [
+    { key: "carnitine", label: "L-Carnitine — fatty-acid shuttle to mitochondria", limiting: false },
+    { key: "coq10", label: "Coenzyme Q10 — mitochondrial electron transport", limiting: false },
+  ];
+
+  var LONGEVITY_VISCERAL_FAT_GLP_FROM_MICRO = [
+    { microKey: "fiber", label: "Fiber — prebiotic for gut GLP-1 support", limiting: false },
+  ];
+
+  var LONGEVITY_VISCERAL_FAT_GLP_FROM_LONGEVITY = [
+    { key: "polyphenols", label: "Polyphenols — microbiome & incretin support", limiting: false },
+    { key: "flavonoids", label: "Flavonoids — microbiome & incretin support", limiting: false },
+    { key: "resveratrol", label: "Resveratrol — gut incretin signaling", limiting: false },
   ];
 
   var LONGEVITY_FAT_GAIN_AGING_FROM_MICRO = [
@@ -1061,6 +1126,8 @@
     { microKey: "vitaminD", label: "Vitamin D — bone & muscle support", limiting: false },
     { microKey: "magnesium", label: "Magnesium — bone & sleep support", limiting: false },
     { microKey: "vitaminK", label: "Vitamin K — bone matrix mineralization", limiting: false },
+    { microKey: "vitaminK1", label: "Vitamin K1 — bone matrix support", limiting: false },
+    { microKey: "vitaminK2", label: "Vitamin K2 — calcium routing after estrogen drop", limiting: false },
     { microKey: "fiber", label: "Fiber — cardiometabolic support", limiting: false },
     { microKey: "vitaminB6", label: "Vitamin B6 — mood & homocysteine support", limiting: false },
     { microKey: "vitaminB12", label: "Vitamin B12 — nerve & blood support", limiting: false },
@@ -1192,6 +1259,7 @@
 
   var LONGEVITY_VASCULAR_LOWER_PRIORITY_FROM_LONGEVITY = [
     { key: "vitaminK", label: "Vitamin K — calcium routing" },
+    { key: "vitaminK1", label: "Vitamin K1 — clotting & bone proteins" },
     { key: "vitaminK2", label: "Vitamin K2 — arterial calcification" },
     { key: "coq10", label: "CoQ10 — trial data mostly supplemental" },
   ];
@@ -2379,7 +2447,13 @@
       "  - micros.vitaminE: sunflower seeds, almonds, spinach, avocado, olive oil (mg)"
     );
     lines.push(
-      "  - micros.vitaminK: kale, spinach, broccoli, natto, egg yolks (mcg)"
+      "  - micros.vitaminK: kale, spinach, broccoli, natto, egg yolks (mcg; total K — keep alongside K1/K2 when breakdown is known)"
+    );
+    lines.push(
+      "  - micros.vitaminK1: leafy greens, broccoli, avocado, plant oils (mcg; phylloquinone — omit if unknown)"
+    );
+    lines.push(
+      "  - micros.vitaminK2: natto, egg yolks, cheese, liver, fermented foods (mcg; menaquinone — omit if unknown)"
     );
     lines.push(
       "  - micros.thiamin: pork, fortified grains, legumes, sunflower seeds (mg)"
@@ -5162,12 +5236,65 @@
     );
   }
 
+  function thyroidOmega3TipHtml() {
+    return (
+      '<aside class="dashboard__longevity-processed-note dashboard__longevity-processed-note--section" role="note">' +
+      '<p class="dashboard__longevity-processed-note-text">' +
+      "Omega-3 fatty acids are highly important for thyroid health. They reduce inflammation and oxidative stress, which helps protect the thyroid gland from damage. EPA and DHA also produce metabolic compounds called resolvins that are crucial for managing autoimmune conditions like Hashimoto's disease. Additionally, they ensure cell membrane integrity for proper hormone signaling." +
+      "</p>" +
+      "</aside>"
+    );
+  }
+
+  function thyroidVitaminATipHtml() {
+    return (
+      '<aside class="dashboard__longevity-processed-note dashboard__longevity-processed-note--section" role="note">' +
+      '<p class="dashboard__longevity-processed-note-text">' +
+      "Vitamin A is essential for proper thyroid function, largely because it works hand-in-hand with iodine. It helps your body activate thyroid receptors and is required to convert the inactive thyroid hormone T4 into the active energy-boosting form, T3. Without enough Vitamin A, iodine struggles to do its job properly." +
+      "</p>" +
+      "</aside>"
+    );
+  }
+
   function stressResilienceTipHtml() {
     return (
       '<aside class="dashboard__longevity-processed-note dashboard__longevity-processed-note--section" role="note">' +
       '<p class="dashboard__longevity-processed-note-text">' +
       "<strong>Adaptogens, cortisol, and adrenal support:</strong> Chronic stress drains magnesium, B vitamins, and vitamin C faster than calm periods. Adaptogen herbs and mushrooms—ashwagandha, rhodiola, holy basil, reishi, cordyceps—are studied for stress tolerance, but this section tracks the underlying nutrients from food that support cortisol balance and help prevent the depletion pattern sometimes called adrenal fatigue… " +
       '<button type="button" class="dashboard__longevity-tip-link" data-longevity-def="sectionStressResilience" aria-haspopup="dialog">Read more</button>' +
+      "</p>" +
+      "</aside>"
+    );
+  }
+
+  function visceralFatBuildupTipHtml() {
+    return (
+      '<aside class="dashboard__longevity-processed-note dashboard__longevity-processed-note--section" role="note">' +
+      '<p class="dashboard__longevity-processed-note-text">' +
+      "<strong>Reducing buildup:</strong> Visceral fat is not only about calories—insulin sensitivity and body composition matter. Magnesium, vitamin D, chromium, and leucine support how cells handle glucose and retain muscle; EPA, DHA, and monounsaturated fat support a lower-inflammatory fat-storage pattern. Fiber and protein add satiety so excess calories are less likely to land as deep abdominal fat… " +
+      '<button type="button" class="dashboard__longevity-tip-link" data-longevity-def="sectionVisceralFat" aria-haspopup="dialog">Read more</button>' +
+      "</p>" +
+      "</aside>"
+    );
+  }
+
+  function visceralFatMobilizationTipHtml() {
+    return (
+      '<aside class="dashboard__longevity-processed-note dashboard__longevity-processed-note--section" role="note">' +
+      '<p class="dashboard__longevity-processed-note-text">' +
+      "<strong>Mobilizing fat for energy:</strong> Burning stored fat—including visceral fat—depends on mitochondrial oxidation. B vitamins build NAD+, FAD, and coenzyme A; carnitine shuttles fatty acids into mitochondria; CoQ10 carries electrons in the respiratory chain; magnesium and iron support ATP and cytochromes. When these cofactors run low, fat tends to stay stored even in a calorie deficit… " +
+      '<button type="button" class="dashboard__longevity-tip-link" data-longevity-def="sectionVisceralFat" aria-haspopup="dialog">Read more</button>' +
+      "</p>" +
+      "</aside>"
+    );
+  }
+
+  function visceralFatGlpTipHtml() {
+    return (
+      '<aside class="dashboard__longevity-processed-note dashboard__longevity-processed-note--section" role="note">' +
+      '<p class="dashboard__longevity-processed-note-text">' +
+      "<strong>Gut incretin signaling:</strong> Soluble fiber feeds bacteria that produce short-chain fatty acids and stimulate incretin hormones (GLP-1-like effects)—research links this pattern to lower visceral adiposity. Polyphenols, flavonoids, and resveratrol from plants further reshape the microbiome toward lower fat storage. Fermented foods add benefit but are not counted here… " +
+      '<button type="button" class="dashboard__longevity-tip-link" data-longevity-def="sectionVisceralFat" aria-haspopup="dialog">Read more</button>' +
       "</p>" +
       "</aside>"
     );
@@ -6344,12 +6471,63 @@
     return (avgDailyLongevity(key, weekTotal) / dv) * 100;
   }
 
+  function effectiveDailyOmega3FromWeek(weekLongevity) {
+    var avg = function (k) {
+      return avgDailyLongevity(k, weekLongevity[k] || 0);
+    };
+    var total = avg("omega3");
+    if (total > 0) return total;
+    var fromParts = avg("epa") + avg("dha") + avg("ala");
+    return fromParts > 0 ? fromParts : 0;
+  }
+
+  function omega6To3RowDisplay(derived) {
+    var ratio = derived.omega6To3;
+    var idealMax = longevityDvStatus.omega6To3IdealMax;
+    if (ratio != null && !isNaN(ratio)) {
+      return {
+        note:
+          ratio <= idealMax
+            ? "≤ " + idealMax + " ideal"
+            : "> " + idealMax + " high",
+        text: fmtNum(ratio) + ":1",
+      };
+    }
+    if (derived.omega6G > 0 && derived.effectiveOmega3G <= 0) {
+      return { note: "omega-6 without ω-3", text: "—" };
+    }
+    return { note: "—", text: "—" };
+  }
+
+  function longevityRowFromEffectiveOmega3(weekLongevity, weekMicro, label) {
+    var field = longevityFieldByKey("omega3");
+    if (!field) return "";
+    var daily = effectiveDailyOmega3FromWeek(weekLongevity);
+    var target = microRowTargetDisplay(field, daily, "longevity", weekMicro);
+    var amtText = daily > 0 ? fmtNum(daily) + " g" : "—";
+    return longevityRowHtml(
+      label || field.label,
+      amtText,
+      daily > 0 ? target.text : "—",
+      daily > 0 ? target.pct : null,
+      "",
+      false,
+      "omega3",
+      false,
+      null,
+      "omega3",
+      "longevity",
+      daily > 0 ? target.kindLabel : null,
+      daily > 0 ? target.refKey : null
+    );
+  }
+
   function computeLongevityDerived(weekLongevity, weekMicro) {
     var avg = function (k) {
       return avgDailyLongevity(k, weekLongevity[k] || 0);
     };
     var o6 = avg("omega6");
-    var o3 = avg("omega3");
+    var o3 = effectiveDailyOmega3FromWeek(weekLongevity);
     var sat = avg("saturatedFat");
     var unsat = avg("monounsaturatedFat") + avg("polyunsaturatedFat");
     var ratioO6O3 = o3 > 0 ? o6 / o3 : null;
@@ -6366,6 +6544,8 @@
     var ratioKNa = sodiumMg > 0 ? potassiumMg / sodiumMg : null;
     return {
       omega6To3: ratioO6O3,
+      omega6G: o6,
+      effectiveOmega3G: o3,
       satToUnsat: ratioSatUnsat,
       potassiumToSodium: ratioKNa,
       epaPlusDha: avg("epa") + avg("dha"),
@@ -6450,6 +6630,8 @@
   };
 
   var NO_STANDALONE_REF_MICRO_KEYS = {
+    vitaminK1: true,
+    vitaminK2: true,
     cysteine: true,
     glycine: true,
     proline: true,
@@ -7666,12 +7848,9 @@
         longevityListClose()
     );
 
-    var o6o3 = derived.omega6To3;
-    var o6o3Text = o6o3 == null || isNaN(o6o3) ? "—" : fmtNum(o6o3) + ":1";
-    var o6o3Note =
-      o6o3 != null && o6o3 <= longevityDvStatus.omega6To3IdealMax
-        ? "≤ " + longevityDvStatus.omega6To3IdealMax + " ideal"
-        : "—";
+    var o6o3Display = omega6To3RowDisplay(derived);
+    var o6o3Note = o6o3Display.note;
+    var o6o3Text = o6o3Display.text;
     var satUnsat = derived.satToUnsat;
     var transOk = derived.transFatG <= longevityDvStatus.transFatMaxGPerDay;
     var transPct = avgDailyLongevityPct("transFat", weekLongevity.transFat || 0);
@@ -7740,8 +7919,10 @@
     html += longevitySectionWrap(
       "Thyroid health",
       "sectionThyroid",
-      '<p class="dashboard__longevity-note">Same iodine and cofactor values as your micro entries—grouped here because thyroid needs tighten with age, especially after 60.</p>' +
-        thyroidHealthTipHtml(),
+      '<p class="dashboard__longevity-note">Same iodine, vitamin A, and cofactor values as your micro entries plus omega-3 from longevity—grouped here because thyroid needs tighten with age, especially after 60.</p>' +
+        thyroidHealthTipHtml() +
+        thyroidOmega3TipHtml() +
+        thyroidVitaminATipHtml(),
       longevityListOpen() +
         longevitySubgroupHtml("From your micro entries", "micro") +
         LONGEVITY_THYROID_FROM_MICRO.map(function (item) {
@@ -7752,13 +7933,38 @@
             weekMicro
           );
         }).join("") +
+        longevitySubgroupHtml("From your longevity entries", "compounds") +
+        LONGEVITY_THYROID_FROM_LONGEVITY.map(function (item) {
+          if (item.key === "omega3") {
+            return longevityRowFromEffectiveOmega3(weekLongevity, weekMicro, item.label);
+          }
+          var field = longevityFieldByKey(item.key);
+          if (!field) return "";
+          return longevityRowFromLongevityField(field, weekLongevity, weekMicro);
+        }).join("") +
+        longevitySubgroupHtml("Watch — lower is better", "limit") +
+        LONGEVITY_THYROID_WATCH_FROM_LONGEVITY.map(function (item) {
+          var field = longevityFieldByKey(item.key);
+          if (!field) return "";
+          return longevityRowFromLongevityField(field, weekLongevity, weekMicro);
+        }).join("") +
+        longevityRowHtml(
+          "Omega-6 : Omega-3",
+          o6o3Note,
+          o6o3Text,
+          null,
+          "dashboard__longevity-row--computed",
+          true,
+          "omega6To3",
+          false
+        ) +
         longevityListClose()
     );
 
     html += longevitySectionWrap(
       "Bone density",
       "sectionBoneDensity",
-      '<p class="dashboard__longevity-note">Same calcium, magnesium, and vitamin D values as your micro entries—grouped here for fracture and osteoporosis prevention.</p>',
+      '<p class="dashboard__longevity-note">Same calcium, magnesium, vitamin D, and vitamin K values as your micro entries—plus K1/K2 when you have a breakdown—grouped here for fracture and osteoporosis prevention.</p>',
       longevityListOpen() +
         longevitySubgroupHtml("From your micro entries", "micro") +
         LONGEVITY_BONE_FROM_MICRO.map(function (item) {
@@ -7898,9 +8104,12 @@
     html += longevitySectionWrap(
       "Visceral fat",
       "sectionVisceralFat",
-      '<p class="dashboard__longevity-note">Visceral fat is the deep abdominal fat linked to insulin resistance, inflammation, and cardiometabolic risk. Research shows fiber, protein, and antioxidants can help reduce it—especially alongside exercise, sleep, and stress management. Track the nutrients below from your food entries.</p>',
+      '<p class="dashboard__longevity-note">Visceral fat is the deep abdominal fat linked to insulin resistance, inflammation, and cardiometabolic risk. Track nutrients below that help reduce buildup, mobilize stored fat for energy, and support gut incretin signaling—alongside exercise, sleep, and stress management.</p>' +
+        visceralFatBuildupTipHtml() +
+        visceralFatMobilizationTipHtml() +
+        visceralFatGlpTipHtml(),
       longevityListOpen() +
-        longevitySubgroupHtml("Aim — higher % DV is better", "aim") +
+        longevitySubgroupHtml("Nutrients that help reduce visceral fat buildup", "aim") +
         longevityRowFromMicroKey(
           "fiber",
           "Fiber — satiety & gut support",
@@ -7908,6 +8117,19 @@
           weekMicro
         ) +
         longevityRowFromProtein(weekMacro) +
+        LONGEVITY_VISCERAL_FAT_REDUCE_BUILDUP_FROM_MICRO.map(function (item) {
+          return longevityRowFromMicroKey(
+            item.microKey,
+            item.label,
+            !!item.limiting,
+            weekMicro
+          );
+        }).join("") +
+        LONGEVITY_VISCERAL_FAT_REDUCE_BUILDUP_FROM_LONGEVITY.map(function (item) {
+          var field = longevityFieldByKey(item.key);
+          if (!field) return "";
+          return longevityRowFromLongevityField(field, weekLongevity, weekMicro);
+        }).join("") +
         longevitySubgroupHtml("Antioxidants — higher % DV is better", "aim") +
         LONGEVITY_VISCERAL_FAT_ANTIOXIDANTS_FROM_MICRO.map(function (item) {
           return longevityRowFromMicroKey(
@@ -7919,6 +8141,37 @@
         }).join("") +
         LONGEVITY_VISCERAL_FAT_ANTIOXIDANTS_FROM_LONGEVITY.map(function (item) {
           return longevityRowFromLongevityOrMicro(item, weekLongevity, weekMicro);
+        }).join("") +
+        longevitySubgroupHtml(
+          "Nutrients that support mobilizing fat for energy",
+          "aim"
+        ) +
+        LONGEVITY_VISCERAL_FAT_MOBILIZE_FROM_MICRO.map(function (item) {
+          return longevityRowFromMicroKey(
+            item.microKey,
+            item.label,
+            !!item.limiting,
+            weekMicro
+          );
+        }).join("") +
+        LONGEVITY_VISCERAL_FAT_MOBILIZE_FROM_LONGEVITY.map(function (item) {
+          var field = longevityFieldByKey(item.key);
+          if (!field) return "";
+          return longevityRowFromLongevityField(field, weekLongevity, weekMicro);
+        }).join("") +
+        longevitySubgroupHtml("Gut incretin support (GLP-like)", "aim") +
+        LONGEVITY_VISCERAL_FAT_GLP_FROM_MICRO.map(function (item) {
+          return longevityRowFromMicroKey(
+            item.microKey,
+            item.label,
+            !!item.limiting,
+            weekMicro
+          );
+        }).join("") +
+        LONGEVITY_VISCERAL_FAT_GLP_FROM_LONGEVITY.map(function (item) {
+          var field = longevityFieldByKey(item.key);
+          if (!field) return "";
+          return longevityRowFromLongevityField(field, weekLongevity, weekMicro);
         }).join("") +
         longevitySubgroupHtml("Jump to related areas", "neutral") +
         longevityNavJumpRowHtml("sectionFatGain", "Fat gain") +
@@ -8233,9 +8486,18 @@
     html += longevitySectionWrap(
       "Calcification & vascular balance",
       "sectionCalcification",
-      '<p class="dashboard__longevity-note">Phosphorus also appears under compounds above. Excess absorbable phosphate from cola and processed foods can pull calcium into arteries even when calcium and vitamin D intake looks fine.</p>' +
+      '<p class="dashboard__longevity-note">Phosphorus also appears under compounds above. Excess absorbable phosphate from cola and processed foods can pull calcium into arteries even when calcium and vitamin D intake looks fine. Vitamin K (total), K1, and K2 are tracked separately so you can view calcium routing under different lenses.</p>' +
         calcificationPhosphorusTipHtml(),
       longevityListOpen() +
+        longevitySubgroupHtml("Aim — higher % DV is better", "aim") +
+        LONGEVITY_CALCIFICATION_AIM_FROM_MICRO.map(function (item) {
+          return longevityRowFromMicroKey(
+            item.microKey,
+            item.label,
+            !!item.limiting,
+            weekMicro
+          );
+        }).join("") +
         longevitySubgroupHtml("Watch — lower % DV is better", "limit") +
         LONGEVITY_CALCIFICATION_FIELD_KEYS.map(function (key) {
           var field = longevityFieldByKey(key);
