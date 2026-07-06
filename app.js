@@ -1350,19 +1350,23 @@
     var field = longevityFieldByKey(key);
     if (!field) return "";
     var value = weekLongevity[key] || 0;
-    var pct = avgDailyLongevityPct(key, value);
+    var daily = avgDailyLongevity(key, value);
+    var target = microRowTargetDisplay(field, daily, "longevity", {});
     return longevityRowHtml(
       label,
-      value > 0 ? fmtNum(avgDailyLongevity(key, value)) + " " + field.unit : "—",
-      pct == null || isNaN(pct) ? "—" : fmtNum(pct) + "%",
-      pct,
+      value > 0 ? fmtNum(daily) + " " + field.unit : "—",
+      target.text,
+      target.pct,
       "",
       false,
       key,
       false,
       null,
       key,
-      "longevity"
+      "longevity",
+      target.kindLabel,
+      target.refKey,
+      target.reqAmount
     );
   }
 
@@ -6520,7 +6524,8 @@
       "omega3",
       "longevity",
       daily > 0 ? target.kindLabel : null,
-      daily > 0 ? target.refKey : null
+      daily > 0 ? target.refKey : null,
+      daily > 0 ? target.reqAmount : null
     );
   }
 
@@ -7479,7 +7484,17 @@
     }
   }
 
-  function longevityBarHtml(pct, limiting) {
+  function longevityBarRefPopoverLabel(reqAmount) {
+    if (!reqAmount) return "";
+    return reqAmount.replace(/\s*\/day\s*$/i, "").trim();
+  }
+
+  function longevityBarShowsRefNotch(kindLabel, refAmount, pct) {
+    if (pct == null || isNaN(pct) || !refAmount) return false;
+    return !!targetRefKindKey(kindLabel);
+  }
+
+  function longevityBarHtml(pct, limiting, kindLabel, refAmount) {
     if (pct == null || isNaN(pct)) {
       return (
         '<div class="dashboard__longevity-bar dashboard__longevity-bar--empty" aria-hidden="true"></div>'
@@ -7488,14 +7503,26 @@
     var tier = tierForLongevityPct(pct, !!limiting);
     var width = Math.min(100, Math.max(4, pct));
     var color = tier ? tier.color : "#c8c8c4";
+    var refLabel = longevityBarRefPopoverLabel(refAmount);
+    var showNotch = longevityBarShowsRefNotch(kindLabel, refAmount, pct);
+    var notchHtml = showNotch
+      ? '<span class="dashboard__longevity-bar-notch" tabindex="0" aria-label="100% reference: ' +
+        escapeAttr(refLabel) +
+        '"><span class="dashboard__longevity-bar-notch-popover" role="tooltip">' +
+        escapeHtml(refLabel) +
+        "</span></span>"
+      : "";
     return (
+      '<div class="dashboard__longevity-bar-wrap">' +
       '<div class="dashboard__longevity-bar" role="presentation" title="' +
       escapeAttr(fmtNum(pct) + "% of daily reference") +
       '"><div class="dashboard__longevity-bar-fill" style="width:' +
       escapeAttr(String(width)) +
       "%;background:" +
       escapeAttr(color) +
-      '"></div></div>'
+      '"></div></div>' +
+      notchHtml +
+      "</div>"
     );
   }
 
@@ -7615,7 +7642,8 @@
     sourcesKey,
     sourcesKind,
     kindLabel,
-    kindRefKey
+    kindRefKey,
+    refAmount
   ) {
     var tier = tierForLongevityPct(pct, !!limiting);
     var tierAttr = tier ? ' data-dv-tier="' + escapeAttr(tier.id) + '"' : "";
@@ -7677,7 +7705,7 @@
       escapeHtml(amtText) +
       "</span>" +
       pctBlock +
-      longevityBarHtml(pct, !!limiting) +
+      longevityBarHtml(pct, !!limiting, kindLabel, refAmount) +
       "</div>"
     );
   }
@@ -7706,7 +7734,8 @@
       field.key,
       "longevity",
       target.kindLabel,
-      target.refKey
+      target.refKey,
+      target.reqAmount
     );
   }
 
@@ -7733,7 +7762,8 @@
       microKey,
       "micro",
       target.kindLabel,
-      target.refKey
+      target.refKey,
+      target.reqAmount
     );
   }
 
@@ -7742,6 +7772,9 @@
     var daily = total / DAYS.length;
     var target = proteinTargetPct(daily);
     var amtText = total > 0 ? fmtNum(daily) + " g" : "—";
+    var proteinReqAmount = dailyProteinTargetG()
+      ? fmtNum(dailyProteinTargetG()) + " g/day"
+      : "";
     return longevityRowHtml(
       "Protein — satiety & lean mass",
       amtText,
@@ -7755,7 +7788,8 @@
       "protein",
       "macro",
       target.kindLabel,
-      target.refKey
+      target.refKey,
+      proteinReqAmount
     );
   }
 
@@ -8584,25 +8618,24 @@
         LONGEVITY_TMAO_LOWERING_LONGEVITY.map(function (item) {
           var field = longevityFieldByKey(item.key);
           if (!field) return "";
+          var total = weekLongevity[item.key] || 0;
+          var daily = avgDailyLongevity(item.key, total);
+          var target = microRowTargetDisplay(field, daily, "longevity", weekMicro);
           return longevityRowHtml(
             item.label,
-            weekLongevity[item.key] > 0
-              ? fmtNum(avgDailyLongevity(item.key, weekLongevity[item.key])) +
-                " " +
-                field.unit
-              : "—",
-            (function () {
-              var pct = avgDailyLongevityPct(item.key, weekLongevity[item.key] || 0);
-              return pct == null || isNaN(pct) ? "—" : fmtNum(pct) + "%";
-            })(),
-            avgDailyLongevityPct(item.key, weekLongevity[item.key] || 0),
+            total > 0 ? fmtNum(daily) + " " + field.unit : "—",
+            target.text,
+            target.pct,
             "",
             false,
             item.key,
             false,
             null,
             item.key,
-            "longevity"
+            "longevity",
+            target.kindLabel,
+            target.refKey,
+            target.reqAmount
           );
         }).join("") +
         longevityRowHtml(
