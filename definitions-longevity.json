@@ -23,6 +23,10 @@
       "Bacon & sausage",
       "Dark chocolate",
       "Whole milk"
+    ],
+    "hairLoss": [
+      "High saturated fat intake may influence testosterone and DHT levels, potentially contributing to androgenetic alopecia in susceptible individuals.",
+      "Diets high in saturated fat and red meat have been associated with higher androgen levels; swapping toward unsaturated fats may help."
     ]
   },
   "monounsaturatedFat": {
@@ -719,6 +723,32 @@
       "Acts as a mitochondrial antioxidant and supports bile acid metabolism—both decline with aging. Human trials are ongoing; food-first shellfish, dark poultry, and fish are the practical targets."
     ]
   },
+  "creatine": {
+    "tooLow": [
+      "Low creatine is not a classical deficiency—the body synthesizes about 1 g/day from arginine, glycine, and methionine.",
+      "Vegetarians and those avoiding red meat may have lower muscle creatine stores, which can affect high-intensity exercise performance."
+    ],
+    "enough": [
+      "Creatine supports ATP regeneration during short bursts of high-intensity exercise and may have cognitive benefits.",
+      "Typical omnivore diets supply 1–2 g/day from red meat, fish, and poultry; the body makes another ~1 g/day endogenously."
+    ],
+    "tooHigh": [
+      "High creatine intake from supplements or very high red meat consumption has been associated with increased DHT (dihydrotestosterone) in some studies, which may accelerate androgenetic alopecia (pattern hair loss) in genetically susceptible individuals.",
+      "A 2009 study found 3 weeks of creatine supplementation increased DHT by ~56% in rugby players. While evidence is mixed, those concerned about DHT-related hair loss may want to limit high-dose supplementation."
+    ],
+    "foodSources": [
+      "Beef & red meat",
+      "Pork",
+      "Salmon & tuna",
+      "Herring",
+      "Chicken (smaller amounts)",
+      "Cod & other white fish"
+    ],
+    "hairLoss": [
+      "High creatine intake may increase DHT conversion, potentially accelerating androgenetic alopecia in genetically susceptible individuals.",
+      "If concerned about DHT-related hair loss, consider limiting creatine supplements and very high red meat intake."
+    ]
+  },
   "sulforaphane": {
     "tooLow": [
       "No classical deficiency—low sulforaphane means infrequent cruciferous vegetables, missing easy detox-support phytochemicals.",
@@ -832,6 +862,10 @@
       "Watermelon (high GI, lower GL)",
       "Soda & juice",
       "Potatoes (variable prep)"
+    ],
+    "hairLoss": [
+      "High-glycemic diets spike insulin, which can increase androgen levels and stimulate sebum production—both linked to androgenetic alopecia progression.",
+      "Chronic high insulin may also upregulate 5-alpha reductase activity, increasing DHT conversion. Lower-GI eating patterns may help reduce these effects."
     ]
   },
   "addedSugar": {

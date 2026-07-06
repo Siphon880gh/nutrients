@@ -144,6 +144,7 @@
   );
   var microTipCaffeineEl = document.getElementById("micro-tip-caffeine");
   var microTipCataractsEl = document.getElementById("micro-tip-cataracts");
+  var microTipHairLossEl = document.getElementById("micro-tip-hair-loss");
   var caffeineTipModalEl = document.getElementById("caffeine-tip-modal");
   var caffeineTipModalDoneBtn = document.getElementById("caffeine-tip-modal-done");
   var fatsCholesterolTipModalEl = document.getElementById("fats-cholesterol-tip-modal");
@@ -547,7 +548,9 @@
         "folate",
         "vitaminB12",
         "vitaminC",
+        "iodine",
       ],
+      longevityNutrients: ["saturatedFat", "glycemicIndex", "creatine"],
     },
   };
 
@@ -1690,6 +1693,14 @@
       unit: "mg",
       code: "tau",
       group: "compounds",
+    },
+    {
+      key: "creatine",
+      label: "Creatine",
+      unit: "g",
+      code: "cre",
+      group: "compounds",
+      limiting: true,
     },
     { key: "glycemicIndex", label: "Glycemic index", unit: "GI", code: "gi", group: "glycemic" },
     {
@@ -3332,6 +3343,10 @@
 
     var html = microDefWarningSectionHtml(def) + microDefConditionSectionHtml(key, def);
 
+    if (key === "solubleFiber" || key === "insolubleFiber") {
+      html += fiberBulkingTypeHtml(key);
+    }
+
     if (def.dashboardTracking.length) {
       html +=
         '<section class="micro-def__section">' +
@@ -3409,11 +3424,31 @@
     );
   }
 
+  function fiberBulkingTypeHtml(key) {
+    if (key === "insolubleFiber") {
+      return (
+        '<section class="micro-def__section">' +
+        '<h4 class="micro-def__heading">Bulking type and how it affects transit time</h4>' +
+        '<p class="micro-def__p">Insoluble fiber passes through your digestive system largely intact, adding bulk roughage to your stool that triggers the walls and helps food pass more quickly through the stomach and intestines.</p>' +
+        "</section>"
+      );
+    }
+    if (key === "solubleFiber") {
+      return (
+        '<section class="micro-def__section">' +
+        '<h4 class="micro-def__heading">Bulking type and how it affects transit time</h4>' +
+        '<p class="micro-def__p">Soluble fiber attracts water and forms gel bulk that conforms to the space around it, slowing digestion, helping regulate blood sugar, and lowering cholesterol.</p>' +
+        "</section>"
+      );
+    }
+    return "";
+  }
+
   function insolubleToSolubleFiberCompareHtml() {
     return (
       '<section class="micro-def__section">' +
       '<h4 class="micro-def__heading">How they compare</h4>' +
-      '<p class="micro-def__p"><strong>Insoluble fiber</strong> passes through your digestive system largely intact, adding bulk roughage to your stool that triggers the intestinal walls and helps food pass more quickly.</p>' +
+      '<p class="micro-def__p"><strong>Insoluble fiber</strong> passes through your digestive system largely intact, adding bulk roughage to your stool that triggers the walls and helps food pass more quickly.</p>' +
       '<p class="micro-def__p"><strong>Top sources:</strong> Wheat bran, whole-wheat breads, brown rice, nuts, and most vegetables.</p>' +
       '<p class="micro-def__p"><strong>Soluble fiber</strong> attracts water and forms gel bulk that conforms to the space around it, slowing digestion, helping regulate blood sugar, and lowering cholesterol.</p>' +
       '<p class="micro-def__p"><strong>Top sources:</strong> Oats, barley, beans, lentils, peas, and fruits like apples and oranges.</p>' +
@@ -7290,6 +7325,18 @@
       MICRO_EXTENDED_FIELDS.forEach(function (field) {
         fields.push({ source: "micro", field: field });
       });
+      var addedLongevityKeys = {};
+      Object.keys(MICRO_CONDITION_FOCUS).forEach(function (condId) {
+        var cond = MICRO_CONDITION_FOCUS[condId];
+        (cond.longevityNutrients || []).forEach(function (key) {
+          if (addedLongevityKeys[key]) return;
+          var field = longevityFieldByKey(key);
+          if (field) {
+            addedLongevityKeys[key] = true;
+            fields.push({ source: "longevity", field: field });
+          }
+        });
+      });
     }
     return fields;
   }
@@ -7464,6 +7511,9 @@
     }
     if (microTipCataractsEl) {
       microTipCataractsEl.hidden = microConditionFocus !== "cataractsPrevention";
+    }
+    if (microTipHairLossEl) {
+      microTipHairLossEl.hidden = microConditionFocus !== "hairLoss";
     }
   }
 
