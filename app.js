@@ -482,6 +482,8 @@
         "vitaminK",
         "vitaminK1",
         "vitaminK2",
+        "vitaminK2MK4",
+        "vitaminK2MK7",
         "selenium",
         "copper",
         "magnesium",
@@ -579,6 +581,8 @@
     { key: "vitaminK", label: "Vitamin K", unit: "mcg", code: "vk" },
     { key: "vitaminK1", label: "Vitamin K1", unit: "mcg", code: "k1" },
     { key: "vitaminK2", label: "Vitamin K2", unit: "mcg", code: "k2" },
+    { key: "vitaminK2MK4", label: "MK-4 (Menaquinone-4)", unit: "mcg", code: "mk4" },
+    { key: "vitaminK2MK7", label: "MK-7 (Menaquinone-7)", unit: "mcg", code: "mk7" },
     { key: "thiamin", label: "Thiamin (B1)", unit: "mg", code: "b1" },
     { key: "riboflavin", label: "Riboflavin (B2)", unit: "mg", code: "b2" },
     { key: "niacin", label: "Niacin (B3)", unit: "mg", code: "b3" },
@@ -873,12 +877,16 @@
     { microKey: "vitaminK", label: "Vitamin K — bone matrix mineralization", limiting: false },
     { microKey: "vitaminK1", label: "Vitamin K1 — osteocalcin activation", limiting: false },
     { microKey: "vitaminK2", label: "Vitamin K2 — directs calcium to bone", limiting: false },
+    { microKey: "vitaminK2MK4", label: "MK-4 — short-acting K2 from animal foods", limiting: false },
+    { microKey: "vitaminK2MK7", label: "MK-7 — long-acting K2 from fermented foods", limiting: false },
   ];
 
   var LONGEVITY_CALCIFICATION_AIM_FROM_MICRO = [
     { microKey: "vitaminK", label: "Vitamin K — calcium routing", limiting: false },
     { microKey: "vitaminK1", label: "Vitamin K1 — clotting & bone proteins", limiting: false },
     { microKey: "vitaminK2", label: "Vitamin K2 — arterial calcification guard", limiting: false },
+    { microKey: "vitaminK2MK4", label: "MK-4 — animal-source K2 (short half-life)", limiting: false },
+    { microKey: "vitaminK2MK7", label: "MK-7 — fermented-food K2 (long half-life)", limiting: false },
   ];
 
   var LONGEVITY_STRESS_FROM_MICRO = [
@@ -1130,6 +1138,8 @@
     { microKey: "vitaminK", label: "Vitamin K — bone matrix mineralization", limiting: false },
     { microKey: "vitaminK1", label: "Vitamin K1 — bone matrix support", limiting: false },
     { microKey: "vitaminK2", label: "Vitamin K2 — calcium routing after estrogen drop", limiting: false },
+    { microKey: "vitaminK2MK4", label: "MK-4 — spread across meals for steady K2", limiting: false },
+    { microKey: "vitaminK2MK7", label: "MK-7 — once-daily K2 from fermentation", limiting: false },
     { microKey: "fiber", label: "Fiber — cardiometabolic support", limiting: false },
     { microKey: "vitaminB6", label: "Vitamin B6 — mood & homocysteine support", limiting: false },
     { microKey: "vitaminB12", label: "Vitamin B12 — nerve & blood support", limiting: false },
@@ -1263,6 +1273,8 @@
     { key: "vitaminK", label: "Vitamin K — calcium routing" },
     { key: "vitaminK1", label: "Vitamin K1 — clotting & bone proteins" },
     { key: "vitaminK2", label: "Vitamin K2 — arterial calcification" },
+    { key: "vitaminK2MK4", label: "MK-4 — animal-source K2" },
+    { key: "vitaminK2MK7", label: "MK-7 — fermented-food K2" },
     { key: "coq10", label: "CoQ10 — trial data mostly supplemental" },
   ];
 
@@ -1574,6 +1586,8 @@
     { key: "vitaminK", label: "Vitamin K", unit: "mcg", code: "k", group: "compounds" },
     { key: "vitaminK1", label: "Vitamin K1", unit: "mcg", code: "k1", group: "compounds" },
     { key: "vitaminK2", label: "Vitamin K2", unit: "mcg", code: "k2", group: "compounds" },
+    { key: "vitaminK2MK4", label: "MK-4 (Menaquinone-4)", unit: "mcg", code: "mk4", group: "compounds" },
+    { key: "vitaminK2MK7", label: "MK-7 (Menaquinone-7)", unit: "mcg", code: "mk7", group: "compounds" },
     { key: "selenium", label: "Selenium", unit: "mcg", code: "se", group: "compounds" },
     { key: "copper", label: "Copper", unit: "mcg", code: "cu", group: "compounds" },
     {
@@ -2460,6 +2474,12 @@
     );
     lines.push(
       "  - micros.vitaminK2: natto, egg yolks, cheese, liver, fermented foods (mcg; menaquinone — omit if unknown)"
+    );
+    lines.push(
+      "  - micros.vitaminK2MK4: egg yolks, meat, liver, butter, dairy (mcg; menaquinone-4 from animal foods — omit if unknown)"
+    );
+    lines.push(
+      "  - micros.vitaminK2MK7: natto, aged cheese, sauerkraut (mcg; menaquinone-7 from fermentation — omit if unknown)"
     );
     lines.push(
       "  - micros.thiamin: pork, fortified grains, legumes, sunflower seeds (mg)"
@@ -6639,6 +6659,8 @@
   var NO_STANDALONE_REF_MICRO_KEYS = {
     vitaminK1: true,
     vitaminK2: true,
+    vitaminK2MK4: true,
+    vitaminK2MK7: true,
     cysteine: true,
     glycine: true,
     proline: true,
@@ -8051,7 +8073,7 @@
     html += longevitySectionWrap(
       "Bone density",
       "sectionBoneDensity",
-      '<p class="dashboard__longevity-note">Same calcium, magnesium, vitamin D, and vitamin K values as your micro entries—plus K1/K2 when you have a breakdown—grouped here for fracture and osteoporosis prevention.</p>',
+      '<p class="dashboard__longevity-note">Same calcium, magnesium, vitamin D, and vitamin K values as your micro entries—plus K1/K2 and MK-4/MK-7 when you have a breakdown—grouped here for fracture and osteoporosis prevention.</p>',
       longevityListOpen() +
         longevitySubgroupHtml("From your micro entries", "micro") +
         LONGEVITY_BONE_FROM_MICRO.map(function (item) {
@@ -8573,7 +8595,7 @@
     html += longevitySectionWrap(
       "Calcification & vascular balance",
       "sectionCalcification",
-      '<p class="dashboard__longevity-note">Phosphorus also appears under compounds above. Excess absorbable phosphate from cola and processed foods can pull calcium into arteries even when calcium and vitamin D intake looks fine. Vitamin K (total), K1, and K2 are tracked separately so you can view calcium routing under different lenses.</p>' +
+      '<p class="dashboard__longevity-note">Phosphorus also appears under compounds above. Excess absorbable phosphate from cola and processed foods can pull calcium into arteries even when calcium and vitamin D intake looks fine. Vitamin K (total), K1, K2, MK-4, and MK-7 are tracked separately so you can view calcium routing under different lenses.</p>' +
         calcificationPhosphorusTipHtml(),
       longevityListOpen() +
         longevitySubgroupHtml("Aim — higher % DV is better", "aim") +

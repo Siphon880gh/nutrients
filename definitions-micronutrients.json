@@ -1200,6 +1200,66 @@
       "K2 activates matrix Gla protein (MGP) which prevents calcium from depositing in arteries—a hallmark of vascular aging."
     ]
   },
+  "vitaminK2MK4": {
+    "tooLow": [
+      "Low MK-4 (menaquinone-4) from animal foods may leave gaps if you rely on a single daily meal for K2—its half-life in the body is only a few hours.",
+      "Egg yolks, meat, and dairy supply most dietary MK-4; very low intake is common on plant-forward diets without supplementation."
+    ],
+    "enough": [
+      "MK-4 is found naturally in some meats and dairy and activates K-dependent proteins for bone and calcium routing.",
+      "Because MK-4 clears quickly, spreading intake across meals—or multiple smaller doses if supplementing—helps keep levels steadier through the day."
+    ],
+    "tooHigh": [
+      "Food MK-4 is safe; high supplemental MK-4 may interact with blood thinners (warfarin)—consult a clinician if on anticoagulants."
+    ],
+    "foodSources": [
+      "Egg yolks",
+      "Chicken & pork",
+      "Beef & chicken liver",
+      "Butter & cream",
+      "Fish roe",
+      "Grass-fed meat (variable)"
+    ],
+    "male": [
+      "MK-4 from animal foods supports the same calcium-routing proteins as other K2 forms—timing matters more than total weekly average."
+    ],
+    "female": [
+      "MK-4 helps direct calcium to bone; post-menopause, steady K2 intake across the day may matter more when ovarian estrogen is low."
+    ],
+    "antiAging": [
+      "MK-4 activates matrix Gla protein (MGP) and osteocalcin, helping keep calcium in bone rather than soft tissues as you age.",
+      "Short half-life means day-to-day consistency beats one large weekly dose for maintaining active K2-dependent proteins."
+    ]
+  },
+  "vitaminK2MK7": {
+    "tooLow": [
+      "Low MK-7 (menaquinone-7) is common without fermented foods or targeted K2 supplements—many natto products have K2 removed.",
+      "Without MK-7 or other long-chain menaquinones, you may miss the form best studied for steady once-daily supplementation."
+    ],
+    "enough": [
+      "MK-7 from fermented foods like natto has a much longer half-life (days), allowing steady once-daily intake from food or supplements.",
+      "When supplementing K2, choose the MK-7 form rather than generic K2 labels that may not specify menaquinone type."
+    ],
+    "tooHigh": [
+      "Food MK-7 is safe; very high supplemental MK-7 may interact with blood thinners (warfarin)—consult a clinician if on anticoagulants."
+    ],
+    "foodSources": [
+      "Natto (fermented soy — check label; some products remove K2)",
+      "Aged hard cheeses (Gouda, Brie)",
+      "Sauerkraut & kimchi (variable)",
+      "MK-7 supplements (when food intake is low)"
+    ],
+    "male": [
+      "MK-7's longer half-life makes it practical for once-daily coverage of K2-dependent calcium routing between animal-food meals."
+    ],
+    "female": [
+      "MK-7 supports bone and arterial calcium handling—especially useful when fermented foods are not a regular part of the diet."
+    ],
+    "antiAging": [
+      "MK-7 sustains matrix Gla protein activation over days rather than hours, supporting arterial flexibility and bone mineralization with less frequent dosing.",
+      "Natto is the richest food source, but many commercial natto supplements strip K2—verify labels or use an MK-7-specific supplement."
+    ]
+  },
   "phosphorus": {
     "tooLow": [
       "Low phosphorus (hypophosphatemia) causes muscle weakness, bone pain, and impaired energy metabolism—rare from diet alone but possible with antacid overuse or refeeding syndrome.",

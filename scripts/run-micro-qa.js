@@ -53,7 +53,7 @@ const AMINO_PER_G = {
 function roundVal(key, n) {
   if (n === 0) return 0;
   if (key === "solubleFiber" || key === "insolubleFiber" || key === "fiber") return Math.round(n * 10) / 10;
-  if (["vitaminA", "vitaminD", "vitaminK", "folate", "biotin", "selenium", "copper", "chromium", "iodine", "molybdenum", "vitaminB12"].includes(key)) {
+  if (["vitaminA", "vitaminD", "vitaminK", "vitaminK1", "vitaminK2", "vitaminK2MK4", "vitaminK2MK7", "folate", "biotin", "selenium", "copper", "chromium", "iodine", "molybdenum", "vitaminB12"].includes(key)) {
     return Math.round(n * 10) / 10;
   }
   if (key.startsWith("histidine") || AMINO_PER_G.animal[key] != null) return Math.round(n);

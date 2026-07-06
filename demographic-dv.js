@@ -150,6 +150,7 @@
     "vitaminB6",
     "biotin",
     "folate",
+    "vitaminK2MK4",
     "histidine",
     "isoleucine",
     "leucine",

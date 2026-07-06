@@ -399,6 +399,39 @@
       "Butter (grass-fed, variable)"
     ]
   },
+  "vitaminK2MK4": {
+    "tooLow": [
+      "Low MK-4 from meats and dairy may leave short gaps between meals because it clears from the body within hours.",
+      "Plant-forward diets without eggs or animal products often have little dietary MK-4."
+    ],
+    "enough": [
+      "MK-4 from animal foods supports K-dependent proteins that route calcium toward bone.",
+      "Spread intake across meals when possible—MK-4 does not linger like MK-7."
+    ],
+    "foodSources": [
+      "Egg yolks",
+      "Chicken & pork",
+      "Beef & chicken liver",
+      "Butter & cream",
+      "Fish roe"
+    ]
+  },
+  "vitaminK2MK7": {
+    "tooLow": [
+      "Low MK-7 is common without natto, aged cheese, or an MK-7 supplement—many natto products have K2 removed.",
+      "Without MK-7, you may miss the menaquinone form best suited to once-daily supplementation."
+    ],
+    "enough": [
+      "MK-7 from fermented foods has a half-life of days, supporting steady K2 status from one daily source.",
+      "For supplements, choose MK-7 specifically rather than unspecified K2."
+    ],
+    "foodSources": [
+      "Natto (verify label — K2 sometimes removed)",
+      "Aged hard cheeses (Gouda, Brie)",
+      "Sauerkraut (variable)",
+      "MK-7 supplements"
+    ]
+  },
   "selenium": {
     "tooLow": [
       "Low selenium weakens antioxidant enzymes (glutathione peroxidase), thyroid conversion, and immunity.",
