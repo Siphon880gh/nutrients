@@ -19,6 +19,8 @@
   var STORAGE_KEY_REORDER = "nutrients-keywords-reorder-open";
   var STORAGE_KEY_CALORIES = "nutrients-keywords-calories-open";
   var STORAGE_KEY_KEYWORDS_PAGE_SIZE = "nutrients-keywords-page-size";
+  var STORAGE_KEY_MICRO_VIEW_DAILY = "nutrients-micro-view-daily";
+  var STORAGE_KEY_MICRO_SHOW_DV = "nutrients-micro-show-dv";
   var KEYWORDS_DEFAULT_PAGE_SIZE = 25;
   var demographicDv =
     typeof NutrientsDemographicDv !== "undefined" ? NutrientsDemographicDv : null;
@@ -7077,8 +7079,59 @@
     }
   }
 
+  function loadMicroViewDaily() {
+    try {
+      microViewDaily =
+        localStorage.getItem(STORAGE_KEY_MICRO_VIEW_DAILY) === "true";
+    } catch (e) {
+      microViewDaily = false;
+    }
+  }
+
+  function saveMicroViewDaily() {
+    try {
+      localStorage.setItem(
+        STORAGE_KEY_MICRO_VIEW_DAILY,
+        microViewDaily ? "true" : "false"
+      );
+    } catch (e) {
+      /* ignore */
+    }
+  }
+
+  function loadShowMicroDailyDv() {
+    try {
+      showMicroDailyDv =
+        localStorage.getItem(STORAGE_KEY_MICRO_SHOW_DV) === "true";
+    } catch (e) {
+      showMicroDailyDv = false;
+    }
+  }
+
+  function saveShowMicroDailyDv() {
+    try {
+      localStorage.setItem(
+        STORAGE_KEY_MICRO_SHOW_DV,
+        showMicroDailyDv ? "true" : "false"
+      );
+    } catch (e) {
+      /* ignore */
+    }
+  }
+
+  function setShowMicroDailyDv(open) {
+    showMicroDailyDv = !!open;
+    saveShowMicroDailyDv();
+    if (microRequirementsOpen) {
+      renderMicroRequirements();
+    } else {
+      syncMicroDailyDvToggleUi();
+    }
+  }
+
   function setMicroViewDaily(daily) {
     microViewDaily = !!daily;
+    saveMicroViewDaily();
     if (microRequirementsOpen) {
       renderMicroRequirements();
     } else {
@@ -13104,12 +13157,7 @@
 
   if (dashboardMicroDvToggleEl) {
     dashboardMicroDvToggleEl.addEventListener("click", function () {
-      showMicroDailyDv = !showMicroDailyDv;
-      if (microRequirementsOpen) {
-        renderMicroRequirements();
-      } else {
-        syncMicroDailyDvToggleUi();
-      }
+      setShowMicroDailyDv(!showMicroDailyDv);
     });
   }
 
@@ -13890,6 +13938,10 @@
     loadDayNotes();
     loadDayHighlightsPreference();
     loadDayEditorHeight();
+    loadMicroViewDaily();
+    loadShowMicroDailyDv();
+    syncMicroDailyDvToggleUi();
+    syncMicroViewToggleUi();
     loadDemographic();
     loadTdee();
     loadBodyWeight();
