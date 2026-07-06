@@ -1305,6 +1305,21 @@
     { microKey: "fiber", label: "Fiber (prebiotic)", limiting: false },
   ];
 
+  var LONGEVITY_FATS_AIM_FROM_MICRO = [
+    { microKey: "fiber", label: "Fiber — LDL & total cholesterol support" },
+    { microKey: "solubleFiber", label: "Soluble fiber — lowers LDL" },
+    { microKey: "niacin", label: "Niacin (B3) — cholesterol balance" },
+    { microKey: "vitaminC", label: "Vitamin C — LDL antioxidant support" },
+    { microKey: "vitaminD", label: "Vitamin D — lipid balance when deficient" },
+    { microKey: "vitaminE", label: "Vitamin E — protects LDL from oxidation" },
+  ];
+
+  var LONGEVITY_FATS_AIM_FROM_LONGEVITY = [
+    { key: "omega3", label: "Omega-3 (total) — triglyceride support" },
+    { key: "epa", label: "EPA — triglyceride support" },
+    { key: "dha", label: "DHA — triglyceride support" },
+  ];
+
   var LONGEVITY_TMAO_PRECURSOR_KEYS = ["choline", "carnitine", "betaine"];
 
   var LONGEVITY_TMAO_LOWERING_FROM_MICRO = [
@@ -1544,6 +1559,13 @@
       code: "chol",
       group: "fats",
       limiting: true,
+    },
+    {
+      key: "plantSterols",
+      label: "Plant sterols & stanols",
+      unit: "g",
+      code: "ps",
+      group: "fats",
     },
     { key: "omega3", label: "Omega-3 (total)", unit: "g", code: "o3", group: "omega" },
     {
@@ -3391,9 +3413,9 @@
     return (
       '<section class="micro-def__section">' +
       '<h4 class="micro-def__heading">How they compare</h4>' +
-      '<p class="micro-def__p"><strong>Insoluble fiber</strong> passes through your digestive system largely intact, adding bulk to your stool and helping food pass more quickly through the stomach and intestines.</p>' +
+      '<p class="micro-def__p"><strong>Insoluble fiber</strong> passes through your digestive system largely intact, adding bulk roughage to your stool that triggers the intestinal walls and helps food pass more quickly.</p>' +
       '<p class="micro-def__p"><strong>Top sources:</strong> Wheat bran, whole-wheat breads, brown rice, nuts, and most vegetables.</p>' +
-      '<p class="micro-def__p"><strong>Soluble fiber</strong> attracts water and turns to gel during digestion, which slows digestion, helps regulate blood sugar, and lowers cholesterol.</p>' +
+      '<p class="micro-def__p"><strong>Soluble fiber</strong> attracts water and forms gel bulk that conforms to the space around it, slowing digestion, helping regulate blood sugar, and lowering cholesterol.</p>' +
       '<p class="micro-def__p"><strong>Top sources:</strong> Oats, barley, beans, lentils, peas, and fruits like apples and oranges.</p>' +
       "</section>"
     );
@@ -5228,11 +5250,41 @@
     });
   }
 
-  function fatsCholesterolTipHtml() {
+  function cholesterolPlaqueTipHtml() {
     return (
       '<aside class="dashboard__longevity-processed-note dashboard__longevity-processed-note--section" role="note">' +
       '<p class="dashboard__longevity-processed-note-text">' +
+      "<strong>Cholesterol:</strong> High LDL and excess dietary cholesterol contribute to plaque buildup in artery walls—the process behind most heart attacks and strokes… " +
+      '<button type="button" class="dashboard__longevity-tip-link" data-longevity-def="cholesterol" aria-haspopup="dialog">Read more</button>' +
+      "</p>" +
+      "</aside>"
+    );
+  }
+
+  function fatsCholesterolTipHtml() {
+    return (
+      cholesterolPlaqueTipHtml() +
+      '<aside class="dashboard__longevity-processed-note dashboard__longevity-processed-note--section" role="note">' +
+      '<p class="dashboard__longevity-processed-note-text">' +
       "For most healthy adults, eggs in moderation are fine for your heart. Egg yolks are high in cholesterol, but dietary cholesterol affects blood levels less than saturated fat does… " +
+      '<button type="button" class="dashboard__longevity-tip-link" data-action="open-fats-cholesterol-tip-modal">Read more</button>' +
+      "</p>" +
+      "</aside>" +
+      '<aside class="dashboard__longevity-processed-note dashboard__longevity-processed-note--section" role="note">' +
+      '<p class="dashboard__longevity-processed-note-text">' +
+      "<strong>Soluble fiber:</strong> Supplements like psyllium husk bind to cholesterol in your gut and help remove it through waste. Oats, beans, barley, apples, and citrus are food sources tracked above… " +
+      '<button type="button" class="dashboard__longevity-tip-link" data-action="open-fats-cholesterol-tip-modal">Read more</button>' +
+      "</p>" +
+      "</aside>" +
+      '<aside class="dashboard__longevity-processed-note dashboard__longevity-processed-note--section" role="note">' +
+      '<p class="dashboard__longevity-processed-note-text">' +
+      "<strong>Plant sterols &amp; stanols:</strong> About 2 g/day from fortified spreads, orange juice, or supplements can lower LDL by 7–10% by blocking cholesterol absorption in the gut. Whole nuts and seeds supply small amounts—log fortified products explicitly… " +
+      '<button type="button" class="dashboard__longevity-tip-link" data-action="open-fats-cholesterol-tip-modal">Read more</button>' +
+      "</p>" +
+      "</aside>" +
+      '<aside class="dashboard__longevity-processed-note dashboard__longevity-processed-note--section" role="note">' +
+      '<p class="dashboard__longevity-processed-note-text">' +
+      "<strong>Lab testing:</strong> Ask for ApoB alongside a standard lipid panel. ApoB counts atherogenic lipoprotein particles directly—each LDL, VLDL, and Lp(a) particle carries one ApoB molecule—so it is often more accurate than LDL cholesterol alone, especially when LDL-C looks normal but particle number is high… " +
       '<button type="button" class="dashboard__longevity-tip-link" data-action="open-fats-cholesterol-tip-modal">Read more</button>' +
       "</p>" +
       "</aside>"
@@ -5426,7 +5478,7 @@
   }
 
   function vascularBloodPressureTipHtml() {
-    return vascularSodiumPotassiumTipHtml();
+    return cholesterolPlaqueTipHtml() + vascularSodiumPotassiumTipHtml();
   }
 
   function vascularBrainTipHtml() {
@@ -8613,6 +8665,31 @@
       });
       if (!groupFields.length) return;
       var body = longevityListOpen() + longevityRowsGroupedByLimit(groupFields, weekLongevity, weekMicro);
+      if (group.id === "fats") {
+        body += longevitySubgroupHtml("Also from your micro entries", "micro");
+        LONGEVITY_FATS_AIM_FROM_MICRO.forEach(function (item) {
+          body += longevityRowFromMicroKey(
+            item.microKey,
+            item.label,
+            !!item.limiting,
+            weekMicro
+          );
+        });
+        body += longevitySubgroupHtml("Triglyceride support — from longevity entries", "compounds");
+        LONGEVITY_FATS_AIM_FROM_LONGEVITY.forEach(function (item) {
+          body += longevityRowFromLongevityOrMicro(item, weekLongevity, weekMicro);
+        });
+        body += longevityRowHtml(
+          "EPA + DHA",
+          derived.epaPlusDha > 0 ? fmtNum(derived.epaPlusDha) + " g" : "—",
+          derived.epaPlusDha > 0 ? "combined" : "—",
+          null,
+          "dashboard__longevity-row--computed",
+          false,
+          "epaPlusDha",
+          false
+        );
+      }
       if (group.id === "compounds") {
         body += longevitySubgroupHtml("Also from your micro entries", "micro");
         LONGEVITY_COMPOUNDS_FROM_MICRO.forEach(function (item) {
@@ -8625,7 +8702,11 @@
         });
       }
       body += longevityListClose();
-      var noteHtml = group.id === "fats" ? fatsCholesterolTipHtml() : "";
+      var noteHtml =
+        group.id === "fats"
+          ? '<p class="dashboard__longevity-note">Nutrients here support healthy LDL, HDL, total cholesterol, and triglyceride labs—maximize protective fats, plant sterols, fiber, omega-3s, and supporting vitamins; minimize saturated fat, trans fat, and excess dietary cholesterol.</p>' +
+            fatsCholesterolTipHtml()
+          : "";
       html += longevitySectionWrap(group.label, group.sectionDefKey, noteHtml, body);
       if (group.id === "compounds") {
         html += histamineSectionHtml();

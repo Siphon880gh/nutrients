@@ -61,7 +61,7 @@ Amino acids (all in **mg**): `histidine`, `isoleucine`, `leucine`, `lysine`, `me
 
 ### `longevity` — units per key
 
-- Grams (`g`): `saturatedFat`, `monounsaturatedFat`, `polyunsaturatedFat`, `transFat`, `omega3`, `omega6`, `omega9`, `ala`, `epa`, `dha`, `linoleicAcid`, `arachidonicAcid`, `oleicAcid`, `palmitoleicAcid`, `methionine`
+- Grams (`g`): `saturatedFat`, `monounsaturatedFat`, `polyunsaturatedFat`, `transFat`, `plantSterols`, `omega3`, `omega6`, `omega9`, `ala`, `epa`, `dha`, `linoleicAcid`, `arachidonicAcid`, `oleicAcid`, `palmitoleicAcid`, `methionine`
 - Milligrams (`mg`): `cholesterol`, `polyphenols`, `nitrate`, `flavonoids`, `carotenoids`, `lutein`, `curcumin`, `resveratrol`, `coq10`, `sulforaphane`, `phosphorus`, `choline`, `carnitine`, `betaine`, `taurine`
 - Micrograms (`mcg`): `selenium`, `copper`
 
@@ -126,6 +126,7 @@ Values below are illustrative estimates for a **1 oz (28 g)** serving. Replace w
     "polyunsaturatedFat": 0.4,
     "transFat": 0,
     "cholesterol": 0,
+    "plantSterols": 0,
     "omega3": 0.06,
     "omega6": 0.36,
     "oleicAcid": 16.5,

@@ -83,6 +83,7 @@
   },
   "cholesterol": {
     "tooHigh": [
+      "High LDL and excess dietary cholesterol build plaque in artery walls over decades—the process behind most heart attacks and strokes.",
       "High dietary cholesterol may raise LDL in some people, especially with low fiber and high saturated fat overall.",
       "For many, saturated and trans fats affect blood lipids more than cholesterol from eggs and shellfish alone."
     ],
@@ -98,6 +99,24 @@
       "Sausage & bacon",
       "Chicken (with skin)",
       "Squid"
+    ]
+  },
+  "plantSterols": {
+    "tooLow": [
+      "Low plant sterol and stanol intake misses one of the better-evidenced dietary LDL-lowering tools—about 2 g/day can cut LDL roughly 7–10%.",
+      "Most whole foods supply only tiny amounts; meaningful doses usually come from fortified margarine, sterol-fortified juice, or supplements."
+    ],
+    "enough": [
+      "Plant sterols and stanols block cholesterol absorption in the gut, lowering LDL without much effect on HDL or triglycerides.",
+      "Target about 2 g/day combined sterols + stanols from fortified spreads, supplements, or products labeled for cholesterol lowering."
+    ],
+    "foodSources": [
+      "Sterol-fortified margarine & spreads",
+      "Fortified orange juice",
+      "Sterol supplements",
+      "Whole nuts & seeds (small amounts)",
+      "Whole grains & legumes (small amounts)",
+      "Vegetable oils (trace amounts)"
     ]
   },
   "omega3": {
@@ -1128,9 +1147,13 @@
   },
   "sectionFats": {
     "enough": [
-      "The type of fat you eat shapes LDL and HDL cholesterol, artery inflammation, and long-term heart attack and stroke risk more than total fat alone.",
+      "This section tracks food nutrients that support healthy LDL, HDL, total cholesterol, and triglyceride labs—maximize protective fats, plant sterols, fiber, omega-3s, and supporting vitamins; minimize saturated fat, trans fat, and excess dietary cholesterol.",
+      "Watch rows flag nutrients that tend to raise LDL or lower HDL; aim rows flag nutrients that tend to lower LDL, raise HDL, or cut triglycerides.",
+      "Plant sterols & stanols (~2 g/day), soluble fiber, and EPA/DHA are tracked here alongside fat types and cholesterol-supporting vitamins.",
+      "The type of fat you eat shapes LDL and HDL cholesterol, artery inflammation, and long-term heart attack and stroke risk more than total fat grams alone.",
       "Diets heavy in saturated and industrial trans fat tend to stiffen blood vessels and raise LDL; swapping toward olive oil, nuts, avocado, and fish is one of the strongest dietary prevention moves.",
-      "Cholesterol from whole eggs or shellfish is less concerning for many people than the same calories from processed meats paired with refined carbs and low fiber."
+      "Cholesterol from whole eggs or shellfish is less concerning for many people than the same calories from processed meats paired with refined carbs and low fiber.",
+      "Soluble fiber (oats, beans, psyllium) binds cholesterol in the gut for removal; niacin, vitamins C, D, and E can support lipid balance alongside diet—not as a substitute for medication when levels are dangerously high."
     ]
   },
   "sectionPufaAntioxidant": {

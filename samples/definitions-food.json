@@ -84,7 +84,8 @@
 			"vitaminK1": true,
 			"vitaminK2": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0.12
 		},
 		"carbQuality": {
 			"glycemicIndex": 45,
@@ -178,7 +179,8 @@
 			"vitaminK1": true,
 			"vitaminK2": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0.2
 		},
 		"carbQuality": {
 			"glycemicIndex": 45,
@@ -280,7 +282,8 @@
 			"lutein": 0,
 			"methionine": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0.28
 		},
 		"carbQuality": {
 			"glycemicIndex": 14,
@@ -381,7 +384,8 @@
 			"copper": true,
 			"lutein": 0,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 0,
@@ -482,7 +486,8 @@
 			"copper": true,
 			"lutein": 0,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 0,
@@ -583,7 +588,8 @@
 			"copper": true,
 			"lutein": 0,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 0,
@@ -684,7 +690,8 @@
 			"copper": true,
 			"lutein": 0,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 0,
@@ -785,7 +792,8 @@
 			"copper": true,
 			"lutein": 0,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 0,
@@ -886,7 +894,8 @@
 			"copper": true,
 			"lutein": 0,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 0,
@@ -987,7 +996,8 @@
 			"copper": true,
 			"lutein": 0,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 0,
@@ -1088,7 +1098,8 @@
 			"copper": true,
 			"lutein": 0,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 0,
@@ -1189,7 +1200,8 @@
 			"copper": true,
 			"lutein": 0,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 0,
@@ -1291,7 +1303,8 @@
 			"lutein": 0.5,
 			"methionine": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0.03
 		},
 		"carbQuality": {
 			"glycemicIndex": 45,
@@ -1365,7 +1378,8 @@
 			"vitaminE": true,
 			"vitaminK": true,
 			"phosphorus": true,
-			"methionine": true
+			"methionine": true,
+			"plantSterols": 0
 		},
 		"carbQuality": {
 			"netCarbs": 7
@@ -1437,7 +1451,8 @@
 			"vitaminE": true,
 			"vitaminK": true,
 			"phosphorus": true,
-			"methionine": true
+			"methionine": true,
+			"plantSterols": 0
 		},
 		"carbQuality": {
 			"netCarbs": 75
@@ -1509,7 +1524,8 @@
 			"vitaminE": true,
 			"phosphorus": true,
 			"methionine": true,
-			"vitaminK": true
+			"vitaminK": true,
+			"plantSterols": 0
 		},
 		"carbQuality": {
 			"netCarbs": 31
@@ -1608,7 +1624,8 @@
 			"lutein": 0,
 			"methionine": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 0,
@@ -1710,7 +1727,8 @@
 			"lutein": 0.25,
 			"methionine": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 0,
@@ -1812,7 +1830,8 @@
 			"lutein": 1,
 			"methionine": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 0,
@@ -1914,7 +1933,8 @@
 			"lutein": 0.75,
 			"methionine": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 0,
@@ -2016,7 +2036,8 @@
 			"lutein": 0.03,
 			"methionine": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 50,
@@ -2118,7 +2139,8 @@
 			"lutein": 0.03,
 			"methionine": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 50,
@@ -2220,7 +2242,8 @@
 			"lutein": 0.02,
 			"methionine": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 38,
@@ -2322,7 +2345,8 @@
 			"lutein": 0.02,
 			"methionine": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 38,
@@ -2424,7 +2448,8 @@
 			"lutein": 0.01,
 			"methionine": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 36,
@@ -2526,7 +2551,8 @@
 			"lutein": 0.01,
 			"methionine": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 36,
@@ -2628,7 +2654,8 @@
 			"lutein": 0.01,
 			"methionine": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 51,
@@ -2730,7 +2757,8 @@
 			"lutein": 0.01,
 			"methionine": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 51,
@@ -2832,7 +2860,8 @@
 			"lutein": 0.12,
 			"methionine": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 43,
@@ -2934,7 +2963,8 @@
 			"lutein": 0.12,
 			"methionine": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 43,
@@ -3036,7 +3066,8 @@
 			"lutein": 0.05,
 			"methionine": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 42,
@@ -3138,7 +3169,8 @@
 			"lutein": 0.05,
 			"methionine": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 42,
@@ -3240,7 +3272,8 @@
 			"lutein": 0.05,
 			"methionine": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 38,
@@ -3342,7 +3375,8 @@
 			"lutein": 0.05,
 			"methionine": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 38,
@@ -3444,7 +3478,8 @@
 			"lutein": 0.02,
 			"methionine": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 39,
@@ -3546,7 +3581,8 @@
 			"lutein": 0.02,
 			"methionine": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 39,
@@ -3648,7 +3684,8 @@
 			"lutein": 0.05,
 			"methionine": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 26,
@@ -3750,7 +3787,8 @@
 			"lutein": 0.05,
 			"methionine": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 26,
@@ -3852,7 +3890,8 @@
 			"lutein": 0.03,
 			"methionine": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 22,
@@ -3954,7 +3993,8 @@
 			"lutein": 0.03,
 			"methionine": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 22,
@@ -4056,7 +4096,8 @@
 			"lutein": 0,
 			"methionine": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 11,
@@ -4139,7 +4180,8 @@
 			"vitaminK2": true,
 			"vitaminK": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 35,
@@ -4222,7 +4264,8 @@
 			"vitaminK1": true,
 			"vitaminK2": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0.05
 		},
 		"carbQuality": {
 			"addedSugar": 1,
@@ -4306,7 +4349,8 @@
 			"vitaminK1": true,
 			"vitaminK2": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0.05
 		},
 		"carbQuality": {
 			"addedSugar": 9,
@@ -4387,7 +4431,8 @@
 			"vitaminK1": true,
 			"vitaminK2": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0.08
 		},
 		"carbQuality": {
 			"addedSugar": 0,
@@ -4468,7 +4513,8 @@
 			"vitaminK1": true,
 			"vitaminK2": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0.06
 		},
 		"carbQuality": {
 			"addedSugar": 0,
@@ -4569,7 +4615,8 @@
 			"lutein": 0,
 			"methionine": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 0,
@@ -4665,7 +4712,8 @@
 			"lutein": 0,
 			"methionine": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 35,
@@ -4767,7 +4815,8 @@
 			"lutein": 0,
 			"methionine": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 31,
@@ -4855,7 +4904,8 @@
 			"choline": true,
 			"copper": true,
 			"lutein": 0,
-			"methionine": true
+			"methionine": true,
+			"plantSterols": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 45,
@@ -4957,7 +5007,8 @@
 			"lutein": 0,
 			"methionine": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 0,
@@ -5059,7 +5110,8 @@
 			"lutein": 0,
 			"methionine": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 0,
@@ -5147,7 +5199,8 @@
 			"choline": true,
 			"copper": true,
 			"lutein": 0,
-			"methionine": true
+			"methionine": true,
+			"plantSterols": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 0,
@@ -5237,7 +5290,8 @@
 			"choline": true,
 			"copper": true,
 			"lutein": 0,
-			"methionine": true
+			"methionine": true,
+			"plantSterols": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 65,
@@ -5325,7 +5379,8 @@
 			"vitaminK2": true,
 			"vitaminK": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0.02
 		},
 		"carbQuality": {
 			"glycemicIndex": 0,
@@ -5409,7 +5464,8 @@
 			"vitaminK1": true,
 			"vitaminK2": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 0,
@@ -5490,7 +5546,8 @@
 			"vitaminK2": true,
 			"vitaminK": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 0,
@@ -5575,7 +5632,8 @@
 			"vitaminK1": true,
 			"vitaminK2": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0.06
 		},
 		"carbQuality": {
 			"glycemicIndex": 15,
@@ -5678,7 +5736,8 @@
 			"lutein": 0,
 			"methionine": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0.01
 		},
 		"carbQuality": {
 			"glycemicIndex": 32,
@@ -5777,7 +5836,8 @@
 			"betaine": 0.5,
 			"taurine": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 35,
@@ -5878,7 +5938,8 @@
 			"lutein": 0.18,
 			"methionine": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 39,
@@ -5981,7 +6042,8 @@
 			"lutein": 0.01,
 			"methionine": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 15,
@@ -6083,7 +6145,8 @@
 			"lutein": 0.02,
 			"methionine": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 15,
@@ -6185,7 +6248,8 @@
 			"lutein": 0,
 			"methionine": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 15,
@@ -6288,7 +6352,8 @@
 			"betaine": 2,
 			"taurine": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0.02
 		},
 		"carbQuality": {
 			"glycemicIndex": 35,
@@ -6389,7 +6454,8 @@
 			"betaine": 2,
 			"taurine": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0.02
 		},
 		"carbQuality": {
 			"glycemicIndex": 35,
@@ -6491,7 +6557,8 @@
 			"betaine": 3,
 			"taurine": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0.02
 		},
 		"carbQuality": {
 			"glycemicIndex": 35,
@@ -6593,7 +6660,8 @@
 			"betaine": 3,
 			"taurine": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0.02
 		},
 		"carbQuality": {
 			"glycemicIndex": 35,
@@ -6695,7 +6763,8 @@
 			"betaine": 2,
 			"taurine": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0.04
 		},
 		"carbQuality": {
 			"glycemicIndex": 45,
@@ -6797,7 +6866,8 @@
 			"betaine": 1,
 			"taurine": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0.02
 		},
 		"carbQuality": {
 			"glycemicIndex": 45,
@@ -6881,7 +6951,8 @@
 			"vitaminK1": true,
 			"vitaminK2": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0.01
 		},
 		"carbQuality": {
 			"glycemicIndex": 85,
@@ -6966,7 +7037,8 @@
 			"vitaminK1": true,
 			"vitaminK2": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0.01
 		},
 		"carbQuality": {
 			"glycemicIndex": 85,
@@ -7051,7 +7123,8 @@
 			"vitaminK1": true,
 			"vitaminK2": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0.01
 		},
 		"carbQuality": {
 			"glycemicIndex": 78,
@@ -7136,7 +7209,8 @@
 			"vitaminK1": true,
 			"vitaminK2": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0.01
 		},
 		"carbQuality": {
 			"glycemicIndex": 78,
@@ -7221,7 +7295,8 @@
 			"vitaminK1": true,
 			"vitaminK2": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0.01
 		},
 		"carbQuality": {
 			"glycemicIndex": 80,
@@ -7306,7 +7381,8 @@
 			"vitaminK1": true,
 			"vitaminK2": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0.01
 		},
 		"carbQuality": {
 			"glycemicIndex": 80,
@@ -7393,7 +7469,8 @@
 			"vitaminK1": true,
 			"vitaminK2": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0.02
 		},
 		"carbQuality": {
 			"glycemicIndex": 54,
@@ -7480,7 +7557,8 @@
 			"vitaminK1": true,
 			"vitaminK2": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0.02
 		},
 		"carbQuality": {
 			"glycemicIndex": 54,
@@ -7567,7 +7645,8 @@
 			"vitaminK1": true,
 			"vitaminK2": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0.01
 		},
 		"carbQuality": {
 			"glycemicIndex": 76,
@@ -7654,7 +7733,8 @@
 			"vitaminK1": true,
 			"vitaminK2": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0.01
 		},
 		"carbQuality": {
 			"glycemicIndex": 76,
@@ -7741,7 +7821,8 @@
 			"vitaminK1": true,
 			"vitaminK2": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0.01
 		},
 		"carbQuality": {
 			"glycemicIndex": 76,
@@ -7826,7 +7907,8 @@
 			"vitaminK1": true,
 			"vitaminK2": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0.01
 		},
 		"carbQuality": {
 			"glycemicIndex": 75,
@@ -7911,7 +7993,8 @@
 			"vitaminK1": true,
 			"vitaminK2": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0.01
 		},
 		"carbQuality": {
 			"glycemicIndex": 75,
@@ -7996,7 +8079,8 @@
 			"vitaminK1": true,
 			"vitaminK2": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0.01
 		},
 		"carbQuality": {
 			"glycemicIndex": 75,
@@ -8081,7 +8165,8 @@
 			"vitaminK1": true,
 			"vitaminK2": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0.01
 		},
 		"carbQuality": {
 			"glycemicIndex": 75,
@@ -8164,7 +8249,8 @@
 			"vitaminK2": true,
 			"vitaminK": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0
 		},
 		"carbQuality": {
 			"addedSugar": 0,
@@ -8245,7 +8331,8 @@
 			"vitaminK2": true,
 			"vitaminK": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0
 		},
 		"carbQuality": {
 			"addedSugar": 0,
@@ -8327,7 +8414,8 @@
 			"vitaminK2": true,
 			"vitaminK": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0
 		},
 		"carbQuality": {
 			"addedSugar": 0,
@@ -8409,7 +8497,8 @@
 			"vitaminK2": true,
 			"vitaminK": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0
 		},
 		"carbQuality": {
 			"addedSugar": 3,
@@ -8490,7 +8579,8 @@
 			"vitaminK2": true,
 			"vitaminK": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0
 		},
 		"carbQuality": {
 			"addedSugar": 0,
@@ -8572,7 +8662,8 @@
 			"vitaminK2": true,
 			"vitaminK": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0
 		},
 		"carbQuality": {
 			"addedSugar": 0,
@@ -8673,7 +8764,8 @@
 			"lutein": 0,
 			"methionine": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0.04
 		},
 		"carbQuality": {
 			"glycemicIndex": 14,
@@ -8775,7 +8867,8 @@
 			"lutein": 0,
 			"methionine": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0.08
 		},
 		"carbQuality": {
 			"glycemicIndex": 14,
@@ -8877,7 +8970,8 @@
 			"lutein": 0.1,
 			"methionine": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 68,
@@ -8979,7 +9073,8 @@
 			"lutein": 0.15,
 			"methionine": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0.02
 		},
 		"carbQuality": {
 			"glycemicIndex": 68,
@@ -9081,7 +9176,8 @@
 			"lutein": 0.21,
 			"methionine": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 68,
@@ -9181,7 +9277,8 @@
 			"betaine": 8,
 			"taurine": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 86,
@@ -9262,7 +9359,8 @@
 			"vitaminK1": true,
 			"vitaminK2": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0.02
 		},
 		"carbQuality": {
 			"glycemicIndex": 73,
@@ -9344,7 +9442,8 @@
 			"vitaminK1": true,
 			"vitaminK2": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0.04
 		},
 		"carbQuality": {
 			"glycemicIndex": 68,
@@ -9427,7 +9526,8 @@
 			"vitaminK1": true,
 			"vitaminK2": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0.06
 		},
 		"carbQuality": {
 			"glycemicIndex": 53,
@@ -9510,7 +9610,8 @@
 			"vitaminK1": true,
 			"vitaminK2": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 20,
@@ -9592,7 +9693,8 @@
 			"vitaminK1": true,
 			"vitaminK2": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0.04
 		},
 		"carbQuality": {
 			"glycemicIndex": 69,
@@ -9674,7 +9776,8 @@
 			"vitaminK1": true,
 			"vitaminK2": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0.06
 		},
 		"carbQuality": {
 			"glycemicIndex": 69,
@@ -9779,7 +9882,8 @@
 			"betaine": 12,
 			"taurine": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0.05
 		},
 		"carbQuality": {
 			"glycemicIndex": 62,
@@ -9860,7 +9964,8 @@
 			"vitaminK1": true,
 			"vitaminK2": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0.03
 		},
 		"carbQuality": {
 			"glycemicIndex": 54,
@@ -9942,7 +10047,8 @@
 			"vitaminK1": true,
 			"vitaminK2": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 50,
@@ -10025,7 +10131,8 @@
 			"vitaminK1": true,
 			"vitaminK2": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 75,
@@ -10108,7 +10215,8 @@
 			"vitaminK1": true,
 			"vitaminK2": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 75,
@@ -10185,7 +10293,8 @@
 			"vitaminE": true,
 			"vitaminK": true,
 			"phosphorus": true,
-			"methionine": true
+			"methionine": true,
+			"plantSterols": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 50,
@@ -10260,7 +10369,8 @@
 			"vitaminE": true,
 			"vitaminK": true,
 			"phosphorus": true,
-			"methionine": true
+			"methionine": true,
+			"plantSterols": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 50,
@@ -10345,7 +10455,8 @@
 			"vitaminK1": true,
 			"vitaminK2": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0.01
 		},
 		"carbQuality": {
 			"glycemicIndex": 55,
@@ -10430,7 +10541,8 @@
 			"vitaminK1": true,
 			"vitaminK2": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0.01
 		},
 		"carbQuality": {
 			"glycemicIndex": 55,
@@ -10515,7 +10627,8 @@
 			"vitaminK1": true,
 			"vitaminK2": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0.01
 		},
 		"carbQuality": {
 			"glycemicIndex": 55,
@@ -10600,7 +10713,8 @@
 			"vitaminK1": true,
 			"vitaminK2": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0.01
 		},
 		"carbQuality": {
 			"glycemicIndex": 55,
@@ -10684,7 +10798,8 @@
 			"vitaminK1": true,
 			"vitaminK2": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 60,
@@ -10763,7 +10878,8 @@
 			"vitaminK2": true,
 			"vitaminK": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 0,
@@ -10842,7 +10958,8 @@
 			"vitaminK2": true,
 			"vitaminK": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 0,
@@ -10921,7 +11038,8 @@
 			"vitaminK2": true,
 			"vitaminK": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 65,
@@ -11000,7 +11118,8 @@
 			"vitaminK2": true,
 			"vitaminK": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 65,
@@ -11082,7 +11201,8 @@
 			"vitaminK1": true,
 			"vitaminK2": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 35,
@@ -11184,7 +11304,8 @@
 			"lutein": 135,
 			"methionine": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0.07
 		},
 		"carbQuality": {
 			"glycemicIndex": 30,
@@ -11285,7 +11406,8 @@
 			"lutein": 0,
 			"methionine": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 0,
@@ -11365,7 +11487,8 @@
 			"vitaminK2": true,
 			"vitaminK": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 0,
@@ -11457,7 +11580,8 @@
 			"vitaminK2": true,
 			"vitaminK": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 0,
@@ -11549,7 +11673,8 @@
 			"vitaminK2": true,
 			"vitaminK": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 0,
@@ -11651,7 +11776,8 @@
 			"lutein": 540,
 			"methionine": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0.16
 		},
 		"carbQuality": {
 			"glycemicIndex": 15,
@@ -11753,7 +11879,8 @@
 			"lutein": 270,
 			"methionine": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0.08
 		},
 		"carbQuality": {
 			"glycemicIndex": 15,
@@ -11855,7 +11982,8 @@
 			"lutein": 0,
 			"methionine": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 31,
@@ -11939,7 +12067,8 @@
 			"vitaminK1": true,
 			"vitaminK2": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 0,
@@ -12044,7 +12173,8 @@
 			"betaine": 0,
 			"taurine": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 0,
@@ -12144,7 +12274,8 @@
 			"vitaminK1": true,
 			"vitaminK2": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0.03
 		},
 		"carbQuality": {
 			"glycemicIndex": 0,
@@ -12232,7 +12363,8 @@
 			"choline": true,
 			"betaine": 0,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 0,
@@ -12318,7 +12450,8 @@
 			"choline": true,
 			"betaine": 0,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 0,
@@ -12404,7 +12537,8 @@
 			"choline": true,
 			"betaine": 0,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 0,
@@ -12496,7 +12630,8 @@
 			"vitaminK1": true,
 			"vitaminK2": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 0,
@@ -12588,7 +12723,8 @@
 			"vitaminK1": true,
 			"vitaminK2": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 0,
@@ -12675,7 +12811,8 @@
 			"vitaminK2": true,
 			"vitaminK": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 0,
@@ -12762,7 +12899,8 @@
 			"vitaminK2": true,
 			"vitaminK": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 0,
@@ -12854,7 +12992,8 @@
 			"vitaminK1": true,
 			"vitaminK2": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 0,
@@ -12946,7 +13085,8 @@
 			"vitaminK1": true,
 			"vitaminK2": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 0,
@@ -13050,7 +13190,8 @@
 			"betaine": 0,
 			"taurine": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0.01
 		},
 		"carbQuality": {
 			"glycemicIndex": 10,
@@ -13151,7 +13292,8 @@
 			"lutein": 0.15,
 			"methionine": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 55,
@@ -13253,7 +13395,8 @@
 			"lutein": 0.2,
 			"methionine": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 55,
@@ -13355,7 +13498,8 @@
 			"lutein": 0.25,
 			"methionine": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 55,
@@ -13457,7 +13601,8 @@
 			"lutein": 1.5,
 			"methionine": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 45,
@@ -13559,7 +13704,8 @@
 			"lutein": 2.1,
 			"methionine": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 45,
@@ -13661,7 +13807,8 @@
 			"lutein": 2.6,
 			"methionine": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 45,
@@ -13760,7 +13907,8 @@
 			"carnitine": 0,
 			"methionine": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 56,
@@ -13858,7 +14006,8 @@
 			"carnitine": 0,
 			"methionine": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 56,
@@ -13956,7 +14105,8 @@
 			"carnitine": 0,
 			"methionine": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 56,
@@ -14056,7 +14206,8 @@
 			"copper": true,
 			"lutein": 0,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 0,
@@ -14158,7 +14309,8 @@
 			"lutein": 0,
 			"methionine": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0.02
 		},
 		"carbQuality": {
 			"glycemicIndex": 25,
@@ -14259,7 +14411,8 @@
 			"copper": true,
 			"lutein": 0,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0.01
 		},
 		"carbQuality": {
 			"glycemicIndex": 0,
@@ -14360,7 +14513,8 @@
 			"copper": true,
 			"lutein": 0,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0.02
 		},
 		"carbQuality": {
 			"glycemicIndex": 0,
@@ -14462,7 +14616,8 @@
 			"lutein": 0,
 			"methionine": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 0,
@@ -14564,7 +14719,8 @@
 			"lutein": 0,
 			"methionine": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 0,
@@ -14665,7 +14821,8 @@
 			"copper": true,
 			"lutein": 0,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 50,
@@ -14767,7 +14924,8 @@
 			"lutein": 0,
 			"methionine": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0.03
 		},
 		"carbQuality": {
 			"glycemicIndex": 65,
@@ -14869,7 +15027,8 @@
 			"lutein": 0,
 			"methionine": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0.06
 		},
 		"carbQuality": {
 			"glycemicIndex": 65,
@@ -14971,7 +15130,8 @@
 			"lutein": 0,
 			"methionine": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0.04
 		},
 		"carbQuality": {
 			"glycemicIndex": 65,
@@ -15073,7 +15233,8 @@
 			"lutein": 0,
 			"methionine": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0.05
 		},
 		"carbQuality": {
 			"glycemicIndex": 65,
@@ -15175,7 +15336,8 @@
 			"lutein": 0,
 			"methionine": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0.06
 		},
 		"carbQuality": {
 			"glycemicIndex": 65,
@@ -15277,7 +15439,8 @@
 			"lutein": 0,
 			"methionine": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0.02
 		},
 		"carbQuality": {
 			"glycemicIndex": 55,
@@ -15379,7 +15542,8 @@
 			"lutein": 0,
 			"methionine": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0.01
 		},
 		"carbQuality": {
 			"glycemicIndex": 55,
@@ -15470,7 +15634,8 @@
 			"vitaminK2": true,
 			"vitaminK": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 0,
@@ -15572,7 +15737,8 @@
 			"lutein": 3.2,
 			"methionine": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0.02
 		},
 		"carbQuality": {
 			"glycemicIndex": 51,
@@ -15674,7 +15840,8 @@
 			"lutein": 0,
 			"methionine": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0.09
 		},
 		"carbQuality": {
 			"glycemicIndex": 10,
@@ -15749,7 +15916,8 @@
 			"vitaminK1": true,
 			"vitaminK2": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 0,
@@ -15824,7 +15992,8 @@
 			"vitaminK1": true,
 			"vitaminK2": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 0,
@@ -15899,7 +16068,8 @@
 			"vitaminK1": true,
 			"vitaminK2": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 0,
@@ -15974,7 +16144,8 @@
 			"vitaminK1": true,
 			"vitaminK2": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 0,
@@ -16052,7 +16223,8 @@
 			"vitaminK2": true,
 			"vitaminK2MK4": true,
 			"vitaminK2MK7": true,
-			"methionine": true
+			"methionine": true,
+			"plantSterols": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 0,
@@ -16130,7 +16302,8 @@
 			"vitaminK2": true,
 			"vitaminK2MK4": true,
 			"vitaminK2MK7": true,
-			"methionine": true
+			"methionine": true,
+			"plantSterols": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 0,
@@ -16149,7 +16322,8 @@
 			"omega3": 0.115,
 			"epa": 0.064,
 			"dha": 0.03,
-			"carotenoids": 0.025
+			"carotenoids": 0.025,
+			"plantSterols": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 0,
@@ -16263,7 +16437,8 @@
 		},
 		"longevity": {
 			"cholesterol": 5,
-			"omega3": 0.049
+			"omega3": 0.049,
+			"plantSterols": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 0,
@@ -16365,7 +16540,8 @@
 			"lutein": 0,
 			"methionine": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0.02
 		},
 		"carbQuality": {
 			"glycemicIndex": 0,
@@ -16464,7 +16640,8 @@
 			"lutein": 0,
 			"methionine": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0.01
 		},
 		"carbQuality": {
 			"glycemicIndex": 0,
@@ -16566,7 +16743,8 @@
 			"lutein": 5,
 			"methionine": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0.01
 		},
 		"carbQuality": {
 			"glycemicIndex": 0,
@@ -16668,7 +16846,8 @@
 			"lutein": 0,
 			"methionine": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0.01
 		},
 		"carbQuality": {
 			"glycemicIndex": 0,
@@ -16766,7 +16945,8 @@
 			"lutein": 0,
 			"methionine": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 0,
@@ -16865,7 +17045,8 @@
 			"lutein": 0,
 			"methionine": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0.01
 		},
 		"carbQuality": {
 			"glycemicIndex": 0,
@@ -16964,7 +17145,8 @@
 			"lutein": 0,
 			"methionine": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0.01
 		},
 		"carbQuality": {
 			"glycemicIndex": 0,
@@ -17063,7 +17245,8 @@
 			"lutein": 0,
 			"methionine": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0.01
 		},
 		"carbQuality": {
 			"glycemicIndex": 0,
@@ -17162,7 +17345,8 @@
 			"lutein": 0,
 			"methionine": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0.01
 		},
 		"carbQuality": {
 			"glycemicIndex": 0,
@@ -17252,7 +17436,8 @@
 			"copper": true,
 			"methionine": true,
 			"vitaminK2MK4": true,
-			"vitaminK2MK7": true
+			"vitaminK2MK7": true,
+			"plantSterols": 0
 		},
 		"carbQuality": {
 			"glycemicIndex": 15,

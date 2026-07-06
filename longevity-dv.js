@@ -10,6 +10,7 @@
     polyunsaturatedFat: 0,
     transFat: 0,
     cholesterol: 300,
+    plantSterols: 2,
     omega3: 1.6,
     omega6: 17,
     omega9: 0,
