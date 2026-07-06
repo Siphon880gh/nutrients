@@ -1,6 +1,6 @@
 # AGENTS_CODE_REFERENCE-ui.md
 
-> **Approximate locations only** — use class names and file regions in `index.html` (~1500 lines) and `styles.css` (~5500 lines).
+> **Approximate locations only** — use class names and file regions in `index.html` (~1,525 lines) and `styles.css` (~5,580 lines).
 
 Markup structure, layout, modals, and the **highlight mirror** pattern.
 
@@ -19,15 +19,15 @@ Parent: [AGENTS_CODE_REFERENCE.md](./AGENTS_CODE_REFERENCE.md)
 │   ├── #dashboard-grid            (7 cards with macro % toggle, JS)
 │   ├── #dashboard-micro-panel     (hidden until toggle)
 │   │   ├── condition/filter focus dropdown (#dashboard-micro-condition-*)
-│   │   ├── view segments (weekly avg / each day) + Show targets
+│   │   ├── view segments (weekly avg / each day; persisted) + Show targets (persisted)
 │   │   ├── Ask AI to help fill gaps
-│   │   ├── caffeine tip aside
+│   │   ├── caffeine / cataracts / hair-loss tip asides (#micro-tip-*)
 │   │   ├── #dashboard-micro-list        (% target list + my-food + target-ref badges, JS)
 │   │   └── #dashboard-micro-daily-grid  (each-day grid + More nutrients, JS)
 │   ├── #dashboard-longevity-panel (hidden until toggle)
 │   │   ├── intro, disclaimer, processed-food note (Yuka / Bobby links)
 │   │   ├── #dashboard-longevity-nav (sticky section prev/next + All topics)
-│   │   └── #dashboard-longevity-content (JS — % DV bars, explain + my-food links)
+│   │   └── #dashboard-longevity-content (JS — % DV bars + 100% notch, explain + my-food links)
 │   ├── #target-ref-popover        (fixed tooltip: which target reference, JS)
 │   └── #week-summary              (hidden by default; week total, day avg, TDEE, macro split)
 ├── .week__days-toolbar     (hint mentioning * N multiplier + export/import/clear)
@@ -110,9 +110,10 @@ Pen + notes markup is **static** in `index.html`; only labels and popover **cont
 
 **Micro panel** — `.dashboard__micro-panel`:
 - `.dashboard__micro-condition-wrap` — focus dropdown grouped into **Conditions** (ADHD, anemia, anti-aging, bowel movements, cataracts, coffee/tea, hair loss) and **absorption filters** (well/poorly absorbed) + clear ×.
-- `.dashboard__micro-segmented` segments (`#dashboard-micro-view-weekly` / `-daily`) + solo `#dashboard-micro-dv-toggle` (Show targets). Each-day grid has a **More nutrients** control for the extended fields.
+- `.dashboard__micro-segmented` segments (`#dashboard-micro-view-weekly` / `-daily`, persisted) + solo `#dashboard-micro-dv-toggle` (Show targets, persisted). Each-day grid has a **More nutrients** control for extended fields + condition-linked longevity rows.
 - `.dashboard__micro-list` (weekly avg list) and `.dashboard__micro-daily-grid` (each-day grid).
 - **% target** text color / `font-weight` from `config.json` `microDvStatus` tiers. Nutrient rows carry `data-micro-def` (click → micro definition modal), `.dashboard__micro-sources-btn` (ranked foods modal), a `.dashboard__target-ref` badge (`data-target-ref` → `#target-ref-popover`), and optionally `.dashboard__micro-daily-intake-btn` (daily-intake popover when key is in `DAILY_INTAKE_MICRO_KEYS`).
+- `#micro-tip-hair-loss` — shown when **Hair loss** condition filter is active; copy covers zinc, iodine, and limiting nutrients (saturated fat, high-GI, creatine).
 - `#micro-daily-intake-popover` — shared fixed tooltip sibling of `#dashboard-micro-panel`; copy warns that poor storage makes weekly averaging misleading.
 - `#target-ref-popover` (`.dashboard__target-ref-popover`) — fixed tooltip explaining which reference the row scores against (FDA DV / IOM bw min / study max) and its amount.
 - `.dashboard__micro-tip` — caffeine absorption note → `#caffeine-tip-modal`.
@@ -120,7 +121,7 @@ Pen + notes markup is **static** in `index.html`; only labels and popover **cont
 **Longevity panel** — `.dashboard__longevity-panel`:
 - Intro, disclaimer, `.dashboard__longevity-processed-note` (advisory, external Yuka/Bobby links).
 - `.dashboard__longevity-nav` — sticky topic carousel + `#dashboard-longevity-nav-all-list`.
-- `#dashboard-longevity-content` — grouped sections with % DV **Level** bars; inline color from `config.json` `longevityStatus`. Headings carry `data-longevity-def` / `data-micro-def`; rows may include `.dashboard__micro-sources-btn`, optional `.dashboard__micro-daily-intake-btn`, and tip links (eggs → `#fats-cholesterol-tip-modal`, TMAO → `#tmao-protectors-tip-modal`).
+- `#dashboard-longevity-content` — grouped sections with % DV **Level** bars inside `.dashboard__longevity-bar-wrap` (fill + optional `.dashboard__longevity-bar-notch` at 100% with hover popover showing reference amount). Inline color from `config.json` `longevityStatus`. Headings carry `data-longevity-def` / `data-micro-def`; rows may include `.dashboard__micro-sources-btn`, optional `.dashboard__micro-daily-intake-btn`, and tip links (eggs → `#fats-cholesterol-tip-modal`, TMAO → `#tmao-protectors-tip-modal`, K2 → micro-def link).
 
 **Responsive / print** (lower `styles.css`): grid column counts shrink at breakpoints; on narrow screens `.week__grid` is `height: auto` with single column; day editors keep `resize: vertical` unless print/print-preview (`resize: none`).
 
@@ -197,7 +198,7 @@ Variants & instances:
 
 ## CSS naming convention
 
-BEM-like blocks: `.week__`, `.day__`, `.dashboard__`, `.keywords__`, `.settings-modal__`, `.tdee-calc__`, `.macro-split-carousel`, `.micro-sources-modal__`, `.import-ai-`, `.micro-gaps-modal__`, `.micro-def__`, `.micro-tip-modal__`, `.longevity-form`, `.starter-guide__`, `.modal__`.
+BEM-like blocks: `.week__`, `.day__`, `.dashboard__`, `.keywords__`, `.settings-modal__`, `.tdee-calc__`, `.macro-split-carousel`, `.micro-sources-modal__`, `.import-ai-`, `.micro-gaps-modal__`, `.micro-def__`, `.micro-tip-modal__`, `.longevity-form`, `.starter-guide__`, `.modal__`. Longevity Level bars: `.dashboard__longevity-bar-wrap`, `.dashboard__longevity-bar-notch`, `.dashboard__longevity-bar-notch-popover`.
 
 JS does not depend on BEM beyond stable IDs (`#mon`, `#keywords-list`, etc.).
 
@@ -210,7 +211,7 @@ Critical hooks (do not rename without updating the element lookups near the top 
 - Macro split: `macro-split-hint-modal`, `macro-split-carousel`, `macro-split-carousel-prev`, `macro-split-carousel-next`, `macro-split-carousel-indicator`, `macro-split-carousel-card`, `macro-split-hint-modal-done`
 - Sources: `micro-sources-modal`, `micro-sources-modal-title`, `micro-sources-body`, `micro-sources-scope`, `micro-sources-modal-done`, `micro-sources-fullscreen-toggle`, `longevity-sources-modal`, `longevity-sources-modal-title`, `longevity-sources-body`, `longevity-sources-modal-done`, `longevity-sources-fullscreen-toggle`
 - Day: `mon` … `sun`, `day-highlights-toggle`, `day-food-notes`, `day-food-notes-labels`, `day-food-notes-popover`, `day-unmatched-lines`, `export-all-meals`, `import-all-meals`, `import-all-meals-modal`, `clear-all-days`
-- Dashboard: `dashboard-grid`, `dashboard-print`, `week-summary`, `dashboard-week-toggle`, `dashboard-micro-toggle`, `dashboard-micro-panel`, `dashboard-micro-list`, `dashboard-micro-daily-grid`, `micro-daily-intake-popover`, `target-ref-popover`, `target-ref-popover-text`, `dashboard-micro-view-weekly`, `dashboard-micro-view-daily`, `dashboard-micro-dv-toggle`, `dashboard-micro-hint`, `dashboard-micro-hint-text`, `dashboard-micro-condition-toggle`, `dashboard-micro-condition-list`, `dashboard-micro-condition-label`, `dashboard-micro-condition-clear`
+- Dashboard: `dashboard-grid`, `dashboard-print`, `week-summary`, `dashboard-week-toggle`, `dashboard-micro-toggle`, `dashboard-micro-panel`, `dashboard-micro-list`, `dashboard-micro-daily-grid`, `micro-daily-intake-popover`, `target-ref-popover`, `target-ref-popover-text`, `dashboard-micro-view-weekly`, `dashboard-micro-view-daily`, `dashboard-micro-dv-toggle`, `dashboard-micro-hint`, `dashboard-micro-hint-text`, `micro-tip-caffeine`, `micro-tip-cataracts`, `micro-tip-hair-loss`, `dashboard-micro-condition-toggle`, `dashboard-micro-condition-list`, `dashboard-micro-condition-label`, `dashboard-micro-condition-clear`
 - Longevity: `dashboard-longevity-toggle`, `dashboard-longevity-panel`, `dashboard-longevity-content`, `dashboard-longevity-nav`, `dashboard-longevity-nav-prev`, `dashboard-longevity-nav-next`, `dashboard-longevity-nav-current-title`, `dashboard-longevity-nav-all-toggle`, `dashboard-longevity-nav-all-list`, `longevity-modal`, `longevity-form`, `longevity-modal-food`, `longevity-modal-done`
 - Micro gaps: `micro-gaps-ai-open`, `micro-gaps-modal`, `micro-gaps-preference`, `micro-gaps-additional`, `micro-gaps-ai-preview`, `micro-gaps-ai-copy`, `micro-gaps-open-chatgpt`, `micro-gaps-open-claude`, `micro-gaps-modal-done`
 - Tip modals: `phosphorus-binder-modal`, `phosphorus-binder-modal-done`, `caffeine-tip-modal`, `caffeine-tip-modal-done`, `fats-cholesterol-tip-modal`, `fats-cholesterol-tip-modal-done`, `tmao-protectors-tip-modal`, `tmao-protectors-tip-modal-done`
@@ -236,18 +237,38 @@ Critical hooks (do not rename without updating the element lookups near the top 
 
 ## Shared longevity ↔ micro nutrients
 
-Bridge keys are derived at runtime: `microPanelLongevityBridgeFields()` intersects `MICRO_ALL_FIELDS` (micro requirements panel) with `LONGEVITY_FIELDS` → `LONGEVITY_KEYS_ALSO_IN_MICRO` (currently **vitaminE**, **vitaminK**, **selenium**, **copper**, **phosphorus**, **choline**, **methionine**). The AI import prompt lists each bridge field with label/unit and `micros → longevity: true`.
+Bridge keys are derived at runtime: `microPanelLongevityBridgeFields()` intersects `MICRO_ALL_FIELDS` with `LONGEVITY_FIELDS` → `LONGEVITY_KEYS_ALSO_IN_MICRO`. Besides total **vitaminK**, the K breakdown keys **vitaminK1**, **vitaminK2**, **vitaminK2MK4**, **vitaminK2MK7** bridge when present in both field lists. The AI import prompt lists each bridge field with label/unit and `micros → longevity: true`.
 
 **Data convention** — the numeric value lives in `food.micros`; `food.longevity` stores `true` as a reference marker:
 
 ```json
 {
-  "micros": { "copper": 450, "selenium": 40, "vitaminE": 2.5, "vitaminK": 1, "phosphorus": 280, "choline": 105 },
-  "longevity": { "copper": true, "selenium": true, "vitaminE": true, "vitaminK": true, "phosphorus": true, "choline": true }
+  "micros": {
+    "copper": 450,
+    "selenium": 40,
+    "vitaminE": 2.5,
+    "vitaminK": 5,
+    "vitaminK1": 3,
+    "vitaminK2MK7": 12,
+    "phosphorus": 280,
+    "choline": 105
+  },
+  "longevity": {
+    "copper": true,
+    "selenium": true,
+    "vitaminE": true,
+    "vitaminK": true,
+    "vitaminK1": true,
+    "vitaminK2MK7": true,
+    "phosphorus": true,
+    "choline": true,
+    "plantSterols": 0.4,
+    "carotenoids": 2.5
+  }
 }
 ```
 
-**Runtime** — `resolveLongevityValue(kw, key)` returns the micro value when `kw.longevity[key] === true`; callers that accumulate or display longevity totals use it instead of reading `kw.longevity[key]` directly.
+**Runtime** — `resolveLongevityValue(kw, key)` returns the micro value when `kw.longevity[key] === true`; **carotenoids** falls back to an estimate from `micros.vitaminA` when not explicitly stored. Callers that accumulate or display longevity totals use `resolveLongevityValue`, not raw `kw.longevity[key]`.
 
 **Form save** — `saveLongevityFromForm` writes shared-key values to `kw.micros` and sets `kw.longevity` to `true`. `saveMicrosFromForm` writes directly to `kw.micros`; the longevity `true` marker picks up the new value automatically.
 
@@ -259,6 +280,6 @@ Bridge keys are derived at runtime: `microPanelLongevityBridgeFields()` intersec
 
 | File | ~Lines | Load when |
 |------|--------|-----------|
-| `index.html` | 1500 | Structure / new regions |
-| `styles.css` | 5500 | Visual/layout only |
-| `app.js` | 13,500 | Behavior (other docs) |
+| `index.html` | 1525 | Structure / new regions |
+| `styles.css` | 5580 | Visual/layout only |
+| `app.js` | 14,200 | Behavior (other docs) |

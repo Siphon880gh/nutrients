@@ -144,12 +144,17 @@ Triggered by **Ask AI to help fill gaps** (`#micro-gaps-ai-open`) inside the mic
     "solubleFiber": 3,
     "insolubleFiber": 7,
     "sodium": 5,
+    "vitaminK": 25,
+    "vitaminK1": 20,
+    "vitaminK2MK7": 5,
     "leucine": 2500
   },
   "longevity": {
     "saturatedFat": 10,
     "monounsaturatedFat": 36,
-    "omega6": 22
+    "omega6": 22,
+    "plantSterols": 0.5,
+    "carotenoids": 1.2
   },
   "carbQuality": {
     "glycemicIndex": 14,
@@ -172,12 +177,14 @@ Bulk array example:
 ## Safe-change notes
 
 - Keep **amend merge semantics** for optional fields unless product asks for full replace.
-- AI schema example must stay aligned with `MICRO_ALL_FIELDS` (core + extended + amino acids) + `LONGEVITY_FIELDS` keys (`jsonSchemaExample`, `nutrientListForPrompt`).
+- AI schema example must stay aligned with `MICRO_ALL_FIELDS` (core + extended + amino acids, including vitamin K subforms `vitaminK1` / `vitaminK2` / `vitaminK2MK4` / `vitaminK2MK7`) + `LONGEVITY_FIELDS` keys (`plantSterols`, `creatine`, `carotenoids`, …) (`jsonSchemaExample`, `nutrientListForPrompt`).
 - `fiber` is derived from `solubleFiber` + `insolubleFiber` when those are present (`fiberTotalFromParts`); the micros modal auto-splits a typed total via `splitTotalFiber`. Import/export skip the derived `fiber` key when parts exist.
 - External links are not prompt-in-URL APIs — always **copy-first**, then open tab.
 - New AI provider: add link in HTML + listener beside ChatGPT/Claude block at end of `app.js` (both import and micro-gaps panels).
 - `carbQuality` is an import/export alias only; do not add a separate in-memory `carbQuality` store — fold into `longevity` via `mergeCarbQualityIntoLongevity`.
-- **Condition notes in JSON:** `definitions-micronutrients.json` / `definitions-longevity.json` entries may include keys matching `MICRO_CONDITION_FOCUS` ids (`coffeeTeaUser`, `adhd`, `anemia`) — string arrays shown in explain modals when that condition is focused ([core doc](./AGENTS_CODE_REFERENCE-core.md)).
+- **K breakdown import:** log total `vitaminK` for FDA-scored rows; optional K1/K2/MK-4/MK-7 in `micros` with matching `longevity: true` markers when bridged. Subforms are in `NO_STANDALONE_REF_MICRO_KEYS` (tracked, not independently scored).
+- **Carotenoids:** may be omitted when `vitaminA` is present — dashboard estimates mg via `resolveLongevityValue`; explicit `longevity.carotenoids` (mg) overrides.
+- **Condition notes in JSON:** `definitions-micronutrients.json` / `definitions-longevity.json` entries may include keys matching `MICRO_CONDITION_FOCUS` ids (`coffeeTeaUser`, `adhd`, `anemia`, `hairLoss`) — string arrays shown in explain modals when that condition is focused ([core doc](./AGENTS_CODE_REFERENCE-core.md)).
 - **Food notes JSON:** `definitions-food-notes.json` — `{ notes: [{ label, pattern, note }] }`; regex matched against all day-meal text; not imported/exported with meals ([core doc](./AGENTS_CODE_REFERENCE-core.md)).
 
 ## Related CSS
