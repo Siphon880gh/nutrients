@@ -69,11 +69,11 @@ Used when opening import with AI panel **closed** (`setImportAiPanelOpen(false)`
 
 - Opening line: `Please fill in the nutrient data for {portion|___}.`
 - Instructions: JSON only, no fences; example name uses **`1 cup of peanuts`** when portion empty (`jsonSchemaExample`, `nameExample`).
-- Appends full schema sample + `nutrientListForPrompt()` (lists all `MICRO_FIELDS` **and** `LONGEVITY_FIELDS` keys with units).
+- Appends full schema sample + `nutrientListForPrompt()` (lists all `MICRO_ALL_FIELDS` — core + extended trace minerals + amino acids — **and** `LONGEVITY_FIELDS` keys with units, plus the shared micro↔longevity bridge rule).
 
 **Preview** — `renderImportAiPreview` sets `#import-ai-preview` text on portion `input`.
 
-**Copy / open external** — `copyAiPromptToClipboard`; `openAiService(url)` copies then opens `CHATGPT_URL` or `CLAUDE_URL`.
+**Copy / open external** — `copyAiPromptToClipboard`; `openAiService(url)` copies then opens `CHATGPT_URL` (`https://chatgpt.com/`) or `CLAUDE_URL` (`https://claude.ai/new`). The ChatGPT/Claude buttons carry brand icons (both here and in the micro-gaps panel).
 
 **Prefill** — `syncImportAiInputs`: if portion empty and row has `name`, sets portion input to name.
 
@@ -141,7 +141,10 @@ Triggered by **Ask AI to help fill gaps** (`#micro-gaps-ai-open`) inside the mic
   "fats": 72,
   "micros": {
     "fiber": 10,
-    "sodium": 5
+    "solubleFiber": 3,
+    "insolubleFiber": 7,
+    "sodium": 5,
+    "leucine": 2500
   },
   "longevity": {
     "saturatedFat": 10,
@@ -169,7 +172,8 @@ Bulk array example:
 ## Safe-change notes
 
 - Keep **amend merge semantics** for optional fields unless product asks for full replace.
-- AI schema example must stay aligned with `MICRO_FIELDS` + `LONGEVITY_FIELDS` keys (`jsonSchemaExample`, `nutrientListForPrompt`).
+- AI schema example must stay aligned with `MICRO_ALL_FIELDS` (core + extended + amino acids) + `LONGEVITY_FIELDS` keys (`jsonSchemaExample`, `nutrientListForPrompt`).
+- `fiber` is derived from `solubleFiber` + `insolubleFiber` when those are present (`fiberTotalFromParts`); the micros modal auto-splits a typed total via `splitTotalFiber`. Import/export skip the derived `fiber` key when parts exist.
 - External links are not prompt-in-URL APIs — always **copy-first**, then open tab.
 - New AI provider: add link in HTML + listener beside ChatGPT/Claude block at end of `app.js` (both import and micro-gaps panels).
 - `carbQuality` is an import/export alias only; do not add a separate in-memory `carbQuality` store — fold into `longevity` via `mergeCarbQualityIntoLongevity`.
