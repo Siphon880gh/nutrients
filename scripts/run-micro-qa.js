@@ -142,18 +142,28 @@ const FOOD_PATCHES = {
   "Cucumber md": { selenium: 0.2, vitaminK: 8.5, molybdenum: 3 },
   "Ranch Dressing 2 tablespoons": { selenium: 0.5, vitaminK: 15, phosphorus: 15, molybdenum: 2 },
   "Hummus 2 tablespoons": { selenium: 2, vitaminK: 8, molybdenum: 12 },
-  "Russet Potato Baked md": { selenium: 0.5, vitaminK: 2, phosphorus: 48, molybdenum: 8 },
-  "Red Potato Boiled md": { selenium: 0.4, vitaminK: 2, phosphorus: 42, molybdenum: 6 },
-  "Yukon Gold Potato Baked md": { selenium: 0.5, vitaminK: 2, phosphorus: 50, molybdenum: 7 },
-  "Sweet Potato Baked md": { selenium: 0.2, vitaminK: 2.5, phosphorus: 54, molybdenum: 10 },
+  "Russet Potato Baked with Skin md": { selenium: 0.5, vitaminK: 2, phosphorus: 48, molybdenum: 8 },
+  "Russet Potato Baked without Skin md": { selenium: 0.5, vitaminK: 0.2, phosphorus: 48, molybdenum: 8 },
+  "Red Potato Boiled with Skin md": { selenium: 0.4, vitaminK: 2, phosphorus: 42, molybdenum: 6 },
+  "Red Potato Boiled without Skin md": { selenium: 0.4, vitaminK: 0.2, phosphorus: 42, molybdenum: 6 },
+  "Yukon Gold Potato Baked with Skin md": { selenium: 0.5, vitaminK: 2, phosphorus: 50, molybdenum: 7 },
+  "Yukon Gold Potato Baked without Skin md": { selenium: 0.5, vitaminK: 0.2, phosphorus: 50, molybdenum: 7 },
+  "Sweet Potato Baked with Skin md": { selenium: 0.2, vitaminK: 2.5, phosphorus: 54, molybdenum: 10 },
+  "Sweet Potato Baked without Skin md": { selenium: 0.2, vitaminK: 2, phosphorus: 54, molybdenum: 10 },
   "Sweet Potato Fries sm": { selenium: 0.1, vitaminK: 1.5, phosphorus: 30, molybdenum: 6 },
   "Sweet Potato Fries md": { selenium: 0.15, vitaminK: 2, phosphorus: 45, molybdenum: 8 },
   "Sweet Potato Fries lg": { selenium: 0.2, vitaminK: 2.5, phosphorus: 60, molybdenum: 10 },
-  "Smashed Potatoes Yukon Gold - 1 cup": {
+  "Smashed Potatoes Yukon Gold with Skin - 1 cup": {
     iron: 1.5, selenium: 0.8, vitaminE: 0.5, vitaminK: 3, phosphorus: 95, molybdenum: 10,
   },
-  "Smashed Potatoes Red - 1 cup": {
+  "Smashed Potatoes Yukon Gold without Skin - 1 cup": {
+    iron: 1.5, selenium: 0.8, vitaminE: 0.5, vitaminK: 1, phosphorus: 95, molybdenum: 10,
+  },
+  "Smashed Potatoes Red with Skin - 1 cup": {
     iron: 1.2, selenium: 0.7, vitaminE: 0.4, vitaminK: 3, phosphorus: 85, molybdenum: 8,
+  },
+  "Smashed Potatoes Red without Skin - 1 cup": {
+    iron: 1.2, selenium: 0.7, vitaminE: 0.4, vitaminK: 1, phosphorus: 85, molybdenum: 8,
   },
   "Pure Protein Bar": { selenium: 8, vitaminB12: 0.6, phosphorus: 150, iodine: 5, molybdenum: 10 },
   "Premier Protein Shake": {
