@@ -10,7 +10,7 @@ const samplePath = path.join(__dirname, "../samples/definitions-food.json");
 const checkedPath = path.join(__dirname, "../samples/definitions-food-qa-checked.json");
 
 const MICRO_KEYS = [
-  "solubleFiber", "insolubleFiber", "sodium", "potassium", "calcium", "iron", "copper", "magnesium", "zinc", "selenium",
+  "solubleFiber", "insolubleFiber", "fiber", "sodium", "potassium", "calcium", "iron", "copper", "magnesium", "zinc", "selenium",
   "manganese", "chromium", "iodine", "vitaminA", "vitaminD", "vitaminE", "vitaminK", "vitaminB12",
   "thiamin", "riboflavin", "niacin", "pantothenicAcid", "vitaminB6", "vitaminC", "folate", "biotin",
   "phosphorus", "choline", "molybdenum", "chloride",
@@ -217,11 +217,11 @@ const CATEGORY_DEFAULTS = {
   },
   energy: {
     selenium: 0, iodine: 0, vitaminD: 0, vitaminB12: 0, vitaminE: 0, vitaminK: 0,
-    phosphorus: 0,     choline: 0, molybdenum: 0, chloride: 0, solubleFiber: 0, insolubleFiber: 0,
+    phosphorus: 0,     choline: 0, molybdenum: 0, chloride: 0, fiber: 0, solubleFiber: 0, insolubleFiber: 0,
   },
   oil: {
     selenium: 0, iodine: 0, vitaminD: 0, vitaminB12: 0, vitaminK: 0, phosphorus: 0,
-    choline: 0, molybdenum: 0, chloride: 0, solubleFiber: 0, insolubleFiber: 0, vitaminC: 0,
+    choline: 0, molybdenum: 0, chloride: 0, fiber: 0, solubleFiber: 0, insolubleFiber: 0, vitaminC: 0,
   },
   egg: {
     selenium: 15, vitaminB12: 0.5, iodine: 24, phosphorus: 86, vitaminD: 1.1, vitaminE: 0.5,

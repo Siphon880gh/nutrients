@@ -101,6 +101,15 @@
   }
 
   /**
+   * Share of total fiber DV used for soluble vs insoluble targets.
+   * Matches the default split in app.js splitTotalFiber (30% soluble, 70% insoluble).
+   */
+  var FIBER_COMPONENT_DV_RATIO = {
+    solubleFiber: 0.3,
+    insolubleFiber: 0.7,
+  };
+
+  /**
    * Denominator for % DV: (avg daily micro amount / this value) × 100.
    * @param {string} demographic - "male" | "female"
    * @param {string} microKey - e.g. "iron", "vitaminC"
@@ -109,6 +118,11 @@
   function getDailyMicroDv(demographic, microKey) {
     var profile = DAILY_MICRO_DV[normalizeDemographic(demographic)];
     if (!profile) return 0;
+    var fiberShare = FIBER_COMPONENT_DV_RATIO[microKey];
+    if (fiberShare != null) {
+      var fiberDv = profile.fiber;
+      return typeof fiberDv === "number" && fiberDv > 0 ? fiberDv * fiberShare : 0;
+    }
     var dv = profile[microKey];
     return typeof dv === "number" && dv > 0 ? dv : 0;
   }
@@ -119,6 +133,7 @@
    * choline, essential amino acids, and ALA. See DAILY_INTAKE_MICRO_KEYS.
    */
   var DAILY_INTAKE_MICRO_KEYS = [
+    "fiber",
     "solubleFiber",
     "insolubleFiber",
     "sodium",
@@ -191,6 +206,7 @@
     META: META,
     CALORIE_BASELINE: CALORIE_BASELINE,
     DAILY_MICRO_DV: DAILY_MICRO_DV,
+    FIBER_COMPONENT_DV_RATIO: FIBER_COMPONENT_DV_RATIO,
     DAILY_INTAKE_MICRO_KEYS: DAILY_INTAKE_MICRO_KEYS,
     IOM_BW_MIN_MG_PER_KG: IOM_BW_MIN_MG_PER_KG,
     normalizeDemographic: normalizeDemographic,

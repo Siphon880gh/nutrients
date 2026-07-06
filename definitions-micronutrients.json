@@ -6,7 +6,7 @@
     ],
     "enough": [
       "Adequate total fiber (soluble + insoluble) feeds beneficial gut microbes, steadies digestion, and helps you feel full on fewer calories.",
-      "Track both soluble and insoluble fiber in your food entries—their % DV shares add up to your total fiber target."
+      "Fiber (total) tracks your daily target; soluble (~30%) and insoluble (~70%) targets add up to that total."
     ],
     "tooHigh": [
       "Sudden large increases in fiber without enough water can cause bloating, gas, and cramping—raise intake gradually.",
@@ -41,7 +41,7 @@
     ],
     "enough": [
       "Soluble fiber (oats, beans, barley, apples, citrus) forms a gel that slows digestion, lowers LDL cholesterol, and feeds gut microbes that produce protective short-chain fatty acids.",
-      "Soluble fiber may also reduce gut production of TMAO from animal foods and supports hormone clearance via the gut."
+      "Your soluble target is about 30% of total fiber (~11 g for men, ~8 g for women)."
     ],
     "tooHigh": [
       "Sudden large increases in soluble fiber without enough water can cause bloating and gas—raise intake gradually.",
@@ -76,7 +76,7 @@
     ],
     "enough": [
       "Insoluble fiber (whole grains, wheat bran, vegetables, fruit skins) adds bulk, shortens colon transit time, and supports regular bowel movements.",
-      "It complements soluble fiber—together they cover both prebiotic and motility benefits."
+      "Your insoluble target is about 70% of total fiber (~27 g for men, ~18 g for women)."
     ],
     "tooHigh": [
       "Sudden large increases in insoluble fiber without enough water can cause cramping and bloating.",
@@ -102,6 +102,17 @@
     "bowelMovementsAltered": [
       "Insoluble fiber adds bulk and speeds transit—first-line support when stools are infrequent or hard.",
       "Increase gradually with water to avoid gas or cramping."
+    ]
+  },
+  "insolubleToSolubleFiber": {
+    "warning": [
+      "This 3:1 ratio assumes relatively stable bowel habits. If you currently have constipation or diarrhea—including after a stomach bug or in post-infectious IBS—prioritize the fiber type that fits your symptoms (more insoluble for constipation, more soluble for diarrhea) and ignore this ratio until things settle."
+    ],
+    "enough": [
+      "The optimal daily dietary fiber intake ranges between 25 and 38 grams. Experts generally recommend an insoluble-to-soluble fiber ratio of about 3:1 or 2:1. For a daily target of 30 grams, this means roughly 20 grams should be insoluble fiber and 10 grams soluble fiber."
+    ],
+    "dashboardTracking": [
+      "This row scores how close your average insoluble-to-soluble fiber ratio is to 3:1. % of target is highest at exactly 3:1 and falls as the ratio moves higher or lower."
     ]
   },
   "sodium": {

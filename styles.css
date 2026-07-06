@@ -1238,6 +1238,45 @@ button.dashboard__micro-name:focus-visible {
   margin-bottom: 0;
 }
 
+.micro-def__section--warning {
+  margin: 0 0 1.15rem;
+  padding: 0.9rem 0.95rem;
+  border: 1px solid #e0c27a;
+  border-left: 4px solid #b8860b;
+  border-radius: 6px;
+  background: linear-gradient(135deg, #fff8e8 0%, #fffdf5 100%);
+  box-shadow: 0 1px 3px rgba(120, 90, 20, 0.08);
+}
+
+.micro-def__heading--warning {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin: 0 0 0.55rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: none;
+  color: #6b4e00;
+}
+
+.micro-def__heading--warning-icon {
+  flex-shrink: 0;
+  color: #b8860b;
+}
+
+.micro-def__section--warning .micro-def__p {
+  margin: 0 0 0.45rem;
+  font-size: 0.88rem;
+  font-weight: 500;
+  line-height: 1.55;
+  color: #5c4500;
+}
+
+.micro-def__section--warning .micro-def__p:last-child {
+  margin-bottom: 0;
+}
+
 .micro-def__section--condition {
   margin: 0 0 1.15rem;
   padding: 0.9rem 0.95rem;
@@ -2970,7 +3009,10 @@ button.dashboard__longevity-name:focus-visible {
 
 .day__backdrop {
   position: absolute;
-  inset: 0;
+  top: var(--day-input-text-offset, 0px);
+  left: 0;
+  right: 0;
+  height: calc(100% - var(--day-input-text-offset, 0px));
   padding: 0.65rem 0.75rem;
   overflow: hidden;
   pointer-events: none;

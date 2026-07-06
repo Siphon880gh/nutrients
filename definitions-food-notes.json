@@ -24,6 +24,11 @@
       "label": "Salad Kit",
       "pattern": "\\bsalad.*kit\\b",
       "note": "<p>A chopped salad kit from Ralphs or Trader Joe’s usually contains several cups of salad. For one meal, about 1.75 to 2 cups is a good serving size, especially if you add bread or another side.</p><p>The dressing can be portioned out separately. After opening, you can store the small dressing packet in a snack-size Ziploc bag to prevent leaks. The smaller topping bags can usually stay inside the salad kit without issue because they are dry and less likely to spill like liquid dressing.</p><p>To keep the main salad bag closed and fresh, fold it over and secure it with a rubber band.</p>"
+    },
+    {
+      "label": "Multivitamin (Adjusted)",
+      "pattern": "\\bmultivitamin\\b",
+      "note": "<p>These Multivitamin entries are <strong>absorption-adjusted</strong>. The numbers are not the amounts printed on the label — they estimate what your body actually absorbs from one tablet. You never absorb 100% of a pill, so water-soluble vitamins, bulky minerals (calcium, iron, magnesium, zinc), and vitamin B12 (limited by intrinsic factor) are scaled down from their label amounts.</p><p><strong>Take it with a meal that has enough fat.</strong> The fat-soluble vitamins (A, D, E, K) need dietary fat to be absorbed. These values assume you ate enough fat alongside the tablet. On an empty stomach or a very low-fat meal you will absorb much less of A, D, E, and K, so the real amounts would be lower than shown.</p><p>Values are estimates of typical adult absorption and vary by person, dose, brand, and the rest of the meal. Use them as a guide, not an exact measurement.</p>"
     }
   ]
 }

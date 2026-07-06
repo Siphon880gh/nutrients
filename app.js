@@ -552,6 +552,7 @@
   };
 
   var MICRO_FIELDS = [
+    { key: "fiber", label: "Fiber (total)", unit: "g", code: "f" },
     { key: "solubleFiber", label: "Soluble fiber", unit: "g", code: "sf" },
     { key: "insolubleFiber", label: "Insoluble fiber", unit: "g", code: "if" },
     { key: "sodium", label: "Sodium", unit: "mg", code: "na" },
@@ -605,11 +606,12 @@
 
   var MICRO_ALL_FIELDS = MICRO_FIELDS.concat(MICRO_EXTENDED_FIELDS);
 
-  var MICRO_FIBER_TOTAL_FIELD = {
-    key: "fiber",
-    label: "Fiber (total)",
-    unit: "g",
-    code: "f",
+  var MICRO_DERIVED_DEFS = {
+    insolubleToSolubleFiber: {
+      label: "Insoluble : soluble fiber ratio",
+      idealRatio: 3,
+      afterKey: "insolubleFiber",
+    },
   };
 
   function solubleFiberRatioForFoodName(name) {
@@ -654,6 +656,73 @@
   function applyFiberTotalToMicroTotals(totals) {
     totals.fiber = fiberTotalFromParts(totals);
     return totals;
+  }
+
+  function microDerivedDefByKey(key) {
+    return MICRO_DERIVED_DEFS[key] || null;
+  }
+
+  function microDisplayFieldByKey(key) {
+    var field = microFieldByKey(key);
+    if (field) return field;
+    var derived = microDerivedDefByKey(key);
+    if (!derived) return null;
+    return { key: key, label: derived.label, unit: "" };
+  }
+
+  function insolubleToSolubleFiberRatio(microTotals, perDay) {
+    var divisor = perDay ? 1 : DAYS.length;
+    var insoluble = (microTotals.insolubleFiber || 0) / divisor;
+    var soluble = (microTotals.solubleFiber || 0) / divisor;
+    if (soluble <= 0) return null;
+    return insoluble / soluble;
+  }
+
+  function insolubleToSolubleFiberTargetPct(ratio) {
+    var ideal = MICRO_DERIVED_DEFS.insolubleToSolubleFiber.idealRatio;
+    if (ratio == null || isNaN(ratio) || ideal <= 0) {
+      return {
+        pct: null,
+        text: "—",
+        kindLabel: "3:1 target",
+        reqAmount: ideal + ":1",
+        limiting: false,
+        refKey: "insolubleToSolubleFiber",
+      };
+    }
+    var pct = Math.min(100, (Math.min(ratio, ideal) / Math.max(ratio, ideal)) * 100);
+    return {
+      pct: pct,
+      text: formatTargetPctNumber(pct),
+      kindLabel: "3:1 target",
+      reqAmount: ideal + ":1",
+      limiting: false,
+      refKey: "insolubleToSolubleFiber",
+    };
+  }
+
+  function microDerivedRowTargetDisplay(key, microTotals, perDay) {
+    if (key === "insolubleToSolubleFiber") {
+      return insolubleToSolubleFiberTargetPct(
+        insolubleToSolubleFiberRatio(microTotals, perDay)
+      );
+    }
+    return {
+      pct: null,
+      text: "—",
+      kindLabel: "",
+      reqAmount: "",
+      limiting: false,
+      refKey: key,
+    };
+  }
+
+  function microDerivedAmtText(key, microTotals, perDay) {
+    if (key === "insolubleToSolubleFiber") {
+      var ratio = insolubleToSolubleFiberRatio(microTotals, perDay);
+      return ratio == null || isNaN(ratio) ? "—" : fmtNum(ratio) + ":1";
+    }
+    return "—";
   }
 
   var LONGEVITY_GROUPS = [
@@ -1654,11 +1723,34 @@
         micros[field.key] = isNaN(n) ? "" : n;
       }
     });
-    if (raw.fiber !== "" && raw.fiber != null && fiberTotalFromParts(micros) === 0) {
-      var split = splitTotalFiber(raw.fiber, "");
+    var legacyFiber = raw.fiber;
+    var partsTotal =
+      (parseFloat(micros.solubleFiber) || 0) + (parseFloat(micros.insolubleFiber) || 0);
+    if (legacyFiber !== "" && legacyFiber != null && partsTotal === 0) {
+      var split = splitTotalFiber(legacyFiber, "");
       micros.solubleFiber = split.solubleFiber;
       micros.insolubleFiber = split.insolubleFiber;
     }
+    micros.fiber = "";
+    return micros;
+  }
+
+  function finalizeMicrosFromForm(micros, foodName) {
+    if (!micros) return blankMicros();
+    var fiberInput = micros.fiber;
+    var partsTotal =
+      (parseFloat(micros.solubleFiber) || 0) + (parseFloat(micros.insolubleFiber) || 0);
+    if (
+      fiberInput !== "" &&
+      fiberInput != null &&
+      !isNaN(parseFloat(fiberInput)) &&
+      partsTotal === 0
+    ) {
+      var splitFromTotal = splitTotalFiber(fiberInput, foodName);
+      micros.solubleFiber = splitFromTotal.solubleFiber;
+      micros.insolubleFiber = splitFromTotal.insolubleFiber;
+    }
+    micros.fiber = "";
     return micros;
   }
 
@@ -1818,7 +1910,11 @@
 
   function filledMicroCodes(micros) {
     var codes = [];
+    if (fiberTotalFromParts(micros) > 0) {
+      codes.push("f");
+    }
     MICRO_ALL_FIELDS.forEach(function (field) {
+      if (field.key === "fiber") return;
       var v = micros[field.key];
       if (v !== "" && v != null) {
         codes.push(field.code);
@@ -1918,11 +2014,16 @@
 
     var micros = {};
     MICRO_ALL_FIELDS.forEach(function (field) {
+      if (field.key === "fiber") return;
       var v = kw.micros[field.key];
       if (v !== "" && v != null) {
         micros[field.key] = v;
       }
     });
+    var totalFiber = fiberTotalFromParts(kw.micros);
+    if (totalFiber > 0) {
+      micros.fiber = Math.round(totalFiber * 10) / 10;
+    }
     if (Object.keys(micros).length > 0) {
       obj.micros = micros;
     }
@@ -2008,11 +2109,7 @@
       typeof data.micros === "object" &&
       !Array.isArray(data.micros)
     ) {
-      MICRO_ALL_FIELDS.forEach(function (field) {
-        if (field.key in data.micros) {
-          kw.micros[field.key] = storedMacroValue(data.micros[field.key]);
-        }
-      });
+      kw.micros = normalizeMicros(data.micros);
     }
 
     applyLongevityImportToKeyword(kw, data);
@@ -2746,6 +2843,7 @@
 
   function microDefEntryHasContent(entry) {
     if (
+      entry.warning.length ||
       entry.tooLow.length ||
       entry.tooHigh.length ||
       entry.enough.length ||
@@ -2765,11 +2863,12 @@
   function normalizeMicroDefinitions(data) {
     var out = {};
     if (!data || typeof data !== "object") return out;
-    MICRO_ALL_FIELDS.forEach(function (field) {
-      var raw = data[field.key];
+    function loadDefEntry(key) {
+      var raw = data[key];
       if (!raw || typeof raw !== "object") return;
       var entry = Object.assign(
         {
+          warning: stringArray(raw.warning),
           tooLow: stringArray(raw.tooLow),
           tooHigh: stringArray(raw.tooHigh),
           enough: stringArray(raw.enough),
@@ -2782,9 +2881,13 @@
         microConditionDefFields(raw)
       );
       if (microDefEntryHasContent(entry)) {
-        out[field.key] = entry;
+        out[key] = entry;
       }
+    }
+    MICRO_ALL_FIELDS.forEach(function (field) {
+      loadDefEntry(field.key);
     });
+    Object.keys(MICRO_DERIVED_DEFS).forEach(loadDefEntry);
     return out;
   }
 
@@ -2942,7 +3045,6 @@
   }
 
   function microFieldByKey(key) {
-    if (key === "fiber") return MICRO_FIBER_TOTAL_FIELD;
     for (var i = 0; i < MICRO_ALL_FIELDS.length; i++) {
       if (MICRO_ALL_FIELDS[i].key === key) return MICRO_ALL_FIELDS[i];
     }
@@ -3029,6 +3131,20 @@
     );
   }
 
+  function microDefWarningSectionHtml(def) {
+    if (!def.warning || !def.warning.length) return "";
+    return (
+      '<section class="micro-def__section micro-def__section--warning" role="note">' +
+      '<h4 class="micro-def__heading micro-def__heading--warning">' +
+      '<svg class="micro-def__heading--warning-icon" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" focusable="false">' +
+      '<path fill="currentColor" d="M8 1.5 1.25 14h13.5L8 1.5zm0 3.25a.75.75 0 0 1 .75.75v4.5a.75.75 0 0 1-1.5 0V5.5A.75.75 0 0 1 8 4.75zM8 12a.875.875 0 1 0 0-1.75A.875.875 0 0 0 8 12z"></path>' +
+      "</svg>" +
+      "<span>Warning</span></h4>" +
+      microDefParagraphsHtml(def.warning) +
+      "</section>"
+    );
+  }
+
   function microDefConditionSectionHtml(key, def) {
     if (!microConditionFocus || !key) return "";
     var condMeta = MICRO_CONDITION_FOCUS[microConditionFocus];
@@ -3053,7 +3169,7 @@
 
   function renderMicroDefBody(key) {
     if (!microDefBodyEl) return;
-    var field = microFieldByKey(key);
+    var field = microDisplayFieldByKey(key);
     var def = microDefinitions[key];
     if (!def) {
       microDefBodyEl.innerHTML =
@@ -3063,7 +3179,7 @@
       return;
     }
 
-    var html = microDefConditionSectionHtml(key, def);
+    var html = microDefWarningSectionHtml(def) + microDefConditionSectionHtml(key, def);
 
     if (def.dashboardTracking.length) {
       html +=
@@ -3084,9 +3200,17 @@
     if (def.enough.length) {
       html +=
         '<section class="micro-def__section">' +
-        '<h4 class="micro-def__heading">When you get enough</h4>' +
+        '<h4 class="micro-def__heading">' +
+        (key === "insolubleToSolubleFiber"
+          ? "Daily fiber &amp; ratio"
+          : "When you get enough") +
+        "</h4>" +
         microDefParagraphsHtml(def.enough) +
         "</section>";
+    }
+
+    if (key === "insolubleToSolubleFiber") {
+      html += insolubleToSolubleFiberCompareHtml();
     }
 
     if (def.tooHigh.length) {
@@ -3115,6 +3239,18 @@
 
     microDefBodyEl.innerHTML =
       html || '<p class="micro-def__empty">No description content yet.</p>';
+  }
+
+  function insolubleToSolubleFiberCompareHtml() {
+    return (
+      '<section class="micro-def__section">' +
+      '<h4 class="micro-def__heading">How they compare</h4>' +
+      '<p class="micro-def__p"><strong>Insoluble fiber</strong> passes through your digestive system largely intact, adding bulk to your stool and helping food pass more quickly through the stomach and intestines.</p>' +
+      '<p class="micro-def__p"><strong>Top sources:</strong> Wheat bran, whole-wheat breads, brown rice, nuts, and most vegetables.</p>' +
+      '<p class="micro-def__p"><strong>Soluble fiber</strong> attracts water and turns to gel during digestion, which slows digestion, helps regulate blood sugar, and lowers cholesterol.</p>' +
+      '<p class="micro-def__p"><strong>Top sources:</strong> Oats, barley, beans, lentils, peas, and fruits like apples and oranges.</p>' +
+      "</section>"
+    );
   }
 
   function pufaVitaminEProtectionCalcHtml() {
@@ -3331,7 +3467,8 @@
 
   function defModalSourcesTarget() {
     if (activeMicroDefKey) {
-      if (!microFieldByKey(activeMicroDefKey)) return null;
+      if (microDerivedDefByKey(activeMicroDefKey)) return null;
+      if (!microDisplayFieldByKey(activeMicroDefKey)) return null;
       return { modal: "micro", key: activeMicroDefKey, scope: "week" };
     }
     if (activeLongevityDefKey) {
@@ -5309,7 +5446,7 @@
 
   function openMicroDefModal(key, returnTo, stackOnForm) {
     if (!microDefModalEl || !key) return;
-    var field = microFieldByKey(key);
+    var field = microDisplayFieldByKey(key);
     if (!field) return;
 
     if (activeImportId) closeImportModal();
@@ -5819,6 +5956,7 @@
       if (!hits) return;
 
       MICRO_ALL_FIELDS.forEach(function (field) {
+        if (field.key === "fiber") return;
         var v = kw.micros[field.key];
         if (v === "" || v == null) return;
         totals[field.key] += hits * parseFloat(v);
@@ -6135,7 +6273,6 @@
   }
 
   function dailyDv(key) {
-    if (key === "solubleFiber" || key === "insolubleFiber") key = "fiber";
     if (demographicDv && demographicDv.getDailyMicroDv) {
       return demographicDv.getDailyMicroDv(demographic, key);
     }
@@ -6671,8 +6808,18 @@
   }
 
   function microBaseDisplayFields() {
-    var fields = MICRO_FIELDS.map(function (field) {
-      return { source: "micro", field: field };
+    var fields = [];
+    MICRO_FIELDS.forEach(function (field) {
+      fields.push({ source: "micro", field: field });
+      Object.keys(MICRO_DERIVED_DEFS).forEach(function (derivedKey) {
+        var derived = MICRO_DERIVED_DEFS[derivedKey];
+        if (derived.afterKey === field.key) {
+          fields.push({
+            source: "derived",
+            field: microDisplayFieldByKey(derivedKey),
+          });
+        }
+      });
     });
     if (microMoreExpanded) {
       MICRO_EXTENDED_FIELDS.forEach(function (field) {
@@ -6741,6 +6888,7 @@
   }
 
   function microConditionSourcesIconHtml(entry, dayId) {
+    if (entry.source === "derived") return "";
     var key = entry.field.key;
     if (entry.source === "longevity") {
       if (key === "glycemicIndex") return "";
@@ -6755,26 +6903,29 @@
   function microConditionRowHtml(entry, weekMicro, weekLongevity) {
     var field = entry.field;
     var isLongevity = entry.source === "longevity";
+    var isDerived = entry.source === "derived";
     var total = isLongevity
       ? weekLongevity[field.key] || 0
-      : field.key === "fiber"
-        ? fiberTotalFromParts(weekMicro)
-        : weekMicro[field.key] || 0;
-    var dailyAmount = total / DAYS.length;
-    var targetDisplay = microRowTargetDisplay(
-      field,
-      dailyAmount,
-      entry.source,
-      weekMicro
-    );
+      : isDerived
+        ? 0
+        : field.key === "fiber"
+          ? fiberTotalFromParts(weekMicro)
+          : weekMicro[field.key] || 0;
+    var dailyAmount = isDerived ? 0 : total / DAYS.length;
+    var targetDisplay = isDerived
+      ? microDerivedRowTargetDisplay(field.key, weekMicro, false)
+      : microRowTargetDisplay(field, dailyAmount, entry.source, weekMicro);
     var pct = targetDisplay.pct;
-    var amtText = microConditionAmtText(entry, total, false);
+    var amtText = isDerived
+      ? microDerivedAmtText(field.key, weekMicro, false)
+      : microConditionAmtText(entry, total, false);
     var tier = tierForMicroTargetPct(pct, !!targetDisplay.limiting);
     var tierAttr = tier ? ' data-dv-tier="' + escapeAttr(tier.id) + '"' : "";
     var rowCls =
       "dashboard__micro-row dashboard__micro-row--clickable" +
       (showMicroDailyDv ? " dashboard__micro-row--show-dv" : "") +
-      (isLongevity ? " dashboard__micro-row--longevity" : "");
+      (isLongevity ? " dashboard__micro-row--longevity" : "") +
+      (isDerived ? " dashboard__micro-row--derived" : "");
     var defAttr = isLongevity ? "data-longevity-def" : "data-micro-def";
 
     var html =
@@ -6865,22 +7016,27 @@
     microConditionDisplayFields().forEach(function (entry) {
       var field = entry.field;
       var isLongevity = entry.source === "longevity";
+      var isDerived = entry.source === "derived";
       var total = isLongevity
         ? longevityTotals[field.key] || 0
-        : microTotals[field.key] || 0;
-      var targetDisplay = microRowTargetDisplay(
-        field,
-        total,
-        entry.source,
-        microTotals
-      );
+        : isDerived
+          ? 0
+          : field.key === "fiber"
+            ? fiberTotalFromParts(microTotals)
+            : microTotals[field.key] || 0;
+      var targetDisplay = isDerived
+        ? microDerivedRowTargetDisplay(field.key, microTotals, true)
+        : microRowTargetDisplay(field, total, entry.source, microTotals);
       var pct = targetDisplay.pct;
-      var amtText = microConditionAmtText(entry, total, true);
+      var amtText = isDerived
+        ? microDerivedAmtText(field.key, microTotals, true)
+        : microConditionAmtText(entry, total, true);
       var tier = tierForMicroTargetPct(pct, !!targetDisplay.limiting);
       var tierAttr = tier ? ' data-dv-tier="' + escapeAttr(tier.id) + '"' : "";
       var rowCls =
         "dashboard__micro-day-row dashboard__micro-day-row--clickable" +
-        (isLongevity ? " dashboard__micro-day-row--longevity" : "");
+        (isLongevity ? " dashboard__micro-day-row--longevity" : "") +
+        (isDerived ? " dashboard__micro-day-row--derived" : "");
       var defAttr = isLongevity ? "data-longevity-def" : "data-micro-def";
 
       rows +=
@@ -7352,7 +7508,7 @@
       longevityListOpen() +
         longevitySubgroupHtml("Watch — lower % DV is better", "limit") +
         MICRO_FIELDS.filter(function (field) {
-          return !!LONGEVITY_MICRO_LIMITING_KEYS[field.key];
+          return field.key !== "fiber" && !!LONGEVITY_MICRO_LIMITING_KEYS[field.key];
         })
           .map(function (field) {
             return longevityRowFromMicroKey(
@@ -7365,7 +7521,7 @@
           .join("") +
         longevitySubgroupHtml("Aim — higher % DV is better", "aim") +
         MICRO_FIELDS.filter(function (field) {
-          return !LONGEVITY_MICRO_LIMITING_KEYS[field.key];
+          return field.key !== "fiber" && !LONGEVITY_MICRO_LIMITING_KEYS[field.key];
         })
           .map(function (field) {
             return longevityRowFromMicroKey(
@@ -9542,6 +9698,87 @@
     backdrop.scrollLeft = textarea.scrollLeft;
   }
 
+  var dayInputMirrorEl = null;
+
+  function syncDayInputMirrorStyles(textarea) {
+    if (!dayInputMirrorEl) return;
+    var style = window.getComputedStyle(textarea);
+    var mirror = dayInputMirrorEl;
+    mirror.style.position = "absolute";
+    mirror.style.visibility = "hidden";
+    mirror.style.pointerEvents = "none";
+    mirror.style.top = "0";
+    mirror.style.left = "-9999px";
+    mirror.style.height = "auto";
+    mirror.style.overflow = "hidden";
+    mirror.style.width = textarea.clientWidth + "px";
+    mirror.style.boxSizing = style.boxSizing;
+    mirror.style.padding = style.padding;
+    mirror.style.border = style.border;
+    mirror.style.font = style.font;
+    mirror.style.lineHeight = style.lineHeight;
+    mirror.style.letterSpacing = style.letterSpacing;
+    mirror.style.whiteSpace = style.whiteSpace;
+    mirror.style.wordWrap = style.wordWrap;
+    mirror.style.overflowWrap = style.overflowWrap;
+    mirror.style.tabSize = style.tabSize;
+  }
+
+  function getDayInputMirror(textarea) {
+    if (!dayInputMirrorEl) {
+      dayInputMirrorEl = document.createElement("div");
+      dayInputMirrorEl.setAttribute("aria-hidden", "true");
+      dayInputMirrorEl.className = "day__input-mirror";
+      document.body.appendChild(dayInputMirrorEl);
+    }
+    syncDayInputMirrorStyles(textarea);
+    return dayInputMirrorEl;
+  }
+
+  function dayInputMirrorCoords(mirror, text, pos, fallbackLineHeight) {
+    mirror.textContent = text.substring(0, pos);
+    var span = document.createElement("span");
+    span.textContent = text.charAt(pos) || ".";
+    mirror.appendChild(span);
+    var coords = {
+      top: span.offsetTop,
+      left: span.offsetLeft,
+      height: span.offsetHeight || fallbackLineHeight,
+    };
+    mirror.removeChild(span);
+    return coords;
+  }
+
+  function syncDayInputTextOffset(textarea) {
+    var editor = textarea.closest(".day__editor");
+    if (!editor) return;
+    var backdrop = editor.querySelector(".day__backdrop");
+    if (!backdrop || !textarea.value) {
+      editor.style.removeProperty("--day-input-text-offset");
+      return;
+    }
+
+    syncScroll(textarea, backdrop);
+
+    var bdRect = backdropCaretRect(backdrop, 0);
+    if (!bdRect) return;
+
+    var style = window.getComputedStyle(textarea);
+    var lineHeight = parseFloat(style.lineHeight) || 16;
+    var mirror = getDayInputMirror(textarea);
+    var coords = dayInputMirrorCoords(mirror, textarea.value, 0, lineHeight);
+    var rect = textarea.getBoundingClientRect();
+    var padTop = parseFloat(style.paddingTop);
+    var mirrorTop = rect.top + padTop + coords.top - textarea.scrollTop;
+    var offset = Math.round((mirrorTop - bdRect.top) * 10) / 10;
+
+    if (Math.abs(offset) < 0.5) {
+      editor.style.removeProperty("--day-input-text-offset");
+    } else {
+      editor.style.setProperty("--day-input-text-offset", offset + "px");
+    }
+  }
+
   function backdropCaretRect(backdrop, pos) {
     if (!backdrop) return null;
 
@@ -9593,18 +9830,25 @@
     var editor = textarea.closest(".day__editor");
     if (!editor) return null;
     var backdrop = editor.querySelector(".day__backdrop");
-    if (!backdrop) return null;
+    if (backdrop) syncScroll(textarea, backdrop);
 
+    var style = window.getComputedStyle(textarea);
+    var rect = textarea.getBoundingClientRect();
+    var padTop = parseFloat(style.paddingTop);
+    var padLeft = parseFloat(style.paddingLeft);
+    var lineHeight = parseFloat(style.lineHeight) || 16;
+    var relY = clientY - rect.top - padTop + textarea.scrollTop;
+    var relX = clientX - rect.left - padLeft + textarea.scrollLeft;
+
+    var mirror = getDayInputMirror(textarea);
     var text = textarea.value;
     var bestPos = text.length;
     var bestScore = Infinity;
 
     for (var pos = 0; pos <= text.length; pos++) {
-      var rect = backdropCaretRect(backdrop, pos);
-      if (!rect) continue;
-      var midY = rect.top + rect.height / 2;
-      var dy = clientY - midY;
-      var dx = clientX - rect.left;
+      var coords = dayInputMirrorCoords(mirror, text, pos, lineHeight);
+      var dy = relY - coords.top;
+      var dx = relX - coords.left;
       var score = dy * dy * 4 + dx * dx;
       if (score < bestScore) {
         bestScore = score;
@@ -9629,12 +9873,14 @@
     if (!dayHighlightsEnabled) {
       backdrop.textContent = textarea.value;
       syncScroll(textarea, backdrop);
+      syncDayInputTextOffset(textarea);
       return;
     }
 
     var regex = buildHighlightRegex(keywordNames());
     backdrop.innerHTML = highlightedHtml(textarea.value, regex);
     syncScroll(textarea, backdrop);
+    syncDayInputTextOffset(textarea);
   }
 
   function refreshAll() {
@@ -9969,7 +10215,7 @@
       }
     });
 
-    keywords[i].micros = micros;
+    keywords[i].micros = finalizeMicrosFromForm(micros, keywords[i].name);
     Object.keys(LONGEVITY_KEYS_ALSO_IN_MICRO).forEach(function (key) {
       var v = micros[key];
       if (v !== "" && v != null && !isNaN(parseFloat(v))) {
@@ -10026,7 +10272,12 @@
     MICRO_ALL_FIELDS.forEach(function (field) {
       var input = microFormEl.querySelector('[data-micro-key="' + field.key + '"]');
       if (input) {
-        input.value = microInputValue(kw.micros[field.key]);
+        if (field.key === "fiber") {
+          var totalFiber = fiberTotalFromParts(kw.micros);
+          input.value = totalFiber > 0 ? totalFiber : "";
+        } else {
+          input.value = microInputValue(kw.micros[field.key]);
+        }
       }
     });
   }
@@ -10999,6 +11250,10 @@
     var height = clampDayEditorHeight(px);
     document.querySelectorAll(".day__editor").forEach(function (editor) {
       editor.style.height = height + "px";
+    });
+    DAYS.forEach(function (day) {
+      var el = document.getElementById(day.id);
+      if (el && el.value) syncDayInputTextOffset(el);
     });
     return height;
   }
