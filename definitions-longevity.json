@@ -533,7 +533,8 @@
     ],
     "enough": [
       "Carotenoids from orange, red, and green plants support vision (lutein/zeaxanthin) and general antioxidant status.",
-      "Fat with meals improves absorption."
+      "Fat with meals improves absorption.",
+      "The longevity panel uses ~15 mg/day as a food-pattern reference (not an FDA Daily Value). Carrots, sweet potato, and leafy greens are reliable sources."
     ],
     "foodSources": [
       "Carrots & sweet potato",
@@ -1017,6 +1018,25 @@
       "Polyphenols & flavonoids — berries, tea, cocoa, onions, grapes",
       "Lower-insulin-load pattern — beans, berries, intact grains, fish, vegetables",
       "Watch calorie density — fried foods, pastries, processed meats, sugary drinks"
+    ]
+  },
+  "sectionVisceralFat": {
+    "enough": [
+      "Visceral fat is the deep abdominal fat wrapped around organs—not the pinchable fat under the skin. It drives insulin resistance, chronic inflammation, and higher risk of type 2 diabetes, heart disease, and fatty liver over decades.",
+      "Research shows specific nutrients can help reduce visceral fat when intake is adequate: fiber improves satiety and gut signaling; protein preserves lean mass and blunts hunger; antioxidants (vitamin C, E, selenium, polyphenols, flavonoids, carotenoids) lower oxidative stress that worsens fat storage patterns.",
+      "Nutrition supports the pattern—exercise, sleep, and stress management do the rest. This section tracks fiber, protein, and antioxidants from your entries so you can see whether your week supports visceral-fat reduction, not just total weight.",
+      "Jump to fat gain and insulin resistance for related metabolic patterns; pair higher fiber and protein with regular movement for the strongest effect."
+    ],
+    "foodSources": [
+      "Fiber — beans, lentils, oats, barley, berries, broccoli, chia, flax",
+      "Protein — fish, poultry, eggs, Greek yogurt, tofu, legumes",
+      "Vitamin C — citrus, peppers, broccoli, strawberries",
+      "Vitamin E — nuts, seeds, avocado, olive oil",
+      "Selenium — Brazil nuts, fish, eggs, whole grains",
+      "Polyphenols & flavonoids — berries, tea, cocoa, onions, grapes",
+      "Carotenoids & lutein — leafy greens, carrots, sweet potato, eggs",
+      "Resveratrol — grapes, berries, peanuts",
+      "Curcumin — turmeric (with black pepper and fat for absorption)"
     ]
   },
   "sectionFatGain": {

@@ -30,7 +30,7 @@
     polyphenols: 650,
     nitrate: 400,
     flavonoids: 400,
-    carotenoids: 0,
+    carotenoids: 15,
     lutein: 10,
     curcumin: 0,
     resveratrol: 0,

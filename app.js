@@ -430,6 +430,7 @@
     sectionPufaAntioxidant: { label: "Fat oxidation & antioxidant protection" },
     sectionGlycemic: { label: "Glycemic load & GI distribution" },
     sectionInsulinResistance: { label: "Insulin resistance / sensitivity" },
+    sectionVisceralFat: { label: "Visceral fat" },
     sectionFatGain: { label: "Fat gain" },
     sectionMitochondrial: { label: "Mitochondrial health & cellular energy" },
     sectionCellularAging: { label: "Cellular aging & senomorphics" },
@@ -802,6 +803,7 @@
       label: "Insulin resistance / sensitivity",
       sectionDefKey: "sectionInsulinResistance",
     },
+    { label: "Visceral fat", sectionDefKey: "sectionVisceralFat" },
     { label: "Fat gain", sectionDefKey: "sectionFatGain" },
   ]
     .concat(
@@ -910,6 +912,21 @@
     { key: "addedSugar", label: "Added sugar", limiting: true },
     { key: "transFat", label: "Trans fat", limiting: true },
     { key: "omega6", label: "Omega-6 (total)", limiting: true },
+  ];
+
+  var LONGEVITY_VISCERAL_FAT_ANTIOXIDANTS_FROM_MICRO = [
+    { microKey: "vitaminC", label: "Vitamin C — antioxidant defense", limiting: false },
+    { microKey: "vitaminE", label: "Vitamin E — lipid antioxidant defense", limiting: false },
+    { microKey: "selenium", label: "Selenium — antioxidant enzymes", limiting: false },
+  ];
+
+  var LONGEVITY_VISCERAL_FAT_ANTIOXIDANTS_FROM_LONGEVITY = [
+    { key: "polyphenols", label: "Polyphenols", limiting: false },
+    { key: "flavonoids", label: "Flavonoids", limiting: false },
+    { key: "carotenoids", label: "Carotenoids", limiting: false },
+    { key: "lutein", label: "Lutein", limiting: false },
+    { key: "resveratrol", label: "Resveratrol", limiting: false },
+    { key: "curcumin", label: "Curcumin", limiting: false },
   ];
 
   var LONGEVITY_FAT_GAIN_AGING_FROM_MICRO = [
@@ -1640,6 +1657,17 @@
       if (mv === "" || mv == null) return "";
       var n = parseFloat(mv);
       return isNaN(n) ? "" : n;
+    }
+    if (key === "carotenoids") {
+      if (v !== "" && v != null) {
+        var stored = parseFloat(v);
+        if (!isNaN(stored) && stored > 0) return stored;
+      }
+      var vitA = kw.micros ? parseFloat(kw.micros.vitaminA) : NaN;
+      if (!isNaN(vitA) && vitA > 50) {
+        return Math.round(vitA * 0.01 * 10) / 10;
+      }
+      return v === "" || v == null ? "" : v;
     }
     return v;
   }
@@ -4060,7 +4088,11 @@
         if (!hits) return;
 
         var v =
-          kind === "micro" ? kw.micros[nutrientKey] : resolveLongevityValue(kw, nutrientKey);
+          kind === "macro"
+            ? kw[nutrientKey]
+            : kind === "micro"
+              ? kw.micros[nutrientKey]
+              : resolveLongevityValue(kw, nutrientKey);
         if (v === "" || v == null) return;
         var perServing = parseFloat(v);
         if (isNaN(perServing) || perServing <= 0) return;
@@ -4109,6 +4141,30 @@
         "</span></div>" +
         '<p class="micro-sources-modal__req-note">Ranked by GL per serving (GI × carbs ÷ 100), highest first. Row color follows GI tier.</p></div>';
       return html;
+    }
+
+    if (kind === "macro" && nutrientKey === "protein") {
+      var proteinTarget = dailyProteinTargetG();
+      var weekCount = DAYS.length;
+      var proteinNote = getBodyWeightKg()
+        ? "0.8 g/kg body weight (IOM estimated average requirement)"
+        : "50 g/day FDA Daily Value — set body weight in Settings for a personalized 0.8 g/kg target";
+      var proteinHtml = '<div class="micro-sources-modal__reqs">';
+      proteinHtml +=
+        '<div class="micro-sources-modal__req-row">' +
+        '<span class="micro-sources-modal__req-label">Daily requirement</span>' +
+        '<span class="micro-sources-modal__req-val">' +
+        escapeHtml(fmtNum(proteinTarget) + " g") +
+        "</span></div>" +
+        '<div class="micro-sources-modal__req-row">' +
+        '<span class="micro-sources-modal__req-label">Weekly requirement</span>' +
+        '<span class="micro-sources-modal__req-val">' +
+        escapeHtml(fmtNum(proteinTarget * weekCount) + " g") +
+        "</span></div>" +
+        '<p class="micro-sources-modal__req-note">' +
+        escapeHtml(proteinNote) +
+        "</p></div>";
+      return proteinHtml;
     }
 
     var field = longevityFieldByKey(nutrientKey);
@@ -4197,6 +4253,9 @@
     } else if (activeLongevitySourcesKind === "glycemicLoad") {
       label = "Glycemic load";
       unit = "GL";
+    } else if (activeLongevitySourcesKind === "macro" && activeLongevitySourcesKey === "protein") {
+      label = "Protein";
+      unit = "g";
     } else {
       var longevityField = longevityFieldByKey(activeLongevitySourcesKey);
       if (!longevityField) return;
@@ -4244,6 +4303,8 @@
       label = microField.label;
     } else if (kind === "glycemicLoad") {
       label = "Avg daily glycemic load";
+    } else if (kind === "macro" && nutrientKey === "protein") {
+      label = "Protein";
     } else {
       var longevityField = longevityFieldByKey(nutrientKey);
       if (!longevityField) return;
@@ -6128,6 +6189,38 @@
     return week;
   }
 
+  function weekMacroTotals() {
+    var week = { protein: 0, carbs: 0, fats: 0 };
+    DAYS.forEach(function (day) {
+      var el = document.getElementById(day.id);
+      var text = el ? el.value : "";
+      var dayTotals = totalsFromText(text);
+      week.protein += dayTotals.protein;
+      week.carbs += dayTotals.carbs;
+      week.fats += dayTotals.fats;
+    });
+    return week;
+  }
+
+  function dailyProteinTargetG() {
+    var weightKg = getBodyWeightKg();
+    if (weightKg) return weightKg * 0.8;
+    return 50;
+  }
+
+  function proteinTargetPct(dailyG) {
+    var target = dailyProteinTargetG();
+    if (!target) return { pct: null, text: "—", kindLabel: "protein target" };
+    var pct = (dailyG / target) * 100;
+    var kindLabel = getBodyWeightKg() ? "0.8 g/kg" : "50 g/day DV";
+    return {
+      pct: pct,
+      text: formatTargetPctNumber(pct),
+      kindLabel: kindLabel,
+      refKey: "protein",
+    };
+  }
+
   function giBucketsFromWeek() {
     var low = 0;
     var med = 0;
@@ -7409,6 +7502,28 @@
     );
   }
 
+  function longevityRowFromProtein(weekMacro) {
+    var total = weekMacro.protein || 0;
+    var daily = total / DAYS.length;
+    var target = proteinTargetPct(daily);
+    var amtText = total > 0 ? fmtNum(daily) + " g" : "—";
+    return longevityRowHtml(
+      "Protein — satiety & lean mass",
+      amtText,
+      target.text,
+      target.pct,
+      "dashboard__longevity-row--from-macro",
+      false,
+      null,
+      false,
+      null,
+      "protein",
+      "macro",
+      target.kindLabel,
+      target.refKey
+    );
+  }
+
   function longevityRowFromLongevityOrMicro(item, weekLongevity, weekMicro) {
     var key = item.key;
     if (LONGEVITY_KEYS_ALSO_IN_MICRO[key] && weekMicro[key] > 0) {
@@ -7513,6 +7628,7 @@
     hideMicroDailyIntakePopover();
     var weekLongevity = weekLongevityTotals();
     var weekMicro = weekMicroTotals();
+    var weekMacro = weekMacroTotals();
     var derived = computeLongevityDerived(weekLongevity, weekMicro);
     var html = longevityLegendHtml();
 
@@ -7776,6 +7892,40 @@
         ) +
         longevityNavJumpRowHtml("sectionCarb", "Carb quality") +
         longevityNavJumpRowHtml("sectionGlycemic", "Glycemic load & GI distribution") +
+        longevityListClose()
+    );
+
+    html += longevitySectionWrap(
+      "Visceral fat",
+      "sectionVisceralFat",
+      '<p class="dashboard__longevity-note">Visceral fat is the deep abdominal fat linked to insulin resistance, inflammation, and cardiometabolic risk. Research shows fiber, protein, and antioxidants can help reduce it—especially alongside exercise, sleep, and stress management. Track the nutrients below from your food entries.</p>',
+      longevityListOpen() +
+        longevitySubgroupHtml("Aim — higher % DV is better", "aim") +
+        longevityRowFromMicroKey(
+          "fiber",
+          "Fiber — satiety & gut support",
+          false,
+          weekMicro
+        ) +
+        longevityRowFromProtein(weekMacro) +
+        longevitySubgroupHtml("Antioxidants — higher % DV is better", "aim") +
+        LONGEVITY_VISCERAL_FAT_ANTIOXIDANTS_FROM_MICRO.map(function (item) {
+          return longevityRowFromMicroKey(
+            item.microKey,
+            item.label,
+            !!item.limiting,
+            weekMicro
+          );
+        }).join("") +
+        LONGEVITY_VISCERAL_FAT_ANTIOXIDANTS_FROM_LONGEVITY.map(function (item) {
+          return longevityRowFromLongevityOrMicro(item, weekLongevity, weekMicro);
+        }).join("") +
+        longevitySubgroupHtml("Jump to related areas", "neutral") +
+        longevityNavJumpRowHtml("sectionFatGain", "Fat gain") +
+        longevityNavJumpRowHtml(
+          "sectionInsulinResistance",
+          "Insulin resistance / sensitivity"
+        ) +
         longevityListClose()
     );
 
