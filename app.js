@@ -623,12 +623,23 @@
   var MICRO_ALL_FIELDS = MICRO_FIELDS.concat(MICRO_EXTENDED_FIELDS);
 
   var MICRO_DERIVED_DEFS = {
+    insolubleToSolubleFiber2To1: {
+      label: "Insoluble : soluble fiber (2:1)",
+      idealRatio: 2,
+      afterKey: "insolubleFiber",
+    },
     insolubleToSolubleFiber: {
-      label: "Insoluble : soluble fiber ratio",
+      label: "Insoluble : soluble fiber (3:1)",
       idealRatio: 3,
       afterKey: "insolubleFiber",
     },
   };
+
+  function isInsolubleToSolubleFiberRatioKey(key) {
+    return (
+      key === "insolubleToSolubleFiber2To1" || key === "insolubleToSolubleFiber"
+    );
+  }
 
   function solubleFiberRatioForFoodName(name) {
     var n = String(name || "").toLowerCase();
@@ -694,33 +705,35 @@
     return insoluble / soluble;
   }
 
-  function insolubleToSolubleFiberTargetPct(ratio) {
-    var ideal = MICRO_DERIVED_DEFS.insolubleToSolubleFiber.idealRatio;
+  function insolubleToSolubleFiberTargetPct(ratio, ideal, refKey) {
     if (ratio == null || isNaN(ratio) || ideal <= 0) {
       return {
         pct: null,
         text: "—",
-        kindLabel: "3:1 target",
+        kindLabel: ideal + ":1 target",
         reqAmount: ideal + ":1",
         limiting: false,
-        refKey: "insolubleToSolubleFiber",
+        refKey: refKey,
       };
     }
     var pct = Math.min(100, (Math.min(ratio, ideal) / Math.max(ratio, ideal)) * 100);
     return {
       pct: pct,
       text: formatTargetPctNumber(pct),
-      kindLabel: "3:1 target",
+      kindLabel: ideal + ":1 target",
       reqAmount: ideal + ":1",
       limiting: false,
-      refKey: "insolubleToSolubleFiber",
+      refKey: refKey,
     };
   }
 
   function microDerivedRowTargetDisplay(key, microTotals, perDay) {
-    if (key === "insolubleToSolubleFiber") {
+    if (isInsolubleToSolubleFiberRatioKey(key)) {
+      var derived = microDerivedDefByKey(key);
       return insolubleToSolubleFiberTargetPct(
-        insolubleToSolubleFiberRatio(microTotals, perDay)
+        insolubleToSolubleFiberRatio(microTotals, perDay),
+        derived ? derived.idealRatio : 3,
+        key
       );
     }
     return {
@@ -734,7 +747,7 @@
   }
 
   function microDerivedAmtText(key, microTotals, perDay) {
-    if (key === "insolubleToSolubleFiber") {
+    if (isInsolubleToSolubleFiberRatioKey(key)) {
       var ratio = insolubleToSolubleFiberRatio(microTotals, perDay);
       return ratio == null || isNaN(ratio) ? "—" : fmtNum(ratio) + ":1";
     }
@@ -3367,7 +3380,7 @@
       html +=
         '<section class="micro-def__section">' +
         '<h4 class="micro-def__heading">' +
-        (key === "insolubleToSolubleFiber"
+        (isInsolubleToSolubleFiberRatioKey(key)
           ? "Daily fiber &amp; ratio"
           : "When you get enough") +
         "</h4>" +
@@ -3375,7 +3388,7 @@
         "</section>";
     }
 
-    if (key === "insolubleToSolubleFiber") {
+    if (isInsolubleToSolubleFiberRatioKey(key)) {
       html += insolubleToSolubleFiberCompareHtml();
     }
 

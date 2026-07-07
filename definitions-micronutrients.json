@@ -104,12 +104,19 @@
       "Increase gradually with water to avoid gas or cramping."
     ]
   },
+  "insolubleToSolubleFiber2To1": {
+    "warning": [
+      "The optimal daily dietary fiber intake ranges between 25 and 38 grams. Experts generally recommend an insoluble-to-soluble fiber ratio of about 2:1 or 3:1—two commonly agreed targets alongside each other. Use one that fits well with your gut (based on how your gut reacts). For a daily target of 30 grams at 2:1, that means roughly 20 grams insoluble fiber and 10 grams soluble fiber.",
+      "This 2:1 ratio assumes relatively stable bowel movements. If you currently have constipation or diarrhea—including after a stomach bug or in post-infectious IBS—prioritize the fiber type that fits your symptoms (more insoluble for constipation, more soluble for diarrhea) and ignore this ratio until things settle."
+    ],
+    "dashboardTracking": [
+      "This row scores how close your average insoluble-to-soluble fiber ratio is to 2:1. % of target is highest at exactly 2:1 and falls as the ratio moves higher or lower."
+    ]
+  },
   "insolubleToSolubleFiber": {
     "warning": [
+      "The optimal daily dietary fiber intake ranges between 25 and 38 grams. Experts generally recommend an insoluble-to-soluble fiber ratio of about 2:1 or 3:1—two commonly agreed targets alongside each other. Use one that fits well with your gut (based on how your gut reacts). For a daily target of 30 grams at 3:1, that means roughly 22.5 grams insoluble fiber and 7.5 grams soluble fiber.",
       "This 3:1 ratio assumes relatively stable bowel movements. If you currently have constipation or diarrhea—including after a stomach bug or in post-infectious IBS—prioritize the fiber type that fits your symptoms (more insoluble for constipation, more soluble for diarrhea) and ignore this ratio until things settle."
-    ],
-    "enough": [
-      "The optimal daily dietary fiber intake ranges between 25 and 38 grams. Experts generally recommend an insoluble-to-soluble fiber ratio of about 3:1 or 2:1. For a daily target of 30 grams, this means roughly 20 grams should be insoluble fiber and 10 grams soluble fiber."
     ],
     "dashboardTracking": [
       "This row scores how close your average insoluble-to-soluble fiber ratio is to 3:1. % of target is highest at exactly 3:1 and falls as the ratio moves higher or lower."
