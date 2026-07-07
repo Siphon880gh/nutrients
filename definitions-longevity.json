@@ -229,6 +229,9 @@
     "cataractsPrevention": [
       "EPA helps balance inflammatory eicosanoids in retinal tissue; higher marine omega-3 intake is associated with lower cataract risk in several observational studies.",
       "Fatty fish and algae oil supply EPA alongside DHA for the full omega-3 eye-support stack."
+    ],
+    "brainLongevity": [
+      "Dampens neuroinflammation that can impair astrocyte function and glutamate transporter expression over time."
     ]
   },
   "dha": {
@@ -261,6 +264,9 @@
     "cataractsPrevention": [
       "DHA is a major structural fat in the retina and helps maintain cell-membrane fluidity under oxidative stress—relevant to long-term lens and retinal health.",
       "Salmon, sardines, herring, and algae DHA are direct food sources when plant ALA alone is insufficient."
+    ],
+    "brainLongevity": [
+      "Maintains membrane fluidity in neurons and astrocytes, supporting glutamate transporter function and structural resilience as the brain ages."
     ]
   },
   "linoleicAcid": {
@@ -363,6 +369,9 @@
     "cataractsPrevention": [
       "Vitamin E protects the lipid-rich membranes of eye tissues from oxidation; population studies link higher E intake from nuts and seeds with lower cataract rates.",
       "It pairs with vitamin C in the lens antioxidant network—food E from almonds, sunflower seeds, and leafy greens is preferable to high-dose pills."
+    ],
+    "brainLongevity": [
+      "Shields the DHA-rich lipid membranes in brain tissue from peroxidation—protecting the structural fat that astrocytes and neurons share."
     ]
   },
   "vitaminK": {
@@ -698,6 +707,9 @@
     "antiAging": [
       "CoQ10 is the mitochondrial electron shuttle between complexes I/II and III—tissue levels fall with age and statin use, reducing cellular energy capacity.",
       "Adequate CoQ10 from organ meats, fish, and nuts supports ATP production and may blunt the oxidative stress that damages mitochondrial DNA over time."
+    ],
+    "brainLongevity": [
+      "Supports mitochondrial electron transport in brain cells\u2014astrocyte glutamate clearance is ATP-dependent and draws on mitochondrial energy."
     ]
   },
   "taurine": {
@@ -721,6 +733,9 @@
     "antiAging": [
       "Taurine levels decline significantly with age; a 2023 Science study showed taurine supplementation extended lifespan in mice and improved healthspan markers (bone density, muscle, immune function).",
       "Acts as a mitochondrial antioxidant and supports bile acid metabolism—both decline with aging. Human trials are ongoing; food-first shellfish, dark poultry, and fish are the practical targets."
+    ],
+    "brainLongevity": [
+      "Binds GABA-A and glycine receptors to calm glutamate-driven excitability; also supports astrocyte and mitochondrial antioxidant defense."
     ]
   },
   "creatine": {
@@ -747,6 +762,9 @@
     "hairLoss": [
       "High creatine intake may increase DHT conversion, potentially accelerating androgenetic alopecia in genetically susceptible individuals.",
       "If concerned about DHT-related hair loss, consider limiting creatine supplements and very high red meat intake."
+    ],
+    "brainLongevity": [
+      "Buffers brain phosphocreatine stores for rapid ATP regeneration\u2014supporting the energy-intensive work of astrocyte glutamate uptake and recycling."
     ]
   },
   "sulforaphane": {
@@ -1119,7 +1137,8 @@
     "enough": [
       "Brain longevity depends on blood flow, blood sugar control, sleep, exercise, protein, micronutrients, mitochondrial energy, inflammation control, and neurotransmitter balance\u2014not a single memory pill.",
       "Glutamate is central: it is the brain\u2019s main excitatory neurotransmitter and supports learning, memory, and synaptic plasticity. But the aging brain needs glutamate tightly regulated\u2014too much uncontrolled activity contributes to excitotoxic stress, while too little impairs mental drive and clarity. The practical goal is healthy glutamate signaling without overstimulation.",
-      "Magnesium sits in the NMDA receptor channel and helps prevent excessive calcium entry from glutamate signaling. Vitamin B6 is needed for the enzyme that converts glutamate into GABA\u2014making B6 critical for excitation\u2013inhibition balance. DHA maintains neuronal membrane fluidity and vitamin E protects those DHA-rich membranes from lipid peroxidation. EPA dampens neuroinflammation. Creatine buffers brain ATP so neurotransmitter recycling, attention, and working memory have enough energy.",
+      "Astrocytes are support cells in the brain. One of their most important jobs is clearing excess glutamate from the synaptic space via glutamate transporters (EAAT1/GLAST and EAAT2/GLT-1), then converting it to glutamine for recycling back to neurons. That cleanup is energy-intensive and depends on healthy astrocyte antioxidant defenses\u2014astrocytes concentrate vitamin C and rely on glutathione to manage oxidative stress from glutamate turnover.",
+      "Magnesium sits in the NMDA receptor channel and helps prevent excessive calcium entry from glutamate signaling. Vitamin B6 is needed for the enzyme that converts glutamate into GABA\u2014making B6 critical for excitation\u2013inhibition balance. Potassium maintains the ion gradients that power glutamate transporter uptake; glutamine supplies the shuttle amino acid in the glutamate\u2013glutamine cycle. DHA maintains neuronal and astrocyte membrane fluidity; vitamin E protects those DHA-rich membranes from lipid peroxidation. EPA dampens neuroinflammation. Creatine buffers brain ATP so glutamate uptake, neurotransmitter recycling, attention, and working memory have enough energy. Taurine, zinc, vitamin C, selenium, and glycine support astrocyte antioxidant defenses and help keep glutamate-driven excitation in check.",
       "The MIND diet (Mediterranean\u2013DASH hybrid) emphasizes leafy greens, berries, nuts, olive oil, whole grains, beans, fish, and poultry while limiting butter, cheese, red meat, fried foods, and sweets. Observational research linked higher MIND diet scores with slower cognitive decline, though randomized trial results have been more mixed. Use MIND-style eating as the foundation, not a guaranteed dementia-prevention cure.",
       "Choline supports acetylcholine\u2014a neurotransmitter involved in attention, learning, and memory. Eggs are the best food source; citicoline or alpha-GPC supplements are options when food intake is low. Glycine and taurine may support calm and nervous-system balance; theanine from green tea supports calm focus. These are state-control tools, not dementia-prevention supplements.",
       "For practical brain longevity, consider tracking: blood pressure, fasting glucose, A1c, lipids (especially ApoB), hs-CRP, vitamin B12, methylmalonic acid, folate, homocysteine, vitamin D, ferritin, thyroid markers, and sleep quality. Brain fog is not always a neurotransmitter problem\u2014it can come from anemia, B12 deficiency, thyroid issues, sleep apnea, inflammation, glucose swings, or cardiovascular risk.",
@@ -1131,6 +1150,8 @@
       "Protein \u2014 eggs, fish, poultry, Greek yogurt, tofu, tempeh, lentils, beans",
       "Omega-3 (DHA & EPA) \u2014 salmon, sardines, trout, anchovies, herring, mackerel",
       "Magnesium \u2014 pumpkin seeds, almonds, spinach, black beans, avocado, dark chocolate",
+      "Potassium \u2014 leafy greens, beans, potatoes, bananas, yogurt, avocado",
+      "Glutamine \u2014 beef, chicken, fish, eggs, dairy, bone broth, beans",
       "Vitamin B6 \u2014 chickpeas, salmon, tuna, poultry, potatoes, bananas",
       "Folate \u2014 spinach, lentils, asparagus, avocado, broccoli, beans",
       "Vitamin B12 \u2014 fish, meat, eggs, dairy, fortified foods",

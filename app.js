@@ -999,6 +999,8 @@
 
   var LONGEVITY_BRAIN_FROM_MICRO = [
     { microKey: "magnesium", label: "Magnesium — NMDA receptor regulation & glutamate balance", limiting: false },
+    { microKey: "potassium", label: "Potassium — ion gradients for astrocyte glutamate transporters", limiting: false },
+    { microKey: "glutamine", label: "Glutamine — glutamate–glutamine cycle & astrocyte clearance", limiting: false },
     { microKey: "vitaminB6", label: "Vitamin B6 — converts glutamate to GABA", limiting: false },
     { microKey: "folate", label: "Folate (B9) — methylation & homocysteine balance", limiting: false },
     { microKey: "vitaminB12", label: "Vitamin B12 — nerve health & myelin support", limiting: false },
@@ -1021,15 +1023,38 @@
     { key: "choline", label: "Choline — acetylcholine & cell membranes", limiting: false },
     { key: "polyphenols", label: "Polyphenols — MIND diet neuroprotection", limiting: false },
     { key: "flavonoids", label: "Flavonoids — neurovascular & endothelial support", limiting: false },
-    { key: "creatine", label: "Creatine — brain energy buffering", limiting: false },
+    { key: "creatine", label: "Creatine — brain ATP for glutamate uptake & recycling", limiting: false },
     { key: "coq10", label: "Coenzyme Q10 — mitochondrial brain energy", limiting: false },
-    { key: "taurine", label: "Taurine — calming support & mitochondrial antioxidant", limiting: false },
+    { key: "taurine", label: "Taurine — calms glutamate excitability & astrocyte support", limiting: false },
     { key: "lutein", label: "Lutein — predominant brain carotenoid", limiting: false },
     { key: "curcumin", label: "Curcumin — neuroinflammation modulation", limiting: false },
     { key: "nitrate", label: "Nitrate — cerebral blood flow via nitric oxide", limiting: false },
     { key: "vitaminE", label: "Vitamin E — protects DHA-rich brain membranes", limiting: false },
     { key: "resveratrol", label: "Resveratrol — neuroprotective sirtuin activation", limiting: false },
     { key: "sulforaphane", label: "Sulforaphane — Nrf2 neuronal antioxidant defense", limiting: false },
+  ];
+
+  var LONGEVITY_BRAIN_ASTROCYTE_FROM_MICRO = [
+    { microKey: "potassium", label: "Potassium — ion gradients for astrocyte glutamate transporters", limiting: false },
+    { microKey: "glutamine", label: "Glutamine — glutamate–glutamine cycle & astrocyte clearance", limiting: false },
+    { microKey: "magnesium", label: "Magnesium — NMDA receptor regulation & glutamate balance", limiting: false },
+    { microKey: "vitaminB6", label: "Vitamin B6 — converts glutamate to GABA", limiting: false },
+    { microKey: "vitaminC", label: "Vitamin C — astrocyte antioxidant & glutathione recycling", limiting: false },
+    { microKey: "zinc", label: "Zinc — synaptic signaling & astrocyte antioxidant defense", limiting: false },
+    { microKey: "glycine", label: "Glycine — glutathione building block & calming neurotransmitter", limiting: false },
+    { microKey: "thiamin", label: "Thiamin (B1) — brain ATP for glutamate uptake", limiting: false },
+    { microKey: "niacin", label: "Niacin (B3) — NAD+ precursor for astrocyte energy", limiting: false },
+    { microKey: "riboflavin", label: "Riboflavin (B2) — MTHFR & glutathione recycling support", limiting: false },
+    { microKey: "selenium", label: "Selenium — glutathione peroxidase in brain tissue", limiting: false },
+  ];
+
+  var LONGEVITY_BRAIN_ASTROCYTE_FROM_LONGEVITY = [
+    { key: "creatine", label: "Creatine — brain ATP for glutamate uptake & recycling", limiting: false },
+    { key: "dha", label: "DHA — neuronal & astrocyte membrane fluidity", limiting: false },
+    { key: "epa", label: "EPA — neuroinflammation control", limiting: false },
+    { key: "coq10", label: "Coenzyme Q10 — mitochondrial brain energy", limiting: false },
+    { key: "taurine", label: "Taurine — calms glutamate excitability & astrocyte support", limiting: false },
+    { key: "vitaminE", label: "Vitamin E — protects DHA-rich brain membranes", limiting: false },
   ];
 
   var LONGEVITY_SLEEP_FROM_MICRO = [
@@ -3140,7 +3165,8 @@
       entry.foodSources.length ||
       entry.foodSourceGroups.length ||
       entry.male.length ||
-      entry.female.length
+      entry.female.length ||
+      entry.brainLongevity.length
     ) {
       return true;
     }
@@ -3166,6 +3192,7 @@
           foodSourceGroups: foodSourceGroupsArray(raw),
           male: stringArray(raw.male),
           female: stringArray(raw.female),
+          brainLongevity: stringArray(raw.brainLongevity),
         },
         microConditionDefFields(raw)
       );
@@ -3289,7 +3316,7 @@
     }
     return Object.keys(MICRO_CONDITION_FOCUS).some(function (id) {
       return entry[id].length;
-    });
+    }) || entry.brainLongevity.length;
   }
 
   function normalizeLongevityDefinitions(data) {
@@ -3307,6 +3334,7 @@
           foodSources: stringArray(raw.foodSources),
           foodSourceGroups: foodSourceGroupsArray(raw),
           targetReference: stringArray(raw.targetReference),
+          brainLongevity: stringArray(raw.brainLongevity),
         },
         microConditionDefFields(raw)
       );
@@ -3434,6 +3462,16 @@
     );
   }
 
+  function microDefBrainLongevitySectionHtml(def) {
+    if (!def.brainLongevity || !def.brainLongevity.length) return "";
+    return (
+      '<section class="micro-def__section">' +
+      '<h4 class="micro-def__heading">Brain longevity & astrocyte support</h4>' +
+      microDefParagraphsHtml(def.brainLongevity) +
+      "</section>"
+    );
+  }
+
   function microDefConditionSectionHtml(key, def) {
     if (!microConditionFocus || !key) return "";
     var condMeta = MICRO_CONDITION_FOCUS[microConditionFocus];
@@ -3501,6 +3539,8 @@
         microDefParagraphsHtml(def.enough) +
         "</section>";
     }
+
+    html += microDefBrainLongevitySectionHtml(def);
 
     if (isInsolubleToSolubleFiberRatioKey(key)) {
       html += insolubleToSolubleFiberCompareHtml();
@@ -3738,6 +3778,8 @@
         microDefParagraphsHtml(def.enough) +
         "</section>";
     }
+
+    html += microDefBrainLongevitySectionHtml(def);
 
     if (key === "vitaminK1" || key === "vitaminK2") {
       html += vitaminKKeyDifferencesHtml();
@@ -5523,6 +5565,17 @@
       '<p class="dashboard__longevity-processed-note-text">' +
       "<strong>Adaptogens, cortisol, and adrenal support:</strong> Chronic stress drains magnesium, B vitamins, and vitamin C faster than calm periods. Adaptogen herbs and mushrooms—ashwagandha, rhodiola, holy basil, reishi, cordyceps—are studied for stress tolerance, but this section tracks the underlying nutrients from food that support cortisol balance and help prevent the depletion pattern sometimes called adrenal fatigue… " +
       '<button type="button" class="dashboard__longevity-tip-link" data-longevity-def="sectionStressResilience" aria-haspopup="dialog">Read more</button>' +
+      "</p>" +
+      "</aside>"
+    );
+  }
+
+  function brainAstrocyteSupportTipHtml() {
+    return (
+      '<aside class="dashboard__longevity-processed-note dashboard__longevity-processed-note--section" role="note">' +
+      '<p class="dashboard__longevity-processed-note-text">' +
+      "<strong>Astrocytes & glutamate cleanup:</strong> Astrocytes are support cells in the brain. One of their most important jobs is clearing excess glutamate from the synaptic space via glutamate transporters (EAAT1/GLAST and EAAT2/GLT-1), then converting it to glutamine for recycling back to neurons. That cleanup is energy-intensive and depends on potassium (ion gradients for transporter uptake), glutamine (shuttle amino acid), creatine and B vitamins (ATP demand), and antioxidants like vitamin C, selenium, glycine, and taurine that protect astrocytes from oxidative stress\u2026 " +
+      '<button type="button" class="dashboard__longevity-tip-link" data-longevity-def="sectionBrainLongevity" aria-haspopup="dialog">Read more</button>' +
       "</p>" +
       "</aside>"
     );
@@ -8553,7 +8606,7 @@
     html += longevitySectionWrap(
       "Staying sharp & lowering dementia risk",
       "sectionBrainLongevity",
-      '<p class="dashboard__longevity-note">Brain longevity depends on glutamate balance, blood flow, blood sugar control, and micronutrient support\u2014not a single memory pill. The MIND diet pattern (leafy greens, berries, nuts, fish, olive oil) provides the foundation; these nutrients support the signaling, structure, and energy systems that keep cognition sharp.</p>' +
+      '<p class="dashboard__longevity-note">Brain longevity depends on glutamate balance, astrocyte glutamate clearance, blood flow, blood sugar control, and micronutrient support\u2014not a single memory pill. The MIND diet pattern (leafy greens, berries, nuts, fish, olive oil) provides the foundation; these nutrients support the signaling, structure, and energy systems that keep cognition sharp.</p>' +
         brainLongevityTipHtml(),
       longevityListOpen() +
         longevitySubgroupHtml("From your micro entries", "micro") +
@@ -8567,6 +8620,22 @@
         }).join("") +
         longevitySubgroupHtml("From your longevity entries", "compounds") +
         LONGEVITY_BRAIN_FROM_LONGEVITY.map(function (item) {
+          var field = longevityFieldByKey(item.key);
+          if (!field) return "";
+          return longevityRowFromLongevityField(field, weekLongevity, weekMicro);
+        }).join("") +
+        longevitySubgroupHtml("Astrocyte support — from micro entries", "micro") +
+        brainAstrocyteSupportTipHtml() +
+        LONGEVITY_BRAIN_ASTROCYTE_FROM_MICRO.map(function (item) {
+          return longevityRowFromMicroKey(
+            item.microKey,
+            item.label,
+            !!item.limiting,
+            weekMicro
+          );
+        }).join("") +
+        longevitySubgroupHtml("Astrocyte support — from longevity entries", "compounds") +
+        LONGEVITY_BRAIN_ASTROCYTE_FROM_LONGEVITY.map(function (item) {
           var field = longevityFieldByKey(item.key);
           if (!field) return "";
           return longevityRowFromLongevityField(field, weekLongevity, weekMicro);

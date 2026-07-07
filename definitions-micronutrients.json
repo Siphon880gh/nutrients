@@ -209,6 +209,9 @@
     "bowelMovementsAltered": [
       "Potassium is lost heavily with chronic diarrhea or vomiting—low levels weaken smooth muscle function in the gut and can prolong irregular bowel patterns.",
       "Bananas, potatoes, beans, and leafy greens replenish potassium alongside fluids when altered bowel movements involve watery or frequent stools."
+    ],
+    "brainLongevity": [
+      "Maintains Na\u207a/K\u207a ion gradients that power sodium-dependent glutamate transporters (EAAT/GLT) on astrocytes\u2014clearing excess glutamate from the synaptic space."
     ]
   },
   "calcium": {
@@ -356,6 +359,9 @@
     "bowelMovementsAltered": [
       "Low magnesium is a common hidden contributor to constipation; food magnesium (greens, nuts, seeds) and well-tolerated forms like glycinate support softer, more regular stools.",
       "High-dose magnesium supplements (especially oxide or citrate) can loosen stools or cause diarrhea—worth knowing if bowel movements are already too loose."
+    ],
+    "brainLongevity": [
+      "Blocks excessive calcium entry through NMDA (glutamate) receptors\u2014complementing astrocyte uptake by preventing excitotoxic overstimulation when synaptic glutamate spikes."
     ]
   },
   "zinc": {
@@ -412,6 +418,9 @@
     "bowelMovementsAltered": [
       "Zinc supports intestinal lining repair and immune balance in the gut; deficiency weakens barrier function and can worsen diarrhea and malabsorption.",
       "Chronic diarrhea depletes zinc, creating a cycle—restoring intake from oysters, meat, legumes, and seeds helps break it when bowel movements stay altered."
+    ],
+    "brainLongevity": [
+      "Supports synaptic signaling and modulates glutamate transporter function; low zinc impairs the antioxidant defenses astrocytes rely on during high glutamate load."
     ]
   },
   "vitaminA": {
@@ -610,6 +619,9 @@
     "cataractsPrevention": [
       "The lens concentrates vitamin C as an antioxidant buffer against UV and oxidative damage—one reason produce-rich diets correlate with lower cataract risk in population studies.",
       "Vitamin C also recycles vitamin E in eye tissues; citrus, peppers, and leafy greens supply the water-soluble half of that antioxidant pair."
+    ],
+    "brainLongevity": [
+      "Astrocytes concentrate vitamin C as a primary brain antioxidant, recycling glutathione and protecting against oxidative stress from glutamate turnover."
     ]
   },
   "iodine": {
@@ -686,6 +698,9 @@
     "antiAging": [
       "B6 supports mitochondrial enzyme function and homocysteine control—high homocysteine damages blood vessels and is linked with faster cognitive aging.",
       "Together with folate and B12, B6 keeps one-carbon metabolism running so cells can repair DNA and manage oxidative stress."
+    ],
+    "brainLongevity": [
+      "Needed for glutamate decarboxylase, which converts glutamate into GABA\u2014helping keep excitation\u2013inhibition balance alongside astrocyte clearance."
     ]
   },
   "folate": {
@@ -814,6 +829,9 @@
     "bowelMovementsAltered": [
       "Severe thiamin (B1) deficiency causes beriberi, which disrupts autonomic nerve control of the digestive tract—leading to constipation, loss of appetite, indigestion, and in wet beriberi, abdominal distension.",
       "Adequate thiamin keeps the nerve signals that drive normal gut motility and appetite functioning; beriberi-class deficiency is a classic cause of altered bowel habits alongside fatigue and weakness."
+    ],
+    "brainLongevity": [
+      "Feeds pyruvate into the Krebs cycle for neuronal and astrocyte ATP\u2014glutamate uptake and conversion to glutamine is energy-intensive."
     ]
   },
   "riboflavin": {
@@ -852,6 +870,9 @@
     "antiAging": [
       "Riboflavin (B2) builds FAD—another mitochondrial electron carrier paired with NAD in the energy-production chain.",
       "Low riboflavin weakens antioxidant enzyme systems (glutathione reductase) that protect cells from the oxidative stress that drives aging."
+    ],
+    "brainLongevity": [
+      "Builds FAD for glutathione reductase and MTHFR-linked methylation\u2014supporting the antioxidant recycling astrocytes depend on during glutamate cleanup."
     ]
   },
   "niacin": {
@@ -884,9 +905,12 @@
       "Adequate niacin supports mood and metabolism alongside other B vitamins."
     ],
     "antiAging": [
-      "Niacin (vitamin B3) is the direct food precursor for NAD+—the coenzyme mitochondria use to transfer electrons and rebuild cellular energy capacity.",
+      "Niacin (vitamin B3) is the direct food precursor for NAD+\u2014the coenzyme mitochondria use to transfer electrons and rebuild cellular energy capacity.",
       "NAD+ pools decline with age; adequate niacin from poultry, fish, peanuts, and whole grains supports the NAD salvage pathway that keeps mitochondria fueled.",
       "Food niacin supports longevity through energy metabolism—not the high-dose niacin supplement protocols studied for lipids."
+    ],
+    "brainLongevity": [
+      "Main food precursor for NAD+, which fuels mitochondrial ATP production in astrocytes during energy-intensive glutamate clearance."
     ]
   },
   "pantothenicAcid": {
@@ -992,6 +1016,9 @@
     "cataractsPrevention": [
       "Selenium supports glutathione peroxidase in lens tissue—an enzyme that neutralizes hydrogen peroxide and lipid peroxides linked with cataract formation.",
       "Brazil nuts, seafood, and eggs supply selenium without the risks of high-dose supplements; works alongside vitamins C and E for eye antioxidant defense."
+    ],
+    "brainLongevity": [
+      "Powers glutathione peroxidase in brain tissue, neutralizing peroxides before they damage astrocyte and neuronal membranes during glutamate metabolism."
     ]
   },
   "copper": {
@@ -1495,14 +1522,20 @@
       "Glutamine is the most abundant amino acid in the body—fuels immune cells, maintains gut barrier integrity, and supports muscle recovery after intense exercise.",
       "Conditionally essential during critical illness, surgery, or prolonged intense training when demand exceeds synthesis."
     ],
-    "foodSources": ["Beef & chicken", "Fish", "Eggs & dairy", "Cabbage & beets", "Beans & lentils", "Tofu", "Bone broth"]
+    "foodSources": ["Beef & chicken", "Fish", "Eggs & dairy", "Cabbage & beets", "Beans & lentils", "Tofu", "Bone broth"],
+    "brainLongevity": [
+      "After astrocytes take up glutamate, they convert it to glutamine and shuttle it back to neurons\u2014glutamine is the central amino acid in the glutamate\u2013glutamine cycle."
+    ]
   },
   "glycine": {
     "enough": [
       "Glycine supports collagen synthesis (skin, joints, tendons), glutathione production, creatine formation, and acts as an inhibitory neurotransmitter promoting sleep quality.",
       "Research suggests 10+ g/day may improve sleep onset and collagen repair—far above typical dietary intake of 3–5 g."
     ],
-    "foodSources": ["Bone broth & gelatin", "Pork skin & chicken skin", "Beef & chicken", "Fish", "Eggs", "Legumes", "Spinach & kale"]
+    "foodSources": ["Bone broth & gelatin", "Pork skin & chicken skin", "Beef & chicken", "Fish", "Eggs", "Legumes", "Spinach & kale"],
+    "brainLongevity": [
+      "A glutathione precursor and inhibitory neurotransmitter\u2014glycine helps astrocytes maintain antioxidant capacity and nervous-system calm alongside glutamate cleanup."
+    ]
   },
   "proline": {
     "enough": [
@@ -1536,6 +1569,9 @@
       "Taurine is the most abundant free amino acid in the brain and acts as a neuromodulator—binding glycine and GABA-A receptors to calm glutamate-driven excitability alongside dopamine and norepinephrine balance.",
       "ADHD animal models (spontaneously hypertensive rats) show high-dose taurine can reduce hyperactivity and modulate striatal dopamine transporter (DAT) expression and dopamine uptake; low vs high doses can have opposite effects, so food-first intake matters.",
       "Shellfish, dark poultry, beef, fish, eggs, and dairy are the practical food sources; human ADHD trials are still limited, but taurine is generally well tolerated and worth tracking when stimulant side effects or plant-heavy diets leave little from food."
+    ],
+    "brainLongevity": [
+      "Binds GABA-A and glycine receptors to calm glutamate-driven excitability; also supports astrocyte and mitochondrial antioxidant defense."
     ]
   }
 }
