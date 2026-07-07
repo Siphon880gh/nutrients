@@ -391,6 +391,14 @@
       text: "Taurine: Shao & Hathcock, Regulatory Toxicology and Pharmacology (2008), “Risk assessment for the amino acids taurine, L-glutamine and L-arginine.” The study used an Observed Safe Level / Highest Observed Intake approach and selected 3 g/day as the OSL for normal healthy adults.",
       url: "https://pubmed.ncbi.nlm.nih.gov/18325648/",
     },
+    glycine: {
+      text: "Glycine: Mel\u00e9ndez-Hevia et al., Journal of Biosciences (2009), showed that endogenous glycine synthesis (~3 g/day) plus typical dietary intake (~2 g/day) falls ~10 g/day short of the amount needed for collagen synthesis and other metabolic uses in a 70 kg human. de Paz-Lugo et al., Amino Acids (2018), confirmed that higher glycine concentrations increase collagen synthesis by articular chondrocytes in vitro, supporting the 10 g/day target for joint and connective tissue health.",
+      url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC6153947/",
+    },
+    proline: {
+      text: "Proline: Barbul, The Journal of Nutrition (2008), and Albaugh et al., The Journal of Nutrition (2017), reviewed proline as a conditionally essential amino acid for collagen synthesis, noting that typical mixed-diet intake of 2\u20135 g/day supports baseline collagen turnover, while demand rises during wound healing, exercise, and aging. A 5 g/day study-min target reflects adequate intake for sustained collagen and cartilage support in healthy adults.",
+      url: "https://pubmed.ncbi.nlm.nih.gov/28978679/",
+    },
   };
 
   var LONGEVITY_DERIVED_DEFS = {
@@ -420,6 +428,7 @@
     sectionFiber: { label: "Fiber & colon health" },
     sectionThyroid: { label: "Thyroid health" },
     sectionBoneDensity: { label: "Bone density" },
+    sectionAches: { label: "Aches" },
     sectionStressResilience: { label: "Stress resilience" },
     sectionSleepHealth: { label: "Sleep health" },
     sectionCalcification: { label: "Calcification & vascular balance" },
@@ -817,6 +826,7 @@
     { label: "Fiber & colon health", sectionDefKey: "sectionFiber" },
     { label: "Thyroid health", sectionDefKey: "sectionThyroid" },
     { label: "Bone density", sectionDefKey: "sectionBoneDensity" },
+    { label: "Aches", sectionDefKey: "sectionAches" },
     { label: "Stress resilience", sectionDefKey: "sectionStressResilience" },
     { label: "Sleep health", sectionDefKey: "sectionSleepHealth" },
     {
@@ -895,6 +905,59 @@
     { microKey: "vitaminK2", label: "Vitamin K2 — directs calcium to bone", limiting: false },
     { microKey: "vitaminK2MK4", label: "MK-4 — short-acting K2 from animal foods", limiting: false },
     { microKey: "vitaminK2MK7", label: "MK-7 — long-acting K2 from fermented foods", limiting: false },
+  ];
+
+  var LONGEVITY_ACHES_VITAMIN_D_FROM_MICRO = [
+    { microKey: "vitaminD", label: "Vitamin D — muscle & joint support", limiting: false },
+  ];
+
+  var LONGEVITY_ACHES_ANTI_INFLAMMATORY_FROM_MICRO = [
+    { microKey: "magnesium", label: "Magnesium — muscle relaxation & anti-inflammatory", limiting: false },
+    { microKey: "vitaminC", label: "Vitamin C — collagen repair & antioxidant", limiting: false },
+    { microKey: "vitaminE", label: "Vitamin E — tissue antioxidant protection", limiting: false },
+    { microKey: "selenium", label: "Selenium — selenoprotein antioxidant defense", limiting: false },
+    { microKey: "zinc", label: "Zinc — immune regulation & tissue repair", limiting: false },
+    { microKey: "vitaminB6", label: "Vitamin B6 — inflammatory cytokine modulation", limiting: false },
+  ];
+
+  var LONGEVITY_ACHES_ANTI_INFLAMMATORY_FROM_LONGEVITY = [
+    { key: "epa", label: "EPA — resolvin & anti-inflammatory prostaglandins", limiting: false },
+    { key: "dha", label: "DHA — specialized pro-resolving mediators", limiting: false },
+    { key: "omega3", label: "Omega-3 (total) — inflammatory tone", limiting: false },
+    { key: "curcumin", label: "Curcumin — NF-κB & COX-2 modulation", limiting: false },
+    { key: "polyphenols", label: "Polyphenols — broad anti-inflammatory support", limiting: false },
+    { key: "flavonoids", label: "Flavonoids — antioxidant & anti-inflammatory", limiting: false },
+    { key: "resveratrol", label: "Resveratrol — SIRT1 activation & inflammatory tone", limiting: false },
+    { key: "sulforaphane", label: "Sulforaphane — Nrf2 activation & joint protection", limiting: false },
+  ];
+
+  var LONGEVITY_ACHES_JOINT_LUBRICATION_FROM_MICRO = [
+    { microKey: "vitaminC", label: "Vitamin C — collagen & cartilage synthesis", limiting: false },
+    { microKey: "manganese", label: "Manganese — cartilage proteoglycan synthesis", limiting: false },
+    { microKey: "copper", label: "Copper — collagen cross-linking (lysyl oxidase)", limiting: false },
+    { microKey: "glycine", label: "Glycine — collagen backbone amino acid", limiting: false },
+    { microKey: "proline", label: "Proline — collagen structure & cartilage", limiting: false },
+    { microKey: "cysteine", label: "Cysteine — connective tissue & glutathione", limiting: false },
+  ];
+
+  var LONGEVITY_ACHES_JOINT_LUBRICATION_FROM_LONGEVITY = [
+    { key: "omega3", label: "Omega-3 — synovial fluid & joint lubrication", limiting: false },
+    { key: "sulforaphane", label: "Sulforaphane — chondroprotective signaling", limiting: false },
+  ];
+
+  var LONGEVITY_ACHES_AGE_RELATED_FROM_MICRO = [
+    { microKey: "vitaminD", label: "Vitamin D — sarcopenia & osteomalacia prevention", limiting: false },
+    { microKey: "magnesium", label: "Magnesium — muscle cramp & spasm prevention", limiting: false },
+    { microKey: "calcium", label: "Calcium — bone pain & osteoporotic aches", limiting: false },
+    { microKey: "potassium", label: "Potassium — muscle cramping & electrolyte balance", limiting: false },
+    { microKey: "vitaminB12", label: "Vitamin B12 — neuropathic pain & tingling", limiting: false },
+    { microKey: "iron", label: "Iron — restless legs & muscle fatigue", limiting: false },
+    { microKey: "folate", label: "Folate — homocysteine-driven inflammation", limiting: false },
+  ];
+
+  var LONGEVITY_ACHES_AGE_RELATED_FROM_LONGEVITY = [
+    { key: "coq10", label: "CoQ10 — statin-related myalgia & cellular energy", limiting: false },
+    { key: "taurine", label: "Taurine — age-related muscle & joint support", limiting: false },
   ];
 
   var LONGEVITY_CALCIFICATION_AIM_FROM_MICRO = [
@@ -5414,6 +5477,56 @@
     );
   }
 
+  function achesVitaminDTipHtml() {
+    return (
+      '<aside class="dashboard__longevity-processed-note dashboard__longevity-processed-note--section" role="note">' +
+      '<p class="dashboard__longevity-processed-note-text">' +
+      "<strong>Vitamin D & aches:</strong> Low vitamin D can contribute to muscle weakness or aches in some people, especially if blood 25-OH vitamin D is low. Vitamin D receptors are present in muscle tissue and immune cells; deficiency is linked to diffuse musculoskeletal pain, proximal weakness, and higher fall risk in older adults… " +
+      '<button type="button" class="dashboard__longevity-tip-link" data-longevity-def="sectionAches" aria-haspopup="dialog">Read more</button>' +
+      "</p>" +
+      "</aside>"
+    );
+  }
+
+  function achesAntiInflammatoryTipHtml() {
+    return (
+      '<aside class="dashboard__longevity-processed-note dashboard__longevity-processed-note--section" role="note">' +
+      '<p class="dashboard__longevity-processed-note-text">' +
+      "<strong>Anti-inflammatory support:</strong> Chronic low-grade inflammation drives joint stiffness, muscle soreness, and tendon pain—especially with age. Omega-3 fatty acids (EPA and DHA) produce resolvins and protectins that help resolve inflammation rather than just suppress it. Curcumin, polyphenols, and sulforaphane modulate NF-κB and COX-2 pathways; magnesium and B6 lower inflammatory cytokine levels when intake is adequate… " +
+      '<button type="button" class="dashboard__longevity-tip-link" data-longevity-def="sectionAches" aria-haspopup="dialog">Read more</button>' +
+      "</p>" +
+      "</aside>"
+    );
+  }
+
+  function achesJointLubricationTipHtml() {
+    return (
+      '<aside class="dashboard__longevity-processed-note dashboard__longevity-processed-note--section" role="note">' +
+      '<p class="dashboard__longevity-processed-note-text">' +
+      "<strong>Joint lubrication & cartilage:</strong> Healthy cartilage depends on collagen turnover—vitamin C is required for collagen synthesis, while glycine and proline are the main collagen amino acids. Manganese and copper support cartilage proteoglycans and collagen cross-linking. Omega-3 fats help maintain synovial fluid viscosity, which cushions and lubricates joints during movement… " +
+      '<button type="button" class="dashboard__longevity-tip-link" data-longevity-def="sectionAches" aria-haspopup="dialog">Read more</button>' +
+      "</p>" +
+      '<p class="dashboard__longevity-processed-note-text">' +
+      "<strong>Hydration & joints:</strong> Synovial fluid is roughly 80% water—chronic mild dehydration thickens it, reducing cushioning and increasing friction in joints. Aim for about <strong>2.7 L (91 oz) total water daily for women</strong> and <strong>3.7 L (125 oz) for men</strong> (from all food and drinks combined; about 80% typically comes from beverages). Needs increase with exercise, heat, altitude, and age—older adults often lose thirst sensitivity before fluid needs drop." +
+      "</p>" +
+      "</aside>"
+    );
+  }
+
+  function achesAgeRelatedTipHtml() {
+    return (
+      '<aside class="dashboard__longevity-processed-note dashboard__longevity-processed-note--section" role="note">' +
+      '<p class="dashboard__longevity-processed-note-text">' +
+      "<strong>Age-related aches & deficiency patterns:</strong> Several nutrient deficiencies become more common with age and present as aches or pain: low vitamin D causes osteomalacia (bone softening); low B12 causes neuropathic pain and tingling; low magnesium and potassium cause muscle cramps; low iron triggers restless legs; and statin use depletes CoQ10, contributing to myalgia. Addressing these gaps can meaningfully reduce pain that is often attributed to &ldquo;just aging&rdquo;… " +
+      '<button type="button" class="dashboard__longevity-tip-link" data-longevity-def="sectionAches" aria-haspopup="dialog">Read more</button>' +
+      "</p>" +
+      '<p class="dashboard__longevity-processed-note-text">' +
+      "<strong>Hydration & cramps:</strong> Dehydration concentrates electrolytes unevenly and is one of the most common triggers for muscle cramps, stiffness, and joint pain—especially in older adults whose thirst signals weaken with age. General guidelines: <strong>women ~2.7 L (91 oz)/day</strong>, <strong>men ~3.7 L (125 oz)/day</strong> total water from all sources (IOM adequate intake). Spread intake through the day rather than catching up in large amounts; pairing water with potassium- and magnesium-rich foods supports absorption and electrolyte balance." +
+      "</p>" +
+      "</aside>"
+    );
+  }
+
   function visceralFatBuildupTipHtml() {
     return (
       '<aside class="dashboard__longevity-processed-note dashboard__longevity-processed-note--section" role="note">' +
@@ -6784,6 +6897,17 @@
     return fmtNum(pct) + "%";
   }
 
+  var STUDY_MIN_MICRO_REFS = {
+    glycine: {
+      amount: 10000,
+      source: "Meléndez-Hevia et al. 2009 — collagen synthesis deficit",
+    },
+    proline: {
+      amount: 5000,
+      source: "Barbul 2008; Albaugh et al. 2017 — collagen turnover",
+    },
+  };
+
   var STUDY_MAX_MICRO_REFS = {
     arginine: {
       amount: 20000,
@@ -6805,9 +6929,12 @@
     vitaminK2MK4: true,
     vitaminK2MK7: true,
     cysteine: true,
-    glycine: true,
-    proline: true,
   };
+
+  function studyMinMicroRef(key) {
+    var ref = STUDY_MIN_MICRO_REFS[key];
+    return ref && typeof ref.amount === "number" && ref.amount > 0 ? ref : null;
+  }
 
   function studyMaxMicroRef(key) {
     var ref = STUDY_MAX_MICRO_REFS[key];
@@ -6827,6 +6954,8 @@
       if (!getBodyWeightKg()) return "";
       return fmtNum(iomBwMinDaily(key)) + " " + unit + "/day";
     }
+    var studyMin = studyMinMicroRef(key);
+    if (studyMin) return fmtNum(studyMin.amount) + " " + unit + "/day";
     var studyMax = studyMaxMicroRef(key);
     if (studyMax) return fmtNum(studyMax.amount) + " " + unit + "/day";
     return "";
@@ -6864,6 +6993,19 @@
         text: formatTargetPctNumber(iomPct),
         kind: "iom",
         kindLabel: "IOM bw min",
+        reqAmount: microTargetReqAmountText(key),
+        limiting: false,
+        refKey: key,
+      };
+    }
+    var studyMin = studyMinMicroRef(key);
+    if (studyMin) {
+      var minPct = studyMin.amount > 0 ? (dailyAmount / studyMin.amount) * 100 : null;
+      return {
+        pct: minPct,
+        text: formatTargetPctNumber(minPct),
+        kind: "studyMin",
+        kindLabel: "Study min",
         reqAmount: microTargetReqAmountText(key),
         limiting: false,
         refKey: key,
@@ -8241,6 +8383,72 @@
             !!item.limiting,
             weekMicro
           );
+        }).join("") +
+        longevityListClose()
+    );
+
+    html += longevitySectionWrap(
+      "Aches",
+      "sectionAches",
+      '<p class="dashboard__longevity-note">Muscle aches, joint stiffness, and body pain often worsen with age—but specific nutrient gaps can make them worse. This section groups nutrients that support vitamin D status (a common driver of unexplained aches), reduce chronic inflammation in joints and muscles, maintain cartilage and synovial fluid, and address age-related conditions like osteomalacia, neuropathic pain, cramps, and statin-related myalgia.</p>',
+      longevityListOpen() +
+        longevitySubgroupHtml("Vitamin D status", "micro") +
+        achesVitaminDTipHtml() +
+        LONGEVITY_ACHES_VITAMIN_D_FROM_MICRO.map(function (item) {
+          return longevityRowFromMicroKey(
+            item.microKey,
+            item.label,
+            !!item.limiting,
+            weekMicro
+          );
+        }).join("") +
+        longevitySubgroupHtml("Anti-inflammatory support — from micro entries", "micro") +
+        achesAntiInflammatoryTipHtml() +
+        LONGEVITY_ACHES_ANTI_INFLAMMATORY_FROM_MICRO.map(function (item) {
+          return longevityRowFromMicroKey(
+            item.microKey,
+            item.label,
+            !!item.limiting,
+            weekMicro
+          );
+        }).join("") +
+        longevitySubgroupHtml("Anti-inflammatory support — from longevity entries", "compounds") +
+        LONGEVITY_ACHES_ANTI_INFLAMMATORY_FROM_LONGEVITY.map(function (item) {
+          var field = longevityFieldByKey(item.key);
+          if (!field) return "";
+          return longevityRowFromLongevityField(field, weekLongevity, weekMicro);
+        }).join("") +
+        longevitySubgroupHtml("Joint lubrication & cartilage — from micro entries", "micro") +
+        achesJointLubricationTipHtml() +
+        LONGEVITY_ACHES_JOINT_LUBRICATION_FROM_MICRO.map(function (item) {
+          return longevityRowFromMicroKey(
+            item.microKey,
+            item.label,
+            !!item.limiting,
+            weekMicro
+          );
+        }).join("") +
+        longevitySubgroupHtml("Joint lubrication & cartilage — from longevity entries", "compounds") +
+        LONGEVITY_ACHES_JOINT_LUBRICATION_FROM_LONGEVITY.map(function (item) {
+          var field = longevityFieldByKey(item.key);
+          if (!field) return "";
+          return longevityRowFromLongevityField(field, weekLongevity, weekMicro);
+        }).join("") +
+        longevitySubgroupHtml("Age-related aches & deficiency patterns — from micro entries", "micro") +
+        achesAgeRelatedTipHtml() +
+        LONGEVITY_ACHES_AGE_RELATED_FROM_MICRO.map(function (item) {
+          return longevityRowFromMicroKey(
+            item.microKey,
+            item.label,
+            !!item.limiting,
+            weekMicro
+          );
+        }).join("") +
+        longevitySubgroupHtml("Age-related aches — from longevity entries", "compounds") +
+        LONGEVITY_ACHES_AGE_RELATED_FROM_LONGEVITY.map(function (item) {
+          var field = longevityFieldByKey(item.key);
+          if (!field) return "";
+          return longevityRowFromLongevityField(field, weekLongevity, weekMicro);
         }).join("") +
         longevityListClose()
     );

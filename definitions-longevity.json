@@ -1072,6 +1072,32 @@
       "This balance matters most after 40, during menopause, with low sun exposure, or when family history includes osteoporosis."
     ]
   },
+  "sectionAches": {
+    "enough": [
+      "Aches, joint stiffness, and muscle pain are often dismissed as inevitable aging—but many are driven by specific nutrient gaps that worsen chronic low-grade inflammation, cartilage breakdown, and nerve function.",
+      "This section groups four nutrient strategies: (1) Vitamin D status—low 25-OH vitamin D is one of the most common and correctable causes of diffuse musculoskeletal aches, muscle weakness, and higher fall risk. (2) Anti-inflammatory nutrients—omega-3 fatty acids (EPA and DHA) produce resolvins and protectins that actively resolve inflammation; curcumin, sulforaphane, and polyphenols modulate NF-κB and COX-2 pathways; magnesium, zinc, selenium, and B6 lower inflammatory cytokines when intake is adequate. (3) Joint lubrication and cartilage—vitamin C is required for collagen synthesis; glycine and proline are the dominant collagen amino acids; manganese supports cartilage proteoglycans; copper enables collagen cross-linking; omega-3 fats help maintain synovial fluid viscosity that cushions joints. (4) Age-related ache patterns—osteomalacia from low vitamin D, neuropathic pain from low B12, muscle cramps from low magnesium or potassium, restless legs from low iron, statin-related myalgia from depleted CoQ10, and homocysteine-driven inflammation from low folate.",
+      "Low vitamin D can contribute to muscle weakness or aches in some people, especially if blood 25-OH vitamin D is low. Vitamin D receptors are present in muscle tissue, immune cells, and joint synovium—deficiency is linked to diffuse musculoskeletal pain, proximal muscle weakness, and increased fall risk in older adults. If you have unexplained aches, checking 25-OH vitamin D is one of the highest-yield blood tests.",
+      "Osteoarthritis, tendinopathy, fibromyalgia-like pain, and post-exercise soreness all share inflammatory and oxidative-stress components that these nutrients help modulate—they do not replace medical evaluation, but addressing deficiencies often reduces pain that is wrongly attributed to irreversible aging.",
+      "Taurine levels decline with age and a 2023 Science study linked supplementation to improved musculoskeletal markers in animal models; CoQ10 is depleted by statins and restoring it can relieve statin-related muscle pain in many people."
+    ],
+    "foodSources": [
+      "Vitamin D — fatty fish (salmon, sardines, mackerel), egg yolks, fortified dairy, sun exposure",
+      "Omega-3 (EPA & DHA) — salmon, sardines, mackerel, herring, anchovies",
+      "Curcumin — turmeric (with black pepper for absorption)",
+      "Sulforaphane — broccoli, Brussels sprouts, kale, cauliflower (chop and wait 5–10 min before cooking)",
+      "Magnesium — leafy greens, nuts, seeds, legumes, whole grains",
+      "Vitamin C — citrus, peppers, berries, broccoli, kiwi",
+      "Collagen amino acids (glycine, proline) — bone broth, gelatin, chicken skin, pork skin, fish",
+      "Manganese — whole grains, nuts, legumes, tea, pineapple",
+      "Copper — shellfish, liver, nuts, seeds, dark chocolate",
+      "Zinc — oysters, beef, pumpkin seeds, legumes",
+      "Selenium — Brazil nuts, fish, eggs, whole grains",
+      "Polyphenols & flavonoids — berries, tea, cocoa, onions, grapes, olive oil",
+      "Vitamin B12 — meat, fish, eggs, dairy (or fortified foods for plant-based diets)",
+      "Potassium — bananas, potatoes, beans, avocado, leafy greens",
+      "CoQ10 — organ meats, beef, sardines, peanuts, spinach"
+    ]
+  },
   "sectionStressResilience": {
     "enough": [
       "Stress resilience belongs in longevity because chronic stress accelerates cardiovascular aging, sleep disruption, immune drift, and cognitive burnout—not just bad weeks.",
