@@ -261,6 +261,7 @@
   var starterGuideTarget = null;
   var starterGuideScrollResizeBound = false;
   var IMPORT_SAMPLE_FOODS_URL = "samples/definitions-food.json";
+  var IMPORT_SAMPLE_MEALS_URL = "samples/day-meals.json";
   var importAllMealsModalEl = document.getElementById("import-all-meals-modal");
   var importAllMealsJsonEl = document.getElementById("import-all-meals-json");
   var importAllMealsErrorEl = document.getElementById("import-all-meals-error");
@@ -268,6 +269,7 @@
   var importAllMealsCancelBtn = document.getElementById("import-all-meals-cancel");
   var exportAllMealsBtn = document.getElementById("export-all-meals");
   var importAllMealsBtn = document.getElementById("import-all-meals");
+  var importSampleMealsBtn = document.getElementById("import-sample-meals");
   var dayHighlightsToggleBtn = document.getElementById("day-highlights-toggle");
   var dayFoodNotesEl = document.getElementById("day-food-notes");
   var dayFoodNotesLabelsEl = document.getElementById("day-food-notes-labels");
@@ -12509,14 +12511,7 @@
     );
   }
 
-  function applyImportAllDayMealsReplace(raw) {
-    var missingMode = getImportAllMealsMissingMode();
-    if (!confirmImportAllDayMealsApply(missingMode)) {
-      throw new Error("cancelled");
-    }
-
-    var data = parseImportAllDayMealsObject(raw);
-
+  function applySampleDayMealsData(data, clearMissing) {
     DAYS.forEach(function (day) {
       var el = document.getElementById(day.id);
       if (!el) return;
@@ -12526,11 +12521,66 @@
           throw new Error(day.label + " must be a string");
         }
         el.value = data[day.id];
-      } else if (missingMode === "empty") {
+      } else if (clearMissing) {
         el.value = "";
       }
     });
     saveDayNotes();
+  }
+
+  function confirmImportSampleMealsReplace() {
+    if (!anyDayHasNotes()) return true;
+    return window.confirm(
+      "Replace all day meals with the sample week? This cannot be undone."
+    );
+  }
+
+  function importSampleMeals() {
+    if (activeImportId) closeImportModal();
+    if (activeMicroId) {
+      saveMicrosFromForm();
+      closeMicroModal();
+    }
+    if (activeLongevityId) {
+      saveLongevityFromForm();
+      closeLongevityModal();
+    }
+    if (importAllModalEl && !importAllModalEl.hidden) closeImportAllModal();
+    if (importAllMealsModalEl && !importAllMealsModalEl.hidden) {
+      closeImportAllMealsModal();
+    }
+    if (microDefModalEl && !microDefModalEl.hidden) closeMicroDefModal();
+    if (microGapsModalEl && !microGapsModalEl.hidden) closeMicroGapsModal();
+    if (healthTimelineModalEl && !healthTimelineModalEl.hidden) {
+      closeHealthTimelineModal();
+    }
+
+    fetch(IMPORT_SAMPLE_MEALS_URL)
+      .then(function (res) {
+        if (!res.ok) throw new Error("Could not load sample day meals");
+        return res.text();
+      })
+      .then(function (raw) {
+        var data = parseImportAllDayMealsObject(raw);
+        if (!confirmImportSampleMealsReplace()) return;
+        applySampleDayMealsData(data, true);
+        refreshAll();
+        updateDayClearButtons();
+      })
+      .catch(function (e) {
+        if (e.message === "cancelled") return;
+        window.alert(e.message || "Import sample failed");
+      });
+  }
+
+  function applyImportAllDayMealsReplace(raw) {
+    var missingMode = getImportAllMealsMissingMode();
+    if (!confirmImportAllDayMealsApply(missingMode)) {
+      throw new Error("cancelled");
+    }
+
+    var data = parseImportAllDayMealsObject(raw);
+    applySampleDayMealsData(data, missingMode === "empty");
   }
 
   function showImportAllMealsError(message) {
@@ -13696,6 +13746,10 @@
 
   if (importAllMealsBtn) {
     importAllMealsBtn.addEventListener("click", openImportAllMealsModal);
+  }
+
+  if (importSampleMealsBtn) {
+    importSampleMealsBtn.addEventListener("click", importSampleMeals);
   }
 
   if (importAllMealsApplyBtn) {
