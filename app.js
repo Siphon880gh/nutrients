@@ -5492,7 +5492,7 @@
     return (
       '<aside class="dashboard__longevity-processed-note dashboard__longevity-processed-note--section" role="note">' +
       '<p class="dashboard__longevity-processed-note-text">' +
-      "<strong>Anti-inflammatory support:</strong> Chronic low-grade inflammation drives joint stiffness, muscle soreness, and tendon pain—especially with age. Omega-3 fatty acids (EPA and DHA) produce resolvins and protectins that help resolve inflammation rather than just suppress it. Curcumin, polyphenols, and sulforaphane modulate NF-κB and COX-2 pathways; magnesium and B6 lower inflammatory cytokine levels when intake is adequate… " +
+      "<strong>Anti-inflammatory support:</strong> Chronic low-grade inflammation drives joint stiffness, muscle soreness, and tendon pain—especially with age. Omega-3 fatty acids (EPA and DHA) produce resolvins and protectins that help resolve inflammation rather than just suppress it. Curcumin, polyphenols, and sulforaphane modulate NF-κB and COX-2 pathways; magnesium and B6 lower inflammatory cytokine levels when intake is adequate. Your <strong>omega-6 : omega-3 ratio</strong> matters: a ratio above 10:1 (typical Western diet is 15–20:1) tilts eicosanoid production toward pro-inflammatory prostaglandins and leukotrienes; bringing it closer to 2–4:1 shifts the balance toward anti-inflammatory and pro-resolving mediators… " +
       '<button type="button" class="dashboard__longevity-tip-link" data-longevity-def="sectionAches" aria-haspopup="dialog">Read more</button>' +
       "</p>" +
       "</aside>"
@@ -8418,6 +8418,17 @@
           if (!field) return "";
           return longevityRowFromLongevityField(field, weekLongevity, weekMicro);
         }).join("") +
+        longevitySubgroupHtml("Inflammatory balance — watch ratio", "limit") +
+        longevityRowHtml(
+          "Omega-6 : Omega-3 — inflammatory tone",
+          o6o3Note,
+          o6o3Text,
+          null,
+          "dashboard__longevity-row--computed",
+          true,
+          "omega6To3",
+          false
+        ) +
         longevitySubgroupHtml("Joint lubrication & cartilage — from micro entries", "micro") +
         achesJointLubricationTipHtml() +
         LONGEVITY_ACHES_JOINT_LUBRICATION_FROM_MICRO.map(function (item) {
