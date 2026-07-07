@@ -1115,6 +1115,41 @@
       "Adaptogen mushrooms — reishi, cordyceps, lion's mane, shiitake"
     ]
   },
+  "sectionBrainLongevity": {
+    "enough": [
+      "Brain longevity depends on blood flow, blood sugar control, sleep, exercise, protein, micronutrients, mitochondrial energy, inflammation control, and neurotransmitter balance\u2014not a single memory pill.",
+      "Glutamate is central: it is the brain\u2019s main excitatory neurotransmitter and supports learning, memory, and synaptic plasticity. But the aging brain needs glutamate tightly regulated\u2014too much uncontrolled activity contributes to excitotoxic stress, while too little impairs mental drive and clarity. The practical goal is healthy glutamate signaling without overstimulation.",
+      "Magnesium sits in the NMDA receptor channel and helps prevent excessive calcium entry from glutamate signaling. Vitamin B6 is needed for the enzyme that converts glutamate into GABA\u2014making B6 critical for excitation\u2013inhibition balance. DHA maintains neuronal membrane fluidity and vitamin E protects those DHA-rich membranes from lipid peroxidation. EPA dampens neuroinflammation. Creatine buffers brain ATP so neurotransmitter recycling, attention, and working memory have enough energy.",
+      "The MIND diet (Mediterranean\u2013DASH hybrid) emphasizes leafy greens, berries, nuts, olive oil, whole grains, beans, fish, and poultry while limiting butter, cheese, red meat, fried foods, and sweets. Observational research linked higher MIND diet scores with slower cognitive decline, though randomized trial results have been more mixed. Use MIND-style eating as the foundation, not a guaranteed dementia-prevention cure.",
+      "Choline supports acetylcholine\u2014a neurotransmitter involved in attention, learning, and memory. Eggs are the best food source; citicoline or alpha-GPC supplements are options when food intake is low. Glycine and taurine may support calm and nervous-system balance; theanine from green tea supports calm focus. These are state-control tools, not dementia-prevention supplements.",
+      "For practical brain longevity, consider tracking: blood pressure, fasting glucose, A1c, lipids (especially ApoB), hs-CRP, vitamin B12, methylmalonic acid, folate, homocysteine, vitamin D, ferritin, thyroid markers, and sleep quality. Brain fog is not always a neurotransmitter problem\u2014it can come from anemia, B12 deficiency, thyroid issues, sleep apnea, inflammation, glucose swings, or cardiovascular risk.",
+      "B vitamins for brain energy and methylation: thiamin (B1) feeds pyruvate into the Krebs cycle for neuronal ATP; niacin (B3) is the main food precursor for NAD+, which fuels brain energy and repair signaling; riboflavin (B2) supports FAD-dependent MTHFR activity that keeps methylation and homocysteine recycling running. Observational studies have linked higher niacin intake with lower Alzheimer\u2019s risk, though trial evidence is limited.",
+      "Selenium powers glutathione peroxidase in brain tissue, neutralizing peroxides before they damage neuronal DNA and membranes. Vitamin E shields the DHA-rich lipid membranes that make up much of the brain\u2019s structural fat. Sulforaphane from broccoli and crucifers activates Nrf2 antioxidant defenses in neurons. Resveratrol activates sirtuin stress-response pathways studied in aging biology. These antioxidant and neuroprotective compounds work as a network, not in isolation.",
+      "Caution: high-dose B6 over time can damage nerves; too many methyl donors (methylfolate, methyl-B12, SAMe, TMG) can cause anxiety and insomnia; stimulant-heavy nootropics can worsen anxiety, palpitations, and sleep. Poor sleep is one of the fastest ways to disturb glutamate/GABA balance\u2014no supplement stack fully compensates for chronic sleep loss."
+    ],
+    "foodSources": [
+      "Protein \u2014 eggs, fish, poultry, Greek yogurt, tofu, tempeh, lentils, beans",
+      "Omega-3 (DHA & EPA) \u2014 salmon, sardines, trout, anchovies, herring, mackerel",
+      "Magnesium \u2014 pumpkin seeds, almonds, spinach, black beans, avocado, dark chocolate",
+      "Vitamin B6 \u2014 chickpeas, salmon, tuna, poultry, potatoes, bananas",
+      "Folate \u2014 spinach, lentils, asparagus, avocado, broccoli, beans",
+      "Vitamin B12 \u2014 fish, meat, eggs, dairy, fortified foods",
+      "Choline \u2014 eggs, salmon, chicken, soy foods, liver",
+      "Polyphenols \u2014 blueberries, strawberries, cocoa, green tea, olive oil, herbs",
+      "Nitric oxide support \u2014 beets, arugula, spinach, citrus, pomegranate",
+      "Creatine \u2014 beef, pork, salmon, tuna, herring (or 3\u20135 g monohydrate daily)",
+      "Glycine \u2014 bone broth, gelatin, chicken skin, beans, lentils, seeds",
+      "Taurine \u2014 shellfish, dark poultry meat, fish, meat",
+      "Theanine \u2014 green tea, matcha, black tea",
+      "Thiamin (B1) \u2014 whole grains, pork, legumes, seeds",
+      "Niacin (B3) \u2014 poultry, fish, peanuts, mushrooms, whole grains",
+      "Riboflavin (B2) \u2014 dairy, eggs, almonds, mushrooms",
+      "Selenium \u2014 Brazil nuts (1\u20132/day), fish, eggs, sunflower seeds",
+      "Vitamin E \u2014 almonds, sunflower seeds, avocado, olive oil",
+      "Resveratrol \u2014 red & purple grapes, blueberries, peanuts",
+      "Sulforaphane \u2014 broccoli & sprouts, Brussels sprouts, kale, cabbage"
+    ]
+  },
   "sectionSleepHealth": {
     "enough": [
       "Sleep health belongs in longevity because quality of life depends on rest: falling asleep easily, staying asleep through the night, and waking refreshed enough to function the next day.",
@@ -1288,7 +1323,8 @@
       "For sodium reduction, look up salt-swap strategies and herbs or condiments that can replace salt. Example: the same volume of Tajín usually has less sodium than the same volume of table salt because it is a chili-lime seasoning blend, not 100% salt.",
       "You can also consider potassium-enriched salt alternatives, which replace some sodium with potassium. Potassium salts like Nu-Salt or Morton Salt Substitute use potassium chloride, which is sodium-free and mimics salty flavor, though they can have a bitter aftertaste. Avoid these if you have kidney disease or take certain medications.",
       "However, you may not want to fully replace salt if you are low on iodine and use iodized salt as an easy iodine source. In that case you can use iodized salt and then use the alternatives at other times.",
-      "Lower-priority rows (vitamin D, vitamin K/K2, CoQ10) have modest, mixed, or mostly supplemental evidence for BP itself—they are still worth tracking in context but should not distract from sodium, potassium, plants, and fish. Use the DASH diet rows in this section for calcium tracking."
+      "Lower-priority rows (vitamin D, vitamin K/K2, CoQ10) have modest, mixed, or mostly supplemental evidence for BP itself—they are still worth tracking in context but should not distract from sodium, potassium, plants, and fish. Use the DASH diet rows in this section for calcium tracking.",
+      "Glutathione may help manage blood pressure by reducing oxidative stress and increasing the availability of nitric oxide, which relaxes blood vessels and improves circulation. Clinical evidence indicates that low glutathione levels are often linked to hypertension, and administering it via IV can acutely lower blood pressure in individuals with endothelial dysfunction."
     ]
   },
   "sectionDashDiet": {

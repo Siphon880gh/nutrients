@@ -430,6 +430,7 @@
     sectionBoneDensity: { label: "Bone density" },
     sectionAches: { label: "Aches" },
     sectionStressResilience: { label: "Stress resilience" },
+    sectionBrainLongevity: { label: "Staying sharp & lowering dementia risk" },
     sectionSleepHealth: { label: "Sleep health" },
     sectionCalcification: { label: "Calcification & vascular balance" },
     sectionHomocysteine: { label: "Methylation & homocysteine balance" },
@@ -828,6 +829,10 @@
     { label: "Bone density", sectionDefKey: "sectionBoneDensity" },
     { label: "Aches", sectionDefKey: "sectionAches" },
     { label: "Stress resilience", sectionDefKey: "sectionStressResilience" },
+    {
+      label: "Staying sharp & lowering dementia risk",
+      sectionDefKey: "sectionBrainLongevity",
+    },
     { label: "Sleep health", sectionDefKey: "sectionSleepHealth" },
     {
       label: "Mitochondrial health & cellular energy",
@@ -990,6 +995,41 @@
     { key: "epa", label: "EPA", limiting: false },
     { key: "dha", label: "DHA", limiting: false },
     { key: "coq10", label: "Coenzyme Q10 — cellular energy under load", limiting: false },
+  ];
+
+  var LONGEVITY_BRAIN_FROM_MICRO = [
+    { microKey: "magnesium", label: "Magnesium — NMDA receptor regulation & glutamate balance", limiting: false },
+    { microKey: "vitaminB6", label: "Vitamin B6 — converts glutamate to GABA", limiting: false },
+    { microKey: "folate", label: "Folate (B9) — methylation & homocysteine balance", limiting: false },
+    { microKey: "vitaminB12", label: "Vitamin B12 — nerve health & myelin support", limiting: false },
+    { microKey: "vitaminD", label: "Vitamin D — neuroinflammation & cognitive aging", limiting: false },
+    { microKey: "vitaminC", label: "Vitamin C — antioxidant & glutathione recycling", limiting: false },
+    { microKey: "zinc", label: "Zinc — synaptic signaling & antioxidant defense", limiting: false },
+    { microKey: "fiber", label: "Fiber — gut-brain axis & blood sugar stability", limiting: false },
+    { microKey: "glycine", label: "Glycine — calming neurotransmitter & glutathione building block", limiting: false },
+    { microKey: "tyrosine", label: "Tyrosine — dopamine & catecholamine precursor", limiting: false },
+    { microKey: "tryptophan", label: "Tryptophan — serotonin precursor", limiting: false },
+    { microKey: "thiamin", label: "Thiamin (B1) — brain energy metabolism", limiting: false },
+    { microKey: "niacin", label: "Niacin (B3) — NAD+ precursor for brain energy", limiting: false },
+    { microKey: "riboflavin", label: "Riboflavin (B2) — MTHFR & methylation support", limiting: false },
+    { microKey: "selenium", label: "Selenium — glutathione peroxidase in brain tissue", limiting: false },
+  ];
+
+  var LONGEVITY_BRAIN_FROM_LONGEVITY = [
+    { key: "epa", label: "EPA — neuroinflammation control", limiting: false },
+    { key: "dha", label: "DHA — brain structure & membrane fluidity", limiting: false },
+    { key: "choline", label: "Choline — acetylcholine & cell membranes", limiting: false },
+    { key: "polyphenols", label: "Polyphenols — MIND diet neuroprotection", limiting: false },
+    { key: "flavonoids", label: "Flavonoids — neurovascular & endothelial support", limiting: false },
+    { key: "creatine", label: "Creatine — brain energy buffering", limiting: false },
+    { key: "coq10", label: "Coenzyme Q10 — mitochondrial brain energy", limiting: false },
+    { key: "taurine", label: "Taurine — calming support & mitochondrial antioxidant", limiting: false },
+    { key: "lutein", label: "Lutein — predominant brain carotenoid", limiting: false },
+    { key: "curcumin", label: "Curcumin — neuroinflammation modulation", limiting: false },
+    { key: "nitrate", label: "Nitrate — cerebral blood flow via nitric oxide", limiting: false },
+    { key: "vitaminE", label: "Vitamin E — protects DHA-rich brain membranes", limiting: false },
+    { key: "resveratrol", label: "Resveratrol — neuroprotective sirtuin activation", limiting: false },
+    { key: "sulforaphane", label: "Sulforaphane — Nrf2 neuronal antioxidant defense", limiting: false },
   ];
 
   var LONGEVITY_SLEEP_FROM_MICRO = [
@@ -1355,6 +1395,17 @@
     { key: "vitaminK2MK4", label: "MK-4 — animal-source K2" },
     { key: "vitaminK2MK7", label: "MK-7 — fermented-food K2" },
     { key: "coq10", label: "CoQ10 — trial data mostly supplemental" },
+  ];
+
+  var LONGEVITY_VASCULAR_GLUTATHIONE_FROM_MICRO = [
+    { microKey: "vitaminC", label: "Vitamin C — glutathione recycling" },
+    { microKey: "riboflavin", label: "Riboflavin (B2) — glutathione reductase cofactor" },
+    { microKey: "vitaminB6", label: "Vitamin B6 — transsulfuration pathway" },
+  ];
+
+  var LONGEVITY_VASCULAR_GLUTATHIONE_FROM_LONGEVITY = [
+    { key: "selenium", label: "Selenium — glutathione peroxidase cofactor" },
+    { key: "sulforaphane", label: "Sulforaphane — Nrf2 / glutathione induction" },
   ];
 
   var LONGEVITY_DASH_AIM_FROM_MICRO = [
@@ -5477,6 +5528,17 @@
     );
   }
 
+  function brainLongevityTipHtml() {
+    return (
+      '<aside class="dashboard__longevity-processed-note dashboard__longevity-processed-note--section" role="note">' +
+      '<p class="dashboard__longevity-processed-note-text">' +
+      "<strong>Glutamate balance & the MIND diet:</strong> Glutamate is the brain\u2019s main excitatory neurotransmitter\u2014essential for learning, memory, and synaptic plasticity. Aging makes it harder to keep glutamate tightly regulated: too much uncontrolled activity contributes to excitotoxic stress, while too little impairs mental drive and clarity. Magnesium sits in the NMDA receptor channel and helps prevent excessive calcium entry; B6 converts glutamate to GABA; DHA maintains neuronal membrane fluidity; creatine buffers brain ATP for neurotransmitter recycling. The MIND diet\u2014leafy greens, berries, nuts, fish, olive oil, whole grains, and beans\u2014provides these nutrients in a pattern linked with slower cognitive decline in observational research\u2026 " +
+      '<button type="button" class="dashboard__longevity-tip-link" data-longevity-def="sectionBrainLongevity" aria-haspopup="dialog">Read more</button>' +
+      "</p>" +
+      "</aside>"
+    );
+  }
+
   function achesVitaminDTipHtml() {
     return (
       '<aside class="dashboard__longevity-processed-note dashboard__longevity-processed-note--section" role="note">' +
@@ -8489,6 +8551,30 @@
     );
 
     html += longevitySectionWrap(
+      "Staying sharp & lowering dementia risk",
+      "sectionBrainLongevity",
+      '<p class="dashboard__longevity-note">Brain longevity depends on glutamate balance, blood flow, blood sugar control, and micronutrient support\u2014not a single memory pill. The MIND diet pattern (leafy greens, berries, nuts, fish, olive oil) provides the foundation; these nutrients support the signaling, structure, and energy systems that keep cognition sharp.</p>' +
+        brainLongevityTipHtml(),
+      longevityListOpen() +
+        longevitySubgroupHtml("From your micro entries", "micro") +
+        LONGEVITY_BRAIN_FROM_MICRO.map(function (item) {
+          return longevityRowFromMicroKey(
+            item.microKey,
+            item.label,
+            !!item.limiting,
+            weekMicro
+          );
+        }).join("") +
+        longevitySubgroupHtml("From your longevity entries", "compounds") +
+        LONGEVITY_BRAIN_FROM_LONGEVITY.map(function (item) {
+          var field = longevityFieldByKey(item.key);
+          if (!field) return "";
+          return longevityRowFromLongevityField(field, weekLongevity, weekMicro);
+        }).join("") +
+        longevityListClose()
+    );
+
+    html += longevitySectionWrap(
       "Sleep health",
       "sectionSleepHealth",
       '<p class="dashboard__longevity-note">Quality of life depends on rest, and uninterrupted sleep usually gets harder with age; these nutrients support the pathways that help when intake is low.</p>',
@@ -9141,6 +9227,9 @@
           "neutral"
         ) +
         vascularLowerPriorityRowsHtml(weekLongevity, weekMicro) +
+        longevitySubgroupHtml("Glutathione support — oxidative stress & NO availability", "aim") +
+        vascularRowsFromMicroItems(LONGEVITY_VASCULAR_GLUTATHIONE_FROM_MICRO, false, weekMicro) +
+        vascularRowsFromLongevityItems(LONGEVITY_VASCULAR_GLUTATHIONE_FROM_LONGEVITY, weekLongevity, weekMicro) +
         longevityListClose()
     );
 
