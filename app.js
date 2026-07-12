@@ -8347,6 +8347,7 @@
   }
 
   function microDayCardHtml(dayLabel, dayId, microTotals, longevityTotals) {
+    var isToday = dayId === todayDayId();
     var rows = "";
     microConditionDisplayFields().forEach(function (entry) {
       var field = entry.field;
@@ -8401,8 +8402,12 @@
     });
 
     return (
-      '<article class="dashboard__card dashboard__micro-day-card">' +
-      '<span class="dashboard__label">' +
+      '<article class="dashboard__card dashboard__micro-day-card' +
+      (isToday ? " dashboard__card--today" : "") +
+      '">' +
+      '<span class="dashboard__label"' +
+      (isToday ? ' aria-current="date"' : "") +
+      ">" +
       escapeHtml(dayLabel) +
       "</span>" +
       '<div class="dashboard__micro-day-rows">' +
@@ -11175,6 +11180,7 @@
   }
 
   function dashboardCardHtml(label, totals, dayId) {
+    var isToday = dayId === todayDayId();
     var isPct = dashboardMacroPctView;
     var pct = macroPctFromTotals(totals);
     var toggleLabel = isPct ? "Show grams and calories" : "Show macro percentages";
@@ -11211,9 +11217,13 @@
     }
 
     return (
-      '<article class="dashboard__card">' +
+      '<article class="dashboard__card' +
+      (isToday ? " dashboard__card--today" : "") +
+      '">' +
       '<div class="dashboard__card-head">' +
-      '<span class="dashboard__label">' +
+      '<span class="dashboard__label"' +
+      (isToday ? ' aria-current="date"' : "") +
+      ">" +
       escapeHtml(label) +
       "</span>" +
       '<button type="button" class="dashboard__card-toggle" data-action="toggle-dashboard-macro-view" data-day-id="' +
@@ -13022,6 +13032,24 @@
       if (DAYS[i].id === id) return DAYS[i];
     }
     return null;
+  }
+
+  function todayDayId() {
+    // Date#getDay: 0 = Sun … 6 = Sat
+    return ["sun", "mon", "tue", "wed", "thu", "fri", "sat"][new Date().getDay()];
+  }
+
+  function markTodayDay() {
+    var todayId = todayDayId();
+    document.querySelectorAll(".week__grid .day").forEach(function (dayEl) {
+      var input = dayEl.querySelector(".day__input");
+      var isToday = !!(input && input.id === todayId);
+      dayEl.classList.toggle("day--today", isToday);
+      var label = dayEl.querySelector(".day__label");
+      if (!label) return;
+      if (isToday) label.setAttribute("aria-current", "date");
+      else label.removeAttribute("aria-current");
+    });
   }
 
   function dayNotesPayload() {
@@ -15474,6 +15502,7 @@
     loadKeywordCaloriesOpen();
     loadKeywordsPageSize();
     loadDayNotes();
+    markTodayDay();
     loadDayHighlightsPreference();
     loadDayEditorHeight();
     loadMicroViewDaily();

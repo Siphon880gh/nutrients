@@ -3193,6 +3193,18 @@ button.dashboard__longevity-name:focus-visible {
   line-height: 1.35;
 }
 
+.dashboard__card--today {
+  border-color: #3d6b9e;
+  background: #f5f8fc;
+}
+
+.dashboard__card--today .dashboard__label {
+  color: #3d6b9e;
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.2em;
+}
+
 .dashboard__label {
   display: block;
   margin-bottom: 0.35rem;
@@ -3634,6 +3646,18 @@ button.dashboard__longevity-name:focus-visible {
   letter-spacing: 0.04em;
   text-transform: uppercase;
   color: #444;
+}
+
+.day--today .day__label {
+  color: #3d6b9e;
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.2em;
+}
+
+.day--today .day__editor {
+  border-color: #3d6b9e;
+  background: #f5f8fc;
 }
 
 .day__editor {
