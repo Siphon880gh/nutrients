@@ -1082,6 +1082,30 @@
       "Liver & cheese (preformed vitamin A)"
     ]
   },
+  "sectionGrayHair": {
+    "enough": [
+      "Gray hair is often genetic and age-related—but premature graying (canities) is also linked to correctable nutrient gaps and thyroid disease. When deficiency or thyroid dysfunction is the driver, correcting it can halt progression and, in documented cases, restore pigment to new growth. Nutrients alone do not reverse graying driven purely by genetics or permanent melanocyte stem-cell loss.",
+      "Vitamin B12 can only reverse gray hair if the greying was caused by a clinically diagnosed B12 deficiency. Folate works the same way: low serum folate is linked to premature graying, and correcting it helps mainly when folate deficiency was the cause. Iron (serum ferritin) is a melanogenesis cofactor—pigment return has been reported after correcting iron-deficiency anemia, not after supplementing when stores are already adequate. Copper is required for tyrosinase and melanin; reversible hypopigmentation is tied to copper deficiency. Zinc and vitamin D show lower serum levels in many premature-graying studies; repletion helps when those labs are low, not as a universal anti-gray pill.",
+      "Thyroid disease—both hypo- and hyperthyroidism—is a recognized comorbidity of premature graying. Iodine supports thyroid hormone production when thyroid status is involved; selenium helps convert T4 to T3. If thyroid markers are off, treat the thyroid first and use the Thyroid health section for the full cofactor set (iron, zinc, tyrosine, vitamin A, omega-3).",
+      "Severe or prolonged stress can accelerate graying. Mouse research shows sympathetic (fight-or-flight) nerve activity depletes melanocyte stem cells in the follicle; human studies also link stress with graying that can sometimes reverse when stress falls. Magnesium and vitamin C support adrenal/HPA resilience when stress drains them. Pantothenic acid (B5) has limited pharmacotherapy evidence for premature graying (grade 2A). B6, folate, B12, zinc, and vitamin D help mainly by preventing the deficiency-plus-stress pattern—not by dyeing hair from the inside.",
+      "Practical approach: prioritize correcting deficiencies and thyroid disease when present; support stress resilience with food-level magnesium, C, and B vitamins; do not expect dye-like reversal from supplements when genetics or age dominate. Smoking is another modifiable risk factor tied to premature graying in observational studies."
+    ],
+    "tooLow": [
+      "Low B12, folate, ferritin, copper, zinc, or vitamin D is associated with premature graying; correcting a true deficiency is the scenario most likely to slow or reverse pigment loss.",
+      "Untreated thyroid disease and chronic stress without nutrient repletion both raise the chance of earlier or faster graying."
+    ],
+    "foodSources": [
+      "Vitamin B12 — meat, fish, eggs, dairy (or fortified foods for plant-based diets)",
+      "Folate — leafy greens, legumes, asparagus, avocado",
+      "Iron / ferritin — red meat, shellfish, legumes, fortified cereals (pair plant iron with vitamin C)",
+      "Copper — shellfish, liver, nuts, seeds, dark chocolate",
+      "Zinc — oysters, beef, pumpkin seeds, legumes",
+      "Vitamin D — fatty fish, egg yolks, fortified dairy, sensible sun",
+      "Iodine & selenium (thyroid) — iodized salt, seafood, dairy, Brazil nuts",
+      "Magnesium & B vitamins (stress) — leafy greens, nuts, seeds, whole grains, eggs, meat",
+      "Vitamin C — citrus, peppers, berries, broccoli"
+    ]
+  },
   "sectionBoneDensity": {
     "enough": [
       "Calcium, vitamin D, magnesium, and vitamin K work together to mineralize bone, maintain muscle strength, and support immune defense—reducing fracture and fall risk as you age.",

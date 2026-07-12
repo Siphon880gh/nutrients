@@ -87,6 +87,7 @@
   "longevityNavTopicColors": {
     "sectionFiber": "#707680",
     "sectionThyroid": "#707680",
+    "sectionGrayHair": "#707680",
     "sectionBoneDensity": "#707680",
     "sectionAches": "#707680",
     "sectionStressResilience": "#707680",

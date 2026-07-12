@@ -432,6 +432,7 @@
     sectionMicronutrients: { label: "Micronutrients from food" },
     sectionFiber: { label: "Fiber & colon health" },
     sectionThyroid: { label: "Thyroid health" },
+    sectionGrayHair: { label: "Gray hair" },
     sectionBoneDensity: { label: "Bone density" },
     sectionAches: { label: "Aches" },
     sectionStressResilience: { label: "Stress resilience" },
@@ -831,6 +832,7 @@
     { label: "Derived scores", sectionDefKey: "sectionDerived" },
     { label: "Fiber & colon health", sectionDefKey: "sectionFiber" },
     { label: "Thyroid health", sectionDefKey: "sectionThyroid" },
+    { label: "Gray hair", sectionDefKey: "sectionGrayHair" },
     { label: "Bone density", sectionDefKey: "sectionBoneDensity" },
     { label: "Aches", sectionDefKey: "sectionAches" },
     { label: "Stress resilience", sectionDefKey: "sectionStressResilience" },
@@ -904,6 +906,60 @@
 
   var LONGEVITY_THYROID_WATCH_FROM_LONGEVITY = [
     { key: "omega6", label: "Omega-6 (total)", limiting: true },
+  ];
+
+  var LONGEVITY_GRAY_HAIR_DEFICIENCY_FROM_MICRO = [
+    {
+      microKey: "vitaminB12",
+      label:
+        "Vitamin B12 — can reverse gray hair only if greying was caused by a clinically diagnosed B12 deficiency",
+      limiting: false,
+    },
+    {
+      microKey: "folate",
+      label:
+        "Folate — low serum folate is linked to premature graying; correcting deficiency may help only when folate was the cause",
+      limiting: false,
+    },
+    {
+      microKey: "iron",
+      label:
+        "Iron (ferritin) — low ferritin is tied to premature canities; pigment return reported after correcting iron-deficiency anemia",
+      limiting: false,
+    },
+    {
+      microKey: "copper",
+      label:
+        "Copper — cofactor for tyrosinase/melanin; reversible hypopigmentation is linked to copper deficiency, not typical aging gray",
+      limiting: false,
+    },
+    {
+      microKey: "zinc",
+      label:
+        "Zinc — lower serum zinc appears in some premature-graying studies; repletion helps only when zinc is actually low",
+      limiting: false,
+    },
+    {
+      microKey: "vitaminD",
+      label:
+        "Vitamin D — low 25-OH D is associated with premature graying; raise levels when deficient—not a dye-like fix for genetic gray",
+      limiting: false,
+    },
+  ];
+
+  var LONGEVITY_GRAY_HAIR_THYROID_FROM_MICRO = [
+    {
+      microKey: "iodine",
+      label:
+        "Iodine — thyroid disease is a comorbidity of premature graying; steady iodine supports hormone production when thyroid is involved",
+      limiting: false,
+    },
+    {
+      microKey: "selenium",
+      label:
+        "Selenium — helps T4→T3 conversion; useful for gray hair mainly when thyroid dysfunction is driving pigment loss",
+      limiting: false,
+    },
   ];
 
   var LONGEVITY_BONE_FROM_MICRO = [
@@ -5565,6 +5621,17 @@
     );
   }
 
+  function grayHairTipHtml() {
+    return (
+      '<aside class="dashboard__longevity-processed-note dashboard__longevity-processed-note--section" role="note">' +
+      '<p class="dashboard__longevity-processed-note-text">' +
+      "<strong>Preventing &amp; possibly reversing gray hair:</strong> When premature graying is driven by deficiency (B12, folate, low ferritin, copper, zinc, vitamin D) or thyroid disease, correcting the cause can halt progression and sometimes restore pigment in new growth. Genetics and age-related melanocyte stem-cell loss usually do not reverse with nutrients alone. Severe stress can accelerate graying; some human graying appears reversible when stress falls… " +
+      '<button type="button" class="dashboard__longevity-tip-link" data-longevity-def="sectionGrayHair" aria-haspopup="dialog">Read more</button>' +
+      "</p>" +
+      "</aside>"
+    );
+  }
+
   function stressResilienceTipHtml() {
     return (
       '<aside class="dashboard__longevity-processed-note dashboard__longevity-processed-note--section" role="note">' +
@@ -8487,6 +8554,56 @@
           true,
           "omega6To3",
           false
+        ) +
+        longevityListClose()
+    );
+
+    html += longevitySectionWrap(
+      "Gray hair",
+      "sectionGrayHair",
+      '<p class="dashboard__longevity-note">Same B12, folate, iron, copper, zinc, vitamin D, and iodine values as your micro entries—plus the full Stress resilience nutrient set (micro + longevity compounds)—grouped here for premature graying, thyroid-related pigment loss, and stress-accelerated canities.</p>' +
+        grayHairTipHtml(),
+      longevityListOpen() +
+        longevitySubgroupHtml("Deficiency nutrients linked to premature graying", "micro") +
+        LONGEVITY_GRAY_HAIR_DEFICIENCY_FROM_MICRO.map(function (item) {
+          return longevityRowFromMicroKey(
+            item.microKey,
+            item.label,
+            !!item.limiting,
+            weekMicro
+          );
+        }).join("") +
+        longevitySubgroupHtml("Thyroid disease — pigment & hormone cofactors", "micro") +
+        LONGEVITY_GRAY_HAIR_THYROID_FROM_MICRO.map(function (item) {
+          return longevityRowFromMicroKey(
+            item.microKey,
+            item.label,
+            !!item.limiting,
+            weekMicro
+          );
+        }).join("") +
+        longevityNavJumpRowHtml(
+          "sectionThyroid",
+          "Thyroid health — full cofactor set (iron, zinc, tyrosine, vitamin A, omega-3)"
+        ) +
+        longevitySubgroupHtml("Stress resilience — from your micro entries", "micro") +
+        LONGEVITY_STRESS_FROM_MICRO.map(function (item) {
+          return longevityRowFromMicroKey(
+            item.microKey,
+            item.label,
+            !!item.limiting,
+            weekMicro
+          );
+        }).join("") +
+        longevitySubgroupHtml("Stress resilience — from your longevity entries", "compounds") +
+        LONGEVITY_STRESS_FROM_LONGEVITY.map(function (item) {
+          var field = longevityFieldByKey(item.key);
+          if (!field) return "";
+          return longevityRowFromLongevityField(field, weekLongevity, weekMicro);
+        }).join("") +
+        longevityNavJumpRowHtml(
+          "sectionStressResilience",
+          "Stress resilience — same nutrient set in the dedicated section"
         ) +
         longevityListClose()
     );
