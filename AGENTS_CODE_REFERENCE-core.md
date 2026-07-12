@@ -278,6 +278,8 @@ Fetched at boot by `loadFoodCategoriesDefinitions` (parallel with micro/longevit
 
 Foods that match no pattern are **Uncategorized** (filter sentinel `KEYWORDS_CATEGORY_UNCATEGORIZED` / `__uncategorized__`). Modal shows the uncategorized count; reveal expands names; Filter applies that view.
 
+**Agent audit** — `.agents/skills/categorize-food-definitions.json` + `node scripts/list-uncategorized-foods.js [--json] [foods.json]` finds unmatched names and guides assigning them to an existing or new category.
+
 ## Food notes (`definitions-food-notes.json`)
 
 Fetched at boot by `loadFoodNotesDefinitions` (parallel with micro/longevity defs). **Not persisted** — rules live in the JSON file only.

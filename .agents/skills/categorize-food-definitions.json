@@ -1,0 +1,102 @@
+{
+  "name": "categorize-food-definitions",
+  "description": "Find uncategorized food definition names and assign them to an existing or new category in definitions-food-categories.json. Use when auditing food categories, fixing Uncategorized counts, or when the user asks to categorize foods / update the category map.",
+  "purpose": "Look for any food names that match no category pattern, decide whether each belongs in an existing category (extend patterns) or needs a new category, then update definitions-food-categories.json and re-check until the uncategorized list is empty or only true leftovers remain.",
+  "onInvoke": [
+    "Explain the purpose: find foods with no category match, place them into an existing category or propose a new one, and update definitions-food-categories.json.",
+    "Confirm which food list to audit (see foodSources). If the user already named a file or pasted names, use that. Otherwise ask.",
+    "Run the list-uncategorized helper (or equivalent) against that food list + definitions-food-categories.json.",
+    "If uncategorized count is 0, report that and stop unless the user wants a category-structure review.",
+    "Otherwise start the categorization workflow."
+  ],
+  "foodSources": {
+    "prompt": "Which food list should I check for uncategorized names?",
+    "options": [
+      {
+        "id": "sample",
+        "label": "samples/definitions-food.json",
+        "path": "samples/definitions-food.json"
+      },
+      {
+        "id": "export",
+        "label": "A nutrients-food-definitions.json export (path or paste)",
+        "path": null
+      },
+      {
+        "id": "names",
+        "label": "A pasted list of food names only",
+        "path": null
+      }
+    ],
+    "defaultHint": "Prefer samples/definitions-food.json for repo work; use an export when matching the user's live browser list."
+  },
+  "files": {
+    "categoryMap": "definitions-food-categories.json",
+    "listScript": "scripts/list-uncategorized-foods.js",
+    "sampleFoods": "samples/definitions-food.json",
+    "docs": [
+      "AGENTS_CODE_REFERENCE-core.md (Food categories section)",
+      "AGENTS_CODE_REFERENCE.md"
+    ]
+  },
+  "categoryMapShape": {
+    "root": "{ \"categories\": [ { \"id\", \"label\", \"patterns\": [\"regex…\"] } ] }",
+    "rules": [
+      "id — stable camelCase or short slug (e.g. cereal, bread); used as keywordsCategoryFilter value",
+      "label — human label shown in the Categories modal / chip",
+      "patterns — case-insensitive regex strings; first matching category in array order wins",
+      "Foods matching no pattern are Uncategorized"
+    ]
+  },
+  "matchingRules": [
+    "Prefer anchored name prefixes (^Name) over loose substring matches.",
+    "Cover known naming variants in one category (e.g. Cereal - … and Cereals Cheerios → ^Cereals?\\b).",
+    "Do not steal foods from another category: check first-match order after edits.",
+    "Keep patterns specific enough that unrelated foods stay out (e.g. avoid bare ^Rice if it would catch Cereal - … Rice Krispies when cereal is later in the list — cereal should stay above grains, or patterns must stay precise).",
+    "New category id must be unique; label should fit the modal list style (short noun phrase)."
+  ],
+  "decisionGuide": {
+    "existingCategory": [
+      "Name shares a clear family with foods already counted in a category (same prefix, brand family, or food type).",
+      "A small pattern addition (prefix / alias) would cover this food and likely siblings.",
+      "Action: add or broaden a pattern on that category; do not duplicate the food into multiple categories."
+    ],
+    "newCategory": [
+      "Several uncategorized foods form a coherent group with no fitting existing label.",
+      "Or one food type would force an existing category to become too broad / misleading.",
+      "Action: append a new { id, label, patterns } entry; place it so first-match order does not steal from earlier categories."
+    ],
+    "leaveUncategorized": [
+      "One-off or ambiguous name with no stable pattern.",
+      "Or user asks not to invent a category yet.",
+      "Action: list it under leftovers; do not force a bad match."
+    ]
+  },
+  "workflow": [
+    "Load definitions-food-categories.json and the selected food list.",
+    "Run: node scripts/list-uncategorized-foods.js --json <foodsPath>   (omit path to use samples/definitions-food.json).",
+    "Group uncategorized names by likely family (shared prefix, food type, brand).",
+    "For each group, decide: existing category | new category | leave.",
+    "Propose edits before writing when the user has not asked to apply automatically: show food → proposed category id/label → pattern change.",
+    "Apply approved edits to definitions-food-categories.json only (not the food JSON names, unless the user explicitly asks to rename foods).",
+    "Re-run the list script. Repeat until uncategorized is empty or only agreed leftovers remain.",
+    "If a new category was added, mention it so AGENTS docs stay accurate only if the user asks for doc updates — category map file is the source of truth for the app."
+  ],
+  "reportFormat": {
+    "type": "markdown",
+    "sections": [
+      "Source food file + uncategorized count before/after",
+      "Assigned to existing categories (food → category id + pattern added)",
+      "New categories created (id, label, patterns, member foods)",
+      "Left uncategorized (names + reason)"
+    ]
+  },
+  "aiJudgementPrompt": "These food definition names match no category pattern. For each name, choose: (1) an existing category id from the list, (2) a new category { id, label }, or (3) leave uncategorized. Prefer existing categories. Suggest a case-insensitive regex pattern anchored to the name family (usually a ^prefix). Do not rename foods.\n\nExisting categories:\n{categoryList}\n\nUncategorized foods:\n{foodList}\n\nRespond with JSON only:\n{\n  \"assignments\": [\n    {\n      \"name\": \"<exact food name>\",\n      \"action\": \"existing\" | \"new\" | \"leave\",\n      \"categoryId\": \"<id or proposed id>\",\n      \"categoryLabel\": \"<label if new, else existing label>\",\n      \"pattern\": \"<regex string to add, or null if leave>\",\n      \"reason\": \"<brief>\"\n    }\n  ]\n}",
+  "notes": [
+    "Category rules live only in definitions-food-categories.json; they are not stored on food objects.",
+    "Browser localStorage food lists can use older names than samples/definitions-food.json — always audit the list the user cares about.",
+    "Editing a pattern can move many foods at once; after edits, verify category counts and that previously categorized foods did not jump categories unexpectedly.",
+    "Do not delete categories or rewrite unrelated patterns unless the user asks.",
+    "Helper script and app matching both use first match + case-insensitive RegExp; keep that contract."
+  ]
+}

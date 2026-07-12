@@ -103,7 +103,7 @@ Used when opening import with AI panel **closed** (`setImportAiPanelOpen(false)`
 
 Empty table copy in `#keywords-empty` also links to sample import via `data-action="import-sample-from-empty"` (delegated click on `#keywords-empty`).
 
-Human/agent authoring guides (not loaded by the app): `GUIDE_ADDING_FOOD.md`, `GUIDE_IMPROVING_FOOD.md`, `GUIDE_ADDING_MULTIVITAMIN.md`. QA helpers: `scripts/run-micro-qa.js`, `scripts/run-plant-sterols-qa.js`, `.agents/skills/qa-definitions-food.json` (writes `samples/definitions-food-qa-checked.json`).
+Human/agent authoring guides (not loaded by the app): `GUIDE_ADDING_FOOD.md`, `GUIDE_IMPROVING_FOOD.md`, `GUIDE_ADDING_MULTIVITAMIN.md`. QA helpers: `scripts/run-micro-qa.js`, `scripts/run-plant-sterols-qa.js`, `scripts/list-uncategorized-foods.js`; `.agents/skills/qa-definitions-food.json` (writes `samples/definitions-food-qa-checked.json`), `.agents/skills/categorize-food-definitions.json` (updates `definitions-food-categories.json`).
 
 ## Day meals import (`#import-all-meals-modal`)
 

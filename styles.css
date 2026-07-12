@@ -95,7 +95,9 @@ body {
   display: flex;
   flex-wrap: wrap;
   gap: 0.4rem;
-  flex-shrink: 0;
+  flex: 1 1 auto;
+  min-width: 0;
+  max-width: 100%;
 }
 
 .dashboard__toggle {
@@ -6330,9 +6332,68 @@ button.longevity-form__label-link:focus-visible {
     font-size: 0.58rem;
   }
 
-  .dashboard__grid,
+  .dashboard__header-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .dashboard__toggles {
+    width: 100%;
+  }
+
+  .dashboard__grid {
+    grid-template-columns: 1fr;
+    gap: 0.4rem;
+  }
+
   .dashboard__micro-daily-grid {
     grid-template-columns: 1fr 1fr;
+  }
+
+  .dashboard__card {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    column-gap: 0.65rem;
+    row-gap: 0.2rem;
+    padding: 0.5rem 0.65rem;
+  }
+
+  .dashboard__card-head {
+    flex: 0 0 auto;
+    margin-bottom: 0;
+    min-width: 3.25rem;
+  }
+
+  .dashboard__row {
+    flex: 1 1 auto;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 0.05rem;
+    margin-bottom: 0;
+    min-width: 3.75rem;
+  }
+
+  .dashboard__row--total {
+    flex: 0 0 auto;
+    margin-top: 0;
+    margin-left: auto;
+    padding-top: 0;
+    border-top: none;
+    align-items: flex-end;
+    text-align: right;
+  }
+
+  .dashboard__macro {
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+  }
+
+  .dashboard__val {
+    font-size: 0.78rem;
   }
 
   .week__days-carousel-nav {

@@ -38,6 +38,15 @@ The QA flow only asks AI about foods where the selected nutrient is `0` or missi
 The default progress file is `samples/definitions-food-qa-checked.json`.
 
 Example prompt with the definitions file opened:
+
 ```
 Use qa skill that's found locally and make sure the food definitions have Manganese amounts if a food has it.
 ```
+
+## Categorize Food Definitions Tool
+
+Use `.agents/skills/categorize-food-definitions.json` to find food names that match no category in `definitions-food-categories.json`, then assign them to an existing category (extend patterns) or a new category.
+
+Helper: `node scripts/list-uncategorized-foods.js [--json] [foods.json]`
+
+Example prompt: "Categorize any uncategorized foods"

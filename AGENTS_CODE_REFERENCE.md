@@ -4,6 +4,8 @@
 
 AI-oriented codebase map for safe modification, feature tracing, and implementation planning.
 
+**Agent entry:** [AGENTS.md](./AGENTS.md) · skills discovery: [SKILLS.md](./SKILLS.md)
+
 ## Purpose
 
 **Week meals + food definitions** — a client-only nutrition tracker. Users type foods in Mon–Sun notes (optionally with a `* N` serving multiplier per line); **food definitions** supply macros / micros / longevity nutrients per match; a **dashboard** totals grams and calories (toggleable **macro %** per day), shows **micro % target** vs a demographic profile (FDA %DV, or **IOM body-weight minimum** / **study min** / **study max** for nutrients with no FDA DV; optional **condition focus** + poorly-absorbed filter; sticky **Highlight** / **Filter** for daily-intake and acute S/E·A/E icons; persisted weekly/daily view and **Daily Targets**), and a **longevity panel** with sticky title + close, section nav, % DV bars (100% reference notch), sections including **Gray hair**, **Aches** (incl. omega-6:3 ratio), **Brain** / astrocyte support, K1/K2/MK-4/MK-7 breakdown, plant sterols, visceral-fat, and **ranked food-source modals**; a **week summary** shows week total, **daily average calories**, **TDEE deficit/surplus**, and **macro split** with body-type guidance. **Today’s weekday** is visually emphasized on day cards and day editors. Unmatched day-meal lines use a collapsible **carousel** (always available when any exist); **Import sample** loads bundled day meals as well as foods.
@@ -30,7 +32,7 @@ When context is tight: read **this file** first, then open the one feature file 
 | Data files | `config.json` (% DV tiers), `definitions-micronutrients.json`, `definitions-longevity.json`, `definitions-food-notes.json`, `definitions-food-categories.json`, `samples/definitions-food.json`, `samples/day-meals.json` (all `fetch`ed at boot / on demand) |
 | Reference values | `demographic-dv.js` (micro DV, IOM amino-acid bw minimums, fiber component ratio), `longevity-dv.js` (longevity DV) — globals, loaded before `app.js` |
 | Persistence | `localStorage` for **food definitions**, **day meals**, **demographic**, **TDEE**, **body weight**, **day editor height**, **highlights on/off**, **micro panel view** (weekly vs each-day), **Daily Targets**, **acute S/E·A/E icon visibility**, **daily-intake icon visibility**, **sticky Filter / Highlight** (daily / side / adverse), **reorder toggle**, **calories-column toggle**, **table page size** |
-| Guides / QA | `GUIDE_ADDING_FOOD.md`, `GUIDE_IMPROVING_FOOD.md`, `GUIDE_ADDING_MULTIVITAMIN.md`; `scripts/run-micro-qa.js`, `scripts/run-plant-sterols-qa.js`; `.agents/skills/qa-definitions-food.json` |
+| Guides / QA | `GUIDE_ADDING_FOOD.md`, `GUIDE_IMPROVING_FOOD.md`, `GUIDE_ADDING_MULTIVITAMIN.md`; `scripts/run-micro-qa.js`, `scripts/run-plant-sterols-qa.js`, `scripts/list-uncategorized-foods.js`; `.agents/skills/qa-definitions-food.json`, `.agents/skills/categorize-food-definitions.json` |
 | Run | Open `index.html` via a static file server (boot `fetch`es JSON, so `file://` will fall back to defaults) |
 
 ## Architecture (high level)
@@ -93,7 +95,8 @@ nutrients/
 │   ├── run-micro-qa.js             Fill missing micros in sample foods
 │   └── run-plant-sterols-qa.js     Plant-sterols QA helper
 ├── .agents/skills/
-│   └── qa-definitions-food.json    Skill workflow for food QA
+│   ├── qa-definitions-food.json           Skill workflow for food nutrient QA
+│   └── categorize-food-definitions.json   Skill workflow for food category map gaps
 └── AGENTS_CODE_REFERENCE*.md        AI docs (this set)
 ```
 
@@ -191,7 +194,7 @@ Outside main (modal / overlay siblings): `#settings-modal`, `#tdee-calculator-mo
 - **Today emphasis:** `todayDayId` / `markTodayDay` → `.day--today` on week grid + `.dashboard__card--today` on macro/micro day cards ([ui doc](./AGENTS_CODE_REFERENCE-ui.md)).
 - **Sample day meals:** `importSampleMeals` fetches `IMPORT_SAMPLE_MEALS_URL` (`samples/day-meals.json`); confirm replace when any day has notes ([import doc](./AGENTS_CODE_REFERENCE-import.md)).
 - **Food-table search / category / pagination / sort:** `keywordsFilterQuery` + `setKeywordsFilterQuery`, `keywordsCategoryFilter` + `setKeywordsCategoryFilter` / `#keywords-category-modal`, `keywordsPageSize` / `keywordsPageIndex` + `keywordsPageBounds` / `goKeywordsPage` / `changeKeywordsPageSize`, `sortKeywordsAlphabetically`; `renderKeywords` only renders the current filtered page ([core doc](./AGENTS_CODE_REFERENCE-core.md)).
-- **Food category map:** add/adjust entries in `definitions-food-categories.json` (`id`, `label`, `patterns`); first matching pattern wins; unmatched foods are **Uncategorized** ([core doc](./AGENTS_CODE_REFERENCE-core.md)).
+- **Food category map:** add/adjust entries in `definitions-food-categories.json` (`id`, `label`, `patterns`); first matching pattern wins; unmatched foods are **Uncategorized**. Agent workflow: `.agents/skills/categorize-food-definitions.json` + `scripts/list-uncategorized-foods.js` ([core doc](./AGENTS_CODE_REFERENCE-core.md)).
 - **Fiber component ratio:** `solubleFiber` / `insolubleFiber` micros, `splitTotalFiber` / `solubleFiberRatioForFoodName` (auto-split by food name), `fiberTotalFromParts`; `FIBER_COMPONENT_DV_RATIO` in `demographic-dv.js` derives their DV from total fiber ([core doc](./AGENTS_CODE_REFERENCE-core.md)).
 - **Daily intake icon:** add/remove micro keys in `DAILY_INTAKE_MICRO_KEYS` in `demographic-dv.js` when a nutrient has poor body storage and weekly averaging is misleading; visibility toggled by sticky **Poor storage / daily intake** ([core doc](./AGENTS_CODE_REFERENCE-core.md)).
 - **Day meals:** `loadDayNotes` / `saveDayNotes`; bulk `exportAllDayMeals` / `applyImportAllDayMealsReplace` (missing days: empty out or leave alone); clear via `clearDayNotes` / `clearAllDayNotes` ([core doc](./AGENTS_CODE_REFERENCE-core.md)).
