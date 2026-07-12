@@ -32,6 +32,12 @@
     "nutrients-filter-side-effects";
   var STORAGE_KEY_FILTER_ADVERSE_EFFECTS =
     "nutrients-filter-adverse-effects";
+  var STORAGE_KEY_HIGHLIGHT_DAILY_INTAKE =
+    "nutrients-highlight-daily-intake";
+  var STORAGE_KEY_HIGHLIGHT_SIDE_EFFECTS =
+    "nutrients-highlight-side-effects";
+  var STORAGE_KEY_HIGHLIGHT_ADVERSE_EFFECTS =
+    "nutrients-highlight-adverse-effects";
   var KEYWORDS_DEFAULT_PAGE_SIZE = 25;
   var demographicDv =
     typeof NutrientsDemographicDv !== "undefined" ? NutrientsDemographicDv : null;
@@ -328,6 +334,9 @@
   var filterStickyDailyIntake = false;
   var filterStickySideEffects = false;
   var filterStickyAdverseEffects = false;
+  var highlightStickyDailyIntake = false;
+  var highlightStickySideEffects = false;
+  var highlightStickyAdverseEffects = false;
   var microViewDaily = false;
   var microMoreExpanded = false;
   var longevityPanelOpen = false;
@@ -8048,6 +8057,105 @@
     refreshStickyIconFilterViews();
   }
 
+  function microStickyHighlightActive() {
+    return (
+      highlightStickyDailyIntake ||
+      highlightStickySideEffects ||
+      highlightStickyAdverseEffects
+    );
+  }
+
+  function loadStickyIconHighlights() {
+    try {
+      highlightStickyDailyIntake =
+        localStorage.getItem(STORAGE_KEY_HIGHLIGHT_DAILY_INTAKE) === "true";
+      highlightStickySideEffects =
+        localStorage.getItem(STORAGE_KEY_HIGHLIGHT_SIDE_EFFECTS) === "true";
+      highlightStickyAdverseEffects =
+        localStorage.getItem(STORAGE_KEY_HIGHLIGHT_ADVERSE_EFFECTS) === "true";
+    } catch (e) {
+      highlightStickyDailyIntake = false;
+      highlightStickySideEffects = false;
+      highlightStickyAdverseEffects = false;
+    }
+  }
+
+  function saveStickyIconHighlights() {
+    try {
+      localStorage.setItem(
+        STORAGE_KEY_HIGHLIGHT_DAILY_INTAKE,
+        highlightStickyDailyIntake ? "true" : "false"
+      );
+      localStorage.setItem(
+        STORAGE_KEY_HIGHLIGHT_SIDE_EFFECTS,
+        highlightStickySideEffects ? "true" : "false"
+      );
+      localStorage.setItem(
+        STORAGE_KEY_HIGHLIGHT_ADVERSE_EFFECTS,
+        highlightStickyAdverseEffects ? "true" : "false"
+      );
+    } catch (e) {
+      /* ignore */
+    }
+  }
+
+  function syncStickyIconHighlightUi() {
+    var active = microStickyHighlightActive();
+    document.body.classList.toggle(
+      "highlight-daily-intake-icons",
+      !!highlightStickyDailyIntake
+    );
+    document.body.classList.toggle(
+      "highlight-side-effects",
+      !!highlightStickySideEffects
+    );
+    document.body.classList.toggle(
+      "highlight-adverse-effects",
+      !!highlightStickyAdverseEffects
+    );
+    document
+      .querySelectorAll("[data-sticky-highlight-disclosure]")
+      .forEach(function (btn) {
+        btn.classList.toggle(
+          "dashboard__sticky-options-disclosure--active",
+          active
+        );
+      });
+    document
+      .querySelectorAll("[data-sticky-highlight-clear]")
+      .forEach(function (btn) {
+        btn.hidden = !active;
+      });
+    document.querySelectorAll("[data-sticky-highlight]").forEach(function (btn) {
+      var kind = btn.getAttribute("data-sticky-highlight");
+      var on =
+        kind === "daily"
+          ? highlightStickyDailyIntake
+          : kind === "adverse"
+            ? highlightStickyAdverseEffects
+            : highlightStickySideEffects;
+      btn.setAttribute("aria-pressed", on ? "true" : "false");
+    });
+  }
+
+  function clearStickyIconHighlights() {
+    if (!microStickyHighlightActive()) return;
+    highlightStickyDailyIntake = false;
+    highlightStickySideEffects = false;
+    highlightStickyAdverseEffects = false;
+    saveStickyIconHighlights();
+    syncStickyIconHighlightUi();
+  }
+
+  function setStickyIconHighlight(kind, open) {
+    if (kind === "daily") highlightStickyDailyIntake = !!open;
+    else if (kind === "side") highlightStickySideEffects = !!open;
+    else if (kind === "adverse") highlightStickyAdverseEffects = !!open;
+    else return;
+    saveStickyIconHighlights();
+    syncStickyIconHighlightUi();
+  }
+
   function syncAcuteToxicityToggleUi() {
     document.body.classList.toggle(
       "show-acute-side-effects",
@@ -14631,6 +14739,21 @@
       clearStickyIconFilters();
       return;
     }
+    var stickyHighlightClear = e.target.closest("[data-sticky-highlight-clear]");
+    if (stickyHighlightClear) {
+      e.preventDefault();
+      clearStickyIconHighlights();
+      return;
+    }
+    var stickyHighlightToggle = e.target.closest("[data-sticky-highlight]");
+    if (stickyHighlightToggle) {
+      e.preventDefault();
+      var highlightKind = stickyHighlightToggle.getAttribute("data-sticky-highlight");
+      var highlightOn =
+        stickyHighlightToggle.getAttribute("aria-pressed") === "true";
+      setStickyIconHighlight(highlightKind, !highlightOn);
+      return;
+    }
     var dailyIntakeIconsToggle = e.target.closest(
       "[data-daily-intake-icons-toggle]"
     );
@@ -15510,11 +15633,13 @@
     loadShowAcuteToxicityIcons();
     loadShowDailyIntakeIcons();
     loadStickyIconFilters();
+    loadStickyIconHighlights();
     syncMicroDailyDvToggleUi();
     syncMicroViewToggleUi();
     syncAcuteToxicityToggleUi();
     syncDailyIntakeIconsToggleUi();
     syncStickyIconFilterUi();
+    syncStickyIconHighlightUi();
     loadDemographic();
     loadTdee();
     loadBodyWeight();

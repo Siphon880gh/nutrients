@@ -62,11 +62,23 @@
           <div class="dashboard__sticky-options">
             <div class="dashboard__sticky-options-disclosures">
               <span class="dashboard__sticky-filter-wrap">
+                <button type="button" class="dashboard__sticky-options-disclosure" data-sticky-options-toggle data-sticky-highlight-disclosure aria-expanded="false" aria-controls="micro-highlight-options-panel">Highlight</button>
+                <button type="button" class="dashboard__sticky-filter-clear" data-sticky-highlight-clear hidden aria-label="Clear highlights">×</button>
+              </span>
+              <span class="dashboard__sticky-filter-wrap">
                 <button type="button" class="dashboard__sticky-options-disclosure" data-sticky-options-toggle data-sticky-filter-disclosure aria-expanded="false" aria-controls="micro-filter-options-panel">Filter</button>
                 <button type="button" class="dashboard__sticky-filter-clear" data-sticky-filter-clear hidden aria-label="Clear filters">×</button>
               </span>
               <button type="button" class="dashboard__sticky-options-disclosure" data-sticky-options-toggle aria-expanded="false" aria-controls="micro-daily-options-panel">Poor storage / daily intake</button>
               <button type="button" class="dashboard__sticky-options-disclosure" data-sticky-options-toggle aria-expanded="false" aria-controls="micro-acute-options-panel">One-day excess consumption</button>
+            </div>
+            <div id="micro-highlight-options-panel" class="dashboard__sticky-options-panel" hidden>
+              <p class="dashboard__sticky-options-note">Mark matching icons in red (combine freely):</p>
+              <div class="dashboard__sticky-options-toggles" role="group" aria-label="Highlight icons">
+                <button type="button" class="dashboard__sticky-options-toggle" data-sticky-highlight="daily" aria-pressed="false">Required daily intake</button>
+                <button type="button" class="dashboard__sticky-options-toggle" data-sticky-highlight="side" aria-pressed="false">Side effects (S/E)</button>
+                <button type="button" class="dashboard__sticky-options-toggle" data-sticky-highlight="adverse" aria-pressed="false">Adverse effects (A/E)</button>
+              </div>
             </div>
             <div id="micro-filter-options-panel" class="dashboard__sticky-options-panel" hidden>
               <p class="dashboard__sticky-options-note">Show only nutrients that match (combine freely):</p>
@@ -229,11 +241,23 @@
           <div class="dashboard__sticky-options">
             <div class="dashboard__sticky-options-disclosures">
               <span class="dashboard__sticky-filter-wrap">
+                <button type="button" class="dashboard__sticky-options-disclosure" data-sticky-options-toggle data-sticky-highlight-disclosure aria-expanded="false" aria-controls="longevity-highlight-options-panel">Highlight</button>
+                <button type="button" class="dashboard__sticky-filter-clear" data-sticky-highlight-clear hidden aria-label="Clear highlights">×</button>
+              </span>
+              <span class="dashboard__sticky-filter-wrap">
                 <button type="button" class="dashboard__sticky-options-disclosure" data-sticky-options-toggle data-sticky-filter-disclosure aria-expanded="false" aria-controls="longevity-filter-options-panel">Filter</button>
                 <button type="button" class="dashboard__sticky-filter-clear" data-sticky-filter-clear hidden aria-label="Clear filters">×</button>
               </span>
               <button type="button" class="dashboard__sticky-options-disclosure" data-sticky-options-toggle aria-expanded="false" aria-controls="longevity-daily-options-panel">Poor storage / daily intake</button>
               <button type="button" class="dashboard__sticky-options-disclosure" data-sticky-options-toggle aria-expanded="false" aria-controls="longevity-acute-options-panel">One-day excess consumption</button>
+            </div>
+            <div id="longevity-highlight-options-panel" class="dashboard__sticky-options-panel" hidden>
+              <p class="dashboard__sticky-options-note">Mark matching icons in red (combine freely):</p>
+              <div class="dashboard__sticky-options-toggles" role="group" aria-label="Highlight icons">
+                <button type="button" class="dashboard__sticky-options-toggle" data-sticky-highlight="daily" aria-pressed="false">Required daily intake</button>
+                <button type="button" class="dashboard__sticky-options-toggle" data-sticky-highlight="side" aria-pressed="false">Side effects (S/E)</button>
+                <button type="button" class="dashboard__sticky-options-toggle" data-sticky-highlight="adverse" aria-pressed="false">Adverse effects (A/E)</button>
+              </div>
             </div>
             <div id="longevity-filter-options-panel" class="dashboard__sticky-options-panel" hidden>
               <p class="dashboard__sticky-options-note">Show only nutrients that match (combine freely):</p>
