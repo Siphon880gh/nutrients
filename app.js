@@ -21,6 +21,11 @@
   var STORAGE_KEY_KEYWORDS_PAGE_SIZE = "nutrients-keywords-page-size";
   var STORAGE_KEY_MICRO_VIEW_DAILY = "nutrients-micro-view-daily";
   var STORAGE_KEY_MICRO_SHOW_DV = "nutrients-micro-show-dv";
+  var STORAGE_KEY_SHOW_ACUTE_SIDE_EFFECTS = "nutrients-show-acute-side-effects";
+  var STORAGE_KEY_SHOW_ACUTE_ADVERSE_EFFECTS =
+    "nutrients-show-acute-adverse-effects";
+  var STORAGE_KEY_SHOW_DAILY_INTAKE_ICONS =
+    "nutrients-show-daily-intake-icons";
   var KEYWORDS_DEFAULT_PAGE_SIZE = 25;
   var demographicDv =
     typeof NutrientsDemographicDv !== "undefined" ? NutrientsDemographicDv : null;
@@ -311,6 +316,9 @@
   var microConditionExpanded = false;
   var microConditionFocus = null;
   var showMicroDailyDv = false;
+  var showAcuteSideEffects = false;
+  var showAcuteAdverseEffects = false;
+  var showDailyIntakeIcons = true;
   var microViewDaily = false;
   var microMoreExpanded = false;
   var longevityPanelOpen = false;
@@ -4967,9 +4975,9 @@
     return (
       '<button type="button" class="dashboard__micro-daily-intake-btn" data-micro-daily-intake="1" ' +
       'aria-label="Requires daily intake" aria-expanded="false" aria-controls="micro-daily-intake-popover">' +
-      '<svg class="dashboard__micro-daily-intake-icon icon-day" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" focusable="false">' +
-      '<rect x="5.5" y="4" width="5" height="8" rx="0.5"></rect>' +
-      '<line x1="3" y1="8" x2="13" y2="8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></line>' +
+      '<svg class="dashboard__micro-daily-intake-icon" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" focusable="false">' +
+      '<path d="M13.2 6.2A5.5 5.5 0 1 0 12.4 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path>' +
+      '<path d="M13.5 2.8v3.4h-3.4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>' +
       "</svg></button>"
     );
   }
@@ -5068,6 +5076,8 @@
       return;
     }
     var kind = btn.getAttribute("data-micro-acute") || "side";
+    if (kind === "adverse" && !showAcuteAdverseEffects) return;
+    if (kind !== "adverse" && !showAcuteSideEffects) return;
     var microKey = btn.getAttribute("data-micro-acute-key") || "";
     var entry = microAcuteToxicityEntry(microKey);
     var effects = microAcuteToxicityEffects(entry, kind);
@@ -5122,6 +5132,7 @@
 
   function showMicroDailyIntakePopover(btn) {
     if (!microDailyIntakePopoverEl || !btn) return;
+    if (!showDailyIntakeIcons) return;
     if (microDailyIntakePopoverAnchor === btn && !microDailyIntakePopoverEl.hidden) {
       hideMicroDailyIntakePopover();
       return;
@@ -7829,6 +7840,120 @@
     } catch (e) {
       /* ignore */
     }
+  }
+
+  function loadShowAcuteToxicityIcons() {
+    try {
+      showAcuteSideEffects =
+        localStorage.getItem(STORAGE_KEY_SHOW_ACUTE_SIDE_EFFECTS) === "true";
+      showAcuteAdverseEffects =
+        localStorage.getItem(STORAGE_KEY_SHOW_ACUTE_ADVERSE_EFFECTS) === "true";
+    } catch (e) {
+      showAcuteSideEffects = false;
+      showAcuteAdverseEffects = false;
+    }
+  }
+
+  function saveShowAcuteToxicityIcons() {
+    try {
+      localStorage.setItem(
+        STORAGE_KEY_SHOW_ACUTE_SIDE_EFFECTS,
+        showAcuteSideEffects ? "true" : "false"
+      );
+      localStorage.setItem(
+        STORAGE_KEY_SHOW_ACUTE_ADVERSE_EFFECTS,
+        showAcuteAdverseEffects ? "true" : "false"
+      );
+    } catch (e) {
+      /* ignore */
+    }
+  }
+
+  function loadShowDailyIntakeIcons() {
+    try {
+      showDailyIntakeIcons =
+        localStorage.getItem(STORAGE_KEY_SHOW_DAILY_INTAKE_ICONS) !== "false";
+    } catch (e) {
+      showDailyIntakeIcons = true;
+    }
+  }
+
+  function saveShowDailyIntakeIcons() {
+    try {
+      localStorage.setItem(
+        STORAGE_KEY_SHOW_DAILY_INTAKE_ICONS,
+        showDailyIntakeIcons ? "true" : "false"
+      );
+    } catch (e) {
+      /* ignore */
+    }
+  }
+
+  function syncDailyIntakeIconsToggleUi() {
+    document.body.classList.toggle(
+      "show-daily-intake-icons",
+      !!showDailyIntakeIcons
+    );
+    document
+      .querySelectorAll("[data-daily-intake-icons-toggle]")
+      .forEach(function (btn) {
+        btn.setAttribute(
+          "aria-pressed",
+          showDailyIntakeIcons ? "true" : "false"
+        );
+      });
+    if (!showDailyIntakeIcons) {
+      hideMicroDailyIntakePopover();
+    }
+  }
+
+  function setShowDailyIntakeIcons(open) {
+    showDailyIntakeIcons = !!open;
+    saveShowDailyIntakeIcons();
+    syncDailyIntakeIconsToggleUi();
+  }
+
+  function syncAcuteToxicityToggleUi() {
+    document.body.classList.toggle(
+      "show-acute-side-effects",
+      !!showAcuteSideEffects
+    );
+    document.body.classList.toggle(
+      "show-acute-adverse-effects",
+      !!showAcuteAdverseEffects
+    );
+    document.querySelectorAll("[data-acute-kind]").forEach(function (btn) {
+      var kind = btn.getAttribute("data-acute-kind");
+      var on =
+        kind === "adverse" ? showAcuteAdverseEffects : showAcuteSideEffects;
+      btn.setAttribute("aria-pressed", on ? "true" : "false");
+    });
+    if (
+      microAcuteToxicityPopoverAnchor &&
+      ((microAcuteToxicityPopoverAnchor.getAttribute("data-micro-acute") ===
+        "side" &&
+        !showAcuteSideEffects) ||
+        (microAcuteToxicityPopoverAnchor.getAttribute("data-micro-acute") ===
+          "adverse" &&
+          !showAcuteAdverseEffects))
+    ) {
+      hideMicroAcuteToxicityPopover();
+    }
+    if (typeof syncLongevityNavHeightVar === "function") {
+      syncLongevityNavHeightVar();
+    }
+  }
+
+  function setShowAcuteSideEffects(open) {
+    showAcuteSideEffects = !!open;
+    saveShowAcuteToxicityIcons();
+    syncAcuteToxicityToggleUi();
+  }
+
+  function setShowAcuteAdverseEffects(open) {
+    showAcuteAdverseEffects = !!open;
+    saveShowAcuteToxicityIcons();
+    syncAcuteToxicityToggleUi();
   }
 
   function setShowMicroDailyDv(open) {
@@ -14287,6 +14412,61 @@
     });
   }
 
+  document.addEventListener("click", function (e) {
+    var stickyOptionsToggle = e.target.closest("[data-sticky-options-toggle]");
+    if (stickyOptionsToggle) {
+      e.preventDefault();
+      var group = stickyOptionsToggle.closest(".dashboard__sticky-options");
+      var panelId = stickyOptionsToggle.getAttribute("aria-controls");
+      var panel = panelId ? document.getElementById(panelId) : null;
+      var open = stickyOptionsToggle.getAttribute("aria-expanded") === "true";
+      var nextOpen = !open;
+      if (group) {
+        group
+          .querySelectorAll("[data-sticky-options-toggle]")
+          .forEach(function (btn) {
+            var otherId = btn.getAttribute("aria-controls");
+            var otherPanel = otherId ? document.getElementById(otherId) : null;
+            var isTarget = btn === stickyOptionsToggle;
+            btn.setAttribute(
+              "aria-expanded",
+              isTarget && nextOpen ? "true" : "false"
+            );
+            if (otherPanel) otherPanel.hidden = !(isTarget && nextOpen);
+          });
+      } else {
+        stickyOptionsToggle.setAttribute(
+          "aria-expanded",
+          nextOpen ? "true" : "false"
+        );
+        if (panel) panel.hidden = !nextOpen;
+      }
+      if (typeof syncLongevityNavHeightVar === "function") {
+        syncLongevityNavHeightVar();
+      }
+      return;
+    }
+    var dailyIntakeIconsToggle = e.target.closest(
+      "[data-daily-intake-icons-toggle]"
+    );
+    if (dailyIntakeIconsToggle) {
+      e.preventDefault();
+      setShowDailyIntakeIcons(!showDailyIntakeIcons);
+      return;
+    }
+    var acuteToggle = e.target.closest("[data-acute-kind]");
+    if (!acuteToggle) return;
+    e.preventDefault();
+    var kind = acuteToggle.getAttribute("data-acute-kind");
+    if (kind === "adverse") {
+      setShowAcuteAdverseEffects(!showAcuteAdverseEffects);
+      return;
+    }
+    if (kind === "side") {
+      setShowAcuteSideEffects(!showAcuteSideEffects);
+    }
+  });
+
   if (dashboardMicroConditionToggleEl) {
     dashboardMicroConditionToggleEl.addEventListener("click", function () {
       setMicroConditionExpanded(!microConditionExpanded);
@@ -15116,8 +15296,12 @@
     loadDayEditorHeight();
     loadMicroViewDaily();
     loadShowMicroDailyDv();
+    loadShowAcuteToxicityIcons();
+    loadShowDailyIntakeIcons();
     syncMicroDailyDvToggleUi();
     syncMicroViewToggleUi();
+    syncAcuteToxicityToggleUi();
+    syncDailyIntakeIconsToggleUi();
     loadDemographic();
     loadTdee();
     loadBodyWeight();

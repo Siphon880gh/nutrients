@@ -805,7 +805,7 @@ button.dashboard__micro-name:focus-visible {
 
 .dashboard__micro-daily-intake-btn {
   flex-shrink: 0;
-  display: inline-flex;
+  display: none;
   align-items: center;
   justify-content: center;
   width: 1.35rem;
@@ -817,6 +817,10 @@ button.dashboard__micro-name:focus-visible {
   color: #7a6a4a;
   cursor: pointer;
   margin-left: 3px;
+}
+
+body.show-daily-intake-icons .dashboard__micro-daily-intake-btn {
+  display: inline-flex;
 }
 
 .dashboard__micro-daily-intake-btn:hover,
@@ -833,10 +837,6 @@ button.dashboard__micro-name:focus-visible {
 
 .dashboard__micro-daily-intake-icon {
   display: block;
-  fill: currentColor;
-}
-
-.dashboard__micro-daily-intake-icon line {
   fill: none;
 }
 
@@ -864,10 +864,136 @@ button.dashboard__micro-name:focus-visible {
   margin: 0;
 }
 
+.dashboard__micro-sticky {
+  position: sticky;
+  top: 0;
+  z-index: 25;
+  margin: 0 0 0.75rem;
+  padding: 0.5rem 0.65rem;
+  border: 1px solid #c8c8c4;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+  backdrop-filter: blur(6px);
+}
+
+.dashboard__sticky-options {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.35rem;
+}
+
+.dashboard__longevity-nav .dashboard__sticky-options {
+  margin-top: 0.5rem;
+  padding-top: 0.45rem;
+  border-top: 1px solid #e4e8ee;
+}
+
+.dashboard__sticky-options-disclosures {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.15rem 0.35rem;
+}
+
+.dashboard__sticky-options-disclosure {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.2rem 0.4rem;
+  border: 0;
+  border-radius: 4px;
+  background: none;
+  color: #7a7a76;
+  font: inherit;
+  font-size: 0.68rem;
+  font-weight: 500;
+  line-height: 1.3;
+  cursor: pointer;
+}
+
+.dashboard__sticky-options-disclosure::after {
+  content: "▾";
+  font-size: 0.7rem;
+  transition: transform 0.15s ease;
+}
+
+.dashboard__sticky-options-disclosure[aria-expanded="true"]::after {
+  transform: rotate(180deg);
+}
+
+.dashboard__sticky-options-disclosure:hover,
+.dashboard__sticky-options-disclosure:focus-visible {
+  background: #f3f3f0;
+  color: #555;
+}
+
+.dashboard__sticky-options-disclosure:focus-visible {
+  outline: 2px solid #3d6b9e;
+  outline-offset: 1px;
+}
+
+.dashboard__sticky-options-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.4rem;
+  max-width: min(22rem, 100%);
+}
+
+.dashboard__sticky-options-panel[hidden] {
+  display: none;
+}
+
+.dashboard__sticky-options-note {
+  margin: 0;
+  font-size: 0.7rem;
+  line-height: 1.4;
+  color: #6a6a66;
+  text-align: right;
+}
+
+.dashboard__sticky-options-toggles {
+  display: inline-flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.35rem;
+}
+
+.dashboard__sticky-options-toggle {
+  padding: 0.28rem 0.55rem;
+  border: 1px solid #d8d8d4;
+  border-radius: 4px;
+  background: #fff;
+  color: #5a5a56;
+  font: inherit;
+  font-size: 0.72rem;
+  line-height: 1.2;
+  cursor: pointer;
+}
+
+.dashboard__sticky-options-toggle:hover {
+  background: #f5f5f2;
+  border-color: #c8c8c4;
+  color: #333;
+}
+
+.dashboard__sticky-options-toggle:focus-visible {
+  outline: 2px solid #3d6b9e;
+  outline-offset: 1px;
+}
+
+.dashboard__sticky-options-toggle[aria-pressed="true"] {
+  background: #f0ebe4;
+  border-color: #c9b896;
+  color: #4a3f2e;
+}
+
 .dashboard__micro-acute-btn {
   position: relative;
   flex-shrink: 0;
-  display: inline-flex;
+  display: none;
   align-items: center;
   justify-content: center;
   width: 1.35rem;
@@ -879,6 +1005,11 @@ button.dashboard__micro-name:focus-visible {
   color: #9a9590;
   cursor: pointer;
   margin-left: 3px;
+}
+
+body.show-acute-side-effects .dashboard__micro-acute-btn--side,
+body.show-acute-adverse-effects .dashboard__micro-acute-btn--adverse {
+  display: inline-flex;
 }
 
 .dashboard__micro-acute-btn:hover,
@@ -5659,6 +5790,8 @@ button.longevity-form__label-link:focus-visible {
   .dashboard__micro-sources-btn,
   .dashboard__micro-daily-intake-btn,
   .dashboard__micro-acute-btn,
+  .dashboard__micro-sticky,
+  .dashboard__sticky-options,
   .dashboard__card-toggle,
   .dashboard__longevity-nav,
   .dashboard__longevity-section-link {
@@ -5757,6 +5890,8 @@ body.print-preview .dashboard__micro-hint-ai,
 body.print-preview .dashboard__micro-sources-btn,
 body.print-preview .dashboard__micro-daily-intake-btn,
 body.print-preview .dashboard__micro-acute-btn,
+body.print-preview .dashboard__micro-sticky,
+body.print-preview .dashboard__sticky-options,
 body.print-preview .dashboard__card-toggle,
 body.print-preview .dashboard__longevity-section-link {
   display: none !important;
