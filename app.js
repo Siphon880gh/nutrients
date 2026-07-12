@@ -11814,7 +11814,13 @@
     var editor = textarea.closest(".day__editor");
     if (editor) {
       var dayEl = editor.closest(".day");
-      if (dayEl) dayEl.scrollIntoView({ behavior: "smooth", block: "nearest" });
+      if (dayEl) {
+        if (isDaysCarouselActive()) {
+          setDaysCarouselDayId(dayId);
+        } else {
+          dayEl.scrollIntoView({ behavior: "smooth", block: "nearest" });
+        }
+      }
     }
     setDayEditorMode(textarea, "editing");
     setDayInputSelection(textarea, start, end);
@@ -13425,6 +13431,110 @@
       if (isToday) label.setAttribute("aria-current", "date");
       else label.removeAttribute("aria-current");
     });
+    syncDaysCarouselNav();
+  }
+
+  var daysCarouselIndex = 0;
+  var daysCarouselMq =
+    typeof window.matchMedia === "function"
+      ? window.matchMedia("(max-width: 520px)")
+      : null;
+  var daysCarouselNavEl = document.querySelector(".week__days-carousel-nav");
+  var daysCarouselCurrentEl = document.getElementById("days-carousel-current");
+  var daysCarouselScrollTimer = null;
+
+  function isDaysCarouselActive() {
+    return !!(daysCarouselMq && daysCarouselMq.matches);
+  }
+
+  function dayCarouselIndexById(dayId) {
+    for (var i = 0; i < DAYS.length; i++) {
+      if (DAYS[i].id === dayId) return i;
+    }
+    return -1;
+  }
+
+  function weekGridDayEls() {
+    var weekGrid = document.querySelector(".week__grid");
+    if (!weekGrid) return [];
+    return Array.prototype.slice.call(weekGrid.querySelectorAll(":scope > .day"));
+  }
+
+  function syncDaysCarouselNav() {
+    if (!daysCarouselNavEl) return;
+    var day = DAYS[daysCarouselIndex];
+    if (daysCarouselCurrentEl) {
+      daysCarouselCurrentEl.textContent = day ? day.label : "";
+    }
+    var prevBtn = daysCarouselNavEl.querySelector(
+      '[data-days-carousel="prev"]'
+    );
+    var nextBtn = daysCarouselNavEl.querySelector(
+      '[data-days-carousel="next"]'
+    );
+    if (prevBtn) prevBtn.disabled = daysCarouselIndex <= 0;
+    if (nextBtn) nextBtn.disabled = daysCarouselIndex >= DAYS.length - 1;
+  }
+
+  function scrollDaysCarouselToIndex(index) {
+    var weekGrid = document.querySelector(".week__grid");
+    var dayEls = weekGridDayEls();
+    if (!weekGrid || !dayEls.length || !isDaysCarouselActive()) {
+      syncDaysCarouselNav();
+      return;
+    }
+    var clamped = Math.max(0, Math.min(dayEls.length - 1, index));
+    daysCarouselIndex = clamped;
+    var dayEl = dayEls[clamped];
+    var gridRect = weekGrid.getBoundingClientRect();
+    var dayRect = dayEl.getBoundingClientRect();
+    weekGrid.scrollLeft += dayRect.left - gridRect.left;
+    syncDaysCarouselNav();
+  }
+
+  function setDaysCarouselDayId(dayId) {
+    var index = dayCarouselIndexById(dayId);
+    if (index < 0) return;
+    scrollDaysCarouselToIndex(index);
+  }
+
+  function stepDaysCarousel(delta) {
+    scrollDaysCarouselToIndex(daysCarouselIndex + delta);
+  }
+
+  function syncDaysCarouselFromScroll() {
+    var weekGrid = document.querySelector(".week__grid");
+    var dayEls = weekGridDayEls();
+    if (!weekGrid || !dayEls.length || !isDaysCarouselActive()) return;
+    var gridLeft = weekGrid.getBoundingClientRect().left;
+    var bestIndex = 0;
+    var bestDist = Infinity;
+    for (var i = 0; i < dayEls.length; i++) {
+      var dist = Math.abs(dayEls[i].getBoundingClientRect().left - gridLeft);
+      if (dist < bestDist) {
+        bestDist = dist;
+        bestIndex = i;
+      }
+    }
+    daysCarouselIndex = bestIndex;
+    syncDaysCarouselNav();
+  }
+
+  function initDaysCarousel() {
+    var weekGrid = document.querySelector(".week__grid");
+    if (!weekGrid) return;
+    if (!isDaysCarouselActive()) {
+      syncDaysCarouselNav();
+      return;
+    }
+    var startId = todayDayId();
+    var startIndex = dayCarouselIndexById(startId);
+    if (startIndex < 0) startIndex = 0;
+    window.requestAnimationFrame(function () {
+      window.requestAnimationFrame(function () {
+        scrollDaysCarouselToIndex(startIndex);
+      });
+    });
   }
 
   function dayNotesPayload() {
@@ -14899,6 +15009,41 @@
       var dayId = btn.getAttribute("data-day-id");
       if (dayId) clearDayNotes(dayId);
     });
+    weekGridEl.addEventListener(
+      "scroll",
+      function () {
+        if (!isDaysCarouselActive()) return;
+        if (daysCarouselScrollTimer) {
+          window.clearTimeout(daysCarouselScrollTimer);
+        }
+        daysCarouselScrollTimer = window.setTimeout(function () {
+          daysCarouselScrollTimer = null;
+          syncDaysCarouselFromScroll();
+        }, 60);
+      },
+      { passive: true }
+    );
+  }
+
+  if (daysCarouselNavEl) {
+    daysCarouselNavEl.addEventListener("click", function (e) {
+      var adj = e.target.closest("[data-days-carousel]");
+      if (!adj || adj.disabled) return;
+      var action = adj.getAttribute("data-days-carousel");
+      if (action === "prev") stepDaysCarousel(-1);
+      else if (action === "next") stepDaysCarousel(1);
+    });
+  }
+
+  if (daysCarouselMq) {
+    var onDaysCarouselMqChange = function () {
+      initDaysCarousel();
+    };
+    if (typeof daysCarouselMq.addEventListener === "function") {
+      daysCarouselMq.addEventListener("change", onDaysCarouselMqChange);
+    } else if (typeof daysCarouselMq.addListener === "function") {
+      daysCarouselMq.addListener(onDaysCarouselMqChange);
+    }
   }
 
   if (clearAllDaysBtn) {
@@ -15935,6 +16080,7 @@
     loadKeywordsPageSize();
     loadDayNotes();
     markTodayDay();
+    initDaysCarousel();
     loadDayHighlightsPreference();
     loadDayEditorHeight();
     loadMicroViewDaily();

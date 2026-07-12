@@ -3657,6 +3657,17 @@ button.dashboard__longevity-name:focus-visible {
   cursor: default;
 }
 
+.week__days {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  min-width: 0;
+}
+
+.week__days-carousel-nav {
+  display: none;
+}
+
 .week__grid {
   display: grid;
   grid-template-columns: repeat(7, minmax(0, 1fr));
@@ -6324,9 +6335,78 @@ button.longevity-form__label-link:focus-visible {
     grid-template-columns: 1fr 1fr;
   }
 
+  .week__days-carousel-nav {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    gap: 0.5rem;
+    align-items: center;
+  }
+
+  .week__days-carousel-adj {
+    min-width: 2.4rem;
+    height: 2.4rem;
+    padding: 0;
+    border: 1px solid #c8c8c4;
+    border-radius: 6px;
+    background: #fff;
+    color: #444;
+    font: inherit;
+    font-size: 1.35rem;
+    font-weight: 600;
+    line-height: 1;
+    cursor: pointer;
+  }
+
+  .week__days-carousel-adj:hover:not(:disabled) {
+    background: #f3f3f0;
+    border-color: #b0b0ac;
+  }
+
+  .week__days-carousel-adj:focus-visible {
+    outline: 2px solid #3d6b9e;
+    outline-offset: 1px;
+  }
+
+  .week__days-carousel-adj:disabled {
+    opacity: 0.4;
+    cursor: default;
+  }
+
+  .week__days-carousel-current {
+    min-width: 0;
+    text-align: center;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: #444;
+  }
+
   .week__grid {
-    grid-template-columns: 1fr;
+    display: flex;
+    gap: 0;
     height: auto;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: auto;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+  }
+
+  .week__grid::-webkit-scrollbar {
+    display: none;
+  }
+
+  .week__grid .day {
+    flex: 0 0 100%;
+    box-sizing: border-box;
+    width: 100%;
+    min-width: 100%;
+    max-width: 100%;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
   }
 
   .day__editor {
@@ -6354,6 +6434,7 @@ button.longevity-form__label-link:focus-visible {
 
   .dashboard__toggles,
   .week__days-actions,
+  .week__days-carousel-nav,
   .day__clear,
   .week__unmatched-lines,
   .keywords,
@@ -6380,8 +6461,19 @@ button.longevity-form__label-link:focus-visible {
   }
 
   .week__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
     height: auto;
     min-height: 0;
+    overflow: visible;
+    scroll-snap-type: none;
+  }
+
+  .week__grid .day {
+    flex: none;
+    width: auto;
+    min-width: 0;
   }
 
   .day {
@@ -6451,6 +6543,7 @@ body.print-preview .week {
 
 body.print-preview .dashboard__toggles,
 body.print-preview .week__days-actions,
+body.print-preview .week__days-carousel-nav,
 body.print-preview .day__clear,
 body.print-preview .week__unmatched-lines,
 body.print-preview .day__suggest,
@@ -6479,8 +6572,19 @@ body.print-preview .week__days-hint {
 }
 
 body.print-preview .week__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.75rem;
   height: auto;
   min-height: 0;
+  overflow: visible;
+  scroll-snap-type: none;
+}
+
+body.print-preview .week__grid .day {
+  flex: none;
+  width: auto;
+  min-width: 0;
 }
 
 body.print-preview .day {

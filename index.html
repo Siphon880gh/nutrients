@@ -345,81 +345,88 @@
     </div>
     <div id="day-unmatched-lines" class="week__unmatched-lines" hidden role="status"></div>
 
-    <div class="week__grid" role="group" aria-label="Monday through Sunday meals">
-      <div class="day">
-        <div class="day__head">
-          <label class="day__label" for="mon">Mon</label>
-          <button type="button" class="day__clear" data-action="clear-day" data-day-id="mon">Clear</button>
-        </div>
-        <div class="day__editor">
-          <div class="day__backdrop" aria-hidden="true"></div>
-          <textarea id="mon" name="mon" class="day__input" rows="8" placeholder="Monday…" spellcheck="true"></textarea>
-        </div>
+    <div class="week__days">
+      <div class="week__days-carousel-nav" aria-label="Day of week">
+        <button type="button" class="week__days-carousel-adj" data-days-carousel="prev" aria-label="Previous day">‹</button>
+        <span id="days-carousel-current" class="week__days-carousel-current" aria-live="polite">Mon</span>
+        <button type="button" class="week__days-carousel-adj" data-days-carousel="next" aria-label="Next day">›</button>
       </div>
+      <div class="week__grid" role="group" aria-label="Monday through Sunday meals">
+        <div class="day">
+          <div class="day__head">
+            <label class="day__label" for="mon">Mon</label>
+            <button type="button" class="day__clear" data-action="clear-day" data-day-id="mon">Clear</button>
+          </div>
+          <div class="day__editor">
+            <div class="day__backdrop" aria-hidden="true"></div>
+            <textarea id="mon" name="mon" class="day__input" rows="8" placeholder="Monday…" spellcheck="true"></textarea>
+          </div>
+        </div>
 
-      <div class="day">
-        <div class="day__head">
-          <label class="day__label" for="tue">Tue</label>
-          <button type="button" class="day__clear" data-action="clear-day" data-day-id="tue">Clear</button>
+        <div class="day">
+          <div class="day__head">
+            <label class="day__label" for="tue">Tue</label>
+            <button type="button" class="day__clear" data-action="clear-day" data-day-id="tue">Clear</button>
+          </div>
+          <div class="day__editor">
+            <div class="day__backdrop" aria-hidden="true"></div>
+            <textarea id="tue" name="tue" class="day__input" rows="8" placeholder="Tuesday…" spellcheck="true"></textarea>
+          </div>
         </div>
-        <div class="day__editor">
-          <div class="day__backdrop" aria-hidden="true"></div>
-          <textarea id="tue" name="tue" class="day__input" rows="8" placeholder="Tuesday…" spellcheck="true"></textarea>
-        </div>
-      </div>
 
-      <div class="day">
-        <div class="day__head">
-          <label class="day__label" for="wed">Wed</label>
-          <button type="button" class="day__clear" data-action="clear-day" data-day-id="wed">Clear</button>
+        <div class="day">
+          <div class="day__head">
+            <label class="day__label" for="wed">Wed</label>
+            <button type="button" class="day__clear" data-action="clear-day" data-day-id="wed">Clear</button>
+          </div>
+          <div class="day__editor">
+            <div class="day__backdrop" aria-hidden="true"></div>
+            <textarea id="wed" name="wed" class="day__input" rows="8" placeholder="Wednesday…" spellcheck="true"></textarea>
+          </div>
         </div>
-        <div class="day__editor">
-          <div class="day__backdrop" aria-hidden="true"></div>
-          <textarea id="wed" name="wed" class="day__input" rows="8" placeholder="Wednesday…" spellcheck="true"></textarea>
-        </div>
-      </div>
 
-      <div class="day">
-        <div class="day__head">
-          <label class="day__label" for="thu">Thu</label>
-          <button type="button" class="day__clear" data-action="clear-day" data-day-id="thu">Clear</button>
+        <div class="day">
+          <div class="day__head">
+            <label class="day__label" for="thu">Thu</label>
+            <button type="button" class="day__clear" data-action="clear-day" data-day-id="thu">Clear</button>
+          </div>
+          <div class="day__editor">
+            <div class="day__backdrop" aria-hidden="true"></div>
+            <textarea id="thu" name="thu" class="day__input" rows="8" placeholder="Thursday…" spellcheck="true"></textarea>
+          </div>
         </div>
-        <div class="day__editor">
-          <div class="day__backdrop" aria-hidden="true"></div>
-          <textarea id="thu" name="thu" class="day__input" rows="8" placeholder="Thursday…" spellcheck="true"></textarea>
-        </div>
-      </div>
 
-      <div class="day">
-        <div class="day__head">
-          <label class="day__label" for="fri">Fri</label>
-          <button type="button" class="day__clear" data-action="clear-day" data-day-id="fri">Clear</button>
+        <div class="day">
+          <div class="day__head">
+            <label class="day__label" for="fri">Fri</label>
+            <button type="button" class="day__clear" data-action="clear-day" data-day-id="fri">Clear</button>
+          </div>
+          <div class="day__editor">
+            <div class="day__backdrop" aria-hidden="true"></div>
+            <textarea id="fri" name="fri" class="day__input" rows="8" placeholder="Friday…" spellcheck="true"></textarea>
+          </div>
         </div>
-        <div class="day__editor">
-          <div class="day__backdrop" aria-hidden="true"></div>
-          <textarea id="fri" name="fri" class="day__input" rows="8" placeholder="Friday…" spellcheck="true"></textarea>
-        </div>
-      </div>
 
-      <div class="day">
-        <div class="day__head">
-          <label class="day__label" for="sat">Sat</label>
-          <button type="button" class="day__clear" data-action="clear-day" data-day-id="sat">Clear</button>
+        <div class="day">
+          <div class="day__head">
+            <label class="day__label" for="sat">Sat</label>
+            <button type="button" class="day__clear" data-action="clear-day" data-day-id="sat">Clear</button>
+          </div>
+          <div class="day__editor">
+            <div class="day__backdrop" aria-hidden="true"></div>
+            <textarea id="sat" name="sat" class="day__input" rows="8" placeholder="Saturday…" spellcheck="true"></textarea>
+          </div>
         </div>
-        <div class="day__editor">
-          <div class="day__backdrop" aria-hidden="true"></div>
-          <textarea id="sat" name="sat" class="day__input" rows="8" placeholder="Saturday…" spellcheck="true"></textarea>
-        </div>
-      </div>
 
-      <div class="day">
-        <div class="day__head">
-          <label class="day__label" for="sun">Sun</label>
-          <button type="button" class="day__clear" data-action="clear-day" data-day-id="sun">Clear</button>
-        </div>
-        <div class="day__editor">
-          <div class="day__backdrop" aria-hidden="true"></div>
-          <textarea id="sun" name="sun" class="day__input" rows="8" placeholder="Sunday…" spellcheck="true"></textarea>
+        <div class="day">
+          <div class="day__head">
+            <label class="day__label" for="sun">Sun</label>
+            <button type="button" class="day__clear" data-action="clear-day" data-day-id="sun">Clear</button>
+          </div>
+          <div class="day__editor">
+            <div class="day__backdrop" aria-hidden="true"></div>
+            <textarea id="sun" name="sun" class="day__input" rows="8" placeholder="Sunday…" spellcheck="true"></textarea>
+          </div>
         </div>
       </div>
     </div>
