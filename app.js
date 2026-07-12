@@ -275,6 +275,9 @@
   var dayFoodNotesLabelsEl = document.getElementById("day-food-notes-labels");
   var dayFoodNotesPopoverEl = document.getElementById("day-food-notes-popover");
   var dayUnmatchedLinesEl = document.getElementById("day-unmatched-lines");
+  var unmatchedCarouselOpen = false;
+  var unmatchedCarouselIndex = 0;
+  var unmatchedCarouselItems = [];
   var dayFoodNotesPinned = false;
   var dayFoodNotesActiveIndex = -1;
   var dayFoodNotesMatches = [];
@@ -2745,7 +2748,8 @@
       'Use the portion in the name field (e.g. "' +
       nameExample +
       '"). Omit any nutrient keys you cannot estimate.\n\n' +
-      "Rule: amounts for the micro requirements panel belong in micros. " +
+      'Rule: If the food is missing serving information, add one serving whatever units it\'s usually in. If it\'s usually eaten all in one sitting from a container or bag, then name it as container or bag followed by oz etc in parenthesis. Add it to the end of the food name.\n\n' +
+      "Rule: Amounts for the micro requirements panel belong in micros. " +
       "When the same nutrient key also appears in longevity, store the number in micros only and set longevity[key] to true.\n\n" +
       jsonSchemaExample() +
       "\n\n" +
@@ -10826,13 +10830,36 @@
     updateDayHighlights(textarea);
   }
 
+  function normalizeDayMealsText(text) {
+    return String(text || "")
+      .replace(/\r\n/g, "\n")
+      .replace(/\r/g, "\n");
+  }
+
+  function visibleDayLineText(line) {
+    return String(line || "")
+      .replace(
+        /[\u0000-\u001F\u007F-\u009F\u00A0\u00AD\u1680\u2000-\u200F\u2028\u2029\u202F\u205F\u3000\uFEFF]/g,
+        ""
+      )
+      .trim();
+  }
+
+  function isBlankDayMealLine(line) {
+    var visible = visibleDayLineText(line);
+    if (!visible) return true;
+    // Separator-only lines (bullets, dashes, dots) are not meal entries.
+    return !/[A-Za-z0-9]/.test(visible);
+  }
+
   function unmatchedDayLines(text) {
-    var lines = String(text || "").split("\n");
+    var lines = normalizeDayMealsText(text).split("\n");
     var unmatched = [];
     lines.forEach(function (line, index) {
-      if (!line.trim()) return;
-      if (!lineMatchesFoodDefinition(line)) {
-        unmatched.push({ lineNum: index + 1, text: line.trim() });
+      if (isBlankDayMealLine(line)) return;
+      var visible = visibleDayLineText(line);
+      if (!lineMatchesFoodDefinition(visible)) {
+        unmatched.push({ lineNum: index + 1, text: visible });
       }
     });
     return unmatched;
@@ -10845,6 +10872,7 @@
       if (!el) return;
       unmatchedDayLines(el.value).forEach(function (item) {
         items.push({
+          dayId: day.id,
           dayLabel: day.label.toUpperCase(),
           lineNum: item.lineNum,
           text: item.text,
@@ -10854,49 +10882,142 @@
     return items;
   }
 
-  function weekUnmatchedLinesHtml(items) {
-    if (!items.length) return "";
+  function weekUnmatchedCarouselHtml(items, index) {
+    var item = items[index];
+    if (!item) return "";
     return (
-      '<span class="week__unmatched-lines-lead">Unmatched:</span> ' +
-      items
-        .map(function (item) {
-          return (
-            '<span class="week__unmatched-lines-item">' +
-            escapeHtml(item.dayLabel) +
-            " line " +
-            item.lineNum +
-            " — " +
-            escapeHtml(item.text) +
-            "</span>"
-          );
-        })
-        .join('<span class="week__unmatched-lines-sep"> · </span>')
+      '<div class="week__unmatched-carousel" role="region" aria-label="Unmatched meal lines">' +
+      '<div class="week__unmatched-carousel-nav">' +
+      '<button type="button" class="week__unmatched-carousel-adj" data-unmatched-action="prev" aria-label="Previous unmatched line"' +
+      (items.length < 2 ? " disabled" : "") +
+      ">&lt;</button>" +
+      '<span class="week__unmatched-carousel-indicator">' +
+      (index + 1) +
+      " / " +
+      items.length +
+      "</span>" +
+      '<button type="button" class="week__unmatched-carousel-adj" data-unmatched-action="next" aria-label="Next unmatched line"' +
+      (items.length < 2 ? " disabled" : "") +
+      ">&gt;</button>" +
+      "</div>" +
+      '<button type="button" class="week__unmatched-carousel-card" data-unmatched-action="jump" data-day-id="' +
+      escapeHtml(item.dayId) +
+      '" data-line-num="' +
+      item.lineNum +
+      '">' +
+      '<span class="week__unmatched-carousel-loc">' +
+      escapeHtml(item.dayLabel) +
+      " line " +
+      item.lineNum +
+      "</span>" +
+      '<span class="week__unmatched-carousel-text">' +
+      escapeHtml(item.text) +
+      "</span>" +
+      '<span class="week__unmatched-carousel-hint">Go to line</span>' +
+      "</button>" +
+      "</div>"
     );
   }
 
-  function anyDayTextareaFocused() {
-    for (var i = 0; i < DAYS.length; i++) {
-      var el = document.getElementById(DAYS[i].id);
-      if (el && document.activeElement === el) return true;
+  function weekUnmatchedLinesHtml(items, open, index) {
+    if (!items.length) return "";
+    return (
+      '<button type="button" class="week__unmatched-toggle" data-unmatched-action="toggle" aria-expanded="' +
+      (open ? "true" : "false") +
+      '">' +
+      '<span class="week__unmatched-toggle-label">Unmatched</span>' +
+      '<span class="week__unmatched-count">(' +
+      items.length +
+      ")</span>" +
+      "</button>" +
+      (open ? weekUnmatchedCarouselHtml(items, index) : "")
+    );
+  }
+
+  function focusDayLine(dayId, lineNum) {
+    var textarea = document.getElementById(dayId);
+    if (!textarea) return;
+    var lines = normalizeDayMealsText(textarea.value).split("\n");
+    var index = Math.max(0, Math.min(lines.length - 1, Number(lineNum) - 1));
+    var start = 0;
+    // Map normalized line index back onto the raw textarea value, which may still use \r\n.
+    var raw = String(textarea.value || "");
+    var rawPos = 0;
+    var lineIdx = 0;
+    while (rawPos < raw.length && lineIdx < index) {
+      var ch = raw.charAt(rawPos);
+      if (ch === "\r" && raw.charAt(rawPos + 1) === "\n") {
+        rawPos += 2;
+        lineIdx += 1;
+      } else if (ch === "\n" || ch === "\r") {
+        rawPos += 1;
+        lineIdx += 1;
+      } else {
+        rawPos += 1;
+      }
     }
-    return false;
+    start = rawPos;
+    var end = start;
+    while (
+      end < raw.length &&
+      raw.charAt(end) !== "\n" &&
+      raw.charAt(end) !== "\r"
+    ) {
+      end += 1;
+    }
+    var editor = textarea.closest(".day__editor");
+    if (editor) {
+      var dayEl = editor.closest(".day");
+      if (dayEl) dayEl.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    }
+    setDayEditorMode(textarea, "editing");
+    setDayInputSelection(textarea, start, end);
+  }
+
+  function focusUnmatchedCarouselItem() {
+    var item = unmatchedCarouselItems[unmatchedCarouselIndex];
+    if (!item) return;
+    focusDayLine(item.dayId, item.lineNum);
+  }
+
+  function renderWeekUnmatchedLines(focusItem) {
+    if (!dayUnmatchedLinesEl) return;
+    if (!unmatchedCarouselItems.length) {
+      unmatchedCarouselOpen = false;
+      unmatchedCarouselIndex = 0;
+      dayUnmatchedLinesEl.hidden = true;
+      dayUnmatchedLinesEl.innerHTML = "";
+      return;
+    }
+    if (unmatchedCarouselIndex >= unmatchedCarouselItems.length) {
+      unmatchedCarouselIndex = unmatchedCarouselItems.length - 1;
+    }
+    if (unmatchedCarouselIndex < 0) unmatchedCarouselIndex = 0;
+    dayUnmatchedLinesEl.innerHTML = weekUnmatchedLinesHtml(
+      unmatchedCarouselItems,
+      unmatchedCarouselOpen,
+      unmatchedCarouselIndex
+    );
+    dayUnmatchedLinesEl.hidden = false;
+    if (focusItem && unmatchedCarouselOpen) focusUnmatchedCarouselItem();
   }
 
   function updateWeekUnmatchedLines() {
     if (!dayUnmatchedLinesEl) return;
-    if (!dayHighlightsEnabled || anyDayTextareaFocused()) {
-      dayUnmatchedLinesEl.hidden = true;
-      dayUnmatchedLinesEl.innerHTML = "";
-      return;
-    }
-    var items = allUnmatchedDayLines();
-    if (!items.length) {
-      dayUnmatchedLinesEl.hidden = true;
-      dayUnmatchedLinesEl.innerHTML = "";
-      return;
-    }
-    dayUnmatchedLinesEl.innerHTML = weekUnmatchedLinesHtml(items);
-    dayUnmatchedLinesEl.hidden = false;
+    unmatchedCarouselItems = allUnmatchedDayLines();
+    renderWeekUnmatchedLines(false);
+  }
+
+  function stepUnmatchedCarousel(delta) {
+    if (!unmatchedCarouselItems.length) return;
+    var len = unmatchedCarouselItems.length;
+    unmatchedCarouselIndex = (unmatchedCarouselIndex + delta + len) % len;
+    renderWeekUnmatchedLines(false);
+  }
+
+  function toggleUnmatchedCarousel() {
+    unmatchedCarouselOpen = !unmatchedCarouselOpen;
+    renderWeekUnmatchedLines(false);
   }
 
   function backdropCaretRect(backdrop, pos) {
@@ -12748,7 +12869,7 @@
   }
 
   function lineMatchesFoodDefinition(text) {
-    var key = stripKeywordServingMultiplier(text).toLowerCase();
+    var key = stripKeywordServingMultiplier(visibleDayLineText(text)).toLowerCase();
     if (!key) return false;
     for (var i = 0; i < keywords.length; i++) {
       if (keywords[i].name.trim().toLowerCase() === key) return true;
@@ -13187,6 +13308,7 @@
     saveDayNotes();
     updateDayClearButtons();
     updateDayFoodNotesUi();
+    updateWeekUnmatchedLines();
   }
 
   function confirmClearDay(dayId) {
@@ -13236,13 +13358,11 @@
 
     textarea.addEventListener("focus", function () {
       setDayEditorMode(textarea, "editing");
-      updateWeekUnmatchedLines();
     });
     textarea.addEventListener("blur", function () {
       textarea._daySelectAnchor = null;
       hideDaySuggest(textarea);
       updateDayEditorMode(textarea);
-      updateWeekUnmatchedLines();
     });
 
     if (backdrop) {
@@ -14467,6 +14587,42 @@
   if (dayHighlightsToggleBtn) {
     dayHighlightsToggleBtn.addEventListener("click", function () {
       setDayHighlightsEnabled(!dayHighlightsEnabled);
+    });
+  }
+
+  if (dayUnmatchedLinesEl) {
+    dayUnmatchedLinesEl.addEventListener("mousedown", function (e) {
+      var btn = e.target.closest("[data-unmatched-action]");
+      if (!btn || !dayUnmatchedLinesEl.contains(btn)) return;
+      var action = btn.getAttribute("data-unmatched-action");
+      // Keep prev/next/toggle clicks from blurring a day textarea mid-click
+      // (blur used to rebuild this DOM and eat or double the click).
+      if (action === "prev" || action === "next" || action === "toggle") {
+        e.preventDefault();
+      }
+    });
+    dayUnmatchedLinesEl.addEventListener("click", function (e) {
+      var btn = e.target.closest("[data-unmatched-action]");
+      if (!btn || !dayUnmatchedLinesEl.contains(btn)) return;
+      var action = btn.getAttribute("data-unmatched-action");
+      if (action === "toggle") {
+        toggleUnmatchedCarousel();
+        return;
+      }
+      if (action === "prev") {
+        stepUnmatchedCarousel(-1);
+        return;
+      }
+      if (action === "next") {
+        stepUnmatchedCarousel(1);
+        return;
+      }
+      if (action === "jump") {
+        var dayId = btn.getAttribute("data-day-id");
+        var lineNum = Number(btn.getAttribute("data-line-num"));
+        if (!dayId || !lineNum) return;
+        focusDayLine(dayId, lineNum);
+      }
     });
   }
 

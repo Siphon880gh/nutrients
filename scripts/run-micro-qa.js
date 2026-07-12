@@ -119,8 +119,9 @@ const FOOD_PATCHES = {
   "Orange md": { selenium: 0.5, vitaminE: 0.2, vitaminK: 0, phosphorus: 18, molybdenum: 4 },
   "Bartlett Pear md": { selenium: 0.2, vitaminE: 0.2, vitaminK: 4, phosphorus: 16, molybdenum: 3 },
   "Asian Pear md": { selenium: 0.2, vitaminE: 0.2, vitaminK: 4, phosphorus: 16, molybdenum: 3 },
-  "Greek Yogurt": { vitaminD: 0, iodine: 13 },
-  "Yoplait Yogurt": {
+  "Greek Yogurt 1 container (6 oz)": { vitaminD: 0, iodine: 13 },
+  "Chobani Plain Greek Yogurt 1 container (6 oz)": { vitaminD: 0, iodine: 12 },
+  "Yoplait Yogurt 1 container (6 oz)": {
     selenium: 5, vitaminE: 0.1, phosphorus: 180, vitaminB12: 0.9, iodine: 10,
   },
   "Cereals Cheerios": { iodine: 45, vitaminD: 2, selenium: 12, vitaminB12: 1.5 },
