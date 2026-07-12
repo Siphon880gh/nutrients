@@ -1,6 +1,6 @@
 # AGENTS_CODE_REFERENCE-ui.md
 
-> **Approximate locations only** — use class names and file regions in `index.html` (~1,525 lines) and `styles.css` (~5,580 lines).
+> **Approximate locations only** — use class names and file regions in `index.html` (~1,640 lines) and `styles.css` (~6,240 lines).
 
 Markup structure, layout, modals, and the **highlight mirror** pattern.
 
@@ -16,37 +16,34 @@ Parent: [AGENTS_CODE_REFERENCE.md](./AGENTS_CODE_REFERENCE.md)
 │   ├── .dashboard__header
 │   │   ├── .dashboard__toggles  (Print, Week total, Micro requirements, Longevity)
 │   │   └── .dashboard__hint
-│   ├── #dashboard-grid            (7 cards with macro % toggle, JS)
+│   ├── #dashboard-grid            (7 cards; today’s weekday .dashboard__card--today)
 │   ├── #dashboard-micro-panel     (hidden until toggle)
-│   │   ├── condition/filter focus dropdown (#dashboard-micro-condition-*)
-│   │   ├── view segments (weekly avg / each day; persisted) + Show targets (persisted)
-│   │   ├── Ask AI to help fill gaps
-│   │   ├── caffeine / cataracts / hair-loss tip asides (#micro-tip-*)
-│   │   ├── #dashboard-micro-list        (% target list + my-food + target-ref badges, JS)
-│   │   └── #dashboard-micro-daily-grid  (each-day grid + More nutrients, JS)
+│   │   ├── #dashboard-micro-sticky (title, View, Daily Targets, Highlight/Filter/
+│   │   │     daily-intake/acute disclosures, #dashboard-micro-close)
+│   │   ├── intro + Ask AI + condition focus dropdown
+│   │   ├── tip asides (#micro-tip-*)
+│   │   ├── #dashboard-micro-list / #dashboard-micro-daily-grid
+│   │   └── More nutrients
+│   ├── #micro-daily-intake-popover / #micro-acute-toxicity-popover / #target-ref-popover
 │   ├── #dashboard-longevity-panel (hidden until toggle)
-│   │   ├── intro, disclaimer, processed-food note (Yuka / Bobby links)
-│   │   ├── #dashboard-longevity-nav (sticky section prev/next + All topics)
-│   │   └── #dashboard-longevity-content (JS — % DV bars + 100% notch, explain + my-food links)
-│   ├── #target-ref-popover        (fixed tooltip: which target reference, JS)
-│   └── #week-summary              (hidden by default; week total, day avg, TDEE, macro split)
-├── .week__days-toolbar     (hint mentioning * N multiplier + export/import/clear)
-│   └── .week__days-actions (Export all / Import all / Clear all days)
-├── .week__highlight-bar    (pen toggle + food notes + unmatched-lines report)
-│   ├── #day-highlights-toggle (pen; persisted on/off)
-│   ├── #day-food-notes     (hidden until match; lead + #day-food-notes-labels + popover)
-│   └── #day-unmatched-lines (hidden until unmatched day-meal lines exist)
-├── .week__grid             (7 columns Mon–Sun; min-height only — grows with editor height)
+│   │   ├── #dashboard-longevity-nav (title, close, sticky icon options, section nav)
+│   │   └── #dashboard-longevity-content (JS — sections + % DV bars + 100% notch)
+│   └── #week-summary              (hidden by default)
+├── .week__days-toolbar     (* N hint + Export / Import / Import sample / Clear)
+│   └── .week__days-actions
+├── .week__highlight-bar    (pen + food notes)
+│   ├── #day-highlights-toggle
+│   └── #day-food-notes
+├── #day-unmatched-lines    (collapsible Unmatched carousel; JS)
+├── .week__grid             (7 columns; .day--today on current weekday)
 │   └── .day × 7
 │       ├── .day__head (label + Clear)
-│       └── .day__editor (editing/viewing/plain modes; vertically resizable; shared height)
-│           ├── .day__backdrop   (highlight layer; shown in viewing mode; placeholder span)
-│           ├── textarea.day__input (shown in editing/plain mode)
-│           └── .day__suggest (optional food-name popover; hidden by default; resizable)
-│               ├── .day__suggest-dismiss
-│               └── .day__suggest-list (scrollable pill buttons w/ per-item fit + chevrons)
-├── .keywords               (food definitions table — top toolbar, search, pagination, cal column)
-└── (no bottom demographic panel — sex/TDEE/weight in #settings-modal)
+│       └── .day__editor (editing/viewing/plain; shared height)
+│           ├── .day__backdrop
+│           ├── textarea.day__input
+│           └── .day__suggest (optional)
+├── .keywords               (food definitions table)
+└── (sex/TDEE/weight in #settings-modal)
 ```
 
 Modals are **siblings** of `main`, not inside it. **`#starter-guide`** is also a sibling — fixed-position beginner popover (not a blocking modal).
@@ -85,11 +82,16 @@ Native `<textarea>` cannot color individual words, and overlaying a transparent 
 
 ## Days toolbar, highlight bar & food notes
 
-**`.week__days-toolbar`** — `display: flex; justify-content: space-between`; the hint now mentions the `* N` serving multiplier; right side holds Export all / Import all / Clear all days.
+**`.week__days-toolbar`** — `display: flex; justify-content: space-between`; the hint mentions the `* N` serving multiplier; right side holds Export all / Import all / **Import sample** (`#import-sample-meals`) / Clear all days.
 
-**`.week__highlight-bar`** — separate row below the toolbar (`position: relative; z-index: 10` so popovers stack above `.week__grid`): the `#day-highlights-toggle` pen (`.week__highlight-toggle`, persisted on/off), `#day-food-notes`, and `#day-unmatched-lines`.
+**`.week__highlight-bar`** — separate row below the toolbar (`position: relative; z-index: 10` so popovers stack above `.week__grid`): the `#day-highlights-toggle` pen (`.week__highlight-toggle`, persisted on/off) and `#day-food-notes`.
 
-**`#day-unmatched-lines`** (`.week__unmatched-lines`, `role="alert"`) — `[hidden]` until day-meal lines don’t match a food definition; JS injects `.week__unmatched-lines-lead` + `.week__unmatched-lines-item` entries (`DAY line N — text`) separated by `.week__unmatched-lines-sep`.
+**`#day-unmatched-lines`** (`.week__unmatched-lines`, `role="status"`) — sibling below the highlight bar; `[hidden]` only when there are zero unmatched lines. JS injects:
+
+- `.week__unmatched-toggle` — **Unmatched (N)** expand/collapse (`data-unmatched-action="toggle"`)
+- `.week__unmatched-carousel` — prev/next (`.week__unmatched-carousel-adj`), indicator, and `.week__unmatched-carousel-card` (**Go to line**, `data-unmatched-action="jump"`)
+
+**Today’s weekday** — `markTodayDay()` adds `.day--today` on the matching `.day` (underlined `.day__label`, blue-tinted `.day__editor` border/background). Macro and micro day cards use `.dashboard__card--today` the same way. No size change — color/underline only.
 
 **`#day-food-notes`** (`.week__food-notes`) — static shell in HTML; `[hidden]` until JS finds a regex match. When visible:
 
@@ -102,28 +104,32 @@ Pen + notes markup is **static** in `index.html`; only labels and popover **cont
 
 ## Dashboard, micro & longevity panels
 
-**`.dashboard__grid`** — equal columns of `.dashboard__card` with rows for P/C/F g·cal (or **%** when toggled) and total cal; each card head has `.dashboard__card-toggle` (`data-action="toggle-dashboard-macro-view"`); collapses on narrow screens.
+**`.dashboard__grid`** — equal columns of `.dashboard__card` with rows for P/C/F g·cal (or **%** when toggled) and total cal; each card head has `.dashboard__card-toggle` (`data-action="toggle-dashboard-macro-view"`); today’s card gets `.dashboard__card--today`; collapses on narrow screens.
 
 **`.dashboard__toggles`** — `Print` (`#dashboard-print`), `Week total` (`#dashboard-week-toggle`), `Micro requirements` (`#dashboard-micro-toggle`), `Longevity` (`#dashboard-longevity-toggle`); shared `.dashboard__toggle` / `--open`.
 
 **`.week-summary`** — below grid, full width; hidden until **Week total** toggle. Blocks: **Week total**, **Day average**, **Deficit/Surplus vs TDEE** (or prompt to set TDEE), **Macro split (week avg)** with explain links.
 
 **Micro panel** — `.dashboard__micro-panel`:
-- `.dashboard__micro-condition-wrap` — focus dropdown grouped into **Conditions** (ADHD, anemia, anti-aging, bowel movements, cataracts, coffee/tea, hair loss) and **absorption filters** (well/poorly absorbed) + clear ×.
-- `.dashboard__micro-segmented` segments (`#dashboard-micro-view-weekly` / `-daily`, persisted) + solo `#dashboard-micro-dv-toggle` (Show targets, persisted). Each-day grid has a **More nutrients** control for extended fields + condition-linked longevity rows.
-- `.dashboard__micro-list` (weekly avg list) and `.dashboard__micro-daily-grid` (each-day grid).
-- **% target** text color / `font-weight` from `config.json` `microDvStatus` tiers. Nutrient rows carry `data-micro-def` (click → micro definition modal), `.dashboard__micro-sources-btn` (ranked foods modal), a `.dashboard__target-ref` badge (`data-target-ref` → `#target-ref-popover`), and optionally `.dashboard__micro-daily-intake-btn` (daily-intake popover when key is in `DAILY_INTAKE_MICRO_KEYS`).
-- `#micro-tip-hair-loss` — shown when **Hair loss** condition filter is active; copy covers zinc, iodine, and limiting nutrients (saturated fat, high-GI, creatine).
-- `#micro-daily-intake-popover` — shared fixed tooltip sibling of `#dashboard-micro-panel`; copy warns that poor storage makes weekly averaging misleading.
-- `#target-ref-popover` (`.dashboard__target-ref-popover`) — fixed tooltip explaining which reference the row scores against (FDA DV / IOM bw min / study max) and its amount.
-- `.dashboard__micro-tip` — caffeine absorption note → `#caffeine-tip-modal`.
+- **`#dashboard-micro-sticky`** (`.dashboard__micro-sticky`) — sticky top chrome: `.dashboard__micro-sticky-title` (**Micro Requirements**), View segmented control, **Daily Targets** group + `#dashboard-micro-dv-toggle` (“Show daily targets”), `.dashboard__sticky-options` disclosures, `#dashboard-micro-close` (`.dashboard__panel-close`).
+- **Sticky options** (shared pattern with longevity nav):
+  - **Highlight** (`#micro-highlight-options-panel`) — free-combine toggles for Required daily intake / S/E / A/E; clear × (`data-sticky-highlight-clear`).
+  - **Filter** (`#micro-filter-options-panel`) — checkboxes for the same three; clear × (`data-sticky-filter-clear`).
+  - **Poor storage / daily intake** — Show icons toggle (`data-daily-intake-icons-toggle`).
+  - **One-day excess consumption** — S/E and A/E show toggles (`data-acute-kind`).
+- `.dashboard__micro-condition-wrap` — focus dropdown grouped into **Nutrition Intake** (well/poorly absorbed) and **Conditions** (ADHD, anemia, anti-aging, bowel movements, cataracts, coffee/tea, hair loss) + clear ×.
+- `.dashboard__micro-list` (weekly avg list) and `.dashboard__micro-daily-grid` (each-day grid; today column uses `.dashboard__card--today`). Each-day grid has a **More nutrients** control for extended fields + condition-linked longevity rows.
+- **% target** text color / `font-weight` from `config.json` `microDvStatus` tiers. Nutrient rows carry `data-micro-def`, `.dashboard__micro-sources-btn`, a `.dashboard__target-ref` badge, optionally `.dashboard__micro-daily-intake-btn`, and optionally `.dashboard__micro-acute-btn--side` / `--adverse` (S/E · A/E badges).
+- Icon visibility/highlight is CSS-gated by body classes: `show-daily-intake-icons`, `show-acute-side-effects`, `show-acute-adverse-effects`, `highlight-daily-intake-icons`, `highlight-side-effects`, `highlight-adverse-effects` (Highlight forces red styling and visibility).
+- `#micro-tip-hair-loss` — shown when **Hair loss** condition filter is active.
+- `#micro-daily-intake-popover` / `#micro-acute-toxicity-popover` / `#target-ref-popover` — fixed tooltip siblings.
 
 **Longevity panel** — `.dashboard__longevity-panel`:
-- Intro, disclaimer, `.dashboard__longevity-processed-note` (advisory, external Yuka/Bobby links).
-- `.dashboard__longevity-nav` — sticky topic carousel + `#dashboard-longevity-nav-all-list`.
-- `#dashboard-longevity-content` — grouped sections with % DV **Level** bars inside `.dashboard__longevity-bar-wrap` (fill + optional `.dashboard__longevity-bar-notch` at 100% with hover popover showing reference amount). Inline color from `config.json` `longevityStatus`. Headings carry `data-longevity-def` / `data-micro-def`; rows may include `.dashboard__micro-sources-btn`, optional `.dashboard__micro-daily-intake-btn`, and tip links (eggs → `#fats-cholesterol-tip-modal`, TMAO → `#tmao-protectors-tip-modal`, K2 → micro-def link).
+- **`#dashboard-longevity-nav`** — sticky: `.dashboard__longevity-nav-title` (**Longevity**), `#dashboard-longevity-close`, mirrored Highlight/Filter/daily/acute option panels, topic carousel + All topics list.
+- Intro / disclaimer / processed-food note (Yuka / Bobby links) live in content area as applicable.
+- `#dashboard-longevity-content` — grouped sections with % DV **Level** bars inside `.dashboard__longevity-bar-wrap` (fill + optional `.dashboard__longevity-bar-notch` at 100%). Notable section keys: `sectionGrayHair`, `sectionAches` (includes omega-6:3 row), `sectionBrainLongevity` (brain + astrocytes), visceral fat, fats & cholesterol, TMAO, etc. Headings carry `data-longevity-def` / `data-micro-def`; rows may include sources / daily-intake / acute icons.
 
-**Responsive / print** (lower `styles.css`): grid column counts shrink at breakpoints; on narrow screens `.week__grid` is `height: auto` with single column; day editors keep `resize: vertical` unless print/print-preview (`resize: none`).
+**Responsive / print** (lower `styles.css`): grid column counts shrink at breakpoints; on narrow screens `.week__grid` is `height: auto` with single column; day editors keep `resize: vertical` unless print/print-preview (`resize: none`). Icon buttons and unmatched UI are hidden in print / print-preview.
 
 ## Food definitions table
 
@@ -180,6 +186,7 @@ Variants & instances:
 - **TDEE hint** (`#tdee-hint-modal`) — deficit/surplus / 3500 kcal rule.
 - **Macro split hint** (`#macro-split-hint-modal`) — `#macro-split-carousel` body-type guidance.
 - **Micro-gaps modal** (`#micro-gaps-modal`) — preference select + free-text + prompt preview / copy / open (ChatGPT/Claude buttons carry brand icons).
+- **Health timeline modal** (`#health-timeline-modal`) — week-nutrient snapshot prompt for “if you keep eating like this”; same copy / ChatGPT / Claude pattern.
 - **Food-note modal** (`#food-note-modal`) — reader for a long day-meal food note; `#food-note-modal-title` + `#food-note-modal-body`; opened when a `#day-food-notes` label’s note is too long for the popover.
 - **Phosphorus binder modal** (`#phosphorus-binder-modal`) — educational calcium-acetate / phosphate content; opened from longevity calcification tip link (`data-action="open-phosphorus-binder-modal"`).
 - **Caffeine tip modal** (`#caffeine-tip-modal`) — gum/patches vs coffee/tea mineral absorption; opened from micro panel tip (`data-action="open-caffeine-tip-modal"`).
@@ -193,7 +200,7 @@ Variants & instances:
 
 - Modals `z-index: 100`.
 - Starter guide `.starter-guide` `z-index: 120` (above modals).
-- Daily intake popover `.dashboard__micro-daily-intake-popover` and target-ref popover `.dashboard__target-ref-popover` `z-index: 120` (same layer as starter guide; fixed tooltips, not modals).
+- Daily intake / acute toxicity / target-ref popovers `z-index: 120` (fixed tooltips, not modals).
 - Micros / longevity tooltip on button is above the row (cells use `overflow: visible` so it isn’t clipped).
 
 ## CSS naming convention
@@ -280,6 +287,6 @@ Bridge keys are derived at runtime: `microPanelLongevityBridgeFields()` intersec
 
 | File | ~Lines | Load when |
 |------|--------|-----------|
-| `index.html` | 1525 | Structure / new regions |
-| `styles.css` | 5580 | Visual/layout only |
-| `app.js` | 14,200 | Behavior (other docs) |
+| `index.html` | 1,640 | Structure / new regions |
+| `styles.css` | 6,240 | Visual/layout only |
+| `app.js` | 15,670 | Behavior (other docs) |

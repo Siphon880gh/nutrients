@@ -1,8 +1,8 @@
 # AGENTS_CODE_REFERENCE-core.md
 
-> **Approximate locations only** — no exact line numbers. Code moves; use section names and relative position within `app.js` (~14,200 lines).
+> **Approximate locations only** — no exact line numbers. Code moves; use section names and relative position within `app.js` (~15,670 lines).
 
-Core logic: food definitions, matching, highlighting orchestration, dashboard totals, micro % DV, longevity panel, definition modals, localStorage.
+Core logic: food definitions, matching, highlighting orchestration, dashboard totals, micro % DV, sticky icon show/filter/highlight, acute toxicity, longevity panel, definition modals, localStorage.
 
 Parent overview: [AGENTS_CODE_REFERENCE.md](./AGENTS_CODE_REFERENCE.md)
 
@@ -10,30 +10,33 @@ Parent overview: [AGENTS_CODE_REFERENCE.md](./AGENTS_CODE_REFERENCE.md)
 
 | Concern | Primary symbols |
 |---------|-----------------|
-| In-memory state | `keywords[]`, `demographic`, `userTdee`, `userBodyWeightKg`, `settingsWeightUnit`, `dayHighlightsEnabled`, `microRequirementsOpen`, `microViewDaily`, `showMicroDailyDv`, `microConditionFocus`, `longevityPanelOpen`, `weekTotalOpen`, `keywordReorderOpen`, `keywordCaloriesOpen`, `keywordsPageIndex`, `keywordsPageSize`, `keywordsFilterQuery`, `dashboardMacroPctView`, `lastWeekTotals`, `activeMicroId`, `activeLongevityId`, `activeImportId/Index`, `activePositionId/Index`, `activeMicroDefKey`, `activeLongevityDefKey`, `activeMicroSourcesKey/Scope`, `activeLongevitySourcesKey/Kind`, `defModalReturnSources`, `longevityNavActiveIndex`, `targetRefPopoverAnchor` |
+| In-memory state | `keywords[]`, `demographic`, `userTdee`, `userBodyWeightKg`, `settingsWeightUnit`, `dayHighlightsEnabled`, `microRequirementsOpen`, `microViewDaily`, `showMicroDailyDv`, `showAcuteSideEffects`, `showAcuteAdverseEffects`, `showDailyIntakeIcons`, `filterStickyDailyIntake` / `filterStickySideEffects` / `filterStickyAdverseEffects`, `highlightStickyDailyIntake` / `highlightStickySideEffects` / `highlightStickyAdverseEffects`, `microConditionFocus`, `longevityPanelOpen`, `weekTotalOpen`, `keywordReorderOpen`, `keywordCaloriesOpen`, `keywordsPageIndex`, `keywordsPageSize`, `keywordsFilterQuery`, `dashboardMacroPctView`, `lastWeekTotals`, `unmatchedCarouselOpen` / `unmatchedCarouselIndex` / `unmatchedCarouselItems`, `activeMicroId`, `activeLongevityId`, `activeImportId/Index`, `activePositionId/Index`, `activeMicroDefKey`, `activeLongevityDefKey`, `activeMicroSourcesKey/Scope`, `activeLongevitySourcesKey/Kind`, `defModalReturnSources`, `longevityNavActiveIndex`, `targetRefPopoverAnchor`, `microAcuteToxicityPopoverAnchor` |
 | IDs | `makeId()`, `findIndex(id)` |
 | Table UI | `renderKeywords` (renders current filtered page only), `syncFieldFromDom`, `syncAllFieldsFromDom`, `moveKeyword`, `removeKeyword`, `addKeyword`, `sortKeywordsAlphabetically`, reorder toggle (`loadKeywordReorderOpen`), move-to-position modal |
 | Table search / pagination | `keywordMatchesFilter`, `keywordsFilteredIndices`, `setKeywordsFilterQuery`, `clearKeywordsFilter`, `keywordsPageCount`, `clampKeywordsPageIndex`, `keywordsPageBounds`, `goKeywordsPage`, `changeKeywordsPageSize`, `updateKeywordsPaginationUi`, `updateKeywordsSearchUi`, `loadKeywordsPageSize`, `saveKeywordsPageSize` |
 | Matching | `countKeyword` (applies `keywordServingMultiplier`), `keywordNames`, `buildHighlightRegex`, `keywordMatchPattern`, `escapeRegex`, `keywordServingMultiplier`, `stripKeywordServingMultiplier`, `lineMatchesFoodDefinition` |
-| Macro totals | `totalsFromText`, `addTotals`, `renderDashboard`, `dashboardCardHtml`, `dashboardMacroPctView`, `macroPctFromTotals`, `renderWeekSummary`, `setWeekTotalOpen` |
-| Micro totals / target | `microTotalsFromText`, `weekMicroTotals`, `applyFiberTotalToMicroTotals`, `renderMicroRequirements`, `renderMicroWeeklyList`, `renderMicroDailyGrid`, `setMicroViewDaily`, `loadMicroViewDaily`, `saveMicroViewDaily`, `setShowMicroDailyDv`, `loadShowMicroDailyDv`, `saveShowMicroDailyDv`, `syncMicroViewToggleUi`, `syncMicroDailyDvToggleUi`, `microBaseDisplayFields`, `microConditionDisplayFields`, `dailyDv`, `microNutrientTargetPct` (FDA DV → IOM bw min → study min → study max → none), `microTargetReqAmountText`, `iomBwMinDaily`/`iomBwMinPct`, `studyMinMicroRef`, `studyMaxMicroRef`, `microHasNoStandaloneRef`, `microRequiresDailyIntake`, `microConditionDisplayFields`, `setMicroConditionFocus`, `microBaseDisplayFields` (core + extended + condition longevity keys when More nutrients open) |
-| Derived micro metrics | `MICRO_DERIVED_DEFS`, `insolubleToSolubleFiberRatio`, `insolubleToSolubleFiberTargetPct`, `microDerivedRowTargetDisplay`, `microDerivedAmtText`, `microDerivedDefByKey`, `microDisplayFieldByKey` |
+| Macro totals | `totalsFromText`, `addTotals`, `renderDashboard`, `dashboardCardHtml` (`.dashboard__card--today` via `todayDayId`), `dashboardMacroPctView`, `macroPctFromTotals`, `renderWeekSummary`, `setWeekTotalOpen` |
+| Micro totals / target | `microTotalsFromText`, `weekMicroTotals`, `applyFiberTotalToMicroTotals`, `renderMicroRequirements`, `renderMicroWeeklyList`, `renderMicroDailyGrid`, `microDayCardHtml` (today card), `setMicroViewDaily`, `loadMicroViewDaily`, `saveMicroViewDaily`, `setShowMicroDailyDv`, `loadShowMicroDailyDv`, `saveShowMicroDailyDv`, `syncMicroViewToggleUi`, `syncMicroDailyDvToggleUi`, `microBaseDisplayFields`, `microConditionDisplayFields`, `dailyDv`, `microNutrientTargetPct` (FDA DV → IOM bw min → study min → study max → none), `microTargetReqAmountText`, `iomBwMinDaily`/`iomBwMinPct`, `studyMinMicroRef`, `studyMaxMicroRef`, `microHasNoStandaloneRef`, `microRequiresDailyIntake`, `setMicroConditionFocus` |
+| Sticky icon UX | `loadShowAcuteToxicityIcons` / `setShowAcuteToxicityIcons` / `syncAcuteToxicityToggleUi`, `loadShowDailyIntakeIcons` / `setShowDailyIntakeIcons` / `syncDailyIntakeIconsToggleUi`, `microStickyFilterActive` / `microKeyMatchesStickyFilter` / `setStickyIconFilter` / `clearStickyIconFilters` / `loadStickyIconFilters`, `microStickyHighlightActive` / `setStickyIconHighlight` / `clearStickyIconHighlights` / `loadStickyIconHighlights`, `refreshStickyIconFilterViews` |
+| Acute toxicity | `ACUTE_TOXICITY_BY_MICRO`, `microAcuteToxicityEntry`, `microAcuteToxicityEffects`, `microAcuteToxicityIconHtml`, `microAcuteToxicityIconsHtml`, `showMicroAcuteToxicityPopover`, `hideMicroAcuteToxicityPopover`, `handleMicroAcuteToxicityClick` |
+| Derived micro metrics | `MICRO_DERIVED_DEFS` (`insolubleToSolubleFiber2To1` ideal 2, `insolubleToSolubleFiber` ideal 3), `insolubleToSolubleFiberRatio`, `insolubleToSolubleFiberTargetPct`, `microDerivedRowTargetDisplay`, `microDerivedAmtText`, `microDerivedDefByKey`, `microDisplayFieldByKey` |
 | Fiber split | `solubleFiberRatioForFoodName`, `splitTotalFiber`, `fiberTotalFromParts` |
 | Target-ref badges | `showTargetRefPopover`, `toggleTargetRefPopover`, `positionTargetRefPopover`, `hideTargetRefPopover`, `bindTargetRefPopover`, `initTargetRefPopoverEvents`, `targetRefKindKey`, `targetRefDetailHtml` |
-| Longevity | `longevityTotalsFromText`, `renderLongevityPanel`, `renderLongevityGiBuckets`, `setLongevityPanelOpen`, `longevityBarHtml`, `longevityBarShowsRefNotch`, `longevityBarRefPopoverLabel`, `resolveLongevityValue` (carotenoids ← vitamin A fallback), longevity nav (`buildLongevityNavAllList`, `scrollLongevityNavToSection`, `applyInitialLongevityHash`, `longevitySectionFromHash`), blank/normalize/merge helpers (below) |
-| Ranked food sources | `microContributionsFromText`, `microContributionsForScope`, `longevityContributionsFromWeek`, `glycemicLoadContributionsFromWeek`, `nutrientSourcesListHtml`, `openMicroSourcesModal`, `openLongevitySourcesModal`, `microSourcesIconHtml`, `longevitySourcesIconHtml`, `microDailyIntakeIconHtml`, `appendMicroDailyIntakeIconHtml`, `showMicroDailyIntakePopover`, `hideMicroDailyIntakePopover`, `handleMicroDailyIntakeClick`, `microSourcesRequirementsHtml` (FDA/IOM/study reference block) |
+| Longevity | `longevityTotalsFromText`, `renderLongevityPanel`, `renderLongevityGiBuckets`, `setLongevityPanelOpen`, `longevityBarHtml`, `longevityBarShowsRefNotch`, `longevityBarRefPopoverLabel`, `resolveLongevityValue` (carotenoids ← vitamin A fallback), longevity nav (`buildLongevityNavAllList`, `scrollLongevityNavToSection`, `applyInitialLongevityHash`, `longevitySectionFromHash`), section maps (`LONGEVITY_GRAY_HAIR_*`, `LONGEVITY_ACHES_*`, `LONGEVITY_BRAIN_*`, `LONGEVITY_BRAIN_ASTROCYTE_*`), blank/normalize/merge helpers (below) |
+| Ranked food sources | `microContributionsFromText`, `microContributionsForScope`, `longevityContributionsFromWeek`, `glycemicLoadContributionsFromWeek`, `nutrientSourcesListHtml`, `openMicroSourcesModal`, `openLongevitySourcesModal`, `microSourcesIconHtml`, `longevitySourcesIconHtml`, `microDailyIntakeIconHtml`, `appendMicroDailyIntakeIconHtml` (also appends acute icons), `showMicroDailyIntakePopover`, `hideMicroDailyIntakePopover`, `handleMicroDailyIntakeClick`, `microSourcesRequirementsHtml` (FDA/IOM/study reference block) |
 | Settings / TDEE / weight | `openSettingsModal`, `loadTdee`, `saveTdee`, `getTdee`, `getTdeeBaseline`, `loadBodyWeight`, `saveBodyWeight`, `getBodyWeightKg`, `settingsWeightKgFromInput`, `syncSettingsWeightInput`, `setSettingsWeightUnit`, `readSettingsWeightFromInput`, `openTdeeCalculatorModal`, `calcMifflinStJeor`, `openTdeeHintModal`, `openMacroSplitHintModal`, `renderMacroSplitCarousel`, `MACRO_BODY_TYPES` |
 | Definition modals | `openMicroDefModal`, `renderMicroDefBody`, `openLongevityDefModal`, `renderLongevityDefBody`, `setMicroDefFullscreen`, `setDefModalReturnSources`, `returnFromDefModalToSources`, `microDefConditionSectionHtml`, `vitaminKKeyDifferencesHtml`, `fiberBulkingTypeHtml`, `insolubleToSolubleFiberCompareHtml`, `loadMicroDefinitions`, `loadLongevityDefinitions`; long food-note reader `openFoodNoteModal` / `closeFoodNoteModal` / `foodNoteBodyHtml` |
 | % target tiers | `loadAppConfig`, `tierForMicroPct`, `tierForLongevityPct`, `tierForPctInList`, `pctInlineStyle` |
 | Demographic | `loadDemographic`, `saveDemographic`, `setDemographic`, `renderDemographicUi` (updates `#settings-demographic-icon`); targets in `demographic-dv.js` (`DAILY_MICRO_DV`, `CALORIE_BASELINE`, `DAILY_INTAKE_MICRO_KEYS`, `requiresDailyIntake`, `IOM_BW_MIN_MG_PER_KG`, `getIomBwMinDaily`, `FIBER_COMPONENT_DV_RATIO`) |
 | Highlights / editor modes | `updateDayHighlights`, `highlightedHtml`, `highlightedDayHtml`, `highlightServingMultipliersHtml`, `setDayEditorMode`, `updateDayEditorMode`, `backdropCaretRect`, `caretIndexFromBackdropPoint`, `setDayInputSelection`, `dayHighlightsEnabled` + `loadDayHighlightsPreference`/`saveDayHighlightsPreference`/`setDayHighlightsEnabled`/`syncDayHighlightsToggleUi`, `refreshAll`, `syncScroll` |
-| Unmatched lines | `unmatchedDayLines`, `allUnmatchedDayLines`, `weekUnmatchedLinesHtml`, `updateWeekUnmatchedLines`, `anyDayTextareaFocused` |
+| Today weekday | `todayDayId`, `markTodayDay` (`.day--today` + `aria-current="date"`) |
+| Unmatched lines | `unmatchedDayLines`, `allUnmatchedDayLines`, `weekUnmatchedLinesHtml`, `weekUnmatchedCarouselHtml`, `renderWeekUnmatchedLines`, `updateWeekUnmatchedLines`, `stepUnmatchedCarousel`, `toggleUnmatchedCarousel`, `focusDayLine` |
 | Food-name suggestions | `updateDaySuggest`, `foodSuggestMatches`, `applyDayFoodSuggest`, `hideDaySuggest`, `DAY_SUGGEST_MAX`; per-item fit/scroll: `fitDaySuggestItemLabel`, `updateDaySuggestItemHover`, `bindDaySuggestHover`, `bindDaySuggestResize`, `daySuggestItemScrollTo`, `daySuggestItemUpdateChevrons` |
 | Food notes (toolbar) | `loadFoodNotesDefinitions`, `normalizeFoodNotesDefinitions`, `detectedFoodNotes`, `updateDayFoodNotesUi`, `dayFoodNotesLabelsHtml`, `showDayFoodNotesPopoverForIndex`, `initDayFoodNotesEvents`, `foodNotesDefinitions`, `FOOD_NOTES_URL` |
 | Starter guide | `maybeShowStarterGuideImportStep`, `advanceStarterGuideAfterImport`, `showStarterGuideStep`, `repositionStarterGuide`, `dismissStarterGuide`, `hideStarterGuide`, `starterGuideEligible`, `starterGuideStep` |
 | Day editor height | `loadDayEditorHeight`, `saveDayEditorHeight`, `applyDayEditorHeight`, `bindDayEditorResize`, `clampDayEditorHeight` |
 | Persistence | `saveFoodDefinitions`, `loadFoodDefinitions`, `saveDayNotes`, `loadDayNotes` |
-| Day meals | `exportAllDayMeals`, `applyImportAllDayMealsReplace`, `getImportAllMealsMissingMode` (`empty` \| `keep`), `clearDayNotes`, `clearAllDayNotes`, `anyDayHasNotes` |
+| Day meals | `exportAllDayMeals`, `applyImportAllDayMealsReplace`, `getImportAllMealsMissingMode` (`empty` \| `keep`), `importSampleMeals`, `confirmImportSampleMealsReplace`, `clearDayNotes`, `clearAllDayNotes`, `anyDayHasNotes` |
 
 ## Data lifecycle
 
@@ -109,17 +112,22 @@ new RegExp("\\b" + escapeRegex(name) + "\\b", "gi")
 
 - **Weekly average view** (default): average daily amount = week sum ÷ `DAYS.length` (7). **% target** comes from `microNutrientTargetPct(key, avgDaily)`, which picks the first available reference: **FDA % DV** (`dailyDv` → `getDailyMicroDv`, e.g. female iron 18 mg, male 8 mg), else **IOM body-weight minimum** (`iomBwMinPct`, amino acids; needs body weight set), else **study min** (`STUDY_MIN_MICRO_REFS`; `limiting: false`, higher % = better — e.g. glycine 10 g/day for collagen synthesis), else **study max** (`STUDY_MAX_MICRO_REFS`; `limiting: true` so high = red), else unscored (`NO_STANDALONE_REF_MICRO_KEYS`). Rendered by `renderMicroWeeklyList` into `#dashboard-micro-list`.
 - **Target-ref badge** — each row shows a `.dashboard__target-ref` badge (`data-target-ref` = `dv` | `iom` | `studyMin` | `studyMax` | `none`) whose click toggles `#target-ref-popover` explaining which reference and amount is used (`showTargetRefPopover` / `targetRefDetailHtml`). Bound once via `initTargetRefPopoverEvents` on the micro list, daily grid, and longevity content.
-- **Condition focus / intake filter** (`MICRO_CONDITION_FOCUS` + `MICRO_INTAKE_FILTER`, `#dashboard-micro-condition-toggle`): filters rows to condition-relevant micros (+ optional `longevityNutrients` such as `creatine`, `saturatedFat`, `glycemicIndex` for **Hair loss**), or to poorly-/well-absorbed sets (`poorlyAbsorbed` uses `microRequiresDailyIntake`). Adds a **Focus:** section at top of explain modals when JSON has matching condition key. Session-only condition id (not persisted); **weekly/daily view** and **Show targets** are persisted (`STORAGE_KEY_MICRO_VIEW_DAILY`, `STORAGE_KEY_MICRO_SHOW_DV`). Condition-specific tip asides: `#micro-tip-caffeine` (hidden when any filter active), `#micro-tip-cataracts`, `#micro-tip-hair-loss`.
+- **Condition focus / intake filter** (`MICRO_CONDITION_FOCUS` + `MICRO_INTAKE_FILTER`, `#dashboard-micro-condition-toggle`): filters rows to condition-relevant micros (+ optional `longevityNutrients` such as `creatine`, `saturatedFat`, `glycemicIndex` for **Hair loss**), or to poorly-/well-absorbed sets (`poorlyAbsorbed` uses `microRequiresDailyIntake`). Adds a **Focus:** section at top of explain modals when JSON has matching condition key. Session-only condition id (not persisted); **weekly/daily view** and **Daily Targets** are persisted (`STORAGE_KEY_MICRO_VIEW_DAILY`, `STORAGE_KEY_MICRO_SHOW_DV`). Condition-specific tip asides: `#micro-tip-caffeine` (hidden when any filter active), `#micro-tip-cataracts`, `#micro-tip-hair-loss`.
+- **Sticky chrome** (`#dashboard-micro-sticky`): title **Micro Requirements**, view segments, **Daily Targets** toggle, disclosures for **Highlight** / **Filter** / **Poor storage / daily intake** / **One-day excess consumption**, and `#dashboard-micro-close` (closes the panel). Same Highlight/Filter/daily/acute option panels are mirrored on `#dashboard-longevity-nav` and share state.
+- **Sticky Filter** (`filterStickyDailyIntake` / `filterStickySideEffects` / `filterStickyAdverseEffects`, persisted): OR-combine — when any are on, `microKeyMatchesStickyFilter` keeps only rows that match at least one selected criterion (daily-intake keys and/or acute S/E / A/E entries). Clear × via `clearStickyIconFilters`. Re-renders micro + longevity via `refreshStickyIconFilterViews`.
+- **Sticky Highlight** (`highlightSticky*`, persisted): OR-combine free toggles; `syncStickyIconHighlightUi` sets body classes `highlight-daily-intake-icons` / `highlight-side-effects` / `highlight-adverse-effects` so matching icons render in red (Highlight also forces those icon types visible). Clear × via `clearStickyIconHighlights`.
+- **Icon show toggles:** **Poor storage / daily intake** → `showDailyIntakeIcons` (default on, body `show-daily-intake-icons`); **One-day excess** → `showAcuteSideEffects` / `showAcuteAdverseEffects` (body `show-acute-side-effects` / `show-acute-adverse-effects`). Acute icons are `display: none` until their show or highlight class is on.
 - **My food** bar-chart button on each row (`microSourcesIconHtml`, `data-micro-sources`) opens `#micro-sources-modal` — ranked matched foods with per-hit calculations; scope select (week or single day). Requirements block (`microSourcesRequirementsHtml`) lists FDA daily/weekly, IOM bw min (daily/weekly when weight set), and study-max references.
-- **Daily intake icon** — pill button (`.dashboard__micro-daily-intake-btn`, `data-micro-daily-intake`) appears next to **My food** when `NutrientsDemographicDv.requiresDailyIntake(key)` is true (keys listed in `DAILY_INTAKE_MICRO_KEYS` in `demographic-dv.js` — fiber + soluble/insoluble fiber, water-soluble vitamins except B12, steady electrolytes/minerals, choline, essential amino acids, ALA). Click toggles `#micro-daily-intake-popover` (fixed tooltip) explaining that poor body storage makes weekly ÷7 averaging misleading; does not open the sources modal. Hidden on re-render, outside click, and scroll (`hideMicroDailyIntakePopover`).
-- **Each-day view** (`setMicroViewDaily(true)`, persisted): `renderMicroDailyGrid` builds a per-day grid into `#dashboard-micro-daily-grid`; a **More nutrients** control reveals the `MICRO_EXTENDED_FIELDS` rows plus longevity keys referenced by any `MICRO_CONDITION_FOCUS.longevityNutrients`.
-- **Show targets** (`showMicroDailyDv`, `#dashboard-micro-dv-toggle`, label “Show targets”, persisted): appends the daily requirement text (`microTargetReqText` / `microTargetReqAmountText`).
+- **Daily intake icon** — pill button (`.dashboard__micro-daily-intake-btn`, `data-micro-daily-intake`) appears next to **My food** when `NutrientsDemographicDv.requiresDailyIntake(key)` is true (keys in `DAILY_INTAKE_MICRO_KEYS`) **and** `showDailyIntakeIcons` is on. Click toggles `#micro-daily-intake-popover`. Hidden on re-render, outside click, and scroll (`hideMicroDailyIntakePopover`).
+- **Acute toxicity icons** — `appendMicroDailyIntakeIconHtml` also appends S/E and/or A/E warning buttons from `ACUTE_TOXICITY_BY_MICRO` (`microAcuteToxicityIconsHtml`). Click opens `#micro-acute-toxicity-popover` listing effect strings. `sideEffects` = uncomfortable reactions; `adverseEffects` = serious medical outcomes.
+- **Each-day view** (`setMicroViewDaily(true)`, persisted): `renderMicroDailyGrid` builds a per-day grid into `#dashboard-micro-daily-grid`; today’s column uses `.dashboard__card--today` via `todayDayId()`. A **More nutrients** control reveals the `MICRO_EXTENDED_FIELDS` rows plus longevity keys referenced by any `MICRO_CONDITION_FOCUS.longevityNutrients`.
+- **Daily Targets** (`showMicroDailyDv`, `#dashboard-micro-dv-toggle`, label group **Daily Targets** / button “Show daily targets”, persisted): appends the daily requirement text (`microTargetReqText` / `microTargetReqAmountText`).
 - **% color/weight** from `config.json` `microDvStatus.tiers` via `tierForMicroPct` / `microPctInlineStyle`; limiting refs (study max) use the inverted scale.
 - **Learn more:** each nutrient row carries `data-micro-def`; click opens `openMicroDefModal`.
 
-**Derived rows** — `MICRO_DERIVED_DEFS.insolubleToSolubleFiber` renders after `insolubleFiber`: `microDerivedAmtText` shows the average `insoluble:soluble` ratio and `microDerivedRowTargetDisplay` → `insolubleToSolubleFiberTargetPct` scores closeness to the 3:1 ideal (100% at exactly 3:1, falling off either side).
+**Derived rows** — `MICRO_DERIVED_DEFS` includes `insolubleToSolubleFiber2To1` (`idealRatio: 2`) and `insolubleToSolubleFiber` (`idealRatio: 3`) after the fiber fields: `microDerivedAmtText` shows the average `insoluble:soluble` ratio and `microDerivedRowTargetDisplay` → `insolubleToSolubleFiberTargetPct` scores closeness to that ideal (100% at exact match, falling off either side).
 
-Toggle/view state for weekly vs each-day and Show targets is **persisted**; demographic + body weight are persisted separately.
+Toggle/view state for weekly vs each-day, Daily Targets, icon show/filter/highlight is **persisted**; demographic + body weight are persisted separately.
 
 **Vitamin K breakdown** — total `vitaminK` keeps FDA % DV (120 mcg male / 90 female). Optional subforms `vitaminK1`, `vitaminK2`, `vitaminK2MK4`, `vitaminK2MK7` live in `micros`, bridge to longevity (`longevity: true`), and are listed in `NO_STANDALONE_REF_MICRO_KEYS` (tracked, not independently scored). `vitaminK2MK4` is in `DAILY_INTAKE_MICRO_KEYS` (short half-life). Explain modals append `vitaminKKeyDifferencesHtml` for K1/K2; calcification section adds K2/MK-4/MK-7 tip asides.
 
@@ -127,18 +135,21 @@ Toggle/view state for weekly vs each-day and Show targets is **persisted**; demo
 
 `longevityTotalsFromText` mirrors matching for `LONGEVITY_FIELDS` (and the micro keys reused via `LONGEVITY_FROM_MICRO` / `LONGEVITY_COMPOUNDS_FROM_MICRO`).
 
-**`renderLongevityPanel`** builds sections from `LONGEVITY_GROUPS` plus derived blocks (see `LONGEVITY_SECTION_DEFS` — includes bone density, calcification, TMAO, glycemic):
+**`renderLongevityPanel`** builds sections from `LONGEVITY_GROUPS` plus derived blocks (see `LONGEVITY_SECTION_DEFS` / `LONGEVITY_NAV_SECTIONS_CORE` — includes bone density, calcification, TMAO, glycemic, Gray hair, Aches, Brain):
 
 - Groups from `LONGEVITY_GROUPS` (the `group` field on each `LONGEVITY_FIELDS` entry): **Fats & cholesterol** (includes `plantSterols`, 2 g/day DV; also lists micro-sourced LDL helpers via `LONGEVITY_FATS_AIM_FROM_MICRO` and omega triglyceride rows via `LONGEVITY_FATS_AIM_FROM_LONGEVITY` + derived EPA+DHA), **Omega fatty acids**, **Glutathione support**, **DNA repair support**, **Longevity & inflammation compounds** (includes limiting `creatine`), **Carb quality**. (The micros modal `initLongevityForm` skips the `glutathione` group since those come from micro entries.)
-- **Female hormones** nav sections (`FEMALE_HORMONE_NAV_SECTIONS`) surface only for the female demographic.
+- **Female / male hormones** nav sections (`FEMALE_HORMONE_NAV_SECTIONS` / `MALE_HORMONE_NAV_SECTIONS` via `getLongevityHormoneNavSections`) surface for the matching demographic.
 - **Micronutrients from food**, **Bone density**, **Calcification & vascular balance** — repeat micro/longevity entries so users reason in one place (calcification lists K total + K1/K2/MK-4/MK-7 separately; K2 subform tips via `calcificationVitaminK2TipHtml` / `calcificationVitaminK2SubformsTipHtml`).
+- **Gray hair** (`sectionGrayHair`) — deficiency micros (`LONGEVITY_GRAY_HAIR_DEFICIENCY_FROM_MICRO`), thyroid-related micros (`LONGEVITY_GRAY_HAIR_THYROID_FROM_MICRO`), plus jumps/reuses of Stress resilience nutrient sets; tip `grayHairTipHtml`.
+- **Aches** (`sectionAches`) — vitamin D status, anti-inflammatory (micro + longevity), **Omega-6 : Omega-3** derived ratio row, joint lubrication, age-related subgroups (`LONGEVITY_ACHES_*`); tips `achesVitaminDTipHtml` / `achesAntiInflammatoryTipHtml` / etc.
+- **Staying sharp & lowering dementia risk** (`sectionBrainLongevity`) — brain micros/longevity (`LONGEVITY_BRAIN_FROM_MICRO` / `_FROM_LONGEVITY`) plus **Astrocyte support** subgroups (`LONGEVITY_BRAIN_ASTROCYTE_*`); tips `brainLongevityTipHtml` / `brainAstrocyteSupportTipHtml`.
 - **Visceral fat** (`sectionVisceralFat`) — antioxidant rows from micro (`LONGEVITY_VISCERAL_FAT_ANTIOXIDANTS_FROM_MICRO`) and longevity compounds including **carotenoids** (`LONGEVITY_VISCERAL_FAT_ANTIOXIDANTS_FROM_LONGEVITY`); tips via `visceralFatBuildupTipHtml` / `visceralFatMobilizationTipHtml` / `visceralFatGlpTipHtml`.
 - **TMAO balance** — precursors vs lowering factors; inline tips link to `#tmao-protectors-tip-modal`.
 - **Derived scores** (`LONGEVITY_DERIVED_DEFS`): omega-6:omega-3 ratio, saturated:unsaturated ratio, EPA+DHA, glycemic load.
 - **Glycemic load & GI distribution** — `renderLongevityGiBuckets`; GL rows use color by GI tier.
-- **Section nav** — sticky `#dashboard-longevity-nav` (prev/next + “All topics”) scroll-spies `#dashboard-longevity-content` sections; URL hash `#longevity/{sectionDefKey}` deep-links (`applyInitialLongevityHash` at boot, `setLongevityNavHash` on nav).
+- **Section nav** — sticky `#dashboard-longevity-nav` (title **Longevity**, `#dashboard-longevity-close`, shared sticky icon options, prev/next + “All topics”) scroll-spies `#dashboard-longevity-content` sections; URL hash `#longevity/{sectionDefKey}` deep-links (`applyInitialLongevityHash` at boot, `setLongevityNavHash` on nav).
 - **Level bars** — `longevityBarHtml` wraps fill + optional **100% reference notch** (`.dashboard__longevity-bar-notch`): shown when the row has a scored reference (`longevityBarShowsRefNotch`); hover/focus popover displays the daily reference amount (`longevityBarRefPopoverLabel`).
-- **My food** icons on rows (`longevitySourcesIconHtml`, `data-longevity-sources`) open `#longevity-sources-modal` with ranked contributions; glycemic load uses special GL-per-serving ranking. Rows whose `sourcesKey` is in `DAILY_INTAKE_MICRO_KEYS` also get the daily-intake pill icon (same popover as the micro panel).
+- **My food** icons on rows (`longevitySourcesIconHtml`, `data-longevity-sources`) open `#longevity-sources-modal` with ranked contributions; glycemic load uses special GL-per-serving ranking. Rows whose `sourcesKey` is in `DAILY_INTAKE_MICRO_KEYS` also get the daily-intake pill icon (and acute icons via the same append helper as the micro panel). Sticky Filter also applies to longevity rows that have a micro/acute key.
 
 **Carotenoids** — stored under `longevity.carotenoids` (mg); DV 15 mg/day. When not set on a food, `resolveLongevityValue` estimates mg from `micros.vitaminA` when vit A > 50 mcg (÷ 100). Ranked sources and panel totals use `resolveLongevityValue`, not raw `kw.longevity.carotenoids`.
 
@@ -214,7 +225,12 @@ Demographic + TDEE + body weight live in **`#settings-modal`** (header `#setting
 | `nutrients-day-editor-height` | Pixel height string for all `.day__editor` boxes (clamped 6rem–80vh) |
 | `nutrients-day-highlights` | `"on"` / `"off"` — food highlighting pen toggle (default on) |
 | `nutrients-micro-view-daily` | `"true"` / `"false"` — micro panel each-day grid vs weekly average list |
-| `nutrients-micro-show-dv` | `"true"` / `"false"` — micro panel **Show targets** (requirement text on rows) |
+| `nutrients-micro-show-dv` | `"true"` / `"false"` — micro panel **Daily Targets** (requirement text on rows) |
+| `nutrients-show-acute-side-effects` | `"true"` / `"false"` — show S/E acute icons (body class `show-acute-side-effects`) |
+| `nutrients-show-acute-adverse-effects` | `"true"` / `"false"` — show A/E acute icons (body class `show-acute-adverse-effects`) |
+| `nutrients-show-daily-intake-icons` | `"true"` / `"false"` — show daily-intake icons (default on; body `show-daily-intake-icons`) |
+| `nutrients-filter-daily-intake` / `nutrients-filter-side-effects` / `nutrients-filter-adverse-effects` | Sticky **Filter** checkboxes (OR-combine) |
+| `nutrients-highlight-daily-intake` / `nutrients-highlight-side-effects` / `nutrients-highlight-adverse-effects` | Sticky **Highlight** toggles (OR-combine; body `highlight-*` classes) |
 | `nutrients-keywords-reorder-open` | `"true"` / `"false"` reorder column visibility |
 | `nutrients-keywords-calories-open` | `"true"` / `"false"` food table g ↔ cal column mode |
 | `nutrients-keywords-page-size` | `"10"`/`"25"`/`"50"`/`"100"`/`"0"` (All); default 25 |
@@ -298,10 +314,12 @@ UI mirror pattern: [AGENTS_CODE_REFERENCE-ui.md](./AGENTS_CODE_REFERENCE-ui.md)
 
 ## Unmatched day-meal lines
 
-Below the week toolbar, `#day-unmatched-lines` (`.week__unmatched-lines`) lists non-empty day-meal lines that don’t exactly match a food definition, so users can spot typos or missing definitions.
+`#day-unmatched-lines` (`.week__unmatched-lines`, `role="status"`) sits below the highlight bar. It surfaces non-empty day-meal lines that don’t exactly match a food definition.
 
-- **Detect** — `unmatchedDayLines(text)` splits on `\n`, skips blank lines, keeps lines where `lineMatchesFoodDefinition(line)` is false (the check strips any `* N` multiplier first). `allUnmatchedDayLines` walks all seven days, tagging `dayLabel` + `lineNum`.
-- **Render** — `updateWeekUnmatchedLines` (from `refreshAll` and `applyDayNoteChange`) builds `weekUnmatchedLinesHtml`; hidden entirely when highlights are off or any day textarea is focused (`anyDayTextareaFocused`).
+- **Detect** — `unmatchedDayLines(text)` splits on `\n`, skips blank lines, keeps lines where `lineMatchesFoodDefinition(line)` is false (the check strips any `* N` multiplier first). `allUnmatchedDayLines` walks all seven days, tagging `dayId`, `dayLabel`, `lineNum`, `text`.
+- **Render** — `updateWeekUnmatchedLines` refreshes `unmatchedCarouselItems` then `renderWeekUnmatchedLines`. Collapsed: **Unmatched (N)** toggle button. Expanded: `weekUnmatchedCarouselHtml` with prev/next, `index / total`, and a **Go to line** card.
+- **Navigate** — `data-unmatched-action`: `toggle` / `prev` / `next` / `jump`. Jump calls `focusDayLine(dayId, lineNum)` (selects that line in the day textarea). State: `unmatchedCarouselOpen`, `unmatchedCarouselIndex` (session-only).
+- **Visibility** — shown whenever any unmatched lines exist (not gated on the pen/highlight mode). Hidden only when the list is empty.
 
 ## Food-name suggestions (day autocomplete)
 
@@ -373,12 +391,13 @@ All seven `.day__editor` boxes share one height.
 | Add plant sterols / creatine | `LONGEVITY_FIELDS` + `DAILY_LONGEVITY_DV` (plantSterols 2 g); creatine is `limiting: true`, no DV |
 | Carotenoids without explicit food value | `resolveLongevityValue` vitamin-A fallback; set `carotenoids: 15` in `longevity-dv.js` |
 | Longevity 100% bar notch | `longevityBarHtml`, `longevityBarShowsRefNotch`, CSS `.dashboard__longevity-bar-notch` |
-| Persist micro panel toggles | `STORAGE_KEY_MICRO_VIEW_DAILY`, `STORAGE_KEY_MICRO_SHOW_DV`, load/save in `boot()` |
+| Persist micro panel toggles | `STORAGE_KEY_MICRO_VIEW_DAILY`, `STORAGE_KEY_MICRO_SHOW_DV`, acute/daily-intake show keys, sticky Filter/Highlight keys; load/save in `boot()` |
 | Condition longevity rows in micro panel | `MICRO_CONDITION_FOCUS.*.longevityNutrients` + `microConditionDisplayFields` |
-| Add derived micro metric | `MICRO_DERIVED_DEFS` + `microDerivedRowTargetDisplay` / `microDerivedAmtText` |
+| Add derived micro metric | `MICRO_DERIVED_DEFS` (see 2:1 and 3:1 fiber ratios) + `microDerivedRowTargetDisplay` / `microDerivedAmtText` |
 | Change fiber soluble/insoluble split | `solubleFiberRatioForFoodName` (name heuristics) + `FIBER_COMPONENT_DV_RATIO` in `demographic-dv.js` |
 | Change food-table page sizes | `keywordsPageSize` options in HTML + `loadKeywordsPageSize` allowlist |
 | Mark micro as daily-intake-only | `demographic-dv.js` → `DAILY_INTAKE_MICRO_KEYS` (+ `requiresDailyIntake`); dashboard adds pill icon via `appendMicroDailyIntakeIconHtml` |
+| Add acute one-day excess effects | `ACUTE_TOXICITY_BY_MICRO` entry (`sideEffects` / `adverseEffects`) |
 | Change longevity DV targets | `longevity-dv.js` → `DAILY_LONGEVITY_DV`; keys must match `LONGEVITY_FIELDS` |
 | New demographic option | `META`, `DAILY_MICRO_DV`, HTML options, `normalizeDemographic` in `demographic-dv.js` |
 | Edit % DV colors | `config.json` (`microDvStatus`, `longevityStatus`) |
@@ -386,7 +405,9 @@ All seven `.day__editor` boxes share one height.
 | Add ranked source metric | contribution builder + `nutrientSourcesListHtml` + panel row `sourcesIconHtml` |
 | Change TDEE / body-type copy | settings modal HTML + `MACRO_BODY_TYPES` + hint modals |
 | Toggle food table cal column | `keywordCaloriesOpen`, `updateKeywordCaloriesUi`, `STORAGE_KEY_CALORIES` |
-| Add longevity section | `LONGEVITY_GROUPS` / `LONGEVITY_SECTION_DEFS` + `renderLongevityPanel` + nav list |
+| Add longevity section | `LONGEVITY_NAV_SECTIONS_CORE` / `LONGEVITY_SECTION_DEFS` + row maps + `renderLongevityPanel` + tip HTML + `definitions-longevity.json` |
+| Emphasize today’s weekday | `todayDayId` / `markTodayDay`; CSS `.day--today` / `.dashboard__card--today` |
+| Sample day meals | `IMPORT_SAMPLE_MEALS_URL` + `importSampleMeals` + `samples/day-meals.json` |
 | Add explanatory text | key entry in `definitions-micronutrients.json` / `definitions-longevity.json` |
 | Change day clear copy | `confirmClearDay`, `confirmClearAllDays` |
 | Tune food suggestions | `DAY_SUGGEST_MAX`, `foodSuggestMatches`, `levenshtein` thresholds |
@@ -397,7 +418,7 @@ All seven `.day__editor` boxes share one height.
 
 ## Event binding & boot (end of `app.js`)
 
-Listeners are attached in the **last ~20%** of the file: keywords table click/input, table search + pagination + sort buttons, per-day `bindDay` loop (focus/blur editor modes, backdrop click-to-caret), `bindDayEditorResize`, dashboard toggles (week/micro/longevity/print + micro view/targets), condition/filter dropdown, target-ref popover (`initTargetRefPopoverEvents`), micros + longevity modals, definition modals (`data-micro-def` / `data-longevity-def`), long food-note modal, demographic options + body-weight input/unit, phosphorus/caffeine tip modals, starter guide dismiss + empty-state sample link, and import/sample modals — see [import doc](./AGENTS_CODE_REFERENCE-import.md).
+Listeners are attached in the **last ~20%** of the file: keywords table click/input, table search + pagination + sort buttons, per-day `bindDay` loop (focus/blur editor modes, backdrop click-to-caret), `bindDayEditorResize`, dashboard toggles (week/micro/longevity/print + micro view/targets), sticky option disclosures (Highlight/Filter/daily/acute) + panel close buttons, unmatched carousel actions, condition/filter dropdown, target-ref + acute + daily-intake popovers (`initTargetRefPopoverEvents`), micros + longevity modals, definition modals (`data-micro-def` / `data-longevity-def`), long food-note modal, demographic options + body-weight input/unit, phosphorus/caffeine tip modals, starter guide dismiss + empty-state sample link, and import/sample food + sample meals modals — see [import doc](./AGENTS_CODE_REFERENCE-import.md).
 
 Boot sequence (very end):
 
@@ -411,8 +432,10 @@ loadAppConfig(function () {
 });
 // boot(): loadFoodDefinitions → loadKeywordReorderOpen → loadKeywordCaloriesOpen →
 //         loadKeywordsPageSize → loadDayNotes → loadDayHighlightsPreference →
-//         loadDayEditorHeight → loadMicroViewDaily → loadShowMicroDailyDv →
-//         syncMicroDailyDvToggleUi / syncMicroViewToggleUi →
+//         loadDayEditorHeight → markTodayDay →
+//         loadMicroViewDaily → loadShowMicroDailyDv →
+//         loadShowAcuteToxicityIcons → loadShowDailyIntakeIcons →
+//         loadStickyIconFilters → loadStickyIconHighlights → sync toggle UIs →
 //         loadDemographic → loadTdee → loadBodyWeight →
 //         renderDemographicUi → syncSettingsTdeeInput / syncSettingsWeightInput →
 //         renderKeywords → initLongevityNav → initTargetRefPopoverEvents →

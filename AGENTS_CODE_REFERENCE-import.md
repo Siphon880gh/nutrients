@@ -2,7 +2,7 @@
 
 > **Approximate locations only** — navigate by function name and region within `app.js` / `index.html`, not line numbers.
 
-JSON import for a **single** food definition row (with AI prompt help), **bulk** export/import for the full list, **sample** import from a bundled file, and the **micro-gaps** AI prompt builder.
+JSON import for a **single** food definition row (with AI prompt help), **bulk** export/import for the full list, **sample food** import from a bundled file, **sample day meals** import, and the **micro-gaps** AI prompt builder.
 
 Parent: [AGENTS_CODE_REFERENCE.md](./AGENTS_CODE_REFERENCE.md) · Table/macros: [AGENTS_CODE_REFERENCE-core.md](./AGENTS_CODE_REFERENCE-core.md)
 
@@ -103,12 +103,34 @@ Used when opening import with AI panel **closed** (`setImportAiPanelOpen(false)`
 
 Empty table copy in `#keywords-empty` also links to sample import via `data-action="import-sample-from-empty"` (delegated click on `#keywords-empty`).
 
+Human/agent authoring guides (not loaded by the app): `GUIDE_ADDING_FOOD.md`, `GUIDE_IMPROVING_FOOD.md`, `GUIDE_ADDING_MULTIVITAMIN.md`. QA helpers: `scripts/run-micro-qa.js`, `scripts/run-plant-sterols-qa.js`, `.agents/skills/qa-definitions-food.json` (writes `samples/definitions-food-qa-checked.json`).
+
 ## Day meals import (`#import-all-meals-modal`)
 
 - `exportAllDayMeals` → `nutrients-day-meals.json`; `openImportAllMealsModal` prefills `exportAllDayMealsJson()`.
 - `parseImportAllDayMealsObject` requires an **object** keyed by day ids (`mon`…`sun`).
 - `getImportAllMealsMissingMode` — radio `import-all-meals-missing`: `empty` (default, clears days not listed) or `keep`.
 - `applyImportAllDayMealsReplace` writes values, confirms via `confirmImportAllDayMealsApply`, then `saveDayNotes`.
+
+## Sample day meals (`#import-sample-meals`)
+
+**`importSampleMeals`** — fetches `IMPORT_SAMPLE_MEALS_URL` (`samples/day-meals.json`), parses with `parseImportAllDayMealsObject`, confirms via `confirmImportSampleMealsReplace` when any day already has notes, then `applySampleDayMealsData(data, true)` (missing days cleared) + `refreshAll`.
+
+Sample shape:
+
+```json
+{
+  "mon": "…",
+  "tue": "…",
+  "wed": "…",
+  "thu": "…",
+  "fri": "…",
+  "sat": "…",
+  "sun": "…"
+}
+```
+
+Button lives in `.week__days-actions` beside Import all / Clear all days.
 
 ## Micro-gaps AI prompt (`#micro-gaps-modal`)
 
@@ -123,6 +145,20 @@ Triggered by **Ask AI to help fill gaps** (`#micro-gaps-ai-open`) inside the mic
 | `renderMicroGapsAiPreview` | Live `<pre>` preview |
 | `copyMicroGapsPromptToClipboard` / `openMicroGapsAiService` | Copy then open ChatGPT/Claude |
 | `closeMicroGapsModal` | — |
+
+## Health timeline AI prompt (`#health-timeline-modal`)
+
+Triggered by **Ask AI: health timeline** (`#health-timeline-ai-open`) beside the micro-gaps button.
+
+| Function | Role |
+|----------|------|
+| `openHealthTimelineModal` | Open modal, build preview |
+| `buildHealthTimelineAiPrompt` | Prompt from current week nutrient snapshot (what happens if intake continues) |
+| `renderHealthTimelineAiPreview` | Live `<pre>` preview |
+| `copyHealthTimelinePromptToClipboard` / open ChatGPT/Claude links | Copy-first then open tab |
+| `closeHealthTimelineModal` | — |
+
+Same ChatGPT/Claude brand-icon pattern as import and micro-gaps panels.
 
 ## Open / close
 
