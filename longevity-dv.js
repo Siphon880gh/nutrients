@@ -35,6 +35,8 @@
     resveratrol: 0,
     coq10: 0,
     sulforaphane: 0,
+    alphaLipoicAcid: 0,
+    glutathione: 0,
     phosphorus: 700,
     choline: 550,
     carnitine: 0,

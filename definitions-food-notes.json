@@ -59,6 +59,11 @@
       "label": "Milk",
       "pattern": "\\bmilk\\b.*¾",
       "note": "¾ Cup Cereals is the likely count when you pour milk over cereals in a bowl (that normally fills water 16oz to the rim) so that about 1cm height breathing room is at the top so you don't have to worry about spilling when consuming"
+    },
+    {
+      "label": "Trifecta Burrito",
+      "pattern": "\\btrifecta.*burrito\\b",
+      "note": "Nutrients include the side of guac vacuum-sealed with the burrito. Calories and macros in the food definition match the nutrition label on the vacuum-sealed tray. If Trifecta later adjusts the ingredients and the label no longer matches, re-base from the new label and add about +75 calories for the guac (the guac is definitely more than that)."
     }
   ]
 }

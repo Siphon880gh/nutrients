@@ -575,6 +575,8 @@
     sectionMicronutrients: { label: "Micronutrients from food" },
     sectionFiber: { label: "Fiber & colon health" },
     sectionThyroid: { label: "Thyroid health" },
+    sectionLiver: { label: "Liver health" },
+    sectionKidney: { label: "Kidney health" },
     sectionGrayHair: { label: "Gray hair" },
     sectionBoneDensity: { label: "Bone density" },
     sectionAches: { label: "Aches" },
@@ -975,6 +977,8 @@
     { label: "Derived scores", sectionDefKey: "sectionDerived" },
     { label: "Fiber & colon health", sectionDefKey: "sectionFiber" },
     { label: "Thyroid health", sectionDefKey: "sectionThyroid" },
+    { label: "Liver health", sectionDefKey: "sectionLiver" },
+    { label: "Kidney health", sectionDefKey: "sectionKidney" },
     { label: "Gray hair", sectionDefKey: "sectionGrayHair" },
     { label: "Bone density", sectionDefKey: "sectionBoneDensity" },
     { label: "Aches", sectionDefKey: "sectionAches" },
@@ -1049,6 +1053,462 @@
 
   var LONGEVITY_THYROID_WATCH_FROM_LONGEVITY = [
     { key: "omega6", label: "Omega-6 (total)", limiting: true },
+  ];
+
+  var LONGEVITY_LIVER_PROTECTIVE_FROM_LONGEVITY = [
+    {
+      key: "alphaLipoicAcid",
+      label: "Alpha-lipoic acid (ALA) — antioxidant protection & detox support",
+      limiting: false,
+    },
+    {
+      key: "glutathione",
+      label: "Glutathione — detoxification & antioxidant balance",
+      limiting: false,
+    },
+  ];
+
+  var LONGEVITY_LIVER_PRECURSORS_FROM_MICRO = [
+    {
+      microKey: "cysteine",
+      label: "Cysteine — glutathione precursor (rate-limiting)",
+      limiting: false,
+    },
+    {
+      microKey: "glycine",
+      label: "Glycine — glutathione building block",
+      limiting: false,
+    },
+    {
+      microKey: "glutamine",
+      label: "Glutamine — glutamate/glutathione precursor pool",
+      limiting: false,
+    },
+    {
+      microKey: "vitaminC",
+      label: "Vitamin C — recycles glutathione & antioxidant defense",
+      limiting: false,
+    },
+    {
+      microKey: "riboflavin",
+      label: "Riboflavin (B2) — glutathione reductase cofactor",
+      limiting: false,
+    },
+    {
+      microKey: "vitaminB6",
+      label: "Vitamin B6 — transsulfuration & glutathione pathway",
+      limiting: false,
+    },
+    {
+      microKey: "selenium",
+      label: "Selenium — glutathione peroxidase cofactor",
+      limiting: false,
+    },
+  ];
+
+  var LONGEVITY_LIVER_CHOLINE_METHYL_FROM_MICRO = [
+    {
+      microKey: "choline",
+      label: "Choline — VLDL fat export; deficiency drives fatty liver",
+      limiting: false,
+    },
+    {
+      microKey: "folate",
+      label: "Folate (B9) — methylation & one-carbon metabolism",
+      limiting: false,
+    },
+    {
+      microKey: "vitaminB12",
+      label: "Vitamin B12 — methylation & methionine cycle",
+      limiting: false,
+    },
+    {
+      microKey: "vitaminB6",
+      label: "Vitamin B6 — homocysteine & sulfur amino-acid metabolism",
+      limiting: false,
+    },
+    {
+      microKey: "methionine",
+      label: "Methionine — SAMe / methylation (adequate, not excess)",
+      limiting: false,
+    },
+  ];
+
+  var LONGEVITY_LIVER_CHOLINE_METHYL_FROM_LONGEVITY = [
+    {
+      key: "betaine",
+      label: "Betaine — methyl donor; studied in NAFLD support",
+      limiting: false,
+    },
+  ];
+
+  var LONGEVITY_LIVER_ANTIOXIDANT_FROM_MICRO = [
+    {
+      microKey: "vitaminE",
+      label: "Vitamin E — lipid antioxidant; studied in NASH",
+      limiting: false,
+    },
+    {
+      microKey: "vitaminC",
+      label: "Vitamin C — regenerates vitamin E & glutathione",
+      limiting: false,
+    },
+    {
+      microKey: "selenium",
+      label: "Selenium — antioxidant enzymes in hepatocytes",
+      limiting: false,
+    },
+    {
+      microKey: "zinc",
+      label: "Zinc — alcohol dehydrogenase & repair enzymes",
+      limiting: false,
+    },
+    {
+      microKey: "magnesium",
+      label: "Magnesium — enzyme cofactor & insulin sensitivity",
+      limiting: false,
+    },
+    {
+      microKey: "vitaminD",
+      label: "Vitamin D — deficiency common with fatty liver",
+      limiting: false,
+    },
+  ];
+
+  var LONGEVITY_LIVER_ANTIOXIDANT_FROM_LONGEVITY = [
+    {
+      key: "polyphenols",
+      label: "Polyphenols — coffee, tea, plants; fatty-liver associations",
+      limiting: false,
+    },
+    {
+      key: "flavonoids",
+      label: "Flavonoids — antioxidant & metabolic support",
+      limiting: false,
+    },
+    {
+      key: "carotenoids",
+      label: "Carotenoids — antioxidant fat-soluble vitamins support",
+      limiting: false,
+    },
+    {
+      key: "curcumin",
+      label: "Curcumin — anti-inflammatory & liver enzyme support",
+      limiting: false,
+    },
+    {
+      key: "sulforaphane",
+      label: "Sulforaphane — Nrf2 / phase-II detox induction",
+      limiting: false,
+    },
+    {
+      key: "resveratrol",
+      label: "Resveratrol — metabolic & antioxidant pathways",
+      limiting: false,
+    },
+    {
+      key: "coq10",
+      label: "Coenzyme Q10 — mitochondrial antioxidant in hepatocytes",
+      limiting: false,
+    },
+  ];
+
+  var LONGEVITY_LIVER_METABOLIC_FROM_MICRO = [
+    {
+      microKey: "fiber",
+      label: "Fiber — weight, glucose, and bile-acid binding",
+      limiting: false,
+    },
+    {
+      microKey: "chromium",
+      label: "Chromium — glucose metabolism support",
+      limiting: false,
+    },
+    {
+      microKey: "biotin",
+      label: "Biotin (B7) — carboxylase / glucose metabolism",
+      limiting: false,
+    },
+    {
+      microKey: "thiamin",
+      label: "Thiamin (B1) — carbohydrate → energy in liver",
+      limiting: false,
+    },
+    {
+      microKey: "niacin",
+      label: "Niacin (B3) — NAD for fuel oxidation (food-level)",
+      limiting: false,
+    },
+    {
+      microKey: "taurine",
+      label: "Taurine — bile acid conjugation & fat handling",
+      limiting: false,
+    },
+  ];
+
+  var LONGEVITY_LIVER_METABOLIC_FROM_LONGEVITY = [
+    {
+      key: "omega3",
+      label: "Omega-3 (total) — triglycerides & hepatic fat",
+      limiting: false,
+    },
+    { key: "epa", label: "EPA — triglyceride lowering", limiting: false },
+    { key: "dha", label: "DHA — membrane & triglyceride support", limiting: false },
+    {
+      key: "monounsaturatedFat",
+      label: "Monounsaturated fat — Mediterranean / liver-friendly pattern",
+      limiting: false,
+    },
+    {
+      key: "carnitine",
+      label: "L-Carnitine — fatty-acid shuttle into mitochondria",
+      limiting: false,
+    },
+  ];
+
+  var LONGEVITY_LIVER_WATCH_FROM_MICRO = [
+    {
+      microKey: "vitaminA",
+      label: "Vitamin A — essential, but excess is hepatotoxic",
+      limiting: false,
+    },
+    {
+      microKey: "iron",
+      label: "Iron — needed, but overload stresses the liver",
+      limiting: false,
+    },
+    {
+      microKey: "copper",
+      label: "Copper — essential; excess accumulates in liver disease",
+      limiting: false,
+    },
+  ];
+
+  var LONGEVITY_LIVER_WATCH_FROM_LONGEVITY = [
+    { key: "saturatedFat", label: "Saturated fat — fatty-liver & lipid risk", limiting: true },
+    { key: "addedSugar", label: "Added sugar — fructose drives hepatic fat", limiting: true },
+    {
+      key: "refinedCarbs",
+      label: "Refined carbohydrates — glycemic & fat-storage load",
+      limiting: true,
+    },
+    { key: "transFat", label: "Trans fat — metabolic & liver burden", limiting: true },
+    { key: "cholesterol", label: "Cholesterol — lipid-related vessel & liver load", limiting: true },
+  ];
+
+  var LONGEVITY_KIDNEY_ELECTROLYTE_WATCH_FROM_MICRO = [
+    {
+      microKey: "sodium",
+      label: "Sodium — lower is better for blood pressure & kidney load",
+      limiting: true,
+    },
+  ];
+
+  var LONGEVITY_KIDNEY_ELECTROLYTE_AIM_FROM_MICRO = [
+    {
+      microKey: "potassium",
+      label: "Potassium — from food when kidney function is normal",
+      limiting: false,
+    },
+  ];
+
+  var LONGEVITY_KIDNEY_BP_FROM_MICRO = [
+    {
+      microKey: "magnesium",
+      label: "Magnesium — modest blood-pressure support",
+      limiting: false,
+    },
+    {
+      microKey: "fiber",
+      label: "Fiber — DASH / plant pattern for blood pressure",
+      limiting: false,
+    },
+    {
+      microKey: "calcium",
+      label: "Calcium — DASH diet blood-pressure pattern",
+      limiting: false,
+    },
+  ];
+
+  var LONGEVITY_KIDNEY_BP_FROM_LONGEVITY = [
+    {
+      key: "nitrate",
+      label: "Nitrate — nitric oxide widens vessels & lowers BP",
+      limiting: false,
+    },
+    {
+      key: "flavonoids",
+      label: "Flavonoids — endothelial & blood-pressure support",
+      limiting: false,
+    },
+    {
+      key: "polyphenols",
+      label: "Polyphenols — vascular support",
+      limiting: false,
+    },
+    {
+      key: "omega3",
+      label: "Omega-3 (total) — vascular & blood-pressure support",
+      limiting: false,
+    },
+  ];
+
+  var LONGEVITY_KIDNEY_GLUCOSE_FROM_MICRO = [
+    {
+      microKey: "magnesium",
+      label: "Magnesium — blood sugar & insulin signaling",
+      limiting: false,
+    },
+    {
+      microKey: "fiber",
+      label: "Fiber — blunts glucose spikes",
+      limiting: false,
+    },
+    { microKey: "vitaminD", label: "Vitamin D — glucose metabolism when deficient", limiting: false },
+    {
+      microKey: "chromium",
+      label: "Chromium — glucose metabolism support",
+      limiting: false,
+    },
+    {
+      microKey: "zinc",
+      label: "Zinc — insulin signaling support",
+      limiting: false,
+    },
+    {
+      microKey: "biotin",
+      label: "Biotin (B7) — glucose metabolism",
+      limiting: false,
+    },
+  ];
+
+  var LONGEVITY_KIDNEY_GLUCOSE_FROM_LONGEVITY = [
+    { key: "epa", label: "EPA — metabolic & inflammatory support", limiting: false },
+    { key: "dha", label: "DHA — metabolic & inflammatory support", limiting: false },
+    {
+      key: "polyphenols",
+      label: "Polyphenols — glucose & vascular support",
+      limiting: false,
+    },
+    {
+      key: "flavonoids",
+      label: "Flavonoids — glucose & endothelial support",
+      limiting: false,
+    },
+  ];
+
+  var LONGEVITY_KIDNEY_GLUCOSE_WATCH_FROM_LONGEVITY = [
+    { key: "addedSugar", label: "Added sugar — glycemic load & kidney stress", limiting: true },
+    {
+      key: "refinedCarbs",
+      label: "Refined carbohydrates — glucose spikes",
+      limiting: true,
+    },
+  ];
+
+  var LONGEVITY_KIDNEY_WEIGHT_CHOL_FROM_MICRO = [
+    {
+      microKey: "fiber",
+      label: "Fiber — satiety, LDL, and weight support",
+      limiting: false,
+    },
+    {
+      microKey: "solubleFiber",
+      label: "Soluble fiber — lowers LDL cholesterol",
+      limiting: false,
+    },
+    {
+      microKey: "niacin",
+      label: "Niacin (B3) — cholesterol balance (food-level)",
+      limiting: false,
+    },
+    {
+      microKey: "vitaminC",
+      label: "Vitamin C — LDL antioxidant support",
+      limiting: false,
+    },
+    {
+      microKey: "vitaminE",
+      label: "Vitamin E — protects LDL from oxidation",
+      limiting: false,
+    },
+  ];
+
+  var LONGEVITY_KIDNEY_WEIGHT_CHOL_FROM_LONGEVITY = [
+    {
+      key: "omega3",
+      label: "Omega-3 (total) — triglyceride & lipid support",
+      limiting: false,
+    },
+    { key: "epa", label: "EPA — triglyceride support", limiting: false },
+    { key: "dha", label: "DHA — triglyceride support", limiting: false },
+    {
+      key: "monounsaturatedFat",
+      label: "Monounsaturated fat — Mediterranean / lipid pattern",
+      limiting: false,
+    },
+    {
+      key: "plantSterols",
+      label: "Plant sterols & stanols — LDL support",
+      limiting: false,
+    },
+  ];
+
+  var LONGEVITY_KIDNEY_WEIGHT_WATCH_FROM_LONGEVITY = [
+    {
+      key: "saturatedFat",
+      label: "Saturated fat — lipid & cardiovascular kidney risk",
+      limiting: true,
+    },
+    {
+      key: "cholesterol",
+      label: "Cholesterol — lipid-related vessel & kidney risk",
+      limiting: true,
+    },
+    { key: "transFat", label: "Trans fat — metabolic & vessel burden", limiting: true },
+    {
+      key: "addedSugar",
+      label: "Added sugar — weight gain & metabolic kidney stress",
+      limiting: true,
+    },
+  ];
+
+  var LONGEVITY_KIDNEY_MICRONUTRIENTS_FROM_MICRO = [
+    {
+      microKey: "magnesium",
+      label: "Magnesium — overall health (do not megadose in CKD)",
+      limiting: false,
+    },
+    {
+      microKey: "vitaminD",
+      label: "Vitamin D — bone & metabolic health (excess raises calcium risk)",
+      limiting: false,
+    },
+    {
+      microKey: "vitaminB12",
+      label: "Vitamin B12 — methylation & anemia-related needs",
+      limiting: false,
+    },
+    {
+      microKey: "folate",
+      label: "Folate (B9) — methylation & homocysteine",
+      limiting: false,
+    },
+    {
+      microKey: "zinc",
+      label: "Zinc — immune & repair support",
+      limiting: false,
+    },
+    {
+      microKey: "vitaminC",
+      label: "Vitamin C — antioxidant (food-level preferred)",
+      limiting: false,
+    },
+    {
+      microKey: "iron",
+      label: "Iron — needed, but overload stresses organs",
+      limiting: false,
+    },
   ];
 
   var LONGEVITY_GRAY_HAIR_DEFICIENCY_FROM_MICRO = [
@@ -2012,6 +2472,20 @@
       group: "compounds",
     },
     {
+      key: "alphaLipoicAcid",
+      label: "Alpha-lipoic acid (ALA)",
+      unit: "mg",
+      code: "alaa",
+      group: "compounds",
+    },
+    {
+      key: "glutathione",
+      label: "Glutathione",
+      unit: "mg",
+      code: "gsh",
+      group: "compounds",
+    },
+    {
       key: "phosphorus",
       label: "Phosphorus",
       unit: "mg",
@@ -2920,7 +3394,13 @@
       "  - longevity.betaine: wheat bran, beets, spinach; some supplements (mg)"
     );
     lines.push(
-      "  - longevity EPA/DHA/ALA: fatty fish for EPA & DHA; flax/chia/walnuts for ALA"
+      "  - longevity.alphaLipoicAcid: organ meats, spinach, broccoli, tomatoes, Brussels sprouts; also supplements (mg; alpha-lipoic acid — not omega-3 ALA)"
+    );
+    lines.push(
+      "  - longevity.glutathione: asparagus, avocado, spinach, okra, whey; food amounts are modest vs supplements (mg)"
+    );
+    lines.push(
+      "  - longevity EPA/DHA/ALA: fatty fish for EPA & DHA; flax/chia/walnuts for ALA (omega-3 alpha-linolenic acid — not alpha-lipoic acid)"
     );
     lines.push(
       "  - carbQuality: glycemicIndex is per food (0–100+); addedSugar and refinedCarbs in grams"
@@ -5992,6 +6472,136 @@
     );
   }
 
+  function liverHealthTipHtml() {
+    return (
+      '<aside class="dashboard__longevity-processed-note dashboard__longevity-processed-note--section" role="note">' +
+      '<p class="dashboard__longevity-processed-note-text">' +
+      "<strong>Why keep liver health:</strong> The liver stores glycogen, makes bile, clears medications and waste, and produces clotting proteins and albumin. Protecting it supports metabolism, digestion, and long-term risk of fatty liver and liver cancer… " +
+      '<button type="button" class="dashboard__longevity-tip-link" data-longevity-def="sectionLiver" aria-haspopup="dialog">Read more</button>' +
+      "</p>" +
+      '<ol class="dashboard__longevity-processed-note-list">' +
+      "<li><strong>More stable energy and blood sugar.</strong> The liver stores glucose as glycogen and releases it when needed. It also processes fats, proteins, and nutrients from food. Healthy liver function supports normal metabolism, although improving liver health does not automatically cure unexplained fatigue.</li>" +
+      "<li><strong>Proper digestion and nutrient absorption.</strong> The liver produces bile, which helps digest fats and absorb fat-soluble vitamins such as vitamins A, D, E, and K.</li>" +
+      "<li><strong>Normal handling of medications, alcohol, and waste products.</strong> The liver chemically processes many medications and potentially harmful substances so they can be eliminated. Protecting it reduces the risk that these substances accumulate because of impaired liver function.</li>" +
+      "<li><strong>Normal clotting and fluid balance.</strong> The liver produces proteins including clotting factors and albumin. Advanced liver damage can therefore cause abnormal bleeding, swelling, and fluid accumulation.</li>" +
+      "<li><strong>Lower risk of fatty liver progressing.</strong> Preventing or treating fatty liver lowers the chance of inflammation, fibrosis, cirrhosis, liver failure, and liver cancer. For people with excess weight and fatty liver, gradual weight loss and exercise can reduce liver fat; larger sustained losses may improve inflammation and fibrosis.</li>" +
+      "<li><strong>Lower liver-cancer risk.</strong> Keeping the liver free of chronic injury, inflammation, and advanced scarring lowers the long-term chance of hepatocellular carcinoma.</li>" +
+      "</ol>" +
+      "</aside>"
+    );
+  }
+
+  function liverSupplementsTipHtml() {
+    return (
+      '<aside class="dashboard__longevity-processed-note dashboard__longevity-processed-note--section" role="note">' +
+      '<p class="dashboard__longevity-processed-note-text">' +
+      "<strong>Supplements &amp; herbs (not tracked from food):</strong> Common options people use for liver support include milk thistle (silymarin); " +
+      "<strong>NAC</strong> (N-acetylcysteine / N-acetyl-L-cysteine / acetylcysteine)—a glutathione precursor and the hospital antidote for acetaminophen overdose; " +
+      "dandelion root tea (traditional bitter / bile-flow herb); artichoke leaf extract (cynarin—bile and lipid support); and sometimes schisandra, TUDCA, or SAMe. " +
+      "None of these appear as ordinary grocery nutrients, so they have no dashboard rows. Food-trackable alpha-lipoic acid and glutathione still help when you log them. " +
+      "Herbs do not replace choline adequacy, weight management, limiting alcohol and fructose, or medical care… " +
+      '<button type="button" class="dashboard__longevity-tip-link" data-longevity-def="sectionLiver" aria-haspopup="dialog">Read more</button>' +
+      "</p>" +
+      "</aside>"
+    );
+  }
+
+  function kidneyHealthTipHtml() {
+    return (
+      '<aside class="dashboard__longevity-processed-note dashboard__longevity-processed-note--section" role="note">' +
+      '<p class="dashboard__longevity-processed-note-text">' +
+      "<strong>Why kidney health matters:</strong> Kidneys filter waste, balance fluid and electrolytes, help control blood pressure, support red-blood-cell production, and regulate bone minerals. High blood pressure, diabetes, excess weight, and very high protein loads are among the main ways kidneys get stressed over decades… " +
+      '<button type="button" class="dashboard__longevity-tip-link" data-longevity-def="sectionKidney" aria-haspopup="dialog">Read more</button>' +
+      "</p>" +
+      "</aside>"
+    );
+  }
+
+  function kidneyHerbsDirectTipHtml() {
+    return (
+      '<aside class="dashboard__longevity-processed-note dashboard__longevity-processed-note--section" role="note">' +
+      '<p class="dashboard__longevity-processed-note-text">' +
+      "<strong>Herbs traditionally used for kidney support (not tracked from food):</strong> Nettle leaf (Urtica dioica), dandelion leaf/root, marshmallow root, cornsilk, and chanca piedra appear in traditional kidney and urinary formulas. Evidence quality varies; some act as mild diuretics. They are not grocery-tracked nutrients and are not a substitute for medical care—especially with CKD, where “kidney cleanse” herbs can be unsafe… " +
+      '<button type="button" class="dashboard__longevity-tip-link" data-longevity-def="sectionKidney" aria-haspopup="dialog">Read more</button>' +
+      "</p>" +
+      "</aside>"
+    );
+  }
+
+  function kidneyHerbsBloodPressureTipHtml() {
+    return (
+      '<aside class="dashboard__longevity-processed-note dashboard__longevity-processed-note--section" role="note">' +
+      '<p class="dashboard__longevity-processed-note-text">' +
+      "<strong>Herbs that support blood pressure (and thereby ease kidney stress):</strong> High blood pressure damages the kidneys’ filtering units over time. Hibiscus (Hibiscus sabdariffa) tea, garlic, hawthorn, and beetroot-style nitrate support are commonly discussed for blood-pressure patterns. Lowering pressure reduces how hard the kidneys must work—herbs do not replace prescribed BP medicines… " +
+      '<button type="button" class="dashboard__longevity-tip-link" data-longevity-def="sectionKidney" aria-haspopup="dialog">Read more</button>' +
+      "</p>" +
+      "</aside>"
+    );
+  }
+
+  function kidneyHerbsBloodGlucoseTipHtml() {
+    return (
+      '<aside class="dashboard__longevity-processed-note dashboard__longevity-processed-note--section" role="note">' +
+      '<p class="dashboard__longevity-processed-note-text">' +
+      "<strong>Herbs that support blood glucose (and thereby ease kidney stress):</strong> Diabetes is a leading cause of chronic kidney disease. Berberine, cinnamon, fenugreek, and bitter melon are often used for glucose support. Steadier blood sugar reduces the glycemic and vascular stress that injures kidney filters—still not a substitute for diabetes care… " +
+      '<button type="button" class="dashboard__longevity-tip-link" data-longevity-def="sectionKidney" aria-haspopup="dialog">Read more</button>' +
+      "</p>" +
+      "</aside>"
+    );
+  }
+
+  function kidneyHerbsWeightTipHtml() {
+    return (
+      '<aside class="dashboard__longevity-processed-note dashboard__longevity-processed-note--section" role="note">' +
+      '<p class="dashboard__longevity-processed-note-text">' +
+      "<strong>Herbs that support normal weight (and thereby ease kidney stress):</strong> Excess weight raises blood pressure, insulin demand, and kidney filtration workload. Green tea (EGCG), fiber supplements such as glucomannan, and cayenne/capsaicin appear in weight-support formulas. Gradual weight loss protects kidneys more reliably than any herb alone… " +
+      '<button type="button" class="dashboard__longevity-tip-link" data-longevity-def="sectionKidney" aria-haspopup="dialog">Read more</button>' +
+      "</p>" +
+      "</aside>"
+    );
+  }
+
+  function kidneyPotassiumFoodTipHtml() {
+    return (
+      '<aside class="dashboard__longevity-processed-note dashboard__longevity-processed-note--section" role="note">' +
+      '<p class="dashboard__longevity-processed-note-text">' +
+      "<strong>Potassium from food—when kidney function is normal:</strong> Potassium-rich foods such as fruit, vegetables, beans, potatoes, dairy, nuts, and whole grains can support healthy blood pressure, which indirectly protects the kidneys. In people with normal kidney function, excess potassium from ordinary foods is usually eliminated in urine." +
+      "</p>" +
+      "</aside>"
+    );
+  }
+
+  function kidneyPotassiumCkdTipHtml() {
+    return (
+      '<aside class="dashboard__longevity-processed-note dashboard__longevity-processed-note--section" role="note">' +
+      '<p class="dashboard__longevity-processed-note-text">' +
+      "<strong>Potassium caution with CKD or certain medications:</strong> Potassium supplements and potassium-based salt substitutes require caution with CKD or medications such as ACE inhibitors, ARBs, spironolactone, or certain diuretics. Damaged kidneys may be unable to remove potassium safely." +
+      "</p>" +
+      "</aside>"
+    );
+  }
+
+  function kidneyProteinTipHtml() {
+    return (
+      '<aside class="dashboard__longevity-processed-note dashboard__longevity-processed-note--section" role="note">' +
+      '<p class="dashboard__longevity-processed-note-text">' +
+      "<strong>Protein—needed, but excess loads the kidneys:</strong> Protein is essential for muscle, immune function, and tissue repair. But very high-protein diets create more nitrogenous waste for the kidneys to process and may be inappropriate for people with CKD. For CKD not requiring dialysis, NIDDK cites approximately 0.8 g/kg/day as adequate for many adults, although individual needs vary. Animal-protein intake may also need moderation in people prone to kidney stones… " +
+      '<button type="button" class="dashboard__longevity-tip-link" data-longevity-def="sectionKidney" aria-haspopup="dialog">Read more</button>' +
+      "</p>" +
+      "</aside>"
+    );
+  }
+
+  function kidneyMicronutrientCautionTipHtml() {
+    return (
+      '<aside class="dashboard__longevity-processed-note dashboard__longevity-processed-note--section" role="note">' +
+      '<p class="dashboard__longevity-processed-note-text">' +
+      "<strong>Magnesium, vitamin D, and other micronutrients:</strong> These nutrients are needed for overall health, but taking extra amounts does not “strengthen” normal kidneys. High supplement doses can become dangerous when kidney function is reduced because minerals may accumulate. For example, magnesium-toxicity risk rises with impaired kidney function, while excessive vitamin D can cause high calcium and, in extreme cases, kidney failure." +
+      "</p>" +
+      "</aside>"
+    );
+  }
+
   function grayHairTipHtml() {
     return (
       '<aside class="dashboard__longevity-processed-note dashboard__longevity-processed-note--section" role="note">' +
@@ -9000,7 +9610,7 @@
     );
   }
 
-  function longevityRowFromProtein(weekMacro) {
+  function longevityRowFromProtein(weekMacro, label) {
     var total = weekMacro.protein || 0;
     var daily = total / DAYS.length;
     var target = proteinTargetPct(daily);
@@ -9009,7 +9619,7 @@
       ? fmtNum(dailyProteinTargetG()) + " g/day"
       : "";
     return longevityRowHtml(
-      "Protein — satiety & lean mass",
+      label || "Protein — satiety & lean mass",
       amtText,
       target.text,
       target.pct,
@@ -9279,6 +9889,288 @@
           "omega6To3",
           false
         ) +
+        longevityListClose()
+    );
+
+    html += longevitySectionWrap(
+      "Liver health",
+      "sectionLiver",
+      '<p class="dashboard__longevity-note">Tracks liver-protective compounds (alpha-lipoic acid, glutathione) plus choline/methyl donors, antioxidants, and metabolic nutrients that support healthy weight, blood sugar, and triglycerides—grouped here because fatty liver, detoxification capacity, and long-term liver-cancer risk are tightly linked to diet.</p>' +
+        liverHealthTipHtml() +
+        liverSupplementsTipHtml(),
+      longevityListOpen() +
+        longevitySubgroupHtml("Liver-protective compounds", "compounds") +
+        LONGEVITY_LIVER_PROTECTIVE_FROM_LONGEVITY.map(function (item) {
+          var field = longevityFieldByKey(item.key);
+          if (!field) return "";
+          return longevityRowFromLongevityField(field, weekLongevity, weekMicro);
+        }).join("") +
+        longevitySubgroupHtml("Glutathione precursors & recycling — from micro entries", "micro") +
+        LONGEVITY_LIVER_PRECURSORS_FROM_MICRO.map(function (item) {
+          return longevityRowFromMicroKey(
+            item.microKey,
+            item.label,
+            !!item.limiting,
+            weekMicro
+          );
+        }).join("") +
+        longevityNavJumpRowHtml(
+          "sectionGlutathione",
+          "Glutathione support — full precursor & enzyme set"
+        ) +
+        longevitySubgroupHtml("Choline & methyl donors — fatty liver prevention", "micro") +
+        LONGEVITY_LIVER_CHOLINE_METHYL_FROM_MICRO.map(function (item) {
+          return longevityRowFromMicroKey(
+            item.microKey,
+            item.label,
+            !!item.limiting,
+            weekMicro
+          );
+        }).join("") +
+        longevitySubgroupHtml("Choline & methyl donors — from longevity entries", "compounds") +
+        LONGEVITY_LIVER_CHOLINE_METHYL_FROM_LONGEVITY.map(function (item) {
+          var field = longevityFieldByKey(item.key);
+          if (!field) return "";
+          if (!item.limiting && field.limiting) {
+            field = {
+              key: field.key,
+              label: item.label || field.label,
+              unit: field.unit,
+              code: field.code,
+              group: field.group,
+              limiting: false,
+            };
+          }
+          return longevityRowFromLongevityField(field, weekLongevity, weekMicro);
+        }).join("") +
+        longevitySubgroupHtml("Antioxidant & membrane protection — from micro entries", "micro") +
+        LONGEVITY_LIVER_ANTIOXIDANT_FROM_MICRO.map(function (item) {
+          return longevityRowFromMicroKey(
+            item.microKey,
+            item.label,
+            !!item.limiting,
+            weekMicro
+          );
+        }).join("") +
+        longevitySubgroupHtml(
+          "Antioxidant & membrane protection — from longevity entries",
+          "compounds"
+        ) +
+        LONGEVITY_LIVER_ANTIOXIDANT_FROM_LONGEVITY.map(function (item) {
+          return longevityRowFromLongevityOrMicro(item, weekLongevity, weekMicro);
+        }).join("") +
+        longevitySubgroupHtml(
+          "Weight, glucose & triglyceride support — from micro entries",
+          "micro"
+        ) +
+        LONGEVITY_LIVER_METABOLIC_FROM_MICRO.map(function (item) {
+          return longevityRowFromMicroKey(
+            item.microKey,
+            item.label,
+            !!item.limiting,
+            weekMicro
+          );
+        }).join("") +
+        longevitySubgroupHtml(
+          "Weight, glucose & triglyceride support — from longevity entries",
+          "compounds"
+        ) +
+        LONGEVITY_LIVER_METABOLIC_FROM_LONGEVITY.map(function (item) {
+          if (item.key === "omega3") {
+            return longevityRowFromEffectiveOmega3(weekLongevity, weekMicro, item.label);
+          }
+          var field = longevityFieldByKey(item.key);
+          if (!field) return "";
+          if (!item.limiting && field.limiting) {
+            field = {
+              key: field.key,
+              label: item.label || field.label,
+              unit: field.unit,
+              code: field.code,
+              group: field.group,
+              limiting: false,
+            };
+          }
+          return longevityRowFromLongevityField(field, weekLongevity, weekMicro);
+        }).join("") +
+        longevitySubgroupHtml("Caution — excess can burden the liver", "limit") +
+        LONGEVITY_LIVER_WATCH_FROM_MICRO.map(function (item) {
+          return longevityRowFromMicroKey(
+            item.microKey,
+            item.label,
+            !!item.limiting,
+            weekMicro
+          );
+        }).join("") +
+        longevitySubgroupHtml("Watch — lower is better for fatty liver risk", "limit") +
+        LONGEVITY_LIVER_WATCH_FROM_LONGEVITY.map(function (item) {
+          var field = longevityFieldByKey(item.key);
+          if (!field) return "";
+          return longevityRowFromLongevityField(field, weekLongevity, weekMicro);
+        }).join("") +
+        longevitySubgroupHtml("Jump to related metabolic areas", "neutral") +
+        longevityNavJumpRowHtml(
+          "sectionVisceralFat",
+          "Visceral fat — healthy weight & deep abdominal fat"
+        ) +
+        longevityNavJumpRowHtml(
+          "sectionInsulinResistance",
+          "Insulin resistance / sensitivity — diabetes & blood sugar"
+        ) +
+        longevityNavJumpRowHtml(
+          "sectionFats",
+          "Fats & cholesterol — triglycerides & lipid pattern"
+        ) +
+        longevityNavJumpRowHtml(
+          "sectionGlycemic",
+          "Glycemic load & GI distribution"
+        ) +
+        longevityNavJumpRowHtml("sectionFatGain", "Fat gain") +
+        longevityListClose()
+    );
+
+    html += longevitySectionWrap(
+      "Kidney health",
+      "sectionKidney",
+      '<p class="dashboard__longevity-note">Tracks sodium (lower is better), potassium from food when kidneys are healthy, protein load, and the blood-pressure, glucose, weight, and cholesterol nutrients that protect kidneys from chronic stress—plus micronutrients needed for overall health without megadosing when kidney function is reduced.</p>' +
+        kidneyHealthTipHtml() +
+        kidneyHerbsDirectTipHtml() +
+        kidneyHerbsBloodPressureTipHtml() +
+        kidneyHerbsBloodGlucoseTipHtml() +
+        kidneyHerbsWeightTipHtml(),
+      longevityListOpen() +
+        longevitySubgroupHtml("Electrolytes — sodium & potassium", "limit") +
+        LONGEVITY_KIDNEY_ELECTROLYTE_WATCH_FROM_MICRO.map(function (item) {
+          return longevityRowFromMicroKey(
+            item.microKey,
+            item.label,
+            !!item.limiting,
+            weekMicro
+          );
+        }).join("") +
+        longevitySubgroupHtml("Potassium — aim from food when kidneys are healthy", "aim") +
+        kidneyPotassiumFoodTipHtml() +
+        LONGEVITY_KIDNEY_ELECTROLYTE_AIM_FROM_MICRO.map(function (item) {
+          return longevityRowFromMicroKey(
+            item.microKey,
+            item.label,
+            !!item.limiting,
+            weekMicro
+          );
+        }).join("") +
+        kidneyPotassiumCkdTipHtml() +
+        longevitySubgroupHtml("Protein load", "neutral") +
+        kidneyProteinTipHtml() +
+        longevityRowFromProtein(
+          weekMacro,
+          "Protein — essential, but excess raises kidney nitrogen load"
+        ) +
+        longevitySubgroupHtml(
+          "Blood pressure — high BP damages kidney filters",
+          "aim"
+        ) +
+        LONGEVITY_KIDNEY_BP_FROM_MICRO.map(function (item) {
+          return longevityRowFromMicroKey(
+            item.microKey,
+            item.label,
+            !!item.limiting,
+            weekMicro
+          );
+        }).join("") +
+        longevitySubgroupHtml("Blood pressure — from longevity entries", "compounds") +
+        LONGEVITY_KIDNEY_BP_FROM_LONGEVITY.map(function (item) {
+          if (item.key === "omega3") {
+            return longevityRowFromEffectiveOmega3(weekLongevity, weekMicro, item.label);
+          }
+          var field = longevityFieldByKey(item.key);
+          if (!field) return "";
+          return longevityRowFromLongevityField(field, weekLongevity, weekMicro);
+        }).join("") +
+        longevityNavJumpRowHtml(
+          "sectionVascularBloodPressure",
+          "Vascular - Blood Pressure — full sodium / potassium / DASH set"
+        ) +
+        longevitySubgroupHtml(
+          "Blood glucose — diabetes is a leading cause of kidney disease",
+          "aim"
+        ) +
+        LONGEVITY_KIDNEY_GLUCOSE_FROM_MICRO.map(function (item) {
+          return longevityRowFromMicroKey(
+            item.microKey,
+            item.label,
+            !!item.limiting,
+            weekMicro
+          );
+        }).join("") +
+        longevitySubgroupHtml("Blood glucose — from longevity entries", "compounds") +
+        LONGEVITY_KIDNEY_GLUCOSE_FROM_LONGEVITY.map(function (item) {
+          var field = longevityFieldByKey(item.key);
+          if (!field) return "";
+          return longevityRowFromLongevityField(field, weekLongevity, weekMicro);
+        }).join("") +
+        longevitySubgroupHtml("Blood glucose — watch (lower is better)", "limit") +
+        LONGEVITY_KIDNEY_GLUCOSE_WATCH_FROM_LONGEVITY.map(function (item) {
+          var field = longevityFieldByKey(item.key);
+          if (!field) return "";
+          return longevityRowFromLongevityField(field, weekLongevity, weekMicro);
+        }).join("") +
+        longevityNavJumpRowHtml(
+          "sectionInsulinResistance",
+          "Insulin resistance / sensitivity — diabetes & blood sugar"
+        ) +
+        longevityNavJumpRowHtml(
+          "sectionGlycemic",
+          "Glycemic load & GI distribution"
+        ) +
+        longevitySubgroupHtml(
+          "Weight & cholesterol — excess weight and lipids stress kidneys",
+          "aim"
+        ) +
+        LONGEVITY_KIDNEY_WEIGHT_CHOL_FROM_MICRO.map(function (item) {
+          return longevityRowFromMicroKey(
+            item.microKey,
+            item.label,
+            !!item.limiting,
+            weekMicro
+          );
+        }).join("") +
+        longevitySubgroupHtml("Weight & cholesterol — from longevity entries", "compounds") +
+        LONGEVITY_KIDNEY_WEIGHT_CHOL_FROM_LONGEVITY.map(function (item) {
+          if (item.key === "omega3") {
+            return longevityRowFromEffectiveOmega3(weekLongevity, weekMicro, item.label);
+          }
+          var field = longevityFieldByKey(item.key);
+          if (!field) return "";
+          return longevityRowFromLongevityField(field, weekLongevity, weekMicro);
+        }).join("") +
+        longevitySubgroupHtml("Weight & cholesterol — watch (lower is better)", "limit") +
+        LONGEVITY_KIDNEY_WEIGHT_WATCH_FROM_LONGEVITY.map(function (item) {
+          var field = longevityFieldByKey(item.key);
+          if (!field) return "";
+          return longevityRowFromLongevityField(field, weekLongevity, weekMicro);
+        }).join("") +
+        longevityNavJumpRowHtml(
+          "sectionVisceralFat",
+          "Visceral fat — healthy weight & deep abdominal fat"
+        ) +
+        longevityNavJumpRowHtml(
+          "sectionFats",
+          "Fats & cholesterol — triglycerides & lipid pattern"
+        ) +
+        longevityNavJumpRowHtml("sectionFatGain", "Fat gain") +
+        longevitySubgroupHtml(
+          "Magnesium, vitamin D & other micronutrients",
+          "micro"
+        ) +
+        kidneyMicronutrientCautionTipHtml() +
+        LONGEVITY_KIDNEY_MICRONUTRIENTS_FROM_MICRO.map(function (item) {
+          return longevityRowFromMicroKey(
+            item.microKey,
+            item.label,
+            !!item.limiting,
+            weekMicro
+          );
+        }).join("") +
         longevityListClose()
     );
 
@@ -9558,7 +10450,8 @@
     html += longevitySectionWrap(
       "Insulin resistance / sensitivity",
       "sectionInsulinResistance",
-      '<p class="dashboard__longevity-note">Aim for magnesium, fiber, vitamin D, omega-3s, and monounsaturated fat; watch saturated fat, refined carbs, and added sugar. When calorie-dense sources of those fats and fast carbs dominate, that pattern can support fat gain and insulin resistance over time—not from any single meal, but from years of excess.</p>',
+      '<p class="dashboard__longevity-note">Aim for magnesium, fiber, vitamin D, omega-3s, and monounsaturated fat; watch saturated fat, refined carbs, and added sugar. When calorie-dense sources of those fats and fast carbs dominate, that pattern can support fat gain and insulin resistance over time—not from any single meal, but from years of excess.</p>' +
+        kidneyHerbsBloodGlucoseTipHtml(),
       longevityListOpen() +
         longevitySubgroupHtml("Aim — higher % DV is better", "aim") +
         LONGEVITY_INSULIN_FROM_MICRO.map(function (item) {
@@ -9593,6 +10486,7 @@
       "Visceral fat",
       "sectionVisceralFat",
       '<p class="dashboard__longevity-note">Visceral fat is the deep abdominal fat linked to insulin resistance, inflammation, and cardiometabolic risk. Track nutrients below that help reduce buildup, mobilize stored fat for energy, and support gut incretin signaling—alongside exercise, sleep, and stress management.</p>' +
+        kidneyHerbsWeightTipHtml() +
         visceralFatBuildupTipHtml() +
         visceralFatMobilizationTipHtml() +
         visceralFatGlpTipHtml(),
@@ -9673,7 +10567,8 @@
     html += longevitySectionWrap(
       "Fat gain",
       "sectionFatGain",
-      '<p class="dashboard__longevity-note">Age-related fat gain is driven by muscle loss, slower metabolism, gradual loss of insulin sensitivity (cells need more insulin over time), poor sleep, and chronic cortisol—not just calories. These nutrients support the pathways that help you burn fuel and stay leaner over decades; jump links below cover related areas outside this list.</p>',
+      '<p class="dashboard__longevity-note">Age-related fat gain is driven by muscle loss, slower metabolism, gradual loss of insulin sensitivity (cells need more insulin over time), poor sleep, and chronic cortisol—not just calories. These nutrients support the pathways that help you burn fuel and stay leaner over decades; jump links below cover related areas outside this list.</p>' +
+        kidneyHerbsWeightTipHtml(),
       longevityListOpen() +
         longevitySubgroupHtml("Nutrients that support fat from aging", "aim") +
         LONGEVITY_FAT_GAIN_AGING_FROM_MICRO.map(function (item) {
@@ -10124,7 +11019,8 @@
       "Vascular - Blood Pressure",
       "sectionVascularBloodPressure",
       '<p class="dashboard__longevity-note">Potassium can help offset some sodium effects by balancing intake and relaxing blood vessels. In theory, a good target is about twice as much potassium as sodium while keeping sodium under the daily limit—assuming no kidney disease and no ACE inhibitors or other meds that retain potassium. Food\'s naturally occurring nitrates get converted into nitric oxide, which helps widen blood vessels, improve blood flow, and lower blood pressure—both systemically and in the brain; beets are among the best sources.</p>' +
-        vascularBloodPressureTipHtml(),
+        vascularBloodPressureTipHtml() +
+        kidneyHerbsBloodPressureTipHtml(),
       longevityListOpen() +
         longevitySubgroupHtml("Watch — lower % DV is better", "limit") +
         longevityRowFromMicroKey("sodium", "Sodium (main one to control)", true, weekMicro) +

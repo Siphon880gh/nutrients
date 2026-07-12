@@ -1082,10 +1082,132 @@
       "Liver & cheese (preformed vitamin A)"
     ]
   },
+  "sectionLiver": {
+    "enough": [
+      "More stable energy and blood sugar: The liver stores glucose as glycogen and releases it when needed. It also processes fats, proteins, and nutrients from food. Healthy liver function supports normal metabolism, although improving liver health does not automatically cure unexplained fatigue.",
+      "Proper digestion and nutrient absorption: The liver produces bile, which helps digest fats and absorb fat-soluble vitamins such as vitamins A, D, E, and K.",
+      "Normal handling of medications, alcohol, and waste products: The liver chemically processes many medications and potentially harmful substances so they can be eliminated. Protecting it reduces the risk that these substances accumulate because of impaired liver function.",
+      "Normal clotting and fluid balance: The liver produces proteins including clotting factors and albumin. Advanced liver damage can therefore cause abnormal bleeding, swelling, and fluid accumulation.",
+      "Lower risk of fatty liver progressing: Preventing or treating fatty liver lowers the chance of inflammation, fibrosis, cirrhosis, liver failure, and liver cancer. For people with excess weight and fatty liver, gradual weight loss and exercise can reduce liver fat; larger sustained losses may improve inflammation and fibrosis.",
+      "Lower liver-cancer risk: Keeping the liver free of chronic injury, inflammation, and advanced scarring lowers the long-term chance of hepatocellular carcinoma.",
+      "Alpha-lipoic acid (ALA) is claimed to provide antioxidant protection to liver cells and support detoxification. Glutathione is an antioxidant involved in the liver’s normal detoxification processes and antioxidant balance. Track both when you use supplements or foods that list them; also build glutathione capacity with cysteine, glycine, vitamin C, riboflavin, B6, and selenium.",
+      "Supplements & herbs not tracked from food: milk thistle (silymarin) remains the classic hepatoprotective herb. NAC (N-acetylcysteine, also labeled N-acetyl-L-cysteine or acetylcysteine) is a glutathione precursor—hospitals use it for acetaminophen overdose; daily-use liver RCTs are more limited than for silymarin. Dandelion root tea is a traditional bitter used for bile flow, with weaker human evidence than milk thistle. Artichoke leaf extract (cynarin) shows moderate data for bile and lipid support. Other names you may see in formulas: schisandra, TUDCA (tauroursodeoxycholic acid), and SAMe (S-adenosylmethionine). None of these are grocery-food nutrients, so they have no dashboard rows. Standardized alpha-lipoic acid or glutathione supplements can still be logged when labeled. Herbs do not replace choline adequacy, weight management, limiting alcohol and fructose, or medical care.",
+      "Choline is one of the highest-yield nutrients for fatty-liver prevention—deficiency impairs VLDL export of fat from the liver. Pair choline with betaine and B-vitamin methyl donors (folate, B12, B6). Vitamin E has trial data in nonalcoholic steatohepatitis (NASH); omega-3 fats help triglycerides and hepatic fat; fiber, magnesium, chromium, and polyphenols support weight and glucose control that protect the liver.",
+      "Metabolic levers matter as much as “liver herbs”: healthy weight, insulin sensitivity, and lower triglycerides (see Visceral fat, Insulin resistance, and Fats & cholesterol) reduce fatty-liver progression. Limit added sugar (especially fructose), refined carbs, saturated and trans fats, and alcohol. Excess vitamin A, iron, or copper can burden the liver even though each is essential at food-level amounts."
+    ],
+    "tooLow": [
+      "Low choline is a classic driver of fatty liver when intake stays below needs for years—egg yolks, liver, and meat are the densest food sources.",
+      "Low glutathione precursors (cysteine, glycine), selenium, or vitamin C weaken the liver’s antioxidant and detoxification enzyme systems.",
+      "Low fiber, omega-3, magnesium, or polyphenols often travel with weight gain, insulin resistance, and higher triglycerides—the metabolic pattern most linked to nonalcoholic fatty liver disease."
+    ],
+    "tooHigh": [
+      "Very high supplemental vitamin A, iron, or copper can injure hepatocytes; food-level amounts are usually fine, but megadoses and some genetic iron-overload conditions are not.",
+      "High added sugar (especially sugary drinks), refined carbs, and alcohol drive hepatic fat and inflammation even when micronutrient intakes look adequate."
+    ],
+    "foodSources": [
+      "Egg yolks, liver & meat (choline)",
+      "Beets, spinach & wheat bran (betaine)",
+      "Asparagus, avocado, spinach & whey (glutathione / precursors)",
+      "Organ meats, spinach, broccoli & tomatoes (alpha-lipoic acid)",
+      "Brazil nuts (selenium)",
+      "Citrus, peppers & berries (vitamin C)",
+      "Sunflower seeds, almonds & avocado (vitamin E)",
+      "Salmon, sardines & mackerel (omega-3 / triglycerides)",
+      "Coffee, tea, berries & olive oil (polyphenols)",
+      "Broccoli & crucifers (sulforaphane)",
+      "Beans, oats & vegetables (fiber)",
+      "Turmeric with pepper (curcumin)",
+      "Milk thistle (silymarin) — supplement/herb only; not tracked from food",
+      "NAC (N-acetylcysteine / N-acetyl-L-cysteine / acetylcysteine) — supplement only; not tracked from food",
+      "Dandelion root tea — herb/tea only; not tracked from food",
+      "Artichoke leaf extract (cynarin) — supplement only; not tracked from food"
+    ]
+  },
+  "sectionKidney": {
+    "enough": [
+      "Kidneys filter waste, balance fluid and electrolytes, help control blood pressure, support red-blood-cell production, and regulate bone minerals. Protecting them means lowering the chronic stressors that damage filters over decades—especially high blood pressure, diabetes, excess weight, high sodium, and very high protein loads.",
+      "Lower sodium is one of the highest-yield food levers: excess sodium raises blood pressure and kidney filtration workload. Aim under about 2,300 mg/day, or 1,500 mg if you already have high blood pressure (unless your clinician sets a different target).",
+      "Potassium from food—when kidney function is normal: Potassium-rich foods such as fruit, vegetables, beans, potatoes, dairy, nuts, and whole grains can support healthy blood pressure, which indirectly protects the kidneys. In people with normal kidney function, excess potassium from ordinary foods is usually eliminated in urine.",
+      "Potassium caution: Potassium supplements and potassium-based salt substitutes require caution with CKD or medications such as ACE inhibitors, ARBs, spironolactone, or certain diuretics. Damaged kidneys may be unable to remove potassium safely.",
+      "Protein is essential for muscle, immune function, and tissue repair. But very high-protein diets create more nitrogenous waste for the kidneys to process and may be inappropriate for people with CKD. For CKD not requiring dialysis, NIDDK cites approximately 0.8 g/kg/day as adequate for many adults, although individual needs vary. Animal-protein intake may also need moderation in people prone to kidney stones. This dashboard’s protein target uses 0.8 g/kg when body weight is set.",
+      "Blood pressure: High blood pressure damages the kidneys’ filtering units (glomeruli) over time. Magnesium, fiber, calcium (DASH pattern), food nitrates, flavonoids, polyphenols, and omega-3s support a lower-pressure pattern—see also Vascular - Blood Pressure.",
+      "Blood glucose: Diabetes is a leading cause of chronic kidney disease. Fiber, magnesium, chromium, zinc, biotin, vitamin D, EPA/DHA, and polyphenols support steadier glucose; limiting added sugar and refined carbs reduces glycemic stress on kidney filters—see Insulin resistance / sensitivity.",
+      "Weight & cholesterol: Excess weight raises blood pressure, insulin demand, and kidney filtration workload; atherogenic lipids worsen vascular injury that also hits kidneys. Fiber, soluble fiber, omega-3s, monounsaturated fat, and plant sterols support a healthier pattern—see Visceral fat and Fats & cholesterol.",
+      "Magnesium, vitamin D, and other micronutrients are needed for overall health, but taking extra amounts does not “strengthen” normal kidneys. High supplement doses can become dangerous when kidney function is reduced because minerals may accumulate. For example, magnesium-toxicity risk rises with impaired kidney function, while excessive vitamin D can cause high calcium and, in extreme cases, kidney failure.",
+      "Herbs traditionally used for kidney support (not tracked from food): nettle leaf (Urtica dioica), dandelion leaf/root, marshmallow root, cornsilk, and chanca piedra. Evidence quality varies; some act as mild diuretics. Avoid “kidney cleanse” products in CKD without clinician guidance.",
+      "Herbs that support blood pressure (easing kidney stress): hibiscus (Hibiscus sabdariffa) tea, garlic, hawthorn, and beetroot-style nitrate support. Lower pressure reduces how hard the kidneys must work—herbs do not replace prescribed BP medicines.",
+      "Herbs that support blood glucose (easing kidney stress): berberine, cinnamon, fenugreek, and bitter melon. Steadier blood sugar reduces the glycemic and vascular stress that injures kidney filters—not a substitute for diabetes care.",
+      "Herbs that support normal weight (easing kidney stress): green tea (EGCG), fiber supplements such as glucomannan, and cayenne/capsaicin. Gradual weight loss protects kidneys more reliably than any herb alone."
+    ],
+    "tooLow": [
+      "Low potassium from food (when kidneys are healthy) and low magnesium or fiber often travel with higher blood pressure—the main modifiable driver of kidney damage besides diabetes.",
+      "Chronically high sodium with little plant potassium is a common pattern that stresses both blood vessels and kidneys."
+    ],
+    "tooHigh": [
+      "Very high protein intake increases nitrogenous waste the kidneys must clear; megadose magnesium or vitamin D can accumulate or raise calcium when kidney function is reduced.",
+      "Potassium supplements and potassium salt substitutes can cause dangerous hyperkalemia in CKD or with ACE inhibitors, ARBs, spironolactone, or certain diuretics."
+    ],
+    "foodSources": [
+      "Fruit, vegetables, beans, potatoes, dairy, nuts & whole grains (potassium — when kidneys are healthy)",
+      "Limit packaged, restaurant & salted foods (sodium)",
+      "Beans, oats & vegetables (fiber)",
+      "Fatty fish (omega-3)",
+      "Beets, spinach & arugula (nitrate)",
+      "Leafy greens, nuts & seeds (magnesium)",
+      "Fatty fish, egg yolks & fortified dairy (vitamin D)",
+      "Olive oil & avocado (monounsaturated fat)",
+      "Nettle leaf, dandelion, marshmallow root, cornsilk — herb only; not tracked from food",
+      "Hibiscus tea, garlic, hawthorn — BP herbs; not tracked from food",
+      "Berberine, cinnamon, fenugreek, bitter melon — glucose herbs; not tracked from food",
+      "Green tea (EGCG), glucomannan — weight-support herbs/fibers; not tracked from food"
+    ]
+  },
+  "alphaLipoicAcid": {
+    "tooLow": [
+      "Not an essential nutrient with a deficiency disease—low alpha-lipoic acid simply means little from food or supplements.",
+      "Food amounts are small compared with research doses used for antioxidant and metabolic studies."
+    ],
+    "enough": [
+      "Alpha-lipoic acid (ALA) is a sulfur-containing antioxidant claimed to protect liver cells and support detoxification pathways. It is both water- and fat-soluble, so it can work in more compartments than many antioxidants.",
+      "Culinary sources include organ meats and some vegetables (spinach, broccoli, tomatoes, Brussels sprouts). Supplement doses used in trials are far higher than typical food amounts.",
+      "Do not confuse alpha-lipoic acid with omega-3 ALA (alpha-linolenic acid from flax, chia, and walnuts)—they are different compounds tracked under different keys."
+    ],
+    "foodSources": [
+      "Organ meats (kidney, heart, liver)",
+      "Spinach",
+      "Broccoli",
+      "Tomatoes",
+      "Brussels sprouts",
+      "Peas",
+      "Supplements (if used)"
+    ]
+  },
+  "glutathione": {
+    "tooLow": [
+      "Low dietary glutathione and low precursor intake (cysteine, glycine) leave the liver with less raw material for its master antioxidant and phase-II detoxification systems.",
+      "Oral glutathione from food is modest; your body mainly makes it when cysteine, glycine, glutamate, vitamin C, riboflavin, B6, and selenium are available."
+    ],
+    "enough": [
+      "Glutathione is an antioxidant involved in the liver’s normal detoxification processes and antioxidant balance. It conjugates reactive intermediates and helps neutralize peroxides via glutathione peroxidase.",
+      "Track food or supplemental glutathione when labeled; also use the Glutathione support section for precursors and recycling nutrients that raise capacity even when direct glutathione intake is low.",
+      "Asparagus, avocado, spinach, okra, and whey contribute glutathione or precursors; cooking and digestion reduce intact glutathione from food."
+    ],
+    "foodSources": [
+      "Asparagus",
+      "Avocado",
+      "Spinach",
+      "Okra",
+      "Whey protein",
+      "Garlic & onions (sulfur precursors)",
+      "Supplements (if used)"
+    ]
+  },
   "sectionGrayHair": {
     "enough": [
       "Gray hair is often genetic and age-related—but premature graying (canities) is also linked to correctable nutrient gaps and thyroid disease. When deficiency or thyroid dysfunction is the driver, correcting it can halt progression and, in documented cases, restore pigment to new growth. Nutrients alone do not reverse graying driven purely by genetics or permanent melanocyte stem-cell loss.",
       "Vitamin B12 can only reverse gray hair if the greying was caused by a clinically diagnosed B12 deficiency. Folate works the same way: low serum folate is linked to premature graying, and correcting it helps mainly when folate deficiency was the cause. Iron (serum ferritin) is a melanogenesis cofactor—pigment return has been reported after correcting iron-deficiency anemia, not after supplementing when stores are already adequate. Copper is required for tyrosinase and melanin; reversible hypopigmentation is tied to copper deficiency. Zinc and vitamin D show lower serum levels in many premature-graying studies; repletion helps when those labs are low, not as a universal anti-gray pill.",
+      "Copper has the clearest direct relationship because it is needed for tyrosinase, an enzyme involved in melanin production.",
+      "Misconception/Nuance with liver: Alternative health may push working on the liver to improve gray hair, but that is not true. It is only relevant in advanced liver disease, where absorption or processing of vitamin B12, zinc, and copper is affected by the disease as a secondary process—not because the liver absorbs these nutrients for hair pigment directly. The liver helps keep B12 from leaking into the blood or clearing less effectively; in cirrhosis or advanced chronic liver disease, zinc deficiency often correlates although the mechanisms are poorly understood; and copper is regulated by bile.",
       "Thyroid disease—both hypo- and hyperthyroidism—is a recognized comorbidity of premature graying. Iodine supports thyroid hormone production when thyroid status is involved; selenium helps convert T4 to T3. If thyroid markers are off, treat the thyroid first and use the Thyroid health section for the full cofactor set (iron, zinc, tyrosine, vitamin A, omega-3).",
       "Severe or prolonged stress can accelerate graying. Mouse research shows sympathetic (fight-or-flight) nerve activity depletes melanocyte stem cells in the follicle; human studies also link stress with graying that can sometimes reverse when stress falls. Magnesium and vitamin C support adrenal/HPA resilience when stress drains them. Pantothenic acid (B5) has limited pharmacotherapy evidence for premature graying (grade 2A). B6, folate, B12, zinc, and vitamin D help mainly by preventing the deficiency-plus-stress pattern—not by dyeing hair from the inside.",
       "Practical approach: prioritize correcting deficiencies and thyroid disease when present; support stress resilience with food-level magnesium, C, and B vitamins; do not expect dye-like reversal from supplements when genetics or age dominate. Smoking is another modifiable risk factor tied to premature graying in observational studies."

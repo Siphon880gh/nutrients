@@ -2512,6 +2512,19 @@ button.dashboard__micro-day-name:focus-visible {
   margin: 0;
 }
 
+.dashboard__longevity-processed-note-list {
+  margin: 0.55rem 0 0;
+  padding-left: 1.15rem;
+}
+
+.dashboard__longevity-processed-note-list li {
+  margin: 0 0 0.4rem;
+}
+
+.dashboard__longevity-processed-note-list li:last-child {
+  margin-bottom: 0;
+}
+
 .dashboard__longevity-processed-note a {
   color: #2a5f9e;
   font-weight: 600;
