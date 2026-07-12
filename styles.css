@@ -897,6 +897,43 @@ body.show-daily-intake-icons .dashboard__micro-daily-intake-btn {
   gap: 0.15rem 0.35rem;
 }
 
+.dashboard__sticky-filter-wrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.1rem;
+}
+
+.dashboard__sticky-filter-clear {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.15rem;
+  height: 1.15rem;
+  padding: 0;
+  border: 0;
+  border-radius: 3px;
+  background: none;
+  color: #8a8a86;
+  font-size: 0.85rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.dashboard__sticky-filter-clear[hidden] {
+  display: none;
+}
+
+.dashboard__sticky-filter-clear:hover,
+.dashboard__sticky-filter-clear:focus-visible {
+  background: #fce8e8;
+  color: #b42318;
+}
+
+.dashboard__sticky-filter-clear:focus-visible {
+  outline: 2px solid #3d6b9e;
+  outline-offset: 1px;
+}
+
 .dashboard__sticky-options-disclosure {
   display: inline-flex;
   align-items: center;
@@ -934,6 +971,18 @@ body.show-daily-intake-icons .dashboard__micro-daily-intake-btn {
   outline-offset: 1px;
 }
 
+.dashboard__sticky-options-disclosure--active {
+  background: #f0ebe4;
+  color: #4a3f2e;
+  font-weight: 600;
+}
+
+.dashboard__sticky-options-disclosure--active:hover,
+.dashboard__sticky-options-disclosure--active:focus-visible {
+  background: #e8e0d6;
+  color: #3d3428;
+}
+
 .dashboard__sticky-options-panel {
   display: flex;
   flex-direction: column;
@@ -959,6 +1008,37 @@ body.show-daily-intake-icons .dashboard__micro-daily-intake-btn {
   flex-wrap: wrap;
   justify-content: flex-end;
   gap: 0.35rem;
+}
+
+.dashboard__sticky-options-checks {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.3rem;
+}
+
+.dashboard__sticky-options-check {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin: 0;
+  font-size: 0.72rem;
+  line-height: 1.3;
+  color: #5a5a56;
+  cursor: pointer;
+  user-select: none;
+}
+
+.dashboard__sticky-options-check input {
+  width: 0.9rem;
+  height: 0.9rem;
+  margin: 0;
+  accent-color: #7a6a4a;
+  cursor: pointer;
+}
+
+.dashboard__sticky-options-check:hover {
+  color: #333;
 }
 
 .dashboard__sticky-options-toggle {

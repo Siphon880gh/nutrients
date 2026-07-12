@@ -145,8 +145,29 @@
         <nav id="dashboard-micro-sticky" class="dashboard__micro-sticky" aria-label="Micro display options">
           <div class="dashboard__sticky-options">
             <div class="dashboard__sticky-options-disclosures">
+              <span class="dashboard__sticky-filter-wrap">
+                <button type="button" class="dashboard__sticky-options-disclosure" data-sticky-options-toggle data-sticky-filter-disclosure aria-expanded="false" aria-controls="micro-filter-options-panel">Filter</button>
+                <button type="button" class="dashboard__sticky-filter-clear" data-sticky-filter-clear hidden aria-label="Clear filters">×</button>
+              </span>
               <button type="button" class="dashboard__sticky-options-disclosure" data-sticky-options-toggle aria-expanded="false" aria-controls="micro-daily-options-panel">Poor storage / daily intake</button>
               <button type="button" class="dashboard__sticky-options-disclosure" data-sticky-options-toggle aria-expanded="false" aria-controls="micro-acute-options-panel">One-day excess consumption</button>
+            </div>
+            <div id="micro-filter-options-panel" class="dashboard__sticky-options-panel" hidden>
+              <p class="dashboard__sticky-options-note">Show only nutrients that match (combine freely):</p>
+              <div class="dashboard__sticky-options-checks" role="group" aria-label="Filter nutrients">
+                <label class="dashboard__sticky-options-check">
+                  <input type="checkbox" data-sticky-filter="daily" />
+                  <span>Daily intake needed</span>
+                </label>
+                <label class="dashboard__sticky-options-check">
+                  <input type="checkbox" data-sticky-filter="side" />
+                  <span>Side effects (S/E)</span>
+                </label>
+                <label class="dashboard__sticky-options-check">
+                  <input type="checkbox" data-sticky-filter="adverse" />
+                  <span>Adverse effects (A/E)</span>
+                </label>
+              </div>
             </div>
             <div id="micro-daily-options-panel" class="dashboard__sticky-options-panel" hidden>
               <p class="dashboard__sticky-options-note">These nutrients store poorly, so weekly averaging can mislead—aim for steady daily intake.</p>
@@ -221,8 +242,29 @@
           </div>
           <div class="dashboard__sticky-options">
             <div class="dashboard__sticky-options-disclosures">
+              <span class="dashboard__sticky-filter-wrap">
+                <button type="button" class="dashboard__sticky-options-disclosure" data-sticky-options-toggle data-sticky-filter-disclosure aria-expanded="false" aria-controls="longevity-filter-options-panel">Filter</button>
+                <button type="button" class="dashboard__sticky-filter-clear" data-sticky-filter-clear hidden aria-label="Clear filters">×</button>
+              </span>
               <button type="button" class="dashboard__sticky-options-disclosure" data-sticky-options-toggle aria-expanded="false" aria-controls="longevity-daily-options-panel">Poor storage / daily intake</button>
               <button type="button" class="dashboard__sticky-options-disclosure" data-sticky-options-toggle aria-expanded="false" aria-controls="longevity-acute-options-panel">One-day excess consumption</button>
+            </div>
+            <div id="longevity-filter-options-panel" class="dashboard__sticky-options-panel" hidden>
+              <p class="dashboard__sticky-options-note">Show only nutrients that match (combine freely):</p>
+              <div class="dashboard__sticky-options-checks" role="group" aria-label="Filter nutrients">
+                <label class="dashboard__sticky-options-check">
+                  <input type="checkbox" data-sticky-filter="daily" />
+                  <span>Daily intake needed</span>
+                </label>
+                <label class="dashboard__sticky-options-check">
+                  <input type="checkbox" data-sticky-filter="side" />
+                  <span>Side effects (S/E)</span>
+                </label>
+                <label class="dashboard__sticky-options-check">
+                  <input type="checkbox" data-sticky-filter="adverse" />
+                  <span>Adverse effects (A/E)</span>
+                </label>
+              </div>
             </div>
             <div id="longevity-daily-options-panel" class="dashboard__sticky-options-panel" hidden>
               <p class="dashboard__sticky-options-note">These nutrients store poorly, so weekly averaging can mislead—aim for steady daily intake.</p>
