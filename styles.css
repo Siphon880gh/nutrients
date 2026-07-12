@@ -864,6 +864,112 @@ button.dashboard__micro-name:focus-visible {
   margin: 0;
 }
 
+.dashboard__micro-acute-btn {
+  position: relative;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.35rem;
+  height: 1.35rem;
+  padding: 0;
+  border: 1px solid #e2e0dc;
+  border-radius: 4px;
+  background: #fafafa;
+  color: #9a9590;
+  cursor: pointer;
+  margin-left: 3px;
+}
+
+.dashboard__micro-acute-btn:hover,
+.dashboard__micro-acute-btn[aria-expanded="true"] {
+  background: #f5f3f0;
+  border-color: #d4d0ca;
+  color: #6e6860;
+}
+
+.dashboard__micro-acute-btn:focus-visible {
+  outline: 2px solid #3d6b9e;
+  outline-offset: 1px;
+}
+
+.dashboard__micro-acute-btn--adverse {
+  color: #a89890;
+}
+
+.dashboard__micro-acute-btn--adverse:hover,
+.dashboard__micro-acute-btn--adverse[aria-expanded="true"] {
+  color: #7a655c;
+}
+
+.dashboard__micro-acute-icon {
+  display: block;
+}
+
+.dashboard__micro-acute-badge {
+  position: absolute;
+  right: -2px;
+  bottom: -3px;
+  padding: 0 2px;
+  font-size: 0.48rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  line-height: 1.15;
+  color: #8a8580;
+  background: #f7f6f4;
+  border: 1px solid #e4e1dc;
+  border-radius: 2px;
+  pointer-events: none;
+}
+
+.dashboard__micro-acute-btn--adverse .dashboard__micro-acute-badge {
+  color: #8a7468;
+  border-color: #e0d6d0;
+}
+
+.dashboard__micro-acute-popover {
+  position: fixed;
+  z-index: 120;
+  min-width: 12rem;
+  max-width: min(18rem, calc(100vw - 2rem));
+  padding: 0.6rem 0.7rem;
+  font-size: 0.78rem;
+  line-height: 1.45;
+  color: #444;
+  background: #fff;
+  border: 1px solid #d8dce2;
+  border-radius: 6px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+  pointer-events: none;
+}
+
+.dashboard__micro-acute-popover[hidden] {
+  display: none;
+}
+
+.dashboard__micro-acute-popover-text {
+  margin: 0;
+}
+
+.dashboard__micro-acute-popover-heading {
+  margin: 0;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: #6a6560;
+}
+
+.dashboard__micro-acute-popover-lead {
+  margin: 0.35rem 0 0;
+  color: #666;
+}
+
+.dashboard__micro-acute-popover-effects {
+  margin: 0.4rem 0 0;
+  color: #333;
+}
+
 .dashboard__target-ref-popover {
   position: fixed;
   z-index: 120;
@@ -5552,6 +5658,7 @@ button.longevity-form__label-link:focus-visible {
   .dashboard__micro-hint-ai,
   .dashboard__micro-sources-btn,
   .dashboard__micro-daily-intake-btn,
+  .dashboard__micro-acute-btn,
   .dashboard__card-toggle,
   .dashboard__longevity-nav,
   .dashboard__longevity-section-link {
@@ -5649,6 +5756,7 @@ body.print-preview .dashboard__micro-hint-actions,
 body.print-preview .dashboard__micro-hint-ai,
 body.print-preview .dashboard__micro-sources-btn,
 body.print-preview .dashboard__micro-daily-intake-btn,
+body.print-preview .dashboard__micro-acute-btn,
 body.print-preview .dashboard__card-toggle,
 body.print-preview .dashboard__longevity-section-link {
   display: none !important;

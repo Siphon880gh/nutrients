@@ -364,9 +364,95 @@
   var longevitySourcesFullscreen = false;
   var microDailyIntakePopoverEl = document.getElementById("micro-daily-intake-popover");
   var microDailyIntakePopoverAnchor = null;
+  var microAcuteToxicityPopoverEl = document.getElementById(
+    "micro-acute-toxicity-popover"
+  );
+  var microAcuteToxicityPopoverTextEl = document.getElementById(
+    "micro-acute-toxicity-popover-text"
+  );
+  var microAcuteToxicityPopoverAnchor = null;
   var targetRefPopoverEl = document.getElementById("target-ref-popover");
   var targetRefPopoverTextEl = document.getElementById("target-ref-popover-text");
   var targetRefPopoverAnchor = null;
+
+  /**
+   * Nutrients that can cause harm from a single-day excess (often supplements).
+   * sideEffects = uncomfortable GI / sensory reactions; adverseEffects = serious
+   * medical outcomes (confusion, organ failure, cardiac events, death).
+   */
+  var ACUTE_TOXICITY_BY_MICRO = {
+    iron: {
+      sideEffects: ["Nausea", "Vomiting", "Abdominal pain", "Diarrhea"],
+      adverseEffects: ["Metabolic acidosis", "Shock", "Coma", "Death"],
+    },
+    vitaminA: {
+      sideEffects: [
+        "Nausea",
+        "Vomiting",
+        "Headache",
+        "Dizziness",
+        "Blurred vision",
+      ],
+      adverseEffects: [
+        "Increased intracranial pressure",
+        "Liver damage",
+        "Confusion",
+        "Death",
+      ],
+    },
+    vitaminD: {
+      sideEffects: ["Nausea", "Vomiting", "Thirst", "Frequent urination"],
+      adverseEffects: [
+        "Hypercalcemia",
+        "Confusion",
+        "Heart rhythm problems",
+        "Kidney damage",
+      ],
+    },
+    selenium: {
+      sideEffects: ["Nausea", "Vomiting", "Diarrhea", "Garlic-like breath"],
+      adverseEffects: ["Respiratory distress", "Heart failure", "Death"],
+    },
+    copper: {
+      sideEffects: ["Nausea", "Vomiting", "Abdominal pain"],
+      adverseEffects: ["Hemolysis", "Liver failure", "Death"],
+    },
+    zinc: {
+      sideEffects: ["Nausea", "Vomiting", "Stomach cramps", "Metallic taste"],
+    },
+    potassium: {
+      sideEffects: ["Nausea", "Muscle weakness"],
+      adverseEffects: ["Heart arrhythmia", "Heart attack", "Death"],
+    },
+    magnesium: {
+      sideEffects: ["Diarrhea", "Nausea", "Abdominal cramping"],
+      adverseEffects: ["Low blood pressure", "Confusion", "Cardiac arrest"],
+    },
+    niacin: {
+      sideEffects: ["Flushing", "Itching", "Nausea", "Heartburn"],
+    },
+    vitaminC: {
+      sideEffects: ["Diarrhea", "Nausea", "Stomach cramps"],
+    },
+    sodium: {
+      sideEffects: ["Thirst", "Bloating", "Swelling"],
+      adverseEffects: ["Confusion", "Seizures", "Coma"],
+    },
+    iodine: {
+      sideEffects: ["Nausea", "Stomach pain", "Metallic taste", "Diarrhea"],
+    },
+    choline: {
+      sideEffects: [
+        "Fishy body odor",
+        "Sweating",
+        "Salivation",
+        "Low blood pressure",
+      ],
+    },
+    calcium: {
+      sideEffects: ["Constipation", "Nausea", "Stomach upset"],
+    },
+  };
 
   var TARGET_REF_POPOVER_TEXT = {
     fda:
@@ -4889,8 +4975,133 @@
   }
 
   function appendMicroDailyIntakeIconHtml(html, microKey) {
-    if (!microRequiresDailyIntake(microKey)) return html;
-    return html + microDailyIntakeIconHtml();
+    if (microRequiresDailyIntake(microKey)) {
+      html += microDailyIntakeIconHtml();
+    }
+    return html + microAcuteToxicityIconsHtml(microKey);
+  }
+
+  function microAcuteToxicityEntry(microKey) {
+    return ACUTE_TOXICITY_BY_MICRO[microKey] || null;
+  }
+
+  function microAcuteToxicityEffects(entry, kind) {
+    if (!entry) return [];
+    if (kind === "adverse") {
+      return Array.isArray(entry.adverseEffects) ? entry.adverseEffects : [];
+    }
+    return Array.isArray(entry.sideEffects) ? entry.sideEffects : [];
+  }
+
+  function microAcuteToxicityIconHtml(microKey, kind) {
+    var isAdverse = kind === "adverse";
+    var badge = isAdverse ? "A/E" : "S/E";
+    var label = isAdverse
+      ? "Adverse effects of acute excess"
+      : "Side effects of acute excess";
+    var kindClass = isAdverse
+      ? "dashboard__micro-acute-btn--adverse"
+      : "dashboard__micro-acute-btn--side";
+    return (
+      '<button type="button" class="dashboard__micro-acute-btn ' +
+      kindClass +
+      '" data-micro-acute="' +
+      escapeAttr(kind) +
+      '" data-micro-acute-key="' +
+      escapeAttr(microKey) +
+      '" aria-label="' +
+      escapeAttr(label) +
+      '" aria-expanded="false" aria-controls="micro-acute-toxicity-popover" title="' +
+      escapeAttr(label) +
+      '">' +
+      '<svg class="dashboard__micro-acute-icon" viewBox="0 0 16 16" width="12" height="12" aria-hidden="true" focusable="false">' +
+      '<path fill="currentColor" d="M8 1.5 1.25 14h13.5L8 1.5zm0 3.25a.75.75 0 0 1 .75.75v4.5a.75.75 0 0 1-1.5 0V5.5A.75.75 0 0 1 8 4.75zM8 12a.875.875 0 1 0 0-1.75A.875.875 0 0 0 8 12z"></path>' +
+      "</svg>" +
+      '<span class="dashboard__micro-acute-badge" aria-hidden="true">' +
+      badge +
+      "</span></button>"
+    );
+  }
+
+  function microAcuteToxicityIconsHtml(microKey) {
+    var entry = microAcuteToxicityEntry(microKey);
+    if (!entry) return "";
+    var html = "";
+    if (microAcuteToxicityEffects(entry, "side").length) {
+      html += microAcuteToxicityIconHtml(microKey, "side");
+    }
+    if (microAcuteToxicityEffects(entry, "adverse").length) {
+      html += microAcuteToxicityIconHtml(microKey, "adverse");
+    }
+    return html;
+  }
+
+  function positionMicroAcuteToxicityPopover(anchor) {
+    if (!microAcuteToxicityPopoverEl || !anchor) return;
+    var rect = anchor.getBoundingClientRect();
+    microAcuteToxicityPopoverEl.style.left = Math.max(8, rect.left) + "px";
+    microAcuteToxicityPopoverEl.style.top = rect.bottom + 6 + "px";
+  }
+
+  function hideMicroAcuteToxicityPopover() {
+    if (!microAcuteToxicityPopoverEl) return;
+    microAcuteToxicityPopoverEl.hidden = true;
+    if (microAcuteToxicityPopoverAnchor) {
+      microAcuteToxicityPopoverAnchor.setAttribute("aria-expanded", "false");
+      microAcuteToxicityPopoverAnchor = null;
+    }
+  }
+
+  function showMicroAcuteToxicityPopover(btn) {
+    if (
+      !microAcuteToxicityPopoverEl ||
+      !microAcuteToxicityPopoverTextEl ||
+      !btn
+    ) {
+      return;
+    }
+    if (
+      microAcuteToxicityPopoverAnchor === btn &&
+      !microAcuteToxicityPopoverEl.hidden
+    ) {
+      hideMicroAcuteToxicityPopover();
+      return;
+    }
+    var kind = btn.getAttribute("data-micro-acute") || "side";
+    var microKey = btn.getAttribute("data-micro-acute-key") || "";
+    var entry = microAcuteToxicityEntry(microKey);
+    var effects = microAcuteToxicityEffects(entry, kind);
+    if (!effects.length) return;
+    var isAdverse = kind === "adverse";
+    var heading = isAdverse ? "Adverse effects" : "Side effects";
+    var lead = isAdverse
+      ? "Serious outcomes from a single-day excess (often supplements):"
+      : "Uncomfortable reactions from a single-day excess (often supplements):";
+    hideMicroAcuteToxicityPopover();
+    hideMicroDailyIntakePopover();
+    microAcuteToxicityPopoverTextEl.innerHTML =
+      '<p class="dashboard__micro-acute-popover-heading">' +
+      escapeHtml(heading) +
+      "</p>" +
+      '<p class="dashboard__micro-acute-popover-lead">' +
+      escapeHtml(lead) +
+      "</p>" +
+      '<p class="dashboard__micro-acute-popover-effects">' +
+      escapeHtml(effects.join(" · ")) +
+      "</p>";
+    microAcuteToxicityPopoverAnchor = btn;
+    positionMicroAcuteToxicityPopover(btn);
+    microAcuteToxicityPopoverEl.hidden = false;
+    btn.setAttribute("aria-expanded", "true");
+  }
+
+  function handleMicroAcuteToxicityClick(e) {
+    var btn = e.target.closest("[data-micro-acute]");
+    if (!btn) return false;
+    e.preventDefault();
+    e.stopPropagation();
+    showMicroAcuteToxicityPopover(btn);
+    return true;
   }
 
   function positionMicroDailyIntakePopover(anchor) {
@@ -4916,6 +5127,7 @@
       return;
     }
     hideMicroDailyIntakePopover();
+    hideMicroAcuteToxicityPopover();
     microDailyIntakePopoverAnchor = btn;
     positionMicroDailyIntakePopover(btn);
     microDailyIntakePopoverEl.hidden = false;
@@ -7967,6 +8179,7 @@
     if (!dashboardMicroListEl) return;
 
     hideMicroDailyIntakePopover();
+    hideMicroAcuteToxicityPopover();
     hideTargetRefPopover();
     syncMicroDailyDvToggleUi();
     syncMicroViewToggleUi();
@@ -8405,6 +8618,7 @@
     if (!dashboardLongevityContentEl) return;
 
     hideMicroDailyIntakePopover();
+    hideMicroAcuteToxicityPopover();
     var weekLongevity = weekLongevityTotals();
     var weekMicro = weekMicroTotals();
     var weekMacro = weekMacroTotals();
@@ -14165,6 +14379,7 @@
     if (e.target.closest("[data-micro-sources]")) return;
     if (e.target.closest("[data-longevity-sources]")) return;
     if (e.target.closest("[data-micro-daily-intake]")) return;
+    if (e.target.closest("[data-micro-acute]")) return;
     if (e.target.closest(".dashboard__target-ref")) return;
     var microBtn = e.target.closest("[data-micro-def]");
     if (microBtn) {
@@ -14179,6 +14394,7 @@
 
   function handleMicroPanelSourcesClick(e) {
     if (handleMicroDailyIntakeClick(e)) return;
+    if (handleMicroAcuteToxicityClick(e)) return;
     var longevityBtn = e.target.closest("[data-longevity-sources]");
     if (longevityBtn) {
       e.preventDefault();
@@ -14247,6 +14463,7 @@
   if (dashboardLongevityContentEl) {
     dashboardLongevityContentEl.addEventListener("click", function (e) {
       if (handleMicroDailyIntakeClick(e)) return;
+      if (handleMicroAcuteToxicityClick(e)) return;
       if (e.target.closest('[data-action="open-phosphorus-binder-modal"]')) {
         openPhosphorusBinderModal();
         return;
@@ -14748,15 +14965,26 @@
   }
 
   document.addEventListener("click", function (e) {
-    if (!microDailyIntakePopoverAnchor) return;
-    if (e.target.closest("[data-micro-daily-intake]")) return;
-    hideMicroDailyIntakePopover();
+    if (microDailyIntakePopoverAnchor) {
+      if (!e.target.closest("[data-micro-daily-intake]")) {
+        hideMicroDailyIntakePopover();
+      }
+    }
+    if (microAcuteToxicityPopoverAnchor) {
+      if (
+        !e.target.closest("[data-micro-acute]") &&
+        !e.target.closest("#micro-acute-toxicity-popover")
+      ) {
+        hideMicroAcuteToxicityPopover();
+      }
+    }
   });
 
   window.addEventListener(
     "scroll",
     function () {
       hideMicroDailyIntakePopover();
+      hideMicroAcuteToxicityPopover();
     },
     true
   );
