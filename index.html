@@ -42,6 +42,64 @@
       </div>
       <div id="dashboard-grid" class="dashboard__grid"></div>
       <div id="dashboard-micro-panel" class="dashboard__micro-panel" hidden>
+        <nav id="dashboard-micro-sticky" class="dashboard__micro-sticky" aria-label="Micro requirements">
+          <div class="dashboard__micro-sticky-top">
+            <h3 class="dashboard__micro-sticky-title">Micro Requirements</h3>
+          </div>
+          <div class="dashboard__micro-intro-actions">
+            <div class="dashboard__micro-toggle-group" role="group" aria-label="Micro view">
+              <span class="dashboard__micro-toggle-label">View</span>
+              <div class="dashboard__micro-segmented">
+                <button type="button" id="dashboard-micro-view-weekly" class="dashboard__micro-segment" aria-pressed="true">Weekly average</button>
+                <button type="button" id="dashboard-micro-view-daily" class="dashboard__micro-segment" aria-pressed="false">Each day</button>
+              </div>
+            </div>
+            <div class="dashboard__micro-toggle-group" role="group" aria-label="Display options">
+              <span class="dashboard__micro-toggle-label">Daily Targets</span>
+              <button type="button" id="dashboard-micro-dv-toggle" class="dashboard__micro-segment dashboard__micro-segment--solo" aria-pressed="false">Show daily targets</button>
+            </div>
+          </div>
+          <div class="dashboard__sticky-options">
+            <div class="dashboard__sticky-options-disclosures">
+              <span class="dashboard__sticky-filter-wrap">
+                <button type="button" class="dashboard__sticky-options-disclosure" data-sticky-options-toggle data-sticky-filter-disclosure aria-expanded="false" aria-controls="micro-filter-options-panel">Filter</button>
+                <button type="button" class="dashboard__sticky-filter-clear" data-sticky-filter-clear hidden aria-label="Clear filters">×</button>
+              </span>
+              <button type="button" class="dashboard__sticky-options-disclosure" data-sticky-options-toggle aria-expanded="false" aria-controls="micro-daily-options-panel">Poor storage / daily intake</button>
+              <button type="button" class="dashboard__sticky-options-disclosure" data-sticky-options-toggle aria-expanded="false" aria-controls="micro-acute-options-panel">One-day excess consumption</button>
+            </div>
+            <div id="micro-filter-options-panel" class="dashboard__sticky-options-panel" hidden>
+              <p class="dashboard__sticky-options-note">Show only nutrients that match (combine freely):</p>
+              <div class="dashboard__sticky-options-checks" role="group" aria-label="Filter nutrients">
+                <label class="dashboard__sticky-options-check">
+                  <input type="checkbox" data-sticky-filter="daily" />
+                  <span>Daily intake needed</span>
+                </label>
+                <label class="dashboard__sticky-options-check">
+                  <input type="checkbox" data-sticky-filter="side" />
+                  <span>Side effects (S/E)</span>
+                </label>
+                <label class="dashboard__sticky-options-check">
+                  <input type="checkbox" data-sticky-filter="adverse" />
+                  <span>Adverse effects (A/E)</span>
+                </label>
+              </div>
+            </div>
+            <div id="micro-daily-options-panel" class="dashboard__sticky-options-panel" hidden>
+              <p class="dashboard__sticky-options-note">These nutrients store poorly, so weekly averaging can mislead—aim for steady daily intake.</p>
+              <div class="dashboard__sticky-options-toggles" role="group" aria-label="Daily intake icons">
+                <button type="button" class="dashboard__sticky-options-toggle" data-daily-intake-icons-toggle aria-pressed="true">Show icons</button>
+              </div>
+            </div>
+            <div id="micro-acute-options-panel" class="dashboard__sticky-options-panel" hidden>
+              <div class="dashboard__sticky-options-toggles" role="group" aria-label="One-day excess icons">
+                <button type="button" class="dashboard__sticky-options-toggle" data-acute-kind="side" aria-pressed="false">Side effects (S/E)</button>
+                <button type="button" class="dashboard__sticky-options-toggle" data-acute-kind="adverse" aria-pressed="false">Adverse effects (A/E)</button>
+              </div>
+            </div>
+          </div>
+          <button type="button" id="dashboard-micro-close" class="dashboard__panel-close" aria-label="Close micro requirements">×</button>
+        </nav>
         <div class="dashboard__micro-intro">
           <div class="dashboard__micro-hint-block">
             <p id="dashboard-micro-hint" class="dashboard__micro-hint"><span id="dashboard-micro-hint-text">Average daily intake vs your demographic daily values (Mon–Sun). DV's will be low if you dont fill up all days.</span></p>
@@ -99,19 +157,6 @@
               </div>
             </div>
           </div>
-          <div class="dashboard__micro-intro-actions">
-            <div class="dashboard__micro-toggle-group" role="group" aria-label="Micro view">
-              <span class="dashboard__micro-toggle-label">View</span>
-              <div class="dashboard__micro-segmented">
-                <button type="button" id="dashboard-micro-view-weekly" class="dashboard__micro-segment" aria-pressed="true">Weekly average</button>
-                <button type="button" id="dashboard-micro-view-daily" class="dashboard__micro-segment" aria-pressed="false">Each day</button>
-              </div>
-            </div>
-            <div class="dashboard__micro-toggle-group" role="group" aria-label="Display options">
-              <span class="dashboard__micro-toggle-label">Targets</span>
-              <button type="button" id="dashboard-micro-dv-toggle" class="dashboard__micro-segment dashboard__micro-segment--solo" aria-pressed="false">Show targets</button>
-            </div>
-          </div>
         </div>
         <aside class="dashboard__longevity-disclaimer dashboard__panel-disclaimer" role="note">
           <button type="button" class="dashboard__panel-disclaimer-btn" data-action="dismiss-panel-disclaimer">
@@ -142,47 +187,6 @@
             Zinc acts as a 5-alpha reductase inhibitor, which can reduce DHT conversion—helpful for androgenetic alopecia. Iodine supports thyroid function, which regulates hair growth cycles; deficiency leads to brittleness and hair loss. Limiting nutrients (saturated fat, high-GI foods, creatine) may influence testosterone/DHT levels.
           </p>
         </aside>
-        <nav id="dashboard-micro-sticky" class="dashboard__micro-sticky" aria-label="Micro display options">
-          <div class="dashboard__sticky-options">
-            <div class="dashboard__sticky-options-disclosures">
-              <span class="dashboard__sticky-filter-wrap">
-                <button type="button" class="dashboard__sticky-options-disclosure" data-sticky-options-toggle data-sticky-filter-disclosure aria-expanded="false" aria-controls="micro-filter-options-panel">Filter</button>
-                <button type="button" class="dashboard__sticky-filter-clear" data-sticky-filter-clear hidden aria-label="Clear filters">×</button>
-              </span>
-              <button type="button" class="dashboard__sticky-options-disclosure" data-sticky-options-toggle aria-expanded="false" aria-controls="micro-daily-options-panel">Poor storage / daily intake</button>
-              <button type="button" class="dashboard__sticky-options-disclosure" data-sticky-options-toggle aria-expanded="false" aria-controls="micro-acute-options-panel">One-day excess consumption</button>
-            </div>
-            <div id="micro-filter-options-panel" class="dashboard__sticky-options-panel" hidden>
-              <p class="dashboard__sticky-options-note">Show only nutrients that match (combine freely):</p>
-              <div class="dashboard__sticky-options-checks" role="group" aria-label="Filter nutrients">
-                <label class="dashboard__sticky-options-check">
-                  <input type="checkbox" data-sticky-filter="daily" />
-                  <span>Daily intake needed</span>
-                </label>
-                <label class="dashboard__sticky-options-check">
-                  <input type="checkbox" data-sticky-filter="side" />
-                  <span>Side effects (S/E)</span>
-                </label>
-                <label class="dashboard__sticky-options-check">
-                  <input type="checkbox" data-sticky-filter="adverse" />
-                  <span>Adverse effects (A/E)</span>
-                </label>
-              </div>
-            </div>
-            <div id="micro-daily-options-panel" class="dashboard__sticky-options-panel" hidden>
-              <p class="dashboard__sticky-options-note">These nutrients store poorly, so weekly averaging can mislead—aim for steady daily intake.</p>
-              <div class="dashboard__sticky-options-toggles" role="group" aria-label="Daily intake icons">
-                <button type="button" class="dashboard__sticky-options-toggle" data-daily-intake-icons-toggle aria-pressed="true">Show icons</button>
-              </div>
-            </div>
-            <div id="micro-acute-options-panel" class="dashboard__sticky-options-panel" hidden>
-              <div class="dashboard__sticky-options-toggles" role="group" aria-label="One-day excess icons">
-                <button type="button" class="dashboard__sticky-options-toggle" data-acute-kind="side" aria-pressed="false">Side effects (S/E)</button>
-                <button type="button" class="dashboard__sticky-options-toggle" data-acute-kind="adverse" aria-pressed="false">Adverse effects (A/E)</button>
-              </div>
-            </div>
-          </div>
-        </nav>
         <div id="dashboard-micro-list" class="dashboard__micro-list" role="list"></div>
         <div id="dashboard-micro-daily-grid" class="dashboard__micro-daily-grid" hidden></div>
         <div class="dashboard__micro-more-wrap">
@@ -199,29 +203,11 @@
         <div id="target-ref-popover-text" class="dashboard__target-ref-popover-text"></div>
       </div>
       <div id="dashboard-longevity-panel" class="dashboard__longevity-panel" hidden>
-        <p class="dashboard__longevity-hint">Weekly average per day (Mon–Sun). Micronutrients repeat from your micro entries so you can reason in one place. Green bars = good for “aim” nutrients; red bars on limit nutrients mean you are high. Click <em>explain</em> on a heading or nutrient for detail.</p>
-        <aside class="dashboard__longevity-disclaimer dashboard__panel-disclaimer" role="note">
-          <button type="button" class="dashboard__panel-disclaimer-btn" data-action="dismiss-panel-disclaimer">
-            <span class="dashboard__longevity-disclaimer-text">
-              <strong>Not medical advice.</strong> This is an educational food-tracking tool. It does not diagnose, treat, or replace care from your doctor or other qualified health professional. Use blood work, blood pressure checks, and clinical guidance for medical decisions—not dashboard percentages alone.
-            </span>
-          </button>
-        </aside>
-        <aside class="dashboard__longevity-intro" role="note">
-          <p class="dashboard__longevity-intro-text">
-            <strong>What “longevity” means here:</strong> nutrients and compounds that support extending healthy years—slowing age-related decline, improving day-to-day performance (energy, cognition, recovery), and protecting quality of life (heart, brain, eyes, bones, metabolism). This panel supports preventive medicine: diet patterns that over decades can lower risk of type 2 diabetes, high blood pressure, heart disease, stroke, osteoporosis, and cognitive decline. It tracks fats, omegas, inflammation-related compounds, carb quality, and gut-linked markers like TMAO—not just basic % DV, but the patterns behind those outcomes.
-          </p>
-        </aside>
-        <aside class="dashboard__longevity-processed-note" role="note">
-          <p class="dashboard__longevity-processed-note-text">
-            Limit your processed food. This dashboard does not track processed food. Use an app like
-            <a href="https://yuka.io/en/app/" target="_blank" rel="noopener noreferrer">Yuka</a>
-            or
-            <a href="https://apps.apple.com/us/app/bobby-approved-food-scanner/id1571725006" target="_blank" rel="noopener noreferrer">Bobby</a>
-            (<a href="https://play.google.com/store/apps/details?id=com.bobbyapproved" target="_blank" rel="noopener noreferrer">Android</a>) to scan a food or barcode for processed chemicals.
-          </p>
-        </aside>
         <nav id="dashboard-longevity-nav" class="dashboard__longevity-nav" hidden aria-label="Longevity topics">
+          <div class="dashboard__longevity-nav-top">
+            <h3 class="dashboard__longevity-nav-title">Longevity</h3>
+            <button type="button" id="dashboard-longevity-close" class="dashboard__panel-close" aria-label="Close longevity">×</button>
+          </div>
           <div class="dashboard__longevity-nav-track">
             <button type="button" id="dashboard-longevity-nav-prev" class="dashboard__longevity-nav-adj dashboard__longevity-nav-adj--prev" hidden>
               <span class="dashboard__longevity-nav-adj-label">Previous</span>
@@ -280,6 +266,28 @@
             </div>
           </div>
         </nav>
+        <p class="dashboard__longevity-hint">Weekly average per day (Mon–Sun). Micronutrients repeat from your micro entries so you can reason in one place. Green bars = good for “aim” nutrients; red bars on limit nutrients mean you are high. Click <em>explain</em> on a heading or nutrient for detail.</p>
+        <aside class="dashboard__longevity-disclaimer dashboard__panel-disclaimer" role="note">
+          <button type="button" class="dashboard__panel-disclaimer-btn" data-action="dismiss-panel-disclaimer">
+            <span class="dashboard__longevity-disclaimer-text">
+              <strong>Not medical advice.</strong> This is an educational food-tracking tool. It does not diagnose, treat, or replace care from your doctor or other qualified health professional. Use blood work, blood pressure checks, and clinical guidance for medical decisions—not dashboard percentages alone.
+            </span>
+          </button>
+        </aside>
+        <aside class="dashboard__longevity-intro" role="note">
+          <p class="dashboard__longevity-intro-text">
+            <strong>What “longevity” means here:</strong> nutrients and compounds that support extending healthy years—slowing age-related decline, improving day-to-day performance (energy, cognition, recovery), and protecting quality of life (heart, brain, eyes, bones, metabolism). This panel supports preventive medicine: diet patterns that over decades can lower risk of type 2 diabetes, high blood pressure, heart disease, stroke, osteoporosis, and cognitive decline. It tracks fats, omegas, inflammation-related compounds, carb quality, and gut-linked markers like TMAO—not just basic % DV, but the patterns behind those outcomes.
+          </p>
+        </aside>
+        <aside class="dashboard__longevity-processed-note" role="note">
+          <p class="dashboard__longevity-processed-note-text">
+            Limit your processed food. This dashboard does not track processed food. Use an app like
+            <a href="https://yuka.io/en/app/" target="_blank" rel="noopener noreferrer">Yuka</a>
+            or
+            <a href="https://apps.apple.com/us/app/bobby-approved-food-scanner/id1571725006" target="_blank" rel="noopener noreferrer">Bobby</a>
+            (<a href="https://play.google.com/store/apps/details?id=com.bobbyapproved" target="_blank" rel="noopener noreferrer">Android</a>) to scan a food or barcode for processed chemicals.
+          </p>
+        </aside>
         <div id="dashboard-longevity-content"></div>
       </div>
       <div id="week-summary" class="week-summary" hidden aria-label="Week summary"></div>

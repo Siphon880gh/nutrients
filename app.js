@@ -4985,8 +4985,10 @@
       '<button type="button" class="dashboard__micro-daily-intake-btn" data-micro-daily-intake="1" ' +
       'aria-label="Requires daily intake" aria-expanded="false" aria-controls="micro-daily-intake-popover">' +
       '<svg class="dashboard__micro-daily-intake-icon" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" focusable="false">' +
-      '<path d="M13.2 6.2A5.5 5.5 0 1 0 12.4 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path>' +
-      '<path d="M13.5 2.8v3.4h-3.4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>' +
+      '<rect x="2" y="3.5" width="12" height="10.5" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.4"></rect>' +
+      '<path d="M2 6.75h12" fill="none" stroke="currentColor" stroke-width="1.4"></path>' +
+      '<path d="M5 2.2v2.6M11 2.2v2.6" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"></path>' +
+      '<rect x="4.25" y="8.5" width="2.5" height="2.5" rx="0.4" fill="currentColor"></rect>' +
       "</svg></button>"
     );
   }
@@ -7792,8 +7794,8 @@
       showMicroDailyDv ? "true" : "false"
     );
     dashboardMicroDvToggleEl.textContent = showMicroDailyDv
-      ? "Hide targets"
-      : "Show targets";
+      ? "Hide daily targets"
+      : "Show daily targets";
   }
 
   function syncMicroViewToggleUi() {
@@ -14536,6 +14538,13 @@
     });
   }
 
+  var dashboardMicroCloseEl = document.getElementById("dashboard-micro-close");
+  if (dashboardMicroCloseEl) {
+    dashboardMicroCloseEl.addEventListener("click", function () {
+      setMicroRequirementsOpen(false);
+    });
+  }
+
   if (dashboardMicroViewWeeklyEl) {
     dashboardMicroViewWeeklyEl.addEventListener("click", function () {
       setMicroViewDaily(false);
@@ -14688,6 +14697,13 @@
   if (dashboardLongevityToggleEl) {
     dashboardLongevityToggleEl.addEventListener("click", function () {
       setLongevityPanelOpen(!longevityPanelOpen);
+    });
+  }
+
+  var dashboardLongevityCloseEl = document.getElementById("dashboard-longevity-close");
+  if (dashboardLongevityCloseEl) {
+    dashboardLongevityCloseEl.addEventListener("click", function () {
+      setLongevityPanelOpen(false);
     });
   }
 
