@@ -514,6 +514,10 @@
   var TARGET_REF_POPOVER_TEXT = {
     fda:
       "FDA Daily Value — the daily reference behind % DV on U.S. nutrition labels for vitamins and minerals. The FDA factors in absorbability: for example, plant vitamin A is expressed as retinol activity equivalents (RAE), which reflects lower absorption from vegetables than from preformed vitamin A in animal foods. This app uses sex-specific targets from Settings where needs differ from a single label number.",
+    who:
+      "WHO — World Health Organization sodium reduction guidance for adults: less than 2,000 mg sodium per day (about 5 g salt). This is a population ceiling for cardiovascular risk reduction, not an FDA Daily Value.",
+    aha:
+      "AHA — American Heart Association ideal sodium target of about 1,500 mg/day for optimal cardiovascular health, and the usual clinical goal discussed for people with high blood pressure. Any reduction toward this level helps; your clinician may set a different target.",
     iom_bw:
       "IOM bw min — estimated average requirement from the Institute of Medicine (2005) protein and amino acid report: mg/kg body weight × your weight in Settings. It is a minimum target, not a maximum. This nutrient does not have a FDA % DV. The IOM was reorganized as the Health and Medicine Division (HMD) of the National Academies in 2015.",
     iom_bw_set:
@@ -2339,6 +2343,28 @@
   var LONGEVITY_MICRO_LIMITING_KEYS = {
     sodium: true,
   };
+
+  /**
+   * Alternate sodium upper limits for Vascular - Blood Pressure.
+   * Same intake scored against each guideline (limiting: lower % is better).
+   */
+  var VASCULAR_SODIUM_LIMIT_REFS = [
+    {
+      amount: 2300,
+      label: "Sodium — FDA / Dietary Guidelines (<2,300 mg)",
+      kindLabel: "FDA DV",
+    },
+    {
+      amount: 2000,
+      label: "Sodium — WHO (<2,000 mg)",
+      kindLabel: "WHO",
+    },
+    {
+      amount: 1500,
+      label: "Sodium — AHA ideal / high BP (<1,500 mg)",
+      kindLabel: "AHA",
+    },
+  ];
 
   var LONGEVITY_FIELDS = [
     {
@@ -5784,6 +5810,8 @@
 
   function targetRefKindKey(kindLabel) {
     if (kindLabel === "FDA DV") return "fda";
+    if (kindLabel === "WHO") return "who";
+    if (kindLabel === "AHA") return "aha";
     if (kindLabel === "IOM bw min · set weight") return "iom_bw_set";
     if (kindLabel === "IOM bw min") return "iom_bw";
     if (kindLabel === "Study max") return "study_max";
@@ -6800,7 +6828,7 @@
     return (
       '<aside class="dashboard__longevity-processed-note dashboard__longevity-processed-note--section" role="note">' +
       '<p class="dashboard__longevity-processed-note-text">' +
-      "<strong>Lowering sodium, raising potassium:</strong> Potassium-rich foods (fruit, beans, greens, yogurt) can help offset sodium’s blood-pressure effects, but cutting sodium itself is still the main lever—under 2,300 mg/day, or 1,500 mg if you already have high blood pressure. Naturally occurring nitrates in food (especially beets, spinach, arugula, celery) convert to nitric oxide, which widens blood vessels, improves blood flow, and lowers blood pressure—systemically and in the brain… " +
+      "<strong>Lowering sodium, raising potassium:</strong> Potassium-rich foods (fruit, beans, greens, yogurt) can help offset sodium’s blood-pressure effects, but cutting sodium itself is still the main lever—under 2,300 mg/day (FDA / Dietary Guidelines), 2,000 mg (WHO), or closer to 1,500 mg (AHA ideal / high blood pressure). Naturally occurring nitrates in food (especially beets, spinach, arugula, celery) convert to nitric oxide, which widens blood vessels, improves blood flow, and lowers blood pressure—systemically and in the brain… " +
       '<button type="button" class="dashboard__longevity-tip-link" data-longevity-def="sectionVascularBloodPressure" aria-haspopup="dialog">Read more</button>' +
       "</p>" +
       "</aside>"
@@ -9610,6 +9638,49 @@
     );
   }
 
+  /** Same micro intake scored against a custom upper-limit amount (limiting %). */
+  function longevityRowFromMicroLimit(microKey, label, limitAmount, kindLabel, weekMicro) {
+    var field = microFieldByKey(microKey);
+    var unit = field ? field.unit : "mg";
+    var total =
+      microKey === "fiber" ? fiberTotalFromParts(weekMicro) : weekMicro[microKey] || 0;
+    var daily = total / DAYS.length;
+    var pct =
+      limitAmount > 0 && daily >= 0 ? (daily / limitAmount) * 100 : null;
+    var pctText = formatTargetPctNumber(pct);
+    var amtText = total > 0 ? fmtNum(daily) + " " + unit : "—";
+    var reqAmount =
+      limitAmount > 0 ? fmtNum(limitAmount) + " " + unit + "/day" : "";
+    return longevityRowHtml(
+      label || (field ? field.label : microKey),
+      amtText,
+      pctText,
+      pct,
+      "dashboard__longevity-row--from-micro",
+      true,
+      microKey,
+      true,
+      null,
+      microKey,
+      "micro",
+      kindLabel,
+      microKey,
+      reqAmount
+    );
+  }
+
+  function vascularSodiumLimitRowsHtml(weekMicro) {
+    return VASCULAR_SODIUM_LIMIT_REFS.map(function (ref) {
+      return longevityRowFromMicroLimit(
+        "sodium",
+        ref.label,
+        ref.amount,
+        ref.kindLabel,
+        weekMicro
+      );
+    }).join("");
+  }
+
   function longevityRowFromProtein(weekMacro, label) {
     var total = weekMacro.protein || 0;
     var daily = total / DAYS.length;
@@ -11022,8 +11093,8 @@
         vascularBloodPressureTipHtml() +
         kidneyHerbsBloodPressureTipHtml(),
       longevityListOpen() +
-        longevitySubgroupHtml("Watch — lower % DV is better", "limit") +
-        longevityRowFromMicroKey("sodium", "Sodium (main one to control)", true, weekMicro) +
+        longevitySubgroupHtml("Watch — lower % of each sodium limit is better", "limit") +
+        vascularSodiumLimitRowsHtml(weekMicro) +
         vascularRowsFromLongevityItems(
           LONGEVITY_VASCULAR_WATCH_FROM_LONGEVITY,
           weekLongevity,
