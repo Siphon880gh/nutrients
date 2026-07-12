@@ -3456,6 +3456,9 @@
       'Rule: If the food is missing serving information, add one serving whatever units it\'s usually in. If it\'s usually eaten all in one sitting from a container or bag, then name it as container or bag followed by oz etc in parenthesis. Add it to the end of the food name.\n\n' +
       "Rule: Amounts for the micro requirements panel belong in micros. " +
       "When the same nutrient key also appears in longevity, store the number in micros only and set longevity[key] to true.\n\n" +
+      "Rule: If the food is a multivitamin or vitamin entry: Don't just list the label DV. " +
+      "Adjust both the DV and actual values for typical absorption, since we don't absorb 100% of a pill for every vitamin. " +
+      "If there is fat soluble vitamins, assume enough fats were eaten to absorb the fat-soluble vitamins (A, D, E, K).\n\n" +
       jsonSchemaExample() +
       "\n\n" +
       nutrientListForPrompt()
