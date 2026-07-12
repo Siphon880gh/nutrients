@@ -10,10 +10,10 @@ Parent overview: [AGENTS_CODE_REFERENCE.md](./AGENTS_CODE_REFERENCE.md)
 
 | Concern | Primary symbols |
 |---------|-----------------|
-| In-memory state | `keywords[]`, `demographic`, `userTdee`, `userBodyWeightKg`, `settingsWeightUnit`, `dayHighlightsEnabled`, `microRequirementsOpen`, `microViewDaily`, `showMicroDailyDv`, `showAcuteSideEffects`, `showAcuteAdverseEffects`, `showDailyIntakeIcons`, `filterStickyDailyIntake` / `filterStickySideEffects` / `filterStickyAdverseEffects`, `highlightStickyDailyIntake` / `highlightStickySideEffects` / `highlightStickyAdverseEffects`, `microConditionFocus`, `longevityPanelOpen`, `weekTotalOpen`, `keywordReorderOpen`, `keywordCaloriesOpen`, `keywordsPageIndex`, `keywordsPageSize`, `keywordsFilterQuery`, `dashboardMacroPctView`, `lastWeekTotals`, `unmatchedCarouselOpen` / `unmatchedCarouselIndex` / `unmatchedCarouselItems`, `activeMicroId`, `activeLongevityId`, `activeImportId/Index`, `activePositionId/Index`, `activeMicroDefKey`, `activeLongevityDefKey`, `activeMicroSourcesKey/Scope`, `activeLongevitySourcesKey/Kind`, `defModalReturnSources`, `longevityNavActiveIndex`, `targetRefPopoverAnchor`, `microAcuteToxicityPopoverAnchor` |
+| In-memory state | `keywords[]`, `demographic`, `userTdee`, `userBodyWeightKg`, `settingsWeightUnit`, `dayHighlightsEnabled`, `microRequirementsOpen`, `microViewDaily`, `showMicroDailyDv`, `showAcuteSideEffects`, `showAcuteAdverseEffects`, `showDailyIntakeIcons`, `filterStickyDailyIntake` / `filterStickySideEffects` / `filterStickyAdverseEffects`, `highlightStickyDailyIntake` / `highlightStickySideEffects` / `highlightStickyAdverseEffects`, `microConditionFocus`, `longevityPanelOpen`, `weekTotalOpen`, `keywordReorderOpen`, `keywordCaloriesOpen`, `keywordsPageIndex`, `keywordsPageSize`, `keywordsFilterQuery`, `keywordsCategoryFilter`, `foodCategories`, `dashboardMacroPctView`, `lastWeekTotals`, `unmatchedCarouselOpen` / `unmatchedCarouselIndex` / `unmatchedCarouselItems`, `activeMicroId`, `activeLongevityId`, `activeImportId/Index`, `activePositionId/Index`, `activeMicroDefKey`, `activeLongevityDefKey`, `activeMicroSourcesKey/Scope`, `activeLongevitySourcesKey/Kind`, `defModalReturnSources`, `longevityNavActiveIndex`, `targetRefPopoverAnchor`, `microAcuteToxicityPopoverAnchor` |
 | IDs | `makeId()`, `findIndex(id)` |
 | Table UI | `renderKeywords` (renders current filtered page only), `syncFieldFromDom`, `syncAllFieldsFromDom`, `moveKeyword`, `removeKeyword`, `addKeyword`, `sortKeywordsAlphabetically`, reorder toggle (`loadKeywordReorderOpen`), move-to-position modal |
-| Table search / pagination | `keywordMatchesFilter`, `keywordsFilteredIndices`, `setKeywordsFilterQuery`, `clearKeywordsFilter`, `keywordsPageCount`, `clampKeywordsPageIndex`, `keywordsPageBounds`, `goKeywordsPage`, `changeKeywordsPageSize`, `updateKeywordsPaginationUi`, `updateKeywordsSearchUi`, `loadKeywordsPageSize`, `saveKeywordsPageSize` |
+| Table search / pagination | `keywordMatchesFilter`, `keywordMatchesCategory`, `keywordsFilteredIndices`, `keywordsHasActiveFilter`, `setKeywordsFilterQuery`, `clearKeywordsFilter`, `setKeywordsCategoryFilter`, `clearKeywordsCategoryFilter`, `openKeywordsCategoryModal`, `keywordsCategoryCounts`, `foodCategoryIdForName`, `loadFoodCategoriesDefinitions`, `keywordsPageCount`, `clampKeywordsPageIndex`, `keywordsPageBounds`, `goKeywordsPage`, `changeKeywordsPageSize`, `updateKeywordsPaginationUi`, `updateKeywordsSearchUi`, `loadKeywordsPageSize`, `saveKeywordsPageSize` |
 | Matching | `countKeyword` (applies `keywordServingMultiplier`), `keywordNames`, `buildHighlightRegex`, `keywordMatchPattern`, `escapeRegex`, `keywordServingMultiplier`, `stripKeywordServingMultiplier`, `lineMatchesFoodDefinition` |
 | Macro totals | `totalsFromText`, `addTotals`, `renderDashboard`, `dashboardCardHtml` (`.dashboard__card--today` via `todayDayId`), `dashboardMacroPctView`, `macroPctFromTotals`, `renderWeekSummary`, `setWeekTotalOpen` |
 | Micro totals / target | `microTotalsFromText`, `weekMicroTotals`, `applyFiberTotalToMicroTotals`, `renderMicroRequirements`, `renderMicroWeeklyList`, `renderMicroDailyGrid`, `microDayCardHtml` (today card), `setMicroViewDaily`, `loadMicroViewDaily`, `saveMicroViewDaily`, `setShowMicroDailyDv`, `loadShowMicroDailyDv`, `saveShowMicroDailyDv`, `syncMicroViewToggleUi`, `syncMicroDailyDvToggleUi`, `microBaseDisplayFields`, `microConditionDisplayFields`, `dailyDv`, `microNutrientTargetPct` (FDA DV → IOM bw min → study min → study max → none), `microTargetReqAmountText`, `iomBwMinDaily`/`iomBwMinPct`, `studyMinMicroRef`, `studyMaxMicroRef`, `microHasNoStandaloneRef`, `microRequiresDailyIntake`, `setMicroConditionFocus` |
@@ -33,6 +33,7 @@ Parent overview: [AGENTS_CODE_REFERENCE.md](./AGENTS_CODE_REFERENCE.md)
 | Unmatched lines | `unmatchedDayLines`, `allUnmatchedDayLines`, `weekUnmatchedLinesHtml`, `weekUnmatchedCarouselHtml`, `renderWeekUnmatchedLines`, `updateWeekUnmatchedLines`, `stepUnmatchedCarousel`, `toggleUnmatchedCarousel`, `focusDayLine` |
 | Food-name suggestions | `updateDaySuggest`, `foodSuggestMatches`, `applyDayFoodSuggest`, `hideDaySuggest`, `DAY_SUGGEST_MAX`; per-item fit/scroll: `fitDaySuggestItemLabel`, `updateDaySuggestItemHover`, `bindDaySuggestHover`, `bindDaySuggestResize`, `daySuggestItemScrollTo`, `daySuggestItemUpdateChevrons` |
 | Food notes (toolbar) | `loadFoodNotesDefinitions`, `normalizeFoodNotesDefinitions`, `detectedFoodNotes`, `updateDayFoodNotesUi`, `dayFoodNotesLabelsHtml`, `showDayFoodNotesPopoverForIndex`, `initDayFoodNotesEvents`, `foodNotesDefinitions`, `FOOD_NOTES_URL` |
+| Food categories (table filter) | `loadFoodCategoriesDefinitions`, `normalizeFoodCategories`, `foodCategoryIdForName`, `keywordsCategoryCounts`, `foodCategories`, `FOOD_CATEGORIES_URL` |
 | Starter guide | `maybeShowStarterGuideImportStep`, `advanceStarterGuideAfterImport`, `showStarterGuideStep`, `repositionStarterGuide`, `dismissStarterGuide`, `hideStarterGuide`, `starterGuideEligible`, `starterGuideStep` |
 | Day editor height | `loadDayEditorHeight`, `saveDayEditorHeight`, `applyDayEditorHeight`, `bindDayEditorResize`, `clampDayEditorHeight` |
 | Persistence | `saveFoodDefinitions`, `loadFoodDefinitions`, `saveDayNotes`, `loadDayNotes` |
@@ -62,7 +63,7 @@ refreshAll()           → highlights + dashboard (macros, micros, longevity)
 - Row actions use `data-action`: `up` | `down` | `delete` | `micros` | `longevity` | `import` | `position` (move-to-position modal).
 - After building rows: toggles `#keywords-empty` (no foods at all), `#keywords-filter-empty` + hides `#keywords-table` (filtered to zero), then `updateKeywordReorderUi` / `updateKeywordCaloriesUi` / `updateKeywordsPaginationUi`.
 
-**Search / pagination** — the toolbar `#keywords-search` (+ `#keywords-search-clear`) sets `keywordsFilterQuery` via `setKeywordsFilterQuery` (case-insensitive substring on name; resets to page 0). `#keywords-page-size` (10/25/50/100/All) persists to `STORAGE_KEY_KEYWORDS_PAGE_SIZE`; First/Prev/Next/Last (`#keywords-page-*`) call `goKeywordsPage`. `keywordsFilteredIndices` maps visible rows back to real `keywords[]` indices, so editing/import/position operations always use the true index.
+**Search / category / pagination** — the toolbar `#keywords-search` (+ `#keywords-search-clear`) sets `keywordsFilterQuery` via `setKeywordsFilterQuery` (case-insensitive substring on name; resets to page 0). **Categories** (`#keywords-category-open` → `#keywords-category-modal`) sets `keywordsCategoryFilter` via `setKeywordsCategoryFilter` from `definitions-food-categories.json` (first matching regex pattern wins; sentinel `__uncategorized__` for unmatched names). Active category shows `#keywords-category-chip` with clear (×); modal Clear filter / chip clear exits category filter view. Modal lists each category with a count; **Uncategorized** shows its count (click reveal expands the unmatched food names; **Filter** applies the uncategorized view). `#keywords-page-size` (10/25/50/100/All) persists to `STORAGE_KEY_KEYWORDS_PAGE_SIZE`; First/Prev/Next/Last (`#keywords-page-*`) call `goKeywordsPage`. `keywordsFilteredIndices` maps visible rows back to real `keywords[]` indices, so editing/import/position operations always use the true index.
 
 **Sort A–Z** — `sortKeywordsAlphabetically` (bound to `#sort-foods-alphabetically` and `#sort-foods-alphabetically-top`): `syncAllFieldsFromDom` first (don’t lose in-progress edits), sort by lowercased trimmed name (blanks last), reset to page 0, save + re-render.
 
@@ -251,6 +252,32 @@ Fetched by `loadAppConfig` at boot (before definitions). Shapes:
 
 On fetch failure, `DEFAULT_MICRO_DV_STATUS` / `DEFAULT_LONGEVITY_STATUS` are used.
 
+## Food categories (`definitions-food-categories.json`)
+
+Fetched at boot by `loadFoodCategoriesDefinitions` (parallel with micro/longevity/food-notes defs). **Not persisted** — rules live in the JSON file only. Powers the food-definitions table category filter (`keywordsCategoryFilter`).
+
+**Config shape:**
+
+```json
+{
+  "categories": [
+    {
+      "id": "cereal",
+      "label": "Cereal",
+      "patterns": ["^Cereal\\s*-", "^Shredded Wheat"]
+    }
+  ]
+}
+```
+
+| Field | Role |
+|-------|------|
+| `id` | Stable filter key stored in `keywordsCategoryFilter` |
+| `label` | Shown in the modal list and active chip |
+| `patterns` | Case-insensitive regex strings; **first matching category wins** |
+
+Foods that match no pattern are **Uncategorized** (filter sentinel `KEYWORDS_CATEGORY_UNCATEGORIZED` / `__uncategorized__`). Modal shows the uncategorized count; reveal expands names; Filter applies that view.
+
 ## Food notes (`definitions-food-notes.json`)
 
 Fetched at boot by `loadFoodNotesDefinitions` (parallel with micro/longevity defs). **Not persisted** — rules live in the JSON file only.
@@ -396,6 +423,7 @@ All seven `.day__editor` boxes share one height.
 | Add derived micro metric | `MICRO_DERIVED_DEFS` (see 2:1 and 3:1 fiber ratios) + `microDerivedRowTargetDisplay` / `microDerivedAmtText` |
 | Change fiber soluble/insoluble split | `solubleFiberRatioForFoodName` (name heuristics) + `FIBER_COMPONENT_DV_RATIO` in `demographic-dv.js` |
 | Change food-table page sizes | `keywordsPageSize` options in HTML + `loadKeywordsPageSize` allowlist |
+| Add/change food categories | `definitions-food-categories.json` patterns + `loadFoodCategoriesDefinitions` |
 | Mark micro as daily-intake-only | `demographic-dv.js` → `DAILY_INTAKE_MICRO_KEYS` (+ `requiresDailyIntake`); dashboard adds pill icon via `appendMicroDailyIntakeIconHtml` |
 | Add acute one-day excess effects | `ACUTE_TOXICITY_BY_MICRO` entry (`sideEffects` / `adverseEffects`) |
 | Change longevity DV targets | `longevity-dv.js` → `DAILY_LONGEVITY_DV`; keys must match `LONGEVITY_FIELDS` |
@@ -424,11 +452,12 @@ Boot sequence (very end):
 
 ```javascript
 loadAppConfig(function () {
-  var pending = 3;
+  var pending = 4;
   function definitionsReady() { if (--pending === 0) boot(); }
   loadMicroDefinitions(definitionsReady);
   loadLongevityDefinitions(definitionsReady);
   loadFoodNotesDefinitions(definitionsReady);
+  loadFoodCategoriesDefinitions(definitionsReady);
 });
 // boot(): loadFoodDefinitions → loadKeywordReorderOpen → loadKeywordCaloriesOpen →
 //         loadKeywordsPageSize → loadDayNotes → loadDayHighlightsPreference →

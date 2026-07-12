@@ -27,7 +27,7 @@ When context is tight: read **this file** first, then open the one feature file 
 | Markup | Static HTML5 |
 | Style | Plain CSS (`styles.css`, ~6,240 lines) |
 | Logic | Single IIFE in `app.js` (~15,670 lines) |
-| Data files | `config.json` (% DV tiers), `definitions-micronutrients.json`, `definitions-longevity.json`, `definitions-food-notes.json`, `samples/definitions-food.json`, `samples/day-meals.json` (all `fetch`ed at boot / on demand) |
+| Data files | `config.json` (% DV tiers), `definitions-micronutrients.json`, `definitions-longevity.json`, `definitions-food-notes.json`, `definitions-food-categories.json`, `samples/definitions-food.json`, `samples/day-meals.json` (all `fetch`ed at boot / on demand) |
 | Reference values | `demographic-dv.js` (micro DV, IOM amino-acid bw minimums, fiber component ratio), `longevity-dv.js` (longevity DV) — globals, loaded before `app.js` |
 | Persistence | `localStorage` for **food definitions**, **day meals**, **demographic**, **TDEE**, **body weight**, **day editor height**, **highlights on/off**, **micro panel view** (weekly vs each-day), **Daily Targets**, **acute S/E·A/E icon visibility**, **daily-intake icon visibility**, **sticky Filter / Highlight** (daily / side / adverse), **reorder toggle**, **calories-column toggle**, **table page size** |
 | Guides / QA | `GUIDE_ADDING_FOOD.md`, `GUIDE_IMPROVING_FOOD.md`, `GUIDE_ADDING_MULTIVITAMIN.md`; `scripts/run-micro-qa.js`, `scripts/run-plant-sterols-qa.js`; `.agents/skills/qa-definitions-food.json` |
@@ -55,7 +55,7 @@ When context is tight: read **this file** first, then open the one feature file 
 │  food-name suggest; shared resize; Import sample meals; │
 │  unmatched carousel below highlight bar)                │
 ├─────────────────────────────────────────────────────────┤
-│  Food definitions table (CRUD, search/filter, pagination,│
+│  Food definitions table (CRUD, search/category filter, pagination,│
 │  sort A–Z, optional cal column, micros + longevity       │
 │  modals, single/bulk/sample import, reorder,             │
 │  move-to-position; empty-state sample link)              │
@@ -81,6 +81,7 @@ nutrients/
 ├── definitions-micronutrients.json Per-micro explanatory text (tooLow/enough/tooHigh/foodSources/male/female)
 ├── definitions-longevity.json      Per-longevity-nutrient + section explanatory text
 ├── definitions-food-notes.json     Day-meal food notes (regex match → contextual hints in toolbar)
+├── definitions-food-categories.json  Food-table category filter map (id/label/patterns)
 ├── GUIDE_ADDING_FOOD.md            Human/agent guide for new sample foods
 ├── GUIDE_IMPROVING_FOOD.md         Guide for upgrading existing sample foods
 ├── GUIDE_ADDING_MULTIVITAMIN.md    Guide for multivitamin-style definitions
@@ -149,7 +150,7 @@ Micros and longevity nutrients affect **storage and UI** (button codes, import J
 - `STORAGE_KEY_DAYS` — `nutrients-day-notes`. `STORAGE_KEY_DAY_EDITOR_HEIGHT` — `nutrients-day-editor-height` (shared px height for all `.day__editor`). `STORAGE_KEY_DAY_HIGHLIGHTS` — `nutrients-day-highlights` (`on`/`off` pen toggle). `STORAGE_KEY_MICRO_VIEW_DAILY` — `nutrients-micro-view-daily` (`true` = each-day micro grid). `STORAGE_KEY_MICRO_SHOW_DV` — `nutrients-micro-show-dv` (`true` = Daily Targets on). `STORAGE_KEY_SHOW_ACUTE_SIDE_EFFECTS` / `STORAGE_KEY_SHOW_ACUTE_ADVERSE_EFFECTS` — body classes that reveal S/E · A/E icons. `STORAGE_KEY_SHOW_DAILY_INTAKE_ICONS` — daily-intake icon visibility (default on). `STORAGE_KEY_FILTER_*` / `STORAGE_KEY_HIGHLIGHT_*` — sticky Filter / Highlight for `daily-intake`, `side-effects`, `adverse-effects`. `STORAGE_KEY_REORDER` — `nutrients-keywords-reorder-open`. `STORAGE_KEY_TDEE` — `nutrients-tdee` (optional user TDEE number). `STORAGE_KEY_BODY_WEIGHT_KG` — `nutrients-body-weight-kg` (for IOM bw min). `STORAGE_KEY_CALORIES` — `nutrients-keywords-calories-open` (food table shows cal instead of g). `STORAGE_KEY_KEYWORDS_PAGE_SIZE` — `nutrients-keywords-page-size` (10/25/50/100/0=all, default `KEYWORDS_DEFAULT_PAGE_SIZE` = 25).
 - `demographicDv` / `longevityDv` — references to `window.NutrientsDemographicDv` / `window.NutrientsLongevityDv` (must load before `app.js`). `demographicDv` also exposes `IOM_BW_MIN_MG_PER_KG`, `getIomBwMinDaily`, `FIBER_COMPONENT_DV_RATIO`.
 - `CAL_PROTEIN|CARBS|FATS` — 4, 4, 9.
-- `CHATGPT_URL`, `CLAUDE_URL`, `IMPORT_SAMPLE_FOODS_URL` (`samples/definitions-food.json`), `IMPORT_SAMPLE_MEALS_URL` (`samples/day-meals.json`), `FOOD_NOTES_URL` (`definitions-food-notes.json`).
+- `CHATGPT_URL`, `CLAUDE_URL`, `IMPORT_SAMPLE_FOODS_URL` (`samples/definitions-food.json`), `IMPORT_SAMPLE_MEALS_URL` (`samples/day-meals.json`), `FOOD_NOTES_URL` (`definitions-food-notes.json`), `FOOD_CATEGORIES_URL` (`definitions-food-categories.json`).
 
 ## UI regions (`index.html`)
 
@@ -163,7 +164,7 @@ Top to bottom inside `<main class="week">`:
 4. `.week__highlight-bar` — `#day-highlights-toggle` (pen, persisted on/off), `#day-food-notes` (regex-driven notes + popover)
 5. `#day-unmatched-lines` — collapsible **Unmatched (N)** carousel (`data-unmatched-action`: toggle / prev / next / jump → `focusDayLine`); shown whenever unmatched lines exist (not gated on highlight mode)
 6. `.week__grid` — seven `.day` columns; today’s column gets `.day--today`. Each `.day__editor` (backdrop + textarea + optional `.day__suggest`). Modes: **editing** / **viewing** / **plain**; shared vertical resize.
-7. `.keywords` — food definitions table with top `.keywords__toolbar` (duplicate bulk buttons, `-top` ids), `.keywords__filter` search (`#keywords-search`), `#keywords-table` (body `#keywords-list`), `#keywords-pagination`, `#keywords-filter-empty`, `#keywords-empty` with inline **Import our sample** link, reorder toggle, macro cal/g toggle, **Sort alphabetically**, add + bulk + sample import
+7. `.keywords` — food definitions table with top `.keywords__toolbar` (duplicate bulk buttons, `-top` ids), `.keywords__filter` search (`#keywords-search`) + category filter (`#keywords-category-open` / `#keywords-category-modal`), `#keywords-table` (body `#keywords-list`), `#keywords-pagination`, `#keywords-filter-empty`, `#keywords-empty` with inline **Import our sample** link, reorder toggle, macro cal/g toggle, **Sort alphabetically**, add + bulk + sample import
 
 Outside main (modal / overlay siblings): `#settings-modal`, `#tdee-calculator-modal`, `#tdee-hint-modal`, `#macro-split-hint-modal`, `#micro-sources-modal`, `#longevity-sources-modal`, `#import-all-meals-modal`, `#import-all-modal`, `#keyword-position-modal`, `#import-modal`, `#micro-gaps-modal`, `#health-timeline-modal`, `#micro-def-modal`, `#longevity-modal`, `#micro-modal`, `#food-note-modal` (long food-note reader), `#phosphorus-binder-modal`, `#caffeine-tip-modal`, `#fats-cholesterol-tip-modal`, `#tmao-protectors-tip-modal`, `#starter-guide` (fixed beginner popover; not a blocking modal). Fixed popover siblings: `#micro-daily-intake-popover`, `#micro-acute-toxicity-popover`, `#target-ref-popover`.
 
@@ -189,7 +190,8 @@ Outside main (modal / overlay siblings): `#settings-modal`, `#tdee-calculator-mo
 - **Unmatched-lines carousel:** `unmatchedDayLines` / `allUnmatchedDayLines` / `weekUnmatchedLinesHtml` / `weekUnmatchedCarouselHtml` / `updateWeekUnmatchedLines` / `focusDayLine` → `#day-unmatched-lines`; always shown when items exist; jump focuses the day line ([core doc](./AGENTS_CODE_REFERENCE-core.md)).
 - **Today emphasis:** `todayDayId` / `markTodayDay` → `.day--today` on week grid + `.dashboard__card--today` on macro/micro day cards ([ui doc](./AGENTS_CODE_REFERENCE-ui.md)).
 - **Sample day meals:** `importSampleMeals` fetches `IMPORT_SAMPLE_MEALS_URL` (`samples/day-meals.json`); confirm replace when any day has notes ([import doc](./AGENTS_CODE_REFERENCE-import.md)).
-- **Food-table search / pagination / sort:** `keywordsFilterQuery` + `setKeywordsFilterQuery`, `keywordsPageSize` / `keywordsPageIndex` + `keywordsPageBounds` / `goKeywordsPage` / `changeKeywordsPageSize`, `sortKeywordsAlphabetically`; `renderKeywords` only renders the current filtered page ([core doc](./AGENTS_CODE_REFERENCE-core.md)).
+- **Food-table search / category / pagination / sort:** `keywordsFilterQuery` + `setKeywordsFilterQuery`, `keywordsCategoryFilter` + `setKeywordsCategoryFilter` / `#keywords-category-modal`, `keywordsPageSize` / `keywordsPageIndex` + `keywordsPageBounds` / `goKeywordsPage` / `changeKeywordsPageSize`, `sortKeywordsAlphabetically`; `renderKeywords` only renders the current filtered page ([core doc](./AGENTS_CODE_REFERENCE-core.md)).
+- **Food category map:** add/adjust entries in `definitions-food-categories.json` (`id`, `label`, `patterns`); first matching pattern wins; unmatched foods are **Uncategorized** ([core doc](./AGENTS_CODE_REFERENCE-core.md)).
 - **Fiber component ratio:** `solubleFiber` / `insolubleFiber` micros, `splitTotalFiber` / `solubleFiberRatioForFoodName` (auto-split by food name), `fiberTotalFromParts`; `FIBER_COMPONENT_DV_RATIO` in `demographic-dv.js` derives their DV from total fiber ([core doc](./AGENTS_CODE_REFERENCE-core.md)).
 - **Daily intake icon:** add/remove micro keys in `DAILY_INTAKE_MICRO_KEYS` in `demographic-dv.js` when a nutrient has poor body storage and weekly averaging is misleading; visibility toggled by sticky **Poor storage / daily intake** ([core doc](./AGENTS_CODE_REFERENCE-core.md)).
 - **Day meals:** `loadDayNotes` / `saveDayNotes`; bulk `exportAllDayMeals` / `applyImportAllDayMealsReplace` (missing days: empty out or leave alone); clear via `clearDayNotes` / `clearAllDayNotes` ([core doc](./AGENTS_CODE_REFERENCE-core.md)).

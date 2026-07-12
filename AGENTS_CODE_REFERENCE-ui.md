@@ -135,7 +135,7 @@ Pen + notes markup is **static** in `index.html`; only labels and popover **cont
 
 **`.keywords__toolbar`** — top action bar above the table: hint + `.keywords__toolbar-actions` with duplicate bulk buttons using `-top` id suffixes (`#sort-foods-alphabetically-top`, `#export-all-foods-top`, `#import-all-foods-top`, `#import-sample-foods-top`).
 
-**`.keywords__filter`** — search box `#keywords-search` (`type="search"`) + `#keywords-search-clear` (×, hidden when empty); filters by food-name substring.
+**`.keywords__filter`** — search box `#keywords-search` (`type="search"`) + `#keywords-search-clear` (×, hidden when empty); filters by food-name substring. **Categories** button `#keywords-category-open` opens `#keywords-category-modal`; active category shows `#keywords-category-chip` + `#keywords-category-clear` (× exits category filter).
 
 **`.keywords__panel`** — white panel, table `#keywords-table` inside; body `#keywords-list` (renders only the current page).
 
@@ -194,6 +194,7 @@ Variants & instances:
 - **TMAO protectors tip modal** (`#tmao-protectors-tip-modal`) — diet strategies beyond cutting precursors (`data-action="open-tmao-protectors-tip-modal"`).
 - **Import modal** (`#import-modal`) — `.import-modal__body` scrollable; AI panel `.import-ai-panel`; JSON `.import-modal__json` (shorter when `.import-json-wrap--ai`).
 - **Move-to-position modal** (`#keyword-position-modal`) — `#keyword-position-select`; primary button label **Move**.
+- **Category filter modal** (`#keywords-category-modal`) — `#keywords-category-list` (category buttons with counts), uncategorized count `#keywords-category-uncategorized-reveal` (expands `#keywords-category-uncategorized-list`) + `#keywords-category-uncategorized-filter`, Clear filter / Done.
 - **Starter guide** (`#starter-guide`) — fixed popover above import button or week grid; `#starter-guide-text`, `#starter-guide-dismiss` (**Got it**); `.starter-guide__arrow` with `data-placement`; hidden in print / print-preview.
 
 ## Z-index & stacking
@@ -224,7 +225,7 @@ Critical hooks (do not rename without updating the element lookups near the top 
 - Tip modals: `phosphorus-binder-modal`, `phosphorus-binder-modal-done`, `caffeine-tip-modal`, `caffeine-tip-modal-done`, `fats-cholesterol-tip-modal`, `fats-cholesterol-tip-modal-done`, `tmao-protectors-tip-modal`, `tmao-protectors-tip-modal-done`
 - Definitions: `micro-def-modal`, `micro-def-modal-title`, `micro-def-body`, `micro-def-modal-done`, `micro-def-modal-back`, `micro-def-fullscreen-toggle`
 - Food note: `food-note-modal`, `food-note-modal-title`, `food-note-modal-body`, `food-note-modal-done`
-- Table: `keywords-table`, `keywords-list`, `keywords-empty`, `keywords-filter-empty`, `keywords-reorder-toggle`, `keywords-search`, `keywords-search-clear`, `keywords-pagination`, `keywords-pagination-nav`, `keywords-page-size`, `keywords-page-status`, `keywords-page-first`, `keywords-page-prev`, `keywords-page-next`, `keywords-page-last`, `add-keyword`, `sort-foods-alphabetically`(+`-top`), `export-all-foods`(+`-top`), `import-all-foods`(+`-top`), `import-sample-foods`(+`-top`), `keyword-position-modal` (+ `-food`/`-select`/`-error`/`-apply`/`-cancel`)
+- Table: `keywords-table`, `keywords-list`, `keywords-empty`, `keywords-filter-empty`, `keywords-reorder-toggle`, `keywords-search`, `keywords-search-clear`, `keywords-category-open`, `keywords-category-chip`, `keywords-category-chip-label`, `keywords-category-clear`, `keywords-category-modal`, `keywords-category-list`, `keywords-category-uncategorized-reveal`, `keywords-category-uncategorized-count`, `keywords-category-uncategorized-filter`, `keywords-category-uncategorized-list`, `keywords-category-modal-clear`, `keywords-category-modal-done`, `keywords-pagination`, `keywords-pagination-nav`, `keywords-page-size`, `keywords-page-status`, `keywords-page-first`, `keywords-page-prev`, `keywords-page-next`, `keywords-page-last`, `add-keyword`, `sort-foods-alphabetically`(+`-top`), `export-all-foods`(+`-top`), `import-all-foods`(+`-top`), `import-sample-foods`(+`-top`), `keyword-position-modal` (+ `-food`/`-select`/`-error`/`-apply`/`-cancel`)
 - Starter guide: `starter-guide`, `starter-guide-text`, `starter-guide-dismiss`
 - Import: `import-modal`, `import-json`, `import-ai-*`, `import-all-modal`, `import-all-json`, `micro-modal`, `micro-form`
 

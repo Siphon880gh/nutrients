@@ -452,6 +452,22 @@
           >
           <button type="button" id="keywords-search-clear" class="keywords__filter-clear" hidden aria-label="Clear search">×</button>
         </div>
+        <div class="keywords__category-controls">
+          <button
+            type="button"
+            id="keywords-category-open"
+            class="keywords__category-open"
+            aria-haspopup="dialog"
+            aria-controls="keywords-category-modal"
+            aria-expanded="false"
+          >
+            Categories
+          </button>
+          <span id="keywords-category-chip" class="keywords__category-chip" hidden>
+            <span id="keywords-category-chip-label" class="keywords__category-chip-label"></span>
+            <button type="button" id="keywords-category-clear" class="keywords__category-clear" aria-label="Clear category filter">×</button>
+          </span>
+        </div>
       </div>
 
       <div class="keywords__panel">
@@ -536,7 +552,7 @@
         </nav>
 
         <p id="keywords-filter-empty" class="keywords__filter-empty" hidden>
-          No foods match your search.
+          No foods match your filters.
         </p>
 
         <p id="keywords-empty" class="keywords__empty" hidden>
@@ -638,6 +654,46 @@
       <footer class="modal__footer modal__footer--split">
         <button type="button" id="keyword-position-cancel" class="modal__secondary">Cancel</button>
         <button type="button" id="keyword-position-apply" class="modal__done">Move</button>
+      </footer>
+    </div>
+  </div>
+
+  <div id="keywords-category-modal" class="modal" hidden>
+    <div class="modal__backdrop" data-action="close-keywords-category-modal"></div>
+    <div class="modal__panel" role="dialog" aria-modal="true" aria-labelledby="keywords-category-modal-title">
+      <header class="modal__header">
+        <h3 id="keywords-category-modal-title" class="modal__title">Filter by category</h3>
+        <p class="modal__subtitle">Show only foods in one category</p>
+      </header>
+      <div class="import-modal__body keywords-category-modal__body">
+        <ul id="keywords-category-list" class="keywords-category-modal__list" role="listbox" aria-label="Food categories"></ul>
+        <div class="keywords-category-modal__uncategorized">
+          <div class="keywords-category-modal__uncategorized-row">
+            <button
+              type="button"
+              id="keywords-category-uncategorized-reveal"
+              class="keywords-category-modal__uncategorized-count"
+              aria-expanded="false"
+              aria-controls="keywords-category-uncategorized-list"
+            >
+              <span class="keywords-category-modal__uncategorized-label">Uncategorized</span>
+              <span id="keywords-category-uncategorized-count" class="keywords-category-modal__count">0</span>
+            </button>
+            <button
+              type="button"
+              id="keywords-category-uncategorized-filter"
+              class="keywords-category-modal__filter-btn"
+              data-category="__uncategorized__"
+            >
+              Filter
+            </button>
+          </div>
+          <ul id="keywords-category-uncategorized-list" class="keywords-category-modal__food-list" hidden></ul>
+        </div>
+      </div>
+      <footer class="modal__footer modal__footer--split">
+        <button type="button" id="keywords-category-modal-clear" class="modal__secondary">Clear filter</button>
+        <button type="button" id="keywords-category-modal-done" class="modal__done">Done</button>
       </footer>
     </div>
   </div>

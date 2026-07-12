@@ -1,0 +1,189 @@
+{
+  "categories": [
+    {
+      "id": "cereal",
+      "label": "Cereal",
+      "patterns": ["^Cereals?\\b", "^Shredded Wheat"]
+    },
+    {
+      "id": "fruit",
+      "label": "Fruit",
+      "patterns": ["^Fruit\\s*-"]
+    },
+    {
+      "id": "bread",
+      "label": "Bread & crackers",
+      "patterns": [
+        "^Bread,",
+        "^Wonder Classic White Bread",
+        "^Saltines",
+        "^Wheat Thins"
+      ]
+    },
+    {
+      "id": "dairy",
+      "label": "Dairy",
+      "patterns": [
+        "^Milk\\b",
+        "^Lactaid",
+        "^Cheese\\b",
+        "^Cottage cheese",
+        "^Greek Yogurt",
+        "^Chobani",
+        "^Yoplait",
+        "^Butter Salted"
+      ]
+    },
+    {
+      "id": "meat",
+      "label": "Meat & poultry",
+      "patterns": [
+        "^Chicken\\b",
+        "^Beef Liver",
+        "^Lamb Liver",
+        "^Ham slice",
+        "^Costco Rotisserie"
+      ]
+    },
+    {
+      "id": "seafood",
+      "label": "Seafood & seaweed",
+      "patterns": [
+        "^Cod Liver",
+        "^Canned Cod Liver",
+        "^Shrimp",
+        "^Nori",
+        "Seaweed"
+      ]
+    },
+    {
+      "id": "eggs",
+      "label": "Eggs",
+      "patterns": ["^Egg\\b"]
+    },
+    {
+      "id": "vegetables",
+      "label": "Vegetables & potatoes",
+      "patterns": [
+        "^Carrot\\b",
+        "^Celery\\b",
+        "^Cucumber\\b",
+        "^Beet\\b",
+        "^Cauliflower\\b",
+        "^Eggplant\\b",
+        "^Frozen Peas",
+        "^Parsley\\b",
+        "^Edamame\\b",
+        "^Red Potato",
+        "^Russet Potato",
+        "^Sweet Potato",
+        "^Yukon Gold",
+        "^Smashed Potatoes"
+      ]
+    },
+    {
+      "id": "grains",
+      "label": "Rice & grains",
+      "patterns": [
+        "^Rice\\s*-",
+        "^Leaf Wrapped Sticky Rice",
+        "^Quinoa\\b"
+      ]
+    },
+    {
+      "id": "salad",
+      "label": "Salad kits",
+      "patterns": ["^Chopped Salad Kit"]
+    },
+    {
+      "id": "nuts",
+      "label": "Nuts & spreads",
+      "patterns": [
+        "^Brazil Nut",
+        "^Macadamia",
+        "^Peanut",
+        "^First Street Trail Mix",
+        "^Hummus\\b",
+        "^Guacamole\\b",
+        "^Avocado\\b"
+      ]
+    },
+    {
+      "id": "oils",
+      "label": "Oils & fats",
+      "patterns": [
+        "^Extra Virgin Olive Oil",
+        "^AM Shot - Avocado Oil",
+        "^AM Shot - Coconut Oil",
+        "^Mayo\\b"
+      ]
+    },
+    {
+      "id": "condiments",
+      "label": "Condiments & sauces",
+      "patterns": [
+        "^A1 Sauce",
+        "^Ketchup",
+        "^Mustard\\b",
+        "^Ranch Dressing",
+        "^Salsa,",
+        "^Tartar sauce",
+        "^Worcestershire",
+        "^Tajin\\b",
+        "^Apple cider vinegar",
+        "^AM Shot - Apple Cider Vinegar",
+        "^White vinegar"
+      ]
+    },
+    {
+      "id": "drinks",
+      "label": "Drinks",
+      "patterns": [
+        "^Energy Drink",
+        "^Health Drink",
+        "^Jamba Juice"
+      ]
+    },
+    {
+      "id": "protein",
+      "label": "Protein bars & shakes",
+      "patterns": [
+        "^Pure Protein Bar",
+        "^Quest Protein Bar",
+        "^Premier Protein",
+        "^Orgain\\b",
+        "^Isopure\\b"
+      ]
+    },
+    {
+      "id": "junk",
+      "label": "Junk food",
+      "patterns": [
+        "^Junk Food\\s*-",
+        "^Popcorn\\s*-",
+        "^Mexican-style tortilla chips"
+      ]
+    },
+    {
+      "id": "supplements",
+      "label": "Supplements",
+      "patterns": [
+        "^Multivitamin",
+        "^Supplement\\s*-",
+        "^MegaRed",
+        "^Nature Made",
+        "^Metamucil"
+      ]
+    },
+    {
+      "id": "meals",
+      "label": "Prepared meals",
+      "patterns": ["^Denny", "^Starbucks", "^Trifecta"]
+    },
+    {
+      "id": "salt",
+      "label": "Salt",
+      "patterns": ["^Table Salt"]
+    }
+  ]
+}

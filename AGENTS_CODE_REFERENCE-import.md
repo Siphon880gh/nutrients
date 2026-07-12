@@ -222,6 +222,7 @@ Bulk array example:
 - **Carotenoids:** may be omitted when `vitaminA` is present — dashboard estimates mg via `resolveLongevityValue`; explicit `longevity.carotenoids` (mg) overrides.
 - **Condition notes in JSON:** `definitions-micronutrients.json` / `definitions-longevity.json` entries may include keys matching `MICRO_CONDITION_FOCUS` ids (`coffeeTeaUser`, `adhd`, `anemia`, `hairLoss`) — string arrays shown in explain modals when that condition is focused ([core doc](./AGENTS_CODE_REFERENCE-core.md)).
 - **Food notes JSON:** `definitions-food-notes.json` — `{ notes: [{ label, pattern, note }] }`; regex matched against all day-meal text; not imported/exported with meals ([core doc](./AGENTS_CODE_REFERENCE-core.md)).
+- **Food categories JSON:** `definitions-food-categories.json` — `{ categories: [{ id, label, patterns }] }`; first matching regex categorizes a food-definition name for the table filter; not imported/exported with foods ([core doc](./AGENTS_CODE_REFERENCE-core.md)).
 
 ## Related CSS
 

@@ -67,11 +67,42 @@
   var keywordsSearchEl = document.getElementById("keywords-search");
   var keywordsSearchClearBtn = document.getElementById("keywords-search-clear");
   var keywordsFilterEmptyEl = document.getElementById("keywords-filter-empty");
+  var keywordsCategoryOpenBtn = document.getElementById("keywords-category-open");
+  var keywordsCategoryChipEl = document.getElementById("keywords-category-chip");
+  var keywordsCategoryChipLabelEl = document.getElementById(
+    "keywords-category-chip-label"
+  );
+  var keywordsCategoryClearBtn = document.getElementById("keywords-category-clear");
+  var keywordsCategoryModalEl = document.getElementById("keywords-category-modal");
+  var keywordsCategoryListEl = document.getElementById("keywords-category-list");
+  var keywordsCategoryUncategorizedRevealBtn = document.getElementById(
+    "keywords-category-uncategorized-reveal"
+  );
+  var keywordsCategoryUncategorizedCountEl = document.getElementById(
+    "keywords-category-uncategorized-count"
+  );
+  var keywordsCategoryUncategorizedFilterBtn = document.getElementById(
+    "keywords-category-uncategorized-filter"
+  );
+  var keywordsCategoryUncategorizedListEl = document.getElementById(
+    "keywords-category-uncategorized-list"
+  );
+  var keywordsCategoryModalClearBtn = document.getElementById(
+    "keywords-category-modal-clear"
+  );
+  var keywordsCategoryModalDoneBtn = document.getElementById(
+    "keywords-category-modal-done"
+  );
   var keywordReorderOpen = false;
   var keywordCaloriesOpen = false;
   var keywordsPageIndex = 0;
   var keywordsPageSize = KEYWORDS_DEFAULT_PAGE_SIZE;
   var keywordsFilterQuery = "";
+  var keywordsCategoryFilter = "";
+  var keywordsCategoryUncategorizedOpen = false;
+  var foodCategories = [];
+  var FOOD_CATEGORIES_URL = "definitions-food-categories.json";
+  var KEYWORDS_CATEGORY_UNCATEGORIZED = "__uncategorized__";
   var keywordsCaloriesToggleEls = document.querySelectorAll(
     ".keywords__macro-toggle[data-action='toggle-calories']"
   );
@@ -3430,6 +3461,103 @@
         foodNotesDefinitions = [];
         if (done) done();
       });
+  }
+
+  function normalizeFoodCategories(data) {
+    var out = [];
+    var list = data && Array.isArray(data.categories) ? data.categories : [];
+    for (var i = 0; i < list.length; i++) {
+      var raw = list[i];
+      if (!raw || typeof raw !== "object") continue;
+      var id = raw.id != null ? String(raw.id).trim() : "";
+      var label = raw.label != null ? String(raw.label).trim() : "";
+      if (!id || !label) continue;
+      var patterns = [];
+      var rawPatterns = Array.isArray(raw.patterns) ? raw.patterns : [];
+      for (var pi = 0; pi < rawPatterns.length; pi++) {
+        var patternText = rawPatterns[pi] != null ? String(rawPatterns[pi]) : "";
+        if (!patternText) continue;
+        try {
+          patterns.push(new RegExp(patternText, "i"));
+        } catch (e) {
+          /* skip invalid pattern */
+        }
+      }
+      if (!patterns.length) continue;
+      out.push({ id: id, label: label, patterns: patterns });
+    }
+    return out;
+  }
+
+  function loadFoodCategoriesDefinitions(done) {
+    fetch(FOOD_CATEGORIES_URL, { cache: "no-store" })
+      .then(function (res) {
+        if (!res.ok) throw new Error("food categories fetch failed");
+        return res.json();
+      })
+      .then(function (data) {
+        foodCategories = normalizeFoodCategories(data);
+        if (done) done();
+      })
+      .catch(function () {
+        foodCategories = [];
+        if (done) done();
+      });
+  }
+
+  function foodCategoryIdForName(name) {
+    var text = name != null ? String(name) : "";
+    for (var i = 0; i < foodCategories.length; i++) {
+      var cat = foodCategories[i];
+      for (var pi = 0; pi < cat.patterns.length; pi++) {
+        if (cat.patterns[pi].test(text)) return cat.id;
+      }
+    }
+    return null;
+  }
+
+  function foodCategoryById(id) {
+    for (var i = 0; i < foodCategories.length; i++) {
+      if (foodCategories[i].id === id) return foodCategories[i];
+    }
+    return null;
+  }
+
+  function keywordsCategoryFilterLabel() {
+    if (!keywordsCategoryFilter) return "";
+    if (keywordsCategoryFilter === KEYWORDS_CATEGORY_UNCATEGORIZED) {
+      return "Uncategorized";
+    }
+    var cat = foodCategoryById(keywordsCategoryFilter);
+    return cat ? cat.label : keywordsCategoryFilter;
+  }
+
+  function keywordMatchesCategory(kw) {
+    if (!keywordsCategoryFilter) return true;
+    var name = kw && kw.name ? String(kw.name) : "";
+    var categoryId = foodCategoryIdForName(name);
+    if (keywordsCategoryFilter === KEYWORDS_CATEGORY_UNCATEGORIZED) {
+      return !categoryId;
+    }
+    return categoryId === keywordsCategoryFilter;
+  }
+
+  function keywordsCategoryCounts() {
+    var counts = {};
+    var uncategorized = [];
+    for (var i = 0; i < foodCategories.length; i++) {
+      counts[foodCategories[i].id] = 0;
+    }
+    for (var ki = 0; ki < keywords.length; ki++) {
+      var name = keywords[ki] && keywords[ki].name ? String(keywords[ki].name) : "";
+      var categoryId = foodCategoryIdForName(name);
+      if (!categoryId) {
+        uncategorized.push(name.trim() || "(unnamed)");
+      } else if (counts[categoryId] != null) {
+        counts[categoryId] += 1;
+      }
+    }
+    return { counts: counts, uncategorized: uncategorized };
   }
 
   function longevityDefKeyList() {
@@ -12835,6 +12963,7 @@
   }
 
   function keywordMatchesFilter(kw) {
+    if (!keywordMatchesCategory(kw)) return false;
     var query = keywordsFilterNormalized();
     if (!query) return true;
     var name = kw && kw.name ? String(kw.name).trim().toLowerCase() : "";
@@ -12849,9 +12978,32 @@
     return out;
   }
 
+  function keywordsHasActiveFilter() {
+    return keywordsFilterNormalized().length > 0 || !!keywordsCategoryFilter;
+  }
+
+  function updateKeywordsCategoryUi() {
+    var active = !!keywordsCategoryFilter;
+    var label = keywordsCategoryFilterLabel();
+    if (keywordsCategoryOpenBtn) {
+      keywordsCategoryOpenBtn.classList.toggle("keywords__category-open--active", active);
+      keywordsCategoryOpenBtn.setAttribute(
+        "aria-label",
+        active ? "Change category filter (" + label + ")" : "Filter by category"
+      );
+    }
+    if (keywordsCategoryChipEl) {
+      keywordsCategoryChipEl.hidden = !active;
+    }
+    if (keywordsCategoryChipLabelEl) {
+      keywordsCategoryChipLabelEl.textContent = label;
+    }
+  }
+
   function updateKeywordsSearchUi() {
     var active = keywordsFilterNormalized().length > 0;
     if (keywordsSearchClearBtn) keywordsSearchClearBtn.hidden = !active;
+    updateKeywordsCategoryUi();
   }
 
   function setKeywordsFilterQuery(query, options) {
@@ -12870,6 +13022,121 @@
   function clearKeywordsFilter() {
     setKeywordsFilterQuery("");
     if (keywordsSearchEl) keywordsSearchEl.focus();
+  }
+
+  function setKeywordsCategoryFilter(categoryId, options) {
+    var opts = options || {};
+    if (!opts.skipSync) syncAllFieldsFromDom();
+    keywordsCategoryFilter = categoryId == null ? "" : String(categoryId);
+    keywordsPageIndex = 0;
+    clampKeywordsPageIndex();
+    updateKeywordsSearchUi();
+    renderKeywords();
+  }
+
+  function clearKeywordsCategoryFilter() {
+    setKeywordsCategoryFilter("");
+  }
+
+  function renderKeywordsCategoryUncategorizedList(names) {
+    if (!keywordsCategoryUncategorizedListEl) return;
+    keywordsCategoryUncategorizedListEl.innerHTML = "";
+    if (!names.length) {
+      var empty = document.createElement("li");
+      empty.className = "keywords-category-modal__food-empty";
+      empty.textContent = "All foods match a category.";
+      keywordsCategoryUncategorizedListEl.appendChild(empty);
+      return;
+    }
+    for (var i = 0; i < names.length; i++) {
+      var li = document.createElement("li");
+      li.className = "keywords-category-modal__food-item";
+      li.textContent = names[i];
+      keywordsCategoryUncategorizedListEl.appendChild(li);
+    }
+  }
+
+  function setKeywordsCategoryUncategorizedOpen(open) {
+    keywordsCategoryUncategorizedOpen = !!open;
+    if (keywordsCategoryUncategorizedRevealBtn) {
+      keywordsCategoryUncategorizedRevealBtn.setAttribute(
+        "aria-expanded",
+        keywordsCategoryUncategorizedOpen ? "true" : "false"
+      );
+    }
+    if (keywordsCategoryUncategorizedListEl) {
+      keywordsCategoryUncategorizedListEl.hidden = !keywordsCategoryUncategorizedOpen;
+    }
+  }
+
+  function renderKeywordsCategoryModal() {
+    var stats = keywordsCategoryCounts();
+    if (keywordsCategoryListEl) {
+      keywordsCategoryListEl.innerHTML = "";
+      for (var i = 0; i < foodCategories.length; i++) {
+        var cat = foodCategories[i];
+        var count = stats.counts[cat.id] || 0;
+        var li = document.createElement("li");
+        li.className = "keywords-category-modal__item";
+        li.setAttribute("role", "presentation");
+        var btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "keywords-category-modal__link";
+        btn.setAttribute("role", "option");
+        btn.setAttribute("data-category", cat.id);
+        var selected = keywordsCategoryFilter === cat.id;
+        btn.setAttribute("aria-selected", selected ? "true" : "false");
+        if (selected) btn.classList.add("keywords-category-modal__link--active");
+        btn.innerHTML =
+          "<span>" +
+          escapeHtml(cat.label) +
+          '</span><span class="keywords-category-modal__count">' +
+          escapeHtml(String(count)) +
+          "</span>";
+        li.appendChild(btn);
+        keywordsCategoryListEl.appendChild(li);
+      }
+    }
+    if (keywordsCategoryUncategorizedCountEl) {
+      keywordsCategoryUncategorizedCountEl.textContent = String(
+        stats.uncategorized.length
+      );
+    }
+    renderKeywordsCategoryUncategorizedList(stats.uncategorized);
+    if (keywordsCategoryUncategorizedFilterBtn) {
+      var uncatActive =
+        keywordsCategoryFilter === KEYWORDS_CATEGORY_UNCATEGORIZED;
+      keywordsCategoryUncategorizedFilterBtn.classList.toggle(
+        "keywords-category-modal__filter-btn--active",
+        uncatActive
+      );
+      keywordsCategoryUncategorizedFilterBtn.textContent = uncatActive
+        ? "Filtering"
+        : "Filter";
+    }
+    setKeywordsCategoryUncategorizedOpen(keywordsCategoryUncategorizedOpen);
+  }
+
+  function openKeywordsCategoryModal() {
+    keywordsCategoryUncategorizedOpen = false;
+    renderKeywordsCategoryModal();
+    if (keywordsCategoryModalEl) keywordsCategoryModalEl.hidden = false;
+    if (keywordsCategoryOpenBtn) {
+      keywordsCategoryOpenBtn.setAttribute("aria-expanded", "true");
+    }
+  }
+
+  function closeKeywordsCategoryModal() {
+    if (keywordsCategoryModalEl) keywordsCategoryModalEl.hidden = true;
+    if (keywordsCategoryOpenBtn) {
+      keywordsCategoryOpenBtn.setAttribute("aria-expanded", "false");
+      keywordsCategoryOpenBtn.focus();
+    }
+  }
+
+  function applyKeywordsCategoryFromModal(categoryId) {
+    setKeywordsCategoryFilter(categoryId);
+    closeKeywordsCategoryModal();
   }
 
   function keywordsEffectivePageSize() {
@@ -12940,7 +13207,7 @@
   function updateKeywordsPaginationUi() {
     var allTotal = keywords.length;
     var visibleTotal = keywordsFilteredIndices().length;
-    var filtered = keywordsFilterNormalized().length > 0;
+    var filtered = keywordsHasActiveFilter();
     var showPagination = allTotal > 0;
 
     if (keywordsPaginationEl) {
@@ -13024,7 +13291,7 @@
 
     clampKeywordsPageIndex();
     var bounds = keywordsPageBounds();
-    var filtered = keywordsFilterNormalized().length > 0;
+    var filtered = keywordsHasActiveFilter();
     var visibleTotal = keywordsFilteredIndices().length;
 
     keywordsListEl.innerHTML = "";
@@ -14391,6 +14658,10 @@
 
   document.addEventListener("keydown", function (e) {
     if (e.key !== "Escape") return;
+    if (keywordsCategoryModalEl && !keywordsCategoryModalEl.hidden) {
+      closeKeywordsCategoryModal();
+      return;
+    }
     if (importAllMealsModalEl && !importAllMealsModalEl.hidden) {
       closeImportAllMealsModal();
       return;
@@ -14474,6 +14745,44 @@
 
   if (keywordsSearchClearBtn) {
     keywordsSearchClearBtn.addEventListener("click", clearKeywordsFilter);
+  }
+
+  if (keywordsCategoryOpenBtn) {
+    keywordsCategoryOpenBtn.addEventListener("click", openKeywordsCategoryModal);
+  }
+
+  if (keywordsCategoryClearBtn) {
+    keywordsCategoryClearBtn.addEventListener("click", clearKeywordsCategoryFilter);
+  }
+
+  if (keywordsCategoryModalDoneBtn) {
+    keywordsCategoryModalDoneBtn.addEventListener("click", closeKeywordsCategoryModal);
+  }
+
+  if (keywordsCategoryModalClearBtn) {
+    keywordsCategoryModalClearBtn.addEventListener("click", function () {
+      clearKeywordsCategoryFilter();
+      closeKeywordsCategoryModal();
+    });
+  }
+
+  if (keywordsCategoryModalEl) {
+    keywordsCategoryModalEl.addEventListener("click", function (e) {
+      if (e.target.closest('[data-action="close-keywords-category-modal"]')) {
+        closeKeywordsCategoryModal();
+        return;
+      }
+      var categoryBtn = e.target.closest("[data-category]");
+      if (categoryBtn && keywordsCategoryModalEl.contains(categoryBtn)) {
+        applyKeywordsCategoryFromModal(categoryBtn.getAttribute("data-category"));
+      }
+    });
+  }
+
+  if (keywordsCategoryUncategorizedRevealBtn) {
+    keywordsCategoryUncategorizedRevealBtn.addEventListener("click", function () {
+      setKeywordsCategoryUncategorizedOpen(!keywordsCategoryUncategorizedOpen);
+    });
   }
 
   if (keywordsPageSizeEl) {
@@ -15656,7 +15965,7 @@
   }
 
   loadAppConfig(function () {
-    var pending = 3;
+    var pending = 4;
     function definitionsReady() {
       pending -= 1;
       if (pending === 0) boot();
@@ -15664,5 +15973,6 @@
     loadMicroDefinitions(definitionsReady);
     loadLongevityDefinitions(definitionsReady);
     loadFoodNotesDefinitions(definitionsReady);
+    loadFoodCategoriesDefinitions(definitionsReady);
   });
 })();
