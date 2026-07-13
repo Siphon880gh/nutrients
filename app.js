@@ -14,6 +14,7 @@
   var STORAGE_KEY_BODY_WEIGHT_KG = "nutrients-body-weight-kg";
   var STORAGE_KEY_TDEE = "nutrients-tdee";
   var STORAGE_KEY_DAYS = "nutrients-day-notes";
+  var STORAGE_KEY_VIEWED_WEEK = "nutrients-viewed-week-start";
   var STORAGE_KEY_DAY_EDITOR_HEIGHT = "nutrients-day-editor-height";
   var STORAGE_KEY_DAY_HIGHLIGHTS = "nutrients-day-highlights";
   var STORAGE_KEY_REORDER = "nutrients-keywords-reorder-open";
@@ -324,6 +325,28 @@
   var exportAllMealsBtn = document.getElementById("export-all-meals");
   var importAllMealsBtn = document.getElementById("import-all-meals");
   var importSampleMealsBtn = document.getElementById("import-sample-meals");
+  var copyWeekToThisBtn = document.getElementById("copy-week-to-this");
+  var weekNavPrevBtn = document.getElementById("week-nav-prev");
+  var weekNavNextBtn = document.getElementById("week-nav-next");
+  var weekNavThisBtn = document.getElementById("week-nav-this");
+  var weekNavLabelEl = document.getElementById("week-nav-label");
+  var weekNavLabelTextEl = document.getElementById("week-nav-label-text");
+  var weekJumpModalEl = document.getElementById("week-jump-modal");
+  var weekJumpDateEl = document.getElementById("week-jump-date");
+  var weekJumpTypedEl = document.getElementById("week-jump-typed");
+  var weekJumpPreviewEl = document.getElementById("week-jump-preview");
+  var weekJumpErrorEl = document.getElementById("week-jump-error");
+  var weekJumpApplyBtn = document.getElementById("week-jump-apply");
+  var weekJumpCancelBtn = document.getElementById("week-jump-cancel");
+  var copyDateModalEl = document.getElementById("copy-date-modal");
+  var copyDateModalTitleEl = document.getElementById("copy-date-modal-title");
+  var copyDateModalHintEl = document.getElementById("copy-date-modal-hint");
+  var copyDateInputEl = document.getElementById("copy-date-input");
+  var copyDateErrorEl = document.getElementById("copy-date-modal-error");
+  var copyDateApplyBtn = document.getElementById("copy-date-apply");
+  var copyDateCancelBtn = document.getElementById("copy-date-cancel");
+  var copyDatePending = null;
+  var EARLIEST_DIARY_DATE = "2026-05-01";
   var dayHighlightsToggleBtn = document.getElementById("day-highlights-toggle");
   var dayFoodNotesEl = document.getElementById("day-food-notes");
   var dayFoodNotesLabelsEl = document.getElementById("day-food-notes-labels");
@@ -358,6 +381,8 @@
   var tdeeCalcResistanceMode = "days";
   var tdeeCalcLastResult = null;
   var dayHighlightsEnabled = true;
+  var dayMealsByDate = {};
+  var viewedWeekStart = null;
   var dashboardMacroPctView = false;
   var weekTotalOpen = false;
   var panelDisclaimerDismissed = false;
@@ -7599,6 +7624,8 @@
     var open =
       (importAllMealsModalEl && !importAllMealsModalEl.hidden) ||
       (importAllModalEl && !importAllModalEl.hidden) ||
+      (weekJumpModalEl && !weekJumpModalEl.hidden) ||
+      (copyDateModalEl && !copyDateModalEl.hidden) ||
       (microGapsModalEl && !microGapsModalEl.hidden) ||
       (healthTimelineModalEl && !healthTimelineModalEl.hidden) ||
       (microDefModalEl && !microDefModalEl.hidden) ||
@@ -9911,8 +9938,8 @@
     }
   }
 
-  function microDayCardHtml(dayLabel, dayId, microTotals, longevityTotals) {
-    var isToday = dayId === todayDayId();
+  function microDayCardHtml(dayLabel, dayId, microTotals, longevityTotals, dateLabel) {
+    var isToday = dayId === activeTodayDayId();
     var rows = "";
     microConditionDisplayFields().forEach(function (entry) {
       var field = entry.field;
@@ -9975,6 +10002,9 @@
       ">" +
       escapeHtml(dayLabel) +
       "</span>" +
+      (dateLabel
+        ? '<span class="dashboard__date">' + escapeHtml(dateLabel) + "</span>"
+        : "") +
       '<div class="dashboard__micro-day-rows">' +
       rows +
       "</div></article>"
@@ -10004,7 +10034,8 @@
         day.label,
         day.id,
         microTotalsFromText(text),
-        longevityTotalsFromText(text)
+        longevityTotalsFromText(text),
+        dateLabelForDayId(day.id)
       );
     });
     dashboardMicroDailyGridEl.innerHTML = html;
@@ -13301,8 +13332,8 @@
     );
   }
 
-  function dashboardCardHtml(label, totals, dayId) {
-    var isToday = dayId === todayDayId();
+  function dashboardCardHtml(label, totals, dayId, dateLabel) {
+    var isToday = dayId === activeTodayDayId();
     var isPct = dashboardMacroPctView;
     var pct = macroPctFromTotals(totals);
     var toggleLabel = isPct ? "Show grams and calories" : "Show macro percentages";
@@ -13343,11 +13374,16 @@
       (isToday ? " dashboard__card--today" : "") +
       '">' +
       '<div class="dashboard__card-head">' +
+      '<div class="dashboard__card-head-text">' +
       '<span class="dashboard__label"' +
       (isToday ? ' aria-current="date"' : "") +
       ">" +
       escapeHtml(label) +
       "</span>" +
+      (dateLabel
+        ? '<span class="dashboard__date">' + escapeHtml(dateLabel) + "</span>"
+        : "") +
+      "</div>" +
       '<button type="button" class="dashboard__card-toggle" data-action="toggle-dashboard-macro-view" data-day-id="' +
       escapeHtml(dayId) +
       '" aria-label="' +
@@ -13516,7 +13552,7 @@
       var text = el ? el.value : "";
       var totals = totalsFromText(text);
       week = addTotals(week, totals);
-      html += dashboardCardHtml(day.label, totals, day.id);
+      html += dashboardCardHtml(day.label, totals, day.id, dateLabelForDayId(day.id));
     });
 
     dashboardGridEl.innerHTML = html;
@@ -15301,16 +15337,144 @@
     return null;
   }
 
+  function dayIndexById(id) {
+    for (var i = 0; i < DAYS.length; i++) {
+      if (DAYS[i].id === id) return i;
+    }
+    return -1;
+  }
+
+  function pad2(n) {
+    return n < 10 ? "0" + n : String(n);
+  }
+
+  function toDateKey(d) {
+    return (
+      d.getFullYear() +
+      "-" +
+      pad2(d.getMonth() + 1) +
+      "-" +
+      pad2(d.getDate())
+    );
+  }
+
+  function parseDateKey(key) {
+    var parts = String(key || "").split("-");
+    if (parts.length !== 3) return null;
+    var y = parseInt(parts[0], 10);
+    var m = parseInt(parts[1], 10);
+    var day = parseInt(parts[2], 10);
+    if (!y || !m || !day) return null;
+    var d = new Date(y, m - 1, day);
+    if (
+      d.getFullYear() !== y ||
+      d.getMonth() !== m - 1 ||
+      d.getDate() !== day
+    ) {
+      return null;
+    }
+    return d;
+  }
+
+  function mondayOf(d) {
+    var copy = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+    var dow = copy.getDay();
+    var diff = dow === 0 ? -6 : 1 - dow;
+    copy.setDate(copy.getDate() + diff);
+    return copy;
+  }
+
+  function addDays(d, n) {
+    var copy = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+    copy.setDate(copy.getDate() + n);
+    return copy;
+  }
+
+  function formatDayDateLabel(d) {
+    return d.getMonth() + 1 + "/" + d.getDate() + "/" + String(d.getFullYear()).slice(-2);
+  }
+
+  var WEEK_RANGE_MONTHS = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
+
+  function formatWeekRangeLabel(mondayKey) {
+    var mon = parseDateKey(mondayKey);
+    if (!mon) return "";
+    var sun = addDays(mon, 6);
+    return (
+      WEEK_RANGE_MONTHS[mon.getMonth()] +
+      " " +
+      mon.getDate() +
+      " – " +
+      WEEK_RANGE_MONTHS[sun.getMonth()] +
+      " " +
+      sun.getDate() +
+      ", " +
+      sun.getFullYear()
+    );
+  }
+
+  function weekDateKeys(mondayKey) {
+    var mon = parseDateKey(mondayKey);
+    var keys = [];
+    if (!mon) return keys;
+    for (var i = 0; i < 7; i++) {
+      keys.push(toDateKey(addDays(mon, i)));
+    }
+    return keys;
+  }
+
+  function currentWeekMondayKey() {
+    return toDateKey(mondayOf(new Date()));
+  }
+
+  function todayDateKey() {
+    return toDateKey(new Date());
+  }
+
+  function isCurrentWeek() {
+    return viewedWeekStart === currentWeekMondayKey();
+  }
+
+  function dateKeyForDayId(dayId, weekStart) {
+    var idx = dayIndexById(dayId);
+    if (idx < 0) return null;
+    var keys = weekDateKeys(weekStart || viewedWeekStart);
+    return keys[idx] || null;
+  }
+
+  function dateLabelForDayId(dayId) {
+    var key = dateKeyForDayId(dayId);
+    var d = key ? parseDateKey(key) : null;
+    return d ? formatDayDateLabel(d) : "";
+  }
+
   function todayDayId() {
     // Date#getDay: 0 = Sun … 6 = Sat
     return ["sun", "mon", "tue", "wed", "thu", "fri", "sat"][new Date().getDay()];
   }
 
+  function activeTodayDayId() {
+    return isCurrentWeek() ? todayDayId() : null;
+  }
+
   function markTodayDay() {
-    var todayId = todayDayId();
+    var todayId = activeTodayDayId();
     document.querySelectorAll(".week__grid .day").forEach(function (dayEl) {
       var input = dayEl.querySelector(".day__input");
-      var isToday = !!(input && input.id === todayId);
+      var isToday = !!(todayId && input && input.id === todayId);
       dayEl.classList.toggle("day--today", isToday);
       var label = dayEl.querySelector(".day__label");
       if (!label) return;
@@ -15318,6 +15482,125 @@
       else label.removeAttribute("aria-current");
     });
     syncDaysCarouselNav();
+  }
+
+  function updateDayDateLabels() {
+    DAYS.forEach(function (day) {
+      var el = document.querySelector(
+        '[data-day-date="' + day.id + '"]'
+      );
+      if (el) el.textContent = dateLabelForDayId(day.id);
+    });
+  }
+
+  function earliestWeekMondayKey() {
+    var d = parseDateKey(EARLIEST_DIARY_DATE);
+    return d ? toDateKey(mondayOf(d)) : "2026-04-27";
+  }
+
+  function clampWeekMondayKey(mondayKey) {
+    var next = mondayKey;
+    var d = parseDateKey(next);
+    if (!d) return earliestWeekMondayKey();
+    next = toDateKey(mondayOf(d));
+    var earliest = earliestWeekMondayKey();
+    if (next < earliest) return earliest;
+    return next;
+  }
+
+  function isEarliestViewedWeek() {
+    return viewedWeekStart === earliestWeekMondayKey();
+  }
+
+  function updateWeekNavUi() {
+    var label = formatWeekRangeLabel(viewedWeekStart);
+    if (weekNavLabelTextEl) {
+      weekNavLabelTextEl.textContent = label;
+    } else if (weekNavLabelEl) {
+      weekNavLabelEl.textContent = label;
+    }
+    if (weekNavLabelEl) {
+      weekNavLabelEl.setAttribute(
+        "aria-label",
+        label ? "Choose week, currently " + label : "Choose week"
+      );
+    }
+    if (weekNavThisBtn) {
+      weekNavThisBtn.disabled = isCurrentWeek();
+    }
+    if (weekNavPrevBtn) {
+      weekNavPrevBtn.disabled = isEarliestViewedWeek();
+    }
+    updateCopyActionButtons();
+  }
+
+  function saveViewedWeekStart() {
+    try {
+      if (viewedWeekStart) {
+        localStorage.setItem(STORAGE_KEY_VIEWED_WEEK, viewedWeekStart);
+      }
+    } catch (e) {
+      /* ignore */
+    }
+  }
+
+  function loadViewedWeekStartKey() {
+    try {
+      var raw = localStorage.getItem(STORAGE_KEY_VIEWED_WEEK);
+      if (!raw) return null;
+      var d = parseDateKey(raw);
+      if (!d) return null;
+      return toDateKey(mondayOf(d));
+    } catch (e) {
+      return null;
+    }
+  }
+
+  function flushEditorsToDayMeals() {
+    if (!viewedWeekStart) return;
+    var keys = weekDateKeys(viewedWeekStart);
+    DAYS.forEach(function (day, i) {
+      var el = document.getElementById(day.id);
+      var key = keys[i];
+      if (!key) return;
+      var text = el ? el.value : "";
+      if (text) dayMealsByDate[key] = text;
+      else delete dayMealsByDate[key];
+    });
+  }
+
+  function loadEditorsFromDayMeals() {
+    if (!viewedWeekStart) return;
+    var keys = weekDateKeys(viewedWeekStart);
+    DAYS.forEach(function (day, i) {
+      var el = document.getElementById(day.id);
+      if (!el) return;
+      el.value = dayMealsByDate[keys[i]] || "";
+    });
+  }
+
+  function setViewedWeekStart(mondayKey) {
+    var next = clampWeekMondayKey(mondayKey);
+    flushEditorsToDayMeals();
+    viewedWeekStart = next;
+    saveViewedWeekStart();
+    loadEditorsFromDayMeals();
+    updateWeekNavUi();
+    updateDayDateLabels();
+    markTodayDay();
+    refreshAll();
+    updateDayClearButtons();
+  }
+
+  function stepViewedWeek(deltaWeeks) {
+    if (!viewedWeekStart) return;
+    var mon = parseDateKey(viewedWeekStart);
+    if (!mon) return;
+    setViewedWeekStart(toDateKey(addDays(mon, deltaWeeks * 7)));
+  }
+
+  function goToThisWeek() {
+    setViewedWeekStart(currentWeekMondayKey());
   }
 
   var daysCarouselIndex = 0;
@@ -15350,7 +15633,11 @@
     if (!daysCarouselNavEl) return;
     var day = DAYS[daysCarouselIndex];
     if (daysCarouselCurrentEl) {
-      daysCarouselCurrentEl.textContent = day ? day.label : "";
+      var label = day ? day.label : "";
+      var dateLabel = day ? dateLabelForDayId(day.id) : "";
+      daysCarouselCurrentEl.textContent = dateLabel
+        ? label + " · " + dateLabel
+        : label;
     }
     var prevBtn = daysCarouselNavEl.querySelector(
       '[data-days-carousel="prev"]'
@@ -15424,12 +15711,11 @@
   }
 
   function dayNotesPayload() {
-    var out = {};
-    DAYS.forEach(function (day) {
-      var el = document.getElementById(day.id);
-      out[day.id] = el ? el.value : "";
-    });
-    return out;
+    flushEditorsToDayMeals();
+    return {
+      version: 2,
+      days: Object.assign({}, dayMealsByDate),
+    };
   }
 
   function saveDayNotes() {
@@ -15562,21 +15848,76 @@
     });
   }
 
+  function isV2DayMealsData(data) {
+    return !!(
+      data &&
+      typeof data === "object" &&
+      !Array.isArray(data) &&
+      data.version === 2 &&
+      data.days &&
+      typeof data.days === "object" &&
+      !Array.isArray(data.days)
+    );
+  }
+
+  function isLegacyWeekMealsData(data) {
+    if (!data || typeof data !== "object" || Array.isArray(data)) return false;
+    if (isV2DayMealsData(data)) return false;
+    for (var i = 0; i < DAYS.length; i++) {
+      if (DAYS[i].id in data) return true;
+    }
+    return false;
+  }
+
+  function migrateLegacyDayNotesToDates(data) {
+    var keys = weekDateKeys(currentWeekMondayKey());
+    var out = {};
+    DAYS.forEach(function (day, i) {
+      if (typeof data[day.id] === "string" && data[day.id]) {
+        out[keys[i]] = data[day.id];
+      }
+    });
+    return out;
+  }
+
+  function ingestDayMealsMap(daysObj) {
+    var out = {};
+    if (!daysObj || typeof daysObj !== "object" || Array.isArray(daysObj)) {
+      return out;
+    }
+    Object.keys(daysObj).forEach(function (k) {
+      if (!parseDateKey(k)) return;
+      if (typeof daysObj[k] !== "string") return;
+      if (daysObj[k]) out[k] = daysObj[k];
+    });
+    return out;
+  }
+
   function loadDayNotes() {
+    dayMealsByDate = {};
+    var migrated = false;
     try {
       var raw = localStorage.getItem(STORAGE_KEY_DAYS);
-      if (!raw) return;
-      var data = JSON.parse(raw);
-      if (!data || typeof data !== "object") return;
-      DAYS.forEach(function (day) {
-        var el = document.getElementById(day.id);
-        if (el && typeof data[day.id] === "string") {
-          el.value = data[day.id];
+      if (raw) {
+        var data = JSON.parse(raw);
+        if (isV2DayMealsData(data)) {
+          dayMealsByDate = ingestDayMealsMap(data.days);
+        } else if (isLegacyWeekMealsData(data)) {
+          dayMealsByDate = migrateLegacyDayNotesToDates(data);
+          migrated = true;
         }
-      });
+      }
     } catch (e) {
-      /* ignore */
+      dayMealsByDate = {};
     }
+
+    viewedWeekStart =
+      clampWeekMondayKey(loadViewedWeekStartKey() || currentWeekMondayKey());
+    loadEditorsFromDayMeals();
+    updateWeekNavUi();
+    updateDayDateLabels();
+    if (migrated) saveDayNotes();
+    saveViewedWeekStart();
   }
 
   function exportAllDayMealsJson() {
@@ -15611,47 +15952,87 @@
 
     if (!data || typeof data !== "object" || Array.isArray(data)) {
       throw new Error(
-        "JSON must be an object with day ids (mon, tue, wed, thu, fri, sat, sun)"
+        "JSON must be a legacy week object (mon…sun) or a v2 diary {\"version\":2,\"days\":{…}}"
       );
     }
 
-    return data;
+    if (isV2DayMealsData(data)) return data;
+    if (isLegacyWeekMealsData(data)) return data;
+
+    throw new Error(
+      "JSON must be a legacy week object (mon…sun) or a v2 diary {\"version\":2,\"days\":{…}}"
+    );
   }
 
-  function confirmImportAllDayMealsApply(missingMode) {
-    var suffix =
-      missingMode === "keep"
-        ? " Days not in the JSON will be left unchanged."
-        : " Days not in the JSON will be cleared.";
-    if (!anyDayHasNotes()) return true;
+  function confirmImportAllDayMealsApply(missingMode, isV2) {
+    var suffix;
+    if (isV2) {
+      suffix =
+        missingMode === "keep"
+          ? " Dates not in the JSON will be left unchanged."
+          : " The diary will be replaced with only the imported dates.";
+    } else {
+      suffix =
+        missingMode === "keep"
+          ? " Viewed-week days not in the JSON will be left unchanged."
+          : " Viewed-week days not in the JSON will be cleared.";
+    }
+    var hasNotes = isV2 ? anyStoredDayHasNotes() : anyDayHasNotes();
+    if (!hasNotes) return true;
     return window.confirm(
-      "Apply imported day meals? Listed days will be updated." +
+      "Apply imported day meals?" +
         suffix +
         " This cannot be undone."
     );
   }
 
   function applySampleDayMealsData(data, clearMissing) {
-    DAYS.forEach(function (day) {
+    if (!viewedWeekStart) viewedWeekStart = currentWeekMondayKey();
+    flushEditorsToDayMeals();
+    var keys = weekDateKeys(viewedWeekStart);
+    DAYS.forEach(function (day, i) {
       var el = document.getElementById(day.id);
-      if (!el) return;
+      var key = keys[i];
+      if (!el || !key) return;
 
       if (day.id in data) {
         if (typeof data[day.id] !== "string") {
           throw new Error(day.label + " must be a string");
         }
         el.value = data[day.id];
+        if (data[day.id]) dayMealsByDate[key] = data[day.id];
+        else delete dayMealsByDate[key];
       } else if (clearMissing) {
         el.value = "";
+        delete dayMealsByDate[key];
       }
     });
+    saveDayNotes();
+  }
+
+  function applyImportV2DayMealsData(data, clearMissing) {
+    flushEditorsToDayMeals();
+    var incoming = data.days;
+    var next = clearMissing ? {} : Object.assign({}, dayMealsByDate);
+    Object.keys(incoming).forEach(function (k) {
+      if (!parseDateKey(k)) {
+        throw new Error("Invalid date key: " + k);
+      }
+      if (typeof incoming[k] !== "string") {
+        throw new Error(k + " must be a string");
+      }
+      if (incoming[k]) next[k] = incoming[k];
+      else delete next[k];
+    });
+    dayMealsByDate = next;
+    loadEditorsFromDayMeals();
     saveDayNotes();
   }
 
   function confirmImportSampleMealsReplace() {
     if (!anyDayHasNotes()) return true;
     return window.confirm(
-      "Replace all day meals with the sample week? This cannot be undone."
+      "Replace this viewed week's meals with the sample week? This cannot be undone."
     );
   }
 
@@ -15695,12 +16076,17 @@
 
   function applyImportAllDayMealsReplace(raw) {
     var missingMode = getImportAllMealsMissingMode();
-    if (!confirmImportAllDayMealsApply(missingMode)) {
+    var data = parseImportAllDayMealsObject(raw);
+    var isV2 = isV2DayMealsData(data);
+    if (!confirmImportAllDayMealsApply(missingMode, isV2)) {
       throw new Error("cancelled");
     }
 
-    var data = parseImportAllDayMealsObject(raw);
-    applySampleDayMealsData(data, missingMode === "empty");
+    if (isV2) {
+      applyImportV2DayMealsData(data, missingMode === "empty");
+    } else {
+      applySampleDayMealsData(data, missingMode === "empty");
+    }
   }
 
   function showImportAllMealsError(message) {
@@ -15766,6 +16152,48 @@
     return false;
   }
 
+  function anyStoredDayHasNotes() {
+    flushEditorsToDayMeals();
+    var keys = Object.keys(dayMealsByDate);
+    for (var i = 0; i < keys.length; i++) {
+      if ((dayMealsByDate[keys[i]] || "").trim()) return true;
+    }
+    return false;
+  }
+
+  function updateCopyActionButtons() {
+    var todayKey = todayDateKey();
+    var yesterdayKey = toDateKey(addDays(new Date(), -1));
+    var tomorrowKey = toDateKey(addDays(new Date(), 1));
+    DAYS.forEach(function (day) {
+      var wrap = document.querySelector(
+        '.day__copy .day__copy-toggle[data-day-id="' + day.id + '"]'
+      );
+      if (!wrap) return;
+      var menu = wrap.parentElement
+        ? wrap.parentElement.querySelector(".day__copy-menu")
+        : null;
+      var key = dateKeyForDayId(day.id);
+      var hasNotes = dayHasNotes(day.id);
+      wrap.disabled = !key || !hasNotes;
+      if (!menu) return;
+      var weekToThis = menu.querySelector(
+        '[data-action="copy-week-to-this-week"]'
+      );
+      var weekCustom = menu.querySelector('[data-action="copy-week-to-custom"]');
+      var dayCustom = menu.querySelector('[data-action="copy-day-to-custom"]');
+      var toToday = menu.querySelector('[data-action="copy-day-to-today"]');
+      var toYest = menu.querySelector('[data-action="copy-day-to-yesterday"]');
+      var toTom = menu.querySelector('[data-action="copy-day-to-tomorrow"]');
+      if (weekToThis) weekToThis.disabled = isCurrentWeek() || !anyDayHasNotes();
+      if (weekCustom) weekCustom.disabled = !anyDayHasNotes();
+      if (dayCustom) dayCustom.disabled = !hasNotes;
+      if (toToday) toToday.disabled = !hasNotes || key === todayKey;
+      if (toYest) toYest.disabled = !hasNotes || key === yesterdayKey;
+      if (toTom) toTom.disabled = !hasNotes || key === tomorrowKey;
+    });
+  }
+
   function updateDayClearButtons() {
     DAYS.forEach(function (day) {
       var btn = document.querySelector(
@@ -15775,6 +16203,375 @@
     });
     var clearAllBtn = document.getElementById("clear-all-days");
     if (clearAllBtn) clearAllBtn.disabled = !anyDayHasNotes();
+    updateCopyActionButtons();
+  }
+
+  function closeAllDayCopyMenus() {
+    document.querySelectorAll(".day__copy-toggle").forEach(function (btn) {
+      btn.setAttribute("aria-expanded", "false");
+    });
+    document.querySelectorAll(".day__copy-menu").forEach(function (menu) {
+      menu.hidden = true;
+    });
+  }
+
+  function toggleDayCopyMenu(dayId) {
+    var btn = document.querySelector(
+      '.day__copy-toggle[data-day-id="' + dayId + '"]'
+    );
+    if (!btn || btn.disabled) return;
+    var menu = btn.parentElement
+      ? btn.parentElement.querySelector(".day__copy-menu")
+      : null;
+    if (!menu) return;
+    var willOpen = menu.hidden;
+    closeAllDayCopyMenus();
+    if (!willOpen) return;
+    menu.hidden = false;
+    btn.setAttribute("aria-expanded", "true");
+  }
+
+  function confirmReplaceMeals(message) {
+    return window.confirm(message + " This cannot be undone.");
+  }
+
+  function destinationHasNotes(dateKey) {
+    return !!((dayMealsByDate[dateKey] || "").trim());
+  }
+
+  function weekDestinationHasNotes(mondayKey) {
+    var keys = weekDateKeys(mondayKey);
+    for (var i = 0; i < keys.length; i++) {
+      if (destinationHasNotes(keys[i])) return true;
+    }
+    return false;
+  }
+
+  function writeDateMeal(dateKey, text) {
+    if (text) dayMealsByDate[dateKey] = text;
+    else delete dayMealsByDate[dateKey];
+  }
+
+  function applyCopiedDayToEditorsIfNeeded(destKey, text) {
+    if (!viewedWeekStart) return;
+    var keys = weekDateKeys(viewedWeekStart);
+    var idx = keys.indexOf(destKey);
+    if (idx < 0) return;
+    var el = document.getElementById(DAYS[idx].id);
+    if (el) el.value = text;
+  }
+
+  function jumpToDateKey(dateKey) {
+    var d = parseDateKey(dateKey);
+    if (!d) return;
+    setViewedWeekStart(toDateKey(mondayOf(d)));
+  }
+
+  function copyDayToDateKey(dayId, destKey, confirmLabel) {
+    flushEditorsToDayMeals();
+    var srcKey = dateKeyForDayId(dayId);
+    if (!srcKey || !destKey || srcKey === destKey) return false;
+    if (destKey < earliestWeekMondayKey()) {
+      window.alert(
+        "Dates before " +
+          formatDayDateLabel(parseDateKey(EARLIEST_DIARY_DATE)) +
+          " are outside the diary range."
+      );
+      return false;
+    }
+    var text = dayMealsByDate[srcKey] || "";
+    if (
+      destinationHasNotes(destKey) &&
+      !confirmReplaceMeals(
+        "Replace meals on " +
+          (confirmLabel || destKey) +
+          " with this date's meals?"
+      )
+    ) {
+      return false;
+    }
+    writeDateMeal(destKey, text);
+    var destMon = toDateKey(mondayOf(parseDateKey(destKey)));
+    if (viewedWeekStart === destMon) {
+      applyCopiedDayToEditorsIfNeeded(destKey, text);
+      saveDayNotes();
+      refreshAll();
+      updateDayClearButtons();
+    } else {
+      saveDayNotes();
+      jumpToDateKey(destKey);
+    }
+    return true;
+  }
+
+  function copyWeekToMondayKey(destMon, confirmLabel) {
+    if (!viewedWeekStart) return false;
+    destMon = clampWeekMondayKey(destMon);
+    if (viewedWeekStart === destMon) return false;
+    flushEditorsToDayMeals();
+    var srcKeys = weekDateKeys(viewedWeekStart);
+    var destKeys = weekDateKeys(destMon);
+    if (
+      weekDestinationHasNotes(destMon) &&
+      !confirmReplaceMeals(
+        "Replace meals for " +
+          (confirmLabel || formatWeekRangeLabel(destMon)) +
+          " with the viewed week's meals?"
+      )
+    ) {
+      return false;
+    }
+    for (var j = 0; j < srcKeys.length; j++) {
+      writeDateMeal(destKeys[j], dayMealsByDate[srcKeys[j]] || "");
+    }
+    saveDayNotes();
+    setViewedWeekStart(destMon);
+    return true;
+  }
+
+  function copyDayToToday(dayId) {
+    copyDayToDateKey(
+      dayId,
+      todayDateKey(),
+      "today (" + formatDayDateLabel(new Date()) + ")"
+    );
+  }
+
+  function copyDayToYesterday(dayId) {
+    var d = addDays(new Date(), -1);
+    copyDayToDateKey(dayId, toDateKey(d), "yesterday (" + formatDayDateLabel(d) + ")");
+  }
+
+  function copyDayToTomorrow(dayId) {
+    var d = addDays(new Date(), 1);
+    copyDayToDateKey(dayId, toDateKey(d), "tomorrow (" + formatDayDateLabel(d) + ")");
+  }
+
+  function copyViewedWeekToThisWeek() {
+    copyWeekToMondayKey(
+      currentWeekMondayKey(),
+      "this week (" + formatWeekRangeLabel(currentWeekMondayKey()) + ")"
+    );
+  }
+
+  function parseTypedDate(raw) {
+    var text = String(raw || "").trim();
+    if (!text) return null;
+
+    var iso = parseDateKey(text);
+    if (iso) return iso;
+
+    var m = text.match(/^(\d{1,2})[\/\-.](\d{1,2})[\/\-.](\d{2}|\d{4})$/);
+    if (m) {
+      var month = parseInt(m[1], 10);
+      var day = parseInt(m[2], 10);
+      var year = parseInt(m[3], 10);
+      if (m[3].length === 2) {
+        year += year >= 70 ? 1900 : 2000;
+      }
+      var d = new Date(year, month - 1, day);
+      if (
+        d.getFullYear() === year &&
+        d.getMonth() === month - 1 &&
+        d.getDate() === day
+      ) {
+        return d;
+      }
+    }
+
+    var parsed = Date.parse(text);
+    if (!isNaN(parsed)) {
+      var fromNative = new Date(parsed);
+      return new Date(
+        fromNative.getFullYear(),
+        fromNative.getMonth(),
+        fromNative.getDate()
+      );
+    }
+    return null;
+  }
+
+  function showWeekJumpError(message) {
+    if (!weekJumpErrorEl) return;
+    if (!message) {
+      weekJumpErrorEl.hidden = true;
+      weekJumpErrorEl.textContent = "";
+      return;
+    }
+    weekJumpErrorEl.hidden = false;
+    weekJumpErrorEl.textContent = message;
+  }
+
+  function syncWeekJumpPreview(dateObj) {
+    if (!weekJumpPreviewEl) return;
+    if (!dateObj) {
+      weekJumpPreviewEl.textContent = "";
+      return;
+    }
+    var mondayKey = toDateKey(mondayOf(dateObj));
+    var clamped = clampWeekMondayKey(mondayKey);
+    weekJumpPreviewEl.textContent =
+      "Week: " + formatWeekRangeLabel(clamped);
+  }
+
+  function setWeekJumpFieldsFromDate(dateObj) {
+    if (!dateObj) return;
+    var key = toDateKey(dateObj);
+    if (weekJumpDateEl) weekJumpDateEl.value = key;
+    if (weekJumpTypedEl) {
+      weekJumpTypedEl.value = formatDayDateLabel(dateObj);
+    }
+    syncWeekJumpPreview(dateObj);
+  }
+
+  function closeWeekJumpModal() {
+    if (!weekJumpModalEl) return;
+    weekJumpModalEl.hidden = true;
+    showWeekJumpError("");
+    updateBodyModalOpen();
+  }
+
+  function openWeekJumpModal() {
+    if (!weekJumpModalEl) return;
+    closeAllDayCopyMenus();
+    var earliest = earliestWeekMondayKey();
+    if (weekJumpDateEl) {
+      weekJumpDateEl.min = earliest;
+      weekJumpDateEl.value = viewedWeekStart || todayDateKey();
+    }
+    var seed = parseDateKey(weekJumpDateEl ? weekJumpDateEl.value : "") ||
+      parseDateKey(viewedWeekStart) ||
+      new Date();
+    setWeekJumpFieldsFromDate(seed);
+    showWeekJumpError("");
+    weekJumpModalEl.hidden = false;
+    updateBodyModalOpen();
+    if (weekJumpTypedEl) weekJumpTypedEl.focus();
+    else if (weekJumpDateEl) weekJumpDateEl.focus();
+  }
+
+  function resolveWeekJumpDate() {
+    var typed = weekJumpTypedEl ? weekJumpTypedEl.value.trim() : "";
+    if (typed) {
+      var fromTyped = parseTypedDate(typed);
+      if (fromTyped) return fromTyped;
+      return null;
+    }
+    if (weekJumpDateEl && weekJumpDateEl.value) {
+      return parseDateKey(weekJumpDateEl.value);
+    }
+    return null;
+  }
+
+  function runWeekJumpApply() {
+    var d = resolveWeekJumpDate();
+    if (!d) {
+      showWeekJumpError("Enter a valid date (e.g. 5/1/26 or 2026-05-01).");
+      return;
+    }
+    var key = toDateKey(d);
+    if (key < earliestWeekMondayKey()) {
+      showWeekJumpError(
+        "Choose a date on or after " +
+          formatDayDateLabel(parseDateKey(EARLIEST_DIARY_DATE)) +
+          "."
+      );
+      return;
+    }
+    setViewedWeekStart(toDateKey(mondayOf(d)));
+    closeWeekJumpModal();
+  }
+
+  function closeCopyDateModal() {
+    if (!copyDateModalEl) return;
+    copyDateModalEl.hidden = true;
+    copyDatePending = null;
+    showCopyDateError("");
+    updateBodyModalOpen();
+  }
+
+  function openCopyDateModal(mode, dayId) {
+    if (!copyDateModalEl || !copyDateInputEl) return;
+    closeAllDayCopyMenus();
+    copyDatePending = { mode: mode, dayId: dayId };
+    var earliest = earliestWeekMondayKey();
+    copyDateInputEl.min = earliest;
+    copyDateInputEl.value = todayDateKey();
+    if (copyDateModalTitleEl) {
+      copyDateModalTitleEl.textContent =
+        mode === "week" ? "Copy to custom week" : "Copy to custom day";
+    }
+    if (copyDateModalHintEl) {
+      copyDateModalHintEl.textContent =
+        mode === "week"
+          ? "Pick any date in the destination week (Mon–Sun). Meals copy Mon→Mon … Sun→Sun."
+          : "Pick the destination calendar day for this date’s meals.";
+    }
+    showCopyDateError("");
+    copyDateModalEl.hidden = false;
+    updateBodyModalOpen();
+    copyDateInputEl.focus();
+  }
+
+  function runCopyDateModalApply() {
+    if (!copyDatePending || !copyDateInputEl) return;
+    var raw = copyDateInputEl.value;
+    var d = parseDateKey(raw);
+    if (!d) {
+      showCopyDateError("Enter a valid date.");
+      return;
+    }
+    var key = toDateKey(d);
+    if (key < earliestWeekMondayKey()) {
+      showCopyDateError(
+        "Choose a date on or after " +
+          formatDayDateLabel(parseDateKey(EARLIEST_DIARY_DATE)) +
+          "."
+      );
+      return;
+    }
+    var pending = copyDatePending;
+    var ok = false;
+    if (pending.mode === "week") {
+      ok = copyWeekToMondayKey(
+        toDateKey(mondayOf(d)),
+        formatWeekRangeLabel(toDateKey(mondayOf(d)))
+      );
+    } else {
+      ok = copyDayToDateKey(
+        pending.dayId,
+        key,
+        formatDayDateLabel(d)
+      );
+    }
+    if (ok) closeCopyDateModal();
+  }
+
+  function handleDayCopyAction(action, dayId) {
+    closeAllDayCopyMenus();
+    if (action === "copy-week-to-this-week") {
+      copyViewedWeekToThisWeek();
+      return;
+    }
+    if (action === "copy-week-to-custom") {
+      openCopyDateModal("week", dayId);
+      return;
+    }
+    if (action === "copy-day-to-custom") {
+      openCopyDateModal("day", dayId);
+      return;
+    }
+    if (action === "copy-day-to-today") {
+      copyDayToToday(dayId);
+      return;
+    }
+    if (action === "copy-day-to-yesterday") {
+      copyDayToYesterday(dayId);
+      return;
+    }
+    if (action === "copy-day-to-tomorrow") {
+      copyDayToTomorrow(dayId);
+    }
   }
 
   var DAY_SUGGEST_MIN_CHARS = 2;
@@ -16341,18 +17138,23 @@
   function confirmClearDay(dayId) {
     var day = dayById(dayId);
     var label = day ? day.label : dayId;
+    var dateLabel = dateLabelForDayId(dayId);
     return window.confirm(
       "Clear all meals for " +
         label +
+        (dateLabel ? " (" + dateLabel + ")" : "") +
         "? This cannot be undone."
     );
   }
 
   function confirmClearAllDays() {
+    var range = formatWeekRangeLabel(viewedWeekStart);
     return window.confirm(
       "Clear meals for all " +
         DAYS.length +
-        " days (Mon–Sun)? This cannot be undone."
+        " days in the viewed week" +
+        (range ? " (" + range + ")" : "") +
+        "? This cannot be undone."
     );
   }
 
@@ -16690,6 +17492,14 @@
       closeImportAllMealsModal();
       return;
     }
+    if (copyDateModalEl && !copyDateModalEl.hidden) {
+      closeCopyDateModal();
+      return;
+    }
+    if (weekJumpModalEl && !weekJumpModalEl.hidden) {
+      closeWeekJumpModal();
+      return;
+    }
     if (importAllModalEl && !importAllModalEl.hidden) {
       closeImportAllModal();
       return;
@@ -16918,10 +17728,29 @@
   if (weekGridEl) {
     bindDayEditorResize();
     weekGridEl.addEventListener("click", function (e) {
-      var btn = e.target.closest('[data-action="clear-day"]');
-      if (!btn) return;
-      var dayId = btn.getAttribute("data-day-id");
-      if (dayId) clearDayNotes(dayId);
+      var clearBtn = e.target.closest('[data-action="clear-day"]');
+      if (clearBtn) {
+        closeAllDayCopyMenus();
+        var clearDayId = clearBtn.getAttribute("data-day-id");
+        if (clearDayId) clearDayNotes(clearDayId);
+        return;
+      }
+      var toggleBtn = e.target.closest('[data-action="toggle-day-copy"]');
+      if (toggleBtn) {
+        e.stopPropagation();
+        var toggleDayId = toggleBtn.getAttribute("data-day-id");
+        if (toggleDayId) toggleDayCopyMenu(toggleDayId);
+        return;
+      }
+      var copyItem = e.target.closest(".day__copy-menu [data-action]");
+      if (copyItem) {
+        e.stopPropagation();
+        var action = copyItem.getAttribute("data-action");
+        var copyDayId = copyItem.getAttribute("data-day-id");
+        if (action && copyDayId && !copyItem.disabled) {
+          handleDayCopyAction(action, copyDayId);
+        }
+      }
     });
     weekGridEl.addEventListener(
       "scroll",
@@ -16962,6 +17791,95 @@
 
   if (clearAllDaysBtn) {
     clearAllDaysBtn.addEventListener("click", clearAllDayNotes);
+  }
+
+  document.addEventListener("click", function (e) {
+    if (!e.target.closest(".day__copy")) closeAllDayCopyMenus();
+  });
+
+  if (copyDateApplyBtn) {
+    copyDateApplyBtn.addEventListener("click", runCopyDateModalApply);
+  }
+  if (copyDateCancelBtn) {
+    copyDateCancelBtn.addEventListener("click", closeCopyDateModal);
+  }
+  if (copyDateModalEl) {
+    copyDateModalEl.addEventListener("click", function (e) {
+      if (e.target.closest('[data-action="close-copy-date-modal"]')) {
+        closeCopyDateModal();
+      }
+    });
+  }
+  if (copyDateInputEl) {
+    copyDateInputEl.addEventListener("keydown", function (e) {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        runCopyDateModalApply();
+      }
+    });
+  }
+
+  if (weekNavPrevBtn) {
+    weekNavPrevBtn.addEventListener("click", function () {
+      stepViewedWeek(-1);
+    });
+  }
+
+  if (weekNavNextBtn) {
+    weekNavNextBtn.addEventListener("click", function () {
+      stepViewedWeek(1);
+    });
+  }
+
+  if (weekNavThisBtn) {
+    weekNavThisBtn.addEventListener("click", goToThisWeek);
+  }
+
+  if (weekNavLabelEl) {
+    weekNavLabelEl.addEventListener("click", openWeekJumpModal);
+  }
+
+  if (weekJumpApplyBtn) {
+    weekJumpApplyBtn.addEventListener("click", runWeekJumpApply);
+  }
+  if (weekJumpCancelBtn) {
+    weekJumpCancelBtn.addEventListener("click", closeWeekJumpModal);
+  }
+  if (weekJumpModalEl) {
+    weekJumpModalEl.addEventListener("click", function (e) {
+      if (e.target.closest('[data-action="close-week-jump-modal"]')) {
+        closeWeekJumpModal();
+      }
+    });
+  }
+  if (weekJumpDateEl) {
+    weekJumpDateEl.addEventListener("change", function () {
+      var d = parseDateKey(weekJumpDateEl.value);
+      if (!d) return;
+      showWeekJumpError("");
+      if (weekJumpTypedEl) {
+        weekJumpTypedEl.value = formatDayDateLabel(d);
+      }
+      syncWeekJumpPreview(d);
+    });
+  }
+  if (weekJumpTypedEl) {
+    weekJumpTypedEl.addEventListener("input", function () {
+      showWeekJumpError("");
+      var d = parseTypedDate(weekJumpTypedEl.value);
+      if (!d) {
+        syncWeekJumpPreview(null);
+        return;
+      }
+      if (weekJumpDateEl) weekJumpDateEl.value = toDateKey(d);
+      syncWeekJumpPreview(d);
+    });
+    weekJumpTypedEl.addEventListener("keydown", function (e) {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        runWeekJumpApply();
+      }
+    });
   }
 
   if (exportAllMealsBtn) {

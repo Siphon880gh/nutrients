@@ -110,16 +110,18 @@ Human/agent authoring guides (not loaded by the app): `GUIDE_ADDING_FOOD.md`, `G
 
 ## Day meals import (`#import-all-meals-modal`)
 
-- `exportAllDayMeals` → `nutrients-day-meals.json`; `openImportAllMealsModal` prefills `exportAllDayMealsJson()`.
-- `parseImportAllDayMealsObject` requires an **object** keyed by day ids (`mon`…`sun`).
-- `getImportAllMealsMissingMode` — radio `import-all-meals-missing`: `empty` (default, clears days not listed) or `keep`.
-- `applyImportAllDayMealsReplace` writes values, confirms via `confirmImportAllDayMealsApply`, then `saveDayNotes`.
+- `exportAllDayMeals` → `nutrients-day-meals.json` (full v2 diary `{version:2,days:{…}}`); `openImportAllMealsModal` prefills `exportAllDayMealsJson()`.
+- `parseImportAllDayMealsObject` accepts either a **legacy week** object keyed by day ids (`mon`…`sun`) or a **v2 diary** (`version: 2` + `days` map of `YYYY-MM-DD` → string).
+- `getImportAllMealsMissingMode` — radio `import-all-meals-missing`: `empty` (default) or `keep`.
+  - Legacy week: apply to the **viewed week**; `empty` clears viewed-week days not listed.
+  - v2: `empty` replaces the whole diary with imported dates only; `keep` merges into existing dates.
+- `applyImportAllDayMealsReplace` confirms via `confirmImportAllDayMealsApply`, then `applySampleDayMealsData` or `applyImportV2DayMealsData` + `saveDayNotes`.
 
 ## Sample day meals (`#import-sample-meals`)
 
-**`importSampleMeals`** — fetches `IMPORT_SAMPLE_MEALS_URL` (`samples/day-meals.json`), parses with `parseImportAllDayMealsObject`, confirms via `confirmImportSampleMealsReplace` when any day already has notes, then `applySampleDayMealsData(data, true)` (missing days cleared) + `refreshAll`.
+**`importSampleMeals`** — fetches `IMPORT_SAMPLE_MEALS_URL` (`samples/day-meals.json`), parses with `parseImportAllDayMealsObject`, confirms via `confirmImportSampleMealsReplace` when any **viewed-week** day already has notes, then `applySampleDayMealsData(data, true)` (missing days cleared on the viewed week) + `refreshAll`.
 
-Sample shape:
+Sample shape (legacy week; applied to the viewed Mon–Sun):
 
 ```json
 {
@@ -133,7 +135,7 @@ Sample shape:
 }
 ```
 
-Button lives in `.week__days-actions` beside Import all / Clear all days.
+Button lives in `.week__days-actions` beside **Copy week to this week** / Import all / Clear all days.
 
 ## Micro-gaps AI prompt (`#micro-gaps-modal`)
 

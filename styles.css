@@ -38,6 +38,128 @@ body {
   font-weight: 600;
 }
 
+.week__nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.45rem 0.65rem;
+  margin: 0 0 0.65rem;
+  padding: 0.55rem 0.65rem;
+  border: 1px solid #c8c8c4;
+  border-radius: 6px;
+  background: #fff;
+}
+
+.week__nav-adj {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  min-height: 1.9rem;
+  padding: 0.2rem 0.55rem;
+  font: inherit;
+  font-size: 0.8rem;
+  font-weight: 600;
+  line-height: 1.2;
+  cursor: pointer;
+  border: 1px solid #c8c8c4;
+  border-radius: 4px;
+  background: #fafaf8;
+  color: #333;
+}
+
+.week__nav-adj:hover:not(:disabled) {
+  background: rgba(0, 0, 0, 0.04);
+}
+
+.week__nav-adj:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.week__nav-label {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.1rem;
+  min-width: 11rem;
+  flex: 1 1 auto;
+  min-height: 2.4rem;
+  padding: 0.25rem 0.55rem;
+  font: inherit;
+  font-size: 0.95rem;
+  font-weight: 700;
+  line-height: 1.2;
+  color: #1a1a1a;
+  text-align: center;
+  cursor: pointer;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  background: transparent;
+}
+
+.week__nav-label:hover,
+.week__nav-label:focus-visible {
+  border-color: #3d6b9e;
+  background: #f5f8fc;
+  outline: none;
+}
+
+.week__nav-label-hint {
+  font-size: 0.65rem;
+  font-weight: 500;
+  color: #6a6a66;
+  letter-spacing: 0.02em;
+}
+
+.week-jump-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.week-jump-input {
+  display: block;
+  width: 100%;
+  min-height: 2.4rem;
+  padding: 0.4rem 0.55rem;
+  font: inherit;
+  font-size: 0.95rem;
+  border: 1px solid #c8c8c4;
+  border-radius: 4px;
+  background: #fff;
+  color: #1a1a1a;
+}
+
+.week-jump-preview {
+  margin: 0.75rem 0 0;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #3d6b9e;
+}
+
+.week__nav-this {
+  padding: 0.25rem 0.65rem;
+  font: inherit;
+  font-size: 0.8rem;
+  font-weight: 600;
+  line-height: 1.2;
+  cursor: pointer;
+  border: 1px solid #3d6b9e;
+  border-radius: 4px;
+  background: #f5f8fc;
+  color: #3d6b9e;
+}
+
+.week__nav-this:hover:not(:disabled) {
+  background: #eaf1f8;
+}
+
+.week__nav-this:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
 .week__settings {
   display: inline-flex;
   align-items: center;
@@ -3544,14 +3666,33 @@ button.dashboard__longevity-name:focus-visible {
 
 .dashboard__card-head {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
   gap: 0.35rem;
   margin-bottom: 0.35rem;
 }
 
+.dashboard__card-head-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.05rem;
+  min-width: 0;
+}
+
 .dashboard__card-head .dashboard__label {
   margin-bottom: 0;
+}
+
+.dashboard__date {
+  font-size: 0.62rem;
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  color: #8a8a86;
+  line-height: 1.2;
+}
+
+.dashboard__card--today .dashboard__date {
+  color: #3d6b9e;
 }
 
 .dashboard__card-toggle {
@@ -3989,12 +4130,17 @@ button.dashboard__longevity-name:focus-visible {
 }
 
 .week__clear-all,
-.day__clear {
+.day__clear,
+.day__copy-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 1.2rem;
   padding: 0.1rem 0.25rem;
   font: inherit;
   font-size: 0.65rem;
   font-weight: 400;
-  line-height: 1.2;
+  line-height: 1;
   cursor: pointer;
   border: none;
   border-radius: 3px;
@@ -4008,8 +4154,66 @@ button.dashboard__longevity-name:focus-visible {
   background: rgba(0, 0, 0, 0.04);
 }
 
+.day__copy-toggle:hover:not(:disabled),
+.day__copy-toggle[aria-expanded="true"] {
+  color: #3d6b9e;
+  background: rgba(0, 0, 0, 0.04);
+}
+
 .week__clear-all:disabled,
-.day__clear:disabled {
+.day__clear:disabled,
+.day__copy-toggle:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.day__copy {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  flex: 0 0 auto;
+}
+
+.day__copy-menu {
+  position: absolute;
+  top: calc(100% + 0.15rem);
+  right: 0;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  min-width: 13.5rem;
+  padding: 0.25rem;
+  border: 1px solid #c8c8c4;
+  border-radius: 6px;
+  background: #fff;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+}
+
+.day__copy-menu[hidden] {
+  display: none;
+}
+
+.day__copy-menu button {
+  display: block;
+  width: 100%;
+  padding: 0.35rem 0.45rem;
+  border: none;
+  border-radius: 4px;
+  background: transparent;
+  color: #333;
+  font: inherit;
+  font-size: 0.68rem;
+  line-height: 1.25;
+  text-align: left;
+  cursor: pointer;
+}
+
+.day__copy-menu button:hover:not(:disabled) {
+  background: #f0f4f8;
+  color: #3d6b9e;
+}
+
+.day__copy-menu button:disabled {
   opacity: 0.4;
   cursor: default;
 }
@@ -4041,9 +4245,29 @@ button.dashboard__longevity-name:focus-visible {
 
 .day__head {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
   gap: 0.35rem;
+  min-height: 2.1rem;
+}
+
+.day__head-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.05rem;
+  min-width: 0;
+  min-height: 2.1rem;
+}
+
+.day__head-actions {
+  display: inline-flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.05rem;
+  flex-shrink: 0;
+  min-height: 2.1rem;
 }
 
 .day__label {
@@ -4054,11 +4278,23 @@ button.dashboard__longevity-name:focus-visible {
   color: #444;
 }
 
+.day__date {
+  font-size: 0.65rem;
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  color: #8a8a86;
+  line-height: 1.2;
+}
+
 .day--today .day__label {
   color: #3d6b9e;
   text-decoration: underline;
   text-decoration-thickness: 2px;
   text-underline-offset: 0.2em;
+}
+
+.day--today .day__date {
+  color: #3d6b9e;
 }
 
 .day--today .day__editor {
@@ -6879,7 +7115,9 @@ button.longevity-form__label-link:focus-visible {
   .dashboard__toggles,
   .week__days-actions,
   .week__days-carousel-nav,
+  .week__nav,
   .day__clear,
+  .day__copy,
   .week__unmatched-lines,
   .keywords,
   .demographic,
@@ -6988,7 +7226,9 @@ body.print-preview .week {
 body.print-preview .dashboard__toggles,
 body.print-preview .week__days-actions,
 body.print-preview .week__days-carousel-nav,
+body.print-preview .week__nav,
 body.print-preview .day__clear,
+body.print-preview .day__copy,
 body.print-preview .week__unmatched-lines,
 body.print-preview .day__suggest,
 body.print-preview .week__food-notes,

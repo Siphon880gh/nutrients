@@ -16,7 +16,7 @@ Parent: [AGENTS_CODE_REFERENCE.md](./AGENTS_CODE_REFERENCE.md)
 │   ├── .dashboard__header
 │   │   ├── .dashboard__toggles  (Print, Week total, Micro requirements, Longevity)
 │   │   └── .dashboard__hint
-│   ├── #dashboard-grid            (7 cards; today’s weekday .dashboard__card--today)
+│   ├── #dashboard-grid            (7 cards; .dashboard__date; today’s weekday .dashboard__card--today when on this week)
 │   ├── #dashboard-micro-panel     (hidden until toggle)
 │   │   ├── #dashboard-micro-sticky (title, View, Daily Targets, Highlight/Filter/
 │   │   │     By Nutrients / daily-intake/acute disclosures, #dashboard-micro-close)
@@ -29,15 +29,16 @@ Parent: [AGENTS_CODE_REFERENCE.md](./AGENTS_CODE_REFERENCE.md)
 │   │   ├── #dashboard-longevity-nav (title, close, sticky icon options + By Nutrients, section nav)
 │   │   └── #dashboard-longevity-content (JS — sections + % DV bars + 100% notch)
 │   └── #week-summary              (hidden by default)
+├── .week__nav              (Previous week / range / Next week / This week; above days toolbar)
 ├── .week__days-toolbar     (* N hint + Export / Import / Import sample / Clear)
 │   └── .week__days-actions
 ├── .week__highlight-bar    (pen + food notes)
 │   ├── #day-highlights-toggle
 │   └── #day-food-notes
 ├── #day-unmatched-lines    (collapsible Unmatched carousel; JS)
-├── .week__grid             (7 columns; .day--today on current weekday)
+├── .week__grid             (7 columns; .day--today on current weekday when viewing this week)
 │   └── .day × 7
-│       ├── .day__head (label + Clear)
+│       ├── .day__head (.day__head-text: label + .day__date; .day__head-actions: Copy menu + Clear)
 │       └── .day__editor (editing/viewing/plain; shared height)
 │           ├── .day__backdrop
 │           ├── textarea.day__input
@@ -83,7 +84,9 @@ Native `<textarea>` cannot color individual words, and overlaying a transparent 
 
 ## Days toolbar, highlight bar & food notes
 
-**`.week__days-toolbar`** — `display: flex; justify-content: space-between`; the hint mentions the `* N` serving multiplier; right side holds Export all / Import all / **Import sample** (`#import-sample-meals`) / Clear all days.
+**`.week__days-toolbar`** — `display: flex; justify-content: space-between`; the hint mentions the `* N` serving multiplier; right side holds Export all / Import all / **Import sample** (`#import-sample-meals`) / Clear all days (viewed week).
+
+**`.week__nav`** — sits directly above the days toolbar (not above the dashboard). Labeled **Previous week** / **Next week** buttons, clickable range `#week-nav-label` (opens `#week-jump-modal` calendar + typed date → jump to that week), **This week** (`#week-nav-this`). Prev disables at the earliest diary week (Mon–Sun containing `2026-05-01`). Hidden in print / print-preview.
 
 **`.week__highlight-bar`** — separate row below the toolbar (`position: relative; z-index: 10` so popovers stack above `.week__grid`): the `#day-highlights-toggle` pen (`.week__highlight-toggle`, persisted on/off) and `#day-food-notes`.
 
@@ -92,7 +95,9 @@ Native `<textarea>` cannot color individual words, and overlaying a transparent 
 - `.week__unmatched-toggle` — **Unmatched (N)** expand/collapse (`data-unmatched-action="toggle"`)
 - `.week__unmatched-carousel` — prev/next (`.week__unmatched-carousel-adj`), indicator, and `.week__unmatched-carousel-card` (**Go to line**, `data-unmatched-action="jump"`)
 
-**Today’s weekday** — `markTodayDay()` adds `.day--today` on the matching `.day` (underlined `.day__label`, blue-tinted `.day__editor` border/background). Macro and micro day cards use `.dashboard__card--today` the same way. No size change — color/underline only.
+**Today’s weekday** — `markTodayDay()` adds `.day--today` on the matching `.day` only when the viewed week contains today (underlined `.day__label`, blue-tinted `.day__editor` border/background). Macro and micro day cards use `.dashboard__card--today` the same way. No size change — color/underline only.
+
+**Day dates + Copy menu** — `.day__date` under each weekday label shows `M/D/YY`. **Copy** (`.day__copy-toggle`) opens a menu: copy this week to this week, copy to custom week, copy this date to custom day / today / yesterday / tomorrow. Custom targets use `#copy-date-modal`.
 
 **`#day-food-notes`** (`.week__food-notes`) — static shell in HTML; `[hidden]` until JS finds a regex match. When visible:
 
@@ -227,7 +232,7 @@ Critical hooks (do not rename without updating the element lookups near the top 
 - TDEE: `tdee-calculator-modal`, `tdee-calculator-apply`, `tdee-calculator-cancel`, `tdee-calc-*`, `tdee-hint-modal`, `tdee-hint-modal-done`
 - Macro split: `macro-split-hint-modal`, `macro-split-carousel`, `macro-split-carousel-prev`, `macro-split-carousel-next`, `macro-split-carousel-indicator`, `macro-split-carousel-card`, `macro-split-hint-modal-done`
 - Sources: `micro-sources-modal`, `micro-sources-modal-title`, `micro-sources-body`, `micro-sources-scope`, `micro-sources-modal-done`, `micro-sources-fullscreen-toggle`, `longevity-sources-modal`, `longevity-sources-modal-title`, `longevity-sources-body`, `longevity-sources-modal-done`, `longevity-sources-fullscreen-toggle`
-- Day: `mon` … `sun`, `day-highlights-toggle`, `day-food-notes`, `day-food-notes-labels`, `day-food-notes-popover`, `day-unmatched-lines`, `export-all-meals`, `import-all-meals`, `import-all-meals-modal`, `clear-all-days`
+- Day: `mon` … `sun`, `week-nav-prev`, `week-nav-next`, `week-nav-label`, `week-nav-this`, `week-jump-modal`, `week-jump-date`, `week-jump-typed`, `copy-date-modal`, `copy-date-input`, `day-highlights-toggle`, `day-food-notes`, `day-food-notes-labels`, `day-food-notes-popover`, `day-unmatched-lines`, `export-all-meals`, `import-all-meals`, `import-all-meals-modal`, `clear-all-days`
 - Dashboard: `dashboard-grid`, `dashboard-print`, `week-summary`, `dashboard-week-toggle`, `dashboard-micro-toggle`, `dashboard-micro-panel`, `dashboard-micro-list`, `dashboard-micro-daily-grid`, `micro-daily-intake-popover`, `target-ref-popover`, `target-ref-popover-text`, `dashboard-micro-view-weekly`, `dashboard-micro-view-daily`, `dashboard-micro-dv-toggle`, `dashboard-micro-hint`, `dashboard-micro-hint-text`, `micro-tip-caffeine`, `micro-tip-cataracts`, `micro-tip-hair-loss`, `micro-tip-common-deficiencies`, `micro-tip-fat-soluble`, `dashboard-micro-condition-toggle`, `dashboard-micro-condition-list`, `dashboard-micro-condition-label`, `dashboard-micro-condition-clear`, `micro-nutrient-filter-panel`, `micro-nutrient-filter-input`, `micro-nutrient-filter-suggest`, `longevity-nutrient-filter-panel`, `longevity-nutrient-filter-input`, `longevity-nutrient-filter-suggest`
 - Longevity: `dashboard-longevity-toggle`, `dashboard-longevity-panel`, `dashboard-longevity-content`, `dashboard-longevity-nav`, `dashboard-longevity-nav-prev`, `dashboard-longevity-nav-next`, `dashboard-longevity-nav-current-title`, `dashboard-longevity-nav-all-toggle`, `dashboard-longevity-nav-all-list`, `longevity-modal`, `longevity-form`, `longevity-modal-food`, `longevity-modal-done`
 - Micro gaps: `micro-gaps-ai-open`, `micro-gaps-modal`, `micro-gaps-preference`, `micro-gaps-additional`, `micro-gaps-ai-preview`, `micro-gaps-ai-copy`, `micro-gaps-open-chatgpt`, `micro-gaps-open-claude`, `micro-gaps-modal-done`
