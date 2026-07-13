@@ -1,8 +1,8 @@
 # AGENTS_CODE_REFERENCE-core.md
 
-> **Approximate locations only** — no exact line numbers. Code moves; use section names and relative position within `app.js` (~18,160 lines).
+> **Approximate locations only** — no exact line numbers. Code moves; use section names and relative position within `app.js` (~19,700 lines).
 
-Core logic: food definitions, matching, highlighting orchestration, dashboard totals, micro % DV, sticky icon show/filter/highlight + By Nutrients filter, acute toxicity, longevity panel, definition modals, localStorage.
+Core logic: food definitions, matching, highlighting orchestration, dashboard totals, micro % DV, sticky icon show/filter/highlight + By Nutrients filter, acute toxicity, longevity panel, definition modals, multi-week diary, diary favorites, mobile days carousel, localStorage.
 
 Parent overview: [AGENTS_CODE_REFERENCE.md](./AGENTS_CODE_REFERENCE.md)
 
@@ -10,7 +10,7 @@ Parent overview: [AGENTS_CODE_REFERENCE.md](./AGENTS_CODE_REFERENCE.md)
 
 | Concern | Primary symbols |
 |---------|-----------------|
-| In-memory state | `keywords[]`, `demographic`, `userTdee`, `userBodyWeightKg`, `settingsWeightUnit`, `dayHighlightsEnabled`, `dayMealsByDate`, `viewedWeekStart`, `microRequirementsOpen`, `microViewDaily`, `showMicroDailyDv`, `showAcuteSideEffects`, `showAcuteAdverseEffects`, `showDailyIntakeIcons`, `filterStickyDailyIntake` / `filterStickySideEffects` / `filterStickyAdverseEffects`, `filterStickyNutrientKeys`, `highlightStickyDailyIntake` / `highlightStickySideEffects` / `highlightStickyAdverseEffects`, `microConditionFocus`, `longevityPanelOpen`, `weekTotalOpen`, `keywordReorderOpen`, `keywordCaloriesOpen`, `keywordsPageIndex`, `keywordsPageSize`, `keywordsFilterQuery`, `keywordsCategoryFilter`, `foodCategories`, `dashboardMacroPctView`, `lastWeekTotals`, `unmatchedCarouselOpen` / `unmatchedCarouselIndex` / `unmatchedCarouselItems`, `activeMicroId`, `activeLongevityId`, `activeImportId/Index`, `activePositionId/Index`, `activeMicroDefKey`, `activeLongevityDefKey`, `activeMicroSourcesKey/Scope`, `activeLongevitySourcesKey/Kind`, `defModalReturnSources`, `longevityNavActiveIndex`, `targetRefPopoverAnchor`, `microAcuteToxicityPopoverAnchor` |
+| In-memory state | `keywords[]`, `demographic`, `userTdee`, `userBodyWeightKg`, `settingsWeightUnit`, `dayHighlightsEnabled`, `dayMealsByDate`, `viewedWeekStart`, `diaryFavorites`, `activeFavoriteDayKey`, `favoriteEditPending`, `microRequirementsOpen`, `microViewDaily`, `showMicroDailyDv`, `showAcuteSideEffects`, `showAcuteAdverseEffects`, `showDailyIntakeIcons`, `filterStickyDailyIntake` / `filterStickySideEffects` / `filterStickyAdverseEffects`, `filterStickyNutrientKeys`, `highlightStickyDailyIntake` / `highlightStickySideEffects` / `highlightStickyAdverseEffects`, `microConditionFocus`, `longevityPanelOpen`, `weekTotalOpen`, `keywordReorderOpen`, `keywordCaloriesOpen`, `keywordsPageIndex`, `keywordsPageSize`, `keywordsFilterQuery`, `keywordsCategoryFilter`, `foodCategories`, `dashboardMacroPctView`, `lastWeekTotals`, `unmatchedCarouselOpen` / `unmatchedCarouselIndex` / `unmatchedCarouselItems`, `activeMicroId`, `activeLongevityId`, `activeImportId/Index`, `activePositionId/Index`, `activeMicroDefKey`, `activeLongevityDefKey`, `activeMicroSourcesKey/Scope`, `activeLongevitySourcesKey/Kind`, `defModalReturnSources`, `longevityNavActiveIndex`, `targetRefPopoverAnchor`, `microAcuteToxicityPopoverAnchor` |
 | IDs | `makeId()`, `findIndex(id)` |
 | Table UI | `renderKeywords` (renders current filtered page only), `syncFieldFromDom`, `syncAllFieldsFromDom`, `moveKeyword`, `removeKeyword`, `addKeyword`, `sortKeywordsAlphabetically`, reorder toggle (`loadKeywordReorderOpen`), move-to-position modal |
 | Table search / pagination | `keywordMatchesFilter`, `keywordMatchesCategory`, `keywordsFilteredIndices`, `keywordsHasActiveFilter`, `setKeywordsFilterQuery`, `clearKeywordsFilter`, `setKeywordsCategoryFilter`, `clearKeywordsCategoryFilter`, `openKeywordsCategoryModal`, `keywordsCategoryCounts`, `foodCategoryIdForName`, `loadFoodCategoriesDefinitions`, `keywordsPageCount`, `clampKeywordsPageIndex`, `keywordsPageBounds`, `goKeywordsPage`, `changeKeywordsPageSize`, `updateKeywordsPaginationUi`, `updateKeywordsSearchUi`, `loadKeywordsPageSize`, `saveKeywordsPageSize` |
@@ -29,7 +29,9 @@ Parent overview: [AGENTS_CODE_REFERENCE.md](./AGENTS_CODE_REFERENCE.md)
 | % target tiers | `loadAppConfig`, `tierForMicroPct`, `tierForLongevityPct`, `tierForPctInList`, `pctInlineStyle` |
 | Demographic | `loadDemographic`, `saveDemographic`, `setDemographic`, `renderDemographicUi` (updates `#settings-demographic-icon`); targets in `demographic-dv.js` (`DAILY_MICRO_DV`, `CALORIE_BASELINE`, `DAILY_INTAKE_MICRO_KEYS`, `requiresDailyIntake`, `IOM_BW_MIN_MG_PER_KG`, `getIomBwMinDaily`, `FIBER_COMPONENT_DV_RATIO`) |
 | Highlights / editor modes | `updateDayHighlights`, `highlightedHtml`, `highlightedDayHtml`, `highlightServingMultipliersHtml`, `setDayEditorMode`, `updateDayEditorMode`, `backdropCaretRect`, `caretIndexFromBackdropPoint`, `setDayInputSelection`, `dayHighlightsEnabled` + `loadDayHighlightsPreference`/`saveDayHighlightsPreference`/`setDayHighlightsEnabled`/`syncDayHighlightsToggleUi`, `refreshAll`, `syncScroll` |
-| Today weekday | `todayDayId`, `activeTodayDayId` (null when not viewing this week), `markTodayDay` (`.day--today` + `aria-current="date"`) |
+| Today weekday | `todayDayId`, `activeTodayDayId` (null when not viewing this week), `markTodayDay` (`.day--today` + `aria-current="date"`; also calls `markFavoriteDay`) |
+| Diary favorites | `diaryFavorites[]`, `activeFavoriteDayKey` (session-only highlight), `favoritesManaging`, `STORAGE_KEY_FAVORITES` (`nutrients-favorites` → `{id,type:"day"|"week",dateKey,name,description}`), `makeFavoriteId` / `normalizeFavoriteEntry` / `findFavoriteIndexById` / `findFavoriteByTypeAndKey`, `loadFavorites` / `saveFavorites`, `favoriteTargetLabel` / `defaultFavoriteName` / `dayIdForDateKey`, `openFavoriteDayEditor` / `openFavoriteWeekEditor` / `openFavoriteEditById` / `openFavoriteEditModal` / `runFavoriteEditSave` / `#favorite-edit-modal`, `openFavoritesSidebar` / `closeFavoritesSidebar` / `toggleFavoritesSidebar` / `isFavoritesSidebarOpen` / `#favorites-sidebar` + `#favorites-open`, `setFavoritesManaging` / `syncFavoritesSidebarMode` / `#favorites-manage-toggle`, `renderFavoritesBrowseList` / `renderFavoritesManageList` / `deleteFavoriteById` / `moveFavoriteById`, `goToFavoriteById` (week clears day highlight; day sets `activeFavoriteDayKey` then `setViewedWeekStart` + `setDaysCarouselDayId`), `markFavoriteDay` (`.day--favorite-day`), `setActiveFavoriteDayHighlight` / `clearActiveFavoriteDayHighlight`, `syncDayFavoriteButtons` / `syncWeekFavoriteButton` |
+| Mobile days carousel | `daysCarouselIndex`, `daysCarouselMq` (`max-width: 520px`), `isDaysCarouselActive`, `initDaysCarousel`, `scrollDaysCarouselToIndex`, `setDaysCarouselDayId`, `stepDaysCarousel`, `syncDaysCarouselNav`, `syncDaysCarouselFromScroll`, `.week__days-carousel-nav` / `#days-carousel-current` / `data-days-carousel="prev\|next"`; used by `focusDayLine` and `goToFavoriteById` when active |
 | Multi-week diary | `dayMealsByDate`, `viewedWeekStart`, `EARLIEST_DIARY_DATE` (`2026-05-01`) / `earliestWeekMondayKey` / `clampWeekMondayKey`, `toDateKey` / `parseDateKey` / `parseTypedDate` / `mondayOf` / `addDays` / `weekDateKeys` / `formatDayDateLabel` / `formatWeekRangeLabel`, `flushEditorsToDayMeals` / `loadEditorsFromDayMeals`, `setViewedWeekStart` / `stepViewedWeek` / `goToThisWeek` / `openWeekJumpModal` / `#week-jump-modal` / `updateWeekNavUi` / `updateDayDateLabels`, `copyDayToDateKey` / `copyWeekToMondayKey` / `copyDayToToday` / `copyDayToYesterday` / `copyDayToTomorrow` / `copyViewedWeekToThisWeek` / `#copy-date-modal` / `handleDayCopyAction` / `updateCopyActionButtons`, `STORAGE_KEY_VIEWED_WEEK` |
 | Unmatched lines | `unmatchedDayLines`, `allUnmatchedDayLines`, `weekUnmatchedLinesHtml`, `weekUnmatchedCarouselHtml`, `renderWeekUnmatchedLines`, `updateWeekUnmatchedLines`, `stepUnmatchedCarousel`, `toggleUnmatchedCarousel`, `focusDayLine` |
 | Food-name suggestions | `updateDaySuggest`, `positionDaySuggest`, `foodSuggestMatches`, `applyDayFoodSuggest`, `hideDaySuggest`, `hideAllDaySuggests`, `DAY_SUGGEST_MAX`; per-item fit/scroll: `fitDaySuggestItemLabel`, `updateDaySuggestItemHover`, `bindDaySuggestHover`, `bindDaySuggestResize`, `daySuggestItemScrollTo`, `daySuggestItemUpdateChevrons` |
@@ -231,6 +233,7 @@ Demographic + TDEE + body weight live in **`#settings-modal`** (header `#setting
 | `nutrients-body-weight-kg` | Optional positive number string; kg, converted from lb on input; used for IOM bw min |
 | `nutrients-day-notes` | v2 `{ "version": 2, "days": { "YYYY-MM-DD": "…" } }`; legacy `{ mon…sun }` migrates onto the current Mon–Sun week once |
 | `nutrients-viewed-week-start` | Monday `YYYY-MM-DD` for the week loaded into `#mon`…`#sun` editors |
+| `nutrients-favorites` | JSON array of `{ id, type: "day"|"week", dateKey, name, description }`; order = display/manage order |
 | `nutrients-day-editor-height` | Pixel height string for all `.day__editor` boxes (clamped 6rem–80vh) |
 | `nutrients-day-highlights` | `"on"` / `"off"` — food highlighting pen toggle (default on) |
 | `nutrients-micro-view-daily` | `"true"` / `"false"` — micro panel each-day grid vs weekly average list |
@@ -357,8 +360,26 @@ UI mirror pattern: [AGENTS_CODE_REFERENCE-ui.md](./AGENTS_CODE_REFERENCE-ui.md)
 
 - **Detect** — `unmatchedDayLines(text)` splits on `\n`, skips blank lines, keeps lines where `lineMatchesFoodDefinition(line)` is false (the check strips any `* N` multiplier first). `allUnmatchedDayLines` walks all seven days, tagging `dayId`, `dayLabel`, `lineNum`, `text`.
 - **Render** — `updateWeekUnmatchedLines` refreshes `unmatchedCarouselItems` then `renderWeekUnmatchedLines`. Collapsed: **Unmatched (N)** toggle button. Expanded: `weekUnmatchedCarouselHtml` with prev/next, `index / total`, and a **Go to line** card.
-- **Navigate** — `data-unmatched-action`: `toggle` / `prev` / `next` / `jump`. Jump calls `focusDayLine(dayId, lineNum)` (selects that line in the day textarea). State: `unmatchedCarouselOpen`, `unmatchedCarouselIndex` (session-only).
+- **Navigate** — `data-unmatched-action`: `toggle` / `prev` / `next` / `jump`. Jump calls `focusDayLine(dayId, lineNum)` (selects that line in the day textarea). When the mobile days carousel is active (`isDaysCarouselActive`), `focusDayLine` uses `setDaysCarouselDayId` instead of `scrollIntoView`. `focusUnmatchedCarouselItem` delegates to `focusDayLine`. State: `unmatchedCarouselOpen`, `unmatchedCarouselIndex` (session-only).
 - **Visibility** — shown whenever any unmatched lines exist (not gated on the pen/highlight mode). Hidden only when the list is empty.
+
+## Diary favorites
+
+Named bookmarks for a **day** (`dateKey` = that calendar day) or **week** (`dateKey` = Monday of the week). Persisted in `nutrients-favorites`; UI lives in week nav + day heads + `#favorites-sidebar`.
+
+- **Add / edit** — `#week-nav-favorite` (above Mon–Sun grid) or per-day `.day__favorite` (`data-action="favorite-day"`) opens `#favorite-edit-modal` (name + why). Re-favoriting an existing day/week opens edit for that entry. `runFavoriteEditSave` upserts by id (or by type+dateKey duplicate).
+- **Browse / jump** — `#favorites-open` opens right slide-in `#favorites-sidebar` (`favorites-sidebar--open`, `inert` when closed; counted in `updateBodyModalOpen`). Browse list (`#favorites-list`) uses `data-action="go-favorite"`.
+- **Manage** — `#favorites-manage-toggle` flips `favoritesManaging`: shows `#favorites-manage-list` with ↑↓ (`favorite-move-up` / `favorite-move-down`), Edit, Delete; **Done** returns to browse. `syncFavoritesSidebarMode` keeps title/hint/lists in sync.
+- **Navigate** — `goToFavoriteById`: **week** → `clearActiveFavoriteDayHighlight` + `setViewedWeekStart`; **day** → `setActiveFavoriteDayHighlight(dateKey)` (clears prior highlight first) + jump to that week’s Monday + `setDaysCarouselDayId` + focus textarea. `activeFavoriteDayKey` is **session-only** (not in localStorage); `markFavoriteDay` applies `.day--favorite-day` only when that date is in the viewed week.
+
+## Mobile days carousel
+
+At `max-width: 520px`, Mon–Sun editors become a horizontal one-day-at-a-time strip (CSS scroll-snap on `.week__grid`). Desktop keeps the 7-column grid; `.week__days-carousel-nav` is `display: none` until that breakpoint.
+
+- **State** — `daysCarouselIndex`, `daysCarouselMq` (`matchMedia("(max-width: 520px)")`), `isDaysCarouselActive()`.
+- **API** — `initDaysCarousel` (boot; prefers today’s weekday index), `scrollDaysCarouselToIndex`, `setDaysCarouselDayId`, `stepDaysCarousel`, `syncDaysCarouselNav` (label `#days-carousel-current` = `Mon · M/D/YY`), `syncDaysCarouselFromScroll` (debounced on `.week__grid` scroll).
+- **Controls** — `.week__days-carousel-adj` with `data-days-carousel="prev|next"`.
+- **Integrations** — `focusDayLine` and `goToFavoriteById` call `setDaysCarouselDayId` when the carousel is active; `markTodayDay` refreshes the carousel label via `syncDaysCarouselNav`.
 
 ## Food-name suggestions (day autocomplete)
 
@@ -450,7 +471,9 @@ All seven `.day__editor` boxes share one height.
 | Toggle food table cal column | `keywordCaloriesOpen`, `updateKeywordCaloriesUi`, `STORAGE_KEY_CALORIES` |
 | Add longevity section | `LONGEVITY_NAV_SECTIONS_CORE` / `LONGEVITY_SECTION_DEFS` + row maps + `renderLongevityPanel` + tip HTML + `definitions-longevity.json` + `longevityNavTopicColors` |
 | Emphasize today’s weekday | `activeTodayDayId` / `markTodayDay`; CSS `.day--today` / `.dashboard__card--today` (only on current week) |
-| Multi-week nav / copy | `setViewedWeekStart` / `copyDayToToday` / `copyViewedWeekToThisWeek`; `.week__nav`, `.day__date`, `#copy-week-to-this` |
+| Diary favorites (day/week) | `diaryFavorites` / `goToFavoriteById` / `markFavoriteDay`; CSS `.day--favorite-day`; `#favorites-sidebar` + `#favorite-edit-modal`; persist `nutrients-favorites` |
+| Mobile days carousel | `initDaysCarousel` / `setDaysCarouselDayId`; CSS `@media (max-width: 520px)` scroll-snap on `.week__grid` |
+| Multi-week nav / copy | `setViewedWeekStart` / `copyDayToToday` / `copyViewedWeekToThisWeek`; `.week__nav`, `.day__date`, `.day__copy-menu` actions (`copy-week-to-this-week`, `copy-week-to-custom`, `copy-day-to-*`) + `#copy-date-modal` |
 | Sample day meals | `IMPORT_SAMPLE_MEALS_URL` + `importSampleMeals` + `samples/day-meals.json` (applies to viewed week) |
 | Add explanatory text | key entry in `definitions-micronutrients.json` / `definitions-longevity.json` |
 | Change day clear copy | `confirmClearDay`, `confirmClearAllDays` (viewed week) |
@@ -462,7 +485,7 @@ All seven `.day__editor` boxes share one height.
 
 ## Event binding & boot (end of `app.js`)
 
-Listeners are attached in the **last ~20%** of the file: keywords table click/input, table search + pagination + sort buttons, per-day `bindDay` loop (focus/blur editor modes, backdrop click-to-caret), `bindDayEditorResize`, week nav (`#week-nav-prev` / `#week-nav-next` / `#week-nav-this`) + copy-day / `#copy-week-to-this`, dashboard toggles (week/micro/longevity/print + micro view/targets), sticky option disclosures (Highlight/Filter/By Nutrients/daily/acute) + panel close buttons, unmatched carousel actions, condition/filter dropdown, target-ref + acute + daily-intake popovers (`initTargetRefPopoverEvents`), micros + longevity modals, definition modals (`data-micro-def` / `data-longevity-def`), long food-note modal, demographic options + body-weight input/unit, phosphorus/caffeine/DASH tip modals, starter guide dismiss + empty-state sample link, and import/sample food + sample meals modals — see [import doc](./AGENTS_CODE_REFERENCE-import.md).
+Listeners are attached in the **last ~20%** of the file: keywords table click/input, table search + pagination + sort buttons, per-day `bindDay` loop (focus/blur editor modes, backdrop click-to-caret), `bindDayEditorResize`, week nav (`#week-nav-prev` / `#week-nav-next` / `#week-nav-this` / `#favorites-open`) + Favorite week (`#week-nav-favorite` above day grid) + `#favorites-sidebar` (browse/manage actions) + `#favorite-edit-modal` + per-day Copy menu / `handleDayCopyAction`, mobile days carousel (`data-days-carousel` + grid scroll), dashboard toggles (week/micro/longevity/print + micro view/targets), sticky option disclosures (Highlight/Filter/By Nutrients/daily/acute) + panel close buttons, unmatched carousel actions, condition/filter dropdown, target-ref + acute + daily-intake popovers (`initTargetRefPopoverEvents`), micros + longevity modals, definition modals (`data-micro-def` / `data-longevity-def`), long food-note modal, demographic options + body-weight input/unit, phosphorus/caffeine/DASH tip modals, starter guide dismiss + empty-state sample link, and import/sample food + sample meals modals — see [import doc](./AGENTS_CODE_REFERENCE-import.md).
 
 Boot sequence (very end):
 
@@ -476,11 +499,13 @@ loadAppConfig(function () {
   loadFoodCategoriesDefinitions(definitionsReady);
 });
 // boot(): loadFoodDefinitions → loadKeywordReorderOpen → loadKeywordCaloriesOpen →
-//         loadKeywordsPageSize → loadDayNotes → loadDayHighlightsPreference →
-//         loadDayEditorHeight → markTodayDay →
+//         loadKeywordsPageSize → loadDayNotes → loadFavorites → markTodayDay →
+//         initDaysCarousel → syncWeekFavoriteButton / syncDayFavoriteButtons →
+//         loadDayHighlightsPreference → loadDayEditorHeight →
 //         loadMicroViewDaily → loadShowMicroDailyDv →
 //         loadShowAcuteToxicityIcons → loadShowDailyIntakeIcons →
 //         loadStickyIconFilters → loadStickyIconHighlights → sync toggle UIs →
+//         setNutrientFilterSectionOpen(true) when filterStickyNutrientKeys nonempty →
 //         loadDemographic → loadTdee → loadBodyWeight →
 //         renderDemographicUi → syncSettingsTdeeInput / syncSettingsWeightInput →
 //         renderKeywords → initLongevityNav → initTargetRefPopoverEvents →

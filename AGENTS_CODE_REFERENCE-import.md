@@ -135,7 +135,7 @@ Sample shape (legacy week; applied to the viewed Mon–Sun):
 }
 ```
 
-Button lives in `.week__days-actions` beside **Copy week to this week** / Import all / Clear all days.
+Button lives in `.week__days-actions` with Export all / Import all / Clear all days (viewed week). Copy-week / copy-day actions live in each day’s **Copy** menu (`.day__copy-menu`), not in this toolbar.
 
 ## Micro-gaps AI prompt (`#micro-gaps-modal`)
 

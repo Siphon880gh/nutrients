@@ -389,6 +389,9 @@
         Next week <span aria-hidden="true">›</span>
       </button>
       <button type="button" id="week-nav-this" class="week__nav-this">This week</button>
+      <button type="button" id="favorites-open" class="week__favorites-toggle" aria-haspopup="dialog" aria-expanded="false" aria-controls="favorites-sidebar">
+        Favorites
+      </button>
     </div>
     <div class="week__days-toolbar">
       <p class="week__days-hint">
@@ -419,6 +422,9 @@
     <div id="day-unmatched-lines" class="week__unmatched-lines" hidden role="status"></div>
 
     <div class="week__days">
+      <div class="week__days-favorite-week">
+        <button type="button" id="week-nav-favorite" class="week__days-favorite-week-btn">Favorite week</button>
+      </div>
       <div class="week__days-carousel-nav" aria-label="Day of week">
         <button type="button" class="week__days-carousel-adj" data-days-carousel="prev" aria-label="Previous day">‹</button>
         <span id="days-carousel-current" class="week__days-carousel-current" aria-live="polite">Mon</span>
@@ -443,6 +449,7 @@
                   <button type="button" role="menuitem" data-action="copy-day-to-tomorrow" data-day-id="mon">Copy this date to tomorrow</button>
                 </div>
               </div>
+              <button type="button" class="day__favorite" data-action="favorite-day" data-day-id="mon">Favorite</button>
               <button type="button" class="day__clear" data-action="clear-day" data-day-id="mon">Clear</button>
             </div>
           </div>
@@ -470,6 +477,7 @@
                   <button type="button" role="menuitem" data-action="copy-day-to-tomorrow" data-day-id="tue">Copy this date to tomorrow</button>
                 </div>
               </div>
+              <button type="button" class="day__favorite" data-action="favorite-day" data-day-id="tue">Favorite</button>
               <button type="button" class="day__clear" data-action="clear-day" data-day-id="tue">Clear</button>
             </div>
           </div>
@@ -497,6 +505,7 @@
                   <button type="button" role="menuitem" data-action="copy-day-to-tomorrow" data-day-id="wed">Copy this date to tomorrow</button>
                 </div>
               </div>
+              <button type="button" class="day__favorite" data-action="favorite-day" data-day-id="wed">Favorite</button>
               <button type="button" class="day__clear" data-action="clear-day" data-day-id="wed">Clear</button>
             </div>
           </div>
@@ -524,6 +533,7 @@
                   <button type="button" role="menuitem" data-action="copy-day-to-tomorrow" data-day-id="thu">Copy this date to tomorrow</button>
                 </div>
               </div>
+              <button type="button" class="day__favorite" data-action="favorite-day" data-day-id="thu">Favorite</button>
               <button type="button" class="day__clear" data-action="clear-day" data-day-id="thu">Clear</button>
             </div>
           </div>
@@ -551,6 +561,7 @@
                   <button type="button" role="menuitem" data-action="copy-day-to-tomorrow" data-day-id="fri">Copy this date to tomorrow</button>
                 </div>
               </div>
+              <button type="button" class="day__favorite" data-action="favorite-day" data-day-id="fri">Favorite</button>
               <button type="button" class="day__clear" data-action="clear-day" data-day-id="fri">Clear</button>
             </div>
           </div>
@@ -578,6 +589,7 @@
                   <button type="button" role="menuitem" data-action="copy-day-to-tomorrow" data-day-id="sat">Copy this date to tomorrow</button>
                 </div>
               </div>
+              <button type="button" class="day__favorite" data-action="favorite-day" data-day-id="sat">Favorite</button>
               <button type="button" class="day__clear" data-action="clear-day" data-day-id="sat">Clear</button>
             </div>
           </div>
@@ -605,6 +617,7 @@
                   <button type="button" role="menuitem" data-action="copy-day-to-tomorrow" data-day-id="sun">Copy this date to tomorrow</button>
                 </div>
               </div>
+              <button type="button" class="day__favorite" data-action="favorite-day" data-day-id="sun">Favorite</button>
               <button type="button" class="day__clear" data-action="clear-day" data-day-id="sun">Clear</button>
             </div>
           </div>
@@ -793,6 +806,57 @@
         <button type="button" id="week-jump-apply" class="modal__done">Go to week</button>
       </footer>
     </div>
+  </div>
+
+  <div id="favorite-edit-modal" class="modal" hidden>
+    <div class="modal__backdrop" data-action="close-favorite-edit-modal"></div>
+    <div class="modal__panel" role="dialog" aria-modal="true" aria-labelledby="favorite-edit-modal-title">
+      <header class="modal__header">
+        <h3 id="favorite-edit-modal-title" class="modal__title">Save favorite</h3>
+      </header>
+      <div class="import-modal__body">
+        <p id="favorite-edit-modal-hint" class="import-modal__hint"></p>
+        <div class="favorite-edit-fields">
+          <div class="import-json-wrap">
+            <label class="import-json-wrap__label" for="favorite-edit-name">Name</label>
+            <input type="text" id="favorite-edit-name" class="week-jump-input" maxlength="80" autocomplete="off" spellcheck="true">
+          </div>
+          <div class="import-json-wrap">
+            <label class="import-json-wrap__label" for="favorite-edit-description">Why it’s a favorite</label>
+            <textarea id="favorite-edit-description" class="import-modal__json" rows="4" maxlength="500" spellcheck="true"></textarea>
+          </div>
+        </div>
+        <p id="favorite-edit-error" class="import-modal__error" hidden></p>
+      </div>
+      <footer class="modal__footer modal__footer--split">
+        <button type="button" id="favorite-edit-cancel" class="modal__secondary">Cancel</button>
+        <button type="button" id="favorite-edit-save" class="modal__done">Save favorite</button>
+      </footer>
+    </div>
+  </div>
+
+  <div id="favorites-sidebar" class="favorites-sidebar" aria-hidden="true" inert>
+    <div class="favorites-sidebar__backdrop" data-action="close-favorites-sidebar"></div>
+    <aside
+      class="favorites-sidebar__panel"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="favorites-sidebar-title"
+    >
+      <header class="favorites-sidebar__header">
+        <h3 id="favorites-sidebar-title" class="favorites-sidebar__title">Favorites</h3>
+        <div class="favorites-sidebar__header-actions">
+          <button type="button" id="favorites-manage-toggle" class="favorites-sidebar__manage">Manage</button>
+          <button type="button" class="favorites-sidebar__close" data-action="close-favorites-sidebar" aria-label="Close favorites">×</button>
+        </div>
+      </header>
+      <div class="favorites-sidebar__body">
+        <p id="favorites-sidebar-hint" class="favorites-sidebar__hint">Choose a favorite to jump there.</p>
+        <div id="favorites-list" class="favorites-sidebar__list" role="list"></div>
+        <div id="favorites-manage-list" class="favorites-manage-list" role="list" hidden></div>
+        <p id="favorites-empty" class="favorites-sidebar__empty" hidden>No favorites yet. Favorite a day or week from the nutrient entry area.</p>
+      </div>
+    </aside>
   </div>
 
   <div id="copy-date-modal" class="modal" hidden>

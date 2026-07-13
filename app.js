@@ -15,6 +15,7 @@
   var STORAGE_KEY_TDEE = "nutrients-tdee";
   var STORAGE_KEY_DAYS = "nutrients-day-notes";
   var STORAGE_KEY_VIEWED_WEEK = "nutrients-viewed-week-start";
+  var STORAGE_KEY_FAVORITES = "nutrients-favorites";
   var STORAGE_KEY_DAY_EDITOR_HEIGHT = "nutrients-day-editor-height";
   var STORAGE_KEY_DAY_HIGHLIGHTS = "nutrients-day-highlights";
   var STORAGE_KEY_REORDER = "nutrients-keywords-reorder-open";
@@ -331,6 +332,35 @@
   var weekNavThisBtn = document.getElementById("week-nav-this");
   var weekNavLabelEl = document.getElementById("week-nav-label");
   var weekNavLabelTextEl = document.getElementById("week-nav-label-text");
+  var weekNavFavoriteBtn = document.getElementById("week-nav-favorite");
+  var favoritesOpenBtn = document.getElementById("favorites-open");
+  var favoritesSidebarEl = document.getElementById("favorites-sidebar");
+  var favoritesListEl = document.getElementById("favorites-list");
+  var favoritesManageToggleBtn = document.getElementById(
+    "favorites-manage-toggle"
+  );
+  var favoriteEditModalEl = document.getElementById("favorite-edit-modal");
+  var favoriteEditModalTitleEl = document.getElementById(
+    "favorite-edit-modal-title"
+  );
+  var favoriteEditModalHintEl = document.getElementById(
+    "favorite-edit-modal-hint"
+  );
+  var favoriteEditNameEl = document.getElementById("favorite-edit-name");
+  var favoriteEditDescriptionEl = document.getElementById(
+    "favorite-edit-description"
+  );
+  var favoriteEditErrorEl = document.getElementById("favorite-edit-error");
+  var favoriteEditSaveBtn = document.getElementById("favorite-edit-save");
+  var favoriteEditCancelBtn = document.getElementById("favorite-edit-cancel");
+  var favoritesManageListEl = document.getElementById("favorites-manage-list");
+  var favoritesEmptyEl = document.getElementById("favorites-empty");
+  var favoritesSidebarHintEl = document.getElementById(
+    "favorites-sidebar-hint"
+  );
+  var favoritesSidebarTitleEl = document.getElementById(
+    "favorites-sidebar-title"
+  );
   var weekJumpModalEl = document.getElementById("week-jump-modal");
   var weekJumpDateEl = document.getElementById("week-jump-date");
   var weekJumpTypedEl = document.getElementById("week-jump-typed");
@@ -383,6 +413,10 @@
   var dayHighlightsEnabled = true;
   var dayMealsByDate = {};
   var viewedWeekStart = null;
+  var diaryFavorites = [];
+  var activeFavoriteDayKey = null;
+  var favoriteEditPending = null;
+  var favoritesManaging = false;
   var dashboardMacroPctView = false;
   var weekTotalOpen = false;
   var panelDisclaimerDismissed = false;
@@ -7626,6 +7660,8 @@
       (importAllModalEl && !importAllModalEl.hidden) ||
       (weekJumpModalEl && !weekJumpModalEl.hidden) ||
       (copyDateModalEl && !copyDateModalEl.hidden) ||
+      (favoriteEditModalEl && !favoriteEditModalEl.hidden) ||
+      isFavoritesSidebarOpen() ||
       (microGapsModalEl && !microGapsModalEl.hidden) ||
       (healthTimelineModalEl && !healthTimelineModalEl.hidden) ||
       (microDefModalEl && !microDefModalEl.hidden) ||
@@ -15481,7 +15517,540 @@
       if (isToday) label.setAttribute("aria-current", "date");
       else label.removeAttribute("aria-current");
     });
+    markFavoriteDay();
     syncDaysCarouselNav();
+  }
+
+  function makeFavoriteId() {
+    return "fav-" + Date.now() + "-" + Math.floor(Math.random() * 100000);
+  }
+
+  function normalizeFavoriteEntry(raw) {
+    if (!raw || typeof raw !== "object") return null;
+    var type = raw.type === "week" ? "week" : raw.type === "day" ? "day" : null;
+    if (!type) return null;
+    var dateKey = String(raw.dateKey || "");
+    var d = parseDateKey(dateKey);
+    if (!d) return null;
+    if (type === "week") {
+      dateKey = toDateKey(mondayOf(d));
+    } else {
+      dateKey = toDateKey(d);
+    }
+    var name = String(raw.name || "").trim();
+    if (!name) return null;
+    var description = String(raw.description || "").trim();
+    var id = String(raw.id || "").trim() || makeFavoriteId();
+    return {
+      id: id,
+      type: type,
+      dateKey: dateKey,
+      name: name,
+      description: description,
+    };
+  }
+
+  function saveFavorites() {
+    try {
+      localStorage.setItem(STORAGE_KEY_FAVORITES, JSON.stringify(diaryFavorites));
+    } catch (e) {
+      /* ignore */
+    }
+  }
+
+  function loadFavorites() {
+    diaryFavorites = [];
+    try {
+      var raw = localStorage.getItem(STORAGE_KEY_FAVORITES);
+      if (!raw) return;
+      var parsed = JSON.parse(raw);
+      if (!Array.isArray(parsed)) return;
+      parsed.forEach(function (item) {
+        var entry = normalizeFavoriteEntry(item);
+        if (entry) diaryFavorites.push(entry);
+      });
+    } catch (e) {
+      diaryFavorites = [];
+    }
+  }
+
+  function findFavoriteIndexById(id) {
+    for (var i = 0; i < diaryFavorites.length; i++) {
+      if (diaryFavorites[i].id === id) return i;
+    }
+    return -1;
+  }
+
+  function findFavoriteByTypeAndKey(type, dateKey) {
+    for (var i = 0; i < diaryFavorites.length; i++) {
+      var fav = diaryFavorites[i];
+      if (fav.type === type && fav.dateKey === dateKey) return fav;
+    }
+    return null;
+  }
+
+  function favoriteTargetLabel(fav) {
+    if (!fav) return "";
+    if (fav.type === "week") {
+      return "Week · " + formatWeekRangeLabel(fav.dateKey);
+    }
+    var d = parseDateKey(fav.dateKey);
+    var dayId = dayIdForDateKey(fav.dateKey);
+    var dayMeta = dayId ? dayById(dayId) : null;
+    var weekday = dayMeta ? dayMeta.label : "";
+    var dateLabel = d ? formatDayDateLabel(d) : fav.dateKey;
+    return (
+      "Day · " +
+      (weekday ? weekday + " " : "") +
+      dateLabel
+    );
+  }
+
+  function dayIdForDateKey(dateKey) {
+    var d = parseDateKey(dateKey);
+    if (!d) return null;
+    return ["sun", "mon", "tue", "wed", "thu", "fri", "sat"][d.getDay()];
+  }
+
+  function activeFavoriteDayId() {
+    if (!activeFavoriteDayKey || !viewedWeekStart) return null;
+    var keys = weekDateKeys(viewedWeekStart);
+    var idx = keys.indexOf(activeFavoriteDayKey);
+    if (idx < 0) return null;
+    return DAYS[idx] ? DAYS[idx].id : null;
+  }
+
+  function markFavoriteDay() {
+    var favoriteId = activeFavoriteDayId();
+    document.querySelectorAll(".week__grid .day").forEach(function (dayEl) {
+      var input = dayEl.querySelector(".day__input");
+      var isFavorite = !!(favoriteId && input && input.id === favoriteId);
+      dayEl.classList.toggle("day--favorite-day", isFavorite);
+    });
+    syncDayFavoriteButtons();
+    syncWeekFavoriteButton();
+  }
+
+  function clearActiveFavoriteDayHighlight() {
+    activeFavoriteDayKey = null;
+    markFavoriteDay();
+  }
+
+  function setActiveFavoriteDayHighlight(dateKey) {
+    if (activeFavoriteDayKey && activeFavoriteDayKey !== dateKey) {
+      activeFavoriteDayKey = null;
+      markFavoriteDay();
+    }
+    activeFavoriteDayKey = dateKey || null;
+    markFavoriteDay();
+  }
+
+  function syncDayFavoriteButtons() {
+    DAYS.forEach(function (day) {
+      var btn = document.querySelector(
+        '.day__favorite[data-day-id="' + day.id + '"]'
+      );
+      if (!btn) return;
+      var key = dateKeyForDayId(day.id);
+      var existing = key ? findFavoriteByTypeAndKey("day", key) : null;
+      btn.disabled = !dayHasNotes(day.id);
+      btn.setAttribute("aria-pressed", existing ? "true" : "false");
+      btn.textContent = existing ? "Favorited" : "Favorite";
+      btn.setAttribute(
+        "aria-label",
+        existing
+          ? "Edit favorite for " + day.label
+          : "Favorite " + day.label
+      );
+    });
+  }
+
+  function syncWeekFavoriteButton() {
+    if (!weekNavFavoriteBtn) return;
+    var existing = viewedWeekStart
+      ? findFavoriteByTypeAndKey("week", viewedWeekStart)
+      : null;
+    weekNavFavoriteBtn.textContent = existing
+      ? "Week favorited"
+      : "Favorite week";
+    weekNavFavoriteBtn.setAttribute("aria-pressed", existing ? "true" : "false");
+  }
+
+  function isFavoritesSidebarOpen() {
+    return !!(
+      favoritesSidebarEl &&
+      favoritesSidebarEl.classList.contains("favorites-sidebar--open")
+    );
+  }
+
+  function closeFavoritesSidebar() {
+    if (!favoritesSidebarEl) return;
+    favoritesSidebarEl.classList.remove("favorites-sidebar--open");
+    favoritesSidebarEl.setAttribute("aria-hidden", "true");
+    if ("inert" in favoritesSidebarEl) favoritesSidebarEl.inert = true;
+    if (favoritesOpenBtn) favoritesOpenBtn.setAttribute("aria-expanded", "false");
+    favoritesManaging = false;
+    syncFavoritesSidebarMode();
+    updateBodyModalOpen();
+  }
+
+  function favoritesBrowseItemHtml(fav) {
+    var desc = fav.description
+      ? '<span class="favorites-sidebar__item-desc">' +
+        escapeHtml(fav.description) +
+        "</span>"
+      : "";
+    return (
+      '<button type="button" role="listitem" class="favorites-sidebar__item" data-action="go-favorite" data-favorite-id="' +
+      escapeAttr(fav.id) +
+      '">' +
+      '<span class="favorites-sidebar__item-name">' +
+      escapeHtml(fav.name) +
+      "</span>" +
+      '<span class="favorites-sidebar__item-meta">' +
+      escapeHtml(favoriteTargetLabel(fav)) +
+      "</span>" +
+      desc +
+      "</button>"
+    );
+  }
+
+  function renderFavoritesBrowseList() {
+    if (!favoritesListEl) return;
+    if (!diaryFavorites.length) {
+      favoritesListEl.innerHTML = "";
+      return;
+    }
+    favoritesListEl.innerHTML = diaryFavorites
+      .map(favoritesBrowseItemHtml)
+      .join("");
+  }
+
+  function syncFavoritesSidebarMode() {
+    var managing = !!favoritesManaging;
+    if (favoritesListEl) favoritesListEl.hidden = managing;
+    if (favoritesManageListEl) favoritesManageListEl.hidden = !managing;
+    if (favoritesManageToggleBtn) {
+      favoritesManageToggleBtn.textContent = managing ? "Done" : "Manage";
+      favoritesManageToggleBtn.setAttribute(
+        "aria-pressed",
+        managing ? "true" : "false"
+      );
+    }
+    if (favoritesSidebarTitleEl) {
+      favoritesSidebarTitleEl.textContent = managing
+        ? "Manage favorites"
+        : "Favorites";
+    }
+    if (favoritesSidebarHintEl) {
+      favoritesSidebarHintEl.textContent = managing
+        ? "Rearrange, rename, edit descriptions, or delete. Click a name to jump there."
+        : "Choose a favorite to jump there.";
+    }
+    var empty = diaryFavorites.length === 0;
+    if (favoritesEmptyEl) favoritesEmptyEl.hidden = !empty;
+    if (managing) renderFavoritesManageList();
+    else renderFavoritesBrowseList();
+  }
+
+  function openFavoritesSidebar() {
+    if (!favoritesSidebarEl || !favoritesOpenBtn) return;
+    closeAllDayCopyMenus();
+    favoritesManaging = false;
+    syncFavoritesSidebarMode();
+    favoritesSidebarEl.classList.add("favorites-sidebar--open");
+    favoritesSidebarEl.setAttribute("aria-hidden", "false");
+    if ("inert" in favoritesSidebarEl) favoritesSidebarEl.inert = false;
+    favoritesOpenBtn.setAttribute("aria-expanded", "true");
+    updateBodyModalOpen();
+    var closeBtn = favoritesSidebarEl.querySelector(
+      '[data-action="close-favorites-sidebar"].favorites-sidebar__close'
+    );
+    if (closeBtn) closeBtn.focus();
+  }
+
+  function toggleFavoritesSidebar() {
+    if (isFavoritesSidebarOpen()) closeFavoritesSidebar();
+    else openFavoritesSidebar();
+  }
+
+  function setFavoritesManaging(managing) {
+    favoritesManaging = !!managing;
+    syncFavoritesSidebarMode();
+  }
+
+  function showFavoriteEditError(message) {
+    if (!favoriteEditErrorEl) return;
+    if (!message) {
+      favoriteEditErrorEl.hidden = true;
+      favoriteEditErrorEl.textContent = "";
+      return;
+    }
+    favoriteEditErrorEl.hidden = false;
+    favoriteEditErrorEl.textContent = message;
+  }
+
+  function closeFavoriteEditModal() {
+    if (!favoriteEditModalEl) return;
+    favoriteEditModalEl.hidden = true;
+    favoriteEditPending = null;
+    showFavoriteEditError("");
+    updateBodyModalOpen();
+  }
+
+  function openFavoriteEditModal(pending) {
+    if (!favoriteEditModalEl || !pending) return;
+    closeAllDayCopyMenus();
+    favoriteEditPending = pending;
+    var isEdit = !!pending.id;
+    if (favoriteEditModalTitleEl) {
+      favoriteEditModalTitleEl.textContent = isEdit
+        ? "Edit favorite"
+        : "Save favorite";
+    }
+    if (favoriteEditModalHintEl) {
+      favoriteEditModalHintEl.textContent =
+        (pending.type === "week" ? "Favorite week: " : "Favorite day: ") +
+        (pending.targetLabel || "");
+    }
+    if (favoriteEditNameEl) favoriteEditNameEl.value = pending.name || "";
+    if (favoriteEditDescriptionEl) {
+      favoriteEditDescriptionEl.value = pending.description || "";
+    }
+    if (favoriteEditSaveBtn) {
+      favoriteEditSaveBtn.textContent = isEdit ? "Save changes" : "Save favorite";
+    }
+    showFavoriteEditError("");
+    favoriteEditModalEl.hidden = false;
+    updateBodyModalOpen();
+    if (favoriteEditNameEl) {
+      favoriteEditNameEl.focus();
+      favoriteEditNameEl.select();
+    }
+  }
+
+  function defaultFavoriteName(type, dateKey) {
+    if (type === "week") {
+      return "Week of " + formatWeekRangeLabel(dateKey);
+    }
+    var d = parseDateKey(dateKey);
+    var dayId = dayIdForDateKey(dateKey);
+    var dayMeta = dayId ? dayById(dayId) : null;
+    var weekday = dayMeta ? dayMeta.label : "Day";
+    return weekday + " " + (d ? formatDayDateLabel(d) : dateKey);
+  }
+
+  function openFavoriteDayEditor(dayId) {
+    var key = dateKeyForDayId(dayId);
+    if (!key) return;
+    var existing = findFavoriteByTypeAndKey("day", key);
+    openFavoriteEditModal({
+      id: existing ? existing.id : null,
+      type: "day",
+      dateKey: key,
+      name: existing ? existing.name : defaultFavoriteName("day", key),
+      description: existing ? existing.description : "",
+      targetLabel: favoriteTargetLabel({
+        type: "day",
+        dateKey: key,
+        name: "",
+        description: "",
+      }),
+    });
+  }
+
+  function openFavoriteWeekEditor() {
+    if (!viewedWeekStart) return;
+    var existing = findFavoriteByTypeAndKey("week", viewedWeekStart);
+    openFavoriteEditModal({
+      id: existing ? existing.id : null,
+      type: "week",
+      dateKey: viewedWeekStart,
+      name: existing
+        ? existing.name
+        : defaultFavoriteName("week", viewedWeekStart),
+      description: existing ? existing.description : "",
+      targetLabel: formatWeekRangeLabel(viewedWeekStart),
+    });
+  }
+
+  function openFavoriteEditById(id) {
+    var idx = findFavoriteIndexById(id);
+    if (idx < 0) return;
+    var fav = diaryFavorites[idx];
+    openFavoriteEditModal({
+      id: fav.id,
+      type: fav.type,
+      dateKey: fav.dateKey,
+      name: fav.name,
+      description: fav.description,
+      targetLabel: favoriteTargetLabel(fav),
+    });
+  }
+
+  function runFavoriteEditSave() {
+    if (!favoriteEditPending) return;
+    var name = favoriteEditNameEl
+      ? favoriteEditNameEl.value.trim()
+      : "";
+    var description = favoriteEditDescriptionEl
+      ? favoriteEditDescriptionEl.value.trim()
+      : "";
+    if (!name) {
+      showFavoriteEditError("Enter a name for this favorite.");
+      if (favoriteEditNameEl) favoriteEditNameEl.focus();
+      return;
+    }
+    var entry = normalizeFavoriteEntry({
+      id: favoriteEditPending.id || makeFavoriteId(),
+      type: favoriteEditPending.type,
+      dateKey: favoriteEditPending.dateKey,
+      name: name,
+      description: description,
+    });
+    if (!entry) {
+      showFavoriteEditError("Could not save this favorite.");
+      return;
+    }
+    var existingIdx = findFavoriteIndexById(entry.id);
+    if (existingIdx >= 0) {
+      diaryFavorites[existingIdx] = entry;
+    } else {
+      var dup = findFavoriteByTypeAndKey(entry.type, entry.dateKey);
+      if (dup) {
+        var dupIdx = findFavoriteIndexById(dup.id);
+        entry.id = dup.id;
+        diaryFavorites[dupIdx] = entry;
+      } else {
+        diaryFavorites.push(entry);
+      }
+    }
+    saveFavorites();
+    closeFavoriteEditModal();
+    syncDayFavoriteButtons();
+    syncWeekFavoriteButton();
+    if (isFavoritesSidebarOpen()) syncFavoritesSidebarMode();
+  }
+
+  function deleteFavoriteById(id) {
+    var idx = findFavoriteIndexById(id);
+    if (idx < 0) return;
+    var fav = diaryFavorites[idx];
+    if (
+      !window.confirm(
+        'Delete favorite "' + fav.name + '"? This cannot be undone.'
+      )
+    ) {
+      return;
+    }
+    diaryFavorites.splice(idx, 1);
+    if (fav.type === "day" && fav.dateKey === activeFavoriteDayKey) {
+      clearActiveFavoriteDayHighlight();
+    }
+    saveFavorites();
+    syncDayFavoriteButtons();
+    syncWeekFavoriteButton();
+    if (isFavoritesSidebarOpen()) syncFavoritesSidebarMode();
+  }
+
+  function moveFavoriteById(id, delta) {
+    var idx = findFavoriteIndexById(id);
+    if (idx < 0) return;
+    var next = idx + delta;
+    if (next < 0 || next >= diaryFavorites.length) return;
+    var tmp = diaryFavorites[idx];
+    diaryFavorites[idx] = diaryFavorites[next];
+    diaryFavorites[next] = tmp;
+    saveFavorites();
+    if (isFavoritesSidebarOpen()) syncFavoritesSidebarMode();
+  }
+
+  function favoritesManageRowHtml(fav, index) {
+    var desc = fav.description
+      ? '<div class="favorites-manage-desc">' +
+        escapeHtml(fav.description) +
+        "</div>"
+      : "";
+    return (
+      '<div class="favorites-manage-row" role="listitem" data-favorite-id="' +
+      escapeAttr(fav.id) +
+      '">' +
+      '<div class="favorites-manage-move">' +
+      '<button type="button" class="favorites-manage-move-btn" data-action="favorite-move-up" data-favorite-id="' +
+      escapeAttr(fav.id) +
+      '" aria-label="Move up"' +
+      (index === 0 ? " disabled" : "") +
+      ">↑</button>" +
+      '<button type="button" class="favorites-manage-move-btn" data-action="favorite-move-down" data-favorite-id="' +
+      escapeAttr(fav.id) +
+      '" aria-label="Move down"' +
+      (index === diaryFavorites.length - 1 ? " disabled" : "") +
+      ">↓</button>" +
+      "</div>" +
+      '<div class="favorites-manage-main">' +
+      '<button type="button" class="favorites-manage-go" data-action="go-favorite" data-favorite-id="' +
+      escapeAttr(fav.id) +
+      '">' +
+      escapeHtml(fav.name) +
+      "</button>" +
+      '<div class="favorites-manage-meta">' +
+      escapeHtml(favoriteTargetLabel(fav)) +
+      "</div>" +
+      desc +
+      "</div>" +
+      '<div class="favorites-manage-actions">' +
+      '<button type="button" class="favorites-manage-action" data-action="favorite-edit" data-favorite-id="' +
+      escapeAttr(fav.id) +
+      '">Edit</button>' +
+      '<button type="button" class="favorites-manage-action favorites-manage-action--danger" data-action="favorite-delete" data-favorite-id="' +
+      escapeAttr(fav.id) +
+      '">Delete</button>' +
+      "</div>" +
+      "</div>"
+    );
+  }
+
+  function renderFavoritesManageList() {
+    if (!favoritesManageListEl) return;
+    favoritesManageListEl.innerHTML = diaryFavorites.length
+      ? diaryFavorites
+          .map(function (fav, index) {
+            return favoritesManageRowHtml(fav, index);
+          })
+          .join("")
+      : "";
+  }
+
+  function goToFavoriteById(id) {
+    var idx = findFavoriteIndexById(id);
+    if (idx < 0) return;
+    var fav = diaryFavorites[idx];
+    closeFavoritesSidebar();
+    closeFavoriteEditModal();
+    if (fav.type === "week") {
+      clearActiveFavoriteDayHighlight();
+      setViewedWeekStart(fav.dateKey);
+      return;
+    }
+    var d = parseDateKey(fav.dateKey);
+    if (!d) return;
+    var mondayKey = toDateKey(mondayOf(d));
+    setActiveFavoriteDayHighlight(fav.dateKey);
+    setViewedWeekStart(mondayKey);
+    var dayId = dayIdForDateKey(fav.dateKey);
+    if (dayId) {
+      window.requestAnimationFrame(function () {
+        setDaysCarouselDayId(dayId);
+        var input = document.getElementById(dayId);
+        if (input) {
+          try {
+            input.focus({ preventScroll: true });
+          } catch (e) {
+            input.focus();
+          }
+        }
+      });
+    }
   }
 
   function updateDayDateLabels() {
@@ -15532,6 +16101,8 @@
       weekNavPrevBtn.disabled = isEarliestViewedWeek();
     }
     updateCopyActionButtons();
+    syncWeekFavoriteButton();
+    syncDayFavoriteButtons();
   }
 
   function saveViewedWeekStart() {
@@ -16204,6 +16775,7 @@
     var clearAllBtn = document.getElementById("clear-all-days");
     if (clearAllBtn) clearAllBtn.disabled = !anyDayHasNotes();
     updateCopyActionButtons();
+    syncDayFavoriteButtons();
   }
 
   function closeAllDayCopyMenus() {
@@ -17496,6 +18068,14 @@
       closeCopyDateModal();
       return;
     }
+    if (favoriteEditModalEl && !favoriteEditModalEl.hidden) {
+      closeFavoriteEditModal();
+      return;
+    }
+    if (isFavoritesSidebarOpen()) {
+      closeFavoritesSidebar();
+      return;
+    }
     if (weekJumpModalEl && !weekJumpModalEl.hidden) {
       closeWeekJumpModal();
       return;
@@ -17728,6 +18308,15 @@
   if (weekGridEl) {
     bindDayEditorResize();
     weekGridEl.addEventListener("click", function (e) {
+      var favoriteBtn = e.target.closest('[data-action="favorite-day"]');
+      if (favoriteBtn) {
+        if (favoriteBtn.disabled) return;
+        closeAllDayCopyMenus();
+        closeFavoritesSidebar();
+        var favoriteDayId = favoriteBtn.getAttribute("data-day-id");
+        if (favoriteDayId) openFavoriteDayEditor(favoriteDayId);
+        return;
+      }
       var clearBtn = e.target.closest('[data-action="clear-day"]');
       if (clearBtn) {
         closeAllDayCopyMenus();
@@ -17833,6 +18422,66 @@
 
   if (weekNavThisBtn) {
     weekNavThisBtn.addEventListener("click", goToThisWeek);
+  }
+
+  if (weekNavFavoriteBtn) {
+    weekNavFavoriteBtn.addEventListener("click", openFavoriteWeekEditor);
+  }
+
+  if (favoritesOpenBtn) {
+    favoritesOpenBtn.addEventListener("click", function () {
+      toggleFavoritesSidebar();
+    });
+  }
+
+  if (favoritesManageToggleBtn) {
+    favoritesManageToggleBtn.addEventListener("click", function () {
+      setFavoritesManaging(!favoritesManaging);
+    });
+  }
+
+  if (favoritesSidebarEl) {
+    favoritesSidebarEl.addEventListener("click", function (e) {
+      if (e.target.closest('[data-action="close-favorites-sidebar"]')) {
+        closeFavoritesSidebar();
+        return;
+      }
+      var btn = e.target.closest("[data-action]");
+      if (!btn) return;
+      var action = btn.getAttribute("data-action");
+      var favId = btn.getAttribute("data-favorite-id");
+      if (action === "go-favorite" && favId) {
+        goToFavoriteById(favId);
+        return;
+      }
+      if (!favId) return;
+      if (action === "favorite-edit") openFavoriteEditById(favId);
+      else if (action === "favorite-delete") deleteFavoriteById(favId);
+      else if (action === "favorite-move-up") moveFavoriteById(favId, -1);
+      else if (action === "favorite-move-down") moveFavoriteById(favId, 1);
+    });
+  }
+
+  if (favoriteEditSaveBtn) {
+    favoriteEditSaveBtn.addEventListener("click", runFavoriteEditSave);
+  }
+  if (favoriteEditCancelBtn) {
+    favoriteEditCancelBtn.addEventListener("click", closeFavoriteEditModal);
+  }
+  if (favoriteEditModalEl) {
+    favoriteEditModalEl.addEventListener("click", function (e) {
+      if (e.target.closest('[data-action="close-favorite-edit-modal"]')) {
+        closeFavoriteEditModal();
+      }
+    });
+  }
+  if (favoriteEditNameEl) {
+    favoriteEditNameEl.addEventListener("keydown", function (e) {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        runFavoriteEditSave();
+      }
+    });
   }
 
   if (weekNavLabelEl) {
@@ -19029,8 +19678,11 @@
     loadKeywordCaloriesOpen();
     loadKeywordsPageSize();
     loadDayNotes();
+    loadFavorites();
     markTodayDay();
     initDaysCarousel();
+    syncWeekFavoriteButton();
+    syncDayFavoriteButtons();
     loadDayHighlightsPreference();
     loadDayEditorHeight();
     loadMicroViewDaily();

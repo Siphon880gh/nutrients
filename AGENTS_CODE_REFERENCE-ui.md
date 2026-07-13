@@ -1,8 +1,8 @@
 # AGENTS_CODE_REFERENCE-ui.md
 
-> **Approximate locations only** — use class names and file regions in `index.html` (~1,760 lines) and `styles.css` (~7,060 lines).
+> **Approximate locations only** — use class names and file regions in `index.html` (~2,000 lines) and `styles.css` (~7,700 lines).
 
-Markup structure, layout, modals, and the **highlight mirror** pattern.
+Markup structure, layout, modals, Favorites sidebar, mobile days carousel, and the **highlight mirror** pattern.
 
 Parent: [AGENTS_CODE_REFERENCE.md](./AGENTS_CODE_REFERENCE.md)
 
@@ -29,17 +29,20 @@ Parent: [AGENTS_CODE_REFERENCE.md](./AGENTS_CODE_REFERENCE.md)
 │   │   ├── #dashboard-longevity-nav (title, close, sticky icon options + By Nutrients, section nav)
 │   │   └── #dashboard-longevity-content (JS — sections + % DV bars + 100% notch)
 │   └── #week-summary              (hidden by default)
-├── .week__nav              (Previous week / range / Next week / This week; above days toolbar)
+├── .week__nav              (Previous/Next week, range, This week, Favorites)
 ├── .week__days-toolbar     (* N hint + Export / Import / Import sample / Clear)
 │   └── .week__days-actions
 ├── .week__highlight-bar    (pen + food notes)
 │   ├── #day-highlights-toggle
 │   └── #day-food-notes
 ├── #day-unmatched-lines    (collapsible Unmatched carousel; JS)
-├── .week__grid             (7 columns; .day--today on current weekday when viewing this week)
-│   └── .day × 7
-│       ├── .day__head (.day__head-text: label + .day__date; .day__head-actions: Copy menu + Clear)
-│       └── .day__editor (editing/viewing/plain; shared height)
+├── .week__days
+│   ├── .week__days-favorite-week (#week-nav-favorite)
+│   ├── .week__days-carousel-nav
+│   └── .week__grid         (7 columns; .day--today / .day--favorite-day when applicable)
+│       └── .day × 7
+│           ├── .day__head (.day__head-text: label + .day__date; .day__head-actions: Copy + Favorite + Clear)
+│           └── .day__editor (editing/viewing/plain; shared height)
 │           ├── .day__backdrop
 │           ├── textarea.day__input
 │           └── .day__suggest (optional; may use .day__suggest--above)
@@ -86,7 +89,9 @@ Native `<textarea>` cannot color individual words, and overlaying a transparent 
 
 **`.week__days-toolbar`** — `display: flex; justify-content: space-between`; the hint mentions the `* N` serving multiplier; right side holds Export all / Import all / **Import sample** (`#import-sample-meals`) / Clear all days (viewed week).
 
-**`.week__nav`** — sits directly above the days toolbar (not above the dashboard). Labeled **Previous week** / **Next week** buttons, clickable range `#week-nav-label` (opens `#week-jump-modal` calendar + typed date → jump to that week), **This week** (`#week-nav-this`). Prev disables at the earliest diary week (Mon–Sun containing `2026-05-01`). Hidden in print / print-preview.
+**`.week__nav`** — sits directly above the days toolbar (not above the dashboard). Labeled **Previous week** / **Next week** buttons, clickable range `#week-nav-label` (opens `#week-jump-modal` calendar + typed date → jump to that week), **This week** (`#week-nav-this`), and **Favorites** (`#favorites-open` → right slide-in `#favorites-sidebar`). Prev disables at the earliest diary week (Mon–Sun containing `2026-05-01`). Hidden in print / print-preview.
+
+**Diary favorites** — **Favorite week** (`#week-nav-favorite`) sits above the Mon–Sun day grid (`.week__days-favorite-week`). Per-day Favorite uses `data-action="favorite-day"`. Add/edit uses `#favorite-edit-modal` (`#favorite-edit-name`, `#favorite-edit-description`, `#favorite-edit-modal-hint`, `#favorite-edit-error`). `#favorites-sidebar` is a fixed right slide-in (not a `.modal`): backdrop + `.favorites-sidebar__panel`, class `favorites-sidebar--open`, `inert` when closed. Browse list `#favorites-list`; **Manage** (`#favorites-manage-toggle`) swaps to `#favorites-manage-list` (↑↓ / Edit / Delete). Empty copy `#favorites-empty`; hint `#favorites-sidebar-hint`. Persisted in `localStorage` `nutrients-favorites`. Jumping to a favorite **day** sets session `activeFavoriteDayKey` and applies `.day--favorite-day` (teal `#1f5c53` / `#2a7a6e` / `#eef7f5`, distinct from `.day--today` blue); choosing another favorite day clears the previous highlight first; jumping to a favorite **week** clears the day highlight. When both today and favorite apply, `.day--today.day--favorite-day` keeps the teal favorite styling.
 
 **`.week__highlight-bar`** — separate row below the toolbar (`position: relative; z-index: 10` so popovers stack above `.week__grid`): the `#day-highlights-toggle` pen (`.week__highlight-toggle`, persisted on/off) and `#day-food-notes`.
 
@@ -95,9 +100,11 @@ Native `<textarea>` cannot color individual words, and overlaying a transparent 
 - `.week__unmatched-toggle` — **Unmatched (N)** expand/collapse (`data-unmatched-action="toggle"`)
 - `.week__unmatched-carousel` — prev/next (`.week__unmatched-carousel-adj`), indicator, and `.week__unmatched-carousel-card` (**Go to line**, `data-unmatched-action="jump"`)
 
-**Today’s weekday** — `markTodayDay()` adds `.day--today` on the matching `.day` only when the viewed week contains today (underlined `.day__label`, blue-tinted `.day__editor` border/background). Macro and micro day cards use `.dashboard__card--today` the same way. No size change — color/underline only.
+**Today’s weekday** — `markTodayDay()` adds `.day--today` on the matching `.day` only when the viewed week contains today (underlined `.day__label`, blue-tinted `.day__editor` border/background). Macro and micro day cards use `.dashboard__card--today` the same way. No size change — color/underline only. Favorite-day jump highlight uses `.day--favorite-day` (teal) via `markFavoriteDay()` / `activeFavoriteDayKey`; see Diary favorites above for combined today+favorite.
 
-**Day dates + Copy menu** — `.day__date` under each weekday label shows `M/D/YY`. **Copy** (`.day__copy-toggle`) opens a menu: copy this week to this week, copy to custom week, copy this date to custom day / today / yesterday / tomorrow. Custom targets use `#copy-date-modal`.
+**Mobile days carousel** — at `max-width: 520px`, `.week__days-carousel-nav` is shown and `.week__grid` becomes a horizontal flex strip with `scroll-snap-type: x mandatory` (one `.day` ≈ full viewport width). Prev/next use `data-days-carousel`; `#days-carousel-current` shows `Mon · M/D/YY`. Desktop keeps seven equal columns; carousel nav is `display: none` above the breakpoint. Hidden in print / print-preview.
+
+**Day dates + Copy menu** — `.day__date` under each weekday label shows `M/D/YY`. **Favorite** (`.day__favorite`, `data-action="favorite-day"`) opens `#favorite-edit-modal`. **Copy** (`.day__copy-toggle`) opens a menu: copy this week to this week, copy to custom week, copy this date to custom day / today / yesterday / tomorrow. Custom targets use `#copy-date-modal`.
 
 **`#day-food-notes`** (`.week__food-notes`) — static shell in HTML; `[hidden]` until JS finds a regex match. When visible:
 
@@ -142,7 +149,7 @@ Pen + notes markup is **static** in `index.html`; only labels and popover **cont
 - Intro / disclaimer / processed-food note (Yuka / Bobby links) live in content area as applicable.
 - `#dashboard-longevity-content` — grouped sections with % DV **Level** bars inside `.dashboard__longevity-bar-wrap` (fill + optional `.dashboard__longevity-bar-notch` at 100%). Notable section keys: `sectionUpperGiMotility`, `sectionThyroid`, `sectionLiver`, `sectionKidney`, `sectionGrayHair`, `sectionAches` (includes omega-6:3 row), `sectionBrainLongevity` (brain + astrocytes), `sectionVascularBloodPressure` (FDA/WHO/AHA sodium limit rows), visceral fat, fats & cholesterol, TMAO, etc. Headings carry `data-longevity-def` / `data-micro-def`; rows may include sources / daily-intake / acute icons.
 
-**Responsive / print** (lower `styles.css`): grid column counts shrink at breakpoints; on narrow screens `.week__grid` is `height: auto` with single column; day editors keep `resize: vertical` unless print/print-preview (`resize: none`). Icon buttons and unmatched UI are hidden in print / print-preview.
+**Responsive / print** (lower `styles.css`): dashboard/table column counts shrink at breakpoints. At `max-width: 520px`, the Mon–Sun **day editors** use a horizontal scroll-snap carousel (not a stacked single-column grid) — see **Mobile days carousel** above. Day editors keep `resize: vertical` unless print/print-preview (`resize: none`). Icon buttons, week nav, Favorite week, Favorites sidebar, unmatched UI, and day Copy/Favorite/Clear are hidden in print / print-preview.
 
 ## Food definitions table
 
@@ -209,18 +216,23 @@ Variants & instances:
 - **Import modal** (`#import-modal`) — `.import-modal__body` scrollable; AI panel `.import-ai-panel`; JSON `.import-modal__json` (shorter when `.import-json-wrap--ai`).
 - **Move-to-position modal** (`#keyword-position-modal`) — `#keyword-position-select`; primary button label **Move**.
 - **Category filter modal** (`#keywords-category-modal`) — `#keywords-category-list` (category buttons with counts), uncategorized count `#keywords-category-uncategorized-reveal` (expands `#keywords-category-uncategorized-list`) + `#keywords-category-uncategorized-filter`, Clear filter / Done.
+- **Week jump** (`#week-jump-modal`) — calendar `#week-jump-date` + typed `#week-jump-typed`; live preview `#week-jump-preview`; error `#week-jump-error`; Apply `#week-jump-apply` / Cancel `#week-jump-cancel`. Jumps to the Mon–Sun week containing the chosen date (clamped by `EARLIEST_DIARY_DATE`).
+- **Copy date** (`#copy-date-modal`) — destination `#copy-date-input`; dynamic `#copy-date-modal-title` / `#copy-date-modal-hint` / `#copy-date-modal-error` from pending copy action; Apply `#copy-date-apply` / Cancel `#copy-date-cancel`. Used for custom week or custom day copy targets from `.day__copy-menu`.
+- **Favorite edit** (`#favorite-edit-modal`) — name + why fields; Save `#favorite-edit-save` / Cancel `#favorite-edit-cancel`.
+- **Favorites sidebar** (`#favorites-sidebar`) — not a `.modal`; right slide-in with `favorites-sidebar--open` (see Diary favorites). Still participates in `updateBodyModalOpen` / Escape-to-close.
 - **Starter guide** (`#starter-guide`) — fixed popover above import button or week grid; `#starter-guide-text`, `#starter-guide-dismiss` (**Got it**); `.starter-guide__arrow` with `data-placement`; hidden in print / print-preview.
 
 ## Z-index & stacking
 
 - Modals `z-index: 100`.
+- Favorites sidebar `z-index: 80` (below modals so `#favorite-edit-modal` can stack above it).
 - Starter guide `.starter-guide` `z-index: 120` (above modals).
 - Daily intake / acute toxicity / target-ref popovers `z-index: 120` (fixed tooltips, not modals).
 - Micros / longevity tooltip on button is above the row (cells use `overflow: visible` so it isn’t clipped).
 
 ## CSS naming convention
 
-BEM-like blocks: `.week__`, `.day__`, `.dashboard__`, `.dashboard__nutrient-filter*`, `.keywords__`, `.settings-modal__`, `.tdee-calc__`, `.macro-split-carousel`, `.micro-sources-modal__`, `.import-ai-`, `.micro-gaps-modal__`, `.micro-def__`, `.micro-tip-modal__`, `.longevity-form`, `.starter-guide__`, `.modal__`. Longevity Level bars: `.dashboard__longevity-bar-wrap`, `.dashboard__longevity-bar-notch`, `.dashboard__longevity-bar-notch-popover`.
+BEM-like blocks: `.week__`, `.day__`, `.dashboard__`, `.dashboard__nutrient-filter*`, `.keywords__`, `.settings-modal__`, `.tdee-calc__`, `.macro-split-carousel`, `.micro-sources-modal__`, `.import-ai-`, `.micro-gaps-modal__`, `.micro-def__`, `.micro-tip-modal__`, `.longevity-form`, `.starter-guide__`, `.favorites-sidebar__`, `.favorites-manage-*`, `.modal__`. Longevity Level bars: `.dashboard__longevity-bar-wrap`, `.dashboard__longevity-bar-notch`, `.dashboard__longevity-bar-notch-popover`.
 
 JS does not depend on BEM beyond stable IDs (`#mon`, `#keywords-list`, etc.).
 
@@ -232,10 +244,11 @@ Critical hooks (do not rename without updating the element lookups near the top 
 - TDEE: `tdee-calculator-modal`, `tdee-calculator-apply`, `tdee-calculator-cancel`, `tdee-calc-*`, `tdee-hint-modal`, `tdee-hint-modal-done`
 - Macro split: `macro-split-hint-modal`, `macro-split-carousel`, `macro-split-carousel-prev`, `macro-split-carousel-next`, `macro-split-carousel-indicator`, `macro-split-carousel-card`, `macro-split-hint-modal-done`
 - Sources: `micro-sources-modal`, `micro-sources-modal-title`, `micro-sources-body`, `micro-sources-scope`, `micro-sources-modal-done`, `micro-sources-fullscreen-toggle`, `longevity-sources-modal`, `longevity-sources-modal-title`, `longevity-sources-body`, `longevity-sources-modal-done`, `longevity-sources-fullscreen-toggle`
-- Day: `mon` … `sun`, `week-nav-prev`, `week-nav-next`, `week-nav-label`, `week-nav-this`, `week-jump-modal`, `week-jump-date`, `week-jump-typed`, `copy-date-modal`, `copy-date-input`, `day-highlights-toggle`, `day-food-notes`, `day-food-notes-labels`, `day-food-notes-popover`, `day-unmatched-lines`, `export-all-meals`, `import-all-meals`, `import-all-meals-modal`, `clear-all-days`
-- Dashboard: `dashboard-grid`, `dashboard-print`, `week-summary`, `dashboard-week-toggle`, `dashboard-micro-toggle`, `dashboard-micro-panel`, `dashboard-micro-list`, `dashboard-micro-daily-grid`, `micro-daily-intake-popover`, `target-ref-popover`, `target-ref-popover-text`, `dashboard-micro-view-weekly`, `dashboard-micro-view-daily`, `dashboard-micro-dv-toggle`, `dashboard-micro-hint`, `dashboard-micro-hint-text`, `micro-tip-caffeine`, `micro-tip-cataracts`, `micro-tip-hair-loss`, `micro-tip-common-deficiencies`, `micro-tip-fat-soluble`, `dashboard-micro-condition-toggle`, `dashboard-micro-condition-list`, `dashboard-micro-condition-label`, `dashboard-micro-condition-clear`, `micro-nutrient-filter-panel`, `micro-nutrient-filter-input`, `micro-nutrient-filter-suggest`, `longevity-nutrient-filter-panel`, `longevity-nutrient-filter-input`, `longevity-nutrient-filter-suggest`
+- Day / week / favorites: `mon` … `sun`, `week-nav-prev`, `week-nav-next`, `week-nav-label`, `week-nav-label-text`, `week-nav-this`, `week-nav-favorite`, `favorites-open`, `favorites-sidebar`, `favorites-sidebar-title`, `favorites-sidebar-hint`, `favorites-list`, `favorites-manage-toggle`, `favorites-manage-list`, `favorites-empty`, `favorite-edit-modal`, `favorite-edit-modal-title`, `favorite-edit-modal-hint`, `favorite-edit-name`, `favorite-edit-description`, `favorite-edit-error`, `favorite-edit-save`, `favorite-edit-cancel`, `days-carousel-current`, `week-jump-modal`, `week-jump-date`, `week-jump-typed`, `week-jump-preview`, `week-jump-error`, `week-jump-apply`, `week-jump-cancel`, `copy-date-modal`, `copy-date-modal-title`, `copy-date-modal-hint`, `copy-date-input`, `copy-date-modal-error`, `copy-date-apply`, `copy-date-cancel`, `day-highlights-toggle`, `day-food-notes`, `day-food-notes-labels`, `day-food-notes-popover`, `day-unmatched-lines`, `export-all-meals`, `import-all-meals`, `import-all-meals-modal`, `clear-all-days`
+- Dashboard: `dashboard-grid`, `dashboard-print`, `week-summary`, `dashboard-week-toggle`, `dashboard-micro-toggle`, `dashboard-micro-panel`, `dashboard-micro-list`, `dashboard-micro-daily-grid`, `micro-daily-intake-popover`, `target-ref-popover`, `target-ref-popover-text`, `dashboard-micro-view-weekly`, `dashboard-micro-view-daily`, `dashboard-micro-dv-toggle`, `dashboard-micro-hint`, `dashboard-micro-hint-text`, `micro-tip-caffeine`, `micro-tip-cataracts`, `micro-tip-hair-loss`, `micro-tip-common-deficiencies`, `micro-tip-fat-soluble`, `dashboard-micro-condition-toggle`, `dashboard-micro-condition-list`, `dashboard-micro-condition-label`, `dashboard-micro-condition-clear`, `micro-nutrient-filter-panel`, `micro-nutrient-filter-input`, `micro-nutrient-filter-suggest`, `longevity-nutrient-filter-panel`, `longevity-nutrient-filter-input`, `longevity-nutrient-filter-suggest`, `micro-gaps-ai-open`, `health-timeline-ai-open`
 - Longevity: `dashboard-longevity-toggle`, `dashboard-longevity-panel`, `dashboard-longevity-content`, `dashboard-longevity-nav`, `dashboard-longevity-nav-prev`, `dashboard-longevity-nav-next`, `dashboard-longevity-nav-current-title`, `dashboard-longevity-nav-all-toggle`, `dashboard-longevity-nav-all-list`, `longevity-modal`, `longevity-form`, `longevity-modal-food`, `longevity-modal-done`
-- Micro gaps: `micro-gaps-ai-open`, `micro-gaps-modal`, `micro-gaps-preference`, `micro-gaps-additional`, `micro-gaps-ai-preview`, `micro-gaps-ai-copy`, `micro-gaps-open-chatgpt`, `micro-gaps-open-claude`, `micro-gaps-modal-done`
+- Micro gaps: `micro-gaps-modal`, `micro-gaps-preference`, `micro-gaps-additional`, `micro-gaps-ai-preview`, `micro-gaps-ai-copy`, `micro-gaps-open-chatgpt`, `micro-gaps-open-claude`, `micro-gaps-modal-done`
+- Health timeline: `health-timeline-modal`, `health-timeline-ai-preview`, `health-timeline-ai-copy`, `health-timeline-open-chatgpt`, `health-timeline-open-claude`, `health-timeline-modal-done`
 - Tip modals: `phosphorus-binder-modal`, `phosphorus-binder-modal-done`, `caffeine-tip-modal`, `caffeine-tip-modal-done`, `fats-cholesterol-tip-modal`, `fats-cholesterol-tip-modal-done`, `tmao-protectors-tip-modal`, `tmao-protectors-tip-modal-done`, `dash-diet-tip-modal`, `dash-diet-tip-modal-done`
 - Definitions: `micro-def-modal`, `micro-def-modal-title`, `micro-def-body`, `micro-def-modal-done`, `micro-def-modal-back`, `micro-def-fullscreen-toggle`
 - Food note: `food-note-modal`, `food-note-modal-title`, `food-note-modal-body`, `food-note-modal-done`
@@ -245,16 +258,16 @@ Critical hooks (do not rename without updating the element lookups near the top 
 
 ## Visual tokens (informal)
 
-- Page bg `#f4f4f2`, cards white, accent blue `#3d6b9e`, success green / amber / red from `config.json` % DV tiers, error red on delete/import error, amber highlight `#ffd966`.
+- Page bg `#f4f4f2`, cards white, accent blue `#3d6b9e` (today), favorite teal `#1f5c53` / `#2a7a6e`, success green / amber / red from `config.json` % DV tiers, error red on delete/import error, amber highlight `#ffd966`.
 
 ## Safe UI changes
 
-- Changing grid column count: update **both** `index.html` day columns **and** `.week__grid` / `.dashboard__grid` in CSS.
+- Changing grid column count: update **both** `index.html` day columns **and** `.week__grid` / `.dashboard__grid` in CSS; keep the ≤520px carousel scroll-snap rules in sync.
 - Do not remove backdrop layer if highlights remain a feature.
 - Day suggest popover is injected by JS inside `.day__editor`; keep `overflow: hidden` on the editor and scroll on `.day__suggest-list` if adding more suggestion UI. Prefer `positionDaySuggest` / `.day__suggest--above` over hard-coding bottom placement so bottom-of-box typing stays visible.
 - Don’t assume the textarea always overlays the backdrop — the editor swaps `--editing` / `--viewing` / `--plain` visibility; style the shown layer per mode and preserve the viewing-mode backdrop click target.
 - Shared editor resize: change `.day__editor` sizing in CSS **and** `clampDayEditorHeight` / `STORAGE_KEY_DAY_EDITOR_HEIGHT` in JS together.
-- New modal: copy `.modal` + `hidden` + backdrop `data-action` close pattern from existing modals; wire close in the global Escape handler.
+- New modal: copy `.modal` + `hidden` + backdrop `data-action` close pattern from existing modals; wire close in the global Escape handler. Favorites sidebar is class-toggled (`favorites-sidebar--open`), not `hidden`-based.
 - Starter guide is not a `.modal`; use fixed positioning + scroll/resize listeners (see core doc). Keep `z-index` above modals if stacking changes.
 
 ## Shared longevity ↔ micro nutrients
@@ -302,6 +315,6 @@ Bridge keys are derived at runtime: `microPanelLongevityBridgeFields()` intersec
 
 | File | ~Lines | Load when |
 |------|--------|-----------|
-| `index.html` | 1,760 | Structure / new regions |
-| `styles.css` | 7,060 | Visual/layout only |
-| `app.js` | 18,160 | Behavior (other docs) |
+| `index.html` | 2,000 | Structure / new regions |
+| `styles.css` | 7,700 | Visual/layout only |
+| `app.js` | 19,700 | Behavior (other docs) |
