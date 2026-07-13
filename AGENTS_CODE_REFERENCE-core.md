@@ -30,9 +30,9 @@ Parent overview: [AGENTS_CODE_REFERENCE.md](./AGENTS_CODE_REFERENCE.md)
 | Demographic | `loadDemographic`, `saveDemographic`, `setDemographic`, `renderDemographicUi` (updates `#settings-demographic-icon`); targets in `demographic-dv.js` (`DAILY_MICRO_DV`, `CALORIE_BASELINE`, `DAILY_INTAKE_MICRO_KEYS`, `requiresDailyIntake`, `IOM_BW_MIN_MG_PER_KG`, `getIomBwMinDaily`, `FIBER_COMPONENT_DV_RATIO`) |
 | Highlights / editor modes | `updateDayHighlights`, `highlightedHtml`, `highlightedDayHtml`, `highlightServingMultipliersHtml`, `setDayEditorMode`, `updateDayEditorMode`, `backdropCaretRect`, `caretIndexFromBackdropPoint`, `setDayInputSelection`, `dayHighlightsEnabled` + `loadDayHighlightsPreference`/`saveDayHighlightsPreference`/`setDayHighlightsEnabled`/`syncDayHighlightsToggleUi`, `refreshAll`, `syncScroll` |
 | Today weekday | `todayDayId`, `activeTodayDayId` (null when not viewing this week), `markTodayDay` (`.day--today` + `aria-current="date"`; also calls `markFavoriteDay`) |
-| Diary favorites | `diaryFavorites[]`, `activeFavoriteDayKey` (session-only highlight), `favoritesManaging`, `STORAGE_KEY_FAVORITES` (`nutrients-favorites` → `{id,type:"day"|"week",dateKey,name,description}`), `makeFavoriteId` / `normalizeFavoriteEntry` / `findFavoriteIndexById` / `findFavoriteByTypeAndKey`, `loadFavorites` / `saveFavorites`, `favoriteTargetLabel` / `defaultFavoriteName` / `dayIdForDateKey`, `openFavoriteDayEditor` / `openFavoriteWeekEditor` / `openFavoriteEditById` / `openFavoriteEditModal` / `runFavoriteEditSave` / `#favorite-edit-modal`, `openFavoritesSidebar` / `closeFavoritesSidebar` / `toggleFavoritesSidebar` / `isFavoritesSidebarOpen` / `#favorites-sidebar` + `#favorites-open`, `setFavoritesManaging` / `syncFavoritesSidebarMode` / `#favorites-manage-toggle`, `renderFavoritesBrowseList` / `renderFavoritesManageList` / `deleteFavoriteById` / `moveFavoriteById`, `goToFavoriteById` (week clears day highlight; day sets `activeFavoriteDayKey` then `setViewedWeekStart` + `setDaysCarouselDayId`), `markFavoriteDay` (`.day--favorite-day`), `setActiveFavoriteDayHighlight` / `clearActiveFavoriteDayHighlight`, `syncDayFavoriteButtons` / `syncWeekFavoriteButton` |
+| Diary favorites | `diaryFavorites[]`, `activeFavoriteDayKey` (session-only highlight), `favoritesManaging`, table `nutrients_favorites` → `{id,type:"day"|"week",dateKey,name,description}`, `makeFavoriteId` / `normalizeFavoriteEntry` / `findFavoriteIndexById` / `findFavoriteByTypeAndKey`, `loadFavorites` / `saveFavorites`, `favoriteTargetLabel` / `defaultFavoriteName` / `dayIdForDateKey`, `openFavoriteDayEditor` / `openFavoriteWeekEditor` / `openFavoriteEditById` / `openFavoriteEditModal` / `runFavoriteEditSave` / `#favorite-edit-modal`, `openFavoritesSidebar` / `closeFavoritesSidebar` / `toggleFavoritesSidebar` / `isFavoritesSidebarOpen` / `#favorites-sidebar` + `#favorites-open`, `setFavoritesManaging` / `syncFavoritesSidebarMode` / `#favorites-manage-toggle`, `renderFavoritesBrowseList` / `renderFavoritesManageList` / `deleteFavoriteById` / `moveFavoriteById`, `goToFavoriteById` (week clears day highlight; day sets `activeFavoriteDayKey` then `setViewedWeekStart` + `setDaysCarouselDayId`), `markFavoriteDay` (`.day--favorite-day`), `setActiveFavoriteDayHighlight` / `clearActiveFavoriteDayHighlight`, `syncDayFavoriteButtons` / `syncWeekFavoriteButton` |
 | Mobile days carousel | `daysCarouselIndex`, `daysCarouselMq` (`max-width: 520px`), `isDaysCarouselActive`, `initDaysCarousel`, `scrollDaysCarouselToIndex`, `setDaysCarouselDayId`, `stepDaysCarousel`, `syncDaysCarouselNav`, `syncDaysCarouselFromScroll`, `.week__days-carousel-nav` / `#days-carousel-current` / `data-days-carousel="prev\|next"`; used by `focusDayLine` and `goToFavoriteById` when active |
-| Multi-week diary | `dayMealsByDate`, `viewedWeekStart`, `EARLIEST_DIARY_DATE` (`2026-05-01`) / `earliestWeekMondayKey` / `clampWeekMondayKey`, `toDateKey` / `parseDateKey` / `parseTypedDate` / `mondayOf` / `addDays` / `weekDateKeys` / `formatDayDateLabel` / `formatWeekRangeLabel`, `flushEditorsToDayMeals` / `loadEditorsFromDayMeals`, `setViewedWeekStart` / `stepViewedWeek` / `goToThisWeek` / `openWeekJumpModal` / `#week-jump-modal` / `updateWeekNavUi` / `updateDayDateLabels`, `copyDayToDateKey` / `copyWeekToMondayKey` / `copyDayToToday` / `copyDayToYesterday` / `copyDayToTomorrow` / `copyViewedWeekToThisWeek` / `#copy-date-modal` / `handleDayCopyAction` / `updateCopyActionButtons`, `STORAGE_KEY_VIEWED_WEEK` |
+| Multi-week diary | `dayMealsByDate`, `viewedWeekStart`, `EARLIEST_DIARY_DATE` (`2026-05-01`) / `earliestWeekMondayKey` / `clampWeekMondayKey`, `toDateKey` / `parseDateKey` / `parseTypedDate` / `mondayOf` / `addDays` / `weekDateKeys` / `formatDayDateLabel` / `formatWeekRangeLabel`, `flushEditorsToDayMeals` / `loadEditorsFromDayMeals`, `setViewedWeekStart` / `stepViewedWeek` / `goToThisWeek` / `openWeekJumpModal` / `#week-jump-modal` / `updateWeekNavUi` / `updateDayDateLabels`, `copyDayToDateKey` / `copyWeekToMondayKey` / `copyDayToToday` / `copyDayToYesterday` / `copyDayToTomorrow` / `copyViewedWeekToThisWeek` / `#copy-date-modal` / `handleDayCopyAction` / `updateCopyActionButtons`, `viewedWeekStart` (settings) |
 | Unmatched lines | `unmatchedDayLines`, `allUnmatchedDayLines`, `weekUnmatchedLinesHtml`, `weekUnmatchedCarouselHtml`, `renderWeekUnmatchedLines`, `updateWeekUnmatchedLines`, `stepUnmatchedCarousel`, `toggleUnmatchedCarousel`, `focusDayLine` |
 | Food-name suggestions | `updateDaySuggest`, `positionDaySuggest`, `foodSuggestMatches`, `applyDayFoodSuggest`, `hideDaySuggest`, `hideAllDaySuggests`, `DAY_SUGGEST_MAX`; per-item fit/scroll: `fitDaySuggestItemLabel`, `updateDaySuggestItemHover`, `bindDaySuggestHover`, `bindDaySuggestResize`, `daySuggestItemScrollTo`, `daySuggestItemUpdateChevrons` |
 | Food notes (toolbar) | `loadFoodNotesDefinitions`, `normalizeFoodNotesDefinitions`, `detectedFoodNotes`, `updateDayFoodNotesUi`, `dayFoodNotesLabelsHtml`, `showDayFoodNotesPopoverForIndex`, `initDayFoodNotesEvents`, `foodNotesDefinitions`, `FOOD_NOTES_URL` |
@@ -51,7 +51,7 @@ renderKeywords()       → DOM table rows (innerHTML per row)
         ↓
 user edit / import / micros modal / longevity modal
         ↓
-saveFoodDefinitions()  → localStorage
+saveFoodDefinitions()  → NutrientsPersist (nutrients_food_definitions)
         ↓
 refreshAll()           → highlights + dashboard (macros, micros, longevity)
 ```
@@ -66,7 +66,7 @@ refreshAll()           → highlights + dashboard (macros, micros, longevity)
 - Row actions use `data-action`: `up` | `down` | `delete` | `micros` | `longevity` | `import` | `position` (move-to-position modal).
 - After building rows: toggles `#keywords-empty` (no foods at all), `#keywords-filter-empty` + hides `#keywords-table` (filtered to zero), then `updateKeywordReorderUi` / `updateKeywordCaloriesUi` / `updateKeywordsPaginationUi`.
 
-**Search / category / pagination** — the toolbar `#keywords-search` (+ `#keywords-search-clear`) sets `keywordsFilterQuery` via `setKeywordsFilterQuery` (case-insensitive substring on name; resets to page 0). **Categories** (`#keywords-category-open` → `#keywords-category-modal`) sets `keywordsCategoryFilter` via `setKeywordsCategoryFilter` from `definitions-food-categories.json` (first matching regex pattern wins; sentinel `__uncategorized__` for unmatched names). Active category shows `#keywords-category-chip` with clear (×); modal Clear filter / chip clear exits category filter view. Modal lists each category with a count; **Uncategorized** shows its count (click reveal expands the unmatched food names; **Filter** applies the uncategorized view). `#keywords-page-size` (10/25/50/100/All) persists to `STORAGE_KEY_KEYWORDS_PAGE_SIZE`; First/Prev/Next/Last (`#keywords-page-*`) call `goKeywordsPage`. `keywordsFilteredIndices` maps visible rows back to real `keywords[]` indices, so editing/import/position operations always use the true index.
+**Search / category / pagination** — the toolbar `#keywords-search` (+ `#keywords-search-clear`) sets `keywordsFilterQuery` via `setKeywordsFilterQuery` (case-insensitive substring on name; resets to page 0). **Categories** (`#keywords-category-open` → `#keywords-category-modal`) sets `keywordsCategoryFilter` via `setKeywordsCategoryFilter` from `definitions-food-categories.json` (first matching regex pattern wins; sentinel `__uncategorized__` for unmatched names). Active category shows `#keywords-category-chip` with clear (×); modal Clear filter / chip clear exits category filter view. Modal lists each category with a count; **Uncategorized** shows its count (click reveal expands the unmatched food names; **Filter** applies the uncategorized view). `#keywords-page-size` (10/25/50/100/All) persists to settings `keywordsPageSize`; First/Prev/Next/Last (`#keywords-page-*`) call `goKeywordsPage`. `keywordsFilteredIndices` maps visible rows back to real `keywords[]` indices, so editing/import/position operations always use the true index.
 
 **Sort A–Z** — `sortKeywordsAlphabetically` (bound to `#sort-foods-alphabetically` and `#sort-foods-alphabetically-top`): `syncAllFieldsFromDom` first (don’t lose in-progress edits), sort by lowercased trimmed name (blanks last), reset to page 0, save + re-render.
 
@@ -75,7 +75,7 @@ refreshAll()           → highlights + dashboard (macros, micros, longevity)
 - `syncFieldFromDom(row)` reads `data-field` inputs into `keywords[i]`; `syncAllFieldsFromDom` flushes every rendered row before actions that re-render or reorder.
 - Macros use `parseMacro` on input (empty → stored as `""`).
 
-**Reorder/delete/add** — `moveKeyword`, `removeKeyword`, `addKeyword`; each saves and calls `renderKeywords` + `refreshAll`. `addKeyword` jumps to the last page so the new row is visible. Closing modals if the active row is removed/moved. The reorder column visibility is a persisted UI flag (`keywordReorderOpen`, `STORAGE_KEY_REORDER`).
+**Reorder/delete/add** — `moveKeyword`, `removeKeyword`, `addKeyword`; each saves and calls `renderKeywords` + `refreshAll`. `addKeyword` jumps to the last page so the new row is visible. Closing modals if the active row is removed/moved. The reorder column visibility is a persisted UI flag (`keywordReorderOpen`, settings `keywordsReorderOpen`).
 
 ## Matching & counting
 
@@ -116,10 +116,10 @@ new RegExp("\\b" + escapeRegex(name) + "\\b", "gi")
 
 - **Weekly average view** (default): average daily amount = week sum ÷ `DAYS.length` (7). **% target** comes from `microNutrientTargetPct(key, avgDaily)`, which picks the first available reference: **FDA % DV** (`dailyDv` → `getDailyMicroDv`, e.g. female iron 18 mg, male 8 mg), else **IOM body-weight minimum** (`iomBwMinPct`, amino acids; needs body weight set), else **study min** (`STUDY_MIN_MICRO_REFS`; `limiting: false`, higher % = better — e.g. glycine 10 g/day for collagen synthesis), else **study max** (`STUDY_MAX_MICRO_REFS`; `limiting: true` so high = red), else unscored (`NO_STANDALONE_REF_MICRO_KEYS`). Rendered by `renderMicroWeeklyList` into `#dashboard-micro-list`.
 - **Target-ref badge** — each row shows a `.dashboard__target-ref` badge (`data-target-ref` = `dv` | `iom` | `studyMin` | `studyMax` | `none`) whose click toggles `#target-ref-popover` explaining which reference and amount is used (`showTargetRefPopover` / `targetRefDetailHtml`). Bound once via `initTargetRefPopoverEvents` on the micro list, daily grid, and longevity content.
-- **Condition focus / intake filter** (`MICRO_CONDITION_FOCUS` + `MICRO_INTAKE_FILTER`, `#dashboard-micro-condition-toggle`): filters rows to condition-relevant micros (+ optional `longevityNutrients` such as `creatine`, `saturatedFat`, `glycemicIndex` for **Hair loss**), or to poorly-/well-absorbed sets (`poorlyAbsorbed` uses `microRequiresDailyIntake`). **Nutrition Intake** group also includes **American Common Deficiencies** (`americanCommonDeficiencies`: A, D, Ca, Mg, iodine) and **Fat-soluble vitamins** (`fatSolubleVitamins`: A, D, E, K). Adds a **Focus:** section at top of explain modals when JSON has matching condition key. Session-only condition id (not persisted); **weekly/daily view** and **Daily Targets** are persisted (`STORAGE_KEY_MICRO_VIEW_DAILY`, `STORAGE_KEY_MICRO_SHOW_DV`). Condition-specific tip asides: `#micro-tip-caffeine` (hidden when any filter active), `#micro-tip-cataracts`, `#micro-tip-hair-loss`, `#micro-tip-common-deficiencies` (stays for American Common Deficiencies), `#micro-tip-fat-soluble` (stays for Fat-soluble vitamins). Choosing a condition focus clears sticky Filter (incl. By Nutrients); choosing sticky Filter clears condition focus.
+- **Condition focus / intake filter** (`MICRO_CONDITION_FOCUS` + `MICRO_INTAKE_FILTER`, `#dashboard-micro-condition-toggle`): filters rows to condition-relevant micros (+ optional `longevityNutrients` such as `creatine`, `saturatedFat`, `glycemicIndex` for **Hair loss**), or to poorly-/well-absorbed sets (`poorlyAbsorbed` uses `microRequiresDailyIntake`). **Nutrition Intake** group also includes **American Common Deficiencies** (`americanCommonDeficiencies`: A, D, Ca, Mg, iodine) and **Fat-soluble vitamins** (`fatSolubleVitamins`: A, D, E, K). Adds a **Focus:** section at top of explain modals when JSON has matching condition key. Session-only condition id (not persisted); **weekly/daily view** and **Daily Targets** are persisted (settings `microViewDaily` / `microShowDv`). Condition-specific tip asides: `#micro-tip-caffeine` (hidden when any filter active), `#micro-tip-cataracts`, `#micro-tip-hair-loss`, `#micro-tip-common-deficiencies` (stays for American Common Deficiencies), `#micro-tip-fat-soluble` (stays for Fat-soluble vitamins). Choosing a condition focus clears sticky Filter (incl. By Nutrients); choosing sticky Filter clears condition focus.
 - **Sticky chrome** (`#dashboard-micro-sticky`): title **Micro Requirements**, view segments, **Daily Targets** toggle, disclosures for **Highlight** / **Filter** / **Poor storage / daily intake** / **One-day excess consumption**, and `#dashboard-micro-close` (closes the panel). Same Highlight/Filter/daily/acute option panels are mirrored on `#dashboard-longevity-nav` and share state.
 - **Sticky Filter** (`filterStickyDailyIntake` / `filterStickySideEffects` / `filterStickyAdverseEffects` / `filterStickyNutrientKeys`, persisted): when any are on, `microKeyMatchesStickyFilter` keeps rows that (1) pass the **By Nutrients** chip list when `filterStickyNutrientKeys` is non-empty (AND), then (2) match at least one selected icon criterion when any of daily / S/E / A/E are on (OR). Clear × via `clearStickyIconFilters` (also clears nutrient chips). Re-renders micro + longevity via `refreshStickyIconFilterViews`.
-- **By Nutrients** (nested under Filter on both sticky bars): disclosure `.dashboard__nutrient-filter`; presets `NUTRIENT_FILTER_PRESETS` (`common-deficiencies`, `fat-soluble`) via `applyNutrientFilterPreset`; typeahead combobox (`[data-nutrient-filter-input]` / `nutrientFilterSuggestMatches`) adds via `addStickyNutrientFilter`; chips remove via `removeStickyNutrientFilter`. Keys limited to `MICRO_ALL_FIELDS` (`normalizeFilterStickyNutrientKeys`). Persisted as JSON array under `STORAGE_KEY_FILTER_NUTRIENTS` (`nutrients-filter-nutrients`).
+- **By Nutrients** (nested under Filter on both sticky bars): disclosure `.dashboard__nutrient-filter`; presets `NUTRIENT_FILTER_PRESETS` (`common-deficiencies`, `fat-soluble`) via `applyNutrientFilterPreset`; typeahead combobox (`[data-nutrient-filter-input]` / `nutrientFilterSuggestMatches`) adds via `addStickyNutrientFilter`; chips remove via `removeStickyNutrientFilter`. Keys limited to `MICRO_ALL_FIELDS` (`normalizeFilterStickyNutrientKeys`). Persisted as JSON array under settings `filterNutrients`.
 - **Sticky Highlight** (`highlightSticky*`, persisted): OR-combine free toggles; `syncStickyIconHighlightUi` sets body classes `highlight-daily-intake-icons` / `highlight-side-effects` / `highlight-adverse-effects` so matching icons render in red (Highlight also forces those icon types visible). Clear × via `clearStickyIconHighlights`.
 - **Icon show toggles:** **Poor storage / daily intake** → `showDailyIntakeIcons` (default on, body `show-daily-intake-icons`); **One-day excess** → `showAcuteSideEffects` / `showAcuteAdverseEffects` (body `show-acute-side-effects` / `show-acute-adverse-effects`). Acute icons are `display: none` until their show or highlight class is on.
 - **My food** bar-chart button on each row (`microSourcesIconHtml`, `data-micro-sources`) opens `#micro-sources-modal` — ranked matched foods with per-hit calculations; scope select (week or single day). Requirements block (`microSourcesRequirementsHtml`) lists FDA daily/weekly, IOM bw min (daily/weekly when weight set), and study-max references.
@@ -211,43 +211,30 @@ Read-only “learn more” content, loaded from JSON at boot:
 Demographic + TDEE + body weight live in **`#settings-modal`** (header `#settings-open`), not a bottom panel.
 
 - **Sex** — same `setDemographic` / `#demographic-options` radios; updates `#settings-demographic-icon` and micro % target immediately.
-- **Body weight** — `#settings-weight` number input + kg/lb unit toggle (`#settings-weight-kg` / `#settings-weight-lb`, default lb). Stored internally as kg (`userBodyWeightKg`, persisted `STORAGE_KEY_BODY_WEIGHT_KG`) via `readSettingsWeightFromInput` / `settingsWeightKgFromInput`; used only for **IOM bw min** amino-acid targets (`getBodyWeightKg` → `iomBwMinDaily`). No weight = amino-acid IOM rows show “set weight”.
-- **TDEE** — `#settings-tdee` input; persisted `STORAGE_KEY_TDEE` (`userTdee`). Placeholder from `getTdeeBaseline()` → `demographic-dv.js` `CALORIE_BASELINE`.
+- **Body weight** — `#settings-weight` number input + kg/lb unit toggle (`#settings-weight-kg` / `#settings-weight-lb`, default lb). Stored internally as kg (`userBodyWeightKg`, persisted settings `bodyWeightKg`) via `readSettingsWeightFromInput` / `settingsWeightKgFromInput`; used only for **IOM bw min** amino-acid targets (`getBodyWeightKg` → `iomBwMinDaily`). No weight = amino-acid IOM rows show “set weight”.
+- **TDEE** — `#settings-tdee` input; persisted settings `tdee` (`userTdee`). Placeholder from `getTdeeBaseline()` → `demographic-dv.js` `CALORIE_BASELINE`.
 - **TDEE calculator** — `#tdee-calculator-modal`: Mifflin–St Jeor BMR × activity factor; resistance (days/week or weekly heavy/light sets) + optional cardio; **Use this value** writes settings input.
 - **Week summary compare** — `renderWeekSummary` uses `getTdee()` × 7 vs week total; deficit/surplus label, cal/week delta, ~lb/week (`3500` rule). Explain: `#tdee-hint-modal`.
 - **Macro split guidance** — week avg P/C/F % in summary; explain opens `#macro-split-hint-modal` with `MACRO_BODY_TYPES` carousel (`renderMacroSplitCarousel`).
 
 ## Food table calories column
 
-- **`keywordCaloriesOpen`** — persisted `STORAGE_KEY_CALORIES`.
+- **`keywordCaloriesOpen`** — persisted settings `keywordsCaloriesOpen`.
 - Header `.keywords__macro-toggle` (`data-action="toggle-calories"`) switches Prot/Carbs/Fats columns between **(g)** and **(cal)**; reveals **Total (cal)** column.
 - `renderKeywords` writes cal or g values per row when open.
 
 ## localStorage
 
+Persistence lives in [`persist.js`](./persist.js) (`NutrientsPersist`). Full shapes and migration: [`specs-data-persistence.md`](./specs-data-persistence.md), agent guide: [`AGENTS-data-persistence.md`](./AGENTS-data-persistence.md).
+
 | Key | Content |
 |-----|---------|
-| `nutrients-food-definitions` | `JSON.stringify(keywords)` (includes `micros` + `longevity`) |
-| `nutrients-demographic` | `"male"` or `"female"` (default `male` if missing) |
-| `nutrients-tdee` | Optional positive number string (user maintenance calories/day) |
-| `nutrients-body-weight-kg` | Optional positive number string; kg, converted from lb on input; used for IOM bw min |
-| `nutrients-day-notes` | v2 `{ "version": 2, "days": { "YYYY-MM-DD": "…" } }`; legacy `{ mon…sun }` migrates onto the current Mon–Sun week once |
-| `nutrients-viewed-week-start` | Monday `YYYY-MM-DD` for the week loaded into `#mon`…`#sun` editors |
-| `nutrients-favorites` | JSON array of `{ id, type: "day"|"week", dateKey, name, description }`; order = display/manage order |
-| `nutrients-day-editor-height` | Pixel height string for all `.day__editor` boxes (clamped 6rem–80vh) |
-| `nutrients-day-highlights` | `"on"` / `"off"` — food highlighting pen toggle (default on) |
-| `nutrients-micro-view-daily` | `"true"` / `"false"` — micro panel each-day grid vs weekly average list |
-| `nutrients-micro-show-dv` | `"true"` / `"false"` — micro panel **Daily Targets** (requirement text on rows) |
-| `nutrients-show-acute-side-effects` | `"true"` / `"false"` — show S/E acute icons (body class `show-acute-side-effects`) |
-| `nutrients-show-acute-adverse-effects` | `"true"` / `"false"` — show A/E acute icons (body class `show-acute-adverse-effects`) |
-| `nutrients-show-daily-intake-icons` | `"true"` / `"false"` — show daily-intake icons (default on; body `show-daily-intake-icons`) |
-| `nutrients-filter-daily-intake` / `nutrients-filter-side-effects` / `nutrients-filter-adverse-effects` | Sticky **Filter** checkboxes (OR-combine among icon criteria) |
-| `nutrients-filter-nutrients` | JSON array of micro keys for sticky **By Nutrients** (AND with icon criteria when both active) |
-| `nutrients-highlight-daily-intake` / `nutrients-highlight-side-effects` / `nutrients-highlight-adverse-effects` | Sticky **Highlight** toggles (OR-combine; body `highlight-*` classes) |
-| `nutrients-keywords-reorder-open` | `"true"` / `"false"` reorder column visibility |
-| `nutrients-keywords-calories-open` | `"true"` / `"false"` food table g ↔ cal column mode |
-| `nutrients-keywords-page-size` | `"10"`/`"25"`/`"50"`/`"100"`/`"0"` (All); default 25 |
-| `nutrients-keywords` (legacy) | Migrated once on load, then removed |
+| `nutrients_food_definitions` | `FoodDefinition[]` (includes `micros` + `longevity`) |
+| `nutrients_day_meals` | v2 `{ "version": 2, "days": { "YYYY-MM-DD": "…" } }`; legacy `{ mon…sun }` migrates onto the current Mon–Sun week once |
+| `nutrients_favorites` | `Favorite[]` `{ id, type: "day"|"week", dateKey, name, description }` |
+| `nutrients_settings` | Single settings object: demographic, TDEE, body weight, viewed week, editor height, day highlights, micro/acute/filter/highlight prefs, keywords UI prefs |
+
+Legacy hyphenated keys (`nutrients-food-definitions`, `nutrients-day-notes`, `nutrients-demographic`, …) migrate once via `NutrientsPersist.migrate()` then are removed.
 
 **Load** — `loadFoodDefinitions`: maps array, `normalizeMicros(item.micros)` + `normalizeLongevity(item.longevity)`, bumps `nextId` from existing ids.
 
@@ -350,7 +337,7 @@ Each `.day__editor` is in one of three modes (set via `setDayEditorMode` → cla
 
 **`highlightedHtml`** — walks regex matches, wraps in `<mark class="hl">`; escapes all text. **`highlightedDayHtml`** additionally wraps `* N` multipliers in `.hl--multiplier`.
 
-**Highlights toggle** — the pen `#day-highlights-toggle` calls `setDayHighlightsEnabled`, persisted to `STORAGE_KEY_DAY_HIGHLIGHTS`; `loadDayHighlightsPreference` at boot, `syncDayHighlightsToggleUi` reflects state and re-applies editor modes.
+**Highlights toggle** — the pen `#day-highlights-toggle` calls `setDayHighlightsEnabled`, persisted as settings `dayHighlights`; `loadDayHighlightsPreference` at boot, `syncDayHighlightsToggleUi` reflects state and re-applies editor modes.
 
 UI mirror pattern: [AGENTS_CODE_REFERENCE-ui.md](./AGENTS_CODE_REFERENCE-ui.md)
 
@@ -365,7 +352,7 @@ UI mirror pattern: [AGENTS_CODE_REFERENCE-ui.md](./AGENTS_CODE_REFERENCE-ui.md)
 
 ## Diary favorites
 
-Named bookmarks for a **day** (`dateKey` = that calendar day) or **week** (`dateKey` = Monday of the week). Persisted in `nutrients-favorites`; UI lives in week nav + day heads + `#favorites-sidebar`.
+Named bookmarks for a **day** (`dateKey` = that calendar day) or **week** (`dateKey` = Monday of the week). Persisted in `nutrients_favorites`; UI lives in week nav + day heads + `#favorites-sidebar`.
 
 - **Add / edit** — `#week-nav-favorite` (above Mon–Sun grid) or per-day `.day__favorite` (`data-action="favorite-day"`) opens `#favorite-edit-modal` (name + why). Re-favoriting an existing day/week opens edit for that entry. `runFavoriteEditSave` upserts by id (or by type+dateKey duplicate).
 - **Browse / jump** — `#favorites-open` opens right slide-in `#favorites-sidebar` (`favorites-sidebar--open`, `inert` when closed; counted in `updateBodyModalOpen`). Browse list (`#favorites-list`) uses `data-action="go-favorite"`.
@@ -452,7 +439,7 @@ All seven `.day__editor` boxes share one height.
 | Add plant sterols / creatine | `LONGEVITY_FIELDS` + `DAILY_LONGEVITY_DV` (plantSterols 2 g); creatine is `limiting: true`, no DV |
 | Carotenoids without explicit food value | `resolveLongevityValue` vitamin-A fallback; set `carotenoids: 15` in `longevity-dv.js` |
 | Longevity 100% bar notch | `longevityBarHtml`, `longevityBarShowsRefNotch`, CSS `.dashboard__longevity-bar-notch` |
-| Persist micro panel toggles | `STORAGE_KEY_MICRO_VIEW_DAILY`, `STORAGE_KEY_MICRO_SHOW_DV`, acute/daily-intake show keys, sticky Filter/Highlight keys + `STORAGE_KEY_FILTER_NUTRIENTS`; load/save in `boot()` |
+| Persist micro panel toggles | settings `microViewDaily` / `microShowDv`, acute/daily-intake show keys, sticky Filter/Highlight keys + settings `filterNutrients`; load/save in `boot()` |
 | Condition longevity rows in micro panel | `MICRO_CONDITION_FOCUS.*.longevityNutrients` + `microConditionDisplayFields` |
 | Add derived micro metric | `MICRO_DERIVED_DEFS` (see 2:1 and 3:1 fiber ratios) + `microDerivedRowTargetDisplay` / `microDerivedAmtText` |
 | Change fiber soluble/insoluble split | `solubleFiberRatioForFoodName` (name heuristics) + `FIBER_COMPONENT_DV_RATIO` in `demographic-dv.js` |
@@ -468,10 +455,10 @@ All seven `.day__editor` boxes share one height.
 | Multi-ceiling sodium (or similar) limits | `VASCULAR_SODIUM_LIMIT_REFS` + `longevityRowFromMicroLimit` / `vascularSodiumLimitRowsHtml` |
 | Add ranked source metric | contribution builder + `nutrientSourcesListHtml` + panel row `sourcesIconHtml` |
 | Change TDEE / body-type copy | settings modal HTML + `MACRO_BODY_TYPES` + hint modals |
-| Toggle food table cal column | `keywordCaloriesOpen`, `updateKeywordCaloriesUi`, `STORAGE_KEY_CALORIES` |
+| Toggle food table cal column | `keywordCaloriesOpen`, `updateKeywordCaloriesUi`, settings `keywordsCaloriesOpen` |
 | Add longevity section | `LONGEVITY_NAV_SECTIONS_CORE` / `LONGEVITY_SECTION_DEFS` + row maps + `renderLongevityPanel` + tip HTML + `definitions-longevity.json` + `longevityNavTopicColors` |
 | Emphasize today’s weekday | `activeTodayDayId` / `markTodayDay`; CSS `.day--today` / `.dashboard__card--today` (only on current week) |
-| Diary favorites (day/week) | `diaryFavorites` / `goToFavoriteById` / `markFavoriteDay`; CSS `.day--favorite-day`; `#favorites-sidebar` + `#favorite-edit-modal`; persist `nutrients-favorites` |
+| Diary favorites (day/week) | `diaryFavorites` / `goToFavoriteById` / `markFavoriteDay`; CSS `.day--favorite-day`; `#favorites-sidebar` + `#favorite-edit-modal`; persist `nutrients_favorites` |
 | Mobile days carousel | `initDaysCarousel` / `setDaysCarouselDayId`; CSS `@media (max-width: 520px)` scroll-snap on `.week__grid` |
 | Multi-week nav / copy | `setViewedWeekStart` / `copyDayToToday` / `copyViewedWeekToThisWeek`; `.week__nav`, `.day__date`, `.day__copy-menu` actions (`copy-week-to-this-week`, `copy-week-to-custom`, `copy-day-to-*`) + `#copy-date-modal` |
 | Sample day meals | `IMPORT_SAMPLE_MEALS_URL` + `importSampleMeals` + `samples/day-meals.json` (applies to viewed week) |

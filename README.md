@@ -16,7 +16,7 @@ Client-only nutrition tracker for weekly meals and reusable food definitions. Th
 - `samples/definitions-food.json` contains bundled food definitions for import.
 - `definitions-micronutrients.json` and `definitions-longevity.json` contain nutrient explanation copy.
 - `demographic-dv.js` and `longevity-dv.js` provide daily value targets.
-- Browser `localStorage` stores user food definitions, meal notes, settings, and UI state.
+- Browser `localStorage` (via `persist.js` / `NutrientsPersist`) stores food definitions, day meals, favorites, and settings across sessions. See `specs-data-persistence.md`.
 
 ## QA Food Definitions Tool
 

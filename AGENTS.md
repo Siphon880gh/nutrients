@@ -11,14 +11,16 @@ Instructions for AI agents working in this **nutrients** app.
 | [AGENTS_CODE_REFERENCE-core.md](./AGENTS_CODE_REFERENCE-core.md) | Food table, matching, dashboard, micros, longevity, categories |
 | [AGENTS_CODE_REFERENCE-import.md](./AGENTS_CODE_REFERENCE-import.md) | Import / export / sample foods & meals |
 | [AGENTS_CODE_REFERENCE-ui.md](./AGENTS_CODE_REFERENCE-ui.md) | Markup, CSS, modals, highlight overlay |
+| [AGENTS-data-persistence.md](./AGENTS-data-persistence.md) | localStorage tables + `NutrientsPersist` repository |
+| [specs-data-persistence.md](./specs-data-persistence.md) | Persistence data shapes, migration, save/load rules |
 
 Authoring guides (human + agent): `GUIDE_ADDING_FOOD.md`, `GUIDE_IMPROVING_FOOD.md`, `GUIDE_ADDING_MULTIVITAMIN.md`.
 
 ## App shape
 
-- Static client-only app: `index.html`, `styles.css`, `app.js` (IIFE).
+- Static client-only app: `index.html`, `styles.css`, `persist.js`, `app.js` (IIFE).
 - No bundler, no backend. Open via a static file server so `fetch` of JSON works.
-- Food definitions and day meals persist in `localStorage`; sample data lives under `samples/`.
+- Food definitions, day meals, favorites, and settings persist in `localStorage` via `NutrientsPersist` (four table keys); sample data lives under `samples/`.
 - Category filter map: `definitions-food-categories.json`.
 
 ## Skills

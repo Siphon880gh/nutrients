@@ -81,7 +81,7 @@ Native `<textarea>` cannot color individual words, and overlaying a transparent 
 - `.day__suggest-list` — `overflow-y: auto`, `overscroll-behavior: contain`, `scrollbar-width: thin`; pill items `.day__suggest-item` with match highlight `.day__suggest-match`.
 - Hidden in print / print-preview.
 
-**Shared resize** — drag the bottom-right grip on any `.day__editor`; on release JS sets the same pixel height on all seven editors and saves to `localStorage` (see core doc).
+**Shared resize** — drag the bottom-right grip on any `.day__editor`; on release JS sets the same pixel height on all seven editors and saves via `NutrientsPersist` settings (`dayEditorHeight`; see [AGENTS-data-persistence.md](./AGENTS-data-persistence.md)).
 
 **Scroll** — JS `syncScroll` copies `scrollTop` / `scrollLeft` between textarea and backdrop (see core doc).
 
@@ -91,7 +91,7 @@ Native `<textarea>` cannot color individual words, and overlaying a transparent 
 
 **`.week__nav`** — sits directly above the days toolbar (not above the dashboard). Labeled **Previous week** / **Next week** buttons, clickable range `#week-nav-label` (opens `#week-jump-modal` calendar + typed date → jump to that week), **This week** (`#week-nav-this`), and **Favorites** (`#favorites-open` → right slide-in `#favorites-sidebar`). Prev disables at the earliest diary week (Mon–Sun containing `2026-05-01`). Hidden in print / print-preview.
 
-**Diary favorites** — **Favorite week** (`#week-nav-favorite`) sits above the Mon–Sun day grid (`.week__days-favorite-week`). Per-day Favorite uses `data-action="favorite-day"`. Add/edit uses `#favorite-edit-modal` (`#favorite-edit-name`, `#favorite-edit-description`, `#favorite-edit-modal-hint`, `#favorite-edit-error`). `#favorites-sidebar` is a fixed right slide-in (not a `.modal`): backdrop + `.favorites-sidebar__panel`, class `favorites-sidebar--open`, `inert` when closed. Browse list `#favorites-list`; **Manage** (`#favorites-manage-toggle`) swaps to `#favorites-manage-list` (↑↓ / Edit / Delete). Empty copy `#favorites-empty`; hint `#favorites-sidebar-hint`. Persisted in `localStorage` `nutrients-favorites`. Jumping to a favorite **day** sets session `activeFavoriteDayKey` and applies `.day--favorite-day` (teal `#1f5c53` / `#2a7a6e` / `#eef7f5`, distinct from `.day--today` blue); choosing another favorite day clears the previous highlight first; jumping to a favorite **week** clears the day highlight. When both today and favorite apply, `.day--today.day--favorite-day` keeps the teal favorite styling.
+**Diary favorites** — **Favorite week** (`#week-nav-favorite`) sits above the Mon–Sun day grid (`.week__days-favorite-week`). Per-day Favorite uses `data-action="favorite-day"`. Add/edit uses `#favorite-edit-modal` (`#favorite-edit-name`, `#favorite-edit-description`, `#favorite-edit-modal-hint`, `#favorite-edit-error`). `#favorites-sidebar` is a fixed right slide-in (not a `.modal`): backdrop + `.favorites-sidebar__panel`, class `favorites-sidebar--open`, `inert` when closed. Browse list `#favorites-list`; **Manage** (`#favorites-manage-toggle`) swaps to `#favorites-manage-list` (↑↓ / Edit / Delete). Empty copy `#favorites-empty`; hint `#favorites-sidebar-hint`. Persisted in `nutrients_favorites`. Jumping to a favorite **day** sets session `activeFavoriteDayKey` and applies `.day--favorite-day` (teal `#1f5c53` / `#2a7a6e` / `#eef7f5`, distinct from `.day--today` blue); choosing another favorite day clears the previous highlight first; jumping to a favorite **week** clears the day highlight. When both today and favorite apply, `.day--today.day--favorite-day` keeps the teal favorite styling.
 
 **`.week__highlight-bar`** — separate row below the toolbar (`position: relative; z-index: 10` so popovers stack above `.week__grid`): the `#day-highlights-toggle` pen (`.week__highlight-toggle`, persisted on/off) and `#day-food-notes`.
 
@@ -166,7 +166,7 @@ Pen + notes markup is **static** in `index.html`; only labels and popover **cont
 Notable columns:
 
 - **Order** — `.keywords__th-order`; reorder controls revealed by `#keywords-reorder-toggle` (persisted open state).
-- **Macros** — `.keywords__macro-toggle` on Prot/Carbs/Fats headers toggles **(g)** ↔ **(cal)** for all three + shows **Total (cal)** (`.keywords__th-total--cal`, persisted via `STORAGE_KEY_CALORIES`).
+- **Macros** — `.keywords__macro-toggle` on Prot/Carbs/Fats headers toggles **(g)** ↔ **(cal)** for all three + shows **Total (cal)** (`.keywords__th-total--cal`, persisted via settings `keywordsCaloriesOpen`).
 - **Micros** — `.keywords__micros` button; filled state class; scrollable text + `data-tooltip` hover.
 - **Longevity** — `.keywords__longevity` button (mirrors micros button pattern).
 - **Actions** — Import, Delete (+ **Move** to position via `#keyword-position-modal`).
@@ -266,7 +266,7 @@ Critical hooks (do not rename without updating the element lookups near the top 
 - Do not remove backdrop layer if highlights remain a feature.
 - Day suggest popover is injected by JS inside `.day__editor`; keep `overflow: hidden` on the editor and scroll on `.day__suggest-list` if adding more suggestion UI. Prefer `positionDaySuggest` / `.day__suggest--above` over hard-coding bottom placement so bottom-of-box typing stays visible.
 - Don’t assume the textarea always overlays the backdrop — the editor swaps `--editing` / `--viewing` / `--plain` visibility; style the shown layer per mode and preserve the viewing-mode backdrop click target.
-- Shared editor resize: change `.day__editor` sizing in CSS **and** `clampDayEditorHeight` / `STORAGE_KEY_DAY_EDITOR_HEIGHT` in JS together.
+- Shared editor resize: change `.day__editor` sizing in CSS **and** `clampDayEditorHeight` / settings `dayEditorHeight` in JS together.
 - New modal: copy `.modal` + `hidden` + backdrop `data-action` close pattern from existing modals; wire close in the global Escape handler. Favorites sidebar is class-toggled (`favorites-sidebar--open`), not `hidden`-based.
 - Starter guide is not a `.modal`; use fixed positioning + scroll/resize listeners (see core doc). Keep `z-index` above modals if stacking changes.
 

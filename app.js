@@ -8,39 +8,8 @@
     { id: "sat", label: "Sat" },
     { id: "sun", label: "Sun" },
   ];
-  var STORAGE_KEY = "nutrients-food-definitions";
-  var STORAGE_KEY_LEGACY = "nutrients-keywords";
-  var STORAGE_KEY_DEMOGRAPHIC = "nutrients-demographic";
-  var STORAGE_KEY_BODY_WEIGHT_KG = "nutrients-body-weight-kg";
-  var STORAGE_KEY_TDEE = "nutrients-tdee";
-  var STORAGE_KEY_DAYS = "nutrients-day-notes";
-  var STORAGE_KEY_VIEWED_WEEK = "nutrients-viewed-week-start";
-  var STORAGE_KEY_FAVORITES = "nutrients-favorites";
-  var STORAGE_KEY_DAY_EDITOR_HEIGHT = "nutrients-day-editor-height";
-  var STORAGE_KEY_DAY_HIGHLIGHTS = "nutrients-day-highlights";
-  var STORAGE_KEY_REORDER = "nutrients-keywords-reorder-open";
-  var STORAGE_KEY_CALORIES = "nutrients-keywords-calories-open";
-  var STORAGE_KEY_KEYWORDS_PAGE_SIZE = "nutrients-keywords-page-size";
-  var STORAGE_KEY_MICRO_VIEW_DAILY = "nutrients-micro-view-daily";
-  var STORAGE_KEY_MICRO_SHOW_DV = "nutrients-micro-show-dv";
-  var STORAGE_KEY_SHOW_ACUTE_SIDE_EFFECTS = "nutrients-show-acute-side-effects";
-  var STORAGE_KEY_SHOW_ACUTE_ADVERSE_EFFECTS =
-    "nutrients-show-acute-adverse-effects";
-  var STORAGE_KEY_SHOW_DAILY_INTAKE_ICONS =
-    "nutrients-show-daily-intake-icons";
-  var STORAGE_KEY_FILTER_DAILY_INTAKE =
-    "nutrients-filter-daily-intake";
-  var STORAGE_KEY_FILTER_SIDE_EFFECTS =
-    "nutrients-filter-side-effects";
-  var STORAGE_KEY_FILTER_ADVERSE_EFFECTS =
-    "nutrients-filter-adverse-effects";
-  var STORAGE_KEY_FILTER_NUTRIENTS = "nutrients-filter-nutrients";
-  var STORAGE_KEY_HIGHLIGHT_DAILY_INTAKE =
-    "nutrients-highlight-daily-intake";
-  var STORAGE_KEY_HIGHLIGHT_SIDE_EFFECTS =
-    "nutrients-highlight-side-effects";
-  var STORAGE_KEY_HIGHLIGHT_ADVERSE_EFFECTS =
-    "nutrients-highlight-adverse-effects";
+  var persist =
+    typeof NutrientsPersist !== "undefined" ? NutrientsPersist : null;
   var KEYWORDS_DEFAULT_PAGE_SIZE = 25;
   var demographicDv =
     typeof NutrientsDemographicDv !== "undefined" ? NutrientsDemographicDv : null;
@@ -8980,90 +8949,61 @@
   }
 
   function loadMicroViewDaily() {
-    try {
-      microViewDaily =
-        localStorage.getItem(STORAGE_KEY_MICRO_VIEW_DAILY) === "true";
-    } catch (e) {
+    if (!persist) {
       microViewDaily = false;
+      return;
     }
+    microViewDaily = !!persist.getSetting("microViewDaily");
   }
 
   function saveMicroViewDaily() {
-    try {
-      localStorage.setItem(
-        STORAGE_KEY_MICRO_VIEW_DAILY,
-        microViewDaily ? "true" : "false"
-      );
-    } catch (e) {
-      /* ignore */
-    }
+    if (!persist) return;
+    persist.setSetting("microViewDaily", !!microViewDaily);
   }
 
   function loadShowMicroDailyDv() {
-    try {
-      showMicroDailyDv =
-        localStorage.getItem(STORAGE_KEY_MICRO_SHOW_DV) === "true";
-    } catch (e) {
+    if (!persist) {
       showMicroDailyDv = false;
+      return;
     }
+    showMicroDailyDv = !!persist.getSetting("microShowDv");
   }
 
   function saveShowMicroDailyDv() {
-    try {
-      localStorage.setItem(
-        STORAGE_KEY_MICRO_SHOW_DV,
-        showMicroDailyDv ? "true" : "false"
-      );
-    } catch (e) {
-      /* ignore */
-    }
+    if (!persist) return;
+    persist.setSetting("microShowDv", !!showMicroDailyDv);
   }
 
   function loadShowAcuteToxicityIcons() {
-    try {
-      showAcuteSideEffects =
-        localStorage.getItem(STORAGE_KEY_SHOW_ACUTE_SIDE_EFFECTS) === "true";
-      showAcuteAdverseEffects =
-        localStorage.getItem(STORAGE_KEY_SHOW_ACUTE_ADVERSE_EFFECTS) === "true";
-    } catch (e) {
+    if (!persist) {
       showAcuteSideEffects = false;
       showAcuteAdverseEffects = false;
+      return;
     }
+    var s = persist.loadSettings();
+    showAcuteSideEffects = !!s.showAcuteSideEffects;
+    showAcuteAdverseEffects = !!s.showAcuteAdverseEffects;
   }
 
   function saveShowAcuteToxicityIcons() {
-    try {
-      localStorage.setItem(
-        STORAGE_KEY_SHOW_ACUTE_SIDE_EFFECTS,
-        showAcuteSideEffects ? "true" : "false"
-      );
-      localStorage.setItem(
-        STORAGE_KEY_SHOW_ACUTE_ADVERSE_EFFECTS,
-        showAcuteAdverseEffects ? "true" : "false"
-      );
-    } catch (e) {
-      /* ignore */
-    }
+    if (!persist) return;
+    persist.patchSettings({
+      showAcuteSideEffects: !!showAcuteSideEffects,
+      showAcuteAdverseEffects: !!showAcuteAdverseEffects,
+    });
   }
 
   function loadShowDailyIntakeIcons() {
-    try {
-      showDailyIntakeIcons =
-        localStorage.getItem(STORAGE_KEY_SHOW_DAILY_INTAKE_ICONS) !== "false";
-    } catch (e) {
+    if (!persist) {
       showDailyIntakeIcons = true;
+      return;
     }
+    showDailyIntakeIcons = persist.getSetting("showDailyIntakeIcons") !== false;
   }
 
   function saveShowDailyIntakeIcons() {
-    try {
-      localStorage.setItem(
-        STORAGE_KEY_SHOW_DAILY_INTAKE_ICONS,
-        showDailyIntakeIcons ? "true" : "false"
-      );
-    } catch (e) {
-      /* ignore */
-    }
+    if (!persist) return;
+    persist.setSetting("showDailyIntakeIcons", !!showDailyIntakeIcons);
   }
 
   function syncDailyIntakeIconsToggleUi() {
@@ -9153,46 +9093,30 @@
   }
 
   function loadStickyIconFilters() {
-    try {
-      filterStickyDailyIntake =
-        localStorage.getItem(STORAGE_KEY_FILTER_DAILY_INTAKE) === "true";
-      filterStickySideEffects =
-        localStorage.getItem(STORAGE_KEY_FILTER_SIDE_EFFECTS) === "true";
-      filterStickyAdverseEffects =
-        localStorage.getItem(STORAGE_KEY_FILTER_ADVERSE_EFFECTS) === "true";
-      var rawNutrients = localStorage.getItem(STORAGE_KEY_FILTER_NUTRIENTS);
-      filterStickyNutrientKeys = rawNutrients
-        ? normalizeFilterStickyNutrientKeys(JSON.parse(rawNutrients))
-        : [];
-    } catch (e) {
+    if (!persist) {
       filterStickyDailyIntake = false;
       filterStickySideEffects = false;
       filterStickyAdverseEffects = false;
       filterStickyNutrientKeys = [];
+      return;
     }
+    var s = persist.loadSettings();
+    filterStickyDailyIntake = !!s.filterDailyIntake;
+    filterStickySideEffects = !!s.filterSideEffects;
+    filterStickyAdverseEffects = !!s.filterAdverseEffects;
+    filterStickyNutrientKeys = normalizeFilterStickyNutrientKeys(
+      s.filterNutrients || []
+    );
   }
 
   function saveStickyIconFilters() {
-    try {
-      localStorage.setItem(
-        STORAGE_KEY_FILTER_DAILY_INTAKE,
-        filterStickyDailyIntake ? "true" : "false"
-      );
-      localStorage.setItem(
-        STORAGE_KEY_FILTER_SIDE_EFFECTS,
-        filterStickySideEffects ? "true" : "false"
-      );
-      localStorage.setItem(
-        STORAGE_KEY_FILTER_ADVERSE_EFFECTS,
-        filterStickyAdverseEffects ? "true" : "false"
-      );
-      localStorage.setItem(
-        STORAGE_KEY_FILTER_NUTRIENTS,
-        JSON.stringify(filterStickyNutrientKeys)
-      );
-    } catch (e) {
-      /* ignore */
-    }
+    if (!persist) return;
+    persist.patchSettings({
+      filterDailyIntake: !!filterStickyDailyIntake,
+      filterSideEffects: !!filterStickySideEffects,
+      filterAdverseEffects: !!filterStickyAdverseEffects,
+      filterNutrients: filterStickyNutrientKeys.slice(),
+    });
   }
 
   function nutrientFilterChipHtml(key) {
@@ -9542,37 +9466,25 @@
   }
 
   function loadStickyIconHighlights() {
-    try {
-      highlightStickyDailyIntake =
-        localStorage.getItem(STORAGE_KEY_HIGHLIGHT_DAILY_INTAKE) === "true";
-      highlightStickySideEffects =
-        localStorage.getItem(STORAGE_KEY_HIGHLIGHT_SIDE_EFFECTS) === "true";
-      highlightStickyAdverseEffects =
-        localStorage.getItem(STORAGE_KEY_HIGHLIGHT_ADVERSE_EFFECTS) === "true";
-    } catch (e) {
+    if (!persist) {
       highlightStickyDailyIntake = false;
       highlightStickySideEffects = false;
       highlightStickyAdverseEffects = false;
+      return;
     }
+    var s = persist.loadSettings();
+    highlightStickyDailyIntake = !!s.highlightDailyIntake;
+    highlightStickySideEffects = !!s.highlightSideEffects;
+    highlightStickyAdverseEffects = !!s.highlightAdverseEffects;
   }
 
   function saveStickyIconHighlights() {
-    try {
-      localStorage.setItem(
-        STORAGE_KEY_HIGHLIGHT_DAILY_INTAKE,
-        highlightStickyDailyIntake ? "true" : "false"
-      );
-      localStorage.setItem(
-        STORAGE_KEY_HIGHLIGHT_SIDE_EFFECTS,
-        highlightStickySideEffects ? "true" : "false"
-      );
-      localStorage.setItem(
-        STORAGE_KEY_HIGHLIGHT_ADVERSE_EFFECTS,
-        highlightStickyAdverseEffects ? "true" : "false"
-      );
-    } catch (e) {
-      /* ignore */
-    }
+    if (!persist) return;
+    persist.patchSettings({
+      highlightDailyIntake: !!highlightStickyDailyIntake,
+      highlightSideEffects: !!highlightStickySideEffects,
+      highlightAdverseEffects: !!highlightStickyAdverseEffects,
+    });
   }
 
   function syncStickyIconHighlightUi() {
@@ -12578,29 +12490,20 @@
   }
 
   function saveTdee() {
-    try {
-      if (userTdee == null || userTdee <= 0) {
-        localStorage.removeItem(STORAGE_KEY_TDEE);
-      } else {
-        localStorage.setItem(STORAGE_KEY_TDEE, String(userTdee));
-      }
-    } catch (e) {
-      /* ignore */
-    }
+    if (!persist) return;
+    persist.setSetting(
+      "tdee",
+      userTdee == null || userTdee <= 0 ? null : userTdee
+    );
   }
 
   function loadTdee() {
-    try {
-      var raw = localStorage.getItem(STORAGE_KEY_TDEE);
-      if (raw == null || raw === "") {
-        userTdee = null;
-        return;
-      }
-      var n = parseFloat(raw);
-      userTdee = !isNaN(n) && n > 0 ? n : null;
-    } catch (e) {
+    if (!persist) {
       userTdee = null;
+      return;
     }
+    var n = persist.getSetting("tdee");
+    userTdee = typeof n === "number" && n > 0 ? n : null;
   }
 
   function getTdee() {
@@ -12608,29 +12511,22 @@
   }
 
   function saveBodyWeight() {
-    try {
-      if (userBodyWeightKg == null || userBodyWeightKg <= 0) {
-        localStorage.removeItem(STORAGE_KEY_BODY_WEIGHT_KG);
-      } else {
-        localStorage.setItem(STORAGE_KEY_BODY_WEIGHT_KG, String(userBodyWeightKg));
-      }
-    } catch (e) {
-      /* ignore */
-    }
+    if (!persist) return;
+    persist.setSetting(
+      "bodyWeightKg",
+      userBodyWeightKg == null || userBodyWeightKg <= 0
+        ? null
+        : userBodyWeightKg
+    );
   }
 
   function loadBodyWeight() {
-    try {
-      var raw = localStorage.getItem(STORAGE_KEY_BODY_WEIGHT_KG);
-      if (raw == null || raw === "") {
-        userBodyWeightKg = null;
-        return;
-      }
-      var n = parseFloat(raw);
-      userBodyWeightKg = !isNaN(n) && n > 0 ? n : null;
-    } catch (e) {
+    if (!persist) {
       userBodyWeightKg = null;
+      return;
     }
+    var n = persist.getSetting("bodyWeightKg");
+    userBodyWeightKg = typeof n === "number" && n > 0 ? n : null;
   }
 
   function settingsWeightKgFromInput() {
@@ -13261,22 +13157,17 @@
   }
 
   function saveDemographic() {
-    try {
-      localStorage.setItem(STORAGE_KEY_DEMOGRAPHIC, demographic);
-    } catch (e) {
-      /* ignore */
-    }
+    if (!persist) return;
+    persist.setSetting("demographic", demographic);
   }
 
   function loadDemographic() {
-    try {
-      var raw = localStorage.getItem(STORAGE_KEY_DEMOGRAPHIC);
-      if (raw) {
-        demographic = normalizeDemographic(raw);
-      }
-    } catch (e) {
+    if (!persist) {
       demographic = DEFAULT_DEMOGRAPHIC;
+      return;
     }
+    var raw = persist.getSetting("demographic");
+    if (raw) demographic = normalizeDemographic(raw);
   }
 
   function renderDemographicUi() {
@@ -14158,50 +14049,35 @@
   }
 
   function saveFoodDefinitions() {
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(keywords));
-    } catch (e) {
-      /* ignore */
-    }
+    if (!persist) return;
+    persist.saveFoodDefinitions(keywords);
   }
 
   function loadFoodDefinitions() {
-    try {
-      var raw = localStorage.getItem(STORAGE_KEY);
-      if (!raw) {
-        raw = localStorage.getItem(STORAGE_KEY_LEGACY);
-        if (raw) {
-          localStorage.setItem(STORAGE_KEY, raw);
-          localStorage.removeItem(STORAGE_KEY_LEGACY);
-        }
-      }
-      if (!raw) return;
-      var data = JSON.parse(raw);
-      if (!Array.isArray(data)) return;
-      var migrated = false;
-      keywords = data.map(function (item) {
-        var micros = normalizeMicros(item.micros);
-        var longevity = normalizeLongevity(item.longevity, micros);
-        longevity = mergeCarbQualityIntoLongevity(longevity, item.carbQuality);
-        if (syncSharedMicroLongevity(micros, longevity)) migrated = true;
-        return {
-          id:
-            item.id != null && item.id !== "" ? String(item.id) : makeId(),
-          name: typeof item.name === "string" ? item.name : "",
-          protein: item.protein === "" || item.protein == null ? "" : item.protein,
-          carbs: item.carbs === "" || item.carbs == null ? "" : item.carbs,
-          fats: item.fats === "" || item.fats == null ? "" : item.fats,
-          micros: micros,
-          longevity: longevity,
-        };
-      });
-      if (migrated || ensureUniqueKeywordIds()) {
-        saveFoodDefinitions();
-      }
-      syncNextIdFromKeywords();
-    } catch (e) {
-      keywords = [];
+    if (!persist) return;
+    var data = persist.loadFoodDefinitions();
+    if (!data) return;
+    var migrated = false;
+    keywords = data.map(function (item) {
+      var micros = normalizeMicros(item.micros);
+      var longevity = normalizeLongevity(item.longevity, micros);
+      longevity = mergeCarbQualityIntoLongevity(longevity, item.carbQuality);
+      if (syncSharedMicroLongevity(micros, longevity)) migrated = true;
+      return {
+        id:
+          item.id != null && item.id !== "" ? String(item.id) : makeId(),
+        name: typeof item.name === "string" ? item.name : "",
+        protein: item.protein === "" || item.protein == null ? "" : item.protein,
+        carbs: item.carbs === "" || item.carbs == null ? "" : item.carbs,
+        fats: item.fats === "" || item.fats == null ? "" : item.fats,
+        micros: micros,
+        longevity: longevity,
+      };
+    });
+    if (migrated || ensureUniqueKeywordIds()) {
+      saveFoodDefinitions();
     }
+    syncNextIdFromKeywords();
   }
 
   function findIndex(id) {
@@ -14809,23 +14685,16 @@
   }
 
   function loadKeywordReorderOpen() {
-    try {
-      keywordReorderOpen =
-        localStorage.getItem(STORAGE_KEY_REORDER) === "true";
-    } catch (e) {
+    if (!persist) {
       keywordReorderOpen = false;
+      return;
     }
+    keywordReorderOpen = !!persist.getSetting("keywordsReorderOpen");
   }
 
   function saveKeywordReorderOpen() {
-    try {
-      localStorage.setItem(
-        STORAGE_KEY_REORDER,
-        keywordReorderOpen ? "true" : "false"
-      );
-    } catch (e) {
-      /* ignore */
-    }
+    if (!persist) return;
+    persist.setSetting("keywordsReorderOpen", !!keywordReorderOpen);
   }
 
   function updateKeywordReorderUi() {
@@ -14861,23 +14730,16 @@
   }
 
   function loadKeywordCaloriesOpen() {
-    try {
-      keywordCaloriesOpen =
-        localStorage.getItem(STORAGE_KEY_CALORIES) === "true";
-    } catch (e) {
+    if (!persist) {
       keywordCaloriesOpen = false;
+      return;
     }
+    keywordCaloriesOpen = !!persist.getSetting("keywordsCaloriesOpen");
   }
 
   function saveKeywordCaloriesOpen() {
-    try {
-      localStorage.setItem(
-        STORAGE_KEY_CALORIES,
-        keywordCaloriesOpen ? "true" : "false"
-      );
-    } catch (e) {
-      /* ignore */
-    }
+    if (!persist) return;
+    persist.setSetting("keywordsCaloriesOpen", !!keywordCaloriesOpen);
   }
 
   function updateKeywordCaloriesUi() {
@@ -15143,24 +15005,19 @@
   }
 
   function loadKeywordsPageSize() {
-    try {
-      var raw = localStorage.getItem(STORAGE_KEY_KEYWORDS_PAGE_SIZE);
-      if (raw == null || raw === "") return;
-      var size = parseInt(raw, 10);
-      if (size === 0 || size === 10 || size === 25 || size === 50 || size === 100) {
-        keywordsPageSize = size;
-      }
-    } catch (e) {
+    if (!persist) {
       keywordsPageSize = KEYWORDS_DEFAULT_PAGE_SIZE;
+      return;
+    }
+    var size = persist.getSetting("keywordsPageSize");
+    if (size === 0 || size === 10 || size === 25 || size === 50 || size === 100) {
+      keywordsPageSize = size;
     }
   }
 
   function saveKeywordsPageSize() {
-    try {
-      localStorage.setItem(STORAGE_KEY_KEYWORDS_PAGE_SIZE, String(keywordsPageSize));
-    } catch (e) {
-      /* ignore */
-    }
+    if (!persist) return;
+    persist.setSetting("keywordsPageSize", keywordsPageSize);
   }
 
   function syncKeywordsPageSizeSelect() {
@@ -15551,27 +15408,19 @@
   }
 
   function saveFavorites() {
-    try {
-      localStorage.setItem(STORAGE_KEY_FAVORITES, JSON.stringify(diaryFavorites));
-    } catch (e) {
-      /* ignore */
-    }
+    if (!persist) return;
+    persist.saveFavorites(diaryFavorites);
   }
 
   function loadFavorites() {
     diaryFavorites = [];
-    try {
-      var raw = localStorage.getItem(STORAGE_KEY_FAVORITES);
-      if (!raw) return;
-      var parsed = JSON.parse(raw);
-      if (!Array.isArray(parsed)) return;
-      parsed.forEach(function (item) {
-        var entry = normalizeFavoriteEntry(item);
-        if (entry) diaryFavorites.push(entry);
-      });
-    } catch (e) {
-      diaryFavorites = [];
-    }
+    if (!persist) return;
+    var parsed = persist.loadFavorites();
+    if (!parsed) return;
+    parsed.forEach(function (item) {
+      var entry = normalizeFavoriteEntry(item);
+      if (entry) diaryFavorites.push(entry);
+    });
   }
 
   function findFavoriteIndexById(id) {
@@ -16106,25 +15955,17 @@
   }
 
   function saveViewedWeekStart() {
-    try {
-      if (viewedWeekStart) {
-        localStorage.setItem(STORAGE_KEY_VIEWED_WEEK, viewedWeekStart);
-      }
-    } catch (e) {
-      /* ignore */
-    }
+    if (!persist) return;
+    if (viewedWeekStart) persist.setSetting("viewedWeekStart", viewedWeekStart);
   }
 
   function loadViewedWeekStartKey() {
-    try {
-      var raw = localStorage.getItem(STORAGE_KEY_VIEWED_WEEK);
-      if (!raw) return null;
-      var d = parseDateKey(raw);
-      if (!d) return null;
-      return toDateKey(mondayOf(d));
-    } catch (e) {
-      return null;
-    }
+    if (!persist) return null;
+    var raw = persist.getSetting("viewedWeekStart");
+    if (!raw) return null;
+    var d = parseDateKey(raw);
+    if (!d) return null;
+    return toDateKey(mondayOf(d));
   }
 
   function flushEditorsToDayMeals() {
@@ -16290,31 +16131,21 @@
   }
 
   function saveDayNotes() {
-    try {
-      localStorage.setItem(STORAGE_KEY_DAYS, JSON.stringify(dayNotesPayload()));
-    } catch (e) {
-      /* ignore */
-    }
+    if (!persist) return;
+    persist.saveDayMeals(dayNotesPayload());
   }
 
   function saveDayHighlightsPreference() {
-    try {
-      localStorage.setItem(
-        STORAGE_KEY_DAY_HIGHLIGHTS,
-        dayHighlightsEnabled ? "on" : "off"
-      );
-    } catch (e) {
-      /* ignore */
-    }
+    if (!persist) return;
+    persist.setSetting("dayHighlights", !!dayHighlightsEnabled);
   }
 
   function loadDayHighlightsPreference() {
-    try {
-      dayHighlightsEnabled =
-        localStorage.getItem(STORAGE_KEY_DAY_HIGHLIGHTS) !== "off";
-    } catch (e) {
+    if (!persist) {
       dayHighlightsEnabled = true;
+      return;
     }
+    dayHighlightsEnabled = persist.getSetting("dayHighlights") !== false;
   }
 
   function syncDayHighlightsToggleUi() {
@@ -16362,22 +16193,14 @@
   }
 
   function saveDayEditorHeight(px) {
-    try {
-      localStorage.setItem(STORAGE_KEY_DAY_EDITOR_HEIGHT, String(px));
-    } catch (e) {
-      /* ignore */
-    }
+    if (!persist) return;
+    persist.setSetting("dayEditorHeight", px);
   }
 
   function loadDayEditorHeight() {
-    try {
-      var raw = localStorage.getItem(STORAGE_KEY_DAY_EDITOR_HEIGHT);
-      if (!raw) return;
-      var height = parseInt(raw, 10);
-      if (height > 0) applyDayEditorHeight(height);
-    } catch (e) {
-      /* ignore */
-    }
+    if (!persist) return;
+    var height = persist.getSetting("dayEditorHeight");
+    if (typeof height === "number" && height > 0) applyDayEditorHeight(height);
   }
 
   function isDayEditorResizeIntent(e, editor) {
@@ -16467,10 +16290,9 @@
   function loadDayNotes() {
     dayMealsByDate = {};
     var migrated = false;
-    try {
-      var raw = localStorage.getItem(STORAGE_KEY_DAYS);
-      if (raw) {
-        var data = JSON.parse(raw);
+    if (persist) {
+      var data = persist.loadDayMeals();
+      if (data) {
         if (isV2DayMealsData(data)) {
           dayMealsByDate = ingestDayMealsMap(data.days);
         } else if (isLegacyWeekMealsData(data)) {
@@ -16478,8 +16300,6 @@
           migrated = true;
         }
       }
-    } catch (e) {
-      dayMealsByDate = {};
     }
 
     viewedWeekStart =
@@ -19673,6 +19493,7 @@
   }
 
   function boot() {
+    if (persist) persist.migrate();
     loadFoodDefinitions();
     loadKeywordReorderOpen();
     loadKeywordCaloriesOpen();

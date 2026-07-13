@@ -19,6 +19,8 @@ No backend, no bundler, no framework.
 | [AGENTS_CODE_REFERENCE-core.md](./AGENTS_CODE_REFERENCE-core.md) | Data model, localStorage, matching, dashboard math, micro % DV, condition focus, sticky icon show/filter/highlight + By Nutrients filter, acute toxicity, ranked source modals, TDEE/settings, longevity panel + nav (Upper GI / Thyroid / Liver / Kidney / Gray hair / Aches / Brain; multi-ceiling sodium), definition modals, highlights, food notes, unmatched carousel, multi-week diary, diary favorites, mobile days carousel, starter guide, food-definition table |
 | [AGENTS_CODE_REFERENCE-import.md](./AGENTS_CODE_REFERENCE-import.md) | Single + bulk JSON import, sample food + sample day-meals import, AI prompt panels (import + micro gaps + health timeline), ChatGPT/Claude links |
 | [AGENTS_CODE_REFERENCE-ui.md](./AGENTS_CODE_REFERENCE-ui.md) | `index.html` regions, `styles.css` layout, sticky panel chrome, settings/TDEE modals, sources modals, food-notes toolbar popover, unmatched carousel, today + favorite-day styling, Favorites sidebar, mobile days carousel, starter guide popover, highlight overlay |
+| [AGENTS-data-persistence.md](./AGENTS-data-persistence.md) | `NutrientsPersist` repository, localStorage tables, migration |
+| [specs-data-persistence.md](./specs-data-persistence.md) | Persistence data shapes and save/load rules |
 
 When context is tight: read **this file** first, then open the one feature file you need. Full logic lives in `app.js` (~19,700 lines) — load it whole only when editing behavior, otherwise navigate by the function names listed in the companion docs.
 
@@ -31,7 +33,7 @@ When context is tight: read **this file** first, then open the one feature file 
 | Logic | Single IIFE in `app.js` (~19,700 lines) |
 | Data files | `config.json` (% DV tiers), `definitions-micronutrients.json`, `definitions-longevity.json`, `definitions-food-notes.json`, `definitions-food-categories.json`, `samples/definitions-food.json`, `samples/day-meals.json` (all `fetch`ed at boot / on demand) |
 | Reference values | `demographic-dv.js` (micro DV, IOM amino-acid bw minimums, fiber component ratio), `longevity-dv.js` (longevity DV) — globals, loaded before `app.js` |
-| Persistence | `localStorage` for **food definitions**, **day meals**, **viewed week**, **diary favorites**, **demographic**, **TDEE**, **body weight**, **day editor height**, **highlights on/off**, **micro panel view** (weekly vs each-day), **Daily Targets**, **acute S/E·A/E icon visibility**, **daily-intake icon visibility**, **sticky Filter / Highlight** (daily / side / adverse), **By Nutrients filter keys**, **reorder toggle**, **calories-column toggle**, **table page size** |
+| Persistence | `persist.js` (`NutrientsPersist`) → four localStorage tables: **food definitions**, **day meals**, **favorites**, **settings** (demographic, TDEE, weight, viewed week, UI prefs). See [AGENTS-data-persistence.md](./AGENTS-data-persistence.md) / [specs-data-persistence.md](./specs-data-persistence.md) |
 | Guides / QA | `GUIDE_ADDING_FOOD.md`, `GUIDE_IMPROVING_FOOD.md`, `GUIDE_ADDING_MULTIVITAMIN.md`; `scripts/run-micro-qa.js`, `scripts/run-plant-sterols-qa.js`, `scripts/list-uncategorized-foods.js`; `.agents/skills/qa-definitions-food.json`, `.agents/skills/categorize-food-definitions.json` |
 | Run | Open `index.html` via a static file server (boot `fetch`es JSON, so `file://` will fall back to defaults) |
 
@@ -65,14 +67,13 @@ When context is tight: read **this file** first, then open the one feature file 
 │  sort A–Z, optional cal column, micros + longevity       │
 │  modals, single/bulk/sample import, reorder,             │
 │  move-to-position; empty-state sample link)              │
-│  ← persisted: localStorage `nutrients-food-definitions` │
+│  ← persisted: localStorage `nutrients_food_definitions` │
 │  Settings (header): sex / micro DV profile + TDEE + weight│
-│  ← persisted: `nutrients-demographic`, `nutrients-tdee`, │
-│    `nutrients-body-weight-kg`                             │
+│  ← persisted: fields on `nutrients_settings`              │
 └─────────────────────────────────────────────────────────┘
 ```
 
-**Persisted:** day meals (`nutrients-day-notes` v2 date map), viewed week start (`nutrients-viewed-week-start`), diary favorites (`nutrients-favorites`), food definitions (`nutrients-food-definitions`), demographic (`nutrients-demographic`), TDEE (`nutrients-tdee`), body weight kg (`nutrients-body-weight-kg`), day editor height (`nutrients-day-editor-height`), highlights on/off (`nutrients-day-highlights`), micro panel weekly-vs-daily view (`nutrients-micro-view-daily`), micro **Daily Targets** toggle (`nutrients-micro-show-dv`), acute S/E / A/E icon show (`nutrients-show-acute-side-effects`, `nutrients-show-acute-adverse-effects`), daily-intake icon show (`nutrients-show-daily-intake-icons`, default on), sticky Filter (`nutrients-filter-daily-intake` / `-side-effects` / `-adverse-effects`), sticky **By Nutrients** keys (`nutrients-filter-nutrients`, JSON array), sticky Highlight (`nutrients-highlight-daily-intake` / `-side-effects` / `-adverse-effects`), reorder-open flag (`nutrients-keywords-reorder-open`), food-table calories column (`nutrients-keywords-calories-open`), food-table page size (`nutrients-keywords-page-size`). Bulk export/import for meals and foods; sample foods from `samples/definitions-food.json`; sample meals from `samples/day-meals.json`; clear per day / viewed week with `confirm`.
+**Persisted** (via `NutrientsPersist`): `nutrients_food_definitions`, `nutrients_day_meals` (v2 date map), `nutrients_favorites`, `nutrients_settings` (demographic, TDEE, body weight, viewed week, editor height, highlights, micro/acute/filter/highlight prefs, keywords UI prefs). Details: [specs-data-persistence.md](./specs-data-persistence.md). Bulk export/import for meals and foods; sample foods from `samples/definitions-food.json`; sample meals from `samples/day-meals.json`; clear per day / viewed week with `confirm`.
 
 ## File tree
 
@@ -80,7 +81,10 @@ When context is tight: read **this file** first, then open the one feature file 
 nutrients/
 ├── index.html                      (~2,000 lines) Page structure, sticky panel chrome, modals, favorites sidebar, starter guide, day editors
 ├── styles.css                      (~7,700 lines) Layout, dashboard, sticky options, nutrient filter, today/favorite styling, mobile day carousel, table, modals, print
+├── persist.js                      NutrientsPersist — localStorage repository (four tables)
 ├── app.js                          (~19,700 lines) All application logic (IIFE)
+├── specs-data-persistence.md       Persistence shapes + migration
+├── AGENTS-data-persistence.md      Repository architecture for agents
 ├── config.json                     Micro + longevity % DV tier colors / font weights (fetched at boot)
 ├── demographic-dv.js               window.NutrientsDemographicDv — gender micro DV targets, daily-intake key list, IOM amino-acid bw minimums, fiber component ratio
 ├── longevity-dv.js                 window.NutrientsLongevityDv — longevity nutrient DV targets
@@ -154,9 +158,7 @@ Micros and longevity nutrients affect **storage and UI** (button codes, import J
 - `CARB_QUALITY_KEYS` — subset of longevity keys (`glycemicIndex`, `addedSugar`, `refinedCarbs`, `netCarbs`) surfaced as `carbQuality` on import/export.
 - `LONGEVITY_GROUPS`, `LONGEVITY_FROM_MICRO`, `LONGEVITY_COMPOUNDS_FROM_MICRO`, `LONGEVITY_TMAO_*`, `LONGEVITY_DERIVED_DEFS`, `LONGEVITY_SECTION_DEFS`, `LONGEVITY_NAV_SECTIONS_CORE` — drive longevity panel sections (incl. **Upper GI Motility**, **Thyroid**, **Liver**, **Kidney**, **Gray hair**, **Aches**, **Staying sharp & lowering dementia risk** / astrocytes), TMAO balance, and derived scores. Section row maps: `LONGEVITY_UPPER_GI_*`, `LONGEVITY_LIVER_*`, `LONGEVITY_KIDNEY_*`, `LONGEVITY_GRAY_HAIR_*`, `LONGEVITY_ACHES_*`, `LONGEVITY_BRAIN_*`, `LONGEVITY_BRAIN_ASTROCYTE_*`.
 - `VASCULAR_SODIUM_LIMIT_REFS` — alternate sodium ceilings for **Vascular - Blood Pressure** (FDA 2,300 mg / WHO 2,000 mg / AHA 1,500 mg); same intake scored via `longevityRowFromMicroLimit` / `vascularSodiumLimitRowsHtml` (limiting: lower % is better).
-- `STORAGE_KEY` — `nutrients-food-definitions`; migrates from `STORAGE_KEY_LEGACY` (`nutrients-keywords`).
-- `STORAGE_KEY_DEMOGRAPHIC` — `nutrients-demographic`; `male` | `female`, default `male`.
-- `STORAGE_KEY_DAYS` — `nutrients-day-notes` (v2 `{version:2,days:{"YYYY-MM-DD":"…"}}`; legacy `{mon…sun}` migrates onto the current calendar week). `STORAGE_KEY_VIEWED_WEEK` — `nutrients-viewed-week-start` (Monday `YYYY-MM-DD` for the week shown in the editors). `STORAGE_KEY_FAVORITES` — `nutrients-favorites` (array of `{id,type:"day"|"week",dateKey,name,description}`). `STORAGE_KEY_DAY_EDITOR_HEIGHT` — `nutrients-day-editor-height` (shared px height for all `.day__editor`). `STORAGE_KEY_DAY_HIGHLIGHTS` — `nutrients-day-highlights` (`on`/`off` pen toggle). `STORAGE_KEY_MICRO_VIEW_DAILY` — `nutrients-micro-view-daily` (`true` = each-day micro grid). `STORAGE_KEY_MICRO_SHOW_DV` — `nutrients-micro-show-dv` (`true` = Daily Targets on). `STORAGE_KEY_SHOW_ACUTE_SIDE_EFFECTS` / `STORAGE_KEY_SHOW_ACUTE_ADVERSE_EFFECTS` — body classes that reveal S/E · A/E icons. `STORAGE_KEY_SHOW_DAILY_INTAKE_ICONS` — daily-intake icon visibility (default on). `STORAGE_KEY_FILTER_*` / `STORAGE_KEY_HIGHLIGHT_*` — sticky Filter / Highlight for `daily-intake`, `side-effects`, `adverse-effects`. `STORAGE_KEY_FILTER_NUTRIENTS` — `nutrients-filter-nutrients` (JSON array of micro keys for **By Nutrients**). `STORAGE_KEY_REORDER` — `nutrients-keywords-reorder-open`. `STORAGE_KEY_TDEE` — `nutrients-tdee` (optional user TDEE number). `STORAGE_KEY_BODY_WEIGHT_KG` — `nutrients-body-weight-kg` (for IOM bw min). `STORAGE_KEY_CALORIES` — `nutrients-keywords-calories-open` (food table shows cal instead of g). `STORAGE_KEY_KEYWORDS_PAGE_SIZE` — `nutrients-keywords-page-size` (10/25/50/100/0=all, default `KEYWORDS_DEFAULT_PAGE_SIZE` = 25).
+- Persistence — `NutrientsPersist` in `persist.js` (loaded before `app.js`). Tables: `nutrients_food_definitions`, `nutrients_day_meals`, `nutrients_favorites`, `nutrients_settings`. See [AGENTS-data-persistence.md](./AGENTS-data-persistence.md).
 - `demographicDv` / `longevityDv` — references to `window.NutrientsDemographicDv` / `window.NutrientsLongevityDv` (must load before `app.js`). `demographicDv` also exposes `IOM_BW_MIN_MG_PER_KG`, `getIomBwMinDaily`, `FIBER_COMPONENT_DV_RATIO`.
 - `CAL_PROTEIN|CARBS|FATS` — 4, 4, 9.
 - `CHATGPT_URL`, `CLAUDE_URL`, `IMPORT_SAMPLE_FOODS_URL` (`samples/definitions-food.json`), `IMPORT_SAMPLE_MEALS_URL` (`samples/day-meals.json`), `FOOD_NOTES_URL` (`definitions-food-notes.json`), `FOOD_CATEGORIES_URL` (`definitions-food-categories.json`).
@@ -186,8 +188,8 @@ Outside main (modal / overlay siblings): `#settings-modal`, `#tdee-calculator-mo
 - **Condition longevity rows in micro panel:** add keys to `MICRO_CONDITION_FOCUS.*.longevityNutrients`; `microConditionDisplayFields` renders them when that condition is focused; **More nutrients** also merges all conditions’ longevity keys ([core doc](./AGENTS_CODE_REFERENCE-core.md)).
 - **New derived micro metric:** add to `MICRO_DERIVED_DEFS` + `microDerivedRowTargetDisplay` / `microDerivedAmtText`; explanatory text keyed by the derived key in `definitions-micronutrients.json` (may use `warning` / `dashboardTracking` arrays). Fiber ratios: both `insolubleToSolubleFiber2To1` (ideal 2) and `insolubleToSolubleFiber` (ideal 3).
 - **New condition focus / filter group:** extend `MICRO_CONDITION_FOCUS` (or `MICRO_INTAKE_FILTER`) + HTML list in `#dashboard-micro-condition-list` (group labels like **Nutrition Intake**); add condition paragraph arrays on relevant keys in `definitions-micronutrients.json` / `definitions-longevity.json`. Tip asides: wire `#micro-tip-*` visibility in `syncMicroConditionUi`.
-- **Sticky icon Filter / Highlight / show toggles:** Filter (`setStickyIconFilter` / `microKeyMatchesStickyFilter`) and Highlight (`setStickyIconHighlight` → body classes `highlight-daily-intake-icons` / `highlight-side-effects` / `highlight-adverse-effects`) share state across micro + longevity sticky bars; acute icon visibility via `setShowAcuteToxicityIcons` (body `show-acute-side-effects` / `show-acute-adverse-effects`); daily-intake icons via `setShowDailyIntakeIcons` (body `show-daily-intake-icons`). Persist with matching `STORAGE_KEY_*` ([core doc](./AGENTS_CODE_REFERENCE-core.md)).
-- **By Nutrients sticky filter:** `filterStickyNutrientKeys` + `STORAGE_KEY_FILTER_NUTRIENTS`; UI under Filter → **By Nutrients** (mirrored on micro + longevity sticky bars); presets via `NUTRIENT_FILTER_PRESETS` / `applyNutrientFilterPreset`; typeahead via `nutrientFilterSuggestMatches`; AND with icon Filter criteria inside `microKeyMatchesStickyFilter`. Selecting sticky filters clears condition focus (and vice versa).
+- **Sticky icon Filter / Highlight / show toggles:** Filter (`setStickyIconFilter` / `microKeyMatchesStickyFilter`) and Highlight (`setStickyIconHighlight` → body classes `highlight-daily-intake-icons` / `highlight-side-effects` / `highlight-adverse-effects`) share state across micro + longevity sticky bars; acute icon visibility via `setShowAcuteToxicityIcons` (body `show-acute-side-effects` / `show-acute-adverse-effects`); daily-intake icons via `setShowDailyIntakeIcons` (body `show-daily-intake-icons`). Persist via `NutrientsPersist` settings ([AGENTS-data-persistence.md](./AGENTS-data-persistence.md)).
+- **By Nutrients sticky filter:** `filterStickyNutrientKeys` + settings `filterNutrients`; UI under Filter → **By Nutrients** (mirrored on micro + longevity sticky bars); presets via `NUTRIENT_FILTER_PRESETS` / `applyNutrientFilterPreset`; typeahead via `nutrientFilterSuggestMatches`; AND with icon Filter criteria inside `microKeyMatchesStickyFilter`. Selecting sticky filters clears condition focus (and vice versa).
 - **Acute toxicity (one-day excess):** add/edit keys in `ACUTE_TOXICITY_BY_MICRO` (`sideEffects` / `adverseEffects`); icons via `microAcuteToxicityIconsHtml` → `#micro-acute-toxicity-popover` ([core doc](./AGENTS_CODE_REFERENCE-core.md)).
 - **New alternate target reference:** wire it into `microNutrientTargetPct` (FDA DV → IOM bw min → study min → study max → none); add a `data-target-ref` badge kind and popover copy in `showTargetRefPopover` ([core doc](./AGENTS_CODE_REFERENCE-core.md)). Study min (`STUDY_MIN_MICRO_REFS`) = aim higher; study max (`STUDY_MAX_MICRO_REFS`) = limiting/ceiling. Both need a `TARGET_REF_POPOVER_DETAILS` entry with citation `text` and PubMed `url`.
 - **New longevity nutrient:** add to `LONGEVITY_FIELDS` (with `group`, `limiting?`); add DV in `longevity-dv.js` (`DAILY_LONGEVITY_DV`); `initLongevityForm` / `normalizeLongevity` follow; optional text in `definitions-longevity.json`. If it is a carb-quality field, also add to `CARB_QUALITY_KEYS`. **Carotenoids:** when not stored explicitly, `resolveLongevityValue` estimates mg from `micros.vitaminA` (mcg ÷ 100 when vit A > 50). Liver-tracked compounds currently include `alphaLipoicAcid` and `glutathione` (DV may be `0` = unscored amount display).
@@ -201,7 +203,7 @@ Outside main (modal / overlay siblings): `#settings-modal`, `#tdee-calculator-mo
 - **Serving multiplier:** `KEYWORD_SERVING_MULTIPLIER_RE` / `keywordServingMultiplier` (counting) + `highlightServingMultipliersHtml` (highlight as `.hl--multiplier`); `stripKeywordServingMultiplier` for line-match checks ([core doc](./AGENTS_CODE_REFERENCE-core.md)).
 - **Unmatched-lines carousel:** `unmatchedDayLines` / `allUnmatchedDayLines` / `weekUnmatchedLinesHtml` / `weekUnmatchedCarouselHtml` / `updateWeekUnmatchedLines` / `focusDayLine` → `#day-unmatched-lines`; always shown when items exist; jump focuses the day line (on mobile carousel uses `setDaysCarouselDayId`) ([core doc](./AGENTS_CODE_REFERENCE-core.md)).
 - **Today emphasis:** `todayDayId` / `activeTodayDayId` / `markTodayDay` → `.day--today` on week grid + `.dashboard__card--today` on macro/micro day cards **only when viewing the current calendar week** ([ui doc](./AGENTS_CODE_REFERENCE-ui.md)).
-- **Diary favorites:** persist `{id,type,dateKey,name,description}` in `nutrients-favorites`; `#favorites-open` → `#favorites-sidebar` (browse + Manage mode); `#week-nav-favorite` above day grid; per-day `data-action="favorite-day"`; `#favorite-edit-modal`; `goToFavoriteById` / `activeFavoriteDayKey` (session) → `.day--favorite-day`. Do not rename `data-favorite-id` / manage `data-action`s without updating listeners ([core doc](./AGENTS_CODE_REFERENCE-core.md)).
+- **Diary favorites:** persist `{id,type,dateKey,name,description}` in `nutrients_favorites`; `#favorites-open` → `#favorites-sidebar` (browse + Manage mode); `#week-nav-favorite` above day grid; per-day `data-action="favorite-day"`; `#favorite-edit-modal`; `goToFavoriteById` / `activeFavoriteDayKey` (session) → `.day--favorite-day`. Do not rename `data-favorite-id` / manage `data-action`s without updating listeners ([core doc](./AGENTS_CODE_REFERENCE-core.md)).
 - **Mobile days carousel:** at `max-width: 520px`, `initDaysCarousel` / `setDaysCarouselDayId` / `data-days-carousel`; keep in sync with favorite-day jump and unmatched jump ([core doc](./AGENTS_CODE_REFERENCE-core.md), [ui doc](./AGENTS_CODE_REFERENCE-ui.md)).
 - **Multi-week diary:** `dayMealsByDate` + `viewedWeekStart`; earliest week containing `EARLIEST_DIARY_DATE` (`2026-05-01`); `setViewedWeekStart` / `stepViewedWeek` / `goToThisWeek`; date labels via `updateDayDateLabels` / `formatDayDateLabel`; Copy menu via `handleDayCopyAction` / `#copy-date-modal` (actions live in `.day__copy-menu`, not a standalone `#copy-week-to-this` button) ([core doc](./AGENTS_CODE_REFERENCE-core.md)).
 - **Sample day meals:** `importSampleMeals` fetches `IMPORT_SAMPLE_MEALS_URL` (`samples/day-meals.json`); applies to the **viewed week**; confirm replace when any viewed day has notes ([import doc](./AGENTS_CODE_REFERENCE-import.md)).
@@ -214,7 +216,7 @@ Outside main (modal / overlay siblings): `#settings-modal`, `#tdee-calculator-mo
 - **Day editor height:** `loadDayEditorHeight` / `saveDayEditorHeight` / `applyDayEditorHeight` / `bindDayEditorResize`; CSS default `calc(45vh - 2.5rem)` until user resizes ([ui doc](./AGENTS_CODE_REFERENCE-ui.md)).
 - **Food-name suggestions:** `updateDaySuggest` / `positionDaySuggest` / `foodSuggestMatches` / `DAY_SUGGEST_MAX`; places `.day__suggest` below the caret, or `.day__suggest--above` (pinned to editor top) when the caret is in the lower half so the popover does not cover typing ([core doc](./AGENTS_CODE_REFERENCE-core.md)).
 - **Starter guide (empty state):** `maybeShowStarterGuideImportStep` / `advanceStarterGuideAfterImport` / `showStarterGuideStep` / `dismissStarterGuide`; `#keywords-empty` inline sample link (`data-action="import-sample-from-empty"`); session-only `starterGuideEligible` ([core doc](./AGENTS_CODE_REFERENCE-core.md)).
-- **Food table calories column:** `keywordCaloriesOpen` / `toggleKeywordCaloriesOpen` / `STORAGE_KEY_CALORIES`; header `.keywords__macro-toggle` switches g ↔ cal ([core doc](./AGENTS_CODE_REFERENCE-core.md)).
+- **Food table calories column:** `keywordCaloriesOpen` / `toggleKeywordCaloriesOpen` / settings `keywordsCaloriesOpen`; header `.keywords__macro-toggle` switches g ↔ cal ([core doc](./AGENTS_CODE_REFERENCE-core.md)).
 - **Def modal ↔ sources modal:** `defModalReturnSources` + `#micro-def-modal-back` (`data-action="return-to-sources-modal"`); title links in sources modals open explain modal with return stack ([core doc](./AGENTS_CODE_REFERENCE-core.md)).
 - **% DV / longevity colors:** edit tiers in `config.json` (`microDvStatus`, `longevityStatus`); All-topics button colors in `longevityNavTopicColors`. Read by `tierForMicroPct` / `tierForLongevityPct`.
 - **Highlighting** requires mirror DOM; do not style matches only in textarea ([ui doc](./AGENTS_CODE_REFERENCE-ui.md)).
@@ -243,14 +245,14 @@ Called after food-definition changes; day `input` calls highlight + dashboard + 
 
 ## Snippet: storage save
 
-Near **`saveFoodDefinitions`** in `app.js`:
+Near **`saveFoodDefinitions`** in `app.js` (via `NutrientsPersist`):
 
 ```javascript
-localStorage.setItem(STORAGE_KEY, JSON.stringify(keywords));
+persist.saveFoodDefinitions(keywords);
 ```
 
-Also on `beforeunload`.
+Also on `beforeunload`. See [AGENTS-data-persistence.md](./AGENTS-data-persistence.md).
 
 ---
 
-**Next:** [AGENTS_CODE_REFERENCE-core.md](./AGENTS_CODE_REFERENCE-core.md) · [AGENTS_CODE_REFERENCE-import.md](./AGENTS_CODE_REFERENCE-import.md) · [AGENTS_CODE_REFERENCE-ui.md](./AGENTS_CODE_REFERENCE-ui.md)
+**Next:** [AGENTS_CODE_REFERENCE-core.md](./AGENTS_CODE_REFERENCE-core.md) · [AGENTS_CODE_REFERENCE-import.md](./AGENTS_CODE_REFERENCE-import.md) · [AGENTS_CODE_REFERENCE-ui.md](./AGENTS_CODE_REFERENCE-ui.md) · [AGENTS-data-persistence.md](./AGENTS-data-persistence.md)
