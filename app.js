@@ -451,11 +451,16 @@
   var sourcesModalStackedOnDef = null;
   var activeMicroSourcesKey = null;
   var activeMicroSourcesScope = "week";
+  var activeMicroSourcesSort = { key: "amount", dir: "desc" };
+  var activeMicroSourcesFilter = "";
   var activeLongevitySourcesKey = null;
   var activeLongevitySourcesKind = null;
+  var activeLongevitySourcesSort = { key: "amount", dir: "desc" };
+  var activeLongevitySourcesFilter = "";
   var microSourcesModalEl = document.getElementById("micro-sources-modal");
   var microSourcesModalTitleEl = document.getElementById("micro-sources-modal-title");
   var microSourcesScopeEl = document.getElementById("micro-sources-scope");
+  var microSourcesFilterEl = document.getElementById("micro-sources-filter");
   var microSourcesBodyEl = document.getElementById("micro-sources-body");
   var microSourcesModalDoneBtn = document.getElementById("micro-sources-modal-done");
   var microSourcesFullscreenToggleBtn = document.getElementById(
@@ -466,6 +471,7 @@
   var longevitySourcesModalSubtitleEl = document.getElementById(
     "longevity-sources-modal-subtitle"
   );
+  var longevitySourcesFilterEl = document.getElementById("longevity-sources-filter");
   var longevitySourcesBodyEl = document.getElementById("longevity-sources-body");
   var longevitySourcesModalDoneBtn = document.getElementById("longevity-sources-modal-done");
   var longevitySourcesFullscreenToggleBtn = document.getElementById(
@@ -5005,9 +5011,92 @@
     }
   }
 
-  function nutrientSourcesListHtml(list, unit) {
+  function normalizeSourcesSortKey(key) {
+    if (key === "name" || key === "rank" || key === "amount") return key;
+    return "amount";
+  }
+
+  function defaultSourcesSortForKey(key) {
+    var sortKey = normalizeSourcesSortKey(key);
+    if (sortKey === "amount") return { key: "amount", dir: "desc" };
+    return { key: sortKey, dir: "asc" };
+  }
+
+  function nextSourcesSort(current, nextKey) {
+    var key = normalizeSourcesSortKey(nextKey);
+    if (current && current.key === key) {
+      return { key: key, dir: current.dir === "asc" ? "desc" : "asc" };
+    }
+    return defaultSourcesSortForKey(key);
+  }
+
+  function sourcesListSortHeaderHtml(sort) {
+    var sortKey = normalizeSourcesSortKey(sort && sort.key);
+    var sortDir =
+      sortKey === "amount"
+        ? sort && sort.dir === "asc"
+          ? "asc"
+          : "desc"
+        : sort && sort.dir === "desc"
+          ? "desc"
+          : "asc";
+
+    function sortBtn(key, label, extraClass) {
+      var active = sortKey === key;
+      var arrow = active ? (sortDir === "asc" ? " ↑" : " ↓") : "";
+      var title;
+      if (key === "name") {
+        title = active
+          ? sortDir === "asc"
+            ? "Sorted A–Z — click for Z–A"
+            : "Sorted Z–A — click for A–Z"
+          : "Sort by food name";
+      } else if (key === "amount") {
+        title = active
+          ? sortDir === "desc"
+            ? "Sorted high→low — click for low→high"
+            : "Sorted low→high — click for high→low"
+          : "Sort by amount";
+      } else {
+        title = active
+          ? sortDir === "asc"
+            ? "Sorted by rank (#1 first) — click to reverse"
+            : "Sorted by rank (lowest first) — click to reverse"
+          : "Sort by rank";
+      }
+      return (
+        '<button type="button" class="micro-sources-modal__sort-btn ' +
+        extraClass +
+        (active ? " is-active" : "") +
+        '" data-sources-sort="' +
+        key +
+        '" aria-pressed="' +
+        (active ? "true" : "false") +
+        '" aria-sort="' +
+        (active ? (sortDir === "asc" ? "ascending" : "descending") : "none") +
+        '" title="' +
+        escapeAttr(title) +
+        '">' +
+        escapeHtml(label) +
+        '<span class="micro-sources-modal__sort-arrow" aria-hidden="true">' +
+        escapeHtml(arrow) +
+        "</span></button>"
+      );
+    }
+
+    return (
+      '<div class="micro-sources-modal__list-head">' +
+      sortBtn("rank", "#", "micro-sources-modal__sort-btn--rank") +
+      sortBtn("name", "Food", "micro-sources-modal__sort-btn--name") +
+      sortBtn("amount", "Amount", "micro-sources-modal__sort-btn--amount") +
+      "</div>"
+    );
+  }
+
+  function nutrientSourcesListHtml(list, unit, sort) {
     var total = 0;
-    var html = '<ol class="micro-sources-modal__list">';
+    var html =
+      sourcesListSortHeaderHtml(sort) + '<ol class="micro-sources-modal__list">';
     list.forEach(function (item, idx) {
       total += item.amount;
       var perText = fmtNum(item.perServing) + " " + unit;
@@ -5036,7 +5125,7 @@
       html +=
         '<li class="micro-sources-modal__item">' +
         '<span class="micro-sources-modal__rank">' +
-        (idx + 1) +
+        (item.rank != null ? item.rank : idx + 1) +
         "</span>" +
         '<span class="micro-sources-modal__name">' +
         escapeHtml(item.name) +
@@ -5050,6 +5139,58 @@
       escapeHtml(fmtNum(total) + " " + unit) +
       "</p>";
     return html;
+  }
+
+  function prepareSourcesList(list, filterText, sort) {
+    var ranked = list.map(function (item, idx) {
+      var copy = {};
+      for (var key in item) {
+        if (Object.prototype.hasOwnProperty.call(item, key)) {
+          copy[key] = item[key];
+        }
+      }
+      copy.rank = idx + 1;
+      return copy;
+    });
+    var q = (filterText || "").trim().toLowerCase();
+    var filtered = q
+      ? ranked.filter(function (item) {
+          return String(item.name || "")
+            .toLowerCase()
+            .indexOf(q) !== -1;
+        })
+      : ranked;
+    var sortKey = normalizeSourcesSortKey(sort && sort.key);
+    var sortDir =
+      sortKey === "amount"
+        ? sort && sort.dir === "asc"
+          ? "asc"
+          : "desc"
+        : sort && sort.dir === "desc"
+          ? "desc"
+          : "asc";
+    return filtered.slice().sort(function (a, b) {
+      var cmp;
+      if (sortKey === "name") {
+        cmp = String(a.name || "").localeCompare(String(b.name || ""), undefined, {
+          sensitivity: "base",
+        });
+      } else if (sortKey === "amount") {
+        cmp = (a.amount || 0) - (b.amount || 0);
+      } else {
+        cmp = (a.rank || 0) - (b.rank || 0);
+      }
+      return sortDir === "desc" ? -cmp : cmp;
+    });
+  }
+
+  function sourcesFilterEmptyHtml(filterText) {
+    var q = (filterText || "").trim();
+    return (
+      '<p class="micro-sources-modal__empty">No foods matching "' +
+      escapeHtml(q) +
+      '".</p>'
+    );
   }
 
   function giTierFromGi(gi) {
@@ -5186,7 +5327,7 @@
     );
   }
 
-  function glycemicLoadSourcesListHtml(list) {
+  function glycemicLoadSourcesListHtml(list, sort) {
     var total = 0;
     var html =
       '<p class="micro-sources-modal__gi-legend" role="note">' +
@@ -5194,6 +5335,7 @@
       '<span class="micro-sources-modal__gi-legend-item micro-sources-modal__gi-legend-item--med">Med GI 56–69</span>' +
       '<span class="micro-sources-modal__gi-legend-item micro-sources-modal__gi-legend-item--high">High GI ≥70</span>' +
       "</p>" +
+      sourcesListSortHeaderHtml(sort) +
       '<ol class="micro-sources-modal__list">';
     list.forEach(function (item, idx) {
       total += item.amount;
@@ -5232,7 +5374,7 @@
         item.tier +
         '">' +
         '<span class="micro-sources-modal__rank">' +
-        (idx + 1) +
+        (item.rank != null ? item.rank : idx + 1) +
         "</span>" +
         '<span class="micro-sources-modal__name">' +
         escapeHtml(item.name) +
@@ -5588,12 +5730,27 @@
       return;
     }
 
+    var displayList = prepareSourcesList(
+      list,
+      activeLongevitySourcesFilter,
+      activeLongevitySourcesSort
+    );
+    if (!displayList.length) {
+      html += sourcesFilterEmptyHtml(activeLongevitySourcesFilter);
+      longevitySourcesBodyEl.innerHTML = html;
+      return;
+    }
+
     if (activeLongevitySourcesKind === "glycemicLoad") {
-      html += glycemicLoadSourcesListHtml(list);
+      html += glycemicLoadSourcesListHtml(displayList, activeLongevitySourcesSort);
     } else {
-      html += nutrientSourcesListHtml(list, unit);
+      html += nutrientSourcesListHtml(displayList, unit, activeLongevitySourcesSort);
     }
     longevitySourcesBodyEl.innerHTML = html;
+  }
+
+  function syncLongevitySourcesControls() {
+    if (longevitySourcesFilterEl) longevitySourcesFilterEl.value = activeLongevitySourcesFilter;
   }
 
   function openLongevitySourcesModal(nutrientKey, kind, stackOnDef) {
@@ -5619,6 +5776,9 @@
     });
     activeLongevitySourcesKey = nutrientKey;
     activeLongevitySourcesKind = kind;
+    activeLongevitySourcesSort = defaultSourcesSortForKey("amount");
+    activeLongevitySourcesFilter = "";
+    syncLongevitySourcesControls();
     setLongevitySourcesFullscreen(false);
     if (longevitySourcesModalTitleEl) {
       longevitySourcesModalTitleEl.innerHTML = sourcesModalTitleHtml(
@@ -5646,6 +5806,9 @@
     var stackedOnDef = sourcesModalStackedOnDef;
     activeLongevitySourcesKey = null;
     activeLongevitySourcesKind = null;
+    activeLongevitySourcesSort = defaultSourcesSortForKey("amount");
+    activeLongevitySourcesFilter = "";
+    syncLongevitySourcesControls();
     setLongevitySourcesFullscreen(false);
     longevitySourcesModalEl.hidden = true;
     setSourcesModalStackedOnDef(false);
@@ -5706,8 +5869,23 @@
       return;
     }
 
-    html += nutrientSourcesListHtml(list, field.unit);
+    var displayList = prepareSourcesList(
+      list,
+      activeMicroSourcesFilter,
+      activeMicroSourcesSort
+    );
+    if (!displayList.length) {
+      html += sourcesFilterEmptyHtml(activeMicroSourcesFilter);
+      microSourcesBodyEl.innerHTML = html;
+      return;
+    }
+
+    html += nutrientSourcesListHtml(displayList, field.unit, activeMicroSourcesSort);
     microSourcesBodyEl.innerHTML = html;
+  }
+
+  function syncMicroSourcesControls() {
+    if (microSourcesFilterEl) microSourcesFilterEl.value = activeMicroSourcesFilter;
   }
 
   function openMicroSourcesModal(microKey, scope, stackOnDef) {
@@ -5721,8 +5899,11 @@
     });
     activeMicroSourcesKey = microKey;
     activeMicroSourcesScope = scope || "week";
+    activeMicroSourcesSort = defaultSourcesSortForKey("amount");
+    activeMicroSourcesFilter = "";
     setMicroSourcesFullscreen(false);
     populateMicroSourcesScopeSelect(activeMicroSourcesScope);
+    syncMicroSourcesControls();
     if (microSourcesModalTitleEl) {
       microSourcesModalTitleEl.innerHTML = sourcesModalTitleHtml(
         field.label,
@@ -5743,6 +5924,9 @@
     var stackedOnDef = sourcesModalStackedOnDef;
     activeMicroSourcesKey = null;
     activeMicroSourcesScope = "week";
+    activeMicroSourcesSort = defaultSourcesSortForKey("amount");
+    activeMicroSourcesFilter = "";
+    syncMicroSourcesControls();
     setMicroSourcesFullscreen(false);
     microSourcesModalEl.hidden = true;
     setSourcesModalStackedOnDef(false);
@@ -19134,6 +19318,15 @@
         closeLongevitySourcesModal();
         return;
       }
+      var sortBtn = e.target.closest("[data-sources-sort]");
+      if (sortBtn && longevitySourcesModalEl.contains(sortBtn)) {
+        activeLongevitySourcesSort = nextSourcesSort(
+          activeLongevitySourcesSort,
+          sortBtn.getAttribute("data-sources-sort")
+        );
+        renderLongevitySourcesBody();
+        return;
+      }
       handleSourcesModalTitleDefClick(
         e,
         longevitySourcesModalTitleEl,
@@ -19174,10 +19367,33 @@
     });
   }
 
+  if (microSourcesFilterEl) {
+    microSourcesFilterEl.addEventListener("input", function () {
+      activeMicroSourcesFilter = microSourcesFilterEl.value || "";
+      renderMicroSourcesBody();
+    });
+  }
+
+  if (longevitySourcesFilterEl) {
+    longevitySourcesFilterEl.addEventListener("input", function () {
+      activeLongevitySourcesFilter = longevitySourcesFilterEl.value || "";
+      renderLongevitySourcesBody();
+    });
+  }
+
   if (microSourcesModalEl) {
     microSourcesModalEl.addEventListener("click", function (e) {
       if (e.target.closest('[data-action="close-micro-sources-modal"]')) {
         closeMicroSourcesModal();
+        return;
+      }
+      var sortBtn = e.target.closest("[data-sources-sort]");
+      if (sortBtn && microSourcesModalEl.contains(sortBtn)) {
+        activeMicroSourcesSort = nextSourcesSort(
+          activeMicroSourcesSort,
+          sortBtn.getAttribute("data-sources-sort")
+        );
+        renderMicroSourcesBody();
         return;
       }
       handleSourcesModalTitleDefClick(

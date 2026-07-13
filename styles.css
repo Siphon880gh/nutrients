@@ -2297,6 +2297,7 @@ body.highlight-adverse-effects .dashboard__micro-acute-btn--adverse .dashboard__
 .micro-sources-modal__toolbar {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 0.5rem;
   padding: 0.75rem 1rem;
   border-bottom: 1px solid #ecece8;
@@ -2309,13 +2310,31 @@ body.highlight-adverse-effects .dashboard__micro-acute-btn--adverse .dashboard__
 }
 
 .micro-sources-modal__select {
-  min-width: 10rem;
+  min-width: 8rem;
   padding: 0.35rem 0.5rem;
   font-size: 0.8rem;
   border: 1px solid #d0d0cc;
   border-radius: 4px;
   background: #fff;
   color: #333;
+}
+
+.micro-sources-modal__filter {
+  flex: 1 1 10rem;
+  min-width: 8rem;
+  max-width: 18rem;
+  padding: 0.35rem 0.5rem;
+  font: inherit;
+  font-size: 0.8rem;
+  border: 1px solid #d0d0cc;
+  border-radius: 4px;
+  background: #fff;
+  color: #333;
+}
+
+.micro-sources-modal__filter:focus-visible {
+  outline: 2px solid #4a7fd4;
+  outline-offset: 1px;
 }
 
 .micro-sources-modal__body {
@@ -2396,6 +2415,64 @@ body.highlight-adverse-effects .dashboard__micro-acute-btn--adverse .dashboard__
   margin: 0;
   font-size: 0.84rem;
   color: #5c5c5c;
+}
+
+.micro-sources-modal__list-head {
+  display: grid;
+  grid-template-columns: 1.75rem minmax(0, 1fr) auto;
+  gap: 0.35rem 0.75rem;
+  align-items: center;
+  padding: 0 0 0.35rem;
+  margin-bottom: 0.15rem;
+  border-bottom: 1px solid #e4e4e0;
+}
+
+.micro-sources-modal__sort-btn {
+  margin: 0;
+  padding: 0.1rem 0;
+  border: none;
+  background: transparent;
+  font: inherit;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: #8a8a8a;
+  cursor: pointer;
+  text-align: inherit;
+}
+
+.micro-sources-modal__sort-btn:hover,
+.micro-sources-modal__sort-btn:focus-visible {
+  color: #333;
+}
+
+.micro-sources-modal__sort-btn:focus-visible {
+  outline: 2px solid #4a7fd4;
+  outline-offset: 1px;
+}
+
+.micro-sources-modal__sort-btn.is-active {
+  color: #2f5f9f;
+}
+
+.micro-sources-modal__sort-arrow {
+  font-weight: 700;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.micro-sources-modal__sort-btn--rank {
+  text-align: right;
+}
+
+.micro-sources-modal__sort-btn--name {
+  text-align: left;
+}
+
+.micro-sources-modal__sort-btn--amount {
+  text-align: right;
+  justify-self: end;
 }
 
 .micro-sources-modal__list {
