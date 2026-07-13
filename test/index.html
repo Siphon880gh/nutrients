@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nutrients — Persistence Test Harness</title>
+  <style>
+    :root {
+      --bg: #f4f4f1;
+      --card: #fff;
+      --border: #c8c8c4;
+      --text: #1a1a1a;
+      --muted: #5c5c5c;
+      --pass: #dcefe2;
+      --pass-border: #3d8a5a;
+      --fail: #f5e0e0;
+      --fail-border: #b04a4a;
+      --pending: #f5f0d8;
+      --pending-border: #a08a30;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 1.25rem 1rem 2.5rem;
+      font: 14px/1.45 system-ui, -apple-system, Segoe UI, sans-serif;
+      color: var(--text);
+      background: var(--bg);
+    }
+    .wrap { max-width: 56rem; margin: 0 auto; }
+    h1 { margin: 0 0 0.25rem; font-size: 1.45rem; }
+    .lede { margin: 0 0 1.25rem; color: var(--muted); }
+    section {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1rem 1.1rem;
+      margin-bottom: 1rem;
+    }
+    h2 { margin: 0 0 0.85rem; font-size: 1.05rem; }
+    h3 { margin: 0 0 0.55rem; font-size: 0.95rem; }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+      gap: 0.65rem;
+    }
+    .key-card {
+      background: #fafaf8;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.65rem;
+    }
+    .key-card h3 {
+      margin: 0 0 0.35rem;
+      font-size: 0.7rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    pre {
+      margin: 0;
+      max-height: 10rem;
+      overflow: auto;
+      white-space: pre-wrap;
+      word-break: break-word;
+      font: 11px/1.35 ui-monospace, SFMono-Regular, Menlo, monospace;
+      color: #333;
+    }
+    .row { display: flex; flex-wrap: wrap; gap: 0.45rem; align-items: center; margin-top: 0.75rem; }
+    .user-box {
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.75rem;
+      margin-bottom: 0.75rem;
+    }
+    .user-box--a h3 { color: #2a4a6e; }
+    .user-box--b h3 { color: #1f5c53; }
+    input {
+      min-height: 2rem;
+      padding: 0.3rem 0.55rem;
+      border: 1px solid var(--border);
+      border-radius: 5px;
+      font: inherit;
+      width: 11rem;
+    }
+    button {
+      min-height: 2rem;
+      padding: 0.3rem 0.7rem;
+      border: 1px solid var(--border);
+      border-radius: 5px;
+      background: #fafaf8;
+      font: inherit;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    button:hover { background: #e8eef4; border-color: #9eb4cc; }
+    .btn-primary { background: #e8eef4; border-color: #7a9ab8; color: #2a4a6e; }
+    .btn-danger { background: #faf2f2; border-color: #d0a8a8; color: #7a4a4a; }
+    .btn-run { background: #2a4a6e; border-color: #2a4a6e; color: #fff; }
+    .btn-run:hover { background: #1f3a58; }
+    .btn-small { font-size: 0.78rem; font-weight: 600; }
+    .section-head {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 0.85rem;
+    }
+    .section-head h2 { margin: 0; }
+    .test-item {
+      border: 1px solid var(--pending-border);
+      background: var(--pending);
+      border-radius: 6px;
+      padding: 0.55rem 0.7rem;
+      margin-bottom: 0.4rem;
+    }
+    .test-item.pass { border-color: var(--pass-border); background: var(--pass); }
+    .test-item.fail { border-color: var(--fail-border); background: var(--fail); }
+    .test-name { font-weight: 600; }
+    .test-detail { margin-top: 0.2rem; font-size: 0.8rem; color: var(--muted); }
+    #action-log {
+      background: #1a1a1a;
+      color: #e8e8e4;
+      border-radius: 6px;
+      padding: 0.75rem;
+      font: 11px/1.4 ui-monospace, SFMono-Regular, Menlo, monospace;
+      max-height: 14rem;
+      overflow: auto;
+    }
+    #action-log .ok { color: #8fd49a; }
+    #action-log .err { color: #f0a0a0; }
+    #action-log .warn { color: #e6d07a; }
+    #action-log .muted { color: #8a8a86; }
+    .note { margin: 0.5rem 0 0; font-size: 0.8rem; color: var(--muted); }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <h1>Nutrients Persistence Test Harness</h1>
+      <p class="lede">Browser UI for signup / login / logout and per-user localStorage tables via <code>NutrientsAuth</code> + <code>NutrientsPersist</code>. Open this page at <code>/test/</code> (same origin as the app so storage is shared).</p>
+    </header>
+
+    <section>
+      <h2>localStorage tables</h2>
+      <div class="grid" id="storage-grid"></div>
+      <div class="row">
+        <button type="button" id="btn-refresh">Refresh display</button>
+        <button type="button" id="btn-clear" class="btn-danger">Clear nutrients_* keys</button>
+      </div>
+      <p class="note">Clear only removes nutrients persistence keys used by the repositories (including orphan). Other site keys are left alone.</p>
+    </section>
+
+    <section>
+      <h2>Manual controls</h2>
+
+      <div class="user-box user-box--a">
+        <h3>User A</h3>
+        <div class="row">
+          <input type="email" id="userA-email" value="usera@test.com" autocomplete="off">
+          <input type="password" id="userA-password" value="password123" autocomplete="off">
+          <button type="button" data-signup="A" class="btn-primary">Sign up A</button>
+          <button type="button" data-login="A">Log in A</button>
+          <button type="button" data-logout>Log out</button>
+        </div>
+        <div class="row">
+          <button type="button" class="btn-small" data-seed="A-food">Save food “Egg A”</button>
+          <button type="button" class="btn-small" data-seed="A-meals">Save day meal “Egg A”</button>
+          <button type="button" class="btn-small" data-seed="A-fav">Save favorite “Week A”</button>
+          <button type="button" class="btn-small" data-seed="A-settings">Set demographic female + TDEE 2100</button>
+        </div>
+      </div>
+
+      <div class="user-box user-box--b">
+        <h3>User B</h3>
+        <div class="row">
+          <input type="email" id="userB-email" value="userb@test.com" autocomplete="off">
+          <input type="password" id="userB-password" value="password456" autocomplete="off">
+          <button type="button" data-signup="B" class="btn-primary">Sign up B</button>
+          <button type="button" data-login="B">Log in B</button>
+          <button type="button" data-logout>Log out</button>
+        </div>
+        <div class="row">
+          <button type="button" class="btn-small" data-seed="B-food">Save food “Rice B”</button>
+          <button type="button" class="btn-small" data-seed="B-meals">Save day meal “Rice B”</button>
+          <button type="button" class="btn-small" data-seed="B-fav">Save favorite “Day B”</button>
+          <button type="button" class="btn-small" data-seed="B-settings">Set demographic male + TDEE 2500</button>
+        </div>
+      </div>
+      <p class="note">Seed buttons require the matching user to be logged in. They call repository save methods only (no direct localStorage writes for entity data).</p>
+    </section>
+
+    <section>
+      <div class="section-head">
+        <h2>Test suite</h2>
+        <button type="button" id="btn-run" class="btn-run">Run all tests</button>
+      </div>
+      <div id="test-results"></div>
+    </section>
+
+    <section>
+      <div class="section-head">
+        <h2>Action log</h2>
+        <button type="button" id="btn-clear-log">Clear log</button>
+      </div>
+      <div id="action-log"><div class="muted">// ready</div></div>
+    </section>
+  </div>
+
+  <script src="../persist.js"></script>
+  <script>
+(function () {
+  var KEYS = [
+    "nutrients_users",
+    "nutrients_session",
+    "nutrients_food_definitions",
+    "nutrients_day_meals",
+    "nutrients_favorites",
+    "nutrients_settings",
+    "nutrients_orphan_legacy",
+  ];
+
+  function log(message, type) {
+    var el = document.getElementById("action-log");
+    var cls = type === "ok" ? "ok" : type === "err" ? "err" : type === "warn" ? "warn" : "muted";
+    var line = document.createElement("div");
+    line.className = cls;
+    line.textContent =
+      "[" + new Date().toLocaleTimeString() + "] " + message;
+    el.appendChild(line);
+    el.scrollTop = el.scrollHeight;
+  }
+
+  function clearLog() {
+    document.getElementById("action-log").innerHTML =
+      '<div class="muted">// log cleared</div>';
+  }
+
+  function pretty(raw) {
+    if (raw == null || raw === "") return "null";
+    try {
+      return JSON.stringify(JSON.parse(raw), null, 2);
+    } catch (e) {
+      return String(raw);
+    }
+  }
+
+  function refreshStorageDisplay() {
+    var grid = document.getElementById("storage-grid");
+    grid.innerHTML = "";
+    KEYS.forEach(function (key) {
+      var card = document.createElement("div");
+      card.className = "key-card";
+      card.innerHTML =
+        "<h3>" +
+        key +
+        "</h3><pre>" +
+        pretty(localStorage.getItem(key)).replace(/</g, "&lt;") +
+        "</pre>";
+      grid.appendChild(card);
+    });
+  }
+
+  function clearNutrientsStorage(silent) {
+    KEYS.forEach(function (key) {
+      try {
+        localStorage.removeItem(key);
+      } catch (e) {
+        /* ignore */
+      }
+    });
+    if (NutrientsPersist && NutrientsPersist.clearCache) {
+      NutrientsPersist.clearCache();
+    }
+    if (!silent) {
+      refreshStorageDisplay();
+      log("Cleared nutrients_* keys", "warn");
+    }
+  }
+
+  function creds(letter) {
+    return {
+      email: document.getElementById("user" + letter + "-email").value,
+      password: document.getElementById("user" + letter + "-password").value,
+    };
+  }
+
+  function signupUser(letter) {
+    var c = creds(letter);
+    var result = NutrientsAuth.signup(c.email, c.password);
+    if (result.ok) {
+      log(
+        "Signup ok " + c.email + " (" + result.user.id + ")",
+        "ok"
+      );
+    } else {
+      log("Signup failed " + c.email + ": " + result.error, "err");
+    }
+    refreshStorageDisplay();
+    return result;
+  }
+
+  function loginUser(letter) {
+    var c = creds(letter);
+    var result = NutrientsAuth.login(c.email, c.password);
+    if (result.ok) {
+      log("Login ok " + c.email, "ok");
+    } else {
+      log("Login failed " + c.email + ": " + result.error, "err");
+    }
+    refreshStorageDisplay();
+    return result;
+  }
+
+  function logoutUser() {
+    var session = NutrientsAuth.getSession();
+    NutrientsAuth.logout();
+    log(
+      "Logout" + (session ? " (was " + session.email + ")" : ""),
+      "ok"
+    );
+    refreshStorageDisplay();
+  }
+
+  function requireLogin(expectedEmail) {
+    var user = NutrientsAuth.getCurrentUser();
+    if (!user) {
+      log("Not logged in", "err");
+      return null;
+    }
+    if (
+      expectedEmail &&
+      user.email !== String(expectedEmail).trim().toLowerCase()
+    ) {
+      log(
+        "Logged in as " + user.email + ", expected " + expectedEmail,
+        "err"
+      );
+      return null;
+    }
+    return user;
+  }
+
+  function seedAction(id) {
+    if (id === "A-food") {
+      if (!requireLogin(creds("A").email)) return;
+      NutrientsPersist.saveFoodDefinitions([
+        {
+          id: "food-a",
+          name: "Egg A",
+          protein: 6,
+          carbs: 0,
+          fats: 5,
+          micros: {},
+          longevity: {},
+        },
+      ]);
+      log('Saved food "Egg A"', "ok");
+    } else if (id === "B-food") {
+      if (!requireLogin(creds("B").email)) return;
+      NutrientsPersist.saveFoodDefinitions([
+        {
+          id: "food-b",
+          name: "Rice B",
+          protein: 2,
+          carbs: 20,
+          fats: 0,
+          micros: {},
+          longevity: {},
+        },
+      ]);
+      log('Saved food "Rice B"', "ok");
+    } else if (id === "A-meals") {
+      if (!requireLogin(creds("A").email)) return;
+      NutrientsPersist.saveDayMeals({
+        version: 2,
+        days: { "2026-07-13": "Egg A" },
+      });
+      log("Saved day meal for A", "ok");
+    } else if (id === "B-meals") {
+      if (!requireLogin(creds("B").email)) return;
+      NutrientsPersist.saveDayMeals({
+        version: 2,
+        days: { "2026-07-14": "Rice B" },
+      });
+      log("Saved day meal for B", "ok");
+    } else if (id === "A-fav") {
+      if (!requireLogin(creds("A").email)) return;
+      NutrientsPersist.saveFavorites([
+        {
+          id: "fav-a",
+          type: "week",
+          dateKey: "2026-07-13",
+          name: "Week A",
+          description: "A",
+        },
+      ]);
+      log('Saved favorite "Week A"', "ok");
+    } else if (id === "B-fav") {
+      if (!requireLogin(creds("B").email)) return;
+      NutrientsPersist.saveFavorites([
+        {
+          id: "fav-b",
+          type: "day",
+          dateKey: "2026-07-14",
+          name: "Day B",
+          description: "B",
+        },
+      ]);
+      log('Saved favorite "Day B"', "ok");
+    } else if (id === "A-settings") {
+      if (!requireLogin(creds("A").email)) return;
+      NutrientsPersist.patchSettings({ demographic: "female", tdee: 2100 });
+      log("Patched settings for A", "ok");
+    } else if (id === "B-settings") {
+      if (!requireLogin(creds("B").email)) return;
+      NutrientsPersist.patchSettings({ demographic: "male", tdee: 2500 });
+      log("Patched settings for B", "ok");
+    }
+    refreshStorageDisplay();
+  }
+
+  var tests = [
+    {
+      name: "Signup creates user in nutrients_users",
+      run: function () {
+        clearNutrientsStorage(true);
+        var result = NutrientsAuth.signup("test1@example.com", "pass123");
+        var raw = localStorage.getItem("nutrients_users");
+        var users = raw ? JSON.parse(raw) : [];
+        return (
+          result.ok &&
+          users.length === 1 &&
+          users[0].email === "test1@example.com"
+        );
+      },
+    },
+    {
+      name: "Signup prevents duplicate emails",
+      run: function () {
+        clearNutrientsStorage(true);
+        NutrientsAuth.signup("dup@example.com", "pass1");
+        var result = NutrientsAuth.signup("dup@example.com", "pass2");
+        return !result.ok && /already exists/i.test(result.error || "");
+      },
+    },
+    {
+      name: "Signup auto-logs in (sets nutrients_session)",
+      run: function () {
+        clearNutrientsStorage(true);
+        var result = NutrientsAuth.signup("auto@example.com", "pass");
+        var session = NutrientsAuth.getSession();
+        return (
+          !!session &&
+          session.email === "auto@example.com" &&
+          session.userId === result.user.id
+        );
+      },
+    },
+    {
+      name: "Login with valid credentials succeeds",
+      run: function () {
+        clearNutrientsStorage(true);
+        NutrientsAuth.signup("login@example.com", "mypass");
+        NutrientsAuth.logout();
+        var result = NutrientsAuth.login("login@example.com", "mypass");
+        return result.ok && NutrientsAuth.getSession() !== null;
+      },
+    },
+    {
+      name: "Login with invalid password fails",
+      run: function () {
+        clearNutrientsStorage(true);
+        NutrientsAuth.signup("invalid@example.com", "correctpass");
+        NutrientsAuth.logout();
+        var result = NutrientsAuth.login("invalid@example.com", "wrongpass");
+        return !result.ok;
+      },
+    },
+    {
+      name: "Logout clears session",
+      run: function () {
+        clearNutrientsStorage(true);
+        NutrientsAuth.signup("logout@example.com", "pass");
+        NutrientsAuth.logout();
+        return NutrientsAuth.getSession() === null;
+      },
+    },
+    {
+      name: "Logged-out loads are empty / defaults; saves no-op",
+      run: function () {
+        clearNutrientsStorage(true);
+        NutrientsAuth.signup("guestcheck@example.com", "pass");
+        NutrientsPersist.saveFoodDefinitions([
+          { id: "1", name: "X", protein: 1, carbs: 0, fats: 0, micros: {}, longevity: {} },
+        ]);
+        NutrientsAuth.logout();
+        var foods = NutrientsPersist.loadFoodDefinitions();
+        var saved = NutrientsPersist.saveFoodDefinitions([
+          { id: "2", name: "Y", protein: 1, carbs: 0, fats: 0, micros: {}, longevity: {} },
+        ]);
+        var demo = NutrientsPersist.getSetting("demographic");
+        return foods === null && saved === false && demo === "male";
+      },
+    },
+    {
+      name: "Food definitions are scoped by userId",
+      run: function () {
+        clearNutrientsStorage(true);
+        NutrientsAuth.signup("foodA@example.com", "passA");
+        NutrientsPersist.saveFoodDefinitions([
+          { id: "a", name: "Egg A", protein: 6, carbs: 0, fats: 5, micros: {}, longevity: {} },
+        ]);
+        NutrientsAuth.logout();
+        NutrientsAuth.signup("foodB@example.com", "passB");
+        NutrientsPersist.saveFoodDefinitions([
+          { id: "b", name: "Rice B", protein: 2, carbs: 20, fats: 0, micros: {}, longevity: {} },
+        ]);
+        var foodsB = NutrientsPersist.loadFoodDefinitions();
+        NutrientsAuth.logout();
+        NutrientsAuth.login("foodA@example.com", "passA");
+        var foodsA = NutrientsPersist.loadFoodDefinitions();
+        var table = JSON.parse(localStorage.getItem("nutrients_food_definitions") || "[]");
+        return (
+          foodsA.length === 1 &&
+          foodsA[0].name === "Egg A" &&
+          foodsB.length === 1 &&
+          foodsB[0].name === "Rice B" &&
+          table.length === 2 &&
+          table.every(function (row) {
+            return !!row.userId;
+          })
+        );
+      },
+    },
+    {
+      name: "Day meals / favorites / settings isolated per user",
+      run: function () {
+        clearNutrientsStorage(true);
+        NutrientsAuth.signup("isoA@example.com", "passA");
+        NutrientsPersist.saveDayMeals({ version: 2, days: { "2026-07-13": "A" } });
+        NutrientsPersist.saveFavorites([
+          { id: "fa", type: "week", dateKey: "2026-07-13", name: "Week A", description: "" },
+        ]);
+        NutrientsPersist.patchSettings({ demographic: "female", tdee: 2100 });
+        NutrientsAuth.logout();
+        NutrientsAuth.signup("isoB@example.com", "passB");
+        NutrientsPersist.saveDayMeals({ version: 2, days: { "2026-07-14": "B" } });
+        NutrientsPersist.saveFavorites([
+          { id: "fb", type: "day", dateKey: "2026-07-14", name: "Day B", description: "" },
+        ]);
+        NutrientsPersist.patchSettings({ demographic: "male", tdee: 2500 });
+        var mealsB = NutrientsPersist.loadDayMeals();
+        var favsB = NutrientsPersist.loadFavorites();
+        var tdeeB = NutrientsPersist.getSetting("tdee");
+        NutrientsAuth.logout();
+        NutrientsAuth.login("isoA@example.com", "passA");
+        var mealsA = NutrientsPersist.loadDayMeals();
+        var favsA = NutrientsPersist.loadFavorites();
+        var tdeeA = NutrientsPersist.getSetting("tdee");
+        var demoA = NutrientsPersist.getSetting("demographic");
+        return (
+          mealsA.days["2026-07-13"] === "A" &&
+          !mealsA.days["2026-07-14"] &&
+          mealsB.days["2026-07-14"] === "B" &&
+          favsA[0].name === "Week A" &&
+          favsB[0].name === "Day B" &&
+          demoA === "female" &&
+          tdeeA === 2100 &&
+          tdeeB === 2500
+        );
+      },
+    },
+    {
+      name: "Data persists after logout and re-login",
+      run: function () {
+        clearNutrientsStorage(true);
+        NutrientsAuth.signup("persist@example.com", "pass");
+        NutrientsPersist.saveFoodDefinitions([
+          { id: "1", name: "Keep", protein: 1, carbs: 0, fats: 0, micros: {}, longevity: {} },
+        ]);
+        NutrientsPersist.patchSettings({ keywordsPageSize: 50 });
+        NutrientsAuth.logout();
+        NutrientsAuth.login("persist@example.com", "pass");
+        var foods = NutrientsPersist.loadFoodDefinitions();
+        return (
+          foods &&
+          foods.length === 1 &&
+          foods[0].name === "Keep" &&
+          NutrientsPersist.getSetting("keywordsPageSize") === 50
+        );
+      },
+    },
+    {
+      name: "Email normalization (case insensitive)",
+      run: function () {
+        clearNutrientsStorage(true);
+        var signup = NutrientsAuth.signup("Case.User@Example.COM", "pass");
+        NutrientsAuth.logout();
+        var login = NutrientsAuth.login("case.user@example.com", "pass");
+        return signup.ok && login.ok && NutrientsAuth.getSession().email === "case.user@example.com";
+      },
+    },
+  ];
+
+  function setTestResult(index, status, detail) {
+    var el = document.getElementById("test-" + index);
+    if (!el) return;
+    el.className = "test-item " + status;
+    var detailEl = el.querySelector(".test-detail");
+    if (detailEl) detailEl.textContent = detail || status;
+  }
+
+  function renderTestList() {
+    var root = document.getElementById("test-results");
+    root.innerHTML = "";
+    tests.forEach(function (t, i) {
+      var div = document.createElement("div");
+      div.className = "test-item";
+      div.id = "test-" + i;
+      div.innerHTML =
+        '<div class="test-name">' +
+        (i + 1) +
+        ". " +
+        t.name +
+        '</div><div class="test-detail">pending</div>';
+      root.appendChild(div);
+    });
+  }
+
+  function runAllTests() {
+    renderTestList();
+    log("Running test suite…", "muted");
+    var pass = 0;
+    tests.forEach(function (t, i) {
+      var ok = false;
+      var err = "";
+      try {
+        ok = !!t.run();
+      } catch (e) {
+        ok = false;
+        err = String(e && e.message ? e.message : e);
+      }
+      if (ok) {
+        pass += 1;
+        setTestResult(i, "pass", "pass");
+      } else {
+        setTestResult(i, "fail", err || "fail");
+      }
+    });
+    refreshStorageDisplay();
+    log("Tests finished: " + pass + "/" + tests.length + " passed", pass === tests.length ? "ok" : "err");
+  }
+
+  document.getElementById("btn-refresh").addEventListener("click", refreshStorageDisplay);
+  document.getElementById("btn-clear").addEventListener("click", clearNutrientsStorage);
+  document.getElementById("btn-run").addEventListener("click", runAllTests);
+  document.getElementById("btn-clear-log").addEventListener("click", clearLog);
+
+  document.querySelectorAll("[data-signup]").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      signupUser(btn.getAttribute("data-signup"));
+    });
+  });
+  document.querySelectorAll("[data-login]").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      loginUser(btn.getAttribute("data-login"));
+    });
+  });
+  document.querySelectorAll("[data-logout]").forEach(function (btn) {
+    btn.addEventListener("click", logoutUser);
+  });
+  document.querySelectorAll("[data-seed]").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      seedAction(btn.getAttribute("data-seed"));
+    });
+  });
+
+  if (typeof NutrientsAuth === "undefined" || typeof NutrientsPersist === "undefined") {
+    log("persist.js failed to load — open via static server at /test/", "err");
+  } else {
+    NutrientsPersist.migrate();
+    renderTestList();
+    refreshStorageDisplay();
+    log("Harness ready (shared localStorage with app)", "ok");
+  }
+})();
+  </script>
+</body>
+</html>

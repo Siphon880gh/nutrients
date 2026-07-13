@@ -58,6 +58,19 @@ When logged out: loads return `null` / defaults; saves return `false`.
 
 Top-right (`.week__header-actions`): **Log in** / **Sign up** when logged out; email + **Log out** when logged in. Modals: `#auth-signup-modal`, `#auth-login-modal`. After session change, `afterAuthSessionChange()` reloads repository data into memory and refreshes the UI.
 
+## Test harness
+
+Browser-only UI at [`test/index.html`](./test/index.html) (visit `/test/` on the same origin as the app).
+
+**Features:**
+- Live display of `nutrients_users`, `nutrients_session`, food / day-meals / favorites / settings tables, and orphan key
+- Manual Sign up / Log in / Log out for User A and User B
+- Seed buttons that save foods, day meals, favorites, and settings through `NutrientsPersist` (validates per-user isolation)
+- **Run all tests** suite for signup, login, logout, logged-out no-op saves, per-user entity isolation, persistence across re-login, email normalization
+- Action log + clear nutrients_* keys
+
+Loads `../persist.js` so it exercises the real repositories (shared `localStorage` with the main app).
+
 ## Key Design Decisions
 
 1. **Few localStorage keys** — tables, not per-preference keys.
