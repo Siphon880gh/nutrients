@@ -69,7 +69,10 @@ Used when opening import with AI panel **closed** (`setImportAiPanelOpen(false)`
 
 - Opening line: `Please fill in the nutrient data for {portion|___}.`
 - Instructions: JSON only, no fences; example name uses **`1 cup of peanuts`** when portion empty (`jsonSchemaExample`, `nameExample`).
-- Appends full schema sample + `nutrientListForPrompt()` (lists all `MICRO_ALL_FIELDS` — core + extended trace minerals + amino acids — **and** `LONGEVITY_FIELDS` keys with units, plus the shared micro↔longevity bridge rule).
+- Serving-name rule: if serving info is missing, invent a typical one-sitting unit and append it to the food name.
+- Micro↔longevity bridge rule: amounts for the micro panel belong in `micros`; when the same key also appears in longevity, store the number in `micros` only and set `longevity[key]` to `true`.
+- Multivitamin / vitamin absorption rule: do not paste label %DV alone — adjust both DV and actual values for typical absorption (pills are not 100% absorbed); for fat-soluble vitamins (A, D, E, K), assume enough dietary fat was eaten for absorption.
+- Appends full schema sample + `nutrientListForPrompt()` (lists all `MICRO_ALL_FIELDS` — core + extended trace minerals + amino acids — **and** `LONGEVITY_FIELDS` keys with units, including `alphaLipoicAcid` / `glutathione`).
 
 **Preview** — `renderImportAiPreview` sets `#import-ai-preview` text on portion `input`.
 
@@ -213,14 +216,14 @@ Bulk array example:
 ## Safe-change notes
 
 - Keep **amend merge semantics** for optional fields unless product asks for full replace.
-- AI schema example must stay aligned with `MICRO_ALL_FIELDS` (core + extended + amino acids, including vitamin K subforms `vitaminK1` / `vitaminK2` / `vitaminK2MK4` / `vitaminK2MK7`) + `LONGEVITY_FIELDS` keys (`plantSterols`, `creatine`, `carotenoids`, …) (`jsonSchemaExample`, `nutrientListForPrompt`).
+- AI schema example must stay aligned with `MICRO_ALL_FIELDS` (core + extended + amino acids, including vitamin K subforms `vitaminK1` / `vitaminK2` / `vitaminK2MK4` / `vitaminK2MK7`) + `LONGEVITY_FIELDS` keys (`plantSterols`, `creatine`, `carotenoids`, `alphaLipoicAcid`, `glutathione`, …) (`jsonSchemaExample`, `nutrientListForPrompt`). Multivitamin absorption + fat-soluble fat-assumption rules live in `buildAiPromptFromPortion`.
 - `fiber` is derived from `solubleFiber` + `insolubleFiber` when those are present (`fiberTotalFromParts`); the micros modal auto-splits a typed total via `splitTotalFiber`. Import/export skip the derived `fiber` key when parts exist.
 - External links are not prompt-in-URL APIs — always **copy-first**, then open tab.
 - New AI provider: add link in HTML + listener beside ChatGPT/Claude block at end of `app.js` (both import and micro-gaps panels).
 - `carbQuality` is an import/export alias only; do not add a separate in-memory `carbQuality` store — fold into `longevity` via `mergeCarbQualityIntoLongevity`.
 - **K breakdown import:** log total `vitaminK` for FDA-scored rows; optional K1/K2/MK-4/MK-7 in `micros` with matching `longevity: true` markers when bridged. Subforms are in `NO_STANDALONE_REF_MICRO_KEYS` (tracked, not independently scored).
 - **Carotenoids:** may be omitted when `vitaminA` is present — dashboard estimates mg via `resolveLongevityValue`; explicit `longevity.carotenoids` (mg) overrides.
-- **Condition notes in JSON:** `definitions-micronutrients.json` / `definitions-longevity.json` entries may include keys matching `MICRO_CONDITION_FOCUS` ids (`coffeeTeaUser`, `adhd`, `anemia`, `hairLoss`) — string arrays shown in explain modals when that condition is focused ([core doc](./AGENTS_CODE_REFERENCE-core.md)).
+- **Condition notes in JSON:** `definitions-micronutrients.json` / `definitions-longevity.json` entries may include keys matching `MICRO_CONDITION_FOCUS` ids (`coffeeTeaUser`, `adhd`, `anemia`, `hairLoss`, `americanCommonDeficiencies`, `fatSolubleVitamins`, …) — string arrays shown in explain modals when that condition is focused ([core doc](./AGENTS_CODE_REFERENCE-core.md)).
 - **Food notes JSON:** `definitions-food-notes.json` — `{ notes: [{ label, pattern, note }] }`; regex matched against all day-meal text; not imported/exported with meals ([core doc](./AGENTS_CODE_REFERENCE-core.md)).
 - **Food categories JSON:** `definitions-food-categories.json` — `{ categories: [{ id, label, patterns }] }`; first matching regex categorizes a food-definition name for the table filter; not imported/exported with foods ([core doc](./AGENTS_CODE_REFERENCE-core.md)).
 
