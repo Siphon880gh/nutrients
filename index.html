@@ -100,12 +100,22 @@
                 <button type="button" class="dashboard__nutrient-filter-disclosure" data-nutrient-filter-disclosure aria-expanded="false" aria-controls="micro-nutrient-filter-panel">By Nutrients</button>
                 <div id="micro-nutrient-filter-panel" class="dashboard__nutrient-filter-panel" hidden>
                   <div class="dashboard__nutrient-filter-presets" role="group" aria-label="Nutrient filter presets">
-                    <button type="button" class="dashboard__nutrient-filter-preset" data-nutrient-filter-preset="common-deficiencies" aria-pressed="false">Common Deficiencies (A,D,Calc,Mag,Iodine)</button>
+                    <span class="dashboard__nutrient-filter-prefix">Auto add:</span>
+                    <button type="button" class="dashboard__nutrient-filter-preset" data-nutrient-filter-preset="common-deficiencies" aria-pressed="false">
+                      <span class="dashboard__nutrient-filter-preset-title">Common deficiencies</span>
+                      <span class="dashboard__nutrient-filter-preset-meta">A · D · Ca · Mg · Iodine</span>
+                    </button>
+                    <button type="button" class="dashboard__nutrient-filter-preset" data-nutrient-filter-preset="fat-soluble" aria-pressed="false">
+                      <span class="dashboard__nutrient-filter-preset-title">Fat-soluble vitamins</span>
+                      <span class="dashboard__nutrient-filter-preset-meta">A · D · E · K</span>
+                    </button>
                   </div>
-                  <label class="dashboard__nutrient-filter-label" for="micro-nutrient-filter-input">Add nutrient</label>
-                  <div class="dashboard__nutrient-filter-combobox">
-                    <input type="text" id="micro-nutrient-filter-input" class="dashboard__nutrient-filter-input" data-nutrient-filter-input placeholder="Type a vitamin or mineral…" autocomplete="off" spellcheck="false" aria-autocomplete="list" aria-controls="micro-nutrient-filter-suggest" aria-expanded="false" />
-                    <div id="micro-nutrient-filter-suggest" class="dashboard__nutrient-filter-suggest" role="listbox" hidden aria-label="Nutrient suggestions"></div>
+                  <div class="dashboard__nutrient-filter-add">
+                    <label class="dashboard__nutrient-filter-label" for="micro-nutrient-filter-input">Type nutrient:</label>
+                    <div class="dashboard__nutrient-filter-combobox">
+                      <input type="text" id="micro-nutrient-filter-input" class="dashboard__nutrient-filter-input" data-nutrient-filter-input placeholder="Type a vitamin or mineral…" autocomplete="off" spellcheck="false" aria-autocomplete="list" aria-controls="micro-nutrient-filter-suggest" aria-expanded="false" />
+                      <div id="micro-nutrient-filter-suggest" class="dashboard__nutrient-filter-suggest" role="listbox" hidden aria-label="Nutrient suggestions"></div>
+                    </div>
                   </div>
                   <div class="dashboard__nutrient-filter-chips" data-nutrient-filter-chips role="list" aria-label="Selected nutrients"></div>
                 </div>
@@ -155,6 +165,12 @@
                   <li class="dashboard__micro-condition-item" role="presentation">
                     <button type="button" class="dashboard__micro-condition-link" role="option" data-micro-condition="poorlyAbsorbed">Poorly absorbed / take daily</button>
                   </li>
+                  <li class="dashboard__micro-condition-item" role="presentation">
+                    <button type="button" class="dashboard__micro-condition-link" role="option" data-micro-condition="americanCommonDeficiencies">American Common Deficiencies</button>
+                  </li>
+                  <li class="dashboard__micro-condition-item" role="presentation">
+                    <button type="button" class="dashboard__micro-condition-link" role="option" data-micro-condition="fatSolubleVitamins">Fat-soluble vitamins (A, D, E, K)</button>
+                  </li>
                   <li class="dashboard__micro-condition-group" role="presentation">
                     <span class="dashboard__micro-condition-group-label">Conditions</span>
                   </li>
@@ -194,7 +210,7 @@
 
         <aside id="micro-tip-fat-soluble" class="dashboard__micro-tip" role="note">
           <p class="dashboard__micro-tip-text">
-            Vitamins A, D, E, and K are fat-soluble—your body absorbs them much better with some dietary fat. For example, with 1 cup of carrot juice, eat at least about 1 teaspoon of peanut butter.
+            Vitamins A, D, E, and K need dietary fat to absorb well. Aim for about <strong>3–5 g fat</strong> with a single vitamin-rich serving (≈½–1 tsp oil or butter, or 1 tsp peanut butter), and about <strong>10–15 g fat</strong> in a meal that covers a full day’s DV of ADEK (≈1 tbsp oil, or 1–2 tsp butter). Example: with 1 cup carrot juice (~100% DV vitamin A as carotenoids), eat at least about 1 teaspoon of peanut butter (~5 g fat).
           </p>
         </aside>
         <aside id="micro-tip-common-deficiencies" class="dashboard__micro-tip" role="note">
@@ -298,12 +314,22 @@
                 <button type="button" class="dashboard__nutrient-filter-disclosure" data-nutrient-filter-disclosure aria-expanded="false" aria-controls="longevity-nutrient-filter-panel">By Nutrients</button>
                 <div id="longevity-nutrient-filter-panel" class="dashboard__nutrient-filter-panel" hidden>
                   <div class="dashboard__nutrient-filter-presets" role="group" aria-label="Nutrient filter presets">
-                    <button type="button" class="dashboard__nutrient-filter-preset" data-nutrient-filter-preset="common-deficiencies" aria-pressed="false">Common Deficiencies (A,D,Calc,Mag,Iodine)</button>
+                    <span class="dashboard__nutrient-filter-prefix">Auto add:</span>
+                    <button type="button" class="dashboard__nutrient-filter-preset" data-nutrient-filter-preset="common-deficiencies" aria-pressed="false">
+                      <span class="dashboard__nutrient-filter-preset-title">Common deficiencies</span>
+                      <span class="dashboard__nutrient-filter-preset-meta">A · D · Ca · Mg · Iodine</span>
+                    </button>
+                    <button type="button" class="dashboard__nutrient-filter-preset" data-nutrient-filter-preset="fat-soluble" aria-pressed="false">
+                      <span class="dashboard__nutrient-filter-preset-title">Fat-soluble vitamins</span>
+                      <span class="dashboard__nutrient-filter-preset-meta">A · D · E · K</span>
+                    </button>
                   </div>
-                  <label class="dashboard__nutrient-filter-label" for="longevity-nutrient-filter-input">Add nutrient</label>
-                  <div class="dashboard__nutrient-filter-combobox">
-                    <input type="text" id="longevity-nutrient-filter-input" class="dashboard__nutrient-filter-input" data-nutrient-filter-input placeholder="Type a vitamin or mineral…" autocomplete="off" spellcheck="false" aria-autocomplete="list" aria-controls="longevity-nutrient-filter-suggest" aria-expanded="false" />
-                    <div id="longevity-nutrient-filter-suggest" class="dashboard__nutrient-filter-suggest" role="listbox" hidden aria-label="Nutrient suggestions"></div>
+                  <div class="dashboard__nutrient-filter-add">
+                    <label class="dashboard__nutrient-filter-label" for="longevity-nutrient-filter-input">Add nutrient</label>
+                    <div class="dashboard__nutrient-filter-combobox">
+                      <input type="text" id="longevity-nutrient-filter-input" class="dashboard__nutrient-filter-input" data-nutrient-filter-input placeholder="Type a vitamin or mineral…" autocomplete="off" spellcheck="false" aria-autocomplete="list" aria-controls="longevity-nutrient-filter-suggest" aria-expanded="false" />
+                      <div id="longevity-nutrient-filter-suggest" class="dashboard__nutrient-filter-suggest" role="listbox" hidden aria-label="Nutrient suggestions"></div>
+                    </div>
                   </div>
                   <div class="dashboard__nutrient-filter-chips" data-nutrient-filter-chips role="list" aria-label="Selected nutrients"></div>
                 </div>

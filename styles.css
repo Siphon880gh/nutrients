@@ -1163,7 +1163,7 @@ body.highlight-daily-intake-icons .dashboard__micro-daily-intake-btn[aria-expand
   align-items: flex-end;
   gap: 0.35rem;
   width: 100%;
-  max-width: 18rem;
+  max-width: 26rem;
   margin-top: 0.15rem;
   padding-top: 0.4rem;
   border-top: 1px solid #e4e8ee;
@@ -1230,16 +1230,108 @@ body.highlight-daily-intake-icons .dashboard__micro-daily-intake-btn[aria-expand
   display: none;
 }
 
-.dashboard__nutrient-filter-label {
+.dashboard__nutrient-filter-presets {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.35rem;
+  width: 100%;
+}
+
+.dashboard__nutrient-filter-prefix {
+  flex: 0 0 auto;
   font-size: 0.68rem;
   line-height: 1.3;
   color: #6a6a66;
-  text-align: right;
+  white-space: nowrap;
+}
+
+.dashboard__nutrient-filter-preset {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.05rem;
+  flex: 0 1 auto;
+  min-width: 0;
+  max-width: 100%;
+  padding: 0.28rem 0.55rem;
+  border: 1px solid #d8d8d4;
+  border-radius: 4px;
+  background: #fff;
+  color: #5a5a56;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  overflow: visible;
+}
+
+.dashboard__nutrient-filter-preset:hover {
+  background: #f5f5f2;
+  border-color: #c8c8c4;
+  color: #333;
+}
+
+.dashboard__nutrient-filter-preset:focus-visible {
+  outline: 2px solid #3d6b9e;
+  outline-offset: 1px;
+}
+
+.dashboard__nutrient-filter-preset--active,
+.dashboard__nutrient-filter-preset[aria-pressed="true"] {
+  background: #f0ebe4;
+  border-color: #c9b896;
+  color: #4a3f2e;
+}
+
+.dashboard__nutrient-filter-preset-title {
+  font-size: 0.72rem;
+  font-weight: 500;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.dashboard__nutrient-filter-preset--active .dashboard__nutrient-filter-preset-title,
+.dashboard__nutrient-filter-preset[aria-pressed="true"] .dashboard__nutrient-filter-preset-title {
+  font-weight: 600;
+}
+
+.dashboard__nutrient-filter-preset-meta {
+  font-size: 0.62rem;
+  font-weight: 400;
+  line-height: 1.25;
+  color: #8a8a86;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+}
+
+.dashboard__nutrient-filter-preset--active .dashboard__nutrient-filter-preset-meta,
+.dashboard__nutrient-filter-preset[aria-pressed="true"] .dashboard__nutrient-filter-preset-meta {
+  color: #7a6a4a;
+}
+
+.dashboard__nutrient-filter-add {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 0.4rem;
+  width: 100%;
+}
+
+.dashboard__nutrient-filter-label {
+  flex: 0 0 auto;
+  font-size: 0.68rem;
+  line-height: 1.3;
+  color: #6a6a66;
+  text-align: left;
+  white-space: nowrap;
 }
 
 .dashboard__nutrient-filter-combobox {
   position: relative;
-  width: 100%;
+  flex: 1 1 auto;
+  min-width: 0;
+  width: auto;
 }
 
 .dashboard__nutrient-filter-input {
@@ -1384,10 +1476,6 @@ body.highlight-daily-intake-icons .dashboard__micro-daily-intake-btn[aria-expand
 
 .dashboard__micro-sticky .dashboard__nutrient-filter {
   align-items: flex-end;
-}
-
-.dashboard__micro-sticky .dashboard__nutrient-filter-label {
-  text-align: right;
 }
 
 .dashboard__micro-sticky .dashboard__nutrient-filter-chips {
@@ -6560,10 +6648,6 @@ button.longevity-form__label-link:focus-visible {
 
   .dashboard__micro-sticky .dashboard__nutrient-filter {
     align-items: flex-start;
-  }
-
-  .dashboard__micro-sticky .dashboard__nutrient-filter-label {
-    text-align: left;
   }
 
   .dashboard__micro-sticky .dashboard__nutrient-filter-chips {

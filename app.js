@@ -194,6 +194,10 @@
   var microTipCaffeineEl = document.getElementById("micro-tip-caffeine");
   var microTipCataractsEl = document.getElementById("micro-tip-cataracts");
   var microTipHairLossEl = document.getElementById("micro-tip-hair-loss");
+  var microTipCommonDeficienciesEl = document.getElementById(
+    "micro-tip-common-deficiencies"
+  );
+  var microTipFatSolubleEl = document.getElementById("micro-tip-fat-soluble");
   var caffeineTipModalEl = document.getElementById("caffeine-tip-modal");
   var caffeineTipModalDoneBtn = document.getElementById("caffeine-tip-modal-done");
   var fatsCholesterolTipModalEl = document.getElementById("fats-cholesterol-tip-modal");
@@ -630,6 +634,20 @@
       ],
       longevityNutrients: ["epa", "dha"],
     },
+    americanCommonDeficiencies: {
+      label: "American Common Deficiencies",
+      nutrients: [
+        "vitaminA",
+        "vitaminD",
+        "calcium",
+        "magnesium",
+        "iodine",
+      ],
+    },
+    fatSolubleVitamins: {
+      label: "Fat-soluble vitamins (A, D, E, K)",
+      nutrients: ["vitaminA", "vitaminD", "vitaminE", "vitaminK"],
+    },
     anemia: {
       label: "Anemia",
       nutrients: [
@@ -728,6 +746,26 @@
     poorlyAbsorbed: {
       label: "Poorly absorbed / take daily",
     },
+  };
+
+  var COMMON_DEFICIENCY_NUTRIENT_KEYS = [
+    "vitaminA",
+    "vitaminD",
+    "calcium",
+    "magnesium",
+    "iodine",
+  ];
+
+  var FAT_SOLUBLE_NUTRIENT_KEYS = [
+    "vitaminA",
+    "vitaminD",
+    "vitaminE",
+    "vitaminK",
+  ];
+
+  var NUTRIENT_FILTER_PRESETS = {
+    "common-deficiencies": COMMON_DEFICIENCY_NUTRIENT_KEYS,
+    "fat-soluble": FAT_SOLUBLE_NUTRIENT_KEYS,
   };
 
   var MICRO_FIELDS = [
@@ -8846,6 +8884,45 @@
       .forEach(function (el) {
         el.innerHTML = chipsHtml;
       });
+    document
+      .querySelectorAll("[data-nutrient-filter-preset]")
+      .forEach(function (btn) {
+        var presetId = btn.getAttribute("data-nutrient-filter-preset");
+        var active = nutrientFilterPresetActive(presetId);
+        btn.classList.toggle(
+          "dashboard__nutrient-filter-preset--active",
+          active
+        );
+        btn.setAttribute("aria-pressed", active ? "true" : "false");
+      });
+  }
+
+  function nutrientFilterPresetKeys(presetId) {
+    return NUTRIENT_FILTER_PRESETS[presetId] || null;
+  }
+
+  function nutrientFilterPresetActive(presetId) {
+    var keys = nutrientFilterPresetKeys(presetId);
+    if (!keys || !keys.length) return false;
+    if (filterStickyNutrientKeys.length !== keys.length) return false;
+    return keys.every(function (key) {
+      return filterStickyNutrientKeys.indexOf(key) !== -1;
+    });
+  }
+
+  function applyNutrientFilterPreset(presetId) {
+    var keys = nutrientFilterPresetKeys(presetId);
+    if (!keys) return;
+    if (nutrientFilterPresetActive(presetId)) {
+      filterStickyNutrientKeys = [];
+    } else {
+      clearMicroConditionFocusForStickyFilter();
+      filterStickyNutrientKeys = keys.slice();
+    }
+    saveStickyIconFilters();
+    syncStickyIconFilterUi();
+    setNutrientFilterSectionOpen(filterStickyNutrientKeys.length > 0);
+    refreshStickyIconFilterViews();
   }
 
   function setNutrientFilterSectionOpen(open) {
@@ -9013,6 +9090,7 @@
     if (!key || !microFieldByKey(key)) return;
     if (filterStickyNutrientKeys.indexOf(key) !== -1) return;
     var wasEmpty = filterStickyNutrientKeys.length === 0;
+    clearMicroConditionFocusForStickyFilter();
     filterStickyNutrientKeys = filterStickyNutrientKeys.concat([key]);
     saveStickyIconFilters();
     syncStickyIconFilterUi();
@@ -9077,6 +9155,13 @@
     refreshStickyIconFilterViews();
   }
 
+  function clearMicroConditionFocusForStickyFilter() {
+    if (!microConditionFocus) return;
+    microConditionFocus = null;
+    setMicroConditionExpanded(false);
+    syncMicroConditionUi();
+  }
+
   function refreshStickyIconFilterViews() {
     if (microRequirementsOpen) {
       renderMicroRequirements();
@@ -9094,6 +9179,7 @@
     else if (kind === "side") filterStickySideEffects = !!open;
     else if (kind === "adverse") filterStickyAdverseEffects = !!open;
     else return;
+    if (open) clearMicroConditionFocusForStickyFilter();
     saveStickyIconFilters();
     syncStickyIconFilterUi();
     refreshStickyIconFilterViews();
@@ -9510,6 +9596,14 @@
     if (microTipCaffeineEl) {
       microTipCaffeineEl.hidden = active;
     }
+    if (microTipFatSolubleEl) {
+      microTipFatSolubleEl.hidden =
+        active && microConditionFocus !== "fatSolubleVitamins";
+    }
+    if (microTipCommonDeficienciesEl) {
+      microTipCommonDeficienciesEl.hidden =
+        active && microConditionFocus !== "americanCommonDeficiencies";
+    }
     if (microTipCataractsEl) {
       microTipCataractsEl.hidden = microConditionFocus !== "cataractsPrevention";
     }
@@ -9519,9 +9613,14 @@
   }
 
   function setMicroConditionFocus(id) {
-    microConditionFocus = id && microFilterMeta(id) ? id : null;
+    var next = id && microFilterMeta(id) ? id : null;
+    microConditionFocus = next;
     setMicroConditionExpanded(false);
     syncMicroConditionUi();
+    if (next && microStickyFilterActive()) {
+      clearStickyIconFilters();
+      return;
+    }
     if (microRequirementsOpen) {
       renderMicroRequirements();
     }
@@ -16484,6 +16583,14 @@
       e.preventDefault();
       removeStickyNutrientFilter(
         nutrientFilterRemove.getAttribute("data-nutrient-filter-remove")
+      );
+      return;
+    }
+    var nutrientFilterPreset = e.target.closest("[data-nutrient-filter-preset]");
+    if (nutrientFilterPreset) {
+      e.preventDefault();
+      applyNutrientFilterPreset(
+        nutrientFilterPreset.getAttribute("data-nutrient-filter-preset")
       );
       return;
     }
