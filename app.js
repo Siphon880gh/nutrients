@@ -15203,6 +15203,11 @@
     document.querySelectorAll(".day__suggest").forEach(function (el) {
       el.hidden = true;
       el.innerHTML = "";
+      el.classList.remove("day__suggest--above");
+      el.style.top = "";
+      el.style.bottom = "";
+      el.style.height = "";
+      el.style.maxHeight = "";
     });
   }
 
@@ -15214,6 +15219,11 @@
     if (!suggestEl) return;
     suggestEl.hidden = true;
     suggestEl.innerHTML = "";
+    suggestEl.classList.remove("day__suggest--above");
+    suggestEl.style.top = "";
+    suggestEl.style.bottom = "";
+    suggestEl.style.height = "";
+    suggestEl.style.maxHeight = "";
   }
 
   function positionDaySuggest(textarea, suggestEl) {
@@ -15230,22 +15240,40 @@
 
     var editorRect = editor.getBoundingClientRect();
     var gap = 2;
-    var top = rect.bottom - editorRect.top + gap;
+    var caretTop = rect.top - editorRect.top;
+    var caretBottom = rect.bottom - editorRect.top;
+    var editorHeight = editor.clientHeight;
+    var placeAbove = caretTop >= editorHeight / 2;
     var header = suggestEl.querySelector(".day__suggest-header");
     var headerGap = 6;
     var headerHeight = header ? header.offsetHeight + headerGap : 0;
     var rowHeight = daySuggestRowHeight(suggestEl);
     var minPanelHeight = headerHeight + rowHeight;
-    var available = editor.clientHeight - top;
 
-    if (available < minPanelHeight) {
-      top = Math.max(0, editor.clientHeight - minPanelHeight);
-    }
-
-    suggestEl.style.top = top + "px";
     suggestEl.style.left = "0";
     suggestEl.style.right = "0";
+
+    if (placeAbove) {
+      // Pin to the top so the line being typed at the bottom stays visible.
+      var maxHeight = Math.max(minPanelHeight, caretTop - gap);
+      suggestEl.classList.add("day__suggest--above");
+      suggestEl.style.top = "0";
+      suggestEl.style.bottom = "auto";
+      suggestEl.style.height = "auto";
+      suggestEl.style.maxHeight = maxHeight + "px";
+      return;
+    }
+
+    var top = caretBottom + gap;
+    var availableBelow = editorHeight - top;
+    if (availableBelow < minPanelHeight) {
+      top = Math.max(0, editorHeight - minPanelHeight);
+    }
+    suggestEl.classList.remove("day__suggest--above");
+    suggestEl.style.top = top + "px";
     suggestEl.style.bottom = "0";
+    suggestEl.style.height = "";
+    suggestEl.style.maxHeight = "";
   }
 
   function bindDaySuggestResize(editor) {

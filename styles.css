@@ -3853,6 +3853,17 @@ button.dashboard__longevity-name:focus-visible {
   pointer-events: auto;
 }
 
+.day__suggest--above {
+  border-top: none;
+  border-bottom: 1px solid #c8c8c4;
+  padding: 0.65rem 0.75rem 0;
+  height: auto;
+}
+
+.day__suggest--above .day__suggest-list {
+  flex: 0 1 auto;
+}
+
 .day__suggest-header {
   flex: 0 0 auto;
   display: flex;

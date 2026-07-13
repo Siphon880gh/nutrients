@@ -16794,6 +16794,54 @@
 		}
 	},
 	{
+		"name": "Kroger Saltines 1 serving (5 crackers)",
+		"protein": 1,
+		"carbs": 11,
+		"fats": 1.5,
+		"micros": {
+			"fiber": 1,
+			"sodium": 140,
+			"iron": 0.7,
+			"calcium": 0,
+			"potassium": 0,
+			"vitaminD": 0
+		},
+		"longevity": {
+			"saturatedFat": 0,
+			"transFat": 0,
+			"cholesterol": 0
+		},
+		"carbQuality": {
+			"glycemicIndex": 74,
+			"addedSugar": 0,
+			"refinedCarbs": 10
+		}
+	},
+	{
+		"name": "Kroger Saltines 1 stack (37 crackers)",
+		"protein": 7.4,
+		"carbs": 81.4,
+		"fats": 11.1,
+		"micros": {
+			"fiber": 7.4,
+			"sodium": 1036,
+			"iron": 5.18,
+			"calcium": 0,
+			"potassium": 0,
+			"vitaminD": 0
+		},
+		"longevity": {
+			"saturatedFat": 0,
+			"transFat": 0,
+			"cholesterol": 0
+		},
+		"carbQuality": {
+			"glycemicIndex": 74,
+			"addedSugar": 0,
+			"refinedCarbs": 74
+		}
+	},
+	{
 		"name": "Wheat Thins Reduced Fat Whole Grain Wheat Crackers 8 pieces",
 		"protein": 1,
 		"carbs": 11,
