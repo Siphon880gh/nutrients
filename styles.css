@@ -47,6 +47,7 @@ body {
   font: inherit;
   font-size: 0.8rem;
   font-weight: 600;
+  line-height: 1.2;
   border: 1px solid #c8c8c4;
   border-radius: 6px;
   background: #fff;
@@ -63,6 +64,22 @@ body {
   font-size: 1rem;
   line-height: 1;
   color: #3d6b9e;
+}
+
+.week__settings-abbr {
+  display: none;
+  flex-shrink: 0;
+  min-width: 1.15rem;
+  padding: 0.05rem 0.2rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: 0.02em;
+  text-align: center;
+  color: #2a4a6e;
+  background: #e8eef4;
+  border: 1px solid #9eb4cc;
+  border-radius: 4px;
 }
 
 .week__settings-label {
@@ -2825,7 +2842,7 @@ button.dashboard__micro-day-name:focus-visible {
 .dashboard__longevity-processed-note {
   margin: 0 0 0.75rem;
   padding: 0.65rem 0.75rem;
-  font-size: 0.78rem;
+  font-size: 0.72rem;
   line-height: 1.45;
   color: #444;
   background: #f6f8fa;
@@ -2964,9 +2981,9 @@ button.dashboard__micro-day-name:focus-visible {
 
 .dashboard__longevity-subgroup {
   margin: 0.5rem 0 0.2rem;
-  padding: 0.2rem 0.35rem;
-  font-size: 0.66rem;
-  font-weight: 600;
+  padding: 0.28rem 0.4rem;
+  font-size: 0.8rem;
+  font-weight: 700;
   letter-spacing: 0.01em;
   border-radius: 3px;
 }
@@ -6694,8 +6711,17 @@ button.longevity-form__label-link:focus-visible {
     align-items: stretch;
   }
 
+  .week__settings-icon {
+    display: none;
+  }
+
+  .week__settings-abbr {
+    display: inline-block;
+  }
+
   .dashboard__toggles {
     width: 100%;
+    margin-bottom: 0.75rem;
   }
 
   .dashboard__grid {

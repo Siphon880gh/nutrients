@@ -1050,6 +1050,58 @@
       "Aim for 100%+ DV (about 38 g/day for men, 25 g/day for women). Insoluble fiber shortens colon transit time; soluble fiber feeds gut bacteria that produce protective butyrate."
     ]
   },
+  "sectionUpperGiMotility": {
+    "tooLow": [
+      "Low vitamin B1 (thiamine) weakens autonomic nervous-system drive for digestion; low vitamin B6 limits neurotransmitter synthesis that helps smooth-muscle intestinal movements.",
+      "Low magnesium can leave gut smooth muscle sluggish, with delayed transit along the digestive tract.",
+      "Low zinc may reduce stomach acid (HCl) and impair gastrin and motilin signaling that support gastrointestinal motility.",
+      "Deficiency of vitamin D, vitamin B12, or iron can slow upper GI motility and may contribute to gastroparesis-like delayed emptying.",
+      "Low choline, taurine, or glycine limits building blocks for phosphatidylcholine and bile salts; low vitamin C can reduce bile acid synthesis; low magnesium may leave bile ducts less able to relax and flow.",
+      "Low soluble fiber can worsen constipation, straining, bloating, and abdominal pressure against the stomach and LES; low zinc may delay repair of esophageal tissue.",
+      "Low bile often results in slower gut transit time, which commonly contributes to constipation—and delayed emptying in the stomach and duodenum can leave food fermenting, with gas pressing up against the lower esophageal sphincter."
+    ],
+    "enough": [
+      "What upper GI consists of: the esophagus, stomach, and duodenum (the first part of the small intestine)—the stretch that receives food, mixes it with acid and enzymes, and begins emptying into the rest of the gut.",
+      "General gut motility nutrients from your micro entries: vitamin B1 (thiamine) supports the autonomic nervous system that dictates digestion; vitamin B6 (pyridoxine) aids neurotransmitter synthesis for smooth-muscle intestinal movements; magnesium regulates contraction and relaxation along the digestive tract; zinc supports stomach acid (HCl) and influences gastrin and motilin.",
+      "Upper GI–focused nutrients: vitamin D, vitamin B12, and iron—deficiency here slows upper GI motility and could result in gastroparesis.",
+      "Key nutrients for bile production include choline, taurine, and glycine. Choline is vital for building phosphatidylcholine (a main component of bile), while taurine and glycine are essential for creating bile salts. Vitamin C stimulates bile acid synthesis, and magnesium helps relax bile ducts to improve flow.",
+      "Food sources for bile production: choline from organic eggs, grass-fed beef, and sunflower or soy lecithin; taurine and glycine from bone broth, gelatin, fish, collagen, and shellfish; vitamin C from bell peppers, citrus fruits, and strawberries; magnesium from spinach, leafy greens, nuts, and seeds.",
+      "Bile helps stimulate movement (motility) through the gastrointestinal tract. Low bile often results in slower gut transit time, which commonly contributes to constipation.",
+      "The liver continuously produces bile (a digestive fluid), and the gallbladder serves as a holding tank to store and concentrate it until you eat. When you consume fatty foods, your body signals the gallbladder, which then contracts to release this bile into the small intestine to break down the fats.",
+      "Bile affects upper GI motility as well as impacting the stomach and upper part of the small intestine (duodenum), and affects gastric emptying. If food sits too long in the upper GI tract, fermentation gas pushes up against the lower esophageal sphincter.",
+      "Consuming bitter foods actively stimulates your bitter taste receptors, signaling your brain to trigger bile production in the liver and release it from the gallbladder.",
+      "Bile support herbs & habits (not tracked from food): dandelion root, milk thistle, turmeric (with black pepper / BioPerine), gentian, ginger (gingerols and shogaols); ox bile or bile salts; artichoke leaf extract often paired with ginger; actinidin (kiwi fruit extract); digestive enzymes (lipase, amylase, proteases); chewing thoroughly; warm water; walking 10–15 minutes after eating; chamomile to ease bloating. Peppermint may ease bloating for some people but can lower LES pressure and worsen reflux in susceptible people.",
+      "Lower esophageal sphincter (LES): a ring of smooth muscle where the esophagus meets the stomach. It keeps the junction closed and opens briefly for swallowing. Inadequate LES pressure—or relaxation at the wrong time—allows reflux, regurgitation, heartburn, or GERD. Good LES tone helps, but reflux also depends on transient LES relaxations, hiatal hernia, stomach distention, delayed emptying, abdominal pressure, meal size/timing, and esophageal clearance.",
+      "No nutrient permanently tightens the LES like resistance training strengthens skeletal muscle. Support normal resting pressure and reduce upward forces: soluble fiber, adequately lean protein, lower-fat meals, and zinc for esophageal tissue maintenance.",
+      "Soluble fiber (oats, oat bran, psyllium, barley, applesauce/peeled apples, bananas, cooked carrots) supports regularity and may lower abdominal pressure against the LES. A small study of nonerosive GERD with low fiber intake found psyllium (5 g three times daily) associated with higher minimum LES resting pressure and fewer reflux/heartburn episodes—introduce gradually with adequate water.",
+      "Protein can stimulate gastrin, which may temporarily raise LES pressure. Prefer lean proteins (fish, skinless poultry, egg whites, moderate lean meat, low-fat dairy or tofu when tolerated) prepared without heavy frying or cream sauces. High-fat meals may lower LES pressure via CCK, slow emptying, and leave the stomach distended against the LES—saturated fat is tracked here as a proxy watch for that pattern.",
+      "Zinc supports esophageal tissue maintenance and repair; food sources include fish, poultry, meat, eggs, dairy, beans, nuts, and fortified cereals. Food-level adequacy is the goal—high-dose zinc is not an established GERD treatment, and excess can impair copper absorption (adult UL 40 mg/day unless a clinician directs otherwise).",
+      "Common LES-lowering or reflux triggers (not all tracked): high-fat/fried foods; mint/menthol; caffeine and coffee; chocolate; alcohol; raw onion, garlic, and alliums in susceptible people. Acidic foods (citrus, tomato) often irritate an already-sensitive esophagus more than they lower LES tone—identify personal triggers.",
+      "Lifestyle that protects the antireflux barrier: remain upright after meals; avoid eating within about 2–3 hours of bedtime when nighttime reflux is a problem; smaller meals; reduce excess abdominal pressure; elevate the head of the bed for nocturnal reflux; avoid smoking/nicotine; review LES-lowering medications with a clinician.",
+      "Focus on liver health and bile production to help with upper GI motility—not only the nutrients that support motility directly. This section duplicates the Liver health nutrient rows so you can track both levers in one place."
+    ],
+    "tooHigh": [
+      "High-fat and fried meal patterns (reflected partly in saturated fat intake) may lower LES pressure, slow stomach emptying, and increase reflux risk in susceptible people.",
+      "Excess supplemental zinc above the adult upper intake level (40 mg/day from all sources, unless prescribed) can interfere with copper absorption and is not a substitute for reflux care."
+    ],
+    "foodSources": [
+      "Pork, fortified grains, legumes & sunflower seeds (thiamin / B1)",
+      "Poultry, fish, potatoes & chickpeas (vitamin B6)",
+      "Organic eggs, grass-fed beef, sunflower or soy lecithin (choline)",
+      "Bone broth, gelatin, fish, collagen & shellfish (taurine & glycine)",
+      "Bell peppers, citrus fruits & strawberries (vitamin C)",
+      "Spinach, leafy greens, nuts & seeds (magnesium)",
+      "Oatmeal, oat bran, psyllium, barley, bananas & cooked carrots (soluble fiber — LES)",
+      "Fish, skinless poultry, egg whites & lean meat (protein — LES; prefer low-fat prep)",
+      "Low-fat yogurt or cottage cheese when tolerated (protein with less fat burden)",
+      "Fish, poultry, meat, eggs, dairy, beans, nuts & fortified cereals (zinc)",
+      "Oysters, beef, pumpkin seeds & legumes (zinc)",
+      "Fatty fish, fortified dairy & sunlight (vitamin D)",
+      "Meat, fish, eggs & dairy (vitamin B12)",
+      "Red meat, lentils, spinach & fortified cereals (iron)",
+      "Bitter greens, ginger, turmeric & artichoke (bile-support foods / herbs)"
+    ]
+  },
   "sectionThyroid": {
     "tooLow": [
       "As you get older—especially after 60—thyroid function is particularly sensitive to variations in iodine intake. Iodine deficiency plays an important role in hypothyroidism: an enlarged thyroid (goiter), slowed metabolism, fatigue, cold intolerance, and cognitive sluggishness.",

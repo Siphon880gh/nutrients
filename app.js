@@ -226,6 +226,7 @@
   var settingsModalEl = document.getElementById("settings-modal");
   var settingsModalDoneBtn = document.getElementById("settings-modal-done");
   var settingsDemographicIconEl = document.getElementById("settings-demographic-icon");
+  var settingsDemographicAbbrEl = document.getElementById("settings-demographic-abbr");
   var settingsTdeeEl = document.getElementById("settings-tdee");
   var settingsWeightEl = document.getElementById("settings-weight");
   var settingsWeightKgBtn = document.getElementById("settings-weight-kg");
@@ -584,6 +585,7 @@
     sectionCarb: { label: "Carb quality" },
     sectionMicronutrients: { label: "Micronutrients from food" },
     sectionFiber: { label: "Fiber & colon health" },
+    sectionUpperGiMotility: { label: "Upper GI Motility" },
     sectionThyroid: { label: "Thyroid health" },
     sectionLiver: { label: "Liver health" },
     sectionKidney: { label: "Kidney health" },
@@ -1020,6 +1022,7 @@
     { label: "Micronutrients from food", sectionDefKey: "sectionMicronutrients" },
     { label: "Derived scores", sectionDefKey: "sectionDerived" },
     { label: "Fiber & colon health", sectionDefKey: "sectionFiber" },
+    { label: "Upper GI Motility", sectionDefKey: "sectionUpperGiMotility" },
     { label: "Thyroid health", sectionDefKey: "sectionThyroid" },
     { label: "Liver health", sectionDefKey: "sectionLiver" },
     { label: "Kidney health", sectionDefKey: "sectionKidney" },
@@ -1097,6 +1100,60 @@
 
   var LONGEVITY_THYROID_WATCH_FROM_LONGEVITY = [
     { key: "omega6", label: "Omega-6 (total)", limiting: true },
+  ];
+
+  var LONGEVITY_UPPER_GI_FROM_MICRO = [
+    {
+      microKey: "vitaminD",
+      label: "Vitamin D — upper GI motility; deficiency may slow emptying",
+      limiting: false,
+    },
+    {
+      microKey: "vitaminB12",
+      label: "Vitamin B12 — upper GI motility; deficiency may slow emptying",
+      limiting: false,
+    },
+    {
+      microKey: "iron",
+      label: "Iron — upper GI motility; deficiency may slow emptying",
+      limiting: false,
+    },
+  ];
+
+  var LONGEVITY_UPPER_GI_BILE_PRODUCTION_FROM_MICRO = [
+    {
+      microKey: "choline",
+      label: "Choline — phosphatidylcholine (main bile component)",
+      limiting: false,
+    },
+    {
+      microKey: "taurine",
+      label: "Taurine — bile salt conjugation",
+      limiting: false,
+    },
+    {
+      microKey: "glycine",
+      label: "Glycine — bile salt conjugation",
+      limiting: false,
+    },
+    {
+      microKey: "vitaminC",
+      label: "Vitamin C — stimulates bile acid synthesis",
+      limiting: false,
+    },
+    {
+      microKey: "magnesium",
+      label: "Magnesium — relaxes bile ducts to improve flow",
+      limiting: false,
+    },
+  ];
+
+  var LONGEVITY_UPPER_GI_LES_WATCH_FROM_LONGEVITY = [
+    {
+      key: "saturatedFat",
+      label: "Saturated fat — high-fat meals may lower LES & delay emptying",
+      limiting: true,
+    },
   ];
 
   var LONGEVITY_LIVER_PROTECTIVE_FROM_LONGEVITY = [
@@ -6501,6 +6558,234 @@
     );
   }
 
+  function upperGiWhatIsTipHtml() {
+    return (
+      '<aside class="dashboard__longevity-processed-note dashboard__longevity-processed-note--section" role="note">' +
+      '<p class="dashboard__longevity-processed-note-text">' +
+      "<strong>What does upper GI consist of?</strong> The upper gastrointestinal tract is the esophagus, stomach, and duodenum (the first part of the small intestine)—the stretch that receives food, mixes it with acid and enzymes, and begins emptying into the rest of the gut… " +
+      '<button type="button" class="dashboard__longevity-tip-link" data-longevity-def="sectionUpperGiMotility" aria-haspopup="dialog">Read more</button>' +
+      "</p>" +
+      "</aside>"
+    );
+  }
+
+  function upperGiB1B6TipHtml() {
+    return (
+      '<aside class="dashboard__longevity-processed-note dashboard__longevity-processed-note--section" role="note">' +
+      '<p class="dashboard__longevity-processed-note-text">' +
+      "<strong>Vitamin B1 (Thiamine) &amp; B6 (Pyridoxine):</strong> Vitamin B1 is foundational for the autonomic nervous system, which dictates digestion. Vitamin B6 aids in synthesizing neurotransmitters that regulate smooth muscle intestinal movements." +
+      "</p>" +
+      "</aside>"
+    );
+  }
+
+  function upperGiMagnesiumTipHtml() {
+    return (
+      '<aside class="dashboard__longevity-processed-note dashboard__longevity-processed-note--section" role="note">' +
+      '<p class="dashboard__longevity-processed-note-text">' +
+      "<strong>Magnesium:</strong> Magnesium helps regulate muscle contractions and muscle relaxation along the entire digestive tract. A deficiency can lead to sluggish smooth muscle function and delayed transit." +
+      "</p>" +
+      "</aside>"
+    );
+  }
+
+  function upperGiZincTipHtml() {
+    return (
+      '<aside class="dashboard__longevity-processed-note dashboard__longevity-processed-note--section" role="note">' +
+      '<p class="dashboard__longevity-processed-note-text">' +
+      "<strong>Zinc:</strong> Zinc helps stimulate the production of stomach acid (HCl) and supports gastrointestinal motility by influencing serum gastrin and motilin levels." +
+      "</p>" +
+      "</aside>"
+    );
+  }
+
+  function upperGiDeficiencyTipHtml() {
+    return (
+      '<aside class="dashboard__longevity-processed-note dashboard__longevity-processed-note--section" role="note">' +
+      '<p class="dashboard__longevity-processed-note-text">' +
+      "<strong>Upper GI nutrients:</strong> Deficiency here slows down upper GI motility and could result in gastroparesis—track vitamin D, vitamin B12, and iron alongside general gut-motility nutrients." +
+      "</p>" +
+      "</aside>"
+    );
+  }
+
+  function upperGiBileMotilityTipHtml() {
+    return (
+      '<aside class="dashboard__longevity-processed-note dashboard__longevity-processed-note--section" role="note">' +
+      '<p class="dashboard__longevity-processed-note-text">' +
+      "<strong>Bile &amp; motility:</strong> Bile helps stimulate movement (motility) through the gastrointestinal tract. Low bile often results in slower gut transit time, which commonly contributes to constipation… " +
+      '<button type="button" class="dashboard__longevity-tip-link" data-longevity-def="sectionUpperGiMotility" aria-haspopup="dialog">Read more</button>' +
+      "</p>" +
+      "</aside>"
+    );
+  }
+
+  function upperGiBileProductionTipHtml() {
+    return (
+      '<aside class="dashboard__longevity-processed-note dashboard__longevity-processed-note--section" role="note">' +
+      '<p class="dashboard__longevity-processed-note-text">' +
+      "<strong>Liver &amp; gallbladder:</strong> The liver continuously produces bile (a digestive fluid), and the gallbladder serves as a holding tank to store and concentrate it until you eat. When you consume fatty foods, your body signals the gallbladder, which then contracts to release this bile into the small intestine to break down the fats… " +
+      '<button type="button" class="dashboard__longevity-tip-link" data-longevity-def="sectionUpperGiMotility" aria-haspopup="dialog">Read more</button>' +
+      "</p>" +
+      "</aside>"
+    );
+  }
+
+  function upperGiBileNutrientsTipHtml() {
+    return (
+      '<aside class="dashboard__longevity-processed-note dashboard__longevity-processed-note--section" role="note">' +
+      '<p class="dashboard__longevity-processed-note-text">' +
+      "<strong>Bile production nutrients:</strong> Key nutrients for bile production include choline, taurine, and glycine. Choline is vital for building phosphatidylcholine (a main component of bile), while taurine and glycine are essential for creating bile salts. Vitamin C stimulates bile acid synthesis, and magnesium helps relax bile ducts to improve flow… " +
+      '<button type="button" class="dashboard__longevity-tip-link" data-longevity-def="sectionUpperGiMotility" aria-haspopup="dialog">Read more</button>' +
+      "</p>" +
+      '<ol class="dashboard__longevity-processed-note-list">' +
+      "<li><strong>Choline:</strong> Organic eggs, grass-fed beef, and sunflower or soy lecithin.</li>" +
+      "<li><strong>Taurine &amp; glycine:</strong> Bone broth, gelatin, fish, collagen, and shellfish.</li>" +
+      "<li><strong>Vitamin C:</strong> Bell peppers, citrus fruits, and strawberries.</li>" +
+      "<li><strong>Magnesium:</strong> Spinach, leafy greens, nuts, and seeds.</li>" +
+      "</ol>" +
+      "</aside>"
+    );
+  }
+
+  function upperGiBileGastricEmptyingTipHtml() {
+    return (
+      '<aside class="dashboard__longevity-processed-note dashboard__longevity-processed-note--section" role="note">' +
+      '<p class="dashboard__longevity-processed-note-text">' +
+      "<strong>Bile &amp; gastric emptying:</strong> Bile affects upper GI motility as well as impacting the stomach and upper part of the small intestine (duodenum), and affects gastric emptying. If food sits too long in the upper GI tract, fermentation gas pushes up against the lower esophageal sphincter… " +
+      '<button type="button" class="dashboard__longevity-tip-link" data-longevity-def="sectionUpperGiMotility" aria-haspopup="dialog">Read more</button>' +
+      "</p>" +
+      "</aside>"
+    );
+  }
+
+  function upperGiBittersTipHtml() {
+    return (
+      '<aside class="dashboard__longevity-processed-note dashboard__longevity-processed-note--section" role="note">' +
+      '<p class="dashboard__longevity-processed-note-text">' +
+      "<strong>Bitter foods:</strong> Consuming bitter foods actively stimulates your bitter taste receptors, signaling your brain to trigger bile production in the liver and release it from the gallbladder… " +
+      '<button type="button" class="dashboard__longevity-tip-link" data-longevity-def="sectionUpperGiMotility" aria-haspopup="dialog">Read more</button>' +
+      "</p>" +
+      "</aside>"
+    );
+  }
+
+  function upperGiBileHerbsTipHtml() {
+    return (
+      '<aside class="dashboard__longevity-processed-note dashboard__longevity-processed-note--section" role="note">' +
+      '<p class="dashboard__longevity-processed-note-text">' +
+      "<strong>Bile support (herbs &amp; habits — not tracked from food):</strong> Dandelion root, milk thistle, turmeric (with black pepper / BioPerine), gentian, ginger (gingerols and shogaols). Or actual ox bile or bile salts. More: artichoke leaf extract often paired with ginger, actinidin (kiwi fruit extract), digestive enzymes (lipase, amylase, proteases—which lower the amount of work so food can go through the upper GI faster), chewing thoroughly, warm water, walking 10–15 mins after eating, chamomile to relax stomach muscles (eases bloating). Peppermint may ease bloating for some people but can lower LES pressure and worsen reflux in susceptible people—see LES tone tips… " +
+      '<button type="button" class="dashboard__longevity-tip-link" data-longevity-def="sectionUpperGiMotility" aria-haspopup="dialog">Read more</button>' +
+      "</p>" +
+      "</aside>"
+    );
+  }
+
+  function upperGiLesWhatIsTipHtml() {
+    return (
+      '<aside class="dashboard__longevity-processed-note dashboard__longevity-processed-note--section" role="note">' +
+      '<p class="dashboard__longevity-processed-note-text">' +
+      "<strong>Lower esophageal sphincter (LES):</strong> A ring of smooth muscle where the esophagus meets the stomach. It normally keeps the junction closed and opens briefly when food enters the stomach. Inadequate pressure—or relaxation at the wrong time—lets stomach contents travel upward, producing acid reflux, regurgitation, heartburn, or GERD. Healthy LES tone makes reflux less likely, but reflux is also driven by transient LES relaxations, hiatal hernia, stomach distention, delayed emptying, excess abdominal pressure, meal size/timing, and esophageal clearance… " +
+      '<button type="button" class="dashboard__longevity-tip-link" data-longevity-def="sectionUpperGiMotility" aria-haspopup="dialog">Read more</button>' +
+      "</p>" +
+      "</aside>"
+    );
+  }
+
+  function upperGiLesNutrientsCaveatTipHtml() {
+    return (
+      '<aside class="dashboard__longevity-processed-note dashboard__longevity-processed-note--section" role="note">' +
+      '<p class="dashboard__longevity-processed-note-text">' +
+      "<strong>Can nutrients tighten the LES?</strong> No nutrient has been proven to permanently tighten the LES the way resistance training strengthens skeletal muscle. The useful strategy is supporting normal resting LES pressure while reducing forces that push stomach contents upward—soluble fiber, adequately lean protein, lower-fat meals, and enough zinc for tissue maintenance." +
+      "</p>" +
+      "</aside>"
+    );
+  }
+
+  function upperGiLesSolubleFiberTipHtml() {
+    return (
+      '<aside class="dashboard__longevity-processed-note dashboard__longevity-processed-note--section" role="note">' +
+      '<p class="dashboard__longevity-processed-note-text">' +
+      "<strong>Soluble fiber:</strong> Forms a gel that supports regularity and may lower constipation, straining, bloating, and abdominal pressure against the stomach and LES. In a small prospective study of nonerosive GERD with low baseline fiber, psyllium (5 g three times daily) was associated with higher minimum LES resting pressure and fewer reflux/heartburn episodes—introduce gradually with enough water so gas and distention do not temporarily worsen reflux… " +
+      '<button type="button" class="dashboard__longevity-tip-link" data-longevity-def="sectionUpperGiMotility" aria-haspopup="dialog">Read more</button>' +
+      "</p>" +
+      '<ol class="dashboard__longevity-processed-note-list">' +
+      "<li>Oatmeal and oat bran</li>" +
+      "<li>Psyllium husk</li>" +
+      "<li>Barley</li>" +
+      "<li>Applesauce or peeled apples (if tolerated)</li>" +
+      "<li>Bananas</li>" +
+      "<li>Cooked carrots and other well-tolerated soluble-fiber foods</li>" +
+      "</ol>" +
+      "</aside>"
+    );
+  }
+
+  function upperGiLesProteinTipHtml() {
+    return (
+      '<aside class="dashboard__longevity-processed-note dashboard__longevity-processed-note--section" role="note">' +
+      '<p class="dashboard__longevity-processed-note-text">' +
+      "<strong>Protein &amp; LES pressure:</strong> Protein can stimulate gastrin release; older physiology research found protein meals raised blood gastrin and LES pressure in many people (response varies). Lean proteins—fish, skinless poultry, egg whites, moderate lean meat, low-fat yogurt/cottage cheese or tofu when tolerated—supply protein without the large fat load of fried meats, sausage, bacon, or ribeye. Prefer baked, grilled, steamed, or poached—not breaded/fried or heavy cream sauces… " +
+      '<button type="button" class="dashboard__longevity-tip-link" data-longevity-def="sectionUpperGiMotility" aria-haspopup="dialog">Read more</button>' +
+      "</p>" +
+      "</aside>"
+    );
+  }
+
+  function upperGiLesFatWatchTipHtml() {
+    return (
+      '<aside class="dashboard__longevity-processed-note dashboard__longevity-processed-note--section" role="note">' +
+      '<p class="dashboard__longevity-processed-note-text">' +
+      "<strong>Why lean beats high-fat protein:</strong> Fat in the small intestine stimulates CCK. High-fat meals may lower LES pressure, promote transient sphincter relaxation, and slow stomach emptying—leaving the stomach distended longer against the LES. Low-fat dairy often sits in the supportive category (protein with less fat burden) when tolerated; it is not proven to directly tighten the LES. Saturated fat here is a proxy watch for that high-fat meal pattern… " +
+      '<button type="button" class="dashboard__longevity-tip-link" data-longevity-def="sectionUpperGiMotility" aria-haspopup="dialog">Read more</button>' +
+      "</p>" +
+      "</aside>"
+    );
+  }
+
+  function upperGiLesZincTipHtml() {
+    return (
+      '<aside class="dashboard__longevity-processed-note dashboard__longevity-processed-note--section" role="note">' +
+      '<p class="dashboard__longevity-processed-note-text">' +
+      "<strong>Zinc &amp; esophageal tissue:</strong> Zinc supports normal cellular function and tissue repair; deficiency can delay wound healing. Adequate food zinc may support esophageal lining maintenance—fish, poultry, meat, eggs, dairy, beans, nuts, fortified cereals. Ordinary zinc supplements are not established as raising LES pressure or healing reflux esophagitis; the adult upper intake level is 40 mg/day from all sources unless a clinician directs otherwise (excess can impair copper absorption)." +
+      "</p>" +
+      "</aside>"
+    );
+  }
+
+  function upperGiLesTriggersTipHtml() {
+    return (
+      '<aside class="dashboard__longevity-processed-note dashboard__longevity-processed-note--section" role="note">' +
+      '<p class="dashboard__longevity-processed-note-text">' +
+      "<strong>May lower LES tone or trigger reflux (not all tracked):</strong> High-fat/fried foods; peppermint, spearmint, and menthol; caffeine and coffee (decaffeinated coffee can still trigger some people); chocolate; alcohol; raw onion, garlic, and other alliums in susceptible people. Citrus, tomatoes, and other acidic foods often irritate an already-sensitive esophagus more than they lower LES tone. Identify personal triggers rather than blanket restriction… " +
+      '<button type="button" class="dashboard__longevity-tip-link" data-longevity-def="sectionUpperGiMotility" aria-haspopup="dialog">Read more</button>' +
+      "</p>" +
+      "</aside>"
+    );
+  }
+
+  function upperGiLesLifestyleTipHtml() {
+    return (
+      '<aside class="dashboard__longevity-processed-note dashboard__longevity-processed-note--section" role="note">' +
+      '<p class="dashboard__longevity-processed-note-text">' +
+      "<strong>Lifestyle that protects the LES barrier:</strong> Remain upright after eating; avoid meals within about 2–3 hours of bedtime when nighttime reflux is a problem; prefer smaller meals over one very large meal; reduce excess abdominal pressure (weight around the midsection, tight waistbands, severe constipation); elevate the head of the bed for nocturnal reflux (wedge/frame elevation beats stacking pillows); avoid smoking and nicotine. Certain medications can lower LES pressure—review with a clinician; do not stop prescribed drugs on your own… " +
+      '<button type="button" class="dashboard__longevity-tip-link" data-longevity-def="sectionUpperGiMotility" aria-haspopup="dialog">Read more</button>' +
+      "</p>" +
+      "</aside>"
+    );
+  }
+
+  function upperGiLiverFocusTipHtml() {
+    return (
+      '<aside class="dashboard__longevity-processed-note dashboard__longevity-processed-note--section" role="note">' +
+      '<p class="dashboard__longevity-processed-note-text">' +
+      "<strong>Liver &amp; bile for upper GI motility:</strong> Focus on liver health and bile production to help with upper GI motility—not just the nutrients that support motility directly. The liver rows below are the same set tracked under Liver health… " +
+      '<button type="button" class="dashboard__longevity-tip-link" data-longevity-def="sectionLiver" aria-haspopup="dialog">Read more</button>' +
+      "</p>" +
+      "</aside>"
+    );
+  }
+
   function dashDietTipHtml() {
     return (
       '<aside class="dashboard__longevity-processed-note dashboard__longevity-processed-note--section" role="note">' +
@@ -10325,6 +10610,231 @@
     );
 
     html += longevitySectionWrap(
+      "Upper GI Motility",
+      "sectionUpperGiMotility",
+      '<p class="dashboard__longevity-note">Tracks nutrients that support general gut motility and upper GI emptying, bile production, LES tone / reflux barrier, plus bile/liver levers that move food through the esophagus, stomach, and duodenum—not only colon fiber.</p>' +
+        upperGiWhatIsTipHtml() +
+        upperGiBileMotilityTipHtml() +
+        upperGiBileProductionTipHtml() +
+        upperGiBileGastricEmptyingTipHtml() +
+        upperGiBittersTipHtml() +
+        upperGiBileHerbsTipHtml(),
+      longevityListOpen() +
+        longevitySubgroupHtml("General gut motility — from micro entries", "micro") +
+        upperGiB1B6TipHtml() +
+        longevityRowFromMicroKey(
+          "thiamin",
+          "Vitamin B1 (Thiamine) — autonomic nervous system & digestion",
+          false,
+          weekMicro
+        ) +
+        longevityRowFromMicroKey(
+          "vitaminB6",
+          "Vitamin B6 (Pyridoxine) — neurotransmitters for smooth-muscle movement",
+          false,
+          weekMicro
+        ) +
+        upperGiMagnesiumTipHtml() +
+        longevityRowFromMicroKey(
+          "magnesium",
+          "Magnesium — muscle contraction & relaxation along the gut",
+          false,
+          weekMicro
+        ) +
+        upperGiZincTipHtml() +
+        longevityRowFromMicroKey(
+          "zinc",
+          "Zinc — stomach acid (HCl), gastrin & motilin support",
+          false,
+          weekMicro
+        ) +
+        longevitySubgroupHtml("Upper GI — from micro entries", "micro") +
+        upperGiDeficiencyTipHtml() +
+        LONGEVITY_UPPER_GI_FROM_MICRO.map(function (item) {
+          return longevityRowFromMicroKey(
+            item.microKey,
+            item.label,
+            !!item.limiting,
+            weekMicro
+          );
+        }).join("") +
+        longevitySubgroupHtml("Bile production support — from micro entries", "micro") +
+        upperGiBileNutrientsTipHtml() +
+        LONGEVITY_UPPER_GI_BILE_PRODUCTION_FROM_MICRO.map(function (item) {
+          return longevityRowFromMicroKey(
+            item.microKey,
+            item.label,
+            !!item.limiting,
+            weekMicro
+          );
+        }).join("") +
+        longevitySubgroupHtml("LES tone & reflux barrier", "aim") +
+        upperGiLesWhatIsTipHtml() +
+        upperGiLesNutrientsCaveatTipHtml() +
+        longevitySubgroupHtml("Supports LES / antireflux barrier — aim", "aim") +
+        upperGiLesSolubleFiberTipHtml() +
+        longevityRowFromMicroKey(
+          "solubleFiber",
+          "Soluble fiber — LES resting pressure & lower abdominal pressure",
+          false,
+          weekMicro
+        ) +
+        upperGiLesProteinTipHtml() +
+        longevityRowFromProtein(
+          weekMacro,
+          "Protein — gastrin support for temporary LES pressure (prefer lean)"
+        ) +
+        upperGiLesFatWatchTipHtml() +
+        upperGiLesZincTipHtml() +
+        longevityRowFromMicroKey(
+          "zinc",
+          "Zinc — esophageal tissue maintenance & repair",
+          false,
+          weekMicro
+        ) +
+        longevitySubgroupHtml(
+          "Watch — high-fat pattern may lower LES / delay emptying",
+          "limit"
+        ) +
+        LONGEVITY_UPPER_GI_LES_WATCH_FROM_LONGEVITY.map(function (item) {
+          var field = longevityFieldByKey(item.key);
+          if (!field) return "";
+          return longevityRowFromLongevityField(
+            {
+              key: field.key,
+              label: item.label || field.label,
+              unit: field.unit,
+              code: field.code,
+              group: field.group,
+              limiting: true,
+            },
+            weekLongevity,
+            weekMicro
+          );
+        }).join("") +
+        upperGiLesTriggersTipHtml() +
+        upperGiLesLifestyleTipHtml() +
+        longevitySubgroupHtml(
+          "Liver health — bile production & upper GI motility (same rows as Liver health)",
+          "compounds"
+        ) +
+        upperGiLiverFocusTipHtml() +
+        longevitySubgroupHtml("Liver-protective compounds", "compounds") +
+        LONGEVITY_LIVER_PROTECTIVE_FROM_LONGEVITY.map(function (item) {
+          var field = longevityFieldByKey(item.key);
+          if (!field) return "";
+          return longevityRowFromLongevityField(field, weekLongevity, weekMicro);
+        }).join("") +
+        longevitySubgroupHtml("Glutathione precursors & recycling — from micro entries", "micro") +
+        LONGEVITY_LIVER_PRECURSORS_FROM_MICRO.map(function (item) {
+          return longevityRowFromMicroKey(
+            item.microKey,
+            item.label,
+            !!item.limiting,
+            weekMicro
+          );
+        }).join("") +
+        longevityNavJumpRowHtml(
+          "sectionGlutathione",
+          "Glutathione support — full precursor & enzyme set"
+        ) +
+        longevitySubgroupHtml("Choline & methyl donors — fatty liver prevention", "micro") +
+        LONGEVITY_LIVER_CHOLINE_METHYL_FROM_MICRO.map(function (item) {
+          return longevityRowFromMicroKey(
+            item.microKey,
+            item.label,
+            !!item.limiting,
+            weekMicro
+          );
+        }).join("") +
+        longevitySubgroupHtml("Choline & methyl donors — from longevity entries", "compounds") +
+        LONGEVITY_LIVER_CHOLINE_METHYL_FROM_LONGEVITY.map(function (item) {
+          var field = longevityFieldByKey(item.key);
+          if (!field) return "";
+          if (!item.limiting && field.limiting) {
+            field = {
+              key: field.key,
+              label: item.label || field.label,
+              unit: field.unit,
+              code: field.code,
+              group: field.group,
+              limiting: false,
+            };
+          }
+          return longevityRowFromLongevityField(field, weekLongevity, weekMicro);
+        }).join("") +
+        longevitySubgroupHtml("Antioxidant & membrane protection — from micro entries", "micro") +
+        LONGEVITY_LIVER_ANTIOXIDANT_FROM_MICRO.map(function (item) {
+          return longevityRowFromMicroKey(
+            item.microKey,
+            item.label,
+            !!item.limiting,
+            weekMicro
+          );
+        }).join("") +
+        longevitySubgroupHtml(
+          "Antioxidant & membrane protection — from longevity entries",
+          "compounds"
+        ) +
+        LONGEVITY_LIVER_ANTIOXIDANT_FROM_LONGEVITY.map(function (item) {
+          return longevityRowFromLongevityOrMicro(item, weekLongevity, weekMicro);
+        }).join("") +
+        longevitySubgroupHtml(
+          "Weight, glucose & triglyceride support — from micro entries",
+          "micro"
+        ) +
+        LONGEVITY_LIVER_METABOLIC_FROM_MICRO.map(function (item) {
+          return longevityRowFromMicroKey(
+            item.microKey,
+            item.label,
+            !!item.limiting,
+            weekMicro
+          );
+        }).join("") +
+        longevitySubgroupHtml(
+          "Weight, glucose & triglyceride support — from longevity entries",
+          "compounds"
+        ) +
+        LONGEVITY_LIVER_METABOLIC_FROM_LONGEVITY.map(function (item) {
+          if (item.key === "omega3") {
+            return longevityRowFromEffectiveOmega3(weekLongevity, weekMicro, item.label);
+          }
+          var field = longevityFieldByKey(item.key);
+          if (!field) return "";
+          if (!item.limiting && field.limiting) {
+            field = {
+              key: field.key,
+              label: item.label || field.label,
+              unit: field.unit,
+              code: field.code,
+              group: field.group,
+              limiting: false,
+            };
+          }
+          return longevityRowFromLongevityField(field, weekLongevity, weekMicro);
+        }).join("") +
+        longevitySubgroupHtml("Caution — excess can burden the liver", "limit") +
+        LONGEVITY_LIVER_WATCH_FROM_MICRO.map(function (item) {
+          return longevityRowFromMicroKey(
+            item.microKey,
+            item.label,
+            !!item.limiting,
+            weekMicro
+          );
+        }).join("") +
+        longevitySubgroupHtml("Watch — lower is better for fatty liver risk", "limit") +
+        LONGEVITY_LIVER_WATCH_FROM_LONGEVITY.map(function (item) {
+          var field = longevityFieldByKey(item.key);
+          if (!field) return "";
+          return longevityRowFromLongevityField(field, weekLongevity, weekMicro);
+        }).join("") +
+        longevitySubgroupHtml("Jump to related areas", "neutral") +
+        longevityNavJumpRowHtml("sectionLiver", "Liver health — full section") +
+        longevityNavJumpRowHtml("sectionFiber", "Fiber & colon health") +
+        longevityListClose()
+    );
+
+    html += longevitySectionWrap(
       "Thyroid health",
       "sectionThyroid",
       '<p class="dashboard__longevity-note">Same iodine, vitamin A, and cofactor values as your micro entries plus omega-3 from longevity—grouped here because thyroid needs tighten with age, especially after 60.</p>' +
@@ -12707,6 +13217,9 @@
     var meta = metaMap[demographic] || metaMap[DEFAULT_DEMOGRAPHIC] || { icon: "♂", label: "Male" };
     if (settingsDemographicIconEl) {
       settingsDemographicIconEl.textContent = meta.icon;
+    }
+    if (settingsDemographicAbbrEl) {
+      settingsDemographicAbbrEl.textContent = (meta.label || "M").charAt(0).toUpperCase();
     }
     if (!demographicOptionsEl) return;
     var buttons = demographicOptionsEl.querySelectorAll("[data-demographic]");
