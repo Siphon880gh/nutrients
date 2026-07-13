@@ -16801,10 +16801,41 @@
   }
 
   function confirmImportSampleMealsReplace() {
-    if (!anyDayHasNotes()) return true;
+    if (!viewedWeekStart) viewedWeekStart = currentWeekMondayKey();
+    var range = formatWeekRangeLabel(viewedWeekStart);
     return window.confirm(
-      "Replace this viewed week's meals with the sample week? This cannot be undone."
+      "Replace meals for " +
+        range +
+        " with the sample week? This cannot be undone."
     );
+  }
+
+  /** Map a v2 sample diary onto a legacy mon…sun week (first sample week). */
+  function legacyWeekFromSampleDayMeals(data) {
+    if (isLegacyWeekMealsData(data)) return data;
+    if (!isV2DayMealsData(data)) {
+      throw new Error(
+        "JSON must be a legacy week object (mon…sun) or a v2 diary {\"version\":2,\"days\":{…}}"
+      );
+    }
+    var days = data.days;
+    var earliest = null;
+    Object.keys(days).forEach(function (k) {
+      if (!parseDateKey(k)) return;
+      if (!earliest || k < earliest) earliest = k;
+    });
+    if (!earliest) {
+      throw new Error("Sample day meals has no dated entries");
+    }
+    var sampleMonday = toDateKey(mondayOf(parseDateKey(earliest)));
+    var weekKeys = weekDateKeys(sampleMonday);
+    var out = {};
+    DAYS.forEach(function (day, i) {
+      var key = weekKeys[i];
+      var text = key && days[key];
+      out[day.id] = typeof text === "string" ? text : "";
+    });
+    return out;
   }
 
   function importSampleMeals() {
@@ -16827,6 +16858,10 @@
       closeHealthTimelineModal();
     }
 
+    // Confirm in the click handler (before fetch) so the browser keeps the
+    // user-gesture and does not silently dismiss window.confirm.
+    if (!confirmImportSampleMealsReplace()) return;
+
     fetch(IMPORT_SAMPLE_MEALS_URL)
       .then(function (res) {
         if (!res.ok) throw new Error("Could not load sample day meals");
@@ -16834,8 +16869,8 @@
       })
       .then(function (raw) {
         var data = parseImportAllDayMealsObject(raw);
-        if (!confirmImportSampleMealsReplace()) return;
-        applySampleDayMealsData(data, true);
+        // Always apply onto the currently viewed week (v2 dates are remapped).
+        applySampleDayMealsData(legacyWeekFromSampleDayMeals(data), true);
         refreshAll();
         updateDayClearButtons();
       })
