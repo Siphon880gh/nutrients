@@ -1,8 +1,8 @@
 # AGENTS_CODE_REFERENCE-ui.md
 
-> **Approximate locations only** — use class names and file regions in `index.html` (~2,000 lines) and `styles.css` (~7,700 lines).
+> **Approximate locations only** — use class names and file regions in `index.html` (~2,070 lines) and `styles.css` (~7,800 lines).
 
-Markup structure, layout, modals, Favorites sidebar, mobile days carousel, and the **highlight mirror** pattern.
+Markup structure, layout, auth header/modals, Favorites sidebar, mobile days carousel, and the **highlight mirror** pattern.
 
 Parent: [AGENTS_CODE_REFERENCE.md](./AGENTS_CODE_REFERENCE.md)
 
@@ -11,7 +11,9 @@ Parent: [AGENTS_CODE_REFERENCE.md](./AGENTS_CODE_REFERENCE.md)
 ```text
 .week (main, max-width ~1400px)
 ├── .week__header
-│   └── #settings-open (.week__settings — sex icon + “Settings”)
+│   └── .week__header-actions
+│       ├── #auth-logged-out / #auth-logged-in (.week__auth — Sign up / Log in / email / Log out)
+│       └── #settings-open (.week__settings — sex icon + “Settings”)
 ├── .dashboard
 │   ├── .dashboard__header
 │   │   ├── .dashboard__toggles  (Print, Week total, Micro requirements, Longevity)
@@ -50,7 +52,7 @@ Parent: [AGENTS_CODE_REFERENCE.md](./AGENTS_CODE_REFERENCE.md)
 └── (sex/TDEE/weight in #settings-modal)
 ```
 
-Modals are **siblings** of `main`, not inside it. **`#starter-guide`** is also a sibling — fixed-position beginner popover (not a blocking modal).
+Modals are **siblings** of `main`, not inside it. Auth modals (`#auth-signup-modal`, `#auth-login-modal`), **`#starter-guide`**, and `#favorites-sidebar` are also siblings — starter guide is a fixed-position beginner popover (not a blocking modal).
 
 ## Day editor: highlight mirror + modes
 
@@ -91,7 +93,7 @@ Native `<textarea>` cannot color individual words, and overlaying a transparent 
 
 **`.week__nav`** — sits directly above the days toolbar (not above the dashboard). Labeled **Previous week** / **Next week** buttons, clickable range `#week-nav-label` (opens `#week-jump-modal` calendar + typed date → jump to that week), **This week** (`#week-nav-this`), and **Favorites** (`#favorites-open` → right slide-in `#favorites-sidebar`). Prev disables at the earliest diary week (Mon–Sun containing `2026-05-01`). Hidden in print / print-preview.
 
-**Diary favorites** — **Favorite week** (`#week-nav-favorite`) sits above the Mon–Sun day grid (`.week__days-favorite-week`). Per-day Favorite uses `data-action="favorite-day"`. Add/edit uses `#favorite-edit-modal` (`#favorite-edit-name`, `#favorite-edit-description`, `#favorite-edit-modal-hint`, `#favorite-edit-error`). `#favorites-sidebar` is a fixed right slide-in (not a `.modal`): backdrop + `.favorites-sidebar__panel`, class `favorites-sidebar--open`, `inert` when closed. Browse list `#favorites-list`; **Manage** (`#favorites-manage-toggle`) swaps to `#favorites-manage-list` (↑↓ / Edit / Delete). Empty copy `#favorites-empty`; hint `#favorites-sidebar-hint`. Persisted in `nutrients_favorites`. Jumping to a favorite **day** sets session `activeFavoriteDayKey` and applies `.day--favorite-day` (teal `#1f5c53` / `#2a7a6e` / `#eef7f5`, distinct from `.day--today` blue); choosing another favorite day clears the previous highlight first; jumping to a favorite **week** clears the day highlight. When both today and favorite apply, `.day--today.day--favorite-day` keeps the teal favorite styling.
+**Diary favorites** — **Favorite week** (`#week-nav-favorite`) sits above the Mon–Sun day grid (`.week__days-favorite-week`). Per-day Favorite uses `data-action="favorite-day"`; disabled when that day has no notes (same as Clear/Copy). Add/edit uses `#favorite-edit-modal` (`#favorite-edit-name`, `#favorite-edit-description`, `#favorite-edit-modal-hint`, `#favorite-edit-error`). `#favorites-sidebar` is a fixed right slide-in (not a `.modal`): backdrop + `.favorites-sidebar__panel`, class `favorites-sidebar--open`, `inert` when closed. Browse list `#favorites-list`; **Manage** (`#favorites-manage-toggle`) swaps to `#favorites-manage-list` (↑↓ / Edit / Delete). Empty copy `#favorites-empty`; hint `#favorites-sidebar-hint`. Persisted in `nutrients_favorites` (per `userId`). Jumping to a favorite **day** sets session `activeFavoriteDayKey` and applies `.day--favorite-day` (teal `#1f5c53` / `#2a7a6e` / `#eef7f5`, distinct from `.day--today` blue); choosing another favorite day clears the previous highlight first; jumping to a favorite **week** clears the day highlight. When both today and favorite apply, `.day--today.day--favorite-day` keeps the teal favorite styling.
 
 **`.week__highlight-bar`** — separate row below the toolbar (`position: relative; z-index: 10` so popovers stack above `.week__grid`): the `#day-highlights-toggle` pen (`.week__highlight-toggle`, persisted on/off) and `#day-food-notes`.
 
@@ -175,6 +177,14 @@ Notable columns:
 
 Horizontal scroll on narrow screens: `.keywords__panel { overflow-x: auto }`, `min-width` on table.
 
+## Auth header & modals
+
+**Header** — `.week__header-actions` (top-right): `#auth-logged-out` shows **Log in** (`#auth-login-open`) + **Sign up** (`#auth-signup-open`); `#auth-logged-in` shows `#auth-user-email` + **Log out** (`#auth-logout`). `syncAuthUi` toggles which block is visible.
+
+**`#auth-signup-modal` / `#auth-login-modal`** — standard `.modal` pattern; email + password fields (`#auth-signup-email` / `#auth-signup-password`, `#auth-login-email` / `#auth-login-password`); error paragraphs `#auth-signup-error` / `#auth-login-error`; submit via `#auth-signup-submit` / `#auth-login-submit`. CSS: `.week__auth`, `.week__auth-btn`, `.week__auth-btn--primary`, `.week__auth-email`. Passwords are plaintext local-testing accounts only ([AGENTS-data-persistence.md](./AGENTS-data-persistence.md)).
+
+Scripts **`demographic-dv.js`**, **`longevity-dv.js`**, and **`persist.js`** must load before `app.js`.
+
 ## Settings modal (demographic + TDEE)
 
 **`#settings-modal`** — opened from `#settings-open` in header.
@@ -183,8 +193,6 @@ Horizontal scroll on narrow screens: `.keywords__panel { overflow-x: auto }`, `m
 - **Weight** — `#settings-weight` number input + kg/lb unit toggle (`#settings-weight-kg` / `#settings-weight-lb`, `.tdee-calc__unit-btn`); used for IOM bw min amino-acid targets. Stored as kg.
 - **TDEE** — `#settings-tdee` number input + `#settings-tdee-calc-open` → `#tdee-calculator-modal`.
 - Explainer copy references `demographic-dv.js` calorie baselines (informative; week calories still from food matches).
-
-Scripts **`demographic-dv.js`** and **`longevity-dv.js`** must load before `app.js`.
 
 ## Modals (shared)
 
@@ -201,6 +209,7 @@ Variants & instances:
 - **Definition modal** (`#micro-def-modal`) — shared by micro + longevity “explain”; `.modal__header--with-tools` with `#micro-def-fullscreen-toggle`; `#micro-def-modal-back` (**← My food**, hidden unless opened from sources modal); body `.micro-def__body`.
 - **Micro sources modal** (`#micro-sources-modal`) — ranked foods + calculations; `#micro-sources-scope`, `#micro-sources-body`, fullscreen toggle.
 - **Longevity sources modal** (`#longevity-sources-modal`) — same layout pattern for longevity metrics / GL.
+- **Sign up / Log in** (`#auth-signup-modal`, `#auth-login-modal`) — local multi-user accounts; see Auth header & modals.
 - **Settings modal** (`#settings-modal`) — sex + TDEE.
 - **TDEE calculator** (`#tdee-calculator-modal`) — Mifflin–St Jeor inputs, resistance/cardio activity, `#tdee-calc-result`, Apply/Cancel.
 - **TDEE hint** (`#tdee-hint-modal`) — deficit/surplus / 3500 kcal rule.
@@ -232,7 +241,7 @@ Variants & instances:
 
 ## CSS naming convention
 
-BEM-like blocks: `.week__`, `.day__`, `.dashboard__`, `.dashboard__nutrient-filter*`, `.keywords__`, `.settings-modal__`, `.tdee-calc__`, `.macro-split-carousel`, `.micro-sources-modal__`, `.import-ai-`, `.micro-gaps-modal__`, `.micro-def__`, `.micro-tip-modal__`, `.longevity-form`, `.starter-guide__`, `.favorites-sidebar__`, `.favorites-manage-*`, `.modal__`. Longevity Level bars: `.dashboard__longevity-bar-wrap`, `.dashboard__longevity-bar-notch`, `.dashboard__longevity-bar-notch-popover`.
+BEM-like blocks: `.week__`, `.week__auth*`, `.day__`, `.dashboard__`, `.dashboard__nutrient-filter*`, `.keywords__`, `.settings-modal__`, `.tdee-calc__`, `.macro-split-carousel`, `.micro-sources-modal__`, `.import-ai-`, `.micro-gaps-modal__`, `.micro-def__`, `.micro-tip-modal__`, `.longevity-form`, `.starter-guide__`, `.favorites-sidebar__`, `.favorites-manage-*`, `.modal__`. Longevity Level bars: `.dashboard__longevity-bar-wrap`, `.dashboard__longevity-bar-notch`, `.dashboard__longevity-bar-notch-popover`.
 
 JS does not depend on BEM beyond stable IDs (`#mon`, `#keywords-list`, etc.).
 
@@ -240,6 +249,7 @@ JS does not depend on BEM beyond stable IDs (`#mon`, `#keywords-list`, etc.).
 
 Critical hooks (do not rename without updating the element lookups near the top of `app.js`):
 
+- Auth: `auth-logged-out`, `auth-logged-in`, `auth-user-email`, `auth-login-open`, `auth-signup-open`, `auth-logout`, `auth-signup-modal`, `auth-signup-email`, `auth-signup-password`, `auth-signup-error`, `auth-signup-cancel`, `auth-signup-submit`, `auth-login-modal`, `auth-login-email`, `auth-login-password`, `auth-login-error`, `auth-login-cancel`, `auth-login-submit`
 - Header/settings: `settings-open`, `settings-demographic-icon`, `settings-modal`, `settings-modal-done`, `settings-tdee`, `settings-tdee-calc-open`, `settings-weight`, `settings-weight-kg`, `settings-weight-lb`, `demographic-options`
 - TDEE: `tdee-calculator-modal`, `tdee-calculator-apply`, `tdee-calculator-cancel`, `tdee-calc-*`, `tdee-hint-modal`, `tdee-hint-modal-done`
 - Macro split: `macro-split-hint-modal`, `macro-split-carousel`, `macro-split-carousel-prev`, `macro-split-carousel-next`, `macro-split-carousel-indicator`, `macro-split-carousel-card`, `macro-split-hint-modal-done`
@@ -268,6 +278,7 @@ Critical hooks (do not rename without updating the element lookups near the top 
 - Don’t assume the textarea always overlays the backdrop — the editor swaps `--editing` / `--viewing` / `--plain` visibility; style the shown layer per mode and preserve the viewing-mode backdrop click target.
 - Shared editor resize: change `.day__editor` sizing in CSS **and** `clampDayEditorHeight` / settings `dayEditorHeight` in JS together.
 - New modal: copy `.modal` + `hidden` + backdrop `data-action` close pattern from existing modals; wire close in the global Escape handler. Favorites sidebar is class-toggled (`favorites-sidebar--open`), not `hidden`-based.
+- Auth + password fields on the same page can cause Chrome to autofill saved usernames into other text/search inputs (e.g. `#keywords-search`); keep `autocomplete="off"` on search filters and prefer non-username-like `name`/`id` when adding new free-text fields.
 - Starter guide is not a `.modal`; use fixed positioning + scroll/resize listeners (see core doc). Keep `z-index` above modals if stacking changes.
 
 ## Shared longevity ↔ micro nutrients
@@ -315,6 +326,7 @@ Bridge keys are derived at runtime: `microPanelLongevityBridgeFields()` intersec
 
 | File | ~Lines | Load when |
 |------|--------|-----------|
-| `index.html` | 2,000 | Structure / new regions |
-| `styles.css` | 7,700 | Visual/layout only |
-| `app.js` | 19,700 | Behavior (other docs) |
+| `index.html` | 2,070 | Structure / new regions |
+| `styles.css` | 7,800 | Visual/layout only |
+| `persist.js` | 960 | Auth + repository only |
+| `app.js` | 19,800 | Behavior (other docs) |

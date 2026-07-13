@@ -1,8 +1,8 @@
 # AGENTS_CODE_REFERENCE-core.md
 
-> **Approximate locations only** — no exact line numbers. Code moves; use section names and relative position within `app.js` (~19,700 lines).
+> **Approximate locations only** — no exact line numbers. Code moves; use section names and relative position within `app.js` (~19,800 lines).
 
-Core logic: food definitions, matching, highlighting orchestration, dashboard totals, micro % DV, sticky icon show/filter/highlight + By Nutrients filter, acute toxicity, longevity panel, definition modals, multi-week diary, diary favorites, mobile days carousel, localStorage.
+Core logic: food definitions, matching, highlighting orchestration, dashboard totals, micro % DV, sticky icon show/filter/highlight + By Nutrients filter, acute toxicity, longevity panel, definition modals, multi-week diary, diary favorites, mobile days carousel, multi-user auth + `NutrientsPersist` localStorage.
 
 Parent overview: [AGENTS_CODE_REFERENCE.md](./AGENTS_CODE_REFERENCE.md)
 
@@ -235,12 +235,17 @@ Persistence lives in [`persist.js`](./persist.js) (`NutrientsAuth` + `NutrientsP
 | `nutrients_day_meals` | `DayMealsRow[]` `{ userId, version: 2, days: { "YYYY-MM-DD": "…" } }` |
 | `nutrients_favorites` | `Favorite[]` with `userId` |
 | `nutrients_settings` | `SettingsRow[]` with `userId` (demographic, TDEE, UI prefs, …) |
+| `nutrients_orphan_legacy` | Temporary pre–multi-user blob; removed after first Sign up claims it |
 
-Pre–multi-user single-user payloads move to `nutrients_orphan_legacy` and are claimed by the **first Sign up**. Logged-out sessions do not persist entity data.
+Pre–multi-user single-user payloads move to `nutrients_orphan_legacy` and are claimed by the **first Sign up**. Logged-out sessions do not persist entity data (loads empty/defaults; saves no-op).
 
-**Load** — `loadFoodDefinitions`: maps current user’s rows, `normalizeMicros` + `normalizeLongevity`, bumps `nextId`. After auth changes, `afterAuthSessionChange()` reloads all tables into memory.
+**Auth UI / session reload** — header `#auth-logged-out` / `#auth-logged-in`; modals `#auth-signup-modal` / `#auth-login-modal`. `syncAuthUi` reflects session. `submitAuthSignup` / `submitAuthLogin` / `submitAuthLogout` call `afterAuthSessionChange()` → `loadPersistedAppState()` + `applyLoadedAppStateToUi()`.
 
-**Save triggers** — same as before when logged in; repository saves no-op when logged out. `beforeunload` still calls save helpers.
+**Load helpers** — `loadPersistedAppState`: `persist.migrate()` then foods / keyword UI prefs / day meals / favorites / day highlights / editor height / micro+sticky prefs / demographic / TDEE / body weight. `loadFoodDefinitions` maps **current user’s** rows, `normalizeMicros` + `normalizeLongevity`, bumps `nextId`.
+
+**Apply helpers** — `applyLoadedAppStateToUi`: today + favorite button sync, sticky toggle UIs (opens By Nutrients disclosure when chips persist), demographic/TDEE/weight UI, `renderKeywords` / `refreshAll`, `syncAuthUi`.
+
+**Save triggers** — day textarea `input`, row input, add/delete/reorder, micros/longevity save, import apply, demographic/TDEE/weight, calories/reorder toggles, favorites CRUD, `beforeunload` — all via repository helpers; no-op when logged out.
 
 ## Config (`config.json`)
 
@@ -356,7 +361,7 @@ UI mirror pattern: [AGENTS_CODE_REFERENCE-ui.md](./AGENTS_CODE_REFERENCE-ui.md)
 
 Named bookmarks for a **day** (`dateKey` = that calendar day) or **week** (`dateKey` = Monday of the week). Persisted in `nutrients_favorites`; UI lives in week nav + day heads + `#favorites-sidebar`.
 
-- **Add / edit** — `#week-nav-favorite` (above Mon–Sun grid) or per-day `.day__favorite` (`data-action="favorite-day"`) opens `#favorite-edit-modal` (name + why). Re-favoriting an existing day/week opens edit for that entry. `runFavoriteEditSave` upserts by id (or by type+dateKey duplicate).
+- **Add / edit** — `#week-nav-favorite` (above Mon–Sun grid) or per-day `.day__favorite` (`data-action="favorite-day"`) opens `#favorite-edit-modal` (name + why). Re-favoriting an existing day/week opens edit for that entry. `runFavoriteEditSave` upserts by id (or by type+dateKey duplicate). `syncDayFavoriteButtons` disables the day Favorite button when that day has no notes (same empty-day rule as Clear/Copy) and sets `aria-pressed` / label **Favorited** when an entry exists.
 - **Browse / jump** — `#favorites-open` opens right slide-in `#favorites-sidebar` (`favorites-sidebar--open`, `inert` when closed; counted in `updateBodyModalOpen`). Browse list (`#favorites-list`) uses `data-action="go-favorite"`.
 - **Manage** — `#favorites-manage-toggle` flips `favoritesManaging`: shows `#favorites-manage-list` with ↑↓ (`favorite-move-up` / `favorite-move-down`), Edit, Delete; **Done** returns to browse. `syncFavoritesSidebarMode` keeps title/hint/lists in sync.
 - **Navigate** — `goToFavoriteById`: **week** → `clearActiveFavoriteDayHighlight` + `setViewedWeekStart`; **day** → `setActiveFavoriteDayHighlight(dateKey)` (clears prior highlight first) + jump to that week’s Monday + `setDaysCarouselDayId` + focus textarea. `activeFavoriteDayKey` is **session-only** (not in localStorage); `markFavoriteDay` applies `.day--favorite-day` only when that date is in the viewed week.
@@ -422,7 +427,7 @@ All seven `.day__editor` boxes share one height.
 - `pointerdown` on the editor’s bottom-right resize grip (~24px) sets `dayEditorResizeTarget`.
 - `pointerup` reads that editor’s `offsetHeight`, runs `applyDayEditorHeight` on **all** editors, then `saveDayEditorHeight`.
 
-**Boot** — `loadDayEditorHeight()` restores the saved px height from `nutrients-day-editor-height`.
+**Boot** — `loadDayEditorHeight()` restores the saved px height from settings `dayEditorHeight` (via `NutrientsPersist`).
 
 ## Internal naming vs UI
 
@@ -441,7 +446,8 @@ All seven `.day__editor` boxes share one height.
 | Add plant sterols / creatine | `LONGEVITY_FIELDS` + `DAILY_LONGEVITY_DV` (plantSterols 2 g); creatine is `limiting: true`, no DV |
 | Carotenoids without explicit food value | `resolveLongevityValue` vitamin-A fallback; set `carotenoids: 15` in `longevity-dv.js` |
 | Longevity 100% bar notch | `longevityBarHtml`, `longevityBarShowsRefNotch`, CSS `.dashboard__longevity-bar-notch` |
-| Persist micro panel toggles | settings `microViewDaily` / `microShowDv`, acute/daily-intake show keys, sticky Filter/Highlight keys + settings `filterNutrients`; load/save in `boot()` |
+| Auth / multi-user tables | `NutrientsAuth` / `NutrientsPersist` in `persist.js`; `syncAuthUi` / `afterAuthSessionChange` / `loadPersistedAppState` / `applyLoadedAppStateToUi`; see [AGENTS-data-persistence.md](./AGENTS-data-persistence.md) |
+| Persist micro panel toggles | settings `microViewDaily` / `microShowDv`, acute/daily-intake show keys, sticky Filter/Highlight keys + settings `filterNutrients`; loaded via `loadPersistedAppState` |
 | Condition longevity rows in micro panel | `MICRO_CONDITION_FOCUS.*.longevityNutrients` + `microConditionDisplayFields` |
 | Add derived micro metric | `MICRO_DERIVED_DEFS` (see 2:1 and 3:1 fiber ratios) + `microDerivedRowTargetDisplay` / `microDerivedAmtText` |
 | Change fiber soluble/insoluble split | `solubleFiberRatioForFoodName` (name heuristics) + `FIBER_COMPONENT_DV_RATIO` in `demographic-dv.js` |
@@ -460,7 +466,7 @@ All seven `.day__editor` boxes share one height.
 | Toggle food table cal column | `keywordCaloriesOpen`, `updateKeywordCaloriesUi`, settings `keywordsCaloriesOpen` |
 | Add longevity section | `LONGEVITY_NAV_SECTIONS_CORE` / `LONGEVITY_SECTION_DEFS` + row maps + `renderLongevityPanel` + tip HTML + `definitions-longevity.json` + `longevityNavTopicColors` |
 | Emphasize today’s weekday | `activeTodayDayId` / `markTodayDay`; CSS `.day--today` / `.dashboard__card--today` (only on current week) |
-| Diary favorites (day/week) | `diaryFavorites` / `goToFavoriteById` / `markFavoriteDay`; CSS `.day--favorite-day`; `#favorites-sidebar` + `#favorite-edit-modal`; persist `nutrients_favorites` |
+| Diary favorites (day/week) | `diaryFavorites` / `goToFavoriteById` / `markFavoriteDay` / `syncDayFavoriteButtons`; CSS `.day--favorite-day`; `#favorites-sidebar` + `#favorite-edit-modal`; persist `nutrients_favorites` |
 | Mobile days carousel | `initDaysCarousel` / `setDaysCarouselDayId`; CSS `@media (max-width: 520px)` scroll-snap on `.week__grid` |
 | Multi-week nav / copy | `setViewedWeekStart` / `copyDayToToday` / `copyViewedWeekToThisWeek`; `.week__nav`, `.day__date`, `.day__copy-menu` actions (`copy-week-to-this-week`, `copy-week-to-custom`, `copy-day-to-*`) + `#copy-date-modal` |
 | Sample day meals | `IMPORT_SAMPLE_MEALS_URL` + `importSampleMeals` + `samples/day-meals.json` (applies to viewed week) |
@@ -474,7 +480,7 @@ All seven `.day__editor` boxes share one height.
 
 ## Event binding & boot (end of `app.js`)
 
-Listeners are attached in the **last ~20%** of the file: keywords table click/input, table search + pagination + sort buttons, per-day `bindDay` loop (focus/blur editor modes, backdrop click-to-caret), `bindDayEditorResize`, week nav (`#week-nav-prev` / `#week-nav-next` / `#week-nav-this` / `#favorites-open`) + Favorite week (`#week-nav-favorite` above day grid) + `#favorites-sidebar` (browse/manage actions) + `#favorite-edit-modal` + per-day Copy menu / `handleDayCopyAction`, mobile days carousel (`data-days-carousel` + grid scroll), dashboard toggles (week/micro/longevity/print + micro view/targets), sticky option disclosures (Highlight/Filter/By Nutrients/daily/acute) + panel close buttons, unmatched carousel actions, condition/filter dropdown, target-ref + acute + daily-intake popovers (`initTargetRefPopoverEvents`), micros + longevity modals, definition modals (`data-micro-def` / `data-longevity-def`), long food-note modal, demographic options + body-weight input/unit, phosphorus/caffeine/DASH tip modals, starter guide dismiss + empty-state sample link, and import/sample food + sample meals modals — see [import doc](./AGENTS_CODE_REFERENCE-import.md).
+Listeners are attached in the **last ~20%** of the file: auth header/modals (`#auth-login-open` / `#auth-signup-open` / `#auth-logout` + signup/login submit), keywords table click/input, table search + pagination + sort buttons, per-day `bindDay` loop (focus/blur editor modes, backdrop click-to-caret), `bindDayEditorResize`, week nav (`#week-nav-prev` / `#week-nav-next` / `#week-nav-this` / `#favorites-open`) + Favorite week (`#week-nav-favorite` above day grid) + `#favorites-sidebar` (browse/manage actions) + `#favorite-edit-modal` + per-day Copy menu / `handleDayCopyAction`, mobile days carousel (`data-days-carousel` + grid scroll), dashboard toggles (week/micro/longevity/print + micro view/targets), sticky option disclosures (Highlight/Filter/By Nutrients/daily/acute) + panel close buttons, unmatched carousel actions, condition/filter dropdown, target-ref + acute + daily-intake popovers (`initTargetRefPopoverEvents`), micros + longevity modals, definition modals (`data-micro-def` / `data-longevity-def`), long food-note modal, demographic options + body-weight input/unit, phosphorus/caffeine/DASH tip modals, starter guide dismiss + empty-state sample link, and import/sample food + sample meals modals — see [import doc](./AGENTS_CODE_REFERENCE-import.md).
 
 Boot sequence (very end):
 
@@ -487,16 +493,10 @@ loadAppConfig(function () {
   loadFoodNotesDefinitions(definitionsReady);
   loadFoodCategoriesDefinitions(definitionsReady);
 });
-// boot(): loadFoodDefinitions → loadKeywordReorderOpen → loadKeywordCaloriesOpen →
-//         loadKeywordsPageSize → loadDayNotes → loadFavorites → markTodayDay →
-//         initDaysCarousel → syncWeekFavoriteButton / syncDayFavoriteButtons →
-//         loadDayHighlightsPreference → loadDayEditorHeight →
-//         loadMicroViewDaily → loadShowMicroDailyDv →
-//         loadShowAcuteToxicityIcons → loadShowDailyIntakeIcons →
-//         loadStickyIconFilters → loadStickyIconHighlights → sync toggle UIs →
-//         setNutrientFilterSectionOpen(true) when filterStickyNutrientKeys nonempty →
-//         loadDemographic → loadTdee → loadBodyWeight →
-//         renderDemographicUi → syncSettingsTdeeInput / syncSettingsWeightInput →
-//         renderKeywords → initLongevityNav → initTargetRefPopoverEvents →
-//         refreshAll → applyInitialLongevityHash → maybeShowStarterGuideImportStep
+// boot():
+//   loadPersistedAppState()  // persist.migrate + foods/meals/favorites/settings prefs
+//   initDaysCarousel → initLongevityNav → initTargetRefPopoverEvents
+//   applyLoadedAppStateToUi()  // today/favorites sync, sticky UIs, renderKeywords/refreshAll, syncAuthUi
+//   applyInitialLongevityHash → maybeShowStarterGuideImportStep
+// afterAuthSessionChange() (signup/login/logout) = loadPersistedAppState + applyLoadedAppStateToUi
 ```

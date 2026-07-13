@@ -4,7 +4,9 @@
 
 JSON import for a **single** food definition row (with AI prompt help), **bulk** export/import for the full list, **sample food** import from a bundled file, **sample day meals** import, and the **micro-gaps** AI prompt builder.
 
-Parent: [AGENTS_CODE_REFERENCE.md](./AGENTS_CODE_REFERENCE.md) · Table/macros: [AGENTS_CODE_REFERENCE-core.md](./AGENTS_CODE_REFERENCE-core.md)
+Parent: [AGENTS_CODE_REFERENCE.md](./AGENTS_CODE_REFERENCE.md) · Table/macros: [AGENTS_CODE_REFERENCE-core.md](./AGENTS_CODE_REFERENCE-core.md) · Persistence: [AGENTS-data-persistence.md](./AGENTS-data-persistence.md)
+
+> **Persistence:** import/export update in-memory state immediately, but `saveFoodDefinitions` / `saveDayNotes` only write to localStorage when a user is logged in (`NutrientsPersist` no-ops when logged out). Download filenames like `nutrients-food-definitions.json` are export artifacts, not storage keys.
 
 ## Single import modal (`#import-modal`, `index.html`)
 
