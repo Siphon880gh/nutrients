@@ -4,125 +4,153 @@
 
 **Storage Mechanism:** Browser LocalStorage  
 **Format:** JSON strings  
-**Scope:** Single-user, device/browser-specific (no cloud sync)  
-**Repository module:** [`persist.js`](./persist.js) (`NutrientsPersist`)
+**Scope:** Multi-user, device/browser-specific (no cloud sync)  
+**Repository modules:** [`persist.js`](./persist.js) — `NutrientsAuth` + `NutrientsPersist`
 
-App data is organized as a small set of **tables** (one localStorage key each), not as dozens of scattered preference keys.
+App data is organized as a small set of **tables** (one localStorage key each). Entity rows carry a `userId` so each tester’s data stays isolated.
 
 ### Storage Keys (Database-like Organization)
 
 | Key | Purpose | Structure |
 |-----|---------|-----------|
-| `nutrients_food_definitions` | Food definitions table | `FoodDefinition[]` |
-| `nutrients_day_meals` | Day meals / diary table | `DayMealsPayload` |
-| `nutrients_favorites` | Diary favorites table | `Favorite[]` |
-| `nutrients_settings` | Settings / UI preferences row | `Settings` |
+| `nutrients_users` | Users table (accounts) | `User[]` |
+| `nutrients_session` | Current logged-in session | `Session \| null` |
+| `nutrients_food_definitions` | Food definitions table | `FoodDefinition[]` (+ `userId`) |
+| `nutrients_day_meals` | Day meals / diary table | `DayMealsRow[]` (+ `userId`) |
+| `nutrients_favorites` | Diary favorites table | `Favorite[]` (+ `userId`) |
+| `nutrients_settings` | Settings rows | `SettingsRow[]` (+ `userId`) |
+| `nutrients_orphan_legacy` | Temporary hold for pre–multi-user data | Orphan blob (removed after first signup claims it) |
 
 ---
 
 ## Persisted Data Structures
+
+### Users Table (`nutrients_users`)
+
+```javascript
+[
+  {
+    id: string,        // "user-{timestamp}-{random}"
+    email: string,     // normalized lowercase
+    password: string,  // plaintext (local testing only)
+    createdAt: string  // ISO 8601
+  }
+]
+```
+
+### Session (`nutrients_session`)
+
+```javascript
+{
+  userId: string,
+  email: string
+}
+// or absent / null when logged out
+```
 
 ### Food Definitions Table (`nutrients_food_definitions`)
 
 ```javascript
 [
   {
+    userId: string,
     id: string,
     name: string,
     protein: number | "",
     carbs: number | "",
     fats: number | "",
-    micros: object,      // micronutrient amounts keyed by micro field id
-    longevity: object    // longevity nutrient amounts / flags
+    micros: object,
+    longevity: object
   }
 ]
 ```
 
-Order in the array is the food-table display order.
+Repository load/save for the UI strips/adds `userId` and only returns the current user’s rows.
 
 ### Day Meals Table (`nutrients_day_meals`)
 
 ```javascript
-{
-  version: 2,
-  days: {
-    "YYYY-MM-DD": string  // free-text meal lines for that calendar day
+[
+  {
+    userId: string,
+    version: 2,
+    days: {
+      "YYYY-MM-DD": string
+    }
   }
-}
+]
 ```
 
-Empty day strings are omitted when saving. Legacy single-week `{ mon…sun }` payloads are migrated onto the current Mon–Sun week once on load (handled in `app.js`).
+One row per user. Empty day strings are omitted when saving. Legacy single-week `{ mon…sun }` payloads may arrive via orphan claim as `_legacyWeek` and are migrated in `app.js` on load.
 
 ### Favorites Table (`nutrients_favorites`)
 
 ```javascript
 [
   {
-    id: string,           // e.g. "fav-{timestamp}-{random}"
+    userId: string,
+    id: string,
     type: "day" | "week",
-    dateKey: string,      // day: YYYY-MM-DD; week: Monday YYYY-MM-DD
+    dateKey: string,
     name: string,
     description: string
   }
 ]
 ```
 
-Array order is browse/manage order.
-
 ### Settings (`nutrients_settings`)
 
-One JSON object holding all durable preferences (formerly many separate keys):
+One settings row per user:
 
 ```javascript
 {
-  version: 1,
+  userId: string,
+  version: 2,
   demographic: "male" | "female",
   tdee: number | null,
   bodyWeightKg: number | null,
-  viewedWeekStart: string | null,   // Monday YYYY-MM-DD
-  dayEditorHeight: number | null,   // px
-  dayHighlights: boolean,           // default true
+  viewedWeekStart: string | null,
+  dayEditorHeight: number | null,
+  dayHighlights: boolean,
   microViewDaily: boolean,
   microShowDv: boolean,
   showAcuteSideEffects: boolean,
   showAcuteAdverseEffects: boolean,
-  showDailyIntakeIcons: boolean,    // default true
+  showDailyIntakeIcons: boolean,
   filterDailyIntake: boolean,
   filterSideEffects: boolean,
   filterAdverseEffects: boolean,
-  filterNutrients: string[],        // micro field keys
+  filterNutrients: string[],
   highlightDailyIntake: boolean,
   highlightSideEffects: boolean,
   highlightAdverseEffects: boolean,
   keywordsReorderOpen: boolean,
   keywordsCaloriesOpen: boolean,
-  keywordsPageSize: 0 | 10 | 25 | 50 | 100  // 0 = All; default 25
+  keywordsPageSize: 0 | 10 | 25 | 50 | 100
 }
 ```
 
 ---
 
-## Entity Definitions
+## Authentication Operations
 
-### FoodDefinition
+| Operation | Storage change |
+|-----------|----------------|
+| Signup | Append `User` to `nutrients_users`; write `nutrients_session`; first signup claims `nutrients_orphan_legacy` if present |
+| Login | Write `nutrients_session` |
+| Logout | Remove `nutrients_session`; clear settings cache |
 
-| Field | Type | Required | Description |
-|-------|------|----------|-------------|
-| `id` | `string` | Yes | Stable row id |
-| `name` | `string` | Yes | Match name for diary lines |
-| `protein` / `carbs` / `fats` | `number \| ""` | Yes | Macro grams per serving |
-| `micros` | `object` | Yes | Normalized micro amounts |
-| `longevity` | `object` | Yes | Normalized longevity amounts |
+**Email:** trimmed + lowercased. **Passwords:** plaintext for local in-person testing only.
 
-### Favorite
+When logged out, entity loaders return empty/defaults and saves no-op (no guest persistence).
 
-| Field | Type | Required | Description |
-|-------|------|----------|-------------|
-| `id` | `string` | Yes | Unique favorite id |
-| `type` | `"day" \| "week"` | Yes | Jump target kind |
-| `dateKey` | `string` | Yes | Calendar day or week Monday |
-| `name` | `string` | Yes | Display name |
-| `description` | `string` | No | Optional note |
+---
+
+## Multi-User Isolation
+
+1. App reads `nutrients_session` for `userId`
+2. Loads only rows where `userId` matches
+3. Saves replace that user’s rows inside each entity table (other users’ rows untouched)
 
 ---
 
@@ -132,58 +160,29 @@ One JSON object holding all durable preferences (formerly many separate keys):
 |-------|--------|
 | `activeFavoriteDayKey` | Session-only teal day highlight |
 | Modal open / carousel indices | UI-only |
-| In-memory match caches | Derived from definitions + day text |
-| Category / micro / longevity definition JSON | Loaded from repo files via `fetch`, not localStorage |
+| In-memory match caches | Derived |
+| Category / micro / longevity definition JSON | Fetched from repo files |
 
 ---
 
 ## Migration Handling
 
-On first access after upgrade, `NutrientsPersist.migrate()`:
-
-1. Copies `nutrients-food-definitions` or legacy `nutrients-keywords` → `nutrients_food_definitions`
-2. Copies `nutrients-day-notes` → `nutrients_day_meals`
-3. Copies `nutrients-favorites` → `nutrients_favorites`
-4. Collapses hyphenated preference keys into `nutrients_settings`
-5. Removes the legacy keys once migration succeeds
-
-Missing fields in `nutrients_settings` are filled from `defaultSettings()` so new preference fields stay backward-compatible.
+1. Hyphenated single-key prefs → table keys (unchanged from prior migration)
+2. Single-user table payloads (no `userId`) → `nutrients_orphan_legacy`, tables reset to `[]`
+3. First successful **Sign up** claims the orphan into that user’s rows and deletes the orphan key
 
 ---
 
 ## Save / Load Flow
 
-### Save triggers (via `app.js` helpers → `NutrientsPersist`)
-
-| Trigger | Table(s) |
-|---------|----------|
-| Food row edit / add / delete / reorder / micros / longevity / import | `nutrients_food_definitions` |
-| Day textarea input, week nav, clear/import meals | `nutrients_day_meals` (+ `viewedWeekStart` in settings) |
-| Favorite add / edit / delete / reorder | `nutrients_favorites` |
-| Demographic, TDEE, weight, UI toggles, filters, highlights, page size, editor height | `nutrients_settings` |
-| `beforeunload` | definitions, demographic, TDEE, day meals, day highlights |
-
-### Load triggers
-
-- Boot (`boot()`): `persist.migrate()` then load all four tables into in-memory state
-
-### Implementation rule
-
-UI / domain code in `app.js` must not call `localStorage` for app data. All reads/writes go through `NutrientsPersist`.
-
----
-
-## Storage Limits
-
-LocalStorage is typically 5–10 MB per origin. Food definitions and multi-week meal text dominate size. Favorites and settings are small. Export/import JSON remains the backup path for large diaries.
+UI talks only to `NutrientsAuth` / `NutrientsPersist`. `app.js` reloads in-memory state after signup, login, and logout via `afterAuthSessionChange()`.
 
 ---
 
 ## Future Persistence Considerations
 
-| Feature | Persistence impact |
-|---------|-------------------|
-| Named profiles / multi-user | Additional user table + scoped keys (see dailytimepoints pattern) |
-| Cross-device sync | Would need a backend |
-| Quotas / compaction | Drop empty historical days or archive old weeks |
-| Schema bumps | Increment `Settings.version` / day-meals `version` and extend `migrate()` |
+| Feature | Notes |
+|---------|--------|
+| Backend / cloud sync | Replace localStorage adapters; keep repository APIs |
+| Password hashing | Replace plaintext before any non-local use |
+| Account deletion | Remove user + all rows with that `userId` |

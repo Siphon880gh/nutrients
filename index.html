@@ -21,11 +21,21 @@
         <h1>Week meals</h1>
         <p class="week__hint">Mon–Sun by calendar week · multiple lines per day</p>
       </div>
-      <button type="button" id="settings-open" class="week__settings" aria-haspopup="dialog" aria-label="Settings">
-        <span id="settings-demographic-icon" class="week__settings-icon" aria-hidden="true">♂</span>
-        <span id="settings-demographic-abbr" class="week__settings-abbr" aria-hidden="true">M</span>
-        <span class="week__settings-label">Settings</span>
-      </button>
+      <div class="week__header-actions">
+        <div id="auth-logged-out" class="week__auth" hidden>
+          <button type="button" id="auth-login-open" class="week__auth-btn">Log in</button>
+          <button type="button" id="auth-signup-open" class="week__auth-btn week__auth-btn--primary">Sign up</button>
+        </div>
+        <div id="auth-logged-in" class="week__auth" hidden>
+          <span id="auth-user-email" class="week__auth-email"></span>
+          <button type="button" id="auth-logout" class="week__auth-btn">Log out</button>
+        </div>
+        <button type="button" id="settings-open" class="week__settings" aria-haspopup="dialog" aria-label="Settings">
+          <span id="settings-demographic-icon" class="week__settings-icon" aria-hidden="true">♂</span>
+          <span id="settings-demographic-abbr" class="week__settings-abbr" aria-hidden="true">M</span>
+          <span class="week__settings-label">Settings</span>
+        </button>
+      </div>
     </header>
 
     <section class="dashboard" aria-labelledby="dashboard-heading">
@@ -779,6 +789,60 @@
     </section>
 
   </main>
+
+  <div id="auth-signup-modal" class="modal" hidden>
+    <div class="modal__backdrop" data-action="close-auth-signup-modal"></div>
+    <div class="modal__panel" role="dialog" aria-modal="true" aria-labelledby="auth-signup-modal-title">
+      <header class="modal__header">
+        <h3 id="auth-signup-modal-title" class="modal__title">Sign up</h3>
+      </header>
+      <div class="import-modal__body">
+        <p class="import-modal__hint">Create a local account for this browser. Data stays on this device.</p>
+        <div class="auth-form-fields">
+          <div class="import-json-wrap">
+            <label class="import-json-wrap__label" for="auth-signup-email">Email</label>
+            <input type="email" id="auth-signup-email" class="week-jump-input" autocomplete="email" spellcheck="false">
+          </div>
+          <div class="import-json-wrap">
+            <label class="import-json-wrap__label" for="auth-signup-password">Password</label>
+            <input type="password" id="auth-signup-password" class="week-jump-input" autocomplete="new-password">
+          </div>
+        </div>
+        <p id="auth-signup-error" class="import-modal__error" hidden></p>
+      </div>
+      <footer class="modal__footer modal__footer--split">
+        <button type="button" id="auth-signup-cancel" class="modal__secondary">Cancel</button>
+        <button type="button" id="auth-signup-submit" class="modal__done">Create account</button>
+      </footer>
+    </div>
+  </div>
+
+  <div id="auth-login-modal" class="modal" hidden>
+    <div class="modal__backdrop" data-action="close-auth-login-modal"></div>
+    <div class="modal__panel" role="dialog" aria-modal="true" aria-labelledby="auth-login-modal-title">
+      <header class="modal__header">
+        <h3 id="auth-login-modal-title" class="modal__title">Log in</h3>
+      </header>
+      <div class="import-modal__body">
+        <p class="import-modal__hint">Log in to load your meals, foods, and settings on this device.</p>
+        <div class="auth-form-fields">
+          <div class="import-json-wrap">
+            <label class="import-json-wrap__label" for="auth-login-email">Email</label>
+            <input type="email" id="auth-login-email" class="week-jump-input" autocomplete="email" spellcheck="false">
+          </div>
+          <div class="import-json-wrap">
+            <label class="import-json-wrap__label" for="auth-login-password">Password</label>
+            <input type="password" id="auth-login-password" class="week-jump-input" autocomplete="current-password">
+          </div>
+        </div>
+        <p id="auth-login-error" class="import-modal__error" hidden></p>
+      </div>
+      <footer class="modal__footer modal__footer--split">
+        <button type="button" id="auth-login-cancel" class="modal__secondary">Cancel</button>
+        <button type="button" id="auth-login-submit" class="modal__done">Log in</button>
+      </footer>
+    </div>
+  </div>
 
   <div id="week-jump-modal" class="modal" hidden>
     <div class="modal__backdrop" data-action="close-week-jump-modal"></div>

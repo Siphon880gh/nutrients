@@ -11,7 +11,7 @@ Instructions for AI agents working in this **nutrients** app.
 | [AGENTS_CODE_REFERENCE-core.md](./AGENTS_CODE_REFERENCE-core.md) | Food table, matching, dashboard, micros, longevity, categories |
 | [AGENTS_CODE_REFERENCE-import.md](./AGENTS_CODE_REFERENCE-import.md) | Import / export / sample foods & meals |
 | [AGENTS_CODE_REFERENCE-ui.md](./AGENTS_CODE_REFERENCE-ui.md) | Markup, CSS, modals, highlight overlay |
-| [AGENTS-data-persistence.md](./AGENTS-data-persistence.md) | localStorage tables + `NutrientsPersist` repository |
+| [AGENTS-data-persistence.md](./AGENTS-data-persistence.md) | localStorage tables + `NutrientsAuth` / `NutrientsPersist` (multi-user) |
 | [specs-data-persistence.md](./specs-data-persistence.md) | Persistence data shapes, migration, save/load rules |
 
 Authoring guides (human + agent): `GUIDE_ADDING_FOOD.md`, `GUIDE_IMPROVING_FOOD.md`, `GUIDE_ADDING_MULTIVITAMIN.md`.
@@ -20,7 +20,8 @@ Authoring guides (human + agent): `GUIDE_ADDING_FOOD.md`, `GUIDE_IMPROVING_FOOD.
 
 - Static client-only app: `index.html`, `styles.css`, `persist.js`, `app.js` (IIFE).
 - No bundler, no backend. Open via a static file server so `fetch` of JSON works.
-- Food definitions, day meals, favorites, and settings persist in `localStorage` via `NutrientsPersist` (four table keys); sample data lives under `samples/`.
+- Food definitions, day meals, favorites, and settings persist in `localStorage` via `NutrientsAuth` + `NutrientsPersist` (users/session + per-`userId` entity tables); sample data lives under `samples/`.
+- Header auth: Sign up / Log in / Log out (local accounts for multi-user testing).
 - Category filter map: `definitions-food-categories.json`.
 
 ## Skills

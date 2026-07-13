@@ -28,6 +28,72 @@ body {
   margin-bottom: 1rem;
 }
 
+.week__header-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.45rem;
+  flex-shrink: 0;
+}
+
+.week__auth {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.week__auth[hidden] {
+  display: none;
+}
+
+.week__auth-email {
+  max-width: 12rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 0.78rem;
+  color: #5c5c5c;
+}
+
+.week__auth-btn {
+  display: inline-flex;
+  align-items: center;
+  min-height: 1.9rem;
+  padding: 0.35rem 0.65rem;
+  font: inherit;
+  font-size: 0.8rem;
+  font-weight: 600;
+  line-height: 1.2;
+  border: 1px solid #c8c8c4;
+  border-radius: 6px;
+  background: #fff;
+  color: #1a1a1a;
+  cursor: pointer;
+}
+
+.week__auth-btn:hover {
+  border-color: #9eb4cc;
+  background: #e8eef4;
+}
+
+.week__auth-btn--primary {
+  border-color: #7a9ab8;
+  background: #e8eef4;
+  color: #2a4a6e;
+}
+
+.week__auth-btn--primary:hover {
+  border-color: #5e82a6;
+  background: #dce7f2;
+}
+
+.auth-form-fields {
+  display: grid;
+  gap: 0.75rem;
+}
+
 .week__header-text {
   min-width: 0;
 }

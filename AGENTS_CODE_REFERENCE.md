@@ -33,7 +33,7 @@ When context is tight: read **this file** first, then open the one feature file 
 | Logic | Single IIFE in `app.js` (~19,700 lines) |
 | Data files | `config.json` (% DV tiers), `definitions-micronutrients.json`, `definitions-longevity.json`, `definitions-food-notes.json`, `definitions-food-categories.json`, `samples/definitions-food.json`, `samples/day-meals.json` (all `fetch`ed at boot / on demand) |
 | Reference values | `demographic-dv.js` (micro DV, IOM amino-acid bw minimums, fiber component ratio), `longevity-dv.js` (longevity DV) — globals, loaded before `app.js` |
-| Persistence | `persist.js` (`NutrientsPersist`) → four localStorage tables: **food definitions**, **day meals**, **favorites**, **settings** (demographic, TDEE, weight, viewed week, UI prefs). See [AGENTS-data-persistence.md](./AGENTS-data-persistence.md) / [specs-data-persistence.md](./specs-data-persistence.md) |
+| Persistence | `persist.js` (`NutrientsAuth` + `NutrientsPersist`) → localStorage tables: **users**, **session**, **food definitions**, **day meals**, **favorites**, **settings** (rows keyed by `userId`). Header Sign up / Log in / Log out. See [AGENTS-data-persistence.md](./AGENTS-data-persistence.md) / [specs-data-persistence.md](./specs-data-persistence.md) |
 | Guides / QA | `GUIDE_ADDING_FOOD.md`, `GUIDE_IMPROVING_FOOD.md`, `GUIDE_ADDING_MULTIVITAMIN.md`; `scripts/run-micro-qa.js`, `scripts/run-plant-sterols-qa.js`, `scripts/list-uncategorized-foods.js`; `.agents/skills/qa-definitions-food.json`, `.agents/skills/categorize-food-definitions.json` |
 | Run | Open `index.html` via a static file server (boot `fetch`es JSON, so `file://` will fall back to defaults) |
 
@@ -67,13 +67,15 @@ When context is tight: read **this file** first, then open the one feature file 
 │  sort A–Z, optional cal column, micros + longevity       │
 │  modals, single/bulk/sample import, reorder,             │
 │  move-to-position; empty-state sample link)              │
-│  ← persisted: localStorage `nutrients_food_definitions` │
+│  ← persisted: `nutrients_food_definitions` (+ userId)   │
 │  Settings (header): sex / micro DV profile + TDEE + weight│
-│  ← persisted: fields on `nutrients_settings`              │
+│  ← persisted: `nutrients_settings` (+ userId)             │
+│  Auth (header): Sign up / Log in / Log out                │
+│  ← `nutrients_users` + `nutrients_session`                │
 └─────────────────────────────────────────────────────────┘
 ```
 
-**Persisted** (via `NutrientsPersist`): `nutrients_food_definitions`, `nutrients_day_meals` (v2 date map), `nutrients_favorites`, `nutrients_settings` (demographic, TDEE, body weight, viewed week, editor height, highlights, micro/acute/filter/highlight prefs, keywords UI prefs). Details: [specs-data-persistence.md](./specs-data-persistence.md). Bulk export/import for meals and foods; sample foods from `samples/definitions-food.json`; sample meals from `samples/day-meals.json`; clear per day / viewed week with `confirm`.
+**Persisted** (via `NutrientsAuth` / `NutrientsPersist`): `nutrients_users`, `nutrients_session`, `nutrients_food_definitions`, `nutrients_day_meals`, `nutrients_favorites`, `nutrients_settings` (all entity rows include `userId`). Details: [specs-data-persistence.md](./specs-data-persistence.md). Bulk export/import for meals and foods; sample foods from `samples/definitions-food.json`; sample meals from `samples/day-meals.json`; clear per day / viewed week with `confirm`.
 
 ## File tree
 

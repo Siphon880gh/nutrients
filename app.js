@@ -10,6 +10,7 @@
   ];
   var persist =
     typeof NutrientsPersist !== "undefined" ? NutrientsPersist : null;
+  var auth = typeof NutrientsAuth !== "undefined" ? NutrientsAuth : null;
   var KEYWORDS_DEFAULT_PAGE_SIZE = 25;
   var demographicDv =
     typeof NutrientsDemographicDv !== "undefined" ? NutrientsDemographicDv : null;
@@ -196,6 +197,24 @@
   var settingsOpenBtn = document.getElementById("settings-open");
   var settingsModalEl = document.getElementById("settings-modal");
   var settingsModalDoneBtn = document.getElementById("settings-modal-done");
+  var authLoggedOutEl = document.getElementById("auth-logged-out");
+  var authLoggedInEl = document.getElementById("auth-logged-in");
+  var authUserEmailEl = document.getElementById("auth-user-email");
+  var authLoginOpenBtn = document.getElementById("auth-login-open");
+  var authSignupOpenBtn = document.getElementById("auth-signup-open");
+  var authLogoutBtn = document.getElementById("auth-logout");
+  var authSignupModalEl = document.getElementById("auth-signup-modal");
+  var authLoginModalEl = document.getElementById("auth-login-modal");
+  var authSignupEmailEl = document.getElementById("auth-signup-email");
+  var authSignupPasswordEl = document.getElementById("auth-signup-password");
+  var authSignupErrorEl = document.getElementById("auth-signup-error");
+  var authSignupCancelBtn = document.getElementById("auth-signup-cancel");
+  var authSignupSubmitBtn = document.getElementById("auth-signup-submit");
+  var authLoginEmailEl = document.getElementById("auth-login-email");
+  var authLoginPasswordEl = document.getElementById("auth-login-password");
+  var authLoginErrorEl = document.getElementById("auth-login-error");
+  var authLoginCancelBtn = document.getElementById("auth-login-cancel");
+  var authLoginSubmitBtn = document.getElementById("auth-login-submit");
   var settingsDemographicIconEl = document.getElementById("settings-demographic-icon");
   var settingsDemographicAbbrEl = document.getElementById("settings-demographic-abbr");
   var settingsTdeeEl = document.getElementById("settings-tdee");
@@ -7646,6 +7665,8 @@
       (histamineTipModalEl && !histamineTipModalEl.hidden) ||
       (foodNoteModalEl && !foodNoteModalEl.hidden) ||
       (settingsModalEl && !settingsModalEl.hidden) ||
+      (authSignupModalEl && !authSignupModalEl.hidden) ||
+      (authLoginModalEl && !authLoginModalEl.hidden) ||
       (tdeeCalculatorModalEl && !tdeeCalculatorModalEl.hidden) ||
       (tdeeHintModalEl && !tdeeHintModalEl.hidden) ||
       (macroSplitHintModalEl && !macroSplitHintModalEl.hidden) ||
@@ -12604,6 +12625,177 @@
     saveTdee();
   }
 
+  function showAuthSignupError(message) {
+    if (!authSignupErrorEl) return;
+    if (!message) {
+      authSignupErrorEl.hidden = true;
+      authSignupErrorEl.textContent = "";
+      return;
+    }
+    authSignupErrorEl.hidden = false;
+    authSignupErrorEl.textContent = message;
+  }
+
+  function showAuthLoginError(message) {
+    if (!authLoginErrorEl) return;
+    if (!message) {
+      authLoginErrorEl.hidden = true;
+      authLoginErrorEl.textContent = "";
+      return;
+    }
+    authLoginErrorEl.hidden = false;
+    authLoginErrorEl.textContent = message;
+  }
+
+  function syncAuthUi() {
+    var user = auth && auth.getCurrentUser ? auth.getCurrentUser() : null;
+    var loggedIn = !!user;
+    if (authLoggedOutEl) {
+      authLoggedOutEl.hidden = loggedIn;
+      authLoggedOutEl.setAttribute("aria-hidden", loggedIn ? "true" : "false");
+    }
+    if (authLoggedInEl) {
+      authLoggedInEl.hidden = !loggedIn;
+      authLoggedInEl.setAttribute("aria-hidden", loggedIn ? "false" : "true");
+    }
+    if (authUserEmailEl) {
+      authUserEmailEl.textContent = user ? user.email : "";
+      authUserEmailEl.title = user ? user.email : "";
+    }
+    if (loggedIn) {
+      closeAuthSignupModal();
+      closeAuthLoginModal();
+    }
+  }
+
+  function closeAuthSignupModal() {
+    if (!authSignupModalEl || authSignupModalEl.hidden) {
+      showAuthSignupError("");
+      return;
+    }
+    authSignupModalEl.hidden = true;
+    showAuthSignupError("");
+    updateBodyModalOpen();
+  }
+
+  function closeAuthLoginModal() {
+    if (!authLoginModalEl || authLoginModalEl.hidden) {
+      showAuthLoginError("");
+      return;
+    }
+    authLoginModalEl.hidden = true;
+    showAuthLoginError("");
+    updateBodyModalOpen();
+  }
+
+  function openAuthSignupModal() {
+    if (auth && auth.isLoggedIn && auth.isLoggedIn()) return;
+    closeAuthLoginModal();
+    if (!authSignupModalEl) return;
+    showAuthSignupError("");
+    if (authSignupEmailEl) authSignupEmailEl.value = "";
+    if (authSignupPasswordEl) authSignupPasswordEl.value = "";
+    authSignupModalEl.hidden = false;
+    updateBodyModalOpen();
+    if (authSignupEmailEl) authSignupEmailEl.focus();
+  }
+
+  function openAuthLoginModal() {
+    if (auth && auth.isLoggedIn && auth.isLoggedIn()) return;
+    closeAuthSignupModal();
+    if (!authLoginModalEl) return;
+    showAuthLoginError("");
+    if (authLoginEmailEl) authLoginEmailEl.value = "";
+    if (authLoginPasswordEl) authLoginPasswordEl.value = "";
+    authLoginModalEl.hidden = false;
+    updateBodyModalOpen();
+    if (authLoginEmailEl) authLoginEmailEl.focus();
+  }
+
+  function loadPersistedAppState() {
+    if (persist) persist.migrate();
+    loadFoodDefinitions();
+    loadKeywordReorderOpen();
+    loadKeywordCaloriesOpen();
+    loadKeywordsPageSize();
+    loadDayNotes();
+    loadFavorites();
+    loadDayHighlightsPreference();
+    loadDayEditorHeight();
+    loadMicroViewDaily();
+    loadShowMicroDailyDv();
+    loadShowAcuteToxicityIcons();
+    loadShowDailyIntakeIcons();
+    loadStickyIconFilters();
+    loadStickyIconHighlights();
+    loadDemographic();
+    loadTdee();
+    loadBodyWeight();
+  }
+
+  function applyLoadedAppStateToUi() {
+    markTodayDay();
+    syncWeekFavoriteButton();
+    syncDayFavoriteButtons();
+    syncMicroDailyDvToggleUi();
+    syncMicroViewToggleUi();
+    syncAcuteToxicityToggleUi();
+    syncDailyIntakeIconsToggleUi();
+    syncStickyIconFilterUi();
+    if (filterStickyNutrientKeys.length) {
+      setNutrientFilterSectionOpen(true);
+    }
+    syncStickyIconHighlightUi();
+    renderDemographicUi();
+    syncDayHighlightsToggleUi();
+    syncSettingsTdeeInput();
+    setSettingsWeightUnit(settingsWeightUnit);
+    updateKeywordReorderUi();
+    updateKeywordCaloriesUi();
+    renderKeywords();
+    refreshAll();
+    syncAuthUi();
+  }
+
+  function afterAuthSessionChange() {
+    loadPersistedAppState();
+    applyLoadedAppStateToUi();
+  }
+
+  function submitAuthSignup() {
+    if (!auth) return;
+    var email = authSignupEmailEl ? authSignupEmailEl.value : "";
+    var password = authSignupPasswordEl ? authSignupPasswordEl.value : "";
+    var result = auth.signup(email, password);
+    if (!result || !result.ok) {
+      showAuthSignupError((result && result.error) || "Could not create account.");
+      return;
+    }
+    closeAuthSignupModal();
+    afterAuthSessionChange();
+  }
+
+  function submitAuthLogin() {
+    if (!auth) return;
+    var email = authLoginEmailEl ? authLoginEmailEl.value : "";
+    var password = authLoginPasswordEl ? authLoginPasswordEl.value : "";
+    var result = auth.login(email, password);
+    if (!result || !result.ok) {
+      showAuthLoginError((result && result.error) || "Could not log in.");
+      return;
+    }
+    closeAuthLoginModal();
+    afterAuthSessionChange();
+  }
+
+  function submitAuthLogout() {
+    if (!auth) return;
+    closeAuthSignupModal();
+    closeAuthLoginModal();
+    auth.logout();
+    afterAuthSessionChange();
+  }
+
   function openSettingsModal() {
     if (!settingsModalEl) return;
     syncSettingsTdeeInput();
@@ -14056,7 +14248,11 @@
   function loadFoodDefinitions() {
     if (!persist) return;
     var data = persist.loadFoodDefinitions();
-    if (!data) return;
+    if (!data) {
+      keywords = [];
+      syncNextIdFromKeywords();
+      return;
+    }
     var migrated = false;
     keywords = data.map(function (item) {
       var micros = normalizeMicros(item.micros);
@@ -17920,6 +18116,14 @@
       closeSettingsModal();
       return;
     }
+    if (authSignupModalEl && !authSignupModalEl.hidden) {
+      closeAuthSignupModal();
+      return;
+    }
+    if (authLoginModalEl && !authLoginModalEl.hidden) {
+      closeAuthLoginModal();
+      return;
+    }
     if (microSourcesModalEl && !microSourcesModalEl.hidden) {
       if (microSourcesFullscreen) {
         setMicroSourcesFullscreen(false);
@@ -17975,6 +18179,18 @@
     keywordsSearchEl.addEventListener("input", function () {
       setKeywordsFilterQuery(keywordsSearchEl.value);
     });
+    // Chrome may autofill a saved username into this search field; wipe it for the first 2s.
+    var keywordsAutofillGuardUntil = Date.now() + 2000;
+    function clearKeywordsAutofill() {
+      if (Date.now() > keywordsAutofillGuardUntil) return;
+      if (!keywordsSearchEl.value && !keywordsFilterQuery) return;
+      setKeywordsFilterQuery("", { skipSync: true });
+    }
+    clearKeywordsAutofill();
+    var keywordsAutofillGuardId = setInterval(clearKeywordsAutofill, 50);
+    setTimeout(function () {
+      clearInterval(keywordsAutofillGuardId);
+    }, 2050);
   }
 
   if (keywordsSearchClearBtn) {
@@ -19134,6 +19350,58 @@
     settingsOpenBtn.addEventListener("click", openSettingsModal);
   }
 
+  if (authLoginOpenBtn) {
+    authLoginOpenBtn.addEventListener("click", openAuthLoginModal);
+  }
+  if (authSignupOpenBtn) {
+    authSignupOpenBtn.addEventListener("click", openAuthSignupModal);
+  }
+  if (authLogoutBtn) {
+    authLogoutBtn.addEventListener("click", submitAuthLogout);
+  }
+  if (authSignupCancelBtn) {
+    authSignupCancelBtn.addEventListener("click", closeAuthSignupModal);
+  }
+  if (authSignupSubmitBtn) {
+    authSignupSubmitBtn.addEventListener("click", submitAuthSignup);
+  }
+  if (authLoginCancelBtn) {
+    authLoginCancelBtn.addEventListener("click", closeAuthLoginModal);
+  }
+  if (authLoginSubmitBtn) {
+    authLoginSubmitBtn.addEventListener("click", submitAuthLogin);
+  }
+  if (authSignupModalEl) {
+    authSignupModalEl.addEventListener("click", function (e) {
+      if (e.target.closest('[data-action="close-auth-signup-modal"]')) {
+        closeAuthSignupModal();
+      }
+    });
+    if (authSignupPasswordEl) {
+      authSignupPasswordEl.addEventListener("keydown", function (e) {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          submitAuthSignup();
+        }
+      });
+    }
+  }
+  if (authLoginModalEl) {
+    authLoginModalEl.addEventListener("click", function (e) {
+      if (e.target.closest('[data-action="close-auth-login-modal"]')) {
+        closeAuthLoginModal();
+      }
+    });
+    if (authLoginPasswordEl) {
+      authLoginPasswordEl.addEventListener("keydown", function (e) {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          submitAuthLogin();
+        }
+      });
+    }
+  }
+
   if (settingsModalDoneBtn) {
     settingsModalDoneBtn.addEventListener("click", closeSettingsModal);
   }
@@ -19493,45 +19761,11 @@
   }
 
   function boot() {
-    if (persist) persist.migrate();
-    loadFoodDefinitions();
-    loadKeywordReorderOpen();
-    loadKeywordCaloriesOpen();
-    loadKeywordsPageSize();
-    loadDayNotes();
-    loadFavorites();
-    markTodayDay();
+    loadPersistedAppState();
     initDaysCarousel();
-    syncWeekFavoriteButton();
-    syncDayFavoriteButtons();
-    loadDayHighlightsPreference();
-    loadDayEditorHeight();
-    loadMicroViewDaily();
-    loadShowMicroDailyDv();
-    loadShowAcuteToxicityIcons();
-    loadShowDailyIntakeIcons();
-    loadStickyIconFilters();
-    loadStickyIconHighlights();
-    syncMicroDailyDvToggleUi();
-    syncMicroViewToggleUi();
-    syncAcuteToxicityToggleUi();
-    syncDailyIntakeIconsToggleUi();
-    syncStickyIconFilterUi();
-    if (filterStickyNutrientKeys.length) {
-      setNutrientFilterSectionOpen(true);
-    }
-    syncStickyIconHighlightUi();
-    loadDemographic();
-    loadTdee();
-    loadBodyWeight();
-    renderDemographicUi();
-    syncDayHighlightsToggleUi();
-    syncSettingsTdeeInput();
-    setSettingsWeightUnit(settingsWeightUnit);
-    renderKeywords();
     initLongevityNav();
     initTargetRefPopoverEvents();
-    refreshAll();
+    applyLoadedAppStateToUi();
     applyInitialLongevityHash();
     maybeShowStarterGuideImportStep();
   }
@@ -19547,4 +19781,6 @@
     loadFoodNotesDefinitions(definitionsReady);
     loadFoodCategoriesDefinitions(definitionsReady);
   });
+
+  syncAuthUi();
 })();

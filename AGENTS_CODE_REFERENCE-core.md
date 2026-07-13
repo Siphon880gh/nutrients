@@ -225,20 +225,22 @@ Demographic + TDEE + body weight live in **`#settings-modal`** (header `#setting
 
 ## localStorage
 
-Persistence lives in [`persist.js`](./persist.js) (`NutrientsPersist`). Full shapes and migration: [`specs-data-persistence.md`](./specs-data-persistence.md), agent guide: [`AGENTS-data-persistence.md`](./AGENTS-data-persistence.md).
+Persistence lives in [`persist.js`](./persist.js) (`NutrientsAuth` + `NutrientsPersist`). Full shapes and migration: [`specs-data-persistence.md`](./specs-data-persistence.md), agent guide: [`AGENTS-data-persistence.md`](./AGENTS-data-persistence.md).
 
 | Key | Content |
 |-----|---------|
-| `nutrients_food_definitions` | `FoodDefinition[]` (includes `micros` + `longevity`) |
-| `nutrients_day_meals` | v2 `{ "version": 2, "days": { "YYYY-MM-DD": "…" } }`; legacy `{ mon…sun }` migrates onto the current Mon–Sun week once |
-| `nutrients_favorites` | `Favorite[]` `{ id, type: "day"|"week", dateKey, name, description }` |
-| `nutrients_settings` | Single settings object: demographic, TDEE, body weight, viewed week, editor height, day highlights, micro/acute/filter/highlight prefs, keywords UI prefs |
+| `nutrients_users` | `User[]` `{ id, email, password, createdAt }` |
+| `nutrients_session` | `{ userId, email }` or absent when logged out |
+| `nutrients_food_definitions` | `FoodDefinition[]` with `userId` (includes `micros` + `longevity`) |
+| `nutrients_day_meals` | `DayMealsRow[]` `{ userId, version: 2, days: { "YYYY-MM-DD": "…" } }` |
+| `nutrients_favorites` | `Favorite[]` with `userId` |
+| `nutrients_settings` | `SettingsRow[]` with `userId` (demographic, TDEE, UI prefs, …) |
 
-Legacy hyphenated keys (`nutrients-food-definitions`, `nutrients-day-notes`, `nutrients-demographic`, …) migrate once via `NutrientsPersist.migrate()` then are removed.
+Pre–multi-user single-user payloads move to `nutrients_orphan_legacy` and are claimed by the **first Sign up**. Logged-out sessions do not persist entity data.
 
-**Load** — `loadFoodDefinitions`: maps array, `normalizeMicros(item.micros)` + `normalizeLongevity(item.longevity)`, bumps `nextId` from existing ids.
+**Load** — `loadFoodDefinitions`: maps current user’s rows, `normalizeMicros` + `normalizeLongevity`, bumps `nextId`. After auth changes, `afterAuthSessionChange()` reloads all tables into memory.
 
-**Save triggers** — day textarea `input`, row input, add/delete/reorder, micros save, longevity save, import apply, demographic change, TDEE input blur, calories toggle, `beforeunload` (definitions + demographic + day notes).
+**Save triggers** — same as before when logged in; repository saves no-op when logged out. `beforeunload` still calls save helpers.
 
 ## Config (`config.json`)
 

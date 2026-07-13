@@ -1,15 +1,224 @@
 /**
- * NutrientsPersist — localStorage repository (table-like keys).
- * App UI code should use this API; do not call localStorage directly for app data.
+ * NutrientsAuth + NutrientsPersist — multi-user localStorage repositories.
+ * UI must not call localStorage directly for app data.
+ *
+ * Tables:
+ *   nutrients_users              User[]
+ *   nutrients_session            Session | null
+ *   nutrients_food_definitions   FoodDefinition[]  (+ userId)
+ *   nutrients_day_meals          DayMealsRow[]     (+ userId)
+ *   nutrients_favorites          Favorite[]        (+ userId)
+ *   nutrients_settings           SettingsRow[]     (+ userId)
  */
+var NutrientsAuth = (function () {
+  var KEYS = {
+    USERS: "nutrients_users",
+    SESSION: "nutrients_session",
+  };
+
+  function safeGet(key) {
+    try {
+      return localStorage.getItem(key);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  function safeSet(key, value) {
+    try {
+      localStorage.setItem(key, value);
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  function safeRemove(key) {
+    try {
+      localStorage.removeItem(key);
+    } catch (e) {
+      /* ignore */
+    }
+  }
+
+  function loadJson(key) {
+    var raw = safeGet(key);
+    if (raw == null || raw === "") return null;
+    try {
+      return JSON.parse(raw);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  function saveJson(key, value) {
+    try {
+      return safeSet(key, JSON.stringify(value));
+    } catch (e) {
+      return false;
+    }
+  }
+
+  function normalizeEmail(email) {
+    return String(email || "")
+      .trim()
+      .toLowerCase();
+  }
+
+  function loadUsers() {
+    var data = loadJson(KEYS.USERS);
+    return Array.isArray(data) ? data : [];
+  }
+
+  function saveUsers(users) {
+    return saveJson(KEYS.USERS, Array.isArray(users) ? users : []);
+  }
+
+  function makeUserId() {
+    return (
+      "user-" +
+      Date.now() +
+      "-" +
+      Math.random().toString(36).slice(2, 11)
+    );
+  }
+
+  function getSession() {
+    var session = loadJson(KEYS.SESSION);
+    if (!session || typeof session !== "object") return null;
+    if (!session.userId || !session.email) return null;
+    return {
+      userId: String(session.userId),
+      email: normalizeEmail(session.email),
+    };
+  }
+
+  function setSession(session) {
+    if (!session) {
+      safeRemove(KEYS.SESSION);
+      return true;
+    }
+    return saveJson(KEYS.SESSION, {
+      userId: String(session.userId),
+      email: normalizeEmail(session.email),
+    });
+  }
+
+  function findUserByEmail(email) {
+    var needle = normalizeEmail(email);
+    var users = loadUsers();
+    for (var i = 0; i < users.length; i++) {
+      if (normalizeEmail(users[i].email) === needle) return users[i];
+    }
+    return null;
+  }
+
+  function findUserById(userId) {
+    var users = loadUsers();
+    for (var i = 0; i < users.length; i++) {
+      if (String(users[i].id) === String(userId)) return users[i];
+    }
+    return null;
+  }
+
+  function signup(email, password) {
+    var normalized = normalizeEmail(email);
+    var pass = String(password || "");
+    if (!normalized || normalized.indexOf("@") < 1) {
+      return { ok: false, error: "Enter a valid email." };
+    }
+    if (!pass) {
+      return { ok: false, error: "Enter a password." };
+    }
+    if (findUserByEmail(normalized)) {
+      return { ok: false, error: "An account with that email already exists." };
+    }
+    var user = {
+      id: makeUserId(),
+      email: normalized,
+      password: pass,
+      createdAt: new Date().toISOString(),
+    };
+    var users = loadUsers();
+    var isFirstUser = users.length === 0;
+    users.push(user);
+    saveUsers(users);
+    setSession({ userId: user.id, email: user.email });
+    if (
+      typeof NutrientsPersist !== "undefined" &&
+      NutrientsPersist.claimOrphanForUser
+    ) {
+      NutrientsPersist.claimOrphanForUser(user.id, isFirstUser);
+    }
+    return {
+      ok: true,
+      user: { id: user.id, email: user.email, createdAt: user.createdAt },
+    };
+  }
+
+  function login(email, password) {
+    var normalized = normalizeEmail(email);
+    var pass = String(password || "");
+    var user = findUserByEmail(normalized);
+    if (!user || String(user.password) !== pass) {
+      return { ok: false, error: "Invalid email or password." };
+    }
+    setSession({ userId: user.id, email: user.email });
+    return {
+      ok: true,
+      user: { id: user.id, email: user.email, createdAt: user.createdAt },
+    };
+  }
+
+  function logout() {
+    setSession(null);
+    if (typeof NutrientsPersist !== "undefined" && NutrientsPersist.clearCache) {
+      NutrientsPersist.clearCache();
+    }
+  }
+
+  function getCurrentUserId() {
+    var session = getSession();
+    return session ? session.userId : null;
+  }
+
+  function isLoggedIn() {
+    return !!getCurrentUserId();
+  }
+
+  function getCurrentUser() {
+    var session = getSession();
+    if (!session) return null;
+    var user = findUserById(session.userId);
+    if (!user) return null;
+    return {
+      id: user.id,
+      email: user.email,
+      createdAt: user.createdAt,
+    };
+  }
+
+  return {
+    KEYS: KEYS,
+    signup: signup,
+    login: login,
+    logout: logout,
+    getSession: getSession,
+    getCurrentUserId: getCurrentUserId,
+    getCurrentUser: getCurrentUser,
+    isLoggedIn: isLoggedIn,
+  };
+})();
+
 var NutrientsPersist = (function () {
-  var SCHEMA_VERSION = 1;
+  var SCHEMA_VERSION = 2;
 
   var KEYS = {
     FOOD_DEFINITIONS: "nutrients_food_definitions",
     DAY_MEALS: "nutrients_day_meals",
     FAVORITES: "nutrients_favorites",
     SETTINGS: "nutrients_settings",
+    ORPHAN_LEGACY: "nutrients_orphan_legacy",
   };
 
   var LEGACY = {
@@ -41,6 +250,7 @@ var NutrientsPersist = (function () {
   };
 
   var settingsCache = null;
+  var settingsCacheUserId = null;
   var migrated = false;
 
   function defaultSettings() {
@@ -111,6 +321,48 @@ var NutrientsPersist = (function () {
     } catch (e) {
       return false;
     }
+  }
+
+  function currentUserId() {
+    return typeof NutrientsAuth !== "undefined"
+      ? NutrientsAuth.getCurrentUserId()
+      : null;
+  }
+
+  function isLoggedIn() {
+    return !!currentUserId();
+  }
+
+  function clearCache() {
+    settingsCache = null;
+    settingsCacheUserId = null;
+  }
+
+  function stripUserId(row) {
+    if (!row || typeof row !== "object") return row;
+    var copy = Object.assign({}, row);
+    delete copy.userId;
+    return copy;
+  }
+
+  function withUserId(row, userId) {
+    var copy = Object.assign({}, row);
+    copy.userId = userId;
+    return copy;
+  }
+
+  function replaceUserRows(allRows, userId, nextRows) {
+    var others = (Array.isArray(allRows) ? allRows : []).filter(function (row) {
+      return row && String(row.userId) !== String(userId);
+    });
+    return others.concat(nextRows);
+  }
+
+  function rowsForUser(allRows, userId) {
+    if (!Array.isArray(allRows) || !userId) return [];
+    return allRows.filter(function (row) {
+      return row && String(row.userId) === String(userId);
+    });
   }
 
   function legacyBoolTrue(key) {
@@ -275,10 +527,146 @@ var NutrientsPersist = (function () {
     return hasAny ? settings : null;
   }
 
-  function removeLegacyKeys() {
+  function removeHyphenLegacyKeys() {
     Object.keys(LEGACY).forEach(function (name) {
       safeRemove(LEGACY[name]);
     });
+  }
+
+  function isSingleUserFoodTable(data) {
+    if (!Array.isArray(data) || data.length === 0) return false;
+    return data.every(function (row) {
+      return row && typeof row === "object" && row.userId == null;
+    });
+  }
+
+  function isSingleUserDayMeals(data) {
+    return !!(
+      data &&
+      typeof data === "object" &&
+      !Array.isArray(data) &&
+      (data.version != null || data.days != null || data.mon != null)
+    );
+  }
+
+  function isSingleUserFavorites(data) {
+    if (!Array.isArray(data) || data.length === 0) return false;
+    return data.every(function (row) {
+      return row && typeof row === "object" && row.userId == null;
+    });
+  }
+
+  function isSingleUserSettings(data) {
+    return !!(
+      data &&
+      typeof data === "object" &&
+      !Array.isArray(data) &&
+      (data.demographic != null ||
+        data.version != null ||
+        data.keywordsPageSize != null)
+    );
+  }
+
+  function isMultiUserFoodTable(data) {
+    return (
+      Array.isArray(data) &&
+      (data.length === 0 ||
+        data.every(function (row) {
+          return row && row.userId != null;
+        }))
+    );
+  }
+
+  function isMultiUserDayMeals(data) {
+    return Array.isArray(data);
+  }
+
+  function isMultiUserFavorites(data) {
+    return (
+      Array.isArray(data) &&
+      (data.length === 0 ||
+        data.every(function (row) {
+          return row && row.userId != null;
+        }))
+    );
+  }
+
+  function isMultiUserSettings(data) {
+    return Array.isArray(data);
+  }
+
+  function captureOrphanFromSingleUserTables() {
+    if (safeGet(KEYS.ORPHAN_LEGACY)) return;
+
+    var foods = loadJson(KEYS.FOOD_DEFINITIONS);
+    var meals = loadJson(KEYS.DAY_MEALS);
+    var favs = loadJson(KEYS.FAVORITES);
+    var settings = loadJson(KEYS.SETTINGS);
+
+    var orphan = {
+      foodDefinitions: null,
+      dayMeals: null,
+      favorites: null,
+      settings: null,
+    };
+    var hasAny = false;
+
+    if (isSingleUserFoodTable(foods)) {
+      orphan.foodDefinitions = foods;
+      hasAny = true;
+      saveJson(KEYS.FOOD_DEFINITIONS, []);
+    } else if (!isMultiUserFoodTable(foods) && foods != null) {
+      saveJson(KEYS.FOOD_DEFINITIONS, []);
+    }
+
+    if (isSingleUserDayMeals(meals)) {
+      orphan.dayMeals = meals;
+      hasAny = true;
+      saveJson(KEYS.DAY_MEALS, []);
+    } else if (!isMultiUserDayMeals(meals) && meals != null) {
+      saveJson(KEYS.DAY_MEALS, []);
+    }
+
+    if (isSingleUserFavorites(favs)) {
+      orphan.favorites = favs;
+      hasAny = true;
+      saveJson(KEYS.FAVORITES, []);
+    } else if (!isMultiUserFavorites(favs) && favs != null) {
+      saveJson(KEYS.FAVORITES, []);
+    }
+
+    if (isSingleUserSettings(settings)) {
+      orphan.settings = settings;
+      hasAny = true;
+      saveJson(KEYS.SETTINGS, []);
+    } else if (!isMultiUserSettings(settings) && settings != null) {
+      saveJson(KEYS.SETTINGS, []);
+    }
+
+    if (hasAny) saveJson(KEYS.ORPHAN_LEGACY, orphan);
+  }
+
+  function ensureMultiUserTableShapes() {
+    if (!isMultiUserFoodTable(loadJson(KEYS.FOOD_DEFINITIONS))) {
+      if (safeGet(KEYS.FOOD_DEFINITIONS) == null) {
+        saveJson(KEYS.FOOD_DEFINITIONS, []);
+      }
+    }
+    if (!isMultiUserDayMeals(loadJson(KEYS.DAY_MEALS))) {
+      if (safeGet(KEYS.DAY_MEALS) == null) {
+        saveJson(KEYS.DAY_MEALS, []);
+      }
+    }
+    if (!isMultiUserFavorites(loadJson(KEYS.FAVORITES))) {
+      if (safeGet(KEYS.FAVORITES) == null) {
+        saveJson(KEYS.FAVORITES, []);
+      }
+    }
+    if (!isMultiUserSettings(loadJson(KEYS.SETTINGS))) {
+      if (safeGet(KEYS.SETTINGS) == null) {
+        saveJson(KEYS.SETTINGS, []);
+      }
+    }
   }
 
   function migrateIfNeeded() {
@@ -312,7 +700,7 @@ var NutrientsPersist = (function () {
       if (fromLegacy) saveJson(KEYS.SETTINGS, fromLegacy);
     }
 
-    var anyLegacy =
+    var anyHyphenLegacy =
       safeGet(LEGACY.FOOD_DEFINITIONS) != null ||
       safeGet(LEGACY.FOOD_DEFINITIONS_OLDER) != null ||
       safeGet(LEGACY.DAY_MEALS) != null ||
@@ -339,49 +727,174 @@ var NutrientsPersist = (function () {
       safeGet(LEGACY.HIGHLIGHT_SIDE_EFFECTS) != null ||
       safeGet(LEGACY.HIGHLIGHT_ADVERSE_EFFECTS) != null;
 
-    if (anyLegacy) removeLegacyKeys();
+    if (anyHyphenLegacy) removeHyphenLegacyKeys();
+
+    captureOrphanFromSingleUserTables();
+    ensureMultiUserTableShapes();
+  }
+
+  function claimOrphanForUser(userId, isFirstUser) {
+    migrateIfNeeded();
+    if (!userId || !isFirstUser) return false;
+    var orphan = loadJson(KEYS.ORPHAN_LEGACY);
+    if (!orphan || typeof orphan !== "object") return false;
+
+    if (Array.isArray(orphan.foodDefinitions) && orphan.foodDefinitions.length) {
+      var foodRows = orphan.foodDefinitions.map(function (row) {
+        return withUserId(stripUserId(row), userId);
+      });
+      saveJson(
+        KEYS.FOOD_DEFINITIONS,
+        replaceUserRows(loadJson(KEYS.FOOD_DEFINITIONS), userId, foodRows)
+      );
+    }
+
+    if (orphan.dayMeals && typeof orphan.dayMeals === "object") {
+      var mealRow;
+      if (
+        orphan.dayMeals.version === 2 &&
+        orphan.dayMeals.days &&
+        typeof orphan.dayMeals.days === "object" &&
+        !Array.isArray(orphan.dayMeals.days)
+      ) {
+        mealRow = withUserId(
+          {
+            version: 2,
+            days: Object.assign({}, orphan.dayMeals.days),
+          },
+          userId
+        );
+      } else {
+        mealRow = withUserId(
+          {
+            version: 2,
+            days: {},
+            _legacyWeek: orphan.dayMeals,
+          },
+          userId
+        );
+      }
+      saveJson(
+        KEYS.DAY_MEALS,
+        replaceUserRows(loadJson(KEYS.DAY_MEALS), userId, [mealRow])
+      );
+    }
+
+    if (Array.isArray(orphan.favorites) && orphan.favorites.length) {
+      var favRows = orphan.favorites.map(function (row) {
+        return withUserId(stripUserId(row), userId);
+      });
+      saveJson(
+        KEYS.FAVORITES,
+        replaceUserRows(loadJson(KEYS.FAVORITES), userId, favRows)
+      );
+    }
+
+    if (orphan.settings && typeof orphan.settings === "object") {
+      var settingsRow = withUserId(
+        Object.assign(defaultSettings(), stripUserId(orphan.settings)),
+        userId
+      );
+      settingsRow.version = SCHEMA_VERSION;
+      saveJson(
+        KEYS.SETTINGS,
+        replaceUserRows(loadJson(KEYS.SETTINGS), userId, [settingsRow])
+      );
+    }
+
+    safeRemove(KEYS.ORPHAN_LEGACY);
+    clearCache();
+    return true;
   }
 
   function loadFoodDefinitions() {
     migrateIfNeeded();
-    var data = loadJson(KEYS.FOOD_DEFINITIONS);
-    return Array.isArray(data) ? data : null;
+    var userId = currentUserId();
+    if (!userId) return null;
+    return rowsForUser(loadJson(KEYS.FOOD_DEFINITIONS), userId).map(stripUserId);
   }
 
   function saveFoodDefinitions(rows) {
     migrateIfNeeded();
-    if (!Array.isArray(rows)) return false;
-    return saveJson(KEYS.FOOD_DEFINITIONS, rows);
+    var userId = currentUserId();
+    if (!userId || !Array.isArray(rows)) return false;
+    var next = rows.map(function (row) {
+      return withUserId(stripUserId(row), userId);
+    });
+    return saveJson(
+      KEYS.FOOD_DEFINITIONS,
+      replaceUserRows(loadJson(KEYS.FOOD_DEFINITIONS), userId, next)
+    );
   }
 
   function loadDayMeals() {
     migrateIfNeeded();
-    return loadJson(KEYS.DAY_MEALS);
+    var userId = currentUserId();
+    if (!userId) return null;
+    var rows = rowsForUser(loadJson(KEYS.DAY_MEALS), userId);
+    if (!rows.length) return null;
+    var row = stripUserId(rows[0]);
+    if (row._legacyWeek) {
+      return row._legacyWeek;
+    }
+    return {
+      version: row.version || 2,
+      days: row.days && typeof row.days === "object" ? row.days : {},
+    };
   }
 
   function saveDayMeals(payload) {
     migrateIfNeeded();
-    if (!payload || typeof payload !== "object") return false;
-    return saveJson(KEYS.DAY_MEALS, payload);
+    var userId = currentUserId();
+    if (!userId || !payload || typeof payload !== "object") return false;
+    var row = withUserId(
+      {
+        version: payload.version || 2,
+        days:
+          payload.days && typeof payload.days === "object" ? payload.days : {},
+      },
+      userId
+    );
+    return saveJson(
+      KEYS.DAY_MEALS,
+      replaceUserRows(loadJson(KEYS.DAY_MEALS), userId, [row])
+    );
   }
 
   function loadFavorites() {
     migrateIfNeeded();
-    var data = loadJson(KEYS.FAVORITES);
-    return Array.isArray(data) ? data : null;
+    var userId = currentUserId();
+    if (!userId) return null;
+    return rowsForUser(loadJson(KEYS.FAVORITES), userId).map(stripUserId);
   }
 
   function saveFavorites(rows) {
     migrateIfNeeded();
-    if (!Array.isArray(rows)) return false;
-    return saveJson(KEYS.FAVORITES, rows);
+    var userId = currentUserId();
+    if (!userId || !Array.isArray(rows)) return false;
+    var next = rows.map(function (row) {
+      return withUserId(stripUserId(row), userId);
+    });
+    return saveJson(
+      KEYS.FAVORITES,
+      replaceUserRows(loadJson(KEYS.FAVORITES), userId, next)
+    );
   }
 
   function loadSettings() {
     migrateIfNeeded();
-    if (settingsCache) return Object.assign({}, settingsCache);
-    var loaded = loadJson(KEYS.SETTINGS);
+    var userId = currentUserId();
+    if (!userId) {
+      clearCache();
+      return Object.assign({}, defaultSettings());
+    }
+    if (settingsCache && settingsCacheUserId === userId) {
+      return Object.assign({}, settingsCache);
+    }
+    var rows = rowsForUser(loadJson(KEYS.SETTINGS), userId);
+    var loaded = rows.length ? stripUserId(rows[0]) : null;
     settingsCache = Object.assign(defaultSettings(), loaded || {});
+    settingsCacheUserId = userId;
     if (!Array.isArray(settingsCache.filterNutrients)) {
       settingsCache.filterNutrients = [];
     }
@@ -391,23 +904,30 @@ var NutrientsPersist = (function () {
 
   function saveSettings(settings) {
     migrateIfNeeded();
-    if (!settings || typeof settings !== "object") return false;
-    settingsCache = Object.assign(defaultSettings(), settings);
+    var userId = currentUserId();
+    if (!userId || !settings || typeof settings !== "object") return false;
+    settingsCache = Object.assign(defaultSettings(), stripUserId(settings));
     settingsCache.version = SCHEMA_VERSION;
     if (!Array.isArray(settingsCache.filterNutrients)) {
       settingsCache.filterNutrients = [];
     }
-    return saveJson(KEYS.SETTINGS, settingsCache);
+    settingsCacheUserId = userId;
+    var row = withUserId(settingsCache, userId);
+    return saveJson(
+      KEYS.SETTINGS,
+      replaceUserRows(loadJson(KEYS.SETTINGS), userId, [row])
+    );
   }
 
   function patchSettings(partial) {
     var current = loadSettings();
+    if (!currentUserId()) return current;
     if (!partial || typeof partial !== "object") return current;
     Object.keys(partial).forEach(function (key) {
       current[key] = partial[key];
     });
     saveSettings(current);
-    return Object.assign({}, settingsCache);
+    return Object.assign({}, settingsCache || current);
   }
 
   function getSetting(key) {
@@ -425,6 +945,9 @@ var NutrientsPersist = (function () {
     SCHEMA_VERSION: SCHEMA_VERSION,
     defaultSettings: defaultSettings,
     migrate: migrateIfNeeded,
+    clearCache: clearCache,
+    claimOrphanForUser: claimOrphanForUser,
+    isLoggedIn: isLoggedIn,
     loadFoodDefinitions: loadFoodDefinitions,
     saveFoodDefinitions: saveFoodDefinitions,
     loadDayMeals: loadDayMeals,

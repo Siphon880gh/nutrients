@@ -2,134 +2,72 @@
 
 ## Overview
 
-Nutrients uses a **repository module** ([`persist.js`](./persist.js)) so UI/domain code in `app.js` never touches `localStorage` directly for app data. Storage is organized as four table-like keys (food definitions, day meals, favorites, settings).
+Nutrients uses **repository modules** in [`persist.js`](./persist.js) so UI/domain code in `app.js` never touches `localStorage` directly. Auth and app data are multi-user: a users table + session, and entity tables where each record includes `userId`.
 
 ```
 ┌─────────────────────────────────────────────────────────┐
 │                     UI / domain                          │
-│  (app.js — editors, dashboard, favorites, settings)     │
+│  (app.js — auth header, editors, dashboard, settings)   │
 └─────────────────────┬───────────────────────────────────┘
-                      │ calls helpers that wrap:
-                      │ - saveFoodDefinitions() / loadFoodDefinitions()
-                      │ - saveDayNotes() / loadDayNotes()
-                      │ - saveFavorites() / loadFavorites()
-                      │ - saveDemographic(), saveTdee(), …
+                      │ NutrientsAuth.signup/login/logout
+                      │ NutrientsPersist load/save*
                       ▼
 ┌─────────────────────────────────────────────────────────┐
-│                 NutrientsPersist                         │
-│  (persist.js — public repository API)                   │
-│                                                          │
-│  Tables:                                                 │
-│  - load/saveFoodDefinitions()                           │
-│  - load/saveDayMeals()                                  │
-│  - load/saveFavorites()                                 │
-│  - load/save/patchSettings(), get/setSetting()          │
-│  - migrate()                                            │
+│              NutrientsAuth + NutrientsPersist            │
+│  (persist.js — only layer that uses localStorage)       │
 └─────────────────────┬───────────────────────────────────┘
-                      │ JSON read/write + legacy migrate
                       ▼
 ┌─────────────────────────────────────────────────────────┐
-│                     localStorage                         │
-│  nutrients_food_definitions                              │
-│  nutrients_day_meals                                     │
-│  nutrients_favorites                                     │
-│  nutrients_settings                                      │
+│  nutrients_users / nutrients_session                      │
+│  nutrients_food_definitions (+ userId)                   │
+│  nutrients_day_meals (+ userId)                          │
+│  nutrients_favorites (+ userId)                          │
+│  nutrients_settings (+ userId)                            │
 └─────────────────────────────────────────────────────────┘
 ```
 
-Script order in [`index.html`](./index.html): `demographic-dv.js` → `longevity-dv.js` → **`persist.js`** → `app.js`.
+Script order: `demographic-dv.js` → `longevity-dv.js` → **`persist.js`** → `app.js`.
 
-Spec for shapes and migration: [`specs-data-persistence.md`](./specs-data-persistence.md).
+Spec: [`specs-data-persistence.md`](./specs-data-persistence.md).
+
+## NutrientsAuth API
+
+| Method | Description |
+|--------|-------------|
+| `signup(email, password)` | Create user + session; first user claims orphan legacy data |
+| `login(email, password)` | Set session |
+| `logout()` | Clear session + persist settings cache |
+| `getSession()` / `getCurrentUser()` / `getCurrentUserId()` / `isLoggedIn()` | Session helpers |
 
 ## NutrientsPersist API
 
 | Method | Description |
 |--------|-------------|
-| `migrate()` | One-shot copy from legacy hyphenated keys into the four tables; removes legacy keys. Safe to call repeatedly. |
-| `loadFoodDefinitions()` | Returns `FoodDefinition[]` or `null` |
-| `saveFoodDefinitions(rows)` | Writes the food definitions table |
-| `loadDayMeals()` | Returns day-meals payload object or `null` |
-| `saveDayMeals(payload)` | Writes `{ version: 2, days: {…} }` |
-| `loadFavorites()` | Returns `Favorite[]` or `null` |
-| `saveFavorites(rows)` | Writes the favorites table |
-| `loadSettings()` | Returns full settings object (defaults merged) |
-| `saveSettings(settings)` | Replaces settings row |
-| `patchSettings(partial)` | Merges keys into settings and saves |
-| `getSetting(key)` / `setSetting(key, value)` | Single-field helpers |
-| `defaultSettings()` | Canonical defaults (`version: 1`, …) |
-| `KEYS` | Table key name constants |
+| `migrate()` | Hyphen legacy → tables; single-user payloads → orphan; ensure multi-user array shapes |
+| `claimOrphanForUser(userId, isFirstUser)` | Used by signup for the first account |
+| `clearCache()` | Drop settings cache (logout) |
+| `isLoggedIn()` | Proxy to auth |
+| `load/saveFoodDefinitions` | Current user’s food rows |
+| `load/saveDayMeals` | Current user’s day-meals row |
+| `load/saveFavorites` | Current user’s favorites |
+| `load/save/patchSettings`, `get/setSetting` | Current user’s settings row |
 
-## Data Flow Example
+When logged out: loads return `null` / defaults; saves return `false`.
 
-### Editing a food definition
+## Auth UI (`app.js` + header)
 
-```javascript
-// app.js
-function saveFoodDefinitions() {
-  if (!persist) return;
-  persist.saveFoodDefinitions(keywords);
-}
-```
-
-### Toggling a sticky filter
-
-```javascript
-function saveStickyIconFilters() {
-  if (!persist) return;
-  persist.patchSettings({
-    filterDailyIntake: !!filterStickyDailyIntake,
-    filterSideEffects: !!filterStickySideEffects,
-    filterAdverseEffects: !!filterStickyAdverseEffects,
-    filterNutrients: filterStickyNutrientKeys.slice(),
-  });
-}
-```
-
-### Boot
-
-```javascript
-function boot() {
-  if (persist) persist.migrate();
-  loadFoodDefinitions();
-  loadDayNotes();
-  loadFavorites();
-  // … then load settings-backed prefs …
-}
-```
-
-## Settings Cache
-
-`loadSettings()` keeps an in-memory cache inside `persist.js` so repeated `getSetting` / `patchSettings` calls during boot do not re-parse JSON every time. Cache is updated on every successful settings write.
-
-## Error Handling
-
-All localStorage access in `persist.js` is wrapped in try/catch. Failures (quota, private mode) return `false` / `null` / defaults instead of throwing into the UI.
-
-## Migration & Backward Compatibility
-
-| Legacy key(s) | New location |
-|---------------|--------------|
-| `nutrients-food-definitions`, `nutrients-keywords` | `nutrients_food_definitions` |
-| `nutrients-day-notes` | `nutrients_day_meals` |
-| `nutrients-favorites` | `nutrients_favorites` |
-| `nutrients-demographic`, `nutrients-tdee`, `nutrients-body-weight-kg`, `nutrients-viewed-week-start`, day editor height, highlight/filter/show toggles, keywords UI prefs, … | Fields on `nutrients_settings` |
-
-`Settings.version` and day-meals `version` allow future schema bumps without scattering new keys.
-
-## Non-Persisted State
-
-Session-only (examples): `activeFavoriteDayKey`, open modals, carousel indices, derived match/highlight caches. See the “Data NOT Persisted” section in [`specs-data-persistence.md`](./specs-data-persistence.md).
+Top-right (`.week__header-actions`): **Log in** / **Sign up** when logged out; email + **Log out** when logged in. Modals: `#auth-signup-modal`, `#auth-login-modal`. After session change, `afterAuthSessionChange()` reloads repository data into memory and refreshes the UI.
 
 ## Key Design Decisions
 
-1. **Table keys, not preference sprawl** — one settings document instead of ~20 boolean/string keys.
-2. **Repository boundary** — only `persist.js` talks to `localStorage` for app data.
-3. **Vanilla IIFE** — matches the rest of the static app; global `NutrientsPersist` (same style as `NutrientsDemographicDv`).
-4. **Migrate then delete** — legacy hyphenated keys are copied once, then removed so DevTools stays readable.
-5. **Domain validation stays in `app.js`** — e.g. favorite normalization, food micro normalization, legacy week→date meal migration.
+1. **Few localStorage keys** — tables, not per-preference keys.
+2. **`userId` on entity rows** — MySQL/Mongo-style association, not one nested blob per user.
+3. **Repository boundary** — UI never calls `localStorage` for app data.
+4. **Orphan claim** — existing single-user data attaches to the first signup so the developer’s diary is not lost during the upgrade.
+5. **No guest persistence** — logged-out edits are not saved (in-person testing expects accounts).
 
 ## Agent Notes
 
-- When adding a new durable preference: extend `defaultSettings()` in `persist.js`, document it in `specs-data-persistence.md`, and read/write via `getSetting` / `setSetting` / `patchSettings` from `app.js`.
-- Do not reintroduce `nutrients-*` hyphenated keys.
-- Export/import JSON for meals and food definitions remains separate from this repository (file download/upload); those flows still mutate in-memory state and then call the same save helpers.
+- New durable preference: add field to `defaultSettings()`, document in `specs-data-persistence.md`, read/write via settings helpers.
+- Do not add new hyphenated `nutrients-*` keys or bypass the repositories.
+- Passwords are plaintext for local testing only.
