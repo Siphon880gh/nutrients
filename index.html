@@ -96,6 +96,20 @@
                   <span>Adverse effects (A/E)</span>
                 </label>
               </div>
+              <div class="dashboard__nutrient-filter">
+                <button type="button" class="dashboard__nutrient-filter-disclosure" data-nutrient-filter-disclosure aria-expanded="false" aria-controls="micro-nutrient-filter-panel">By Nutrients</button>
+                <div id="micro-nutrient-filter-panel" class="dashboard__nutrient-filter-panel" hidden>
+                  <div class="dashboard__nutrient-filter-presets" role="group" aria-label="Nutrient filter presets">
+                    <button type="button" class="dashboard__nutrient-filter-preset" data-nutrient-filter-preset="common-deficiencies" aria-pressed="false">Common Deficiencies (A,D,Calc,Mag,Iodine)</button>
+                  </div>
+                  <label class="dashboard__nutrient-filter-label" for="micro-nutrient-filter-input">Add nutrient</label>
+                  <div class="dashboard__nutrient-filter-combobox">
+                    <input type="text" id="micro-nutrient-filter-input" class="dashboard__nutrient-filter-input" data-nutrient-filter-input placeholder="Type a vitamin or mineral…" autocomplete="off" spellcheck="false" aria-autocomplete="list" aria-controls="micro-nutrient-filter-suggest" aria-expanded="false" />
+                    <div id="micro-nutrient-filter-suggest" class="dashboard__nutrient-filter-suggest" role="listbox" hidden aria-label="Nutrient suggestions"></div>
+                  </div>
+                  <div class="dashboard__nutrient-filter-chips" data-nutrient-filter-chips role="list" aria-label="Selected nutrients"></div>
+                </div>
+              </div>
             </div>
             <div id="micro-daily-options-panel" class="dashboard__sticky-options-panel" hidden>
               <p class="dashboard__sticky-options-note">These nutrients store poorly, so weekly averaging can mislead—aim for steady daily intake.</p>
@@ -181,6 +195,11 @@
         <aside id="micro-tip-fat-soluble" class="dashboard__micro-tip" role="note">
           <p class="dashboard__micro-tip-text">
             Vitamins A, D, E, and K are fat-soluble—your body absorbs them much better with some dietary fat. For example, with 1 cup of carrot juice, eat at least about 1 teaspoon of peanut butter.
+          </p>
+        </aside>
+        <aside id="micro-tip-common-deficiencies" class="dashboard__micro-tip" role="note">
+          <p class="dashboard__micro-tip-text">
+            In a typical American diet—high-yield crops that leave soil less mineral-rich, limited seafood (often avoided over mercury concerns), and meals that simply omit these foods—common deficiencies are vitamin A, vitamin D, calcium, magnesium, and iodine. Use <strong>Filter → By Nutrients</strong> and the <strong>Common Deficiencies</strong> preset to show only those. For nutrients the body can store, rebuilding stores can take about 90 days of adequate intake.
           </p>
         </aside>
         <aside id="micro-tip-caffeine" class="dashboard__micro-tip" role="note">
@@ -274,6 +293,20 @@
                   <input type="checkbox" data-sticky-filter="adverse" />
                   <span>Adverse effects (A/E)</span>
                 </label>
+              </div>
+              <div class="dashboard__nutrient-filter">
+                <button type="button" class="dashboard__nutrient-filter-disclosure" data-nutrient-filter-disclosure aria-expanded="false" aria-controls="longevity-nutrient-filter-panel">By Nutrients</button>
+                <div id="longevity-nutrient-filter-panel" class="dashboard__nutrient-filter-panel" hidden>
+                  <div class="dashboard__nutrient-filter-presets" role="group" aria-label="Nutrient filter presets">
+                    <button type="button" class="dashboard__nutrient-filter-preset" data-nutrient-filter-preset="common-deficiencies" aria-pressed="false">Common Deficiencies (A,D,Calc,Mag,Iodine)</button>
+                  </div>
+                  <label class="dashboard__nutrient-filter-label" for="longevity-nutrient-filter-input">Add nutrient</label>
+                  <div class="dashboard__nutrient-filter-combobox">
+                    <input type="text" id="longevity-nutrient-filter-input" class="dashboard__nutrient-filter-input" data-nutrient-filter-input placeholder="Type a vitamin or mineral…" autocomplete="off" spellcheck="false" aria-autocomplete="list" aria-controls="longevity-nutrient-filter-suggest" aria-expanded="false" />
+                    <div id="longevity-nutrient-filter-suggest" class="dashboard__nutrient-filter-suggest" role="listbox" hidden aria-label="Nutrient suggestions"></div>
+                  </div>
+                  <div class="dashboard__nutrient-filter-chips" data-nutrient-filter-chips role="list" aria-label="Selected nutrients"></div>
+                </div>
               </div>
             </div>
             <div id="longevity-daily-options-panel" class="dashboard__sticky-options-panel" hidden>

@@ -1157,6 +1157,243 @@ body.highlight-daily-intake-icons .dashboard__micro-daily-intake-btn[aria-expand
   color: #333;
 }
 
+.dashboard__nutrient-filter {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.35rem;
+  width: 100%;
+  max-width: 18rem;
+  margin-top: 0.15rem;
+  padding-top: 0.4rem;
+  border-top: 1px solid #e4e8ee;
+}
+
+.dashboard__nutrient-filter-disclosure {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.15rem 0.3rem;
+  border: 0;
+  border-radius: 4px;
+  background: none;
+  color: #7a7a76;
+  font: inherit;
+  font-size: 0.68rem;
+  font-weight: 500;
+  line-height: 1.3;
+  cursor: pointer;
+}
+
+.dashboard__nutrient-filter-disclosure::after {
+  content: "▾";
+  font-size: 0.7rem;
+  transition: transform 0.15s ease;
+}
+
+.dashboard__nutrient-filter-disclosure[aria-expanded="true"]::after {
+  transform: rotate(180deg);
+}
+
+.dashboard__nutrient-filter-disclosure:hover,
+.dashboard__nutrient-filter-disclosure:focus-visible {
+  background: #f3f3f0;
+  color: #555;
+}
+
+.dashboard__nutrient-filter-disclosure:focus-visible {
+  outline: 2px solid #3d6b9e;
+  outline-offset: 1px;
+}
+
+.dashboard__nutrient-filter-disclosure--active {
+  background: #f0ebe4;
+  color: #4a3f2e;
+  font-weight: 600;
+}
+
+.dashboard__nutrient-filter-disclosure--active:hover,
+.dashboard__nutrient-filter-disclosure--active:focus-visible {
+  background: #e8e0d6;
+  color: #3d3428;
+}
+
+.dashboard__nutrient-filter-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.35rem;
+  width: 100%;
+}
+
+.dashboard__nutrient-filter-panel[hidden] {
+  display: none;
+}
+
+.dashboard__nutrient-filter-label {
+  font-size: 0.68rem;
+  line-height: 1.3;
+  color: #6a6a66;
+  text-align: right;
+}
+
+.dashboard__nutrient-filter-combobox {
+  position: relative;
+  width: 100%;
+}
+
+.dashboard__nutrient-filter-input {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 0.3rem 0.45rem;
+  border: 1px solid #d8d8d4;
+  border-radius: 4px;
+  background: #fff;
+  color: #333;
+  font: inherit;
+  font-size: 0.72rem;
+  line-height: 1.3;
+}
+
+.dashboard__nutrient-filter-input::placeholder {
+  color: #9a9a96;
+}
+
+.dashboard__nutrient-filter-input:hover {
+  border-color: #c8c8c4;
+}
+
+.dashboard__nutrient-filter-input:focus {
+  outline: none;
+  border-color: #3d6b9e;
+  box-shadow: 0 0 0 2px rgba(61, 107, 158, 0.2);
+}
+
+.dashboard__nutrient-filter-suggest {
+  position: absolute;
+  z-index: 20;
+  top: calc(100% + 0.15rem);
+  left: 0;
+  right: 0;
+  max-height: 10.5rem;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 0.2rem;
+  border: 1px solid #d8d8d4;
+  border-radius: 4px;
+  background: #fff;
+  box-shadow: 0 4px 12px rgba(40, 40, 36, 0.12);
+  scrollbar-width: thin;
+}
+
+.dashboard__nutrient-filter-suggest[hidden] {
+  display: none;
+}
+
+.dashboard__nutrient-filter-suggest-item {
+  display: block;
+  width: 100%;
+  padding: 0.3rem 0.45rem;
+  border: 0;
+  border-radius: 3px;
+  background: none;
+  color: #333;
+  font: inherit;
+  font-size: 0.72rem;
+  line-height: 1.3;
+  text-align: left;
+  cursor: pointer;
+}
+
+.dashboard__nutrient-filter-suggest-item:hover,
+.dashboard__nutrient-filter-suggest-item--active {
+  background: #f0ebe4;
+  color: #4a3f2e;
+}
+
+.dashboard__nutrient-filter-suggest-item:focus-visible {
+  outline: 2px solid #3d6b9e;
+  outline-offset: -1px;
+}
+
+.dashboard__nutrient-filter-suggest-match {
+  font-weight: 700;
+  color: #3d3428;
+}
+
+.dashboard__nutrient-filter-chips {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.3rem;
+}
+
+.dashboard__nutrient-filter-chips:empty {
+  display: none;
+}
+
+.dashboard__nutrient-filter-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2rem;
+  max-width: 100%;
+  padding: 0.15rem 0.2rem 0.15rem 0.45rem;
+  border: 1px solid #c9b896;
+  border-radius: 999px;
+  background: #f0ebe4;
+  color: #4a3f2e;
+  font-size: 0.68rem;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.dashboard__nutrient-filter-chip-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+}
+
+.dashboard__nutrient-filter-chip-remove {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.1rem;
+  height: 1.1rem;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: #7a6a4a;
+  font-size: 0.85rem;
+  line-height: 1;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.dashboard__nutrient-filter-chip-remove:hover,
+.dashboard__nutrient-filter-chip-remove:focus-visible {
+  background: #e8e0d6;
+  color: #b42318;
+}
+
+.dashboard__nutrient-filter-chip-remove:focus-visible {
+  outline: 2px solid #3d6b9e;
+  outline-offset: 1px;
+}
+
+.dashboard__micro-sticky .dashboard__nutrient-filter {
+  align-items: flex-end;
+}
+
+.dashboard__micro-sticky .dashboard__nutrient-filter-label {
+  text-align: right;
+}
+
+.dashboard__micro-sticky .dashboard__nutrient-filter-chips {
+  justify-content: flex-end;
+}
+
 .dashboard__sticky-options-toggle {
   padding: 0.28rem 0.55rem;
   border: 1px solid #d8d8d4;
@@ -6318,6 +6555,18 @@ button.longevity-form__label-link:focus-visible {
   }
 
   .dashboard__micro-sticky .dashboard__sticky-options-toggles {
+    justify-content: flex-start;
+  }
+
+  .dashboard__micro-sticky .dashboard__nutrient-filter {
+    align-items: flex-start;
+  }
+
+  .dashboard__micro-sticky .dashboard__nutrient-filter-label {
+    text-align: left;
+  }
+
+  .dashboard__micro-sticky .dashboard__nutrient-filter-chips {
     justify-content: flex-start;
   }
 }

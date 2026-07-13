@@ -32,6 +32,7 @@
     "nutrients-filter-side-effects";
   var STORAGE_KEY_FILTER_ADVERSE_EFFECTS =
     "nutrients-filter-adverse-effects";
+  var STORAGE_KEY_FILTER_NUTRIENTS = "nutrients-filter-nutrients";
   var STORAGE_KEY_HIGHLIGHT_DAILY_INTAKE =
     "nutrients-highlight-daily-intake";
   var STORAGE_KEY_HIGHLIGHT_SIDE_EFFECTS =
@@ -365,6 +366,7 @@
   var filterStickyDailyIntake = false;
   var filterStickySideEffects = false;
   var filterStickyAdverseEffects = false;
+  var filterStickyNutrientKeys = [];
   var highlightStickyDailyIntake = false;
   var highlightStickySideEffects = false;
   var highlightStickyAdverseEffects = false;
@@ -8706,6 +8708,15 @@
     return (
       filterStickyDailyIntake ||
       filterStickySideEffects ||
+      filterStickyAdverseEffects ||
+      filterStickyNutrientKeys.length > 0
+    );
+  }
+
+  function microStickyIconFilterActive() {
+    return (
+      filterStickyDailyIntake ||
+      filterStickySideEffects ||
       filterStickyAdverseEffects
     );
   }
@@ -8713,6 +8724,12 @@
   function microKeyMatchesStickyFilter(key) {
     if (!microStickyFilterActive()) return true;
     if (!key) return false;
+    var nutrientOk = true;
+    if (filterStickyNutrientKeys.length) {
+      nutrientOk = filterStickyNutrientKeys.indexOf(key) !== -1;
+    }
+    if (!nutrientOk) return false;
+    if (!microStickyIconFilterActive()) return true;
     var match = false;
     if (filterStickyDailyIntake && microRequiresDailyIntake(key)) {
       match = true;
@@ -8733,6 +8750,22 @@
     return match;
   }
 
+  function normalizeFilterStickyNutrientKeys(raw) {
+    if (!Array.isArray(raw)) return [];
+    var valid = {};
+    MICRO_ALL_FIELDS.forEach(function (field) {
+      valid[field.key] = true;
+    });
+    var out = [];
+    var seen = {};
+    raw.forEach(function (key) {
+      if (typeof key !== "string" || !valid[key] || seen[key]) return;
+      seen[key] = true;
+      out.push(key);
+    });
+    return out;
+  }
+
   function loadStickyIconFilters() {
     try {
       filterStickyDailyIntake =
@@ -8741,10 +8774,15 @@
         localStorage.getItem(STORAGE_KEY_FILTER_SIDE_EFFECTS) === "true";
       filterStickyAdverseEffects =
         localStorage.getItem(STORAGE_KEY_FILTER_ADVERSE_EFFECTS) === "true";
+      var rawNutrients = localStorage.getItem(STORAGE_KEY_FILTER_NUTRIENTS);
+      filterStickyNutrientKeys = rawNutrients
+        ? normalizeFilterStickyNutrientKeys(JSON.parse(rawNutrients))
+        : [];
     } catch (e) {
       filterStickyDailyIntake = false;
       filterStickySideEffects = false;
       filterStickyAdverseEffects = false;
+      filterStickyNutrientKeys = [];
     }
   }
 
@@ -8762,9 +8800,235 @@
         STORAGE_KEY_FILTER_ADVERSE_EFFECTS,
         filterStickyAdverseEffects ? "true" : "false"
       );
+      localStorage.setItem(
+        STORAGE_KEY_FILTER_NUTRIENTS,
+        JSON.stringify(filterStickyNutrientKeys)
+      );
     } catch (e) {
       /* ignore */
     }
+  }
+
+  function nutrientFilterChipHtml(key) {
+    var field = microFieldByKey(key);
+    if (!field) return "";
+    return (
+      '<span class="dashboard__nutrient-filter-chip" role="listitem" data-nutrient-key="' +
+      escapeAttr(key) +
+      '">' +
+      '<span class="dashboard__nutrient-filter-chip-label">' +
+      escapeHtml(field.label) +
+      "</span>" +
+      '<button type="button" class="dashboard__nutrient-filter-chip-remove" data-nutrient-filter-remove="' +
+      escapeAttr(key) +
+      '" aria-label="Remove ' +
+      escapeAttr(field.label) +
+      '">×</button>' +
+      "</span>"
+    );
+  }
+
+  function syncNutrientFilterUi() {
+    var hasKeys = filterStickyNutrientKeys.length > 0;
+    var chipsHtml = filterStickyNutrientKeys
+      .map(nutrientFilterChipHtml)
+      .join("");
+    document
+      .querySelectorAll("[data-nutrient-filter-disclosure]")
+      .forEach(function (btn) {
+        btn.classList.toggle(
+          "dashboard__nutrient-filter-disclosure--active",
+          hasKeys
+        );
+      });
+    document
+      .querySelectorAll("[data-nutrient-filter-chips]")
+      .forEach(function (el) {
+        el.innerHTML = chipsHtml;
+      });
+  }
+
+  function setNutrientFilterSectionOpen(open) {
+    document
+      .querySelectorAll("[data-nutrient-filter-disclosure]")
+      .forEach(function (btn) {
+        var panelId = btn.getAttribute("aria-controls");
+        var panel = panelId ? document.getElementById(panelId) : null;
+        btn.setAttribute("aria-expanded", open ? "true" : "false");
+        if (panel) panel.hidden = !open;
+      });
+  }
+
+  function hideNutrientFilterSuggest(input) {
+    if (!input) return;
+    var wrap = input.closest(".dashboard__nutrient-filter-combobox");
+    var suggest = wrap && wrap.querySelector(".dashboard__nutrient-filter-suggest");
+    if (suggest) {
+      suggest.hidden = true;
+      suggest.innerHTML = "";
+    }
+    input.setAttribute("aria-expanded", "false");
+    input.removeAttribute("aria-activedescendant");
+  }
+
+  function nutrientFilterSuggestMatches(query) {
+    var q = (query || "").trim();
+    if (!q) return [];
+    var ql = q.toLowerCase();
+    var selected = {};
+    filterStickyNutrientKeys.forEach(function (key) {
+      selected[key] = true;
+    });
+    var results = [];
+    MICRO_ALL_FIELDS.forEach(function (field) {
+      if (selected[field.key]) return;
+      var label = field.label || "";
+      var ll = label.toLowerCase();
+      var code = (field.code || "").toLowerCase();
+      var keyl = field.key.toLowerCase();
+      var score = null;
+      var highlight = { start: 0, len: 0 };
+      var at = ll.indexOf(ql);
+      if (at === 0) {
+        score = 0;
+        highlight = { start: 0, len: q.length };
+      } else if (at > 0) {
+        score = 2;
+        highlight = { start: at, len: q.length };
+      } else if (code === ql || keyl === ql) {
+        score = 1;
+        highlight = { start: 0, len: Math.min(q.length, label.length) };
+      } else if (code.indexOf(ql) === 0 || keyl.indexOf(ql) === 0) {
+        score = 3;
+        highlight = { start: 0, len: Math.min(q.length, label.length) };
+      } else {
+        var prefixLen = commonPrefixLen(q, label);
+        if (prefixLen >= 2) {
+          var slice = ll.slice(0, q.length);
+          var dist = levenshtein(ql, slice);
+          var maxDist = q.length <= 4 ? 1 : Math.max(1, Math.floor(q.length / 4));
+          if (dist <= maxDist) {
+            score = 4 + dist;
+            highlight = { start: 0, len: prefixLen };
+          }
+        }
+      }
+      if (score != null) {
+        results.push({
+          key: field.key,
+          label: label,
+          score: score,
+          highlight: highlight,
+        });
+      }
+    });
+    results.sort(function (a, b) {
+      if (a.score !== b.score) return a.score - b.score;
+      return a.label.length - b.label.length;
+    });
+    return results.slice(0, 8);
+  }
+
+  function nutrientFilterSuggestItemHtml(match, index) {
+    var start = match.highlight.start || 0;
+    var len = match.highlight.len || 0;
+    var before = match.label.slice(0, start);
+    var mid = match.label.slice(start, start + len);
+    var after = match.label.slice(start + len);
+    var id = "nutrient-filter-opt-" + index;
+    return (
+      '<button type="button" class="dashboard__nutrient-filter-suggest-item" role="option" id="' +
+      escapeAttr(id) +
+      '" data-nutrient-filter-pick="' +
+      escapeAttr(match.key) +
+      '">' +
+      (before ? escapeHtml(before) : "") +
+      (mid
+        ? '<span class="dashboard__nutrient-filter-suggest-match">' +
+          escapeHtml(mid) +
+          "</span>"
+        : "") +
+      (after ? escapeHtml(after) : "") +
+      "</button>"
+    );
+  }
+
+  function updateNutrientFilterSuggest(input) {
+    if (!input) return;
+    var wrap = input.closest(".dashboard__nutrient-filter-combobox");
+    var suggest = wrap && wrap.querySelector(".dashboard__nutrient-filter-suggest");
+    if (!suggest) return;
+    var matches = nutrientFilterSuggestMatches(input.value);
+    if (!matches.length) {
+      hideNutrientFilterSuggest(input);
+      return;
+    }
+    suggest.innerHTML = matches
+      .map(function (match, i) {
+        return nutrientFilterSuggestItemHtml(match, i);
+      })
+      .join("");
+    suggest.hidden = false;
+    input.setAttribute("aria-expanded", "true");
+    var first = suggest.querySelector(".dashboard__nutrient-filter-suggest-item");
+    if (first) {
+      first.classList.add("dashboard__nutrient-filter-suggest-item--active");
+      input.setAttribute("aria-activedescendant", first.id);
+    }
+  }
+
+  function nutrientFilterActiveSuggestItem(suggest) {
+    return (
+      suggest &&
+      suggest.querySelector(
+        ".dashboard__nutrient-filter-suggest-item--active"
+      )
+    );
+  }
+
+  function moveNutrientFilterSuggestActive(input, delta) {
+    var wrap = input && input.closest(".dashboard__nutrient-filter-combobox");
+    var suggest = wrap && wrap.querySelector(".dashboard__nutrient-filter-suggest");
+    if (!suggest || suggest.hidden) return;
+    var items = Array.prototype.slice.call(
+      suggest.querySelectorAll(".dashboard__nutrient-filter-suggest-item")
+    );
+    if (!items.length) return;
+    var current = nutrientFilterActiveSuggestItem(suggest);
+    var idx = current ? items.indexOf(current) : -1;
+    var next = (idx + delta + items.length) % items.length;
+    items.forEach(function (item, i) {
+      item.classList.toggle(
+        "dashboard__nutrient-filter-suggest-item--active",
+        i === next
+      );
+    });
+    input.setAttribute("aria-activedescendant", items[next].id);
+    if (typeof items[next].scrollIntoView === "function") {
+      items[next].scrollIntoView({ block: "nearest" });
+    }
+  }
+
+  function addStickyNutrientFilter(key) {
+    if (!key || !microFieldByKey(key)) return;
+    if (filterStickyNutrientKeys.indexOf(key) !== -1) return;
+    var wasEmpty = filterStickyNutrientKeys.length === 0;
+    filterStickyNutrientKeys = filterStickyNutrientKeys.concat([key]);
+    saveStickyIconFilters();
+    syncStickyIconFilterUi();
+    if (wasEmpty) setNutrientFilterSectionOpen(true);
+    refreshStickyIconFilterViews();
+  }
+
+  function removeStickyNutrientFilter(key) {
+    var next = filterStickyNutrientKeys.filter(function (k) {
+      return k !== key;
+    });
+    if (next.length === filterStickyNutrientKeys.length) return;
+    filterStickyNutrientKeys = next;
+    saveStickyIconFilters();
+    syncStickyIconFilterUi();
+    refreshStickyIconFilterViews();
   }
 
   function syncStickyIconFilterUi() {
@@ -8792,6 +9056,7 @@
             : filterStickySideEffects;
       input.checked = !!on;
     });
+    syncNutrientFilterUi();
   }
 
   function clearStickyIconFilters() {
@@ -8799,8 +9064,16 @@
     filterStickyDailyIntake = false;
     filterStickySideEffects = false;
     filterStickyAdverseEffects = false;
+    filterStickyNutrientKeys = [];
     saveStickyIconFilters();
     syncStickyIconFilterUi();
+    setNutrientFilterSectionOpen(false);
+    document
+      .querySelectorAll("[data-nutrient-filter-input]")
+      .forEach(function (input) {
+        input.value = "";
+        hideNutrientFilterSuggest(input);
+      });
     refreshStickyIconFilterViews();
   }
 
@@ -9067,9 +9340,40 @@
       }
     }
     if (!microStickyFilterActive()) return fields;
+    fields = ensureSelectedNutrientFields(fields);
     return fields.filter(function (entry) {
       return microKeyMatchesStickyFilter(entry.field.key);
     });
+  }
+
+  function ensureSelectedNutrientFields(fields) {
+    if (!filterStickyNutrientKeys.length) return fields;
+    var seen = {};
+    fields.forEach(function (entry) {
+      if (entry && entry.field && entry.field.key) {
+        seen[entry.field.key] = true;
+      }
+    });
+    filterStickyNutrientKeys.forEach(function (key) {
+      if (seen[key]) return;
+      var field = microFieldByKey(key);
+      if (!field) return;
+      if (microConditionFocus) {
+        if (MICRO_INTAKE_FILTER[microConditionFocus]) {
+          var wantsDaily = microConditionFocus === "poorlyAbsorbed";
+          if (microRequiresDailyIntake(key) !== wantsDaily) return;
+        } else {
+          var meta = MICRO_CONDITION_FOCUS[microConditionFocus];
+          if (meta) {
+            var allowed = (meta.nutrients || []).indexOf(key) !== -1;
+            if (!allowed) return;
+          }
+        }
+      }
+      fields.push({ source: "micro", field: field });
+      seen[key] = true;
+    });
+    return fields;
   }
 
   function longevityDailyDvText(field) {
@@ -16152,6 +16456,62 @@
   }
 
   document.addEventListener("click", function (e) {
+    var nutrientFilterDisclosure = e.target.closest(
+      "[data-nutrient-filter-disclosure]"
+    );
+    if (nutrientFilterDisclosure) {
+      e.preventDefault();
+      e.stopPropagation();
+      var nutrientPanelId = nutrientFilterDisclosure.getAttribute("aria-controls");
+      var nutrientPanel = nutrientPanelId
+        ? document.getElementById(nutrientPanelId)
+        : null;
+      var nutrientOpen =
+        nutrientFilterDisclosure.getAttribute("aria-expanded") === "true";
+      var nextNutrientOpen = !nutrientOpen;
+      nutrientFilterDisclosure.setAttribute(
+        "aria-expanded",
+        nextNutrientOpen ? "true" : "false"
+      );
+      if (nutrientPanel) nutrientPanel.hidden = !nextNutrientOpen;
+      if (typeof syncLongevityNavHeightVar === "function") {
+        syncLongevityNavHeightVar();
+      }
+      return;
+    }
+    var nutrientFilterRemove = e.target.closest("[data-nutrient-filter-remove]");
+    if (nutrientFilterRemove) {
+      e.preventDefault();
+      removeStickyNutrientFilter(
+        nutrientFilterRemove.getAttribute("data-nutrient-filter-remove")
+      );
+      return;
+    }
+    var nutrientFilterPick = e.target.closest("[data-nutrient-filter-pick]");
+    if (nutrientFilterPick) {
+      e.preventDefault();
+      var pickKey = nutrientFilterPick.getAttribute("data-nutrient-filter-pick");
+      var pickCombobox = nutrientFilterPick.closest(
+        ".dashboard__nutrient-filter-combobox"
+      );
+      var pickInput =
+        pickCombobox &&
+        pickCombobox.querySelector("[data-nutrient-filter-input]");
+      addStickyNutrientFilter(pickKey);
+      if (pickInput) {
+        pickInput.value = "";
+        hideNutrientFilterSuggest(pickInput);
+        pickInput.focus();
+      }
+      return;
+    }
+    if (!e.target.closest(".dashboard__nutrient-filter-combobox")) {
+      document
+        .querySelectorAll("[data-nutrient-filter-input]")
+        .forEach(function (input) {
+          hideNutrientFilterSuggest(input);
+        });
+    }
     var stickyOptionsToggle = e.target.closest("[data-sticky-options-toggle]");
     if (stickyOptionsToggle) {
       e.preventDefault();
@@ -16224,6 +16584,60 @@
     }
     if (kind === "side") {
       setShowAcuteSideEffects(!showAcuteSideEffects);
+    }
+  });
+
+  document.addEventListener("input", function (e) {
+    var nutrientInput = e.target.closest("[data-nutrient-filter-input]");
+    if (!nutrientInput) return;
+    updateNutrientFilterSuggest(nutrientInput);
+  });
+
+  document.addEventListener("focusin", function (e) {
+    var nutrientInput = e.target.closest("[data-nutrient-filter-input]");
+    if (!nutrientInput) return;
+    if (nutrientInput.value.trim()) {
+      updateNutrientFilterSuggest(nutrientInput);
+    }
+  });
+
+  document.addEventListener("keydown", function (e) {
+    var nutrientInput = e.target.closest("[data-nutrient-filter-input]");
+    if (!nutrientInput) return;
+    var wrap = nutrientInput.closest(".dashboard__nutrient-filter-combobox");
+    var suggest =
+      wrap && wrap.querySelector(".dashboard__nutrient-filter-suggest");
+    if (e.key === "Escape") {
+      if (suggest && !suggest.hidden) {
+        e.preventDefault();
+        hideNutrientFilterSuggest(nutrientInput);
+      }
+      return;
+    }
+    if (e.key === "ArrowDown") {
+      e.preventDefault();
+      if (!suggest || suggest.hidden) {
+        updateNutrientFilterSuggest(nutrientInput);
+      } else {
+        moveNutrientFilterSuggestActive(nutrientInput, 1);
+      }
+      return;
+    }
+    if (e.key === "ArrowUp") {
+      e.preventDefault();
+      moveNutrientFilterSuggestActive(nutrientInput, -1);
+      return;
+    }
+    if (e.key === "Enter") {
+      var activeItem = nutrientFilterActiveSuggestItem(suggest);
+      if (activeItem && suggest && !suggest.hidden) {
+        e.preventDefault();
+        addStickyNutrientFilter(
+          activeItem.getAttribute("data-nutrient-filter-pick")
+        );
+        nutrientInput.value = "";
+        hideNutrientFilterSuggest(nutrientInput);
+      }
     }
   });
 
@@ -17092,6 +17506,9 @@
     syncAcuteToxicityToggleUi();
     syncDailyIntakeIconsToggleUi();
     syncStickyIconFilterUi();
+    if (filterStickyNutrientKeys.length) {
+      setNutrientFilterSectionOpen(true);
+    }
     syncStickyIconHighlightUi();
     loadDemographic();
     loadTdee();
