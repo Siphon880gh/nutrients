@@ -689,6 +689,10 @@
       ],
       longevityNutrients: ["epa", "dha"],
     },
+    fatSolubleVitamins: {
+      label: "Fat-soluble vitamins (A, D, E, K)",
+      nutrients: ["vitaminA", "vitaminD", "vitaminE", "vitaminK"],
+    },
     americanCommonDeficiencies: {
       label: "American Common Deficiencies",
       nutrients: [
@@ -698,10 +702,6 @@
         "magnesium",
         "iodine",
       ],
-    },
-    fatSolubleVitamins: {
-      label: "Fat-soluble vitamins (A, D, E, K)",
-      nutrients: ["vitaminA", "vitaminD", "vitaminE", "vitaminK"],
     },
     anemia: {
       label: "Anemia",
