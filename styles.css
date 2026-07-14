@@ -3015,14 +3015,32 @@ body.highlight-adverse-effects .dashboard__micro-acute-btn--adverse .dashboard__
 
 .micro-def__sources-list li {
   margin: 0;
+}
+
+.micro-def__source-btn {
+  display: block;
+  margin: 0;
   padding: 0.3rem 0.55rem;
   border-radius: 4px;
   border: 1px solid #b8c8d8;
   background: #fff;
+  font: inherit;
   font-size: 0.8rem;
   font-weight: 500;
   color: #1a3a5c;
   line-height: 1.35;
+  cursor: pointer;
+}
+
+.micro-def__source-btn:hover,
+.micro-def__source-btn:focus-visible {
+  background: #e8eef4;
+  border-color: #3d6b9e;
+}
+
+.micro-def__source-btn:focus-visible {
+  outline: 2px solid #3d6b9e;
+  outline-offset: 1px;
 }
 
 .micro-def__sex-label {
@@ -6518,6 +6536,10 @@ button.dashboard__longevity-name:focus-visible {
   font-size: 1.2rem;
 }
 
+#micro-def-modal.modal--stacked-food-sources:not(.modal--fullscreen) .micro-def__source-btn {
+  font-size: 1.2rem;
+}
+
 #micro-def-modal.modal--stacked-food-sources:not(.modal--fullscreen) .micro-def__sex-label {
   font-size: 1.2rem;
 }
@@ -6695,6 +6717,10 @@ body.modal-open {
 }
 
 #micro-def-modal.modal--fullscreen .micro-def__sources-list li {
+  font-size: 1rem;
+}
+
+#micro-def-modal.modal--fullscreen .micro-def__source-btn {
   font-size: 1rem;
 }
 
