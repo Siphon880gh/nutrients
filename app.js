@@ -154,6 +154,7 @@
   var healthTimelineModalDoneBtn = document.getElementById("health-timeline-modal-done");
   var microDefModalEl = document.getElementById("micro-def-modal");
   var microDefModalTitleEl = document.getElementById("micro-def-modal-title");
+  var microDefTargetsEl = document.getElementById("micro-def-targets");
   var microDefBodyEl = document.getElementById("micro-def-body");
   var microDefSourcesEl = document.getElementById("micro-def-sources");
   var microDefModalFooterEl = document.getElementById("micro-def-modal-footer");
@@ -4957,6 +4958,120 @@
     }
   }
 
+  function defModalTargetInfo(source, key) {
+    if (source === "micro") {
+      if (microDerivedDefByKey(key)) {
+        return microDerivedRowTargetDisplay(key, {}, false);
+      }
+      if (!microFieldByKey(key)) return null;
+      return microNutrientTargetPct(key, 0);
+    }
+
+    if (LONGEVITY_SECTION_DEFS[key]) return null;
+
+    if (key === "glycemicLoad") {
+      var glMax = longevityDvStatus.glycemicLoadMaxPerDay;
+      if (!glMax) return null;
+      return {
+        kindLabel: "",
+        reqAmount: fmtNum(glMax) + " GL/day",
+        limiting: true,
+        refKey: key,
+      };
+    }
+
+    if (key === "pufaVitaminEProtection") {
+      var alpha =
+        longevityDvStatus.pufaVitaminEAlphaTocopherolPerGram ||
+        DEFAULT_LONGEVITY_STATUS.pufaVitaminEAlphaTocopherolPerGram;
+      return {
+        kindLabel: "",
+        reqAmount: fmtNum(alpha) + " mg vitamin E per g PUFA (100% target)",
+        limiting: false,
+        refKey: key,
+      };
+    }
+
+    if (key === "omega6To3") {
+      var idealMax =
+        longevityDvStatus.omega6To3IdealMax ||
+        DEFAULT_LONGEVITY_STATUS.omega6To3IdealMax;
+      return {
+        kindLabel: "",
+        reqAmount: "≤ " + idealMax + ":1 ideal",
+        limiting: true,
+        refKey: key,
+      };
+    }
+
+    if (key === "potassiumToSodium") {
+      var idealMin =
+        longevityDvStatus.potassiumToSodiumIdealMin ||
+        DEFAULT_LONGEVITY_STATUS.potassiumToSodiumIdealMin;
+      return {
+        kindLabel: "",
+        reqAmount: "≥ " + idealMin + ":1 target",
+        limiting: false,
+        refKey: key,
+      };
+    }
+
+    if (key === "epaPlusDha") {
+      var omega3Field = longevityFieldByKey("omega3");
+      if (!omega3Field) return null;
+      return microRowTargetDisplay(omega3Field, 0, "longevity", {});
+    }
+
+    var longevityField = longevityFieldByKey(key);
+    if (longevityField) {
+      return microRowTargetDisplay(longevityField, 0, "longevity", {});
+    }
+
+    if (microFieldByKey(key)) {
+      return microNutrientTargetPct(key, 0);
+    }
+
+    return null;
+  }
+
+  function clearDefModalTargets() {
+    if (!microDefTargetsEl) return;
+    microDefTargetsEl.hidden = true;
+    microDefTargetsEl.innerHTML = "";
+    microDefTargetsEl.classList.remove("micro-def__targets--limiting");
+  }
+
+  function renderDefModalTargets(source, key) {
+    if (!microDefTargetsEl) return;
+    var info = defModalTargetInfo(source, key);
+    if (!info || (!info.kindLabel && !info.reqAmount)) {
+      clearDefModalTargets();
+      return;
+    }
+
+    var html =
+      '<div class="micro-def__targets-inner">' +
+      '<span class="micro-def__targets-label">Daily target</span>';
+    if (info.reqAmount) {
+      html +=
+        '<span class="micro-def__targets-amount">' +
+        escapeHtml(info.reqAmount) +
+        "</span>";
+    }
+    if (info.kindLabel) {
+      html += targetKindLabelHtml(
+        info.kindLabel,
+        "micro-def__targets-kind",
+        info.refKey || key
+      );
+    }
+    html += "</div>";
+
+    microDefTargetsEl.innerHTML = html;
+    microDefTargetsEl.hidden = false;
+    microDefTargetsEl.classList.toggle("micro-def__targets--limiting", !!info.limiting);
+  }
+
   function defModalSourcesTarget() {
     if (activeMicroDefKey) {
       if (microDerivedDefByKey(activeMicroDefKey)) return null;
@@ -5048,6 +5163,7 @@
     activeMicroDefKey = null;
     activeLongevityDefKey = null;
     setMicroDefFullscreen(false);
+    clearDefModalTargets();
     if (microDefModalEl) microDefModalEl.hidden = true;
     setDefModalReturnSources(null);
     setDefModalStackedForm(null);
@@ -5082,6 +5198,7 @@
     activeMicroDefKey = null;
     activeLongevityDefKey = null;
     setMicroDefFullscreen(false);
+    clearDefModalTargets();
     microDefModalEl.hidden = true;
     setDefModalReturnSources(null);
     setDefModalStackedForm(null);
@@ -7413,6 +7530,7 @@
     bindTargetRefPopover(dashboardMicroListEl);
     bindTargetRefPopover(dashboardMicroDailyGridEl);
     bindTargetRefPopover(dashboardLongevityContentEl);
+    bindTargetRefPopover(microDefTargetsEl);
 
     document.addEventListener("click", function (e) {
       if (!targetRefPopoverEl || targetRefPopoverEl.hidden) return;
@@ -8823,6 +8941,7 @@
       microDefModalTitleEl.textContent = longevityDefLabel(key);
     }
     renderLongevityDefBody(key);
+    renderDefModalTargets("longevity", key);
     setDefModalReturnSources(returnTo || null);
     setDefModalStackedForm(stackOnForm || null);
     syncDefModalSourcesBtn();
@@ -8886,6 +9005,7 @@
       microDefModalTitleEl.textContent = field.label;
     }
     renderMicroDefBody(key);
+    renderDefModalTargets("micro", key);
     setDefModalReturnSources(returnTo || null);
     setDefModalStackedForm(stackOnForm || null);
     syncDefModalSourcesBtn();

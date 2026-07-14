@@ -2818,6 +2818,46 @@ body.highlight-adverse-effects .dashboard__micro-acute-btn--adverse .dashboard__
   color: #333;
 }
 
+.micro-def__targets {
+  flex-shrink: 0;
+  padding: 0.45rem 1rem 0.55rem;
+  border-bottom: 1px solid #ecece8;
+  background: #f8f8f6;
+}
+
+.micro-def__targets--limiting {
+  background: #fff9f5;
+}
+
+.micro-def__targets-inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.35rem 0.55rem;
+  font-size: 0.78rem;
+  line-height: 1.35;
+}
+
+.micro-def__targets-label {
+  font-weight: 600;
+  color: #5c5c5c;
+  white-space: nowrap;
+}
+
+.micro-def__targets-amount {
+  font-variant-numeric: tabular-nums;
+  color: #333;
+  white-space: nowrap;
+}
+
+.micro-def__targets-kind {
+  font-size: 0.56rem;
+  line-height: 1.25;
+  color: #8a8a86;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+}
+
 .micro-def__section {
   margin: 0 0 1rem;
 }
@@ -6479,6 +6519,18 @@ button.dashboard__longevity-name:focus-visible {
   font-size: 1.3125rem;
 }
 
+#micro-def-modal.modal--stacked-food-sources:not(.modal--fullscreen) .micro-def__targets {
+  padding: 0.675rem 1.5rem 0.825rem;
+}
+
+#micro-def-modal.modal--stacked-food-sources:not(.modal--fullscreen) .micro-def__targets-inner {
+  font-size: 1.17rem;
+}
+
+#micro-def-modal.modal--stacked-food-sources:not(.modal--fullscreen) .micro-def__targets-kind {
+  font-size: 0.84rem;
+}
+
 #micro-def-modal.modal--stacked-food-sources:not(.modal--fullscreen) .modal__tool-btn {
   padding: 0.525rem 0.975rem;
   font-size: 1.17rem;
@@ -6687,6 +6739,14 @@ body.modal-open {
 
 #micro-def-modal.modal--fullscreen .modal__subtitle {
   font-size: 1rem;
+}
+
+#micro-def-modal.modal--fullscreen .micro-def__targets {
+  padding: 0.55rem 1.25rem 0.65rem;
+}
+
+#micro-def-modal.modal--fullscreen .micro-def__targets-inner {
+  font-size: 0.9rem;
 }
 
 #micro-def-modal.modal--fullscreen .micro-def__body {
