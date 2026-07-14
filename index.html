@@ -46,6 +46,8 @@
         </div>
         <div class="dashboard__toggles">
           <button type="button" id="dashboard-food-sources-open" class="dashboard__toggle" aria-haspopup="dialog" aria-controls="food-sources-modal">Food Sources</button>
+          <button type="button" id="dashboard-macros-jump" class="dashboard__toggle">Macros</button>
+          <button type="button" id="dashboard-food-entry-jump" class="dashboard__toggle">Food Entry</button>
           <button type="button" id="dashboard-week-toggle" class="dashboard__toggle" aria-expanded="false" aria-controls="week-summary">Week total</button>
           <button type="button" id="dashboard-micro-toggle" class="dashboard__toggle" aria-expanded="false" aria-controls="dashboard-micro-panel">Micro requirements</button>
           <button type="button" id="dashboard-longevity-toggle" class="dashboard__toggle" aria-expanded="false" aria-controls="dashboard-longevity-panel">Longevity and wellness</button>
@@ -398,7 +400,7 @@
       <div id="week-summary" class="week-summary" hidden aria-label="Week summary"></div>
     </section>
 
-    <div class="week__nav" role="navigation" aria-label="Week">
+    <div id="food-entry" class="week__nav" role="navigation" aria-label="Week">
       <button type="button" id="week-nav-prev" class="week__nav-adj" aria-label="Previous week">
         <span aria-hidden="true">‹</span> Previous week
       </button>

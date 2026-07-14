@@ -85,6 +85,10 @@
   var weekSummaryEl = document.getElementById("week-summary");
   var dashboardPrintBtn = document.getElementById("dashboard-print");
   var dashboardWeekToggleEl = document.getElementById("dashboard-week-toggle");
+  var dashboardMacrosJumpEl = document.getElementById("dashboard-macros-jump");
+  var dashboardFoodEntryJumpEl = document.getElementById(
+    "dashboard-food-entry-jump"
+  );
   var dashboardFoodSourcesOpenBtn = document.getElementById(
     "dashboard-food-sources-open"
   );
@@ -20212,6 +20216,23 @@
   if (dashboardWeekToggleEl) {
     dashboardWeekToggleEl.addEventListener("click", function () {
       setWeekTotalOpen(!weekTotalOpen);
+    });
+  }
+
+  function scrollDashboardJumpTarget(el) {
+    if (!el || typeof el.scrollIntoView !== "function") return;
+    el.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
+  if (dashboardMacrosJumpEl) {
+    dashboardMacrosJumpEl.addEventListener("click", function () {
+      scrollDashboardJumpTarget(dashboardGridEl);
+    });
+  }
+
+  if (dashboardFoodEntryJumpEl) {
+    dashboardFoodEntryJumpEl.addEventListener("click", function () {
+      scrollDashboardJumpTarget(document.getElementById("food-entry"));
     });
   }
 
