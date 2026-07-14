@@ -85,6 +85,9 @@
   var weekSummaryEl = document.getElementById("week-summary");
   var dashboardPrintBtn = document.getElementById("dashboard-print");
   var dashboardWeekToggleEl = document.getElementById("dashboard-week-toggle");
+  var dashboardFoodSourcesOpenBtn = document.getElementById(
+    "dashboard-food-sources-open"
+  );
   var dashboardMicroToggleEl = document.getElementById("dashboard-micro-toggle");
   var dashboardMicroPanelEl = document.getElementById("dashboard-micro-panel");
   var dashboardMicroListEl = document.getElementById("dashboard-micro-list");
@@ -152,6 +155,7 @@
   var microDefModalEl = document.getElementById("micro-def-modal");
   var microDefModalTitleEl = document.getElementById("micro-def-modal-title");
   var microDefBodyEl = document.getElementById("micro-def-body");
+  var microDefSourcesEl = document.getElementById("micro-def-sources");
   var microDefModalFooterEl = document.getElementById("micro-def-modal-footer");
   var microDefModalBackBtn = document.getElementById("micro-def-modal-back");
   var microDefModalDoneBtn = document.getElementById("micro-def-modal-done");
@@ -166,6 +170,10 @@
   var microTipCaffeineEl = document.getElementById("micro-tip-caffeine");
   var microTipCataractsEl = document.getElementById("micro-tip-cataracts");
   var microTipHairLossEl = document.getElementById("micro-tip-hair-loss");
+  var microTipHairLossHerbsEl = document.getElementById("micro-tip-hair-loss-herbs");
+  var microTipHairLossPrescriptionsEl = document.getElementById(
+    "micro-tip-hair-loss-prescriptions"
+  );
   var microTipCommonDeficienciesEl = document.getElementById(
     "micro-tip-common-deficiencies"
   );
@@ -306,6 +314,7 @@
   var starterGuideScrollResizeBound = false;
   var IMPORT_SAMPLE_FOODS_URL = "samples/definitions-food.json";
   var IMPORT_SAMPLE_MEALS_URL = "samples/day-meals.json";
+  var FOOD_SOURCES_PRECOMPUTED_URL = "definitions-food-sources.json";
   var importAllMealsModalEl = document.getElementById("import-all-meals-modal");
   var importAllMealsJsonEl = document.getElementById("import-all-meals-json");
   var importAllMealsErrorEl = document.getElementById("import-all-meals-error");
@@ -449,6 +458,8 @@
   var defModalStackedForm = null;
   /** When set, sources modal sits above the nutrient description modal. */
   var sourcesModalStackedOnDef = null;
+  /** When set, food sources modal sits under an open nutrient description modal. */
+  var foodSourcesStackedOnDef = null;
   var activeMicroSourcesKey = null;
   var activeMicroSourcesScope = "week";
   var activeMicroSourcesSort = { key: "amount", dir: "desc" };
@@ -477,6 +488,20 @@
   var longevitySourcesFullscreenToggleBtn = document.getElementById(
     "longevity-sources-fullscreen-toggle"
   );
+  var foodSourcesModalEl = document.getElementById("food-sources-modal");
+  var foodSourcesBodyEl = document.getElementById("food-sources-body");
+  var foodSourcesFilterEl = document.getElementById("food-sources-filter");
+  var foodSourcesModalDoneBtn = document.getElementById("food-sources-modal-done");
+  var foodSourcesFullscreenToggleBtn = document.getElementById(
+    "food-sources-fullscreen-toggle"
+  );
+  var foodSourcesFullscreen = false;
+  var activeFoodSourcesSort = { key: "nutrient", dir: "asc" };
+  var activeFoodSourcesFilter = "";
+  var foodSourcesRowsCache = null;
+  var foodSourcesPrecomputedRows = null;
+  var foodSourcesSampleCatalog = null;
+  var foodSourcesSampleCatalogPromise = null;
   var microSourcesFullscreen = false;
   var longevitySourcesFullscreen = false;
   var microDailyIntakePopoverEl = document.getElementById("micro-daily-intake-popover");
@@ -503,6 +528,21 @@
       adverseEffects: ["Metabolic acidosis", "Shock", "Coma", "Death"],
     },
     vitaminA: {
+      sideEffects: [
+        "Nausea",
+        "Vomiting",
+        "Headache",
+        "Dizziness",
+        "Blurred vision",
+      ],
+      adverseEffects: [
+        "Increased intracranial pressure",
+        "Liver damage",
+        "Confusion",
+        "Death",
+      ],
+    },
+    vitaminARetinol: {
       sideEffects: [
         "Nausea",
         "Vomiting",
@@ -611,6 +651,10 @@
       text: "Proline: Barbul, The Journal of Nutrition (2008), and Albaugh et al., The Journal of Nutrition (2017), reviewed proline as a conditionally essential amino acid for collagen synthesis, noting that typical mixed-diet intake of 2\u20135 g/day supports baseline collagen turnover, while demand rises during wound healing, exercise, and aging. A 5 g/day study-min target reflects adequate intake for sustained collagen and cartilage support in healthy adults.",
       url: "https://pubmed.ncbi.nlm.nih.gov/28978679/",
     },
+    vitaminARetinol: {
+      text: "Preform vitamin A (retinol): Institute of Medicine (2001) Dietary Reference Intakes set the Tolerable Upper Intake Level (UL) for adults at 3,000 mcg/day of preformed vitamin A (retinol and retinyl esters) from food plus supplements. The UL does not apply to provitamin A carotenoids such as beta-carotene. NIH ODS Vitamin A fact sheet summarizes the same adult UL.",
+      url: "https://ods.od.nih.gov/factsheets/VitaminA-HealthProfessional/",
+    },
   };
 
   var LONGEVITY_DERIVED_DEFS = {
@@ -691,7 +735,14 @@
     },
     fatSolubleVitamins: {
       label: "Fat-soluble vitamins (A, D, E, K)",
-      nutrients: ["vitaminA", "vitaminD", "vitaminE", "vitaminK"],
+      nutrients: [
+        "vitaminA",
+        "vitaminARetinol",
+        "vitaminABetaCarotene",
+        "vitaminD",
+        "vitaminE",
+        "vitaminK",
+      ],
     },
     americanCommonDeficiencies: {
       label: "American Common Deficiencies",
@@ -764,7 +815,15 @@
     },
     cataractsPrevention: {
       label: "Cataracts prevention",
-      nutrients: ["vitaminC", "vitaminA", "zinc", "vitaminE", "selenium"],
+      nutrients: [
+        "vitaminC",
+        "vitaminA",
+        "vitaminARetinol",
+        "vitaminABetaCarotene",
+        "zinc",
+        "vitaminE",
+        "selenium",
+      ],
       longevityNutrients: [
         "lutein",
         "carotenoids",
@@ -839,6 +898,18 @@
     { key: "chromium", label: "Chromium", unit: "mcg", code: "cr" },
     { key: "iodine", label: "Iodine", unit: "mcg", code: "i" },
     { key: "vitaminA", label: "Vitamin A", unit: "mcg", code: "a" },
+    {
+      key: "vitaminARetinol",
+      label: "Vitamin A (preform retinol)",
+      unit: "mcg",
+      code: "ret",
+    },
+    {
+      key: "vitaminABetaCarotene",
+      label: "Vitamin A (proform β-carotene)",
+      unit: "mcg",
+      code: "bc",
+    },
     { key: "vitaminD", label: "Vitamin D", unit: "mcg", code: "d" },
     { key: "vitaminE", label: "Vitamin E", unit: "mg", code: "e" },
     { key: "vitaminK", label: "Vitamin K", unit: "mcg", code: "vk" },
@@ -2790,6 +2861,12 @@
         var stored = parseFloat(v);
         if (!isNaN(stored) && stored > 0) return stored;
       }
+      var betaCarotene = kw.micros
+        ? parseFloat(kw.micros.vitaminABetaCarotene)
+        : NaN;
+      if (!isNaN(betaCarotene) && betaCarotene > 0) {
+        return Math.round((betaCarotene / 1000) * 10) / 10;
+      }
       var vitA = kw.micros ? parseFloat(kw.micros.vitaminA) : NaN;
       if (!isNaN(vitA) && vitA > 50) {
         return Math.round(vitA * 0.01 * 10) / 10;
@@ -3506,6 +3583,15 @@
       "  - micros.vitaminE: sunflower seeds, almonds, spinach, avocado, olive oil (mg)"
     );
     lines.push(
+      "  - micros.vitaminA: total vitamin A as mcg RAE (retinol + carotenoid contribution — keep alongside retinol/β-carotene when breakdown is known)"
+    );
+    lines.push(
+      "  - micros.vitaminARetinol: liver, eggs, dairy, fortified milk, fish (mcg retinol / retinyl esters — omit if unknown)"
+    );
+    lines.push(
+      "  - micros.vitaminABetaCarotene: carrots, sweet potato, spinach, kale, mango, cantaloupe, red bell pepper (mcg β-carotene mass, not RAE — omit if unknown; 12 mcg dietary β-carotene ≈ 1 mcg RAE)"
+    );
+    lines.push(
       "  - micros.vitaminK: kale, spinach, broccoli, natto, egg yolks (mcg; total K — keep alongside K1/K2 when breakdown is known)"
     );
     lines.push(
@@ -4079,10 +4165,12 @@
       })
       .then(function (data) {
         microDefinitions = normalizeMicroDefinitions(data);
+        invalidateFoodSourcesRowsCache();
         if (done) done();
       })
       .catch(function () {
         microDefinitions = {};
+        invalidateFoodSourcesRowsCache();
         if (done) done();
       });
   }
@@ -4314,10 +4402,12 @@
       })
       .then(function (data) {
         longevityDefinitions = normalizeLongevityDefinitions(data);
+        invalidateFoodSourcesRowsCache();
         if (done) done();
       })
       .catch(function () {
         longevityDefinitions = {};
+        invalidateFoodSourcesRowsCache();
         if (done) done();
       });
   }
@@ -4359,32 +4449,44 @@
   }
 
   function microDefFoodSourcesHtml(sources, groups) {
+    var body = "";
     if (groups && groups.length) {
-      return (
-        '<section class="micro-def__sources">' +
-        '<h4 class="micro-def__sources-heading">Food sources</h4>' +
-        groups
-          .map(function (group) {
-            return (
-              '<div class="micro-def__sources-group">' +
-              '<h5 class="micro-def__sources-subheading">' +
-              escapeHtml(group.heading) +
-              "</h5>" +
-              microDefFoodSourcesListHtml(group.items) +
-              "</div>"
-            );
-          })
-          .join("") +
-        "</section>"
-      );
+      body = groups
+        .map(function (group) {
+          return (
+            '<div class="micro-def__sources-group">' +
+            '<h5 class="micro-def__sources-subheading">' +
+            escapeHtml(group.heading) +
+            "</h5>" +
+            microDefFoodSourcesListHtml(group.items) +
+            "</div>"
+          );
+        })
+        .join("");
+    } else if (sources.length) {
+      body = microDefFoodSourcesListHtml(sources);
+    } else {
+      return "";
     }
-    if (!sources.length) return "";
     return (
-      '<section class="micro-def__sources">' +
-      '<h4 class="micro-def__sources-heading">Food sources</h4>' +
-      microDefFoodSourcesListHtml(sources) +
-      "</section>"
+      '<details class="micro-def__sources" open>' +
+      '<summary class="micro-def__sources-summary">Food sources</summary>' +
+      '<div class="micro-def__sources-body">' +
+      body +
+      "</div>" +
+      "</details>"
     );
+  }
+
+  function setMicroDefFoodSources(html) {
+    if (!microDefSourcesEl) return;
+    if (html) {
+      microDefSourcesEl.innerHTML = html;
+      microDefSourcesEl.hidden = false;
+    } else {
+      microDefSourcesEl.innerHTML = "";
+      microDefSourcesEl.hidden = true;
+    }
   }
 
   function microDefListHtml(items, sexId) {
@@ -4464,6 +4566,7 @@
         '<p class="micro-def__empty">No description is available for ' +
         escapeHtml(field ? field.label : key) +
         " yet.</p>";
+      setMicroDefFoodSources("");
       return;
     }
 
@@ -4511,6 +4614,10 @@
       html += vitaminKKeyDifferencesHtml();
     }
 
+    if (key === "vitaminARetinol" || key === "vitaminABetaCarotene") {
+      html += vitaminAKeyDifferencesHtml();
+    }
+
     if (def.tooHigh.length) {
       html +=
         '<section class="micro-def__section">' +
@@ -4531,9 +4638,11 @@
       html += "</section>";
     }
 
-    if (def.foodSourceGroups.length || def.foodSources.length) {
-      html += microDefFoodSourcesHtml(def.foodSources, def.foodSourceGroups);
-    }
+    setMicroDefFoodSources(
+      def.foodSourceGroups.length || def.foodSources.length
+        ? microDefFoodSourcesHtml(def.foodSources, def.foodSourceGroups)
+        : ""
+    );
 
     microDefBodyEl.innerHTML =
       html || '<p class="micro-def__empty">No description content yet.</p>';
@@ -4548,6 +4657,17 @@
       '<p class="micro-def__p"><strong>The sub-forms of K2:</strong></p>' +
       '<p class="micro-def__p"><strong>MK-4 (Menaquinone-4):</strong> Found in some meats and dairy. Clears from the body within a few hours—you typically need multiple doses through the day to keep levels stable.</p>' +
       '<p class="micro-def__p"><strong>MK-7 (Menaquinone-7):</strong> Sourced from fermented foods like natto. Lasts for days, allowing steady once-daily supplementation. Many commercial natto products have K2 removed—when supplementing, choose the MK-7 form.</p>' +
+      "</section>"
+    );
+  }
+
+  function vitaminAKeyDifferencesHtml() {
+    return (
+      '<section class="micro-def__section">' +
+      '<h4 class="micro-def__heading">The Key Differences</h4>' +
+      '<p class="micro-def__p"><strong>Preform vitamin A (retinol):</strong> Active vitamin A from animal foods and fortified products (liver, eggs, dairy, some fish). Directly supports vision (rhodopsin), gene expression, immune barriers, reproduction, and epithelial repair. Excess preformed A is stored and can be toxic—IOM adult UL is 3,000 mcg/day from food plus supplements.</p>' +
+      '<p class="micro-def__p"><strong>Proform vitamin A (β-carotene):</strong> Plant carotenoid that acts as an antioxidant (quenches singlet oxygen) and converts to retinol only as needed. Stored as carotenoid pigment, not as free retinol, so food β-carotene does not share the retinol UL. Smokers should avoid high-dose β-carotene supplements (ATBC / CARET trials).</p>' +
+      '<p class="micro-def__p"><strong>How totals relate (IOM RAE):</strong> There is no recommended retinol∶β-carotene ratio and no separate FDA Daily Value for either form. Total vitamin A uses retinol activity equivalents: 1 mcg RAE = 1 mcg retinol = 12 mcg dietary β-carotene (or 2 mcg supplemental β-carotene). Keep total <code>vitaminA</code> in mcg RAE; log forms when you know the breakdown.</p>' +
       "</section>"
     );
   }
@@ -4683,6 +4803,7 @@
         '<p class="micro-def__empty">No description is available for ' +
         escapeHtml(label) +
         " yet.</p>";
+      setMicroDefFoodSources("");
       return;
     }
 
@@ -4746,6 +4867,10 @@
       html += vitaminKKeyDifferencesHtml();
     }
 
+    if (key === "vitaminARetinol" || key === "vitaminABetaCarotene") {
+      html += vitaminAKeyDifferencesHtml();
+    }
+
     if (!limiting && def.tooHigh.length) {
       html +=
         '<section class="micro-def__section">' +
@@ -4754,9 +4879,11 @@
         "</section>";
     }
 
-    if (def.foodSourceGroups.length || def.foodSources.length) {
-      html += microDefFoodSourcesHtml(def.foodSources, def.foodSourceGroups);
-    }
+    setMicroDefFoodSources(
+      def.foodSourceGroups.length || def.foodSources.length
+        ? microDefFoodSourcesHtml(def.foodSources, def.foodSourceGroups)
+        : ""
+    );
 
     microDefBodyEl.innerHTML =
       html || '<p class="micro-def__empty">No description content yet.</p>';
@@ -4786,6 +4913,10 @@
     defModalReturnSources = returnTo || null;
     if (microDefModalBackBtn) {
       microDefModalBackBtn.hidden = !defModalReturnSources;
+      if (defModalReturnSources) {
+        microDefModalBackBtn.textContent =
+          defModalReturnSources.kind === "food" ? "← Food Sources" : "← My food";
+      }
     }
     if (microDefModalFooterEl) {
       microDefModalFooterEl.classList.toggle(
@@ -4795,10 +4926,24 @@
     }
   }
 
+  function setFoodSourcesStackedOnDef(on) {
+    foodSourcesStackedOnDef = on ? true : null;
+    if (foodSourcesModalEl) {
+      foodSourcesModalEl.classList.toggle("modal--under-def", !!on);
+    }
+  }
+
   function setDefModalStackedForm(kind) {
     defModalStackedForm = kind || null;
     if (microDefModalEl) {
       microDefModalEl.classList.toggle("modal--stacked", !!kind);
+      microDefModalEl.classList.toggle(
+        "modal--stacked-food-sources",
+        kind === "foodSources"
+      );
+    }
+    if (kind === "foodSources") {
+      setFoodSourcesStackedOnDef(true);
     }
   }
 
@@ -4898,6 +5043,21 @@
     setDefModalStackedForm(null);
     if (microDefModalSourcesBtn) microDefModalSourcesBtn.hidden = true;
     updateBodyModalOpen();
+    if (returnTo.kind === "food") {
+      setFoodSourcesStackedOnDef(false);
+      if (foodSourcesModalEl && foodSourcesModalEl.hidden) {
+        activeFoodSourcesSort =
+          returnTo.sort || defaultFoodSourcesSortForKey("nutrient");
+        activeFoodSourcesFilter = returnTo.filter || "";
+        setFoodSourcesFullscreen(!!returnTo.fullscreen);
+        syncFoodSourcesControls();
+        foodSourcesModalEl.hidden = false;
+        renderFoodSourcesBody();
+        updateBodyModalOpen();
+      }
+      if (foodSourcesModalDoneBtn) foodSourcesModalDoneBtn.focus();
+      return;
+    }
     if (returnTo.kind === "micro") {
       openMicroSourcesModal(returnTo.key, returnTo.scope);
     } else {
@@ -4927,6 +5087,11 @@
         stackedKey ? '[data-longevity-key="' + stackedKey + '"]' : "input"
       );
       if (longevityInput) longevityInput.focus();
+    } else if (stackedForm === "foodSources") {
+      setFoodSourcesStackedOnDef(false);
+      if (foodSourcesModalEl && !foodSourcesModalEl.hidden && foodSourcesModalDoneBtn) {
+        foodSourcesModalDoneBtn.focus();
+      }
     }
   }
 
@@ -4975,6 +5140,9 @@
     if (microSourcesModalEl && !microSourcesModalEl.hidden) closeMicroSourcesModal();
     if (longevitySourcesModalEl && !longevitySourcesModalEl.hidden) {
       closeLongevitySourcesModal();
+    }
+    if (foodSourcesModalEl && !foodSourcesModalEl.hidden) {
+      closeFoodSourcesModal();
     }
     if (phosphorusBinderModalEl && !phosphorusBinderModalEl.hidden) {
       closePhosphorusBinderModal();
@@ -5816,6 +5984,867 @@
     if (stackedOnDef && microDefModalEl && !microDefModalEl.hidden) {
       focusMicroDefModal();
     }
+  }
+
+  function foodSourcesNutrientMeta(key) {
+    var micro = microDisplayFieldByKey(key) || microFieldByKey(key);
+    if (micro) return { label: micro.label, unit: micro.unit || "" };
+    var longevity = longevityFieldByKey(key);
+    if (longevity) return { label: longevity.label, unit: longevity.unit || "" };
+    return { label: longevityDefLabel(key), unit: "" };
+  }
+
+  function nutrientAmountFromKeyword(kw, key) {
+    if (!kw) return null;
+    if (key === "fiber") {
+      var fiber = fiberTotalFromParts(kw.micros);
+      return fiber > 0 ? fiber : null;
+    }
+    if (kw.micros && kw.micros[key] !== "" && kw.micros[key] != null) {
+      var microVal = parseFloat(kw.micros[key]);
+      if (!isNaN(microVal) && microVal > 0) return microVal;
+    }
+    var longevityVal = resolveLongevityValue(kw, key);
+    if (longevityVal === "" || longevityVal == null || longevityVal === true) {
+      return null;
+    }
+    var n = parseFloat(longevityVal);
+    return isNaN(n) || n <= 0 ? null : n;
+  }
+
+  function isGenericSupplementFoodSource(label) {
+    return /^supplements?\b/i.test(String(label || "").trim());
+  }
+
+  function mergeFoodSourcesCatalogEntry(target, source) {
+    if (!target || !source) return target;
+    if (!target.micros) target.micros = {};
+    if (!source.micros) source.micros = {};
+    if (!target.longevity) target.longevity = {};
+    if (!source.longevity) source.longevity = {};
+    Object.keys(source.micros).forEach(function (key) {
+      var src = source.micros[key];
+      var dst = target.micros[key];
+      var srcNum = parseFloat(src);
+      var dstNum = parseFloat(dst);
+      if (
+        src !== "" &&
+        src != null &&
+        !isNaN(srcNum) &&
+        srcNum > 0 &&
+        (dst === "" || dst == null || isNaN(dstNum) || dstNum <= 0)
+      ) {
+        target.micros[key] = src;
+      }
+    });
+    Object.keys(source.longevity).forEach(function (key) {
+      var src = source.longevity[key];
+      var dst = target.longevity[key];
+      if (src === true && (dst === "" || dst == null)) {
+        target.longevity[key] = true;
+        return;
+      }
+      var srcNum = parseFloat(src);
+      var dstNum = parseFloat(dst);
+      if (
+        src !== "" &&
+        src != null &&
+        src !== true &&
+        !isNaN(srcNum) &&
+        srcNum > 0 &&
+        (dst === "" ||
+          dst == null ||
+          dst === true ||
+          isNaN(dstNum) ||
+          dstNum <= 0)
+      ) {
+        target.longevity[key] = src;
+      }
+    });
+    return target;
+  }
+
+  function foodSourceMatchTokens(sourceLabel) {
+    var raw = String(sourceLabel || "");
+    var extras = [];
+    raw = raw.replace(/\(([^)]*)\)/g, function (_match, inner) {
+      String(inner || "")
+        .split(/\s*(?:&|\/|,|\band\b|\bor\b)\s*/i)
+        .forEach(function (part) {
+          extras.push(part);
+        });
+      return " ";
+    });
+    return raw
+      .split(/\s*(?:&|\/|,|\band\b|\bor\b)\s*/i)
+      .concat(extras)
+      .map(function (part) {
+        return part
+          .replace(/[^a-z0-9\s'-]/gi, " ")
+          .replace(/\s+/g, " ")
+          .trim()
+          .toLowerCase();
+      })
+      .filter(function (token) {
+        return token.length >= 3;
+      });
+  }
+
+  var FOOD_SOURCE_TOKEN_ALIASES = {
+    mayonnaise: ["mayo"],
+    mayo: ["mayonnaise"],
+    "bell peppers": ["bell pepper", "pepper"],
+    "bell pepper": ["pepper"],
+    "red bell pepper": ["bell pepper", "pepper"],
+    eggs: ["egg"],
+    egg: ["eggs"],
+    tomatoes: ["tomato"],
+    tomato: ["tomatoes"],
+    potatoes: ["potato"],
+    potato: ["potatoes"],
+    berries: ["berry"],
+    berry: ["berries"],
+    oats: ["oat"],
+    beans: ["bean"],
+    lentils: ["lentil"],
+    carrots: ["carrot"],
+    carrot: ["carrots"],
+    flaxseed: ["flax", "flaxseeds"],
+    flax: ["flaxseed", "flaxseeds"],
+    "flax oil": ["flaxseed oil"],
+    "flaxseed oil": ["flax oil"],
+    walnuts: ["walnut"],
+    walnut: ["walnuts"],
+    shrimp: ["prawns", "prawn"],
+    beets: ["beet"],
+    beet: ["beets"],
+    soybeans: ["soybean", "soy"],
+    soybean: ["soybeans", "soy"],
+    pistachios: ["pistachio"],
+    pistachio: ["pistachios"],
+    sardines: ["sardine"],
+    sardine: ["sardines"],
+    "hemp seeds": ["hemp seed", "hemp"],
+    "hemp seed": ["hemp seeds", "hemp"],
+    hemp: ["hemp seed", "hemp seeds"],
+    "perilla oil": ["perilla"],
+    shellfish: ["shrimp", "prawns", "prawn"],
+    shrimp: ["shellfish", "prawns", "prawn"],
+    "organ meats": ["liver", "organ meat"],
+    "organ meat": ["liver", "organ meats"],
+    "dairy fat": ["milk", "butter", "cheese"],
+    "whole milk": ["milk whole"],
+    "milk whole": ["whole milk"],
+  };
+
+  function expandFoodSourceTokenCandidates(token) {
+    var out = [];
+    var seen = {};
+    function add(value) {
+      var v = String(value || "")
+        .trim()
+        .toLowerCase();
+      if (!v || seen[v]) return;
+      seen[v] = true;
+      out.push(v);
+    }
+    add(token);
+    var aliases = FOOD_SOURCE_TOKEN_ALIASES[token];
+    if (aliases) {
+      aliases.forEach(add);
+    }
+    if (token.endsWith("ies") && token.length > 4) {
+      add(token.slice(0, -3) + "y");
+    } else if (token.endsWith("es") && token.length > 4) {
+      add(token.slice(0, -2));
+    } else if (token.endsWith("s") && token.length > 3) {
+      add(token.slice(0, -1));
+    } else {
+      add(token + "s");
+    }
+    return out;
+  }
+
+  function foodNameHasServing(name) {
+    var n = String(name || "");
+    if (
+      /\b\d+([./]\d+)?\s*(cups?|tbsp|tsp|tablespoons?|teaspoons?|oz|g|kg|ml|l|lbs?|pieces?|slices?|softgels?|bites?|handfuls?|servings?)\b/i.test(
+        n
+      )
+    ) {
+      return true;
+    }
+    if (/\b(x\s*\d+|medium|med|\bmd\b|large|\blg\b|small|\bsm\b)\b/i.test(n)) {
+      return true;
+    }
+    return false;
+  }
+
+  function suggestedServingSuffix(sourceLabel) {
+    var t = String(sourceLabel || "").toLowerCase();
+    if (!t.trim()) return "1 serving";
+    if (/\b(oil|mayo|mayonnaise|dressing|butter|sauce)\b/.test(t)) {
+      return "1 tablespoon";
+    }
+    if (/\b(egg|eggs)\b/.test(t)) return "1 medium";
+    if (
+      /\b(apple|orange|banana|mango|peach|pear|kiwi|plum|avocado|cantaloupe|watermelon|papaya|grapefruit)\b/.test(
+        t
+      )
+    ) {
+      return "1 medium";
+    }
+    if (
+      /\b(spinach|kale|broccoli|carrot|pepper|tomato|lettuce|greens|cabbage|beans|lentils|berries|oats|rice|pasta|yogurt|milk)\b/.test(
+        t
+      )
+    ) {
+      return "1 cup";
+    }
+    if (/\b(nuts?|seeds?|chia|flax|almonds?|walnuts?|pistachios?)\b/.test(t)) {
+      return "1 oz";
+    }
+    if (/\b(fish|salmon|chicken|beef|liver|turkey|tuna|sardines?|meat)\b/.test(t)) {
+      return "3 oz";
+    }
+    if (/\b(bread|toast|slice)\b/.test(t)) return "1 slice";
+    return "1 serving";
+  }
+
+  function withSuggestedFoodServing(foodName, sourceLabel) {
+    var name = String(foodName || sourceLabel || "").trim();
+    if (!name || foodNameHasServing(name)) return name;
+    return name + " " + suggestedServingSuffix(sourceLabel || name);
+  }
+
+  function scoreFoodNameAgainstToken(foodName, token) {
+    var name = String(foodName || "").toLowerCase();
+    if (!name || !token) return 0;
+    var candidates = expandFoodSourceTokenCandidates(token);
+    var best = 0;
+    candidates.forEach(function (candidate) {
+      if (!candidate || name.indexOf(candidate) === -1) return;
+      var stripped = name.replace(/^[a-z0-9][a-z0-9\s/&]*\s-\s/, "");
+      function startsAsWholeToken(haystack) {
+        if (haystack.indexOf(candidate) !== 0) return false;
+        var after = haystack.charAt(candidate.length);
+        return !after || /[^a-z0-9]/.test(after);
+      }
+      if (startsAsWholeToken(stripped) || startsAsWholeToken(name)) {
+        best = Math.max(best, 100 + candidate.length);
+        return;
+      }
+      var boundary = new RegExp(
+        "(^|[^a-z0-9])" + escapeRegex(candidate) + "([^a-z0-9]|$)"
+      );
+      if (boundary.test(name)) {
+        best = Math.max(best, 50 + candidate.length);
+        return;
+      }
+      best = Math.max(best, 10 + candidate.length);
+    });
+    return best;
+  }
+
+  function foodSourcesMatchPenalty(foodName, score, sourceLabel) {
+    var n = String(foodName || "").toLowerCase();
+    var label = String(sourceLabel || "").toLowerCase();
+    var penalty = 0;
+    if (
+      /^(trifecta|jamba juice|supplement|junk food|starbucks|leaf wrapped|am shot)\b/.test(
+        n
+      )
+    ) {
+      penalty += score >= 100 ? 35 : 45;
+    }
+    // Keep "Beef & pork" from preferring liver when the source label is not organ meat.
+    if (
+      /\b(liver|gizzard|heart|kidney|offal)\b/.test(n) &&
+      label &&
+      !/\b(liver|organ|offal|gizzard|heart|kidney)\b/.test(label)
+    ) {
+      penalty += 50;
+    }
+    var words = n.split(/\s+/).filter(Boolean);
+    if (words.length >= 6) penalty += 25;
+    return penalty;
+  }
+
+  function findFoodDefinitionForSourcePass(sourceLabel, nutrientKey, requireAmount) {
+    var tokens = foodSourceMatchTokens(sourceLabel);
+    if (!tokens.length) return null;
+    var catalog = foodSourcesMatchCatalog();
+    if (!catalog.length) return null;
+    var best = null;
+    var minScore = requireAmount ? 40 : 50;
+
+    catalog.forEach(function (kw) {
+      var name = (kw.name || "").trim();
+      if (!name) return;
+      var score = 0;
+      tokens.forEach(function (token) {
+        score = Math.max(score, scoreFoodNameAgainstToken(name, token));
+      });
+      var adjusted = score - foodSourcesMatchPenalty(name, score, sourceLabel);
+      if (adjusted < minScore) return;
+      var amount = nutrientAmountFromKeyword(kw, nutrientKey);
+      var amountNum = amount == null ? -1 : amount;
+      var hasAmount = amountNum > 0 ? 1 : 0;
+      if (requireAmount && !hasAmount) return;
+      var hasServing = foodNameHasServing(name) ? 1 : 0;
+      var multiplierPenalty = /\bx\s*\d+\b/i.test(name) ? 1 : 0;
+      var sourceRank = kw._foodSourcesFromSample ? 1 : 0;
+      if (
+        !best ||
+        hasAmount > best.hasAmount ||
+        (hasAmount === best.hasAmount && adjusted > best.score) ||
+        (hasAmount === best.hasAmount &&
+          adjusted === best.score &&
+          hasServing > best.hasServing) ||
+        (hasAmount === best.hasAmount &&
+          adjusted === best.score &&
+          hasServing === best.hasServing &&
+          multiplierPenalty < best.multiplierPenalty) ||
+        (hasAmount === best.hasAmount &&
+          adjusted === best.score &&
+          hasServing === best.hasServing &&
+          multiplierPenalty === best.multiplierPenalty &&
+          sourceRank < best.sourceRank) ||
+        (hasAmount === best.hasAmount &&
+          adjusted === best.score &&
+          hasServing === best.hasServing &&
+          multiplierPenalty === best.multiplierPenalty &&
+          sourceRank === best.sourceRank &&
+          amountNum > best.amount)
+      ) {
+        best = {
+          name: name,
+          amount: amountNum,
+          score: adjusted,
+          hasAmount: hasAmount,
+          hasServing: hasServing,
+          multiplierPenalty: multiplierPenalty,
+          sourceRank: sourceRank,
+        };
+      }
+    });
+    return best;
+  }
+
+  function findFoodDefinitionForSource(sourceLabel, nutrientKey) {
+    var withAmount = findFoodDefinitionForSourcePass(sourceLabel, nutrientKey, true);
+    if (withAmount) return withAmount;
+    return findFoodDefinitionForSourcePass(sourceLabel, nutrientKey, false);
+  }
+
+  function normalizeFoodSourcesCatalogItem(item, fromSample) {
+    if (!item || typeof item !== "object") return null;
+    var micros = normalizeMicros(item.micros);
+    var longevity = normalizeLongevity(item.longevity, micros);
+    longevity = mergeCarbQualityIntoLongevity(longevity, item.carbQuality);
+    syncSharedMicroLongevity(micros, longevity);
+    return {
+      name: typeof item.name === "string" ? item.name : "",
+      micros: micros,
+      longevity: longevity,
+      _foodSourcesFromSample: !!fromSample,
+    };
+  }
+
+  function foodSourcesMatchCatalog() {
+    var byName = {};
+    var catalog = [];
+    function addItem(kw, fromSample) {
+      var name = (kw && kw.name ? String(kw.name) : "").trim();
+      if (!name) return;
+      var key = name.toLowerCase();
+      if (byName[key]) {
+        if (fromSample) mergeFoodSourcesCatalogEntry(byName[key], kw);
+        return;
+      }
+      var entry = fromSample
+        ? kw
+        : {
+            name: name,
+            micros: Object.assign({}, kw.micros || {}),
+            longevity: Object.assign({}, kw.longevity || {}),
+            _foodSourcesFromSample: false,
+          };
+      byName[key] = entry;
+      catalog.push(entry);
+    }
+    keywords.forEach(function (kw) {
+      addItem(kw, false);
+    });
+    (foodSourcesSampleCatalog || []).forEach(function (kw) {
+      addItem(kw, true);
+    });
+    return catalog;
+  }
+
+  function ensureFoodSourcesSampleCatalog(done) {
+    if (foodSourcesSampleCatalog) {
+      if (done) done();
+      return;
+    }
+    if (foodSourcesSampleCatalogPromise) {
+      foodSourcesSampleCatalogPromise.then(
+        function () {
+          if (done) done();
+        },
+        function () {
+          if (done) done();
+        }
+      );
+      return;
+    }
+    foodSourcesSampleCatalogPromise = fetch(IMPORT_SAMPLE_FOODS_URL, {
+      cache: "no-store",
+    })
+      .then(function (res) {
+        if (!res.ok) throw new Error("sample foods fetch failed");
+        return res.json();
+      })
+      .then(function (data) {
+        var list = Array.isArray(data) ? data : [];
+        foodSourcesSampleCatalog = list
+          .map(function (item) {
+            return normalizeFoodSourcesCatalogItem(item, true);
+          })
+          .filter(function (item) {
+            return item && item.name;
+          });
+        invalidateFoodSourcesRowsCache();
+      })
+      .catch(function () {
+        foodSourcesSampleCatalog = [];
+      })
+      .then(function () {
+        foodSourcesSampleCatalogPromise = null;
+        if (done) done();
+      });
+  }
+
+  function collectDefinitionFoodSourceLabels(def) {
+    var labels = [];
+    if (!def) return labels;
+    if (def.foodSourceGroups && def.foodSourceGroups.length) {
+      def.foodSourceGroups.forEach(function (group) {
+        (group.items || []).forEach(function (item) {
+          if (item && !isGenericSupplementFoodSource(item)) labels.push(item);
+        });
+      });
+    } else if (def.foodSources && def.foodSources.length) {
+      def.foodSources.forEach(function (item) {
+        if (item && !isGenericSupplementFoodSource(item)) labels.push(item);
+      });
+    }
+    return labels;
+  }
+
+  function buildFoodSourcesRows() {
+    var rows = [];
+    var seen = {};
+    var nutrientKeys = {};
+    MICRO_ALL_FIELDS.forEach(function (field) {
+      nutrientKeys[field.key] = true;
+    });
+    LONGEVITY_FIELDS.forEach(function (field) {
+      nutrientKeys[field.key] = true;
+    });
+
+    function addRowsForKey(key, def) {
+      if (!nutrientKeys[key]) return;
+      var meta = foodSourcesNutrientMeta(key);
+      collectDefinitionFoodSourceLabels(def).forEach(function (sourceLabel) {
+        var dedupeKey = key + "\0" + sourceLabel.toLowerCase();
+        if (seen[dedupeKey]) return;
+        seen[dedupeKey] = true;
+        var match = findFoodDefinitionForSource(sourceLabel, key);
+        var foodName = match && match.name ? match.name : sourceLabel;
+        var amount =
+          match && match.amount != null && match.amount > 0 ? match.amount : null;
+
+        // Prefer a definition that includes this nutrient's amount whenever one exists.
+        if (amount == null) {
+          var amountMatch = findFoodDefinitionForSourcePass(
+            sourceLabel,
+            key,
+            true
+          );
+          if (amountMatch && amountMatch.amount > 0) {
+            match = amountMatch;
+            foodName = amountMatch.name;
+            amount = amountMatch.amount;
+          }
+        }
+
+        // If still no clear 1-serving label, attach a typical serving.
+        if (meta.label && !foodNameHasServing(foodName)) {
+          foodName = withSuggestedFoodServing(foodName, sourceLabel);
+        }
+
+        var nutrientText = meta.label;
+        if (amount != null && meta.unit) {
+          nutrientText += " " + fmtFoodSourcesAmount(amount) + " " + meta.unit;
+        } else if (amount != null) {
+          nutrientText += " " + fmtFoodSourcesAmount(amount);
+        }
+        rows.push({
+          food: foodName,
+          sourceLabel: sourceLabel,
+          nutrientKey: key,
+          nutrientLabel: meta.label,
+          nutrientText: nutrientText,
+          amount: amount,
+          unit: meta.unit || "",
+          matched: !!(match && match.name),
+        });
+      });
+    }
+
+    Object.keys(microDefinitions).forEach(function (key) {
+      addRowsForKey(key, microDefinitions[key]);
+    });
+    Object.keys(longevityDefinitions).forEach(function (key) {
+      addRowsForKey(key, longevityDefinitions[key]);
+    });
+    return rows;
+  }
+
+  function getFoodSourcesRows() {
+    if (!foodSourcesRowsCache) {
+      if (foodSourcesPrecomputedRows && foodSourcesPrecomputedRows.length) {
+        foodSourcesRowsCache = foodSourcesPrecomputedRows.slice();
+      } else {
+        foodSourcesRowsCache = buildFoodSourcesRows();
+      }
+    }
+    return foodSourcesRowsCache;
+  }
+
+  function invalidateFoodSourcesRowsCache() {
+    foodSourcesRowsCache = null;
+  }
+
+  function normalizePrecomputedFoodSourcesRows(data) {
+    var list = [];
+    if (data && Array.isArray(data.rows)) list = data.rows;
+    else if (Array.isArray(data)) list = data;
+    var out = [];
+    list.forEach(function (row) {
+      if (!row || typeof row !== "object") return;
+      var food = typeof row.food === "string" ? row.food.trim() : "";
+      var sourceLabel =
+        typeof row.sourceLabel === "string" ? row.sourceLabel.trim() : "";
+      var nutrientKey =
+        typeof row.nutrientKey === "string" ? row.nutrientKey.trim() : "";
+      var nutrientLabel =
+        typeof row.nutrientLabel === "string" ? row.nutrientLabel.trim() : "";
+      if (!food || !nutrientKey) return;
+      var amount = null;
+      if (row.amount != null && row.amount !== "") {
+        var n = parseFloat(row.amount);
+        if (!isNaN(n) && n > 0) amount = n;
+      }
+      var unit = typeof row.unit === "string" ? row.unit : "";
+      var nutrientText =
+        typeof row.nutrientText === "string" && row.nutrientText.trim()
+          ? row.nutrientText.trim()
+          : nutrientLabel || nutrientKey;
+      out.push({
+        food: food,
+        sourceLabel: sourceLabel || food,
+        nutrientKey: nutrientKey,
+        nutrientLabel: nutrientLabel || nutrientKey,
+        nutrientText: nutrientText,
+        amount: amount,
+        unit: unit,
+        matched: row.matched !== false && !!food,
+      });
+    });
+    return out;
+  }
+
+  function loadFoodSourcesPrecomputed(done) {
+    fetch(FOOD_SOURCES_PRECOMPUTED_URL, { cache: "no-store" })
+      .then(function (res) {
+        if (!res.ok) throw new Error("food sources precompute fetch failed");
+        return res.json();
+      })
+      .then(function (data) {
+        foodSourcesPrecomputedRows = normalizePrecomputedFoodSourcesRows(data);
+        invalidateFoodSourcesRowsCache();
+        if (done) done();
+      })
+      .catch(function () {
+        foodSourcesPrecomputedRows = null;
+        invalidateFoodSourcesRowsCache();
+        if (done) done();
+      });
+  }
+
+  function normalizeFoodSourcesSortKey(key) {
+    if (key === "food" || key === "nutrient" || key === "amount") return key;
+    return "nutrient";
+  }
+
+  function defaultFoodSourcesSortForKey(key) {
+    var sortKey = normalizeFoodSourcesSortKey(key);
+    if (sortKey === "amount") return { key: "amount", dir: "desc" };
+    return { key: sortKey, dir: "asc" };
+  }
+
+  function nextFoodSourcesSort(current, nextKey) {
+    var key = normalizeFoodSourcesSortKey(nextKey);
+    if (current && current.key === key) {
+      return { key: key, dir: current.dir === "asc" ? "desc" : "asc" };
+    }
+    return defaultFoodSourcesSortForKey(key);
+  }
+
+  function compareFoodSourcesRows(a, b, sort) {
+    var dir = sort && sort.dir === "desc" ? -1 : 1;
+    var key = normalizeFoodSourcesSortKey(sort && sort.key);
+    function cmpStr(left, right) {
+      return String(left || "").localeCompare(String(right || ""), undefined, {
+        sensitivity: "base",
+      });
+    }
+    var primary = 0;
+    if (key === "food") {
+      primary = cmpStr(a.food, b.food);
+    } else if (key === "amount") {
+      var aAmt = a.amount == null ? -1 : a.amount;
+      var bAmt = b.amount == null ? -1 : b.amount;
+      primary = aAmt === bAmt ? 0 : aAmt < bAmt ? -1 : 1;
+    } else {
+      primary = cmpStr(a.nutrientLabel, b.nutrientLabel);
+      if (!primary) {
+        var aN = a.amount == null ? -1 : a.amount;
+        var bN = b.amount == null ? -1 : b.amount;
+        primary = aN === bN ? 0 : aN < bN ? -1 : 1;
+      }
+    }
+    if (primary) return primary * dir;
+    var foodTie = cmpStr(a.food, b.food);
+    if (foodTie) return foodTie;
+    return cmpStr(a.nutrientText, b.nutrientText);
+  }
+
+  function foodSourcesNutrientHasDef(key) {
+    if (!key) return false;
+    if (microDisplayFieldByKey(key)) return true;
+    if (longevityDefinitions[key]) return true;
+    if (longevityFieldByKey(key)) return true;
+    if (LONGEVITY_DERIVED_DEFS[key]) return true;
+    if (LONGEVITY_SECTION_DEFS[key]) return true;
+    return false;
+  }
+
+  function foodSourcesReturnState() {
+    return {
+      kind: "food",
+      sort: activeFoodSourcesSort,
+      filter: activeFoodSourcesFilter,
+      fullscreen: foodSourcesFullscreen,
+    };
+  }
+
+  function foodSourcesDefIconHtml(nutrientKey, nutrientLabel) {
+    if (!foodSourcesNutrientHasDef(nutrientKey)) return "";
+    var label = nutrientLabel || nutrientKey;
+    return (
+      '<button type="button" class="food-sources-modal__info-btn" data-food-sources-def="' +
+      escapeAttr(nutrientKey) +
+      '" aria-label="About ' +
+      escapeAttr(label) +
+      '" title="About ' +
+      escapeAttr(label) +
+      '">' +
+      '<svg class="food-sources-modal__info-icon" viewBox="0 0 16 16" width="13" height="13" aria-hidden="true" focusable="false">' +
+      '<circle cx="8" cy="8" r="6.25" fill="none" stroke="currentColor" stroke-width="1.2"></circle>' +
+      '<path d="M8 7.1v4.4" fill="none" stroke="currentColor" stroke-width="1.35" stroke-linecap="round"></path>' +
+      '<circle cx="8" cy="4.75" r="0.7" fill="currentColor"></circle>' +
+      "</svg></button>"
+    );
+  }
+
+  function openFoodSourcesNutrientDef(key) {
+    if (!key || !foodSourcesModalEl || foodSourcesModalEl.hidden) return;
+    if (!foodSourcesNutrientHasDef(key)) return;
+    if (microDisplayFieldByKey(key)) {
+      openMicroDefModal(key, foodSourcesReturnState(), "foodSources");
+    } else {
+      openLongevityDefModal(key, foodSourcesReturnState(), "foodSources");
+    }
+  }
+
+  function foodSourcesSortHeaderHtml(sort) {
+    function sortBtn(key, label, extraClass) {
+      var active = sort && sort.key === key;
+      var sortDir = active ? sort.dir : null;
+      var arrow = active ? (sortDir === "asc" ? " ▲" : " ▼") : "";
+      var title;
+      if (key === "food") {
+        title = active
+          ? sortDir === "asc"
+            ? "Sorted A–Z — click for Z–A"
+            : "Sorted Z–A — click for A–Z"
+          : "Sort by food";
+      } else {
+        title = active
+          ? sortDir === "asc"
+            ? "Sorted A–Z — click for Z–A"
+            : "Sorted Z–A — click for A–Z"
+          : "Sort by nutrient";
+      }
+      return (
+        '<button type="button" class="food-sources-modal__sort-btn ' +
+        extraClass +
+        (active ? " is-active" : "") +
+        '" data-food-sources-sort="' +
+        key +
+        '" aria-pressed="' +
+        (active ? "true" : "false") +
+        '" aria-sort="' +
+        (active ? (sortDir === "asc" ? "ascending" : "descending") : "none") +
+        '" title="' +
+        escapeAttr(title) +
+        '">' +
+        escapeHtml(label) +
+        '<span class="food-sources-modal__sort-arrow" aria-hidden="true">' +
+        escapeHtml(arrow) +
+        "</span></button>"
+      );
+    }
+    return (
+      "<thead><tr>" +
+      '<th scope="col">' +
+      sortBtn("food", "Food (1 serving)", "food-sources-modal__sort-btn--food") +
+      "</th>" +
+      '<th scope="col">' +
+      sortBtn(
+        "nutrient",
+        "Nutrient",
+        "food-sources-modal__sort-btn--nutrient"
+      ) +
+      "</th>" +
+      '<th scope="col" class="food-sources-modal__info-col"><span class="visually-hidden">About nutrient</span></th>' +
+      "</tr></thead>"
+    );
+  }
+
+  function renderFoodSourcesBody() {
+    if (!foodSourcesBodyEl) return;
+    var rows = getFoodSourcesRows().slice();
+    var filter = String(activeFoodSourcesFilter || "")
+      .trim()
+      .toLowerCase();
+    if (filter) {
+      rows = rows.filter(function (row) {
+        return (
+          row.food.toLowerCase().indexOf(filter) !== -1 ||
+          row.sourceLabel.toLowerCase().indexOf(filter) !== -1 ||
+          row.nutrientText.toLowerCase().indexOf(filter) !== -1 ||
+          row.nutrientLabel.toLowerCase().indexOf(filter) !== -1
+        );
+      });
+    }
+    rows.sort(function (a, b) {
+      return compareFoodSourcesRows(a, b, activeFoodSourcesSort);
+    });
+
+    if (!rows.length) {
+      foodSourcesBodyEl.innerHTML =
+        '<p class="food-sources-modal__empty">' +
+        (filter
+          ? 'No foods matching "' + escapeHtml(activeFoodSourcesFilter) + '".'
+          : "No food sources found in nutrient modals yet.") +
+        "</p>";
+      return;
+    }
+
+    var html =
+      '<table class="food-sources-modal__table">' +
+      foodSourcesSortHeaderHtml(activeFoodSourcesSort) +
+      "<tbody>";
+    rows.forEach(function (row) {
+      html +=
+        '<tr class="food-sources-modal__row' +
+        (row.matched ? "" : " food-sources-modal__row--unmatched") +
+        '">' +
+        '<td class="food-sources-modal__food">' +
+        escapeHtml(row.food) +
+        "</td>" +
+        '<td class="food-sources-modal__nutrient">' +
+        escapeHtml(row.nutrientText) +
+        "</td>" +
+        '<td class="food-sources-modal__info-col">' +
+        foodSourcesDefIconHtml(row.nutrientKey, row.nutrientLabel) +
+        "</td>" +
+        "</tr>";
+    });
+    html +=
+      "</tbody></table>" +
+      '<p class="food-sources-modal__count">' +
+      rows.length +
+      " source" +
+      (rows.length === 1 ? "" : "s") +
+      "</p>";
+    foodSourcesBodyEl.innerHTML = html;
+  }
+
+  function syncFoodSourcesControls() {
+    if (foodSourcesFilterEl) foodSourcesFilterEl.value = activeFoodSourcesFilter;
+  }
+
+  function setFoodSourcesFullscreen(on) {
+    foodSourcesFullscreen = !!on;
+    if (foodSourcesModalEl) {
+      foodSourcesModalEl.classList.toggle("modal--fullscreen", foodSourcesFullscreen);
+    }
+    updateSourcesFullscreenToggle(foodSourcesFullscreenToggleBtn, foodSourcesFullscreen);
+  }
+
+  function openFoodSourcesModal() {
+    if (!foodSourcesModalEl) return;
+    closeOtherModalsForSources();
+    activeFoodSourcesSort = defaultFoodSourcesSortForKey("nutrient");
+    activeFoodSourcesFilter = "";
+    setFoodSourcesFullscreen(false);
+    syncFoodSourcesControls();
+    foodSourcesModalEl.hidden = false;
+    updateBodyModalOpen();
+    if (foodSourcesFilterEl) foodSourcesFilterEl.focus();
+
+    // Prefer precomputed grocery list (definitions-food-sources.json) for instant open.
+    if (foodSourcesPrecomputedRows && foodSourcesPrecomputedRows.length) {
+      renderFoodSourcesBody();
+      return;
+    }
+
+    // Fallback: live match against sample foods (slower).
+    invalidateFoodSourcesRowsCache();
+    ensureFoodSourcesSampleCatalog(function () {
+      invalidateFoodSourcesRowsCache();
+      renderFoodSourcesBody();
+    });
+    renderFoodSourcesBody();
+  }
+
+  function closeFoodSourcesModal() {
+    if (!foodSourcesModalEl) return;
+    if (foodSourcesStackedOnDef && microDefModalEl && !microDefModalEl.hidden) {
+      closeMicroDefModal();
+    }
+    setFoodSourcesStackedOnDef(false);
+    activeFoodSourcesSort = defaultFoodSourcesSortForKey("nutrient");
+    activeFoodSourcesFilter = "";
+    syncFoodSourcesControls();
+    setFoodSourcesFullscreen(false);
+    foodSourcesModalEl.hidden = true;
+    updateBodyModalOpen();
   }
 
   function longevitySourcesIconHtml(nutrientKey, kind) {
@@ -7839,6 +8868,7 @@
       (microDefModalEl && !microDefModalEl.hidden) ||
       (microSourcesModalEl && !microSourcesModalEl.hidden) ||
       (longevitySourcesModalEl && !longevitySourcesModalEl.hidden) ||
+      (foodSourcesModalEl && !foodSourcesModalEl.hidden) ||
       (phosphorusBinderModalEl && !phosphorusBinderModalEl.hidden) ||
       (caffeineTipModalEl && !caffeineTipModalEl.hidden) ||
       (fatsCholesterolTipModalEl && !fatsCholesterolTipModalEl.hidden) ||
@@ -8060,6 +9090,21 @@
   function fmtNum(n) {
     var rounded = Math.round(n * 10) / 10;
     return rounded % 1 === 0 ? String(rounded) : rounded.toFixed(1);
+  }
+
+  /** Food-sources amounts often need 2 decimals (e.g. 0.08 g AA) so fmtNum does not show "0". */
+  function fmtFoodSourcesAmount(n) {
+    var x = Number(n);
+    if (!isFinite(x)) return "";
+    var abs = Math.abs(x);
+    if (abs === 0) return "0";
+    if (abs >= 1) return fmtNum(x);
+    var two = Math.round(x * 100) / 100;
+    if (two === 0) {
+      var three = Math.round(x * 1000) / 1000;
+      return String(three);
+    }
+    return two % 1 === 0 ? String(two) : two.toFixed(2).replace(/0$/, "").replace(/\.$/, "");
   }
 
   function fmtNumGrouped(n) {
@@ -8683,9 +9728,14 @@
       amount: 3000,
       source: "Shao & Hathcock 2008 OSL",
     },
+    vitaminARetinol: {
+      amount: 3000,
+      source: "IOM 2001 UL — preformed vitamin A",
+    },
   };
 
   var NO_STANDALONE_REF_MICRO_KEYS = {
+    vitaminABetaCarotene: true,
     vitaminK1: true,
     vitaminK2: true,
     vitaminK2MK4: true,
@@ -10074,6 +11124,12 @@
     }
     if (microTipHairLossEl) {
       microTipHairLossEl.hidden = microConditionFocus !== "hairLoss";
+    }
+    if (microTipHairLossHerbsEl) {
+      microTipHairLossHerbsEl.hidden = microConditionFocus !== "hairLoss";
+    }
+    if (microTipHairLossPrescriptionsEl) {
+      microTipHairLossPrescriptionsEl.hidden = microConditionFocus !== "hairLoss";
     }
   }
 
@@ -14427,6 +15483,7 @@
   function saveFoodDefinitions() {
     if (!persist) return;
     persist.saveFoodDefinitions(keywords);
+    invalidateFoodSourcesRowsCache();
   }
 
   function loadFoodDefinitions() {
@@ -17611,31 +18668,51 @@
     );
   }
 
-  function autoScrollDaySuggestItem(btn) {
+  function cancelDaySuggestItemScrollAnim(btn) {
+    if (!btn || !btn._daySuggestScrollRaf) return;
+    cancelAnimationFrame(btn._daySuggestScrollRaf);
+    btn._daySuggestScrollRaf = null;
+  }
+
+  /** Slow continuous scroll to the right while a suggest pill is hovered. */
+  function slowScrollDaySuggestItemRight(btn) {
     var viewport = daySuggestItemViewport(btn);
-    if (!viewport || daySuggestItemScrollOverflow(btn) <= 0) return;
-    var match = btn.querySelector(".day__suggest-match");
-    if (match) {
-      var vpRect = viewport.getBoundingClientRect();
-      var matchRect = match.getBoundingClientRect();
-      if (matchRect.right > vpRect.right - 2) {
-        daySuggestItemScrollTo(
-          btn,
-          viewport.scrollLeft + (matchRect.right - vpRect.right) + 4,
-          true
-        );
-        return;
-      }
-      if (matchRect.left < vpRect.left + 2) {
-        daySuggestItemScrollTo(
-          btn,
-          viewport.scrollLeft - (vpRect.left - matchRect.left) - 4,
-          true
-        );
-        return;
-      }
+    if (!viewport) return;
+    cancelDaySuggestItemScrollAnim(btn);
+    var overflow = daySuggestItemScrollOverflow(btn);
+    if (overflow <= 0) return;
+
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      daySuggestItemScrollTo(btn, overflow, false);
+      daySuggestItemUpdateChevrons(btn);
+      return;
     }
-    daySuggestItemScrollTo(btn, daySuggestItemScrollOverflow(btn), true);
+
+    // ~40px/s — long names take a few seconds to reveal
+    var pxPerMs = 0.04;
+    var last = performance.now();
+
+    function step(now) {
+      if (!btn.isConnected) {
+        btn._daySuggestScrollRaf = null;
+        return;
+      }
+      var dt = Math.max(0, now - last);
+      last = now;
+      var maxLeft = daySuggestItemScrollOverflow(btn);
+      var next = viewport.scrollLeft + dt * pxPerMs;
+      if (next >= maxLeft) {
+        viewport.scrollLeft = maxLeft;
+        btn._daySuggestScrollRaf = null;
+        daySuggestItemUpdateChevrons(btn);
+        return;
+      }
+      viewport.scrollLeft = next;
+      daySuggestItemUpdateChevrons(btn);
+      btn._daySuggestScrollRaf = requestAnimationFrame(step);
+    }
+
+    btn._daySuggestScrollRaf = requestAnimationFrame(step);
   }
 
   function activateDaySuggestItemScroll(btn) {
@@ -17652,15 +18729,13 @@
     daySuggestItemUpdateChevrons(btn);
     requestAnimationFrame(function () {
       requestAnimationFrame(function () {
-        autoScrollDaySuggestItem(btn);
-        window.setTimeout(function () {
-          daySuggestItemUpdateChevrons(btn);
-        }, 220);
+        slowScrollDaySuggestItemRight(btn);
       });
     });
   }
 
   function resetDaySuggestItemLabel(btn) {
+    cancelDaySuggestItemScrollAnim(btn);
     var viewport = daySuggestItemViewport(btn);
     if (viewport) viewport.scrollLeft = 0;
     btn.classList.remove(
@@ -17847,6 +18922,7 @@
         e.stopPropagation();
         var leftBtn = e.target.closest(".day__suggest-item");
         if (leftBtn) {
+          cancelDaySuggestItemScrollAnim(leftBtn);
           daySuggestItemScrollTo(leftBtn, 0, false);
           daySuggestItemUpdateChevrons(leftBtn);
         }
@@ -17856,6 +18932,7 @@
         e.stopPropagation();
         var rightBtn = e.target.closest(".day__suggest-item");
         if (rightBtn) {
+          cancelDaySuggestItemScrollAnim(rightBtn);
           daySuggestItemScrollTo(
             rightBtn,
             daySuggestItemScrollOverflow(rightBtn),
@@ -17889,6 +18966,14 @@
     hideDaySuggest(textarea);
     applyDayNoteChange(textarea);
     textarea.focus();
+  }
+
+  /** Hovered suggest pill, or first option when none is hovered. */
+  function daySuggestPickItem(suggestEl) {
+    if (!suggestEl || suggestEl.hidden) return null;
+    var hovered = suggestEl._daySuggestHoverItem;
+    if (hovered && suggestEl.contains(hovered)) return hovered;
+    return suggestEl.querySelector(".day__suggest-item");
   }
 
   function updateDaySuggest(textarea) {
@@ -18028,8 +19113,17 @@
       updateDaySuggest(textarea);
     });
     textarea.addEventListener("keydown", function (e) {
-      if (e.key !== "Escape") return;
       var suggestEl = editor.querySelector(".day__suggest");
+      if (e.key === "Tab" && !e.shiftKey) {
+        if (!suggestEl || suggestEl.hidden) return;
+        var pick = daySuggestPickItem(suggestEl);
+        var foodName = pick && pick.getAttribute("data-food-name");
+        if (!foodName) return;
+        e.preventDefault();
+        applyDayFoodSuggest(textarea, foodName);
+        return;
+      }
+      if (e.key !== "Escape") return;
       if (!suggestEl || suggestEl.hidden) return;
       e.preventDefault();
       dismissDaySuggest(textarea);
@@ -18365,6 +19459,14 @@
         return;
       }
       closeMicroDefModal();
+      return;
+    }
+    if (foodSourcesModalEl && !foodSourcesModalEl.hidden) {
+      if (foodSourcesFullscreen) {
+        setFoodSourcesFullscreen(false);
+        return;
+      }
+      closeFoodSourcesModal();
       return;
     }
     if (longevityNavCanGoBack()) {
@@ -18856,6 +19958,10 @@
     dashboardWeekToggleEl.addEventListener("click", function () {
       setWeekTotalOpen(!weekTotalOpen);
     });
+  }
+
+  if (dashboardFoodSourcesOpenBtn) {
+    dashboardFoodSourcesOpenBtn.addEventListener("click", openFoodSourcesModal);
   }
 
   if (dashboardMicroToggleEl) {
@@ -19388,6 +20494,46 @@
   if (longevitySourcesFullscreenToggleBtn) {
     longevitySourcesFullscreenToggleBtn.addEventListener("click", function () {
       setLongevitySourcesFullscreen(!longevitySourcesFullscreen);
+    });
+  }
+
+  if (foodSourcesModalDoneBtn) {
+    foodSourcesModalDoneBtn.addEventListener("click", closeFoodSourcesModal);
+  }
+
+  if (foodSourcesFullscreenToggleBtn) {
+    foodSourcesFullscreenToggleBtn.addEventListener("click", function () {
+      setFoodSourcesFullscreen(!foodSourcesFullscreen);
+    });
+  }
+
+  if (foodSourcesFilterEl) {
+    foodSourcesFilterEl.addEventListener("input", function () {
+      activeFoodSourcesFilter = foodSourcesFilterEl.value || "";
+      renderFoodSourcesBody();
+    });
+  }
+
+  if (foodSourcesModalEl) {
+    foodSourcesModalEl.addEventListener("click", function (e) {
+      if (e.target.closest('[data-action="close-food-sources-modal"]')) {
+        closeFoodSourcesModal();
+        return;
+      }
+      var sortBtn = e.target.closest("[data-food-sources-sort]");
+      if (sortBtn && foodSourcesModalEl.contains(sortBtn)) {
+        activeFoodSourcesSort = nextFoodSourcesSort(
+          activeFoodSourcesSort,
+          sortBtn.getAttribute("data-food-sources-sort")
+        );
+        renderFoodSourcesBody();
+        return;
+      }
+      var defBtn = e.target.closest("[data-food-sources-def]");
+      if (defBtn && foodSourcesModalEl.contains(defBtn)) {
+        e.preventDefault();
+        openFoodSourcesNutrientDef(defBtn.getAttribute("data-food-sources-def"));
+      }
     });
   }
 
@@ -20022,7 +21168,7 @@
   }
 
   loadAppConfig(function () {
-    var pending = 4;
+    var pending = 5;
     function definitionsReady() {
       pending -= 1;
       if (pending === 0) boot();
@@ -20031,6 +21177,7 @@
     loadLongevityDefinitions(definitionsReady);
     loadFoodNotesDefinitions(definitionsReady);
     loadFoodCategoriesDefinitions(definitionsReady);
+    loadFoodSourcesPrecomputed(definitionsReady);
   });
 
   syncAuthUi();

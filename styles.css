@@ -652,15 +652,17 @@ body {
   align-items: center;
   justify-content: space-between;
   gap: 0.75rem;
-  flex-wrap: wrap;
+}
+
+.dashboard__header-row .dashboard__title {
+  margin: 0;
 }
 
 .dashboard__toggles {
   display: flex;
   flex-wrap: wrap;
   gap: 0.4rem;
-  flex: 1 1 auto;
-  min-width: 0;
+  margin: 0.45rem 0 0;
   max-width: 100%;
 }
 
@@ -2552,6 +2554,169 @@ body.highlight-adverse-effects .dashboard__micro-acute-btn--adverse .dashboard__
   text-align: right;
 }
 
+.food-sources-modal__toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid #ecece8;
+}
+
+.food-sources-modal__body {
+  padding: 0 1rem 1rem;
+  max-height: min(60vh, 32rem);
+  overflow: auto;
+  overscroll-behavior: contain;
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+.modal--fullscreen .food-sources-modal__body {
+  max-height: none;
+  flex: 1 1 auto;
+}
+
+.food-sources-modal__table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 0.82rem;
+}
+
+.food-sources-modal__table th,
+.food-sources-modal__table td {
+  padding: 0.45rem 0.55rem;
+  border-bottom: 1px solid #efefec;
+  text-align: left;
+  vertical-align: top;
+}
+
+.food-sources-modal__table th:first-child,
+.food-sources-modal__table td:first-child {
+  padding-left: 0;
+}
+
+.food-sources-modal__table th:last-child,
+.food-sources-modal__table td:last-child {
+  padding-right: 0;
+}
+
+.food-sources-modal__info-col {
+  width: 1%;
+  padding-left: 0.35rem;
+  text-align: center;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+.food-sources-modal__info-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.25rem;
+  height: 1.25rem;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: #b8b8b2;
+  cursor: pointer;
+}
+
+.food-sources-modal__info-btn:hover,
+.food-sources-modal__info-btn:focus-visible {
+  color: #7a7a74;
+  background: #f2f2ef;
+}
+
+.food-sources-modal__info-btn:focus-visible {
+  outline: 2px solid #3d6b9e;
+  outline-offset: 1px;
+}
+
+.food-sources-modal__info-icon {
+  display: block;
+}
+
+.food-sources-modal__table th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: #fff;
+  border-bottom-color: #e4e4e0;
+  box-shadow: 0 1px 0 #e4e4e0;
+}
+
+.food-sources-modal__sort-btn {
+  margin: 0;
+  padding: 0.1rem 0;
+  border: none;
+  background: transparent;
+  font: inherit;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: #8a8a8a;
+  cursor: pointer;
+  text-align: inherit;
+}
+
+.food-sources-modal__sort-btn:hover,
+.food-sources-modal__sort-btn:focus-visible {
+  color: #333;
+}
+
+.food-sources-modal__sort-btn:focus-visible {
+  outline: 2px solid #4a7fd4;
+  outline-offset: 1px;
+}
+
+.food-sources-modal__sort-btn.is-active {
+  color: #2f5f9f;
+}
+
+.food-sources-modal__sort-arrow {
+  font-weight: 700;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.food-sources-modal__food {
+  min-width: 0;
+  font-weight: 600;
+  color: #333;
+}
+
+.food-sources-modal__nutrient {
+  color: #444;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.food-sources-modal__row--unmatched .food-sources-modal__food {
+  font-weight: 500;
+  color: #5c5c5c;
+}
+
+.food-sources-modal__table tbody tr:hover td,
+.food-sources-modal__table tbody tr:focus-within td {
+  background: #f6f6f3;
+}
+
+.food-sources-modal__empty,
+.food-sources-modal__count {
+  margin: 0.75rem 0 0;
+  font-size: 0.8rem;
+  color: #6a6a6a;
+}
+
+.food-sources-modal__count {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
 .micro-sources-modal__gl-compare {
   margin-top: 0.5rem;
   padding-top: 0.35rem;
@@ -2769,12 +2934,51 @@ body.highlight-adverse-effects .dashboard__micro-acute-btn--adverse .dashboard__
   margin-bottom: 0;
 }
 
+.micro-def__sources-dock {
+  flex: 1 1 auto;
+  min-width: 0;
+  border: none;
+  background: transparent;
+}
+
 .micro-def__sources {
-  margin: 0 0 1.1rem;
-  padding: 0.85rem 0.9rem;
-  border: 1px solid #9eb4cc;
-  border-radius: 6px;
-  background: #e8eef4;
+  margin: 0;
+  padding: 0;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+}
+
+.micro-def__sources-summary {
+  margin: 0;
+  padding: 0.35rem 0;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #2a4a6e;
+  cursor: pointer;
+  list-style: none;
+  user-select: none;
+}
+
+.micro-def__sources-summary::-webkit-details-marker {
+  display: none;
+}
+
+.micro-def__sources-summary::before {
+  content: "▸ ";
+  color: #3a5a7e;
+}
+
+.micro-def__sources[open] .micro-def__sources-summary::before {
+  content: "▾ ";
+}
+
+.micro-def__sources-body {
+  max-height: min(22vh, 9rem);
+  overflow-y: auto;
+  padding: 0 0 0.15rem;
 }
 
 .micro-def__sources-heading {
@@ -6231,7 +6435,105 @@ button.dashboard__longevity-name:focus-visible {
 }
 
 #micro-def-modal.modal--stacked .modal__backdrop {
-  background: rgba(26, 26, 26, 0.55);
+  background: rgba(26, 26, 26, 0.85);
+}
+
+#micro-def-modal.modal--stacked-food-sources:not(.modal--fullscreen) {
+  padding: 0.5rem;
+}
+
+#micro-def-modal.modal--stacked-food-sources:not(.modal--fullscreen) .modal__panel {
+  max-width: 54rem;
+  max-height: min(90vh, 63rem);
+  border-radius: 12px;
+  box-shadow: 0 18px 60px rgba(0, 0, 0, 0.28);
+}
+
+#micro-def-modal.modal--stacked-food-sources:not(.modal--fullscreen) .modal__header {
+  padding: 1.5rem 1.5rem 0.75rem;
+}
+
+#micro-def-modal.modal--stacked-food-sources:not(.modal--fullscreen) .modal__title {
+  font-size: 1.575rem;
+}
+
+#micro-def-modal.modal--stacked-food-sources:not(.modal--fullscreen) .modal__subtitle {
+  font-size: 1.3125rem;
+}
+
+#micro-def-modal.modal--stacked-food-sources:not(.modal--fullscreen) .modal__tool-btn {
+  padding: 0.525rem 0.975rem;
+  font-size: 1.17rem;
+}
+
+#micro-def-modal.modal--stacked-food-sources:not(.modal--fullscreen) .modal__tool-btn-icon {
+  width: 21px;
+  height: 21px;
+}
+
+#micro-def-modal.modal--stacked-food-sources:not(.modal--fullscreen) .micro-def__body {
+  padding: 1.125rem 1.5rem 1.5rem;
+  font-size: 1.3125rem;
+  line-height: 1.5;
+}
+
+#micro-def-modal.modal--stacked-food-sources:not(.modal--fullscreen) .micro-def__heading {
+  font-size: 1.08rem;
+}
+
+#micro-def-modal.modal--stacked-food-sources:not(.modal--fullscreen)
+  .micro-def__heading--warning,
+#micro-def-modal.modal--stacked-food-sources:not(.modal--fullscreen)
+  .micro-def__heading--condition {
+  font-size: 1.2rem;
+}
+
+#micro-def-modal.modal--stacked-food-sources:not(.modal--fullscreen)
+  .micro-def__section--warning
+  .micro-def__p,
+#micro-def-modal.modal--stacked-food-sources:not(.modal--fullscreen)
+  .micro-def__section--condition
+  .micro-def__p {
+  font-size: 1.32rem;
+}
+
+#micro-def-modal.modal--stacked-food-sources:not(.modal--fullscreen) .micro-def__sources-summary {
+  padding: 0.525rem 0;
+  font-size: 1.2rem;
+}
+
+#micro-def-modal.modal--stacked-food-sources:not(.modal--fullscreen) .micro-def__sources-body {
+  max-height: min(33vh, 13.5rem);
+}
+
+#micro-def-modal.modal--stacked-food-sources:not(.modal--fullscreen) .micro-def__sources-heading {
+  font-size: 1.2rem;
+}
+
+#micro-def-modal.modal--stacked-food-sources:not(.modal--fullscreen) .micro-def__sources-subheading {
+  font-size: 1.125rem;
+}
+
+#micro-def-modal.modal--stacked-food-sources:not(.modal--fullscreen) .micro-def__sources-list li {
+  font-size: 1.2rem;
+}
+
+#micro-def-modal.modal--stacked-food-sources:not(.modal--fullscreen) .micro-def__sex-label {
+  font-size: 1.2rem;
+}
+
+#micro-def-modal.modal--stacked-food-sources:not(.modal--fullscreen) .micro-def__sex-icon {
+  font-size: 1.5rem;
+}
+
+#micro-def-modal.modal--stacked-food-sources:not(.modal--fullscreen) .modal__footer {
+  padding: 1.125rem 1.5rem 1.5rem;
+}
+
+#micro-def-modal.modal--stacked-food-sources:not(.modal--fullscreen) .modal__done,
+#micro-def-modal.modal--stacked-food-sources:not(.modal--fullscreen) .modal__secondary {
+  padding: 0.75rem 1.5rem;
+  font-size: 1.3125rem;
 }
 
 #micro-sources-modal.modal--stacked,
@@ -6242,6 +6544,10 @@ button.dashboard__longevity-name:focus-visible {
 #micro-sources-modal.modal--stacked .modal__backdrop,
 #longevity-sources-modal.modal--stacked .modal__backdrop {
   background: rgba(26, 26, 26, 0.55);
+}
+
+#food-sources-modal.modal--under-def .modal__backdrop {
+  background: rgba(26, 26, 26, 0.72);
 }
 
 .modal__header-tools {
@@ -6370,6 +6676,16 @@ body.modal-open {
   font-size: 0.9rem;
 }
 
+#micro-def-modal.modal--fullscreen .micro-def__sources-summary {
+  font-size: 1rem;
+  padding: 0.45rem 0;
+}
+
+#micro-def-modal.modal--fullscreen .micro-def__sources-body {
+  max-height: min(28vh, 12rem);
+  padding: 0 0 0.25rem;
+}
+
 #micro-def-modal.modal--fullscreen .micro-def__sources-heading {
   font-size: 1rem;
 }
@@ -6391,17 +6707,20 @@ body.modal-open {
 }
 
 #micro-sources-modal.modal--fullscreen,
-#longevity-sources-modal.modal--fullscreen {
+#longevity-sources-modal.modal--fullscreen,
+#food-sources-modal.modal--fullscreen {
   padding: 0;
 }
 
 #micro-sources-modal.modal--fullscreen .modal__backdrop,
-#longevity-sources-modal.modal--fullscreen .modal__backdrop {
+#longevity-sources-modal.modal--fullscreen .modal__backdrop,
+#food-sources-modal.modal--fullscreen .modal__backdrop {
   background: #fff;
 }
 
 #micro-sources-modal.modal--fullscreen .modal__panel,
-#longevity-sources-modal.modal--fullscreen .modal__panel {
+#longevity-sources-modal.modal--fullscreen .modal__panel,
+#food-sources-modal.modal--fullscreen .modal__panel {
   max-width: none;
   max-height: none;
   width: 100%;
@@ -6412,17 +6731,20 @@ body.modal-open {
 }
 
 #micro-sources-modal.modal--fullscreen .modal__title,
-#longevity-sources-modal.modal--fullscreen .modal__title {
+#longevity-sources-modal.modal--fullscreen .modal__title,
+#food-sources-modal.modal--fullscreen .modal__title {
   font-size: 1.35rem;
 }
 
 #micro-sources-modal.modal--fullscreen .modal__subtitle,
-#longevity-sources-modal.modal--fullscreen .modal__subtitle {
+#longevity-sources-modal.modal--fullscreen .modal__subtitle,
+#food-sources-modal.modal--fullscreen .modal__subtitle {
   font-size: 1rem;
 }
 
 #micro-sources-modal.modal--fullscreen .micro-sources-modal__body,
-#longevity-sources-modal.modal--fullscreen .micro-sources-modal__body {
+#longevity-sources-modal.modal--fullscreen .micro-sources-modal__body,
+#food-sources-modal.modal--fullscreen .food-sources-modal__body {
   max-height: none;
   font-size: 1rem;
   line-height: 1.55;
@@ -6633,6 +6955,23 @@ button.longevity-form__label-link:focus-visible {
   display: flex;
   justify-content: flex-end;
   background: #fff;
+}
+
+#micro-def-modal-footer {
+  align-items: flex-start;
+  gap: 0.5rem 0.75rem;
+}
+
+#micro-def-modal-footer:has(.micro-def__sources-dock:not([hidden])) {
+  background: #e8eef4;
+  border-top-color: #c5d4e2;
+}
+
+#micro-def-modal-footer .modal__done,
+#micro-def-modal-footer .modal__secondary {
+  flex: 0 0 auto;
+  align-self: flex-start;
+  white-space: nowrap;
 }
 
 .modal__footer--split {
@@ -7481,11 +7820,6 @@ button.longevity-form__label-link:focus-visible {
     font-size: 0.58rem;
   }
 
-  .dashboard__header-row {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
   .week__settings-icon {
     display: none;
   }
@@ -7652,6 +7986,7 @@ button.longevity-form__label-link:focus-visible {
   }
 
   .dashboard__toggles,
+  .dashboard__print,
   .week__days-actions,
   .week__days-carousel-nav,
   .week__nav,
@@ -7766,6 +8101,7 @@ body.print-preview .week {
 }
 
 body.print-preview .dashboard__toggles,
+body.print-preview .dashboard__print,
 body.print-preview .week__days-actions,
 body.print-preview .week__days-carousel-nav,
 body.print-preview .week__nav,

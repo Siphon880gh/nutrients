@@ -298,13 +298,12 @@
       "Not essential to maximize; focus on ratio and food quality."
     ],
     "foodSources": [
-      "Chicken & turkey",
+      "Chicken breast & turkey",
       "Eggs",
       "Beef & pork",
-      "Organ meats",
-      "Fish (variable)",
-      "Shellfish",
-      "Dairy fat"
+      "Liver",
+      "Salmon & sardines",
+      "Shrimp & shellfish"
     ]
   },
   "oleicAcid": {

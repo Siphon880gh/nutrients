@@ -42,12 +42,13 @@
       <div class="dashboard__header">
         <div class="dashboard__header-row">
           <h2 id="dashboard-heading" class="dashboard__title">Dashboard</h2>
-          <div class="dashboard__toggles">
-            <button type="button" id="dashboard-print" class="dashboard__toggle dashboard__print" aria-label="Print preview">Print</button>
-            <button type="button" id="dashboard-week-toggle" class="dashboard__toggle" aria-expanded="false" aria-controls="week-summary">Week total</button>
-            <button type="button" id="dashboard-micro-toggle" class="dashboard__toggle" aria-expanded="false" aria-controls="dashboard-micro-panel">Micro requirements</button>
-            <button type="button" id="dashboard-longevity-toggle" class="dashboard__toggle" aria-expanded="false" aria-controls="dashboard-longevity-panel">Longevity and wellness</button>
-          </div>
+          <button type="button" id="dashboard-print" class="dashboard__toggle dashboard__print" aria-label="Print preview">Print</button>
+        </div>
+        <div class="dashboard__toggles">
+          <button type="button" id="dashboard-food-sources-open" class="dashboard__toggle" aria-haspopup="dialog" aria-controls="food-sources-modal">Food Sources</button>
+          <button type="button" id="dashboard-week-toggle" class="dashboard__toggle" aria-expanded="false" aria-controls="week-summary">Week total</button>
+          <button type="button" id="dashboard-micro-toggle" class="dashboard__toggle" aria-expanded="false" aria-controls="dashboard-micro-panel">Micro requirements</button>
+          <button type="button" id="dashboard-longevity-toggle" class="dashboard__toggle" aria-expanded="false" aria-controls="dashboard-longevity-panel">Longevity and wellness</button>
         </div>
         <p class="dashboard__hint">Each food match in a day adds that food's macros (4 cal/g protein &amp; carbs, 9 cal/g fat)</p>
       </div>
@@ -243,6 +244,16 @@
         <aside id="micro-tip-hair-loss" class="dashboard__micro-tip" role="note" hidden>
           <p class="dashboard__micro-tip-text">
             Zinc acts as a 5-alpha reductase inhibitor, which can reduce DHT conversion—helpful for androgenetic alopecia. Iodine supports thyroid function, which regulates hair growth cycles; deficiency leads to brittleness and hair loss. Limiting nutrients (saturated fat, high-GI foods, creatine) may influence testosterone/DHT levels.
+          </p>
+        </aside>
+        <aside id="micro-tip-hair-loss-herbs" class="dashboard__micro-tip" role="note" hidden>
+          <p class="dashboard__micro-tip-text">
+            <strong>Herbs (not tracked from food):</strong> Saw palmetto and pumpkin seed oil contain phytosterols that may mildly inhibit 5-alpha reductase, lowering DHT conversion—generally weaker than prescription finasteride. Topical rosemary oil has shown hair-density gains comparable to 2% minoxidil in a small trial. Evidence quality varies; herbs do not replace medical care.
+          </p>
+        </aside>
+        <aside id="micro-tip-hair-loss-prescriptions" class="dashboard__micro-tip" role="note" hidden>
+          <p class="dashboard__micro-tip-text">
+            <strong>Prescriptions:</strong> FDA-approved options for androgenetic alopecia include topical minoxidil (OTC 2–5%; prolongs the anagen growth phase) and oral finasteride (and sometimes dutasteride), which strongly inhibit 5-alpha reductase to lower DHT. Spironolactone is sometimes used off-label in women. These need clinician guidance—discuss side effects, fertility plans, and whether nutrient gaps are also contributing.
           </p>
         </aside>
         <div id="dashboard-micro-list" class="dashboard__micro-list" role="list"></div>
@@ -1191,6 +1202,7 @@
       </header>
       <div id="micro-def-body" class="micro-def__body"></div>
       <footer id="micro-def-modal-footer" class="modal__footer">
+        <div id="micro-def-sources" class="micro-def__sources-dock" hidden></div>
         <button type="button" id="micro-def-modal-back" class="modal__secondary" data-action="return-to-sources-modal" hidden>← My food</button>
         <button type="button" id="micro-def-modal-done" class="modal__done">Done</button>
       </footer>
@@ -1743,6 +1755,34 @@
       <form id="longevity-form" class="longevity-form"></form>
       <footer class="modal__footer">
         <button type="button" id="longevity-modal-done" class="modal__done">Done</button>
+      </footer>
+    </div>
+  </div>
+
+  <div id="food-sources-modal" class="modal" hidden>
+    <div class="modal__backdrop" data-action="close-food-sources-modal"></div>
+    <div class="modal__panel modal__panel--wide" role="dialog" aria-modal="true" aria-labelledby="food-sources-modal-title">
+      <header class="modal__header modal__header--with-tools">
+        <div class="modal__header-text">
+          <h3 id="food-sources-modal-title" class="modal__title">Food Sources</h3>
+          <p id="food-sources-modal-subtitle" class="modal__subtitle">Helpful for simplifying grocery shopping so you can hit as many nutrients as possible.</p>
+        </div>
+        <button type="button" id="food-sources-fullscreen-toggle" class="modal__tool-btn" aria-pressed="false" aria-label="Read in full screen">Full screen</button>
+      </header>
+      <div class="food-sources-modal__toolbar">
+        <label class="micro-sources-modal__label" for="food-sources-filter">Find</label>
+        <input
+          type="search"
+          id="food-sources-filter"
+          class="micro-sources-modal__filter"
+          placeholder="Filter by food or nutrient"
+          autocomplete="off"
+          spellcheck="false"
+        >
+      </div>
+      <div id="food-sources-body" class="food-sources-modal__body"></div>
+      <footer class="modal__footer">
+        <button type="button" id="food-sources-modal-done" class="modal__done">Done</button>
       </footer>
     </div>
   </div>

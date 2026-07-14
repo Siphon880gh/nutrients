@@ -430,12 +430,12 @@
       "Meeting daily requirements has become harder over time. Studies show that overall dietary intake and crop concentration of vitamin A (and its precursor, beta-carotene) have decreased over the past several decades. This decline comes from two main areas: soil and crop quality reducing nutrient density in produce, and dietary shifts—long-term population studies show a significant drop in average dietary vitamin A intake, largely driven by adults consuming fewer animal products (such as liver and dairy) and less beta-carotene-rich produce (like carrots)."
     ],
     "enough": [
-      "Vitamin A (retinol and carotenoids) supports night vision, immune barriers in gut/lungs/skin, and cell growth—reducing infection severity and poor wound healing.",
-      "Beta-carotene from colorful plants converts as needed; preformed A from liver/dairy/eggs is more potent—avoid megadoses."
+      "Vitamin A is tracked as total mcg RAE (retinol activity equivalents). Preform retinol and proform β-carotene have different roles—vision/immune gene programs versus antioxidant plus on-demand conversion—and can be logged separately when you know the breakdown.",
+      "Beta-carotene from colorful plants converts as needed; preformed A from liver/dairy/eggs is more potent—avoid megadoses of retinol."
     ],
     "tooHigh": [
-      "Excess preformed vitamin A from supplements or frequent liver can cause liver damage, bone thinning, and birth defects in pregnancy.",
-      "Beta-carotene from plants is safer because the body converts only what it needs."
+      "Excess preformed vitamin A from supplements or frequent liver can cause liver damage, bone thinning, and birth defects in pregnancy. The IOM adult UL is 3,000 mcg/day of preformed retinol only.",
+      "Beta-carotene from plants is safer because the body converts only what it needs; there is no IOM UL for food β-carotene."
     ],
     "foodSources": [
       "Sweet potato & carrot",
@@ -464,6 +464,80 @@
       "Metabolized into retinoic acid, vitamin A physically seals the gaps between intestinal cells—strengthening tight junctions and preventing leaky gut (intestinal permeability), which stops harmful pathogens and pro-inflammatory molecules (like LPS) from entering the bloodstream.",
       "Vitamin A prevents gut dysbiosis by supporting the growth of beneficial bacteria and maintaining a diverse microbial community.",
       "It directs critical innate immune cells to the intestines and aids in the formation of regulatory T cells (Tregs), which suppress harmful inflammation in the gut—helpful when bowel habits swing toward diarrhea or cramping from gut inflammation."
+    ]
+  },
+  "vitaminARetinol": {
+    "dashboardTracking": [
+      "Log preform vitamin A (retinol / retinyl esters) when you know a food is animal- or fortification-based—liver, eggs, dairy, fortified milk. Omit when only total vitamin A (RAE) is listed.",
+      "Scored against the IOM adult UL of 3,000 mcg/day (ceiling): there is no separate FDA Daily Value for retinol alone. Use total vitamin A for % DV toward the RDA."
+    ],
+    "tooLow": [
+      "Low preformed retinol matters most when plant carotenoid intake is also low, or conversion is poor (fat malabsorption, very low-fat meals).",
+      "Night blindness and dry eyes are classic early signs when total vitamin A activity stays inadequate."
+    ],
+    "enough": [
+      "Retinol is the active preform used for vision (rhodopsin), immune and epithelial gene programs, reproduction, and wound healing—distinct from β-carotene’s antioxidant role.",
+      "Modest servings of eggs, dairy, or occasional liver usually cover needs when the rest of the diet includes colorful plants."
+    ],
+    "tooHigh": [
+      "Chronic intake above the IOM UL (3,000 mcg/day preformed A from food plus supplements) raises risk of liver injury, bone thinning, and birth defects in pregnancy.",
+      "Food β-carotene does not count toward this UL; megadose retinol supplements and frequent liver are the usual excess sources."
+    ],
+    "foodSources": [
+      "Beef & chicken liver (small portions)",
+      "Eggs",
+      "Whole milk & cheese",
+      "Fortified milk & cereals",
+      "Butter",
+      "Fatty fish (variable)",
+      "Cod liver oil"
+    ],
+    "male": [
+      "Supports mucosal immunity and skin barrier recovery; keep supplemental retinol modest if liver or fortified foods are already high."
+    ],
+    "female": [
+      "Essential in pregnancy and breastfeeding, but excess preformed A is teratogenic—prefer food sources and stay under the UL; β-carotene from plants is the safer high-intake path."
+    ],
+    "cataractsPrevention": [
+      "Retinol supports corneal and retinal health; adequate food intake pairs with vitamin C, E, and carotenoids for eye tissue resilience.",
+      "Megadose retinol supplements are not a cataract strategy and raise toxicity risk."
+    ]
+  },
+  "vitaminABetaCarotene": {
+    "dashboardTracking": [
+      "Log proform vitamin A (β-carotene) as mcg of β-carotene mass (USDA-style), not RAE. Omit when only total vitamin A is listed.",
+      "Shown unscored: there is no separate FDA Daily Value, RDA, or recommended retinol∶β-carotene ratio. IOM conversion for totals is 12 mcg dietary β-carotene ≈ 1 mcg RAE (2 mcg if from a supplement)."
+    ],
+    "tooLow": [
+      "Low β-carotene usually means few orange/green plants—you lose both antioxidant carotenoid intake and a major provitamin A backup when animal retinol is also scarce.",
+      "Very low-fat meals reduce carotenoid absorption; pair colorful produce with a little oil or nuts."
+    ],
+    "enough": [
+      "β-Carotene is the main dietary proform: it acts as an antioxidant (quenches singlet oxygen) and converts to retinol only as needed—complementary to preformed retinol’s vision and gene-expression roles.",
+      "Colorful plants—carrots, sweet potato, leafy greens, mango, cantaloupe—cover most dietary β-carotene when eaten with some fat."
+    ],
+    "tooHigh": [
+      "Food β-carotene is not assigned an IOM UL; very high intake can yellow the skin (carotenodermia) without retinol toxicity.",
+      "High-dose β-carotene supplements (about 20–30 mg/day) increased lung cancer risk in smokers and asbestos workers (ATBC, CARET)—smokers should avoid those supplements."
+    ],
+    "foodSources": [
+      "Carrot & sweet potato",
+      "Spinach & kale",
+      "Cantaloupe & mango",
+      "Red bell pepper",
+      "Pumpkin & squash",
+      "Apricot",
+      "Broccoli"
+    ],
+    "male": [
+      "Plant β-carotene supplies antioxidant cover and provitamin A without the retinol UL ceiling—useful when training diet is produce-heavy with dietary fat."
+    ],
+    "female": [
+      "Preferred high-intake path for vitamin A activity in pregnancy because conversion is regulated; still eat with fat for absorption."
+    ],
+    "cataractsPrevention": [
+      "β-Carotene feeds the broader carotenoid network that protects eye tissues alongside lutein, zeaxanthin, vitamins C and E.",
+      "Food sources are the usual route; high-dose supplements are not advised for smokers."
     ]
   },
   "vitaminD": {

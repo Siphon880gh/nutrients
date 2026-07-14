@@ -116,7 +116,7 @@
     "source": "MICRO_ALL_FIELDS in app.js (micro requirements panel)",
     "keys": [
       "fiber", "solubleFiber", "insolubleFiber", "sodium", "potassium", "calcium", "iron", "magnesium", "zinc", "selenium", "copper",
-      "manganese", "chromium", "iodine", "vitaminA", "vitaminD", "vitaminE", "vitaminK", "thiamin",
+      "manganese", "chromium", "iodine", "vitaminA", "vitaminARetinol", "vitaminABetaCarotene", "vitaminD", "vitaminE", "vitaminK", "thiamin",
       "riboflavin", "niacin", "pantothenicAcid", "vitaminB6", "biotin", "folate", "vitaminB12", "vitaminC",
       "phosphorus", "choline", "molybdenum", "chloride",
       "histidine", "isoleucine", "leucine", "lysine", "methionine", "phenylalanine", "threonine",

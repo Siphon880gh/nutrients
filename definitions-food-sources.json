@@ -1,0 +1,6027 @@
+{
+  "generatedAt": "2026-07-14T09:28:30.512Z",
+  "sampleFoods": 281,
+  "rowCount": 602,
+  "rows": [
+    {
+      "food": "Lentils cooked 1 cup",
+      "sourceLabel": "Beans & lentils",
+      "nutrientKey": "fiber",
+      "nutrientLabel": "Fiber (total)",
+      "nutrientText": "Fiber (total) 15.6 g",
+      "amount": 15.6,
+      "unit": "g",
+      "matched": true
+    },
+    {
+      "food": "Oats 1 cup cooked",
+      "sourceLabel": "Oats & barley",
+      "nutrientKey": "fiber",
+      "nutrientLabel": "Fiber (total)",
+      "nutrientText": "Fiber (total) 4 g",
+      "amount": 4,
+      "unit": "g",
+      "matched": true
+    },
+    {
+      "food": "Berries & apples 1 cup",
+      "sourceLabel": "Berries & apples",
+      "nutrientKey": "fiber",
+      "nutrientLabel": "Fiber (total)",
+      "nutrientText": "Fiber (total) 4 g",
+      "amount": 4,
+      "unit": "g",
+      "matched": false
+    },
+    {
+      "food": "Broccoli 1 cup",
+      "sourceLabel": "Broccoli & carrots",
+      "nutrientKey": "fiber",
+      "nutrientLabel": "Fiber (total)",
+      "nutrientText": "Fiber (total) 2.4 g",
+      "amount": 2.4,
+      "unit": "g",
+      "matched": true
+    },
+    {
+      "food": "Whole-grain bread 1 slice",
+      "sourceLabel": "Whole-grain bread",
+      "nutrientKey": "fiber",
+      "nutrientLabel": "Fiber (total)",
+      "nutrientText": "Fiber (total) 2 g",
+      "amount": 2,
+      "unit": "g",
+      "matched": false
+    },
+    {
+      "food": "Chia seeds 1 oz",
+      "sourceLabel": "Chia & flax seeds",
+      "nutrientKey": "fiber",
+      "nutrientLabel": "Fiber (total)",
+      "nutrientText": "Fiber (total) 9.8 g",
+      "amount": 9.8,
+      "unit": "g",
+      "matched": true
+    },
+    {
+      "food": "Popcorn - LesserEvil Himalayan Salt Organic 2 cups (2 Handfuls)",
+      "sourceLabel": "Popcorn (air-popped)",
+      "nutrientKey": "fiber",
+      "nutrientLabel": "Fiber (total)",
+      "nutrientText": "Fiber (total) 2.6 g",
+      "amount": 2.6,
+      "unit": "g",
+      "matched": true
+    },
+    {
+      "food": "Oats 1 cup cooked",
+      "sourceLabel": "Oats & barley",
+      "nutrientKey": "solubleFiber",
+      "nutrientLabel": "Soluble fiber",
+      "nutrientText": "Soluble fiber 2 g",
+      "amount": 2,
+      "unit": "g",
+      "matched": true
+    },
+    {
+      "food": "Lentils cooked 1 cup",
+      "sourceLabel": "Beans & lentils",
+      "nutrientKey": "solubleFiber",
+      "nutrientLabel": "Soluble fiber",
+      "nutrientText": "Soluble fiber 4.5 g",
+      "amount": 4.5,
+      "unit": "g",
+      "matched": true
+    },
+    {
+      "food": "Apples & citrus 1 serving",
+      "sourceLabel": "Apples & citrus",
+      "nutrientKey": "solubleFiber",
+      "nutrientLabel": "Soluble fiber",
+      "nutrientText": "Soluble fiber 1 g",
+      "amount": 1,
+      "unit": "g",
+      "matched": false
+    },
+    {
+      "food": "Berries 1 cup",
+      "sourceLabel": "Berries",
+      "nutrientKey": "solubleFiber",
+      "nutrientLabel": "Soluble fiber",
+      "nutrientText": "Soluble fiber 1 g",
+      "amount": 1,
+      "unit": "g",
+      "matched": false
+    },
+    {
+      "food": "Chia seeds 1 oz",
+      "sourceLabel": "Chia & flax seeds",
+      "nutrientKey": "solubleFiber",
+      "nutrientLabel": "Soluble fiber",
+      "nutrientText": "Soluble fiber 3.5 g",
+      "amount": 3.5,
+      "unit": "g",
+      "matched": true
+    },
+    {
+      "food": "Psyllium 1 serving",
+      "sourceLabel": "Psyllium",
+      "nutrientKey": "solubleFiber",
+      "nutrientLabel": "Soluble fiber",
+      "nutrientText": "Soluble fiber 3.5 g",
+      "amount": 3.5,
+      "unit": "g",
+      "matched": false
+    },
+    {
+      "food": "Brussels sprouts 1 cup",
+      "sourceLabel": "Brussels sprouts",
+      "nutrientKey": "solubleFiber",
+      "nutrientLabel": "Soluble fiber",
+      "nutrientText": "Soluble fiber 1 g",
+      "amount": 1,
+      "unit": "g",
+      "matched": true
+    },
+    {
+      "food": "Whole-grain bread 1 slice",
+      "sourceLabel": "Whole-grain bread",
+      "nutrientKey": "insolubleFiber",
+      "nutrientLabel": "Insoluble fiber",
+      "nutrientText": "Insoluble fiber 1.2 g",
+      "amount": 1.2,
+      "unit": "g",
+      "matched": false
+    },
+    {
+      "food": "Cereal -  Grape-Nuts 1 oz",
+      "sourceLabel": "Wheat bran & Grape-Nuts",
+      "nutrientKey": "insolubleFiber",
+      "nutrientLabel": "Insoluble fiber",
+      "nutrientText": "Insoluble fiber 5.5 g",
+      "amount": 5.5,
+      "unit": "g",
+      "matched": true
+    },
+    {
+      "food": "Brown rice 1 cup",
+      "sourceLabel": "Brown rice",
+      "nutrientKey": "insolubleFiber",
+      "nutrientLabel": "Insoluble fiber",
+      "nutrientText": "Insoluble fiber 2 g",
+      "amount": 2,
+      "unit": "g",
+      "matched": false
+    },
+    {
+      "food": "Broccoli 1 cup",
+      "sourceLabel": "Broccoli & carrots",
+      "nutrientKey": "insolubleFiber",
+      "nutrientLabel": "Insoluble fiber",
+      "nutrientText": "Insoluble fiber 1.7 g",
+      "amount": 1.7,
+      "unit": "g",
+      "matched": true
+    },
+    {
+      "food": "Cucumber md",
+      "sourceLabel": "Celery & cucumbers",
+      "nutrientKey": "insolubleFiber",
+      "nutrientLabel": "Insoluble fiber",
+      "nutrientText": "Insoluble fiber 0.8 g",
+      "amount": 0.8,
+      "unit": "g",
+      "matched": true
+    },
+    {
+      "food": "Popcorn - LesserEvil Himalayan Salt Organic 2 cups (2 Handfuls)",
+      "sourceLabel": "Popcorn (air-popped)",
+      "nutrientKey": "insolubleFiber",
+      "nutrientLabel": "Insoluble fiber",
+      "nutrientText": "Insoluble fiber 2 g",
+      "amount": 2,
+      "unit": "g",
+      "matched": true
+    },
+    {
+      "food": "Potato skins 1 serving",
+      "sourceLabel": "Potato skins",
+      "nutrientKey": "insolubleFiber",
+      "nutrientLabel": "Insoluble fiber",
+      "nutrientText": "Insoluble fiber 2 g",
+      "amount": 2,
+      "unit": "g",
+      "matched": false
+    },
+    {
+      "food": "Table Salt Iodized 8 sm pinches (6ml)",
+      "sourceLabel": "Table salt & sea salt",
+      "nutrientKey": "sodium",
+      "nutrientLabel": "Sodium",
+      "nutrientText": "Sodium 2790.6 mg",
+      "amount": 2790.6,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Soy sauce & tamari 1 tablespoon",
+      "sourceLabel": "Soy sauce & tamari",
+      "nutrientKey": "sodium",
+      "nutrientLabel": "Sodium",
+      "nutrientText": "Sodium 900 mg",
+      "amount": 900,
+      "unit": "mg",
+      "matched": false
+    },
+    {
+      "food": "Pickles & olives 1 serving",
+      "sourceLabel": "Pickles & olives",
+      "nutrientKey": "sodium",
+      "nutrientLabel": "Sodium",
+      "nutrientText": "Sodium 300 mg",
+      "amount": 300,
+      "unit": "mg",
+      "matched": false
+    },
+    {
+      "food": "Broth & soup 1 serving",
+      "sourceLabel": "Broth & soup",
+      "nutrientKey": "sodium",
+      "nutrientLabel": "Sodium",
+      "nutrientText": "Sodium 900 mg",
+      "amount": 900,
+      "unit": "mg",
+      "matched": false
+    },
+    {
+      "food": "Cheese American 1 slice (21g)",
+      "sourceLabel": "Cheese",
+      "nutrientKey": "sodium",
+      "nutrientLabel": "Sodium",
+      "nutrientText": "Sodium 356 mg",
+      "amount": 356,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Bread, Sourdough - 1 slice",
+      "sourceLabel": "Bread & crackers",
+      "nutrientKey": "sodium",
+      "nutrientLabel": "Sodium",
+      "nutrientText": "Sodium 230 mg",
+      "amount": 230,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Cured meats (in moderation) 1 serving",
+      "sourceLabel": "Cured meats (in moderation)",
+      "nutrientKey": "sodium",
+      "nutrientLabel": "Sodium",
+      "nutrientText": "Sodium 500 mg",
+      "amount": 500,
+      "unit": "mg",
+      "matched": false
+    },
+    {
+      "food": "Fruit - Banana with skin 1 serving",
+      "sourceLabel": "Bananas",
+      "nutrientKey": "potassium",
+      "nutrientLabel": "Potassium",
+      "nutrientText": "Potassium 450 mg",
+      "amount": 450,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Avocado whole 1 medium",
+      "sourceLabel": "Avocado",
+      "nutrientKey": "potassium",
+      "nutrientLabel": "Potassium",
+      "nutrientText": "Potassium 970 mg",
+      "amount": 970,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Oranges & orange juice 1 medium",
+      "sourceLabel": "Oranges & orange juice",
+      "nutrientKey": "potassium",
+      "nutrientLabel": "Potassium",
+      "nutrientText": "Potassium 237 mg",
+      "amount": 237,
+      "unit": "mg",
+      "matched": false
+    },
+    {
+      "food": "Dried apricots 1 serving",
+      "sourceLabel": "Dried apricots",
+      "nutrientKey": "potassium",
+      "nutrientLabel": "Potassium",
+      "nutrientText": "Potassium 378 mg",
+      "amount": 378,
+      "unit": "mg",
+      "matched": false
+    },
+    {
+      "food": "Melons (cantaloupe, honeydew) 1 medium",
+      "sourceLabel": "Melons (cantaloupe, honeydew)",
+      "nutrientKey": "potassium",
+      "nutrientLabel": "Potassium",
+      "nutrientText": "Potassium 430 mg",
+      "amount": 430,
+      "unit": "mg",
+      "matched": false
+    },
+    {
+      "food": "Potato baked with skin md",
+      "sourceLabel": "Potatoes (with skin)",
+      "nutrientKey": "potassium",
+      "nutrientLabel": "Potassium",
+      "nutrientText": "Potassium 926 mg",
+      "amount": 926,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Spinach 1 cup",
+      "sourceLabel": "Spinach & leafy greens",
+      "nutrientKey": "potassium",
+      "nutrientLabel": "Potassium",
+      "nutrientText": "Potassium 167 mg",
+      "amount": 167,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Tomato md",
+      "sourceLabel": "Tomatoes & tomato sauce",
+      "nutrientKey": "potassium",
+      "nutrientLabel": "Potassium",
+      "nutrientText": "Potassium 237 mg",
+      "amount": 237,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Sweet Potato Fries lg",
+      "sourceLabel": "Sweet potatoes",
+      "nutrientKey": "potassium",
+      "nutrientLabel": "Potassium",
+      "nutrientText": "Potassium 685 mg",
+      "amount": 685,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Beet greens 1 cup",
+      "sourceLabel": "Beet greens",
+      "nutrientKey": "potassium",
+      "nutrientLabel": "Potassium",
+      "nutrientText": "Potassium 1309 mg",
+      "amount": 1309,
+      "unit": "mg",
+      "matched": false
+    },
+    {
+      "food": "Winter squash 1 serving",
+      "sourceLabel": "Winter squash",
+      "nutrientKey": "potassium",
+      "nutrientLabel": "Potassium",
+      "nutrientText": "Potassium 450 mg",
+      "amount": 450,
+      "unit": "mg",
+      "matched": false
+    },
+    {
+      "food": "Lentils cooked 1 cup",
+      "sourceLabel": "Beans & lentils",
+      "nutrientKey": "potassium",
+      "nutrientLabel": "Potassium",
+      "nutrientText": "Potassium 731 mg",
+      "amount": 731,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Milk reduced 2 cups",
+      "sourceLabel": "Yogurt & milk",
+      "nutrientKey": "potassium",
+      "nutrientLabel": "Potassium",
+      "nutrientText": "Potassium 732 mg",
+      "amount": 732,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Salmon 3 oz",
+      "sourceLabel": "Salmon & other fish",
+      "nutrientKey": "potassium",
+      "nutrientLabel": "Potassium",
+      "nutrientText": "Potassium 300 mg",
+      "amount": 300,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Pistachios 1 oz",
+      "sourceLabel": "Nuts (almonds, pistachios)",
+      "nutrientKey": "potassium",
+      "nutrientLabel": "Potassium",
+      "nutrientText": "Potassium 285 mg",
+      "amount": 285,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Milk reduced 2 cups",
+      "sourceLabel": "Milk & yogurt",
+      "nutrientKey": "calcium",
+      "nutrientLabel": "Calcium",
+      "nutrientText": "Calcium 586 mg",
+      "amount": 586,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Cheese American 1 slice (21g)",
+      "sourceLabel": "Cheese",
+      "nutrientKey": "calcium",
+      "nutrientLabel": "Calcium",
+      "nutrientText": "Calcium 223 mg",
+      "amount": 223,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Fortified plant milks 1 serving",
+      "sourceLabel": "Fortified plant milks",
+      "nutrientKey": "calcium",
+      "nutrientLabel": "Calcium",
+      "nutrientText": "Calcium 300 mg",
+      "amount": 300,
+      "unit": "mg",
+      "matched": false
+    },
+    {
+      "food": "Sardines canned 3 oz",
+      "sourceLabel": "Sardines & canned salmon (with bones)",
+      "nutrientKey": "calcium",
+      "nutrientLabel": "Calcium",
+      "nutrientText": "Calcium 325 mg",
+      "amount": 325,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Broccoli 1 cup",
+      "sourceLabel": "Kale, collard greens, broccoli & bok choy",
+      "nutrientKey": "calcium",
+      "nutrientLabel": "Calcium",
+      "nutrientText": "Calcium 43 mg",
+      "amount": 43,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Green beans 1 cup",
+      "sourceLabel": "Legumes & nuts (calcium-set tofu, almonds, beans)",
+      "nutrientKey": "calcium",
+      "nutrientLabel": "Calcium",
+      "nutrientText": "Calcium 37 mg",
+      "amount": 37,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Beef Liver 3 oz palm-sized",
+      "sourceLabel": "Beef & liver",
+      "nutrientKey": "iron",
+      "nutrientLabel": "Iron",
+      "nutrientText": "Iron 4.1 mg",
+      "amount": 4.05,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Shrimp 3 oz",
+      "sourceLabel": "Shellfish",
+      "nutrientKey": "iron",
+      "nutrientLabel": "Iron",
+      "nutrientText": "Iron 0.4 mg",
+      "amount": 0.4,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Lentils cooked 1 cup",
+      "sourceLabel": "Beans & lentils",
+      "nutrientKey": "iron",
+      "nutrientLabel": "Iron",
+      "nutrientText": "Iron 6.6 mg",
+      "amount": 6.6,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Spinach 1 cup",
+      "sourceLabel": "Spinach & Swiss chard",
+      "nutrientKey": "iron",
+      "nutrientLabel": "Iron",
+      "nutrientText": "Iron 0.8 mg",
+      "amount": 0.8,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Fortified cereals 1 serving",
+      "sourceLabel": "Fortified cereals",
+      "nutrientKey": "iron",
+      "nutrientLabel": "Iron",
+      "nutrientText": "Iron 8 mg",
+      "amount": 8,
+      "unit": "mg",
+      "matched": false
+    },
+    {
+      "food": "Pumpkin seeds 1 oz",
+      "sourceLabel": "Pumpkin seeds",
+      "nutrientKey": "iron",
+      "nutrientLabel": "Iron",
+      "nutrientText": "Iron 2.5 mg",
+      "amount": 2.5,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Tofu 1 serving",
+      "sourceLabel": "Tofu",
+      "nutrientKey": "iron",
+      "nutrientLabel": "Iron",
+      "nutrientText": "Iron 3 mg",
+      "amount": 3,
+      "unit": "mg",
+      "matched": false
+    },
+    {
+      "food": "Pumpkin seeds 1 oz",
+      "sourceLabel": "Pumpkin seeds",
+      "nutrientKey": "magnesium",
+      "nutrientLabel": "Magnesium",
+      "nutrientText": "Magnesium 150 mg",
+      "amount": 150,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Cashews 1 oz",
+      "sourceLabel": "Almonds & cashews",
+      "nutrientKey": "magnesium",
+      "nutrientLabel": "Magnesium",
+      "nutrientText": "Magnesium 83 mg",
+      "amount": 83,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Spinach 1 cup",
+      "sourceLabel": "Spinach & Swiss chard",
+      "nutrientKey": "magnesium",
+      "nutrientLabel": "Magnesium",
+      "nutrientText": "Magnesium 24 mg",
+      "amount": 24,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Black beans 1 cup",
+      "sourceLabel": "Black beans",
+      "nutrientKey": "magnesium",
+      "nutrientLabel": "Magnesium",
+      "nutrientText": "Magnesium 120 mg",
+      "amount": 120,
+      "unit": "mg",
+      "matched": false
+    },
+    {
+      "food": "Dark chocolate 70% 1 oz",
+      "sourceLabel": "Dark chocolate (70%+)",
+      "nutrientKey": "magnesium",
+      "nutrientLabel": "Magnesium",
+      "nutrientText": "Magnesium 65 mg",
+      "amount": 65,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Avocado whole 1 medium",
+      "sourceLabel": "Avocado",
+      "nutrientKey": "magnesium",
+      "nutrientLabel": "Magnesium",
+      "nutrientText": "Magnesium 58 mg",
+      "amount": 58,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Whole grains 1 serving",
+      "sourceLabel": "Whole grains",
+      "nutrientKey": "magnesium",
+      "nutrientLabel": "Magnesium",
+      "nutrientText": "Magnesium 60 mg",
+      "amount": 60,
+      "unit": "mg",
+      "matched": false
+    },
+    {
+      "food": "Edamame 1 cup (155g, shelled)",
+      "sourceLabel": "Edamame",
+      "nutrientKey": "magnesium",
+      "nutrientLabel": "Magnesium",
+      "nutrientText": "Magnesium 99 mg",
+      "amount": 99,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Oysters 1 serving",
+      "sourceLabel": "Oysters",
+      "nutrientKey": "zinc",
+      "nutrientLabel": "Zinc",
+      "nutrientText": "Zinc 30 mg",
+      "amount": 30,
+      "unit": "mg",
+      "matched": false
+    },
+    {
+      "food": "Beef 3 oz",
+      "sourceLabel": "Beef & crab",
+      "nutrientKey": "zinc",
+      "nutrientLabel": "Zinc",
+      "nutrientText": "Zinc 5.5 mg",
+      "amount": 5.5,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Pumpkin seeds 1 oz",
+      "sourceLabel": "Pumpkin seeds",
+      "nutrientKey": "zinc",
+      "nutrientLabel": "Zinc",
+      "nutrientText": "Zinc 2.2 mg",
+      "amount": 2.2,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Lentils cooked 1 cup",
+      "sourceLabel": "Chickpeas & lentils",
+      "nutrientKey": "zinc",
+      "nutrientLabel": "Zinc",
+      "nutrientText": "Zinc 2.5 mg",
+      "amount": 2.5,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Cheese cheddar 1 slice (28g)",
+      "sourceLabel": "Yogurt & cheese",
+      "nutrientKey": "zinc",
+      "nutrientLabel": "Zinc",
+      "nutrientText": "Zinc 1 mg",
+      "amount": 1,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Cashews 1 oz",
+      "sourceLabel": "Cashews",
+      "nutrientKey": "zinc",
+      "nutrientLabel": "Zinc",
+      "nutrientText": "Zinc 1.6 mg",
+      "amount": 1.6,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Chicken 4 oz palm-sized",
+      "sourceLabel": "Chicken & turkey",
+      "nutrientKey": "zinc",
+      "nutrientLabel": "Zinc",
+      "nutrientText": "Zinc 1.1 mg",
+      "amount": 1.1,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Sweet Potato Fries lg",
+      "sourceLabel": "Sweet potato & carrot",
+      "nutrientKey": "vitaminA",
+      "nutrientLabel": "Vitamin A",
+      "nutrientText": "Vitamin A 1180 mcg",
+      "amount": 1180,
+      "unit": "mcg",
+      "matched": true
+    },
+    {
+      "food": "Spinach 1 cup",
+      "sourceLabel": "Spinach & kale",
+      "nutrientKey": "vitaminA",
+      "nutrientLabel": "Vitamin A",
+      "nutrientText": "Vitamin A 2813 mcg",
+      "amount": 2813,
+      "unit": "mcg",
+      "matched": true
+    },
+    {
+      "food": "Egg md",
+      "sourceLabel": "Eggs",
+      "nutrientKey": "vitaminA",
+      "nutrientLabel": "Vitamin A",
+      "nutrientText": "Vitamin A 70 mcg",
+      "amount": 70,
+      "unit": "mcg",
+      "matched": true
+    },
+    {
+      "food": "Beef Liver 3 oz palm-sized",
+      "sourceLabel": "Liver (small portions)",
+      "nutrientKey": "vitaminA",
+      "nutrientLabel": "Vitamin A",
+      "nutrientText": "Vitamin A 7950 mcg",
+      "amount": 7950,
+      "unit": "mcg",
+      "matched": true
+    },
+    {
+      "food": "Cheese cheddar 1 slice (28g)",
+      "sourceLabel": "Milk & cheese",
+      "nutrientKey": "vitaminA",
+      "nutrientLabel": "Vitamin A",
+      "nutrientText": "Vitamin A 96 mcg",
+      "amount": 96,
+      "unit": "mcg",
+      "matched": true
+    },
+    {
+      "food": "Fruit - Mango md",
+      "sourceLabel": "Mango & cantaloupe",
+      "nutrientKey": "vitaminA",
+      "nutrientLabel": "Vitamin A",
+      "nutrientText": "Vitamin A 89 mcg",
+      "amount": 89,
+      "unit": "mcg",
+      "matched": true
+    },
+    {
+      "food": "Red bell pepper 1 cup",
+      "sourceLabel": "Red bell pepper",
+      "nutrientKey": "vitaminA",
+      "nutrientLabel": "Vitamin A",
+      "nutrientText": "Vitamin A 234 mcg",
+      "amount": 234,
+      "unit": "mcg",
+      "matched": false
+    },
+    {
+      "food": "Chicken Liver 1 oz sm",
+      "sourceLabel": "Beef & chicken liver (small portions)",
+      "nutrientKey": "vitaminARetinol",
+      "nutrientLabel": "Vitamin A (preform retinol)",
+      "nutrientText": "Vitamin A (preform retinol) 920 mcg",
+      "amount": 920,
+      "unit": "mcg",
+      "matched": true
+    },
+    {
+      "food": "Egg md",
+      "sourceLabel": "Eggs",
+      "nutrientKey": "vitaminARetinol",
+      "nutrientLabel": "Vitamin A (preform retinol)",
+      "nutrientText": "Vitamin A (preform retinol) 70 mcg",
+      "amount": 70,
+      "unit": "mcg",
+      "matched": true
+    },
+    {
+      "food": "Milk whole 1 cup",
+      "sourceLabel": "Whole milk & cheese",
+      "nutrientKey": "vitaminARetinol",
+      "nutrientLabel": "Vitamin A (preform retinol)",
+      "nutrientText": "Vitamin A (preform retinol) 112 mcg",
+      "amount": 112,
+      "unit": "mcg",
+      "matched": true
+    },
+    {
+      "food": "Cereal - Cheerios 1 cup",
+      "sourceLabel": "Fortified milk & cereals",
+      "nutrientKey": "vitaminARetinol",
+      "nutrientLabel": "Vitamin A (preform retinol)",
+      "nutrientText": "Vitamin A (preform retinol) 150 mcg",
+      "amount": 150,
+      "unit": "mcg",
+      "matched": true
+    },
+    {
+      "food": "Butter Salted 1 tablespoon (14.2g)",
+      "sourceLabel": "Butter",
+      "nutrientKey": "vitaminARetinol",
+      "nutrientLabel": "Vitamin A (preform retinol)",
+      "nutrientText": "Vitamin A (preform retinol) 97 mcg",
+      "amount": 97,
+      "unit": "mcg",
+      "matched": true
+    },
+    {
+      "food": "Fatty fish (variable) 3 oz",
+      "sourceLabel": "Fatty fish (variable)",
+      "nutrientKey": "vitaminARetinol",
+      "nutrientLabel": "Vitamin A (preform retinol)",
+      "nutrientText": "Vitamin A (preform retinol) 40 mcg",
+      "amount": 40,
+      "unit": "mcg",
+      "matched": false
+    },
+    {
+      "food": "Cod liver oil 1 tablespoon",
+      "sourceLabel": "Cod liver oil",
+      "nutrientKey": "vitaminARetinol",
+      "nutrientLabel": "Vitamin A (preform retinol)",
+      "nutrientText": "Vitamin A (preform retinol) 4080 mcg",
+      "amount": 4080,
+      "unit": "mcg",
+      "matched": false
+    },
+    {
+      "food": "Sweet Potato Fries sm",
+      "sourceLabel": "Carrot & sweet potato",
+      "nutrientKey": "vitaminABetaCarotene",
+      "nutrientLabel": "Vitamin A (proform β-carotene)",
+      "nutrientText": "Vitamin A (proform β-carotene) 7000 mcg",
+      "amount": 7000,
+      "unit": "mcg",
+      "matched": true
+    },
+    {
+      "food": "Spinach 1 cup",
+      "sourceLabel": "Spinach & kale",
+      "nutrientKey": "vitaminABetaCarotene",
+      "nutrientLabel": "Vitamin A (proform β-carotene)",
+      "nutrientText": "Vitamin A (proform β-carotene) 33750 mcg",
+      "amount": 33750,
+      "unit": "mcg",
+      "matched": true
+    },
+    {
+      "food": "Fruit - Mango md",
+      "sourceLabel": "Cantaloupe & mango",
+      "nutrientKey": "vitaminABetaCarotene",
+      "nutrientLabel": "Vitamin A (proform β-carotene)",
+      "nutrientText": "Vitamin A (proform β-carotene) 1056 mcg",
+      "amount": 1056,
+      "unit": "mcg",
+      "matched": true
+    },
+    {
+      "food": "Red bell pepper 1 cup",
+      "sourceLabel": "Red bell pepper",
+      "nutrientKey": "vitaminABetaCarotene",
+      "nutrientLabel": "Vitamin A (proform β-carotene)",
+      "nutrientText": "Vitamin A (proform β-carotene) 1980 mcg",
+      "amount": 1980,
+      "unit": "mcg",
+      "matched": false
+    },
+    {
+      "food": "Pumpkin seeds 1 oz",
+      "sourceLabel": "Pumpkin & squash",
+      "nutrientKey": "vitaminABetaCarotene",
+      "nutrientLabel": "Vitamin A (proform β-carotene)",
+      "nutrientText": "Vitamin A (proform β-carotene) 9 mcg",
+      "amount": 9,
+      "unit": "mcg",
+      "matched": true
+    },
+    {
+      "food": "Apricot 1 serving",
+      "sourceLabel": "Apricot",
+      "nutrientKey": "vitaminABetaCarotene",
+      "nutrientLabel": "Vitamin A (proform β-carotene)",
+      "nutrientText": "Vitamin A (proform β-carotene) 1090 mcg",
+      "amount": 1090,
+      "unit": "mcg",
+      "matched": false
+    },
+    {
+      "food": "Broccoli 1 cup",
+      "sourceLabel": "Broccoli",
+      "nutrientKey": "vitaminABetaCarotene",
+      "nutrientLabel": "Vitamin A (proform β-carotene)",
+      "nutrientText": "Vitamin A (proform β-carotene) 6800 mcg",
+      "amount": 6800,
+      "unit": "mcg",
+      "matched": true
+    },
+    {
+      "food": "Sardines canned 3 oz",
+      "sourceLabel": "Salmon & sardines",
+      "nutrientKey": "vitaminD",
+      "nutrientLabel": "Vitamin D",
+      "nutrientText": "Vitamin D 4.5 mcg",
+      "amount": 4.5,
+      "unit": "mcg",
+      "matched": true
+    },
+    {
+      "food": "Egg yolks 1 medium",
+      "sourceLabel": "Egg yolks",
+      "nutrientKey": "vitaminD",
+      "nutrientLabel": "Vitamin D",
+      "nutrientText": "Vitamin D 1.1 mcg",
+      "amount": 1.1,
+      "unit": "mcg",
+      "matched": false
+    },
+    {
+      "food": "Fortified milk & OJ 1 cup",
+      "sourceLabel": "Fortified milk & OJ",
+      "nutrientKey": "vitaminD",
+      "nutrientLabel": "Vitamin D",
+      "nutrientText": "Vitamin D 3 mcg",
+      "amount": 3,
+      "unit": "mcg",
+      "matched": false
+    },
+    {
+      "food": "Fortified cereals 1 serving",
+      "sourceLabel": "Fortified cereals",
+      "nutrientKey": "vitaminD",
+      "nutrientLabel": "Vitamin D",
+      "nutrientText": "Vitamin D 2 mcg",
+      "amount": 2,
+      "unit": "mcg",
+      "matched": false
+    },
+    {
+      "food": "Mushrooms (UV-exposed) 1 serving",
+      "sourceLabel": "Mushrooms (UV-exposed)",
+      "nutrientKey": "vitaminD",
+      "nutrientLabel": "Vitamin D",
+      "nutrientText": "Vitamin D 10 mcg",
+      "amount": 10,
+      "unit": "mcg",
+      "matched": false
+    },
+    {
+      "food": "Cod liver oil 1 tablespoon",
+      "sourceLabel": "Cod liver oil",
+      "nutrientKey": "vitaminD",
+      "nutrientLabel": "Vitamin D",
+      "nutrientText": "Vitamin D 34 mcg",
+      "amount": 34,
+      "unit": "mcg",
+      "matched": false
+    },
+    {
+      "food": "Clams & nutritional yeast (fortified) 1 serving",
+      "sourceLabel": "Clams & nutritional yeast (fortified)",
+      "nutrientKey": "vitaminB12",
+      "nutrientLabel": "Vitamin B12",
+      "nutrientText": "Vitamin B12 40 mcg",
+      "amount": 40,
+      "unit": "mcg",
+      "matched": false
+    },
+    {
+      "food": "Salmon 3 oz",
+      "sourceLabel": "Salmon & tuna",
+      "nutrientKey": "vitaminB12",
+      "nutrientLabel": "Vitamin B12",
+      "nutrientText": "Vitamin B12 2.4 mcg",
+      "amount": 2.4,
+      "unit": "mcg",
+      "matched": true
+    },
+    {
+      "food": "Beef Liver 3 oz palm-sized",
+      "sourceLabel": "Beef & liver",
+      "nutrientKey": "vitaminB12",
+      "nutrientLabel": "Vitamin B12",
+      "nutrientText": "Vitamin B12 50.3 mcg",
+      "amount": 50.25,
+      "unit": "mcg",
+      "matched": true
+    },
+    {
+      "food": "Milk reduced 2 cups",
+      "sourceLabel": "Eggs & milk",
+      "nutrientKey": "vitaminB12",
+      "nutrientLabel": "Vitamin B12",
+      "nutrientText": "Vitamin B12 2.6 mcg",
+      "amount": 2.6,
+      "unit": "mcg",
+      "matched": true
+    },
+    {
+      "food": "Fortified plant milks 1 serving",
+      "sourceLabel": "Fortified plant milks",
+      "nutrientKey": "vitaminB12",
+      "nutrientLabel": "Vitamin B12",
+      "nutrientText": "Vitamin B12 1 mcg",
+      "amount": 1,
+      "unit": "mcg",
+      "matched": false
+    },
+    {
+      "food": "Fortified cereals 1 serving",
+      "sourceLabel": "Fortified cereals",
+      "nutrientKey": "vitaminB12",
+      "nutrientLabel": "Vitamin B12",
+      "nutrientText": "Vitamin B12 2 mcg",
+      "amount": 2,
+      "unit": "mcg",
+      "matched": false
+    },
+    {
+      "food": "Yogurt 1 cup",
+      "sourceLabel": "Yogurt",
+      "nutrientKey": "vitaminB12",
+      "nutrientLabel": "Vitamin B12",
+      "nutrientText": "Vitamin B12 1.4 mcg",
+      "amount": 1.4,
+      "unit": "mcg",
+      "matched": false
+    },
+    {
+      "food": "Oranges & grapefruit 1 medium",
+      "sourceLabel": "Oranges & grapefruit",
+      "nutrientKey": "vitaminC",
+      "nutrientLabel": "Vitamin C",
+      "nutrientText": "Vitamin C 70 mg",
+      "amount": 70,
+      "unit": "mg",
+      "matched": false
+    },
+    {
+      "food": "Bell peppers 1 serving",
+      "sourceLabel": "Bell peppers",
+      "nutrientKey": "vitaminC",
+      "nutrientLabel": "Vitamin C",
+      "nutrientText": "Vitamin C 95 mg",
+      "amount": 95,
+      "unit": "mg",
+      "matched": false
+    },
+    {
+      "food": "Fruit - Kiwi Golden with skin 1 medium",
+      "sourceLabel": "Kiwi & strawberries",
+      "nutrientKey": "vitaminC",
+      "nutrientLabel": "Vitamin C",
+      "nutrientText": "Vitamin C 131 mg",
+      "amount": 131,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Brussels sprouts 1 cup",
+      "sourceLabel": "Broccoli & Brussels sprouts",
+      "nutrientKey": "vitaminC",
+      "nutrientLabel": "Vitamin C",
+      "nutrientText": "Vitamin C 75 mg",
+      "amount": 75,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Tomato md",
+      "sourceLabel": "Tomatoes",
+      "nutrientKey": "vitaminC",
+      "nutrientLabel": "Vitamin C",
+      "nutrientText": "Vitamin C 14 mg",
+      "amount": 14,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Papaya 1 medium",
+      "sourceLabel": "Papaya",
+      "nutrientKey": "vitaminC",
+      "nutrientLabel": "Vitamin C",
+      "nutrientText": "Vitamin C 90 mg",
+      "amount": 90,
+      "unit": "mg",
+      "matched": false
+    },
+    {
+      "food": "Potato baked with skin md",
+      "sourceLabel": "Potato (with skin)",
+      "nutrientKey": "vitaminC",
+      "nutrientLabel": "Vitamin C",
+      "nutrientText": "Vitamin C 17 mg",
+      "amount": 17,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Seaweed - Simple Truth Roasted Seaweed Snack 1 pack (5 g)",
+      "sourceLabel": "Cod & seaweed",
+      "nutrientKey": "iodine",
+      "nutrientLabel": "Iodine",
+      "nutrientText": "Iodine 55 mcg",
+      "amount": 55,
+      "unit": "mcg",
+      "matched": true
+    },
+    {
+      "food": "Seaweed - Roasted Seaweed Snack 1 serving (10 sheets)",
+      "sourceLabel": "Roasted Seaweed Snacks",
+      "nutrientKey": "iodine",
+      "nutrientLabel": "Iodine",
+      "nutrientText": "Iodine 30 mcg",
+      "amount": 30,
+      "unit": "mcg",
+      "matched": true
+    },
+    {
+      "food": "Milk reduced 2 cups",
+      "sourceLabel": "Yogurt & milk",
+      "nutrientKey": "iodine",
+      "nutrientLabel": "Iodine",
+      "nutrientText": "Iodine 112 mcg",
+      "amount": 112,
+      "unit": "mcg",
+      "matched": true
+    },
+    {
+      "food": "Egg md",
+      "sourceLabel": "Eggs",
+      "nutrientKey": "iodine",
+      "nutrientLabel": "Iodine",
+      "nutrientText": "Iodine 24 mcg",
+      "amount": 24,
+      "unit": "mcg",
+      "matched": true
+    },
+    {
+      "food": "Shrimp 3 oz",
+      "sourceLabel": "Shrimp & tuna",
+      "nutrientKey": "iodine",
+      "nutrientLabel": "Iodine",
+      "nutrientText": "Iodine 35 mcg",
+      "amount": 35,
+      "unit": "mcg",
+      "matched": true
+    },
+    {
+      "food": "Prunes 1 serving",
+      "sourceLabel": "Prunes",
+      "nutrientKey": "iodine",
+      "nutrientLabel": "Iodine",
+      "nutrientText": "Iodine 13 mcg",
+      "amount": 13,
+      "unit": "mcg",
+      "matched": false
+    },
+    {
+      "food": "Fortified bread 1 slice",
+      "sourceLabel": "Fortified bread",
+      "nutrientKey": "iodine",
+      "nutrientLabel": "Iodine",
+      "nutrientText": "Iodine 15 mcg",
+      "amount": 15,
+      "unit": "mcg",
+      "matched": false
+    },
+    {
+      "food": "Lentils cooked 1 cup",
+      "sourceLabel": "Chickpeas & lentils",
+      "nutrientKey": "vitaminB6",
+      "nutrientLabel": "Vitamin B6",
+      "nutrientText": "Vitamin B6 0.35 mg",
+      "amount": 0.35,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Salmon 3 oz",
+      "sourceLabel": "Salmon & tuna",
+      "nutrientKey": "vitaminB6",
+      "nutrientLabel": "Vitamin B6",
+      "nutrientText": "Vitamin B6 0.5 mg",
+      "amount": 0.5,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Chicken 4 oz palm-sized",
+      "sourceLabel": "Chicken & turkey",
+      "nutrientKey": "vitaminB6",
+      "nutrientLabel": "Vitamin B6",
+      "nutrientText": "Vitamin B6 0.64 mg",
+      "amount": 0.64,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Sweet Potato Fries lg",
+      "sourceLabel": "Potatoes & sweet potato",
+      "nutrientKey": "vitaminB6",
+      "nutrientLabel": "Vitamin B6",
+      "nutrientText": "Vitamin B6 0.3 mg",
+      "amount": 0.3,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Fruit - Banana with skin 1 serving",
+      "sourceLabel": "Bananas",
+      "nutrientKey": "vitaminB6",
+      "nutrientLabel": "Vitamin B6",
+      "nutrientText": "Vitamin B6 0.5 mg",
+      "amount": 0.5,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Fortified cereals 1 serving",
+      "sourceLabel": "Fortified cereals",
+      "nutrientKey": "vitaminB6",
+      "nutrientLabel": "Vitamin B6",
+      "nutrientText": "Vitamin B6 2 mg",
+      "amount": 2,
+      "unit": "mg",
+      "matched": false
+    },
+    {
+      "food": "Sunflower seeds 1 oz",
+      "sourceLabel": "Sunflower seeds",
+      "nutrientKey": "vitaminB6",
+      "nutrientLabel": "Vitamin B6",
+      "nutrientText": "Vitamin B6 0.38 mg",
+      "amount": 0.38,
+      "unit": "mg",
+      "matched": false
+    },
+    {
+      "food": "Spinach 1 cup",
+      "sourceLabel": "Spinach & romaine",
+      "nutrientKey": "folate",
+      "nutrientLabel": "Folate (B9)",
+      "nutrientText": "Folate (B9) 58 mcg",
+      "amount": 58,
+      "unit": "mcg",
+      "matched": true
+    },
+    {
+      "food": "Asparagus 1 serving",
+      "sourceLabel": "Asparagus",
+      "nutrientKey": "folate",
+      "nutrientLabel": "Folate (B9)",
+      "nutrientText": "Folate (B9) 134 mcg",
+      "amount": 134,
+      "unit": "mcg",
+      "matched": false
+    },
+    {
+      "food": "Lentils cooked 1 cup",
+      "sourceLabel": "Black-eyed peas & lentils",
+      "nutrientKey": "folate",
+      "nutrientLabel": "Folate (B9)",
+      "nutrientText": "Folate (B9) 358 mcg",
+      "amount": 358,
+      "unit": "mcg",
+      "matched": true
+    },
+    {
+      "food": "Avocado whole 1 medium",
+      "sourceLabel": "Avocado",
+      "nutrientKey": "folate",
+      "nutrientLabel": "Folate (B9)",
+      "nutrientText": "Folate (B9) 162 mcg",
+      "amount": 162,
+      "unit": "mcg",
+      "matched": true
+    },
+    {
+      "food": "Broccoli 1 cup",
+      "sourceLabel": "Broccoli",
+      "nutrientKey": "folate",
+      "nutrientLabel": "Folate (B9)",
+      "nutrientText": "Folate (B9) 57 mcg",
+      "amount": 57,
+      "unit": "mcg",
+      "matched": true
+    },
+    {
+      "food": "Fortified grains & pasta 1 cup",
+      "sourceLabel": "Fortified grains & pasta",
+      "nutrientKey": "folate",
+      "nutrientLabel": "Folate (B9)",
+      "nutrientText": "Folate (B9) 200 mcg",
+      "amount": 200,
+      "unit": "mcg",
+      "matched": false
+    },
+    {
+      "food": "Orange juice (fortified) 1 medium",
+      "sourceLabel": "Orange juice (fortified)",
+      "nutrientKey": "folate",
+      "nutrientLabel": "Folate (B9)",
+      "nutrientText": "Folate (B9) 74 mcg",
+      "amount": 74,
+      "unit": "mcg",
+      "matched": false
+    },
+    {
+      "food": "Egg md",
+      "sourceLabel": "Eggs (yolk)",
+      "nutrientKey": "biotin",
+      "nutrientLabel": "Biotin (B7)",
+      "nutrientText": "Biotin (B7) 10 mcg",
+      "amount": 10,
+      "unit": "mcg",
+      "matched": true
+    },
+    {
+      "food": "Sardines canned 3 oz",
+      "sourceLabel": "Salmon & sardines",
+      "nutrientKey": "biotin",
+      "nutrientLabel": "Biotin (B7)",
+      "nutrientText": "Biotin (B7) 5 mcg",
+      "amount": 5,
+      "unit": "mcg",
+      "matched": true
+    },
+    {
+      "food": "Peanuts 1 cup",
+      "sourceLabel": "Peanuts & almonds",
+      "nutrientKey": "biotin",
+      "nutrientLabel": "Biotin (B7)",
+      "nutrientText": "Biotin (B7) 35 mcg",
+      "amount": 35,
+      "unit": "mcg",
+      "matched": true
+    },
+    {
+      "food": "Sweet Potato Fries lg",
+      "sourceLabel": "Sweet potato",
+      "nutrientKey": "biotin",
+      "nutrientLabel": "Biotin (B7)",
+      "nutrientText": "Biotin (B7) 3 mcg",
+      "amount": 3,
+      "unit": "mcg",
+      "matched": true
+    },
+    {
+      "food": "Broccoli 1 cup",
+      "sourceLabel": "Spinach & broccoli",
+      "nutrientKey": "biotin",
+      "nutrientLabel": "Biotin (B7)",
+      "nutrientText": "Biotin (B7) 1 mcg",
+      "amount": 1,
+      "unit": "mcg",
+      "matched": true
+    },
+    {
+      "food": "Cheese cheddar 1 slice (28g)",
+      "sourceLabel": "Cheddar & mozzarella",
+      "nutrientKey": "biotin",
+      "nutrientLabel": "Biotin (B7)",
+      "nutrientText": "Biotin (B7) 1 mcg",
+      "amount": 1,
+      "unit": "mcg",
+      "matched": true
+    },
+    {
+      "food": "Sunflower seeds 1 oz",
+      "sourceLabel": "Sunflower seeds",
+      "nutrientKey": "biotin",
+      "nutrientLabel": "Biotin (B7)",
+      "nutrientText": "Biotin (B7) 2.6 mcg",
+      "amount": 2.6,
+      "unit": "mcg",
+      "matched": false
+    },
+    {
+      "food": "Pork loin 3 oz",
+      "sourceLabel": "Pork & ham",
+      "nutrientKey": "thiamin",
+      "nutrientLabel": "Thiamin (B1)",
+      "nutrientText": "Thiamin (B1) 0.7 mg",
+      "amount": 0.7,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Bread, Sourdough - 1 slice",
+      "sourceLabel": "Fortified cereals & bread",
+      "nutrientKey": "thiamin",
+      "nutrientLabel": "Thiamin (B1)",
+      "nutrientText": "Thiamin (B1) 0.12 mg",
+      "amount": 0.12,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Lentils cooked 1 cup",
+      "sourceLabel": "Black beans & lentils",
+      "nutrientKey": "thiamin",
+      "nutrientLabel": "Thiamin (B1)",
+      "nutrientText": "Thiamin (B1) 0.33 mg",
+      "amount": 0.33,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Sunflower seeds 1 oz",
+      "sourceLabel": "Sunflower seeds",
+      "nutrientKey": "thiamin",
+      "nutrientLabel": "Thiamin (B1)",
+      "nutrientText": "Thiamin (B1) 0.4 mg",
+      "amount": 0.4,
+      "unit": "mg",
+      "matched": false
+    },
+    {
+      "food": "Salmon 3 oz",
+      "sourceLabel": "Salmon & trout",
+      "nutrientKey": "thiamin",
+      "nutrientLabel": "Thiamin (B1)",
+      "nutrientText": "Thiamin (B1) 0.2 mg",
+      "amount": 0.2,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Acorn squash 1 serving",
+      "sourceLabel": "Acorn squash",
+      "nutrientKey": "thiamin",
+      "nutrientLabel": "Thiamin (B1)",
+      "nutrientText": "Thiamin (B1) 0.3 mg",
+      "amount": 0.3,
+      "unit": "mg",
+      "matched": false
+    },
+    {
+      "food": "Green peas 1 serving",
+      "sourceLabel": "Green peas",
+      "nutrientKey": "thiamin",
+      "nutrientLabel": "Thiamin (B1)",
+      "nutrientText": "Thiamin (B1) 0.2 mg",
+      "amount": 0.2,
+      "unit": "mg",
+      "matched": false
+    },
+    {
+      "food": "Milk reduced 2 cups",
+      "sourceLabel": "Milk & yogurt",
+      "nutrientKey": "riboflavin",
+      "nutrientLabel": "Riboflavin (B2)",
+      "nutrientText": "Riboflavin (B2) 0.9 mg",
+      "amount": 0.9,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Egg md",
+      "sourceLabel": "Eggs",
+      "nutrientKey": "riboflavin",
+      "nutrientLabel": "Riboflavin (B2)",
+      "nutrientText": "Riboflavin (B2) 0.23 mg",
+      "amount": 0.23,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Lamb Liver 3 oz palm-sized",
+      "sourceLabel": "Lean beef & organ meats",
+      "nutrientKey": "riboflavin",
+      "nutrientLabel": "Riboflavin (B2)",
+      "nutrientText": "Riboflavin (B2) 3.9 mg",
+      "amount": 3.9,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Almonds 1 oz",
+      "sourceLabel": "Almonds",
+      "nutrientKey": "riboflavin",
+      "nutrientLabel": "Riboflavin (B2)",
+      "nutrientText": "Riboflavin (B2) 0.3 mg",
+      "amount": 0.3,
+      "unit": "mg",
+      "matched": false
+    },
+    {
+      "food": "Broccoli 1 cup",
+      "sourceLabel": "Spinach & broccoli",
+      "nutrientKey": "riboflavin",
+      "nutrientLabel": "Riboflavin (B2)",
+      "nutrientText": "Riboflavin (B2) 0.12 mg",
+      "amount": 0.12,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Fortified cereals 1 serving",
+      "sourceLabel": "Fortified cereals",
+      "nutrientKey": "riboflavin",
+      "nutrientLabel": "Riboflavin (B2)",
+      "nutrientText": "Riboflavin (B2) 0.5 mg",
+      "amount": 0.5,
+      "unit": "mg",
+      "matched": false
+    },
+    {
+      "food": "Salmon 3 oz",
+      "sourceLabel": "Salmon",
+      "nutrientKey": "riboflavin",
+      "nutrientLabel": "Riboflavin (B2)",
+      "nutrientText": "Riboflavin (B2) 0.4 mg",
+      "amount": 0.4,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Chicken 4 oz palm-sized",
+      "sourceLabel": "Chicken & turkey",
+      "nutrientKey": "niacin",
+      "nutrientLabel": "Niacin (B3)",
+      "nutrientText": "Niacin (B3) 13.8 mg",
+      "amount": 13.8,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Salmon 3 oz",
+      "sourceLabel": "Tuna & salmon",
+      "nutrientKey": "niacin",
+      "nutrientLabel": "Niacin (B3)",
+      "nutrientText": "Niacin (B3) 8.5 mg",
+      "amount": 8.5,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Peanut Butter 2 tablespoons",
+      "sourceLabel": "Peanuts & peanut butter",
+      "nutrientKey": "niacin",
+      "nutrientLabel": "Niacin (B3)",
+      "nutrientText": "Niacin (B3) 4.4 mg",
+      "amount": 4.4,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Mushrooms 1 serving",
+      "sourceLabel": "Mushrooms",
+      "nutrientKey": "niacin",
+      "nutrientLabel": "Niacin (B3)",
+      "nutrientText": "Niacin (B3) 3.6 mg",
+      "amount": 3.6,
+      "unit": "mg",
+      "matched": false
+    },
+    {
+      "food": "Bread, Sourdough - 1 slice",
+      "sourceLabel": "Fortified cereals & bread",
+      "nutrientKey": "niacin",
+      "nutrientLabel": "Niacin (B3)",
+      "nutrientText": "Niacin (B3) 1.5 mg",
+      "amount": 1.5,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Brown rice 1 cup",
+      "sourceLabel": "Brown rice",
+      "nutrientKey": "niacin",
+      "nutrientLabel": "Niacin (B3)",
+      "nutrientText": "Niacin (B3) 3 mg",
+      "amount": 3,
+      "unit": "mg",
+      "matched": false
+    },
+    {
+      "food": "Green peas 1 serving",
+      "sourceLabel": "Green peas",
+      "nutrientKey": "niacin",
+      "nutrientLabel": "Niacin (B3)",
+      "nutrientText": "Niacin (B3) 1 mg",
+      "amount": 1,
+      "unit": "mg",
+      "matched": false
+    },
+    {
+      "food": "Chicken 4 oz palm-sized",
+      "sourceLabel": "Chicken & beef",
+      "nutrientKey": "pantothenicAcid",
+      "nutrientLabel": "Pantothenic acid (B5)",
+      "nutrientText": "Pantothenic acid (B5) 1.1 mg",
+      "amount": 1.1,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Mushrooms 1 serving",
+      "sourceLabel": "Mushrooms",
+      "nutrientKey": "pantothenicAcid",
+      "nutrientLabel": "Pantothenic acid (B5)",
+      "nutrientText": "Pantothenic acid (B5) 1.3 mg",
+      "amount": 1.3,
+      "unit": "mg",
+      "matched": false
+    },
+    {
+      "food": "Avocado whole 1 medium",
+      "sourceLabel": "Avocado",
+      "nutrientKey": "pantothenicAcid",
+      "nutrientLabel": "Pantothenic acid (B5)",
+      "nutrientText": "Pantothenic acid (B5) 2.8 mg",
+      "amount": 2.8,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Broccoli 1 cup",
+      "sourceLabel": "Broccoli & kale",
+      "nutrientKey": "pantothenicAcid",
+      "nutrientLabel": "Pantothenic acid (B5)",
+      "nutrientText": "Pantothenic acid (B5) 0.6 mg",
+      "amount": 0.6,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Egg md",
+      "sourceLabel": "Eggs",
+      "nutrientKey": "pantothenicAcid",
+      "nutrientLabel": "Pantothenic acid (B5)",
+      "nutrientText": "Pantothenic acid (B5) 0.7 mg",
+      "amount": 0.7,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Sunflower seeds 1 oz",
+      "sourceLabel": "Sunflower seeds",
+      "nutrientKey": "pantothenicAcid",
+      "nutrientLabel": "Pantothenic acid (B5)",
+      "nutrientText": "Pantothenic acid (B5) 2 mg",
+      "amount": 2,
+      "unit": "mg",
+      "matched": false
+    },
+    {
+      "food": "Yogurt 1 cup",
+      "sourceLabel": "Yogurt",
+      "nutrientKey": "pantothenicAcid",
+      "nutrientLabel": "Pantothenic acid (B5)",
+      "nutrientText": "Pantothenic acid (B5) 1.4 mg",
+      "amount": 1.4,
+      "unit": "mg",
+      "matched": false
+    },
+    {
+      "food": "Broccoli 1 cup",
+      "sourceLabel": "Broccoli",
+      "nutrientKey": "chromium",
+      "nutrientLabel": "Chromium",
+      "nutrientText": "Chromium 9 mcg",
+      "amount": 9,
+      "unit": "mcg",
+      "matched": true
+    },
+    {
+      "food": "Grape juice 1 serving",
+      "sourceLabel": "Grape juice",
+      "nutrientKey": "chromium",
+      "nutrientLabel": "Chromium",
+      "nutrientText": "Chromium 8 mcg",
+      "amount": 8,
+      "unit": "mcg",
+      "matched": false
+    },
+    {
+      "food": "Bread, Sourdough - 1 slice",
+      "sourceLabel": "Whole grains & bread",
+      "nutrientKey": "chromium",
+      "nutrientLabel": "Chromium",
+      "nutrientText": "Chromium 2 mcg",
+      "amount": 2,
+      "unit": "mcg",
+      "matched": true
+    },
+    {
+      "food": "Brewer's yeast 1 serving",
+      "sourceLabel": "Brewer's yeast",
+      "nutrientKey": "chromium",
+      "nutrientLabel": "Chromium",
+      "nutrientText": "Chromium 3 mcg",
+      "amount": 3,
+      "unit": "mcg",
+      "matched": false
+    },
+    {
+      "food": "Beef Liver 3 oz palm-sized",
+      "sourceLabel": "Beef & turkey",
+      "nutrientKey": "chromium",
+      "nutrientLabel": "Chromium",
+      "nutrientText": "Chromium 2 mcg",
+      "amount": 2,
+      "unit": "mcg",
+      "matched": true
+    },
+    {
+      "food": "Fruit - Banana with skin 1 serving",
+      "sourceLabel": "Apples & bananas",
+      "nutrientKey": "chromium",
+      "nutrientLabel": "Chromium",
+      "nutrientText": "Chromium 0.5 mcg",
+      "amount": 0.5,
+      "unit": "mcg",
+      "matched": true
+    },
+    {
+      "food": "Green beans 1 cup",
+      "sourceLabel": "Green beans",
+      "nutrientKey": "chromium",
+      "nutrientLabel": "Chromium",
+      "nutrientText": "Chromium 1.5 mcg",
+      "amount": 1.5,
+      "unit": "mcg",
+      "matched": true
+    },
+    {
+      "food": "Brazil Nut 1 piece",
+      "sourceLabel": "Brazil nuts (1–2 daily)",
+      "nutrientKey": "selenium",
+      "nutrientLabel": "Selenium",
+      "nutrientText": "Selenium 95.9 mcg",
+      "amount": 95.9,
+      "unit": "mcg",
+      "matched": true
+    },
+    {
+      "food": "Sardines canned 3 oz",
+      "sourceLabel": "Tuna & sardines",
+      "nutrientKey": "selenium",
+      "nutrientLabel": "Selenium",
+      "nutrientText": "Selenium 45 mcg",
+      "amount": 45,
+      "unit": "mcg",
+      "matched": true
+    },
+    {
+      "food": "Chicken 4 oz palm-sized",
+      "sourceLabel": "Chicken & turkey",
+      "nutrientKey": "selenium",
+      "nutrientLabel": "Selenium",
+      "nutrientText": "Selenium 27 mcg",
+      "amount": 27,
+      "unit": "mcg",
+      "matched": true
+    },
+    {
+      "food": "Egg md",
+      "sourceLabel": "Eggs",
+      "nutrientKey": "selenium",
+      "nutrientLabel": "Selenium",
+      "nutrientText": "Selenium 13.6 mcg",
+      "amount": 13.6,
+      "unit": "mcg",
+      "matched": true
+    },
+    {
+      "food": "Cottage cheese low-fat 2% 1 cup (226 g)",
+      "sourceLabel": "Cottage cheese",
+      "nutrientKey": "selenium",
+      "nutrientLabel": "Selenium",
+      "nutrientText": "Selenium 20.3 mcg",
+      "amount": 20.3,
+      "unit": "mcg",
+      "matched": true
+    },
+    {
+      "food": "Mushrooms 1 serving",
+      "sourceLabel": "Mushrooms",
+      "nutrientKey": "selenium",
+      "nutrientLabel": "Selenium",
+      "nutrientText": "Selenium 9 mcg",
+      "amount": 9,
+      "unit": "mcg",
+      "matched": false
+    },
+    {
+      "food": "Sunflower seeds 1 oz",
+      "sourceLabel": "Sunflower seeds",
+      "nutrientKey": "selenium",
+      "nutrientLabel": "Selenium",
+      "nutrientText": "Selenium 15 mcg",
+      "amount": 15,
+      "unit": "mcg",
+      "matched": false
+    },
+    {
+      "food": "Shrimp 3 oz",
+      "sourceLabel": "Liver & shellfish",
+      "nutrientKey": "copper",
+      "nutrientLabel": "Copper",
+      "nutrientText": "Copper 250 mcg",
+      "amount": 250,
+      "unit": "mcg",
+      "matched": true
+    },
+    {
+      "food": "Dark chocolate 70% 1 oz",
+      "sourceLabel": "Dark chocolate (70%+)",
+      "nutrientKey": "copper",
+      "nutrientLabel": "Copper",
+      "nutrientText": "Copper 500 mcg",
+      "amount": 500,
+      "unit": "mcg",
+      "matched": true
+    },
+    {
+      "food": "Cashews 1 oz",
+      "sourceLabel": "Cashews & sesame seeds",
+      "nutrientKey": "copper",
+      "nutrientLabel": "Copper",
+      "nutrientText": "Copper 622 mcg",
+      "amount": 622,
+      "unit": "mcg",
+      "matched": true
+    },
+    {
+      "food": "Lentils cooked 1 cup",
+      "sourceLabel": "Lentils & chickpeas",
+      "nutrientKey": "copper",
+      "nutrientLabel": "Copper",
+      "nutrientText": "Copper 500 mcg",
+      "amount": 500,
+      "unit": "mcg",
+      "matched": true
+    },
+    {
+      "food": "Shiitake mushrooms 1 serving",
+      "sourceLabel": "Shiitake mushrooms",
+      "nutrientKey": "copper",
+      "nutrientLabel": "Copper",
+      "nutrientText": "Copper 650 mcg",
+      "amount": 650,
+      "unit": "mcg",
+      "matched": false
+    },
+    {
+      "food": "Avocado whole 1 medium",
+      "sourceLabel": "Avocado",
+      "nutrientKey": "copper",
+      "nutrientLabel": "Copper",
+      "nutrientText": "Copper 380 mcg",
+      "amount": 380,
+      "unit": "mcg",
+      "matched": true
+    },
+    {
+      "food": "Potato baked with skin md",
+      "sourceLabel": "Potatoes",
+      "nutrientKey": "copper",
+      "nutrientLabel": "Copper",
+      "nutrientText": "Copper 200 mcg",
+      "amount": 200,
+      "unit": "mcg",
+      "matched": true
+    },
+    {
+      "food": "Mussels & clams 1 serving",
+      "sourceLabel": "Mussels & clams",
+      "nutrientKey": "manganese",
+      "nutrientLabel": "Manganese",
+      "nutrientText": "Manganese 5.8 mg",
+      "amount": 5.8,
+      "unit": "mg",
+      "matched": false
+    },
+    {
+      "food": "Pecans & almonds 1 oz",
+      "sourceLabel": "Pecans & almonds",
+      "nutrientKey": "manganese",
+      "nutrientLabel": "Manganese",
+      "nutrientText": "Manganese 1.3 mg",
+      "amount": 1.3,
+      "unit": "mg",
+      "matched": false
+    },
+    {
+      "food": "Oats 1 cup cooked",
+      "sourceLabel": "Oats & brown rice",
+      "nutrientKey": "manganese",
+      "nutrientLabel": "Manganese",
+      "nutrientText": "Manganese 1.4 mg",
+      "amount": 1.4,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Pineapple 1 serving",
+      "sourceLabel": "Pineapple",
+      "nutrientKey": "manganese",
+      "nutrientLabel": "Manganese",
+      "nutrientText": "Manganese 1.5 mg",
+      "amount": 1.5,
+      "unit": "mg",
+      "matched": false
+    },
+    {
+      "food": "Sweet Potato Fries lg",
+      "sourceLabel": "Spinach & sweet potato",
+      "nutrientKey": "manganese",
+      "nutrientLabel": "Manganese",
+      "nutrientText": "Manganese 0.55 mg",
+      "amount": 0.55,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Black tea & green tea 1 serving",
+      "sourceLabel": "Black tea & green tea",
+      "nutrientKey": "manganese",
+      "nutrientLabel": "Manganese",
+      "nutrientText": "Manganese 0.5 mg",
+      "amount": 0.5,
+      "unit": "mg",
+      "matched": false
+    },
+    {
+      "food": "Lentils cooked 1 cup",
+      "sourceLabel": "Chickpeas & lentils",
+      "nutrientKey": "manganese",
+      "nutrientLabel": "Manganese",
+      "nutrientText": "Manganese 1 mg",
+      "amount": 1,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Sunflower seeds & almonds 1 oz",
+      "sourceLabel": "Sunflower seeds & almonds",
+      "nutrientKey": "vitaminE",
+      "nutrientLabel": "Vitamin E",
+      "nutrientText": "Vitamin E 7.4 mg",
+      "amount": 7.4,
+      "unit": "mg",
+      "matched": false
+    },
+    {
+      "food": "Peanuts 1 cup",
+      "sourceLabel": "Hazelnuts & peanuts",
+      "nutrientKey": "vitaminE",
+      "nutrientLabel": "Vitamin E",
+      "nutrientText": "Vitamin E 12.3 mg",
+      "amount": 12.3,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Spinach 1 cup",
+      "sourceLabel": "Spinach & Swiss chard",
+      "nutrientKey": "vitaminE",
+      "nutrientLabel": "Vitamin E",
+      "nutrientText": "Vitamin E 3.7 mg",
+      "amount": 3.7,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Avocado whole 1 medium",
+      "sourceLabel": "Avocado",
+      "nutrientKey": "vitaminE",
+      "nutrientLabel": "Vitamin E",
+      "nutrientText": "Vitamin E 4.1 mg",
+      "amount": 4.1,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Sunflower oil 1 tablespoon",
+      "sourceLabel": "Olive oil & sunflower oil",
+      "nutrientKey": "vitaminE",
+      "nutrientLabel": "Vitamin E",
+      "nutrientText": "Vitamin E 5.6 mg",
+      "amount": 5.6,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Butternut squash 1 serving",
+      "sourceLabel": "Butternut squash",
+      "nutrientKey": "vitaminE",
+      "nutrientLabel": "Vitamin E",
+      "nutrientText": "Vitamin E 1.3 mg",
+      "amount": 1.3,
+      "unit": "mg",
+      "matched": false
+    },
+    {
+      "food": "Wheat germ 1 serving",
+      "sourceLabel": "Wheat germ",
+      "nutrientKey": "vitaminE",
+      "nutrientLabel": "Vitamin E",
+      "nutrientText": "Vitamin E 4 mg",
+      "amount": 4,
+      "unit": "mg",
+      "matched": false
+    },
+    {
+      "food": "Spinach 1 cup",
+      "sourceLabel": "Kale & spinach (K1)",
+      "nutrientKey": "vitaminK",
+      "nutrientLabel": "Vitamin K",
+      "nutrientText": "Vitamin K 145 mcg",
+      "amount": 145,
+      "unit": "mcg",
+      "matched": true
+    },
+    {
+      "food": "Brussels sprouts 1 cup",
+      "sourceLabel": "Broccoli & Brussels sprouts (K1)",
+      "nutrientKey": "vitaminK",
+      "nutrientLabel": "Vitamin K",
+      "nutrientText": "Vitamin K 156 mcg",
+      "amount": 156,
+      "unit": "mcg",
+      "matched": true
+    },
+    {
+      "food": "Natto (K2, fermented soy) 1 serving",
+      "sourceLabel": "Natto (K2, fermented soy)",
+      "nutrientKey": "vitaminK",
+      "nutrientLabel": "Vitamin K",
+      "nutrientText": "Vitamin K 850 mcg",
+      "amount": 850,
+      "unit": "mcg",
+      "matched": false
+    },
+    {
+      "food": "Egg yolks (K2) 1 medium",
+      "sourceLabel": "Egg yolks (K2)",
+      "nutrientKey": "vitaminK",
+      "nutrientLabel": "Vitamin K",
+      "nutrientText": "Vitamin K 5 mcg",
+      "amount": 5,
+      "unit": "mcg",
+      "matched": false
+    },
+    {
+      "food": "Hard cheeses (K2) 1 serving",
+      "sourceLabel": "Hard cheeses (K2)",
+      "nutrientKey": "vitaminK",
+      "nutrientLabel": "Vitamin K",
+      "nutrientText": "Vitamin K 10 mcg",
+      "amount": 10,
+      "unit": "mcg",
+      "matched": false
+    },
+    {
+      "food": "Chicken Liver 1 oz sm",
+      "sourceLabel": "Chicken & liver (K2)",
+      "nutrientKey": "vitaminK",
+      "nutrientLabel": "Vitamin K",
+      "nutrientText": "Vitamin K 2 mcg",
+      "amount": 2,
+      "unit": "mcg",
+      "matched": true
+    },
+    {
+      "food": "Sauerkraut (K2) 1 serving",
+      "sourceLabel": "Sauerkraut (K2)",
+      "nutrientKey": "vitaminK",
+      "nutrientLabel": "Vitamin K",
+      "nutrientText": "Vitamin K 6 mcg",
+      "amount": 6,
+      "unit": "mcg",
+      "matched": false
+    },
+    {
+      "food": "Spinach 1 cup",
+      "sourceLabel": "Spinach & kale",
+      "nutrientKey": "vitaminK1",
+      "nutrientLabel": "Vitamin K1",
+      "nutrientText": "Vitamin K1 145 mcg",
+      "amount": 145,
+      "unit": "mcg",
+      "matched": true
+    },
+    {
+      "food": "Collard & turnip greens 1 cup",
+      "sourceLabel": "Collard & turnip greens",
+      "nutrientKey": "vitaminK1",
+      "nutrientLabel": "Vitamin K1",
+      "nutrientText": "Vitamin K1 770 mcg",
+      "amount": 770,
+      "unit": "mcg",
+      "matched": false
+    },
+    {
+      "food": "Broccoli 1 cup",
+      "sourceLabel": "Broccoli",
+      "nutrientKey": "vitaminK1",
+      "nutrientLabel": "Vitamin K1",
+      "nutrientText": "Vitamin K1 92 mcg",
+      "amount": 92,
+      "unit": "mcg",
+      "matched": true
+    },
+    {
+      "food": "Brussels sprouts 1 cup",
+      "sourceLabel": "Brussels sprouts",
+      "nutrientKey": "vitaminK1",
+      "nutrientLabel": "Vitamin K1",
+      "nutrientText": "Vitamin K1 156 mcg",
+      "amount": 156,
+      "unit": "mcg",
+      "matched": true
+    },
+    {
+      "food": "Lettuce 1 cup",
+      "sourceLabel": "Lettuce",
+      "nutrientKey": "vitaminK1",
+      "nutrientLabel": "Vitamin K1",
+      "nutrientText": "Vitamin K1 48 mcg",
+      "amount": 48,
+      "unit": "mcg",
+      "matched": false
+    },
+    {
+      "food": "Asparagus 1 serving",
+      "sourceLabel": "Asparagus",
+      "nutrientKey": "vitaminK1",
+      "nutrientLabel": "Vitamin K1",
+      "nutrientText": "Vitamin K1 45 mcg",
+      "amount": 45,
+      "unit": "mcg",
+      "matched": false
+    },
+    {
+      "food": "Parsley 1 cup chopped",
+      "sourceLabel": "Parsley",
+      "nutrientKey": "vitaminK1",
+      "nutrientLabel": "Vitamin K1",
+      "nutrientText": "Vitamin K1 984 mcg",
+      "amount": 984,
+      "unit": "mcg",
+      "matched": true
+    },
+    {
+      "food": "Natto 1 serving",
+      "sourceLabel": "Natto",
+      "nutrientKey": "vitaminK2",
+      "nutrientLabel": "Vitamin K2",
+      "nutrientText": "Vitamin K2 850 mcg",
+      "amount": 850,
+      "unit": "mcg",
+      "matched": false
+    },
+    {
+      "food": "Gouda & Brie 1 serving",
+      "sourceLabel": "Gouda & Brie",
+      "nutrientKey": "vitaminK2",
+      "nutrientLabel": "Vitamin K2",
+      "nutrientText": "Vitamin K2 25 mcg",
+      "amount": 25,
+      "unit": "mcg",
+      "matched": false
+    },
+    {
+      "food": "Egg yolks 1 medium",
+      "sourceLabel": "Egg yolks",
+      "nutrientKey": "vitaminK2",
+      "nutrientLabel": "Vitamin K2",
+      "nutrientText": "Vitamin K2 5 mcg",
+      "amount": 5,
+      "unit": "mcg",
+      "matched": false
+    },
+    {
+      "food": "Chicken 4 oz palm-sized",
+      "sourceLabel": "Chicken & pork",
+      "nutrientKey": "vitaminK2",
+      "nutrientLabel": "Vitamin K2",
+      "nutrientText": "Vitamin K2 0.5 mcg",
+      "amount": 0.5,
+      "unit": "mcg",
+      "matched": true
+    },
+    {
+      "food": "Beef Liver 3 oz palm-sized",
+      "sourceLabel": "Beef liver",
+      "nutrientKey": "vitaminK2",
+      "nutrientLabel": "Vitamin K2",
+      "nutrientText": "Vitamin K2 52.8 mcg",
+      "amount": 52.8,
+      "unit": "mcg",
+      "matched": true
+    },
+    {
+      "food": "Sauerkraut 1 serving",
+      "sourceLabel": "Sauerkraut",
+      "nutrientKey": "vitaminK2",
+      "nutrientLabel": "Vitamin K2",
+      "nutrientText": "Vitamin K2 6 mcg",
+      "amount": 6,
+      "unit": "mcg",
+      "matched": false
+    },
+    {
+      "food": "Butter Salted 1 tablespoon (14.2g)",
+      "sourceLabel": "Butter (grass-fed, variable)",
+      "nutrientKey": "vitaminK2",
+      "nutrientLabel": "Vitamin K2",
+      "nutrientText": "Vitamin K2 2 mcg",
+      "amount": 2,
+      "unit": "mcg",
+      "matched": true
+    },
+    {
+      "food": "Egg yolks 1 medium",
+      "sourceLabel": "Egg yolks",
+      "nutrientKey": "vitaminK2MK4",
+      "nutrientLabel": "MK-4 (Menaquinone-4)",
+      "nutrientText": "MK-4 (Menaquinone-4) 5 mcg",
+      "amount": 5,
+      "unit": "mcg",
+      "matched": false
+    },
+    {
+      "food": "Chicken 4 oz palm-sized",
+      "sourceLabel": "Chicken & pork",
+      "nutrientKey": "vitaminK2MK4",
+      "nutrientLabel": "MK-4 (Menaquinone-4)",
+      "nutrientText": "MK-4 (Menaquinone-4) 0.5 mcg",
+      "amount": 0.5,
+      "unit": "mcg",
+      "matched": true
+    },
+    {
+      "food": "Chicken Liver 1 oz sm",
+      "sourceLabel": "Beef & chicken liver",
+      "nutrientKey": "vitaminK2MK4",
+      "nutrientLabel": "MK-4 (Menaquinone-4)",
+      "nutrientText": "MK-4 (Menaquinone-4) 40 mcg",
+      "amount": 40,
+      "unit": "mcg",
+      "matched": true
+    },
+    {
+      "food": "Butter Salted 1 tablespoon (14.2g)",
+      "sourceLabel": "Butter & cream",
+      "nutrientKey": "vitaminK2MK4",
+      "nutrientLabel": "MK-4 (Menaquinone-4)",
+      "nutrientText": "MK-4 (Menaquinone-4) 2 mcg",
+      "amount": 2,
+      "unit": "mcg",
+      "matched": true
+    },
+    {
+      "food": "Fish roe 3 oz",
+      "sourceLabel": "Fish roe",
+      "nutrientKey": "vitaminK2MK4",
+      "nutrientLabel": "MK-4 (Menaquinone-4)",
+      "nutrientText": "MK-4 (Menaquinone-4) 2 mcg",
+      "amount": 2,
+      "unit": "mcg",
+      "matched": false
+    },
+    {
+      "food": "Grass-fed meat (variable) 3 oz",
+      "sourceLabel": "Grass-fed meat (variable)",
+      "nutrientKey": "vitaminK2MK4",
+      "nutrientLabel": "MK-4 (Menaquinone-4)",
+      "nutrientText": "MK-4 (Menaquinone-4) 8 mcg",
+      "amount": 8,
+      "unit": "mcg",
+      "matched": false
+    },
+    {
+      "food": "Natto (fermented soy — check label; some products remove K2) 1 serving",
+      "sourceLabel": "Natto (fermented soy — check label; some products remove K2)",
+      "nutrientKey": "vitaminK2MK7",
+      "nutrientLabel": "MK-7 (Menaquinone-7)",
+      "nutrientText": "MK-7 (Menaquinone-7) 850 mcg",
+      "amount": 850,
+      "unit": "mcg",
+      "matched": false
+    },
+    {
+      "food": "Aged hard cheeses (Gouda, Brie) 1 serving",
+      "sourceLabel": "Aged hard cheeses (Gouda, Brie)",
+      "nutrientKey": "vitaminK2MK7",
+      "nutrientLabel": "MK-7 (Menaquinone-7)",
+      "nutrientText": "MK-7 (Menaquinone-7) 20 mcg",
+      "amount": 20,
+      "unit": "mcg",
+      "matched": false
+    },
+    {
+      "food": "Sauerkraut & kimchi (variable) 1 serving",
+      "sourceLabel": "Sauerkraut & kimchi (variable)",
+      "nutrientKey": "vitaminK2MK7",
+      "nutrientLabel": "MK-7 (Menaquinone-7)",
+      "nutrientText": "MK-7 (Menaquinone-7) 5 mcg",
+      "amount": 5,
+      "unit": "mcg",
+      "matched": false
+    },
+    {
+      "food": "MK-7 supplements (when food intake is low) 1 serving",
+      "sourceLabel": "MK-7 supplements (when food intake is low)",
+      "nutrientKey": "vitaminK2MK7",
+      "nutrientLabel": "MK-7 (Menaquinone-7)",
+      "nutrientText": "MK-7 (Menaquinone-7) 100 mcg",
+      "amount": 100,
+      "unit": "mcg",
+      "matched": false
+    },
+    {
+      "food": "Cheese provolone 1 slice (28g)",
+      "sourceLabel": "Dairy (milk, yogurt, cheese)",
+      "nutrientKey": "phosphorus",
+      "nutrientLabel": "Phosphorus",
+      "nutrientText": "Phosphorus 141 mg",
+      "amount": 141,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Chicken 4 oz palm-sized",
+      "sourceLabel": "Chicken & turkey",
+      "nutrientKey": "phosphorus",
+      "nutrientLabel": "Phosphorus",
+      "nutrientText": "Phosphorus 228 mg",
+      "amount": 228,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Sardines canned 3 oz",
+      "sourceLabel": "Salmon & sardines",
+      "nutrientKey": "phosphorus",
+      "nutrientLabel": "Phosphorus",
+      "nutrientText": "Phosphorus 420 mg",
+      "amount": 420,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Lentils cooked 1 cup",
+      "sourceLabel": "Lentils & beans",
+      "nutrientKey": "phosphorus",
+      "nutrientLabel": "Phosphorus",
+      "nutrientText": "Phosphorus 356 mg",
+      "amount": 356,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Pumpkin seeds 1 oz",
+      "sourceLabel": "Pumpkin seeds & sunflower seeds",
+      "nutrientKey": "phosphorus",
+      "nutrientLabel": "Phosphorus",
+      "nutrientText": "Phosphorus 330 mg",
+      "amount": 330,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Whole grains 1 serving",
+      "sourceLabel": "Whole grains",
+      "nutrientKey": "phosphorus",
+      "nutrientLabel": "Phosphorus",
+      "nutrientText": "Phosphorus 150 mg",
+      "amount": 150,
+      "unit": "mg",
+      "matched": false
+    },
+    {
+      "food": "Egg md",
+      "sourceLabel": "Eggs",
+      "nutrientKey": "phosphorus",
+      "nutrientLabel": "Phosphorus",
+      "nutrientText": "Phosphorus 86 mg",
+      "amount": 86,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Egg md",
+      "sourceLabel": "Eggs (yolk is richest)",
+      "nutrientKey": "choline",
+      "nutrientLabel": "Choline",
+      "nutrientText": "Choline 147 mg",
+      "amount": 147,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Beef Liver 3 oz palm-sized",
+      "sourceLabel": "Liver & beef",
+      "nutrientKey": "choline",
+      "nutrientLabel": "Choline",
+      "nutrientText": "Choline 360 mg",
+      "amount": 360,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Salmon 3 oz",
+      "sourceLabel": "Salmon & cod",
+      "nutrientKey": "choline",
+      "nutrientLabel": "Choline",
+      "nutrientText": "Choline 75 mg",
+      "amount": 75,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Chicken 4 oz palm-sized",
+      "sourceLabel": "Chicken & turkey",
+      "nutrientKey": "choline",
+      "nutrientLabel": "Choline",
+      "nutrientText": "Choline 95 mg",
+      "amount": 95,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Soybeans cooked 1 cup",
+      "sourceLabel": "Soybeans & quinoa",
+      "nutrientKey": "choline",
+      "nutrientLabel": "Choline",
+      "nutrientText": "Choline 107 mg",
+      "amount": 107,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Brussels sprouts 1 cup",
+      "sourceLabel": "Broccoli & Brussels sprouts",
+      "nutrientKey": "choline",
+      "nutrientLabel": "Choline",
+      "nutrientText": "Choline 19 mg",
+      "amount": 19,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Peanuts 1 cup",
+      "sourceLabel": "Peanuts",
+      "nutrientKey": "choline",
+      "nutrientLabel": "Choline",
+      "nutrientText": "Choline 78 mg",
+      "amount": 78,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Lentils cooked 1 cup",
+      "sourceLabel": "Lentils & black beans",
+      "nutrientKey": "molybdenum",
+      "nutrientLabel": "Molybdenum",
+      "nutrientText": "Molybdenum 148 mcg",
+      "amount": 148,
+      "unit": "mcg",
+      "matched": true
+    },
+    {
+      "food": "Frozen Peas 1 cup (134g)",
+      "sourceLabel": "Lima beans & peas",
+      "nutrientKey": "molybdenum",
+      "nutrientLabel": "Molybdenum",
+      "nutrientText": "Molybdenum 5 mcg",
+      "amount": 5,
+      "unit": "mcg",
+      "matched": true
+    },
+    {
+      "food": "Rice - Brown 1 cup cooked",
+      "sourceLabel": "Oats & rice",
+      "nutrientKey": "molybdenum",
+      "nutrientLabel": "Molybdenum",
+      "nutrientText": "Molybdenum 35 mcg",
+      "amount": 35,
+      "unit": "mcg",
+      "matched": true
+    },
+    {
+      "food": "Peanuts 1 cup",
+      "sourceLabel": "Almonds & peanuts",
+      "nutrientKey": "molybdenum",
+      "nutrientLabel": "Molybdenum",
+      "nutrientText": "Molybdenum 20 mcg",
+      "amount": 20,
+      "unit": "mcg",
+      "matched": true
+    },
+    {
+      "food": "Yogurt 1 cup",
+      "sourceLabel": "Yogurt",
+      "nutrientKey": "molybdenum",
+      "nutrientLabel": "Molybdenum",
+      "nutrientText": "Molybdenum 11 mcg",
+      "amount": 11,
+      "unit": "mcg",
+      "matched": false
+    },
+    {
+      "food": "Egg md",
+      "sourceLabel": "Eggs",
+      "nutrientKey": "molybdenum",
+      "nutrientLabel": "Molybdenum",
+      "nutrientText": "Molybdenum 8 mcg",
+      "amount": 8,
+      "unit": "mcg",
+      "matched": true
+    },
+    {
+      "food": "Sunflower seeds 1 oz",
+      "sourceLabel": "Sunflower seeds",
+      "nutrientKey": "molybdenum",
+      "nutrientLabel": "Molybdenum",
+      "nutrientText": "Molybdenum 6 mcg",
+      "amount": 6,
+      "unit": "mcg",
+      "matched": false
+    },
+    {
+      "food": "Table Salt Iodized 8 sm pinches (6ml)",
+      "sourceLabel": "Table salt (sodium chloride)",
+      "nutrientKey": "chloride",
+      "nutrientLabel": "Chloride",
+      "nutrientText": "Chloride 4303 mg",
+      "amount": 4303.032,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Seaweed - Simple Truth Roasted Seaweed Snack 1 pack (5 g)",
+      "sourceLabel": "Seaweed",
+      "nutrientKey": "chloride",
+      "nutrientLabel": "Chloride",
+      "nutrientText": "Chloride 60 mg",
+      "amount": 60,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Tomato md",
+      "sourceLabel": "Tomatoes",
+      "nutrientKey": "chloride",
+      "nutrientLabel": "Chloride",
+      "nutrientText": "Chloride 50 mg",
+      "amount": 50,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Celery stalk 1 serving",
+      "sourceLabel": "Celery",
+      "nutrientKey": "chloride",
+      "nutrientLabel": "Chloride",
+      "nutrientText": "Chloride 40 mg",
+      "amount": 40,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Olives 1 serving",
+      "sourceLabel": "Olives",
+      "nutrientKey": "chloride",
+      "nutrientLabel": "Chloride",
+      "nutrientText": "Chloride 500 mg",
+      "amount": 500,
+      "unit": "mg",
+      "matched": false
+    },
+    {
+      "food": "Rye bread 1 slice",
+      "sourceLabel": "Rye bread",
+      "nutrientKey": "chloride",
+      "nutrientLabel": "Chloride",
+      "nutrientText": "Chloride 200 mg",
+      "amount": 200,
+      "unit": "mg",
+      "matched": false
+    },
+    {
+      "food": "Lettuce 1 cup",
+      "sourceLabel": "Lettuce",
+      "nutrientKey": "chloride",
+      "nutrientLabel": "Chloride",
+      "nutrientText": "Chloride 30 mg",
+      "amount": 30,
+      "unit": "mg",
+      "matched": false
+    },
+    {
+      "food": "Beef Liver 3 oz palm-sized",
+      "sourceLabel": "Beef & poultry",
+      "nutrientKey": "histidine",
+      "nutrientLabel": "Histidine",
+      "nutrientText": "Histidine 487.5 mg",
+      "amount": 487.5,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Salmon 3 oz",
+      "sourceLabel": "Tuna & salmon",
+      "nutrientKey": "histidine",
+      "nutrientLabel": "Histidine",
+      "nutrientText": "Histidine 650 mg",
+      "amount": 650,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Soybeans cooked 1 cup",
+      "sourceLabel": "Soybeans",
+      "nutrientKey": "histidine",
+      "nutrientLabel": "Histidine",
+      "nutrientText": "Histidine 780 mg",
+      "amount": 780,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Cheese provolone 1 slice (28g)",
+      "sourceLabel": "Cheese",
+      "nutrientKey": "histidine",
+      "nutrientLabel": "Histidine",
+      "nutrientText": "Histidine 317 mg",
+      "amount": 317,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Rice - Brown 1 cup cooked",
+      "sourceLabel": "Rice",
+      "nutrientKey": "histidine",
+      "nutrientLabel": "Histidine",
+      "nutrientText": "Histidine 121 mg",
+      "amount": 121,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Wheat germ 1 serving",
+      "sourceLabel": "Wheat germ",
+      "nutrientKey": "histidine",
+      "nutrientLabel": "Histidine",
+      "nutrientText": "Histidine 180 mg",
+      "amount": 180,
+      "unit": "mg",
+      "matched": false
+    },
+    {
+      "food": "Green beans 1 cup",
+      "sourceLabel": "Beans",
+      "nutrientKey": "histidine",
+      "nutrientLabel": "Histidine",
+      "nutrientText": "Histidine 40 mg",
+      "amount": 40,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Chicken 4 oz palm-sized",
+      "sourceLabel": "Chicken & turkey",
+      "nutrientKey": "isoleucine",
+      "nutrientLabel": "Isoleucine",
+      "nutrientText": "Isoleucine 1679 mg",
+      "amount": 1679,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Egg md",
+      "sourceLabel": "Eggs",
+      "nutrientKey": "isoleucine",
+      "nutrientLabel": "Isoleucine",
+      "nutrientText": "Isoleucine 286 mg",
+      "amount": 286,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Cheese cheddar 1 slice (28g)",
+      "sourceLabel": "Cheese & cottage cheese",
+      "nutrientKey": "isoleucine",
+      "nutrientLabel": "Isoleucine",
+      "nutrientText": "Isoleucine 343 mg",
+      "amount": 343,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Lentils cooked 1 cup",
+      "sourceLabel": "Lentils",
+      "nutrientKey": "isoleucine",
+      "nutrientLabel": "Isoleucine",
+      "nutrientText": "Isoleucine 770 mg",
+      "amount": 770,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Seaweed - Roasted Seaweed Snack 1 serving (10 sheets)",
+      "sourceLabel": "Seaweed",
+      "nutrientKey": "isoleucine",
+      "nutrientLabel": "Isoleucine",
+      "nutrientText": "Isoleucine 35 mg",
+      "amount": 35,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Spirulina 1 serving",
+      "sourceLabel": "Spirulina",
+      "nutrientKey": "isoleucine",
+      "nutrientLabel": "Isoleucine",
+      "nutrientText": "Isoleucine 350 mg",
+      "amount": 350,
+      "unit": "mg",
+      "matched": false
+    },
+    {
+      "food": "Chicken breast 3 oz",
+      "sourceLabel": "Chicken breast",
+      "nutrientKey": "leucine",
+      "nutrientLabel": "Leucine",
+      "nutrientText": "Leucine 1900 mg",
+      "amount": 1900,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Beef Liver 3 oz palm-sized",
+      "sourceLabel": "Beef & pork",
+      "nutrientKey": "leucine",
+      "nutrientLabel": "Leucine",
+      "nutrientText": "Leucine 1425 mg",
+      "amount": 1425,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Salmon 3 oz",
+      "sourceLabel": "Tuna & salmon",
+      "nutrientKey": "leucine",
+      "nutrientLabel": "Leucine",
+      "nutrientText": "Leucine 1650 mg",
+      "amount": 1650,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Egg md",
+      "sourceLabel": "Eggs",
+      "nutrientKey": "leucine",
+      "nutrientLabel": "Leucine",
+      "nutrientText": "Leucine 473 mg",
+      "amount": 473,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Soybeans cooked 1 cup",
+      "sourceLabel": "Soybeans & tofu",
+      "nutrientKey": "leucine",
+      "nutrientLabel": "Leucine",
+      "nutrientText": "Leucine 2250 mg",
+      "amount": 2250,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Cheese provolone 1 slice (28g)",
+      "sourceLabel": "Dairy (whey, cheese)",
+      "nutrientKey": "leucine",
+      "nutrientLabel": "Leucine",
+      "nutrientText": "Leucine 652 mg",
+      "amount": 652,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Peanuts 1 cup",
+      "sourceLabel": "Peanuts",
+      "nutrientKey": "leucine",
+      "nutrientLabel": "Leucine",
+      "nutrientText": "Leucine 2714 mg",
+      "amount": 2714,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Chicken 4 oz palm-sized",
+      "sourceLabel": "Beef & chicken",
+      "nutrientKey": "lysine",
+      "nutrientLabel": "Lysine",
+      "nutrientText": "Lysine 2626 mg",
+      "amount": 2626,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Shrimp Fried - 3pc 3 oz",
+      "sourceLabel": "Fish & shellfish",
+      "nutrientKey": "lysine",
+      "nutrientLabel": "Lysine",
+      "nutrientText": "Lysine 792 mg",
+      "amount": 792,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Egg md",
+      "sourceLabel": "Eggs & dairy",
+      "nutrientKey": "lysine",
+      "nutrientLabel": "Lysine",
+      "nutrientText": "Lysine 385 mg",
+      "amount": 385,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Soybeans cooked 1 cup",
+      "sourceLabel": "Soybeans & tofu",
+      "nutrientKey": "lysine",
+      "nutrientLabel": "Lysine",
+      "nutrientText": "Lysine 1800 mg",
+      "amount": 1800,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Lentils cooked 1 cup",
+      "sourceLabel": "Lentils & beans",
+      "nutrientKey": "lysine",
+      "nutrientLabel": "Lysine",
+      "nutrientText": "Lysine 1250 mg",
+      "amount": 1250,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Pumpkin seeds 1 oz",
+      "sourceLabel": "Pumpkin seeds",
+      "nutrientKey": "lysine",
+      "nutrientLabel": "Lysine",
+      "nutrientText": "Lysine 350 mg",
+      "amount": 350,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Quinoa 1 cup",
+      "sourceLabel": "Quinoa",
+      "nutrientKey": "lysine",
+      "nutrientLabel": "Lysine",
+      "nutrientText": "Lysine 389 mg",
+      "amount": 389,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Egg md",
+      "sourceLabel": "Eggs",
+      "nutrientKey": "methionine",
+      "nutrientLabel": "Methionine",
+      "nutrientText": "Methionine 165 g",
+      "amount": 165,
+      "unit": "g",
+      "matched": true
+    },
+    {
+      "food": "Chicken 4 oz palm-sized",
+      "sourceLabel": "Fish & chicken",
+      "nutrientKey": "methionine",
+      "nutrientLabel": "Methionine",
+      "nutrientText": "Methionine 876 g",
+      "amount": 876,
+      "unit": "g",
+      "matched": true
+    },
+    {
+      "food": "Beef Liver 3 oz palm-sized",
+      "sourceLabel": "Beef & pork",
+      "nutrientKey": "methionine",
+      "nutrientLabel": "Methionine",
+      "nutrientText": "Methionine 390 g",
+      "amount": 390,
+      "unit": "g",
+      "matched": true
+    },
+    {
+      "food": "Brazil Nut 1 piece",
+      "sourceLabel": "Brazil nuts & sesame seeds",
+      "nutrientKey": "methionine",
+      "nutrientLabel": "Methionine",
+      "nutrientText": "Methionine 50.4 g",
+      "amount": 50.4,
+      "unit": "g",
+      "matched": true
+    },
+    {
+      "food": "Oats 1 cup cooked",
+      "sourceLabel": "Oats",
+      "nutrientKey": "methionine",
+      "nutrientLabel": "Methionine",
+      "nutrientText": "Methionine 0.15 g",
+      "amount": 0.15,
+      "unit": "g",
+      "matched": true
+    },
+    {
+      "food": "Spinach 1 cup",
+      "sourceLabel": "Spinach",
+      "nutrientKey": "methionine",
+      "nutrientLabel": "Methionine",
+      "nutrientText": "Methionine 0.05 g",
+      "amount": 0.05,
+      "unit": "g",
+      "matched": true
+    },
+    {
+      "food": "Meat & poultry 3 oz",
+      "sourceLabel": "Meat & poultry",
+      "nutrientKey": "phenylalanine",
+      "nutrientLabel": "Phenylalanine",
+      "nutrientText": "Phenylalanine 1000 mg",
+      "amount": 1000,
+      "unit": "mg",
+      "matched": false
+    },
+    {
+      "food": "Egg md",
+      "sourceLabel": "Fish & eggs",
+      "nutrientKey": "phenylalanine",
+      "nutrientLabel": "Phenylalanine",
+      "nutrientText": "Phenylalanine 264 mg",
+      "amount": 264,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Cheese provolone 1 slice (28g)",
+      "sourceLabel": "Dairy & cheese",
+      "nutrientKey": "phenylalanine",
+      "nutrientLabel": "Phenylalanine",
+      "nutrientText": "Phenylalanine 366 mg",
+      "amount": 366,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Soybeans cooked 1 cup",
+      "sourceLabel": "Soybeans & tofu",
+      "nutrientKey": "phenylalanine",
+      "nutrientLabel": "Phenylalanine",
+      "nutrientText": "Phenylalanine 1450 mg",
+      "amount": 1450,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Cereal -  Grape-Nuts 1 oz",
+      "sourceLabel": "Nuts & seeds",
+      "nutrientKey": "phenylalanine",
+      "nutrientLabel": "Phenylalanine",
+      "nutrientText": "Phenylalanine 240 mg",
+      "amount": 240,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Lentils cooked 1 cup",
+      "sourceLabel": "Lentils & beans",
+      "nutrientKey": "phenylalanine",
+      "nutrientLabel": "Phenylalanine",
+      "nutrientText": "Phenylalanine 900 mg",
+      "amount": 900,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Whole grains 1 serving",
+      "sourceLabel": "Whole grains",
+      "nutrientKey": "phenylalanine",
+      "nutrientLabel": "Phenylalanine",
+      "nutrientText": "Phenylalanine 300 mg",
+      "amount": 300,
+      "unit": "mg",
+      "matched": false
+    },
+    {
+      "food": "Chicken 4 oz palm-sized",
+      "sourceLabel": "Chicken & turkey",
+      "nutrientKey": "threonine",
+      "nutrientLabel": "Threonine",
+      "nutrientText": "Threonine 1400 mg",
+      "amount": 1400,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Beef Liver 3 oz palm-sized",
+      "sourceLabel": "Beef",
+      "nutrientKey": "threonine",
+      "nutrientLabel": "Threonine",
+      "nutrientText": "Threonine 750 mg",
+      "amount": 750,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Egg md",
+      "sourceLabel": "Eggs & dairy",
+      "nutrientKey": "threonine",
+      "nutrientLabel": "Threonine",
+      "nutrientText": "Threonine 231 mg",
+      "amount": 231,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Lentils cooked 1 cup",
+      "sourceLabel": "Lentils",
+      "nutrientKey": "threonine",
+      "nutrientLabel": "Threonine",
+      "nutrientText": "Threonine 650 mg",
+      "amount": 650,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Sesame seeds 1 oz",
+      "sourceLabel": "Sesame seeds",
+      "nutrientKey": "threonine",
+      "nutrientLabel": "Threonine",
+      "nutrientText": "Threonine 180 mg",
+      "amount": 180,
+      "unit": "mg",
+      "matched": false
+    },
+    {
+      "food": "Wheat germ 1 serving",
+      "sourceLabel": "Wheat germ",
+      "nutrientKey": "threonine",
+      "nutrientLabel": "Threonine",
+      "nutrientText": "Threonine 170 mg",
+      "amount": 170,
+      "unit": "mg",
+      "matched": false
+    },
+    {
+      "food": "Chicken 4 oz palm-sized",
+      "sourceLabel": "Turkey & chicken",
+      "nutrientKey": "tryptophan",
+      "nutrientLabel": "Tryptophan",
+      "nutrientText": "Tryptophan 385 mg",
+      "amount": 385,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Cheese cheddar 1 slice (28g)",
+      "sourceLabel": "Milk & cheese",
+      "nutrientKey": "tryptophan",
+      "nutrientLabel": "Tryptophan",
+      "nutrientText": "Tryptophan 155 mg",
+      "amount": 155,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Egg md",
+      "sourceLabel": "Eggs",
+      "nutrientKey": "tryptophan",
+      "nutrientLabel": "Tryptophan",
+      "nutrientText": "Tryptophan 77 mg",
+      "amount": 77,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Pumpkin seeds 1 oz",
+      "sourceLabel": "Pumpkin seeds",
+      "nutrientKey": "tryptophan",
+      "nutrientLabel": "Tryptophan",
+      "nutrientText": "Tryptophan 160 mg",
+      "amount": 160,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Peanuts 1 cup",
+      "sourceLabel": "Peanuts & almonds",
+      "nutrientKey": "tryptophan",
+      "nutrientLabel": "Tryptophan",
+      "nutrientText": "Tryptophan 377 mg",
+      "amount": 377,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Salmon 3 oz",
+      "sourceLabel": "Salmon & tuna",
+      "nutrientKey": "tryptophan",
+      "nutrientLabel": "Tryptophan",
+      "nutrientText": "Tryptophan 250 mg",
+      "amount": 250,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Tofu & soy 1 serving",
+      "sourceLabel": "Tofu & soy",
+      "nutrientKey": "tryptophan",
+      "nutrientLabel": "Tryptophan",
+      "nutrientText": "Tryptophan 120 mg",
+      "amount": 120,
+      "unit": "mg",
+      "matched": false
+    },
+    {
+      "food": "Chicken 4 oz palm-sized",
+      "sourceLabel": "Beef & chicken",
+      "nutrientKey": "valine",
+      "nutrientLabel": "Valine",
+      "nutrientText": "Valine 1926 mg",
+      "amount": 1926,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Cheese provolone 1 slice (28g)",
+      "sourceLabel": "Cheese & yogurt",
+      "nutrientKey": "valine",
+      "nutrientLabel": "Valine",
+      "nutrientText": "Valine 466 mg",
+      "amount": 466,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Soybeans cooked 1 cup",
+      "sourceLabel": "Soybeans",
+      "nutrientKey": "valine",
+      "nutrientLabel": "Valine",
+      "nutrientText": "Valine 1350 mg",
+      "amount": 1350,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Peanuts 1 cup",
+      "sourceLabel": "Peanuts",
+      "nutrientKey": "valine",
+      "nutrientLabel": "Valine",
+      "nutrientText": "Valine 1810 mg",
+      "amount": 1810,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Mushrooms 1 serving",
+      "sourceLabel": "Mushrooms",
+      "nutrientKey": "valine",
+      "nutrientLabel": "Valine",
+      "nutrientText": "Valine 100 mg",
+      "amount": 100,
+      "unit": "mg",
+      "matched": false
+    },
+    {
+      "food": "Whole grains 1 serving",
+      "sourceLabel": "Whole grains",
+      "nutrientKey": "valine",
+      "nutrientLabel": "Valine",
+      "nutrientText": "Valine 300 mg",
+      "amount": 300,
+      "unit": "mg",
+      "matched": false
+    },
+    {
+      "food": "Chicken 4 oz palm-sized",
+      "sourceLabel": "Turkey & chicken",
+      "nutrientKey": "arginine",
+      "nutrientLabel": "Arginine",
+      "nutrientText": "Arginine 2100 mg",
+      "amount": 2100,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Pumpkin seeds 1 oz",
+      "sourceLabel": "Pumpkin seeds",
+      "nutrientKey": "arginine",
+      "nutrientLabel": "Arginine",
+      "nutrientText": "Arginine 1500 mg",
+      "amount": 1500,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Peanuts 1 cup",
+      "sourceLabel": "Peanuts & almonds",
+      "nutrientKey": "arginine",
+      "nutrientLabel": "Arginine",
+      "nutrientText": "Arginine 2074 mg",
+      "amount": 2074,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Soybeans cooked 1 cup",
+      "sourceLabel": "Soybeans",
+      "nutrientKey": "arginine",
+      "nutrientLabel": "Arginine",
+      "nutrientText": "Arginine 2200 mg",
+      "amount": 2200,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Lentils cooked 1 cup",
+      "sourceLabel": "Lentils & chickpeas",
+      "nutrientKey": "arginine",
+      "nutrientLabel": "Arginine",
+      "nutrientText": "Arginine 1200 mg",
+      "amount": 1200,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Dairy 1 serving",
+      "sourceLabel": "Dairy",
+      "nutrientKey": "arginine",
+      "nutrientLabel": "Arginine",
+      "nutrientText": "Arginine 290 mg",
+      "amount": 290,
+      "unit": "mg",
+      "matched": false
+    },
+    {
+      "food": "Beef 3 oz",
+      "sourceLabel": "Beef",
+      "nutrientKey": "arginine",
+      "nutrientLabel": "Arginine",
+      "nutrientText": "Arginine 1600 mg",
+      "amount": 1600,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Chicken 4 oz palm-sized",
+      "sourceLabel": "Chicken & turkey",
+      "nutrientKey": "cysteine",
+      "nutrientLabel": "Cysteine",
+      "nutrientText": "Cysteine 455 mg",
+      "amount": 455,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Egg md",
+      "sourceLabel": "Eggs",
+      "nutrientKey": "cysteine",
+      "nutrientLabel": "Cysteine",
+      "nutrientText": "Cysteine 99 mg",
+      "amount": 99,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Garlic & onion 1 serving",
+      "sourceLabel": "Garlic & onion",
+      "nutrientKey": "cysteine",
+      "nutrientLabel": "Cysteine",
+      "nutrientText": "Cysteine 60 mg",
+      "amount": 60,
+      "unit": "mg",
+      "matched": false
+    },
+    {
+      "food": "Brussels sprouts 1 cup",
+      "sourceLabel": "Broccoli & Brussels sprouts",
+      "nutrientKey": "cysteine",
+      "nutrientLabel": "Cysteine",
+      "nutrientText": "Cysteine 28 mg",
+      "amount": 28,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Cheese cheddar 1 slice (28g)",
+      "sourceLabel": "Yogurt & cheese",
+      "nutrientKey": "cysteine",
+      "nutrientLabel": "Cysteine",
+      "nutrientText": "Cysteine 35 mg",
+      "amount": 35,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Oats 1 cup cooked",
+      "sourceLabel": "Oats",
+      "nutrientKey": "cysteine",
+      "nutrientLabel": "Cysteine",
+      "nutrientText": "Cysteine 140 mg",
+      "amount": 140,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Lentils cooked 1 cup",
+      "sourceLabel": "Lentils",
+      "nutrientKey": "cysteine",
+      "nutrientLabel": "Cysteine",
+      "nutrientText": "Cysteine 220 mg",
+      "amount": 220,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Chicken 4 oz palm-sized",
+      "sourceLabel": "Beef & chicken",
+      "nutrientKey": "glutamine",
+      "nutrientLabel": "Glutamine",
+      "nutrientText": "Glutamine 5250 mg",
+      "amount": 5250,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Egg md",
+      "sourceLabel": "Eggs & dairy",
+      "nutrientKey": "glutamine",
+      "nutrientLabel": "Glutamine",
+      "nutrientText": "Glutamine 660 mg",
+      "amount": 660,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Beet md",
+      "sourceLabel": "Cabbage & beets",
+      "nutrientKey": "glutamine",
+      "nutrientLabel": "Glutamine",
+      "nutrientText": "Glutamine 99 mg",
+      "amount": 99,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Lentils cooked 1 cup",
+      "sourceLabel": "Beans & lentils",
+      "nutrientKey": "glutamine",
+      "nutrientLabel": "Glutamine",
+      "nutrientText": "Glutamine 2800 mg",
+      "amount": 2800,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Tofu 1 serving",
+      "sourceLabel": "Tofu",
+      "nutrientKey": "glutamine",
+      "nutrientLabel": "Glutamine",
+      "nutrientText": "Glutamine 1900 mg",
+      "amount": 1900,
+      "unit": "mg",
+      "matched": false
+    },
+    {
+      "food": "Bone broth 1 serving",
+      "sourceLabel": "Bone broth",
+      "nutrientKey": "glutamine",
+      "nutrientLabel": "Glutamine",
+      "nutrientText": "Glutamine 400 mg",
+      "amount": 400,
+      "unit": "mg",
+      "matched": false
+    },
+    {
+      "food": "Bone broth & gelatin 1 serving",
+      "sourceLabel": "Bone broth & gelatin",
+      "nutrientKey": "glycine",
+      "nutrientLabel": "Glycine",
+      "nutrientText": "Glycine 1500 mg",
+      "amount": 1500,
+      "unit": "mg",
+      "matched": false
+    },
+    {
+      "food": "Pork skin & chicken skin 3 oz",
+      "sourceLabel": "Pork skin & chicken skin",
+      "nutrientKey": "glycine",
+      "nutrientLabel": "Glycine",
+      "nutrientText": "Glycine 3000 mg",
+      "amount": 3000,
+      "unit": "mg",
+      "matched": false
+    },
+    {
+      "food": "Chicken 4 oz palm-sized",
+      "sourceLabel": "Beef & chicken",
+      "nutrientKey": "glycine",
+      "nutrientLabel": "Glycine",
+      "nutrientText": "Glycine 1575 mg",
+      "amount": 1575,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Egg md",
+      "sourceLabel": "Eggs",
+      "nutrientKey": "glycine",
+      "nutrientLabel": "Glycine",
+      "nutrientText": "Glycine 138 mg",
+      "amount": 138,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Legumes 1 serving",
+      "sourceLabel": "Legumes",
+      "nutrientKey": "glycine",
+      "nutrientLabel": "Glycine",
+      "nutrientText": "Glycine 350 mg",
+      "amount": 350,
+      "unit": "mg",
+      "matched": false
+    },
+    {
+      "food": "Spinach 1 cup",
+      "sourceLabel": "Spinach & kale",
+      "nutrientKey": "glycine",
+      "nutrientLabel": "Glycine",
+      "nutrientText": "Glycine 130 mg",
+      "amount": 130,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Bone broth & gelatin 1 serving",
+      "sourceLabel": "Bone broth & gelatin",
+      "nutrientKey": "proline",
+      "nutrientLabel": "Proline",
+      "nutrientText": "Proline 1200 mg",
+      "amount": 1200,
+      "unit": "mg",
+      "matched": false
+    },
+    {
+      "food": "Egg whites 1 medium",
+      "sourceLabel": "Egg whites",
+      "nutrientKey": "proline",
+      "nutrientLabel": "Proline",
+      "nutrientText": "Proline 120 mg",
+      "amount": 120,
+      "unit": "mg",
+      "matched": false
+    },
+    {
+      "food": "Dairy (especially casein) 1 serving",
+      "sourceLabel": "Dairy (especially casein)",
+      "nutrientKey": "proline",
+      "nutrientLabel": "Proline",
+      "nutrientText": "Proline 800 mg",
+      "amount": 800,
+      "unit": "mg",
+      "matched": false
+    },
+    {
+      "food": "Chicken 4 oz palm-sized",
+      "sourceLabel": "Beef & chicken",
+      "nutrientKey": "proline",
+      "nutrientLabel": "Proline",
+      "nutrientText": "Proline 2100 mg",
+      "amount": 2100,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Cabbage 1 cup",
+      "sourceLabel": "Cabbage",
+      "nutrientKey": "proline",
+      "nutrientLabel": "Proline",
+      "nutrientText": "Proline 40 mg",
+      "amount": 40,
+      "unit": "mg",
+      "matched": false
+    },
+    {
+      "food": "Asparagus 1 serving",
+      "sourceLabel": "Asparagus",
+      "nutrientKey": "proline",
+      "nutrientLabel": "Proline",
+      "nutrientText": "Proline 80 mg",
+      "amount": 80,
+      "unit": "mg",
+      "matched": false
+    },
+    {
+      "food": "Mushrooms 1 serving",
+      "sourceLabel": "Mushrooms",
+      "nutrientKey": "proline",
+      "nutrientLabel": "Proline",
+      "nutrientText": "Proline 60 mg",
+      "amount": 60,
+      "unit": "mg",
+      "matched": false
+    },
+    {
+      "food": "Chicken 4 oz palm-sized",
+      "sourceLabel": "Chicken & turkey",
+      "nutrientKey": "tyrosine",
+      "nutrientLabel": "Tyrosine",
+      "nutrientText": "Tyrosine 1226 mg",
+      "amount": 1226,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Shrimp Fried - 3pc 3 oz",
+      "sourceLabel": "Fish & shrimp",
+      "nutrientKey": "tyrosine",
+      "nutrientLabel": "Tyrosine",
+      "nutrientText": "Tyrosine 352 mg",
+      "amount": 352,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Egg md",
+      "sourceLabel": "Eggs & dairy",
+      "nutrientKey": "tyrosine",
+      "nutrientLabel": "Tyrosine",
+      "nutrientText": "Tyrosine 220 mg",
+      "amount": 220,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Soybeans cooked 1 cup",
+      "sourceLabel": "Soybeans & tofu",
+      "nutrientKey": "tyrosine",
+      "nutrientLabel": "Tyrosine",
+      "nutrientText": "Tyrosine 1100 mg",
+      "amount": 1100,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Peanuts 1 cup",
+      "sourceLabel": "Peanuts & almonds",
+      "nutrientKey": "tyrosine",
+      "nutrientLabel": "Tyrosine",
+      "nutrientText": "Tyrosine 1131 mg",
+      "amount": 1131,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Avocado whole 1 medium",
+      "sourceLabel": "Avocado",
+      "nutrientKey": "tyrosine",
+      "nutrientLabel": "Tyrosine",
+      "nutrientText": "Tyrosine 120 mg",
+      "amount": 120,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Fruit - Banana with skin 1 serving",
+      "sourceLabel": "Bananas",
+      "nutrientKey": "tyrosine",
+      "nutrientLabel": "Tyrosine",
+      "nutrientText": "Tyrosine 45 mg",
+      "amount": 45,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Shrimp Fried - 3pc 1 serving",
+      "sourceLabel": "Shellfish (scallops, mussels)",
+      "nutrientKey": "taurine",
+      "nutrientLabel": "Taurine",
+      "nutrientText": "Taurine 495 mg",
+      "amount": 495,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Turkey breast 3 oz",
+      "sourceLabel": "Dark meat chicken & turkey",
+      "nutrientKey": "taurine",
+      "nutrientLabel": "Taurine",
+      "nutrientText": "Taurine 30 mg",
+      "amount": 30,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Beef Liver 3 oz palm-sized",
+      "sourceLabel": "Beef & pork",
+      "nutrientKey": "taurine",
+      "nutrientLabel": "Taurine",
+      "nutrientText": "Taurine 33.8 mg",
+      "amount": 33.75,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Salmon 3 oz",
+      "sourceLabel": "Fish (tuna, salmon)",
+      "nutrientKey": "taurine",
+      "nutrientLabel": "Taurine",
+      "nutrientText": "Taurine 130 mg",
+      "amount": 130,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Egg md",
+      "sourceLabel": "Eggs",
+      "nutrientKey": "taurine",
+      "nutrientLabel": "Taurine",
+      "nutrientText": "Taurine 11 mg",
+      "amount": 11,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Dairy 1 serving",
+      "sourceLabel": "Dairy",
+      "nutrientKey": "taurine",
+      "nutrientLabel": "Taurine",
+      "nutrientText": "Taurine 15 mg",
+      "amount": 15,
+      "unit": "mg",
+      "matched": false
+    },
+    {
+      "food": "Seaweed - Roasted Seaweed Snack 1 serving (10 sheets)",
+      "sourceLabel": "Seaweed",
+      "nutrientKey": "taurine",
+      "nutrientLabel": "Taurine",
+      "nutrientText": "Taurine 5 mg",
+      "amount": 5,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Beef 3 oz",
+      "sourceLabel": "Beef & lamb",
+      "nutrientKey": "saturatedFat",
+      "nutrientLabel": "Saturated fat",
+      "nutrientText": "Saturated fat 3.2 g",
+      "amount": 3.2,
+      "unit": "g",
+      "matched": true
+    },
+    {
+      "food": "Butter Salted 1 tablespoon (14.2g)",
+      "sourceLabel": "Butter & cheese",
+      "nutrientKey": "saturatedFat",
+      "nutrientLabel": "Saturated fat",
+      "nutrientText": "Saturated fat 7.3 g",
+      "amount": 7.3,
+      "unit": "g",
+      "matched": true
+    },
+    {
+      "food": "AM Shot - Coconut Oil 1 tablespoon",
+      "sourceLabel": "Coconut oil",
+      "nutrientKey": "saturatedFat",
+      "nutrientLabel": "Saturated fat",
+      "nutrientText": "Saturated fat 11.8 g",
+      "amount": 11.8,
+      "unit": "g",
+      "matched": true
+    },
+    {
+      "food": "Palm oil 1 tablespoon",
+      "sourceLabel": "Palm oil",
+      "nutrientKey": "saturatedFat",
+      "nutrientLabel": "Saturated fat",
+      "nutrientText": "Saturated fat 6.7 g",
+      "amount": 6.7,
+      "unit": "g",
+      "matched": false
+    },
+    {
+      "food": "Bacon & sausage 1 serving",
+      "sourceLabel": "Bacon & sausage",
+      "nutrientKey": "saturatedFat",
+      "nutrientLabel": "Saturated fat",
+      "nutrientText": "Saturated fat 5 g",
+      "amount": 5,
+      "unit": "g",
+      "matched": false
+    },
+    {
+      "food": "Dark chocolate 70% 1 oz",
+      "sourceLabel": "Dark chocolate",
+      "nutrientKey": "saturatedFat",
+      "nutrientLabel": "Saturated fat",
+      "nutrientText": "Saturated fat 7 g",
+      "amount": 7,
+      "unit": "g",
+      "matched": true
+    },
+    {
+      "food": "Milk whole 2 cups",
+      "sourceLabel": "Whole milk",
+      "nutrientKey": "saturatedFat",
+      "nutrientLabel": "Saturated fat",
+      "nutrientText": "Saturated fat 9.2 g",
+      "amount": 9.2,
+      "unit": "g",
+      "matched": true
+    },
+    {
+      "food": "Extra-virgin olive oil 1 tablespoon",
+      "sourceLabel": "Extra-virgin olive oil",
+      "nutrientKey": "monounsaturatedFat",
+      "nutrientLabel": "Monounsaturated fat",
+      "nutrientText": "Monounsaturated fat 9.9 g",
+      "amount": 9.9,
+      "unit": "g",
+      "matched": false
+    },
+    {
+      "food": "Avocado whole 1 medium",
+      "sourceLabel": "Avocado",
+      "nutrientKey": "monounsaturatedFat",
+      "nutrientLabel": "Monounsaturated fat",
+      "nutrientText": "Monounsaturated fat 19.6 g",
+      "amount": 19.6,
+      "unit": "g",
+      "matched": true
+    },
+    {
+      "food": "Cashews 1 oz",
+      "sourceLabel": "Almonds & cashews",
+      "nutrientKey": "monounsaturatedFat",
+      "nutrientLabel": "Monounsaturated fat",
+      "nutrientText": "Monounsaturated fat 7 g",
+      "amount": 7,
+      "unit": "g",
+      "matched": true
+    },
+    {
+      "food": "Hazelnuts 1 serving",
+      "sourceLabel": "Hazelnuts",
+      "nutrientKey": "monounsaturatedFat",
+      "nutrientLabel": "Monounsaturated fat",
+      "nutrientText": "Monounsaturated fat 13 g",
+      "amount": 13,
+      "unit": "g",
+      "matched": false
+    },
+    {
+      "food": "Olives 1 serving",
+      "sourceLabel": "Olives",
+      "nutrientKey": "monounsaturatedFat",
+      "nutrientLabel": "Monounsaturated fat",
+      "nutrientText": "Monounsaturated fat 5 g",
+      "amount": 5,
+      "unit": "g",
+      "matched": false
+    },
+    {
+      "food": "Chicken 4 oz palm-sized",
+      "sourceLabel": "Chicken & turkey",
+      "nutrientKey": "monounsaturatedFat",
+      "nutrientLabel": "Monounsaturated fat",
+      "nutrientText": "Monounsaturated fat 1.5 g",
+      "amount": 1.5,
+      "unit": "g",
+      "matched": true
+    },
+    {
+      "food": "Peanut Butter 2 tablespoons",
+      "sourceLabel": "Peanut butter (natural)",
+      "nutrientKey": "monounsaturatedFat",
+      "nutrientLabel": "Monounsaturated fat",
+      "nutrientText": "Monounsaturated fat 7.8 g",
+      "amount": 7.8,
+      "unit": "g",
+      "matched": true
+    },
+    {
+      "food": "Flaxseed 1 tablespoon",
+      "sourceLabel": "Walnuts & flax",
+      "nutrientKey": "polyunsaturatedFat",
+      "nutrientLabel": "Polyunsaturated fat",
+      "nutrientText": "Polyunsaturated fat 2 g",
+      "amount": 2,
+      "unit": "g",
+      "matched": true
+    },
+    {
+      "food": "Fatty fish 3 oz",
+      "sourceLabel": "Fatty fish",
+      "nutrientKey": "polyunsaturatedFat",
+      "nutrientLabel": "Polyunsaturated fat",
+      "nutrientText": "Polyunsaturated fat 3.5 g",
+      "amount": 3.5,
+      "unit": "g",
+      "matched": false
+    },
+    {
+      "food": "Safflower oil 1 tablespoon",
+      "sourceLabel": "Sunflower & safflower oil",
+      "nutrientKey": "polyunsaturatedFat",
+      "nutrientLabel": "Polyunsaturated fat",
+      "nutrientText": "Polyunsaturated fat 10.1 g",
+      "amount": 10.1,
+      "unit": "g",
+      "matched": true
+    },
+    {
+      "food": "Soybean oil 1 tablespoon",
+      "sourceLabel": "Soybean oil",
+      "nutrientKey": "polyunsaturatedFat",
+      "nutrientLabel": "Polyunsaturated fat",
+      "nutrientText": "Polyunsaturated fat 7.9 g",
+      "amount": 7.9,
+      "unit": "g",
+      "matched": true
+    },
+    {
+      "food": "Hemp seeds 1 oz",
+      "sourceLabel": "Chia & hemp seeds",
+      "nutrientKey": "polyunsaturatedFat",
+      "nutrientLabel": "Polyunsaturated fat",
+      "nutrientText": "Polyunsaturated fat 10.7 g",
+      "amount": 10.7,
+      "unit": "g",
+      "matched": true
+    },
+    {
+      "food": "Edamame 1 cup (155g, shelled)",
+      "sourceLabel": "Tofu & edamame",
+      "nutrientKey": "polyunsaturatedFat",
+      "nutrientLabel": "Polyunsaturated fat",
+      "nutrientText": "Polyunsaturated fat 3.3 g",
+      "amount": 3.3,
+      "unit": "g",
+      "matched": true
+    },
+    {
+      "food": "Egg md",
+      "sourceLabel": "Eggs (omega-enriched)",
+      "nutrientKey": "polyunsaturatedFat",
+      "nutrientLabel": "Polyunsaturated fat",
+      "nutrientText": "Polyunsaturated fat 0.7 g",
+      "amount": 0.7,
+      "unit": "g",
+      "matched": true
+    },
+    {
+      "food": "Margarine (check labels) 1 serving",
+      "sourceLabel": "Margarine (check labels)",
+      "nutrientKey": "transFat",
+      "nutrientLabel": "Trans fat",
+      "nutrientText": "Trans fat 1.5 g",
+      "amount": 1.5,
+      "unit": "g",
+      "matched": false
+    },
+    {
+      "food": "Some fried fast food 1 serving",
+      "sourceLabel": "Some fried fast food",
+      "nutrientKey": "transFat",
+      "nutrientLabel": "Trans fat",
+      "nutrientText": "Trans fat 2 g",
+      "amount": 2,
+      "unit": "g",
+      "matched": false
+    },
+    {
+      "food": "Non-dairy creamers (older formulas) 1 serving",
+      "sourceLabel": "Non-dairy creamers (older formulas)",
+      "nutrientKey": "transFat",
+      "nutrientLabel": "Trans fat",
+      "nutrientText": "Trans fat 0.5 g",
+      "amount": 0.5,
+      "unit": "g",
+      "matched": false
+    },
+    {
+      "food": "Packaged frosting & biscuits 1 serving",
+      "sourceLabel": "Packaged frosting & biscuits",
+      "nutrientKey": "transFat",
+      "nutrientLabel": "Trans fat",
+      "nutrientText": "Trans fat 1.5 g",
+      "amount": 1.5,
+      "unit": "g",
+      "matched": false
+    },
+    {
+      "food": "Microwave popcorn (some brands) 1 serving",
+      "sourceLabel": "Microwave popcorn (some brands)",
+      "nutrientKey": "transFat",
+      "nutrientLabel": "Trans fat",
+      "nutrientText": "Trans fat 1 g",
+      "amount": 1,
+      "unit": "g",
+      "matched": false
+    },
+    {
+      "food": "Egg md",
+      "sourceLabel": "Eggs",
+      "nutrientKey": "cholesterol",
+      "nutrientLabel": "Cholesterol",
+      "nutrientText": "Cholesterol 164 mg",
+      "amount": 164,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Shrimp 3 oz",
+      "sourceLabel": "Shrimp & shellfish",
+      "nutrientKey": "cholesterol",
+      "nutrientLabel": "Cholesterol",
+      "nutrientText": "Cholesterol 160 mg",
+      "amount": 160,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Chicken Liver 3 oz palm-sized",
+      "sourceLabel": "Liver",
+      "nutrientKey": "cholesterol",
+      "nutrientLabel": "Cholesterol",
+      "nutrientText": "Cholesterol 479.4 mg",
+      "amount": 479.4,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Butter Salted 1 tablespoon (14.2g)",
+      "sourceLabel": "Cheese & butter",
+      "nutrientKey": "cholesterol",
+      "nutrientLabel": "Cholesterol",
+      "nutrientText": "Cholesterol 31 mg",
+      "amount": 31,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Sausage & bacon 1 serving",
+      "sourceLabel": "Sausage & bacon",
+      "nutrientKey": "cholesterol",
+      "nutrientLabel": "Cholesterol",
+      "nutrientText": "Cholesterol 30 mg",
+      "amount": 30,
+      "unit": "mg",
+      "matched": false
+    },
+    {
+      "food": "Chicken 4 oz palm-sized",
+      "sourceLabel": "Chicken (with skin)",
+      "nutrientKey": "cholesterol",
+      "nutrientLabel": "Cholesterol",
+      "nutrientText": "Cholesterol 96 mg",
+      "amount": 96,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Squid 1 serving",
+      "sourceLabel": "Squid",
+      "nutrientKey": "cholesterol",
+      "nutrientLabel": "Cholesterol",
+      "nutrientText": "Cholesterol 260 mg",
+      "amount": 260,
+      "unit": "mg",
+      "matched": false
+    },
+    {
+      "food": "Sterol-fortified margarine & spreads 1 serving",
+      "sourceLabel": "Sterol-fortified margarine & spreads",
+      "nutrientKey": "plantSterols",
+      "nutrientLabel": "Plant sterols & stanols",
+      "nutrientText": "Plant sterols & stanols 1 g",
+      "amount": 1,
+      "unit": "g",
+      "matched": false
+    },
+    {
+      "food": "Fortified orange juice 1 medium",
+      "sourceLabel": "Fortified orange juice",
+      "nutrientKey": "plantSterols",
+      "nutrientLabel": "Plant sterols & stanols",
+      "nutrientText": "Plant sterols & stanols 1 g",
+      "amount": 1,
+      "unit": "g",
+      "matched": false
+    },
+    {
+      "food": "Sterol supplements 1 serving",
+      "sourceLabel": "Sterol supplements",
+      "nutrientKey": "plantSterols",
+      "nutrientLabel": "Plant sterols & stanols",
+      "nutrientText": "Plant sterols & stanols 1 g",
+      "amount": 1,
+      "unit": "g",
+      "matched": false
+    },
+    {
+      "food": "Pumpkin seeds 1 oz",
+      "sourceLabel": "Whole nuts & seeds (small amounts)",
+      "nutrientKey": "plantSterols",
+      "nutrientLabel": "Plant sterols & stanols",
+      "nutrientText": "Plant sterols & stanols 0.05 g",
+      "amount": 0.05,
+      "unit": "g",
+      "matched": true
+    },
+    {
+      "food": "Sardines canned 3 oz",
+      "sourceLabel": "Salmon & sardines",
+      "nutrientKey": "omega3",
+      "nutrientLabel": "Omega-3 (total)",
+      "nutrientText": "Omega-3 (total) 1.5 g",
+      "amount": 1.5,
+      "unit": "g",
+      "matched": true
+    },
+    {
+      "food": "Mackerel & herring 1 serving",
+      "sourceLabel": "Mackerel & herring",
+      "nutrientKey": "omega3",
+      "nutrientLabel": "Omega-3 (total)",
+      "nutrientText": "Omega-3 (total) 1.5 g",
+      "amount": 1.5,
+      "unit": "g",
+      "matched": false
+    },
+    {
+      "food": "Walnuts 1 oz",
+      "sourceLabel": "Walnuts",
+      "nutrientKey": "omega3",
+      "nutrientLabel": "Omega-3 (total)",
+      "nutrientText": "Omega-3 (total) 2.5 g",
+      "amount": 2.5,
+      "unit": "g",
+      "matched": true
+    },
+    {
+      "food": "Flaxseed 1 tablespoon",
+      "sourceLabel": "Flax & chia",
+      "nutrientKey": "omega3",
+      "nutrientLabel": "Omega-3 (total)",
+      "nutrientText": "Omega-3 (total) 1.6 g",
+      "amount": 1.6,
+      "unit": "g",
+      "matched": true
+    },
+    {
+      "food": "Supplement - Fish Oil 1000mg 1 tablespoon",
+      "sourceLabel": "Algae oil (supplement)",
+      "nutrientKey": "omega3",
+      "nutrientLabel": "Omega-3 (total)",
+      "nutrientText": "Omega-3 (total) 0.3 g",
+      "amount": 0.3,
+      "unit": "g",
+      "matched": true
+    },
+    {
+      "food": "Fortified eggs 1 medium",
+      "sourceLabel": "Fortified eggs",
+      "nutrientKey": "omega3",
+      "nutrientLabel": "Omega-3 (total)",
+      "nutrientText": "Omega-3 (total) 0.15 g",
+      "amount": 0.15,
+      "unit": "g",
+      "matched": false
+    },
+    {
+      "food": "Hemp seeds 1 oz",
+      "sourceLabel": "Hemp seeds",
+      "nutrientKey": "omega3",
+      "nutrientLabel": "Omega-3 (total)",
+      "nutrientText": "Omega-3 (total) 2.4 g",
+      "amount": 2.4,
+      "unit": "g",
+      "matched": true
+    },
+    {
+      "food": "Soybeans cooked 1 cup",
+      "sourceLabel": "Soybean & corn oil",
+      "nutrientKey": "omega6",
+      "nutrientLabel": "Omega-6 (total)",
+      "nutrientText": "Omega-6 (total) 7.5 g",
+      "amount": 7.5,
+      "unit": "g",
+      "matched": true
+    },
+    {
+      "food": "Sunflower oil 1 tablespoon",
+      "sourceLabel": "Sunflower oil (high-linoleic)",
+      "nutrientKey": "omega6",
+      "nutrientLabel": "Omega-6 (total)",
+      "nutrientText": "Omega-6 (total) 8.9 g",
+      "amount": 8.9,
+      "unit": "g",
+      "matched": true
+    },
+    {
+      "food": "Mayo 1 tablespoon",
+      "sourceLabel": "Mayonnaise",
+      "nutrientKey": "omega6",
+      "nutrientLabel": "Omega-6 (total)",
+      "nutrientText": "Omega-6 (total) 6 g",
+      "amount": 6,
+      "unit": "g",
+      "matched": true
+    },
+    {
+      "food": "Processed snacks 1 serving",
+      "sourceLabel": "Processed snacks",
+      "nutrientKey": "omega6",
+      "nutrientLabel": "Omega-6 (total)",
+      "nutrientText": "Omega-6 (total) 5 g",
+      "amount": 5,
+      "unit": "g",
+      "matched": false
+    },
+    {
+      "food": "Chicken fat (variable) 3 oz",
+      "sourceLabel": "Chicken fat (variable)",
+      "nutrientKey": "omega6",
+      "nutrientLabel": "Omega-6 (total)",
+      "nutrientText": "Omega-6 (total) 5 g",
+      "amount": 5,
+      "unit": "g",
+      "matched": false
+    },
+    {
+      "food": "Peanuts 1 cup",
+      "sourceLabel": "Peanuts & pine nuts",
+      "nutrientKey": "omega6",
+      "nutrientLabel": "Omega-6 (total)",
+      "nutrientText": "Omega-6 (total) 22.5 g",
+      "amount": 22.5,
+      "unit": "g",
+      "matched": true
+    },
+    {
+      "food": "Whole grains 1 serving",
+      "sourceLabel": "Whole grains",
+      "nutrientKey": "omega6",
+      "nutrientLabel": "Omega-6 (total)",
+      "nutrientText": "Omega-6 (total) 1 g",
+      "amount": 1,
+      "unit": "g",
+      "matched": false
+    },
+    {
+      "food": "Olive oil 1 tablespoon",
+      "sourceLabel": "Olive oil",
+      "nutrientKey": "omega9",
+      "nutrientLabel": "Omega-9",
+      "nutrientText": "Omega-9 9.9 g",
+      "amount": 9.9,
+      "unit": "g",
+      "matched": false
+    },
+    {
+      "food": "AM Shot - Avocado Oil 1 tablespoon",
+      "sourceLabel": "Avocado oil",
+      "nutrientKey": "omega9",
+      "nutrientLabel": "Omega-9",
+      "nutrientText": "Omega-9 9.9 g",
+      "amount": 9.9,
+      "unit": "g",
+      "matched": true
+    },
+    {
+      "food": "Almonds 1 oz",
+      "sourceLabel": "Almonds",
+      "nutrientKey": "omega9",
+      "nutrientLabel": "Omega-9",
+      "nutrientText": "Omega-9 9 g",
+      "amount": 9,
+      "unit": "g",
+      "matched": false
+    },
+    {
+      "food": "Cashews 1 oz",
+      "sourceLabel": "Cashews",
+      "nutrientKey": "omega9",
+      "nutrientLabel": "Omega-9",
+      "nutrientText": "Omega-9 6.7 g",
+      "amount": 6.7,
+      "unit": "g",
+      "matched": true
+    },
+    {
+      "food": "Avocado whole 1 medium",
+      "sourceLabel": "Avocado",
+      "nutrientKey": "omega9",
+      "nutrientLabel": "Omega-9",
+      "nutrientText": "Omega-9 18 g",
+      "amount": 18,
+      "unit": "g",
+      "matched": true
+    },
+    {
+      "food": "Hazelnut oil 1 tablespoon",
+      "sourceLabel": "Hazelnut oil",
+      "nutrientKey": "omega9",
+      "nutrientLabel": "Omega-9",
+      "nutrientText": "Omega-9 10.5 g",
+      "amount": 10.5,
+      "unit": "g",
+      "matched": false
+    },
+    {
+      "food": "Macadamia nuts 1 oz (28g, about 10-12 nuts)",
+      "sourceLabel": "Macadamia nuts",
+      "nutrientKey": "omega9",
+      "nutrientLabel": "Omega-9",
+      "nutrientText": "Omega-9 12.4 g",
+      "amount": 12.4,
+      "unit": "g",
+      "matched": true
+    },
+    {
+      "food": "Flax oil 1 tablespoon",
+      "sourceLabel": "Flaxseed & flax oil",
+      "nutrientKey": "ala",
+      "nutrientLabel": "ALA",
+      "nutrientText": "ALA 7.2 g",
+      "amount": 7.2,
+      "unit": "g",
+      "matched": true
+    },
+    {
+      "food": "Chia seeds 1 oz",
+      "sourceLabel": "Chia seeds",
+      "nutrientKey": "ala",
+      "nutrientLabel": "ALA",
+      "nutrientText": "ALA 5 g",
+      "amount": 5,
+      "unit": "g",
+      "matched": true
+    },
+    {
+      "food": "Walnuts 1 oz",
+      "sourceLabel": "Walnuts",
+      "nutrientKey": "ala",
+      "nutrientLabel": "ALA",
+      "nutrientText": "ALA 2.5 g",
+      "amount": 2.5,
+      "unit": "g",
+      "matched": true
+    },
+    {
+      "food": "Canola oil 1 tablespoon",
+      "sourceLabel": "Canola oil",
+      "nutrientKey": "ala",
+      "nutrientLabel": "ALA",
+      "nutrientText": "ALA 1.3 g",
+      "amount": 1.3,
+      "unit": "g",
+      "matched": true
+    },
+    {
+      "food": "Hemp seeds 1 oz",
+      "sourceLabel": "Hemp seeds",
+      "nutrientKey": "ala",
+      "nutrientLabel": "ALA",
+      "nutrientText": "ALA 2.4 g",
+      "amount": 2.4,
+      "unit": "g",
+      "matched": true
+    },
+    {
+      "food": "Soybeans cooked 1 cup",
+      "sourceLabel": "Soybeans",
+      "nutrientKey": "ala",
+      "nutrientLabel": "ALA",
+      "nutrientText": "ALA 1 g",
+      "amount": 1,
+      "unit": "g",
+      "matched": true
+    },
+    {
+      "food": "Perilla oil 1 tablespoon",
+      "sourceLabel": "Perilla oil",
+      "nutrientKey": "ala",
+      "nutrientLabel": "ALA",
+      "nutrientText": "ALA 8.5 g",
+      "amount": 8.5,
+      "unit": "g",
+      "matched": true
+    },
+    {
+      "food": "Salmon 3 oz",
+      "sourceLabel": "Salmon",
+      "nutrientKey": "epa",
+      "nutrientLabel": "EPA",
+      "nutrientText": "EPA 0.5 g",
+      "amount": 0.5,
+      "unit": "g",
+      "matched": true
+    },
+    {
+      "food": "Sardines canned 3 oz",
+      "sourceLabel": "Sardines",
+      "nutrientKey": "epa",
+      "nutrientLabel": "EPA",
+      "nutrientText": "EPA 0.45 g",
+      "amount": 0.45,
+      "unit": "g",
+      "matched": true
+    },
+    {
+      "food": "Mackerel 1 serving",
+      "sourceLabel": "Mackerel",
+      "nutrientKey": "epa",
+      "nutrientLabel": "EPA",
+      "nutrientText": "EPA 0.9 g",
+      "amount": 0.9,
+      "unit": "g",
+      "matched": false
+    },
+    {
+      "food": "Anchovies 1 serving",
+      "sourceLabel": "Anchovies",
+      "nutrientKey": "epa",
+      "nutrientLabel": "EPA",
+      "nutrientText": "EPA 0.5 g",
+      "amount": 0.5,
+      "unit": "g",
+      "matched": false
+    },
+    {
+      "food": "Supplement - Fish Oil 1000mg 1 tablespoon",
+      "sourceLabel": "Fish oil",
+      "nutrientKey": "epa",
+      "nutrientLabel": "EPA",
+      "nutrientText": "EPA 0.18 g",
+      "amount": 0.18,
+      "unit": "g",
+      "matched": true
+    },
+    {
+      "food": "Krill oil 1 tablespoon",
+      "sourceLabel": "Krill oil",
+      "nutrientKey": "epa",
+      "nutrientLabel": "EPA",
+      "nutrientText": "EPA 0.5 g",
+      "amount": 0.5,
+      "unit": "g",
+      "matched": false
+    },
+    {
+      "food": "Supplement - Fish Oil 1000mg 1 serving",
+      "sourceLabel": "Algae EPA (supplement)",
+      "nutrientKey": "epa",
+      "nutrientLabel": "EPA",
+      "nutrientText": "EPA 0.18 g",
+      "amount": 0.18,
+      "unit": "g",
+      "matched": true
+    },
+    {
+      "food": "Salmon 3 oz",
+      "sourceLabel": "Salmon & trout",
+      "nutrientKey": "dha",
+      "nutrientLabel": "DHA",
+      "nutrientText": "DHA 0.9 g",
+      "amount": 0.9,
+      "unit": "g",
+      "matched": true
+    },
+    {
+      "food": "Sardines canned 3 oz",
+      "sourceLabel": "Sardines",
+      "nutrientKey": "dha",
+      "nutrientLabel": "DHA",
+      "nutrientText": "DHA 0.7 g",
+      "amount": 0.7,
+      "unit": "g",
+      "matched": true
+    },
+    {
+      "food": "Herring 1 serving",
+      "sourceLabel": "Herring",
+      "nutrientKey": "dha",
+      "nutrientLabel": "DHA",
+      "nutrientText": "DHA 0.9 g",
+      "amount": 0.9,
+      "unit": "g",
+      "matched": false
+    },
+    {
+      "food": "Caviar & roe 1 serving",
+      "sourceLabel": "Caviar & roe",
+      "nutrientKey": "dha",
+      "nutrientLabel": "DHA",
+      "nutrientText": "DHA 1 g",
+      "amount": 1,
+      "unit": "g",
+      "matched": false
+    },
+    {
+      "food": "Supplement - Fish Oil 1000mg 1 tablespoon",
+      "sourceLabel": "Fish oil",
+      "nutrientKey": "dha",
+      "nutrientLabel": "DHA",
+      "nutrientText": "DHA 0.12 g",
+      "amount": 0.12,
+      "unit": "g",
+      "matched": true
+    },
+    {
+      "food": "Algae DHA 1 serving",
+      "sourceLabel": "Algae DHA",
+      "nutrientKey": "dha",
+      "nutrientLabel": "DHA",
+      "nutrientText": "DHA 0.4 g",
+      "amount": 0.4,
+      "unit": "g",
+      "matched": false
+    },
+    {
+      "food": "Fortified foods 1 serving",
+      "sourceLabel": "Fortified foods",
+      "nutrientKey": "dha",
+      "nutrientLabel": "DHA",
+      "nutrientText": "DHA 0.03 g",
+      "amount": 0.03,
+      "unit": "g",
+      "matched": false
+    },
+    {
+      "food": "Soybean oil 1 tablespoon",
+      "sourceLabel": "Soybean oil",
+      "nutrientKey": "linoleicAcid",
+      "nutrientLabel": "Linoleic acid",
+      "nutrientText": "Linoleic acid 7 g",
+      "amount": 7,
+      "unit": "g",
+      "matched": true
+    },
+    {
+      "food": "Corn oil 1 tablespoon",
+      "sourceLabel": "Corn oil",
+      "nutrientKey": "linoleicAcid",
+      "nutrientLabel": "Linoleic acid",
+      "nutrientText": "Linoleic acid 7.3 g",
+      "amount": 7.3,
+      "unit": "g",
+      "matched": true
+    },
+    {
+      "food": "Sunflower oil 1 tablespoon",
+      "sourceLabel": "Sunflower oil",
+      "nutrientKey": "linoleicAcid",
+      "nutrientLabel": "Linoleic acid",
+      "nutrientText": "Linoleic acid 8.9 g",
+      "amount": 8.9,
+      "unit": "g",
+      "matched": true
+    },
+    {
+      "food": "Safflower oil 1 tablespoon",
+      "sourceLabel": "Safflower oil",
+      "nutrientKey": "linoleicAcid",
+      "nutrientLabel": "Linoleic acid",
+      "nutrientText": "Linoleic acid 10.1 g",
+      "amount": 10.1,
+      "unit": "g",
+      "matched": true
+    },
+    {
+      "food": "Mayo 1 tablespoon",
+      "sourceLabel": "Mayonnaise",
+      "nutrientKey": "linoleicAcid",
+      "nutrientLabel": "Linoleic acid",
+      "nutrientText": "Linoleic acid 6 g",
+      "amount": 6,
+      "unit": "g",
+      "matched": true
+    },
+    {
+      "food": "Processed baked goods 1 serving",
+      "sourceLabel": "Processed baked goods",
+      "nutrientKey": "linoleicAcid",
+      "nutrientLabel": "Linoleic acid",
+      "nutrientText": "Linoleic acid 3 g",
+      "amount": 3,
+      "unit": "g",
+      "matched": false
+    },
+    {
+      "food": "Sunflower seeds 1 oz",
+      "sourceLabel": "Sunflower seeds",
+      "nutrientKey": "linoleicAcid",
+      "nutrientLabel": "Linoleic acid",
+      "nutrientText": "Linoleic acid 6.5 g",
+      "amount": 6.5,
+      "unit": "g",
+      "matched": false
+    },
+    {
+      "food": "Chicken breast 3 oz",
+      "sourceLabel": "Chicken breast & turkey",
+      "nutrientKey": "arachidonicAcid",
+      "nutrientLabel": "Arachidonic acid",
+      "nutrientText": "Arachidonic acid 0.08 g",
+      "amount": 0.08,
+      "unit": "g",
+      "matched": true
+    },
+    {
+      "food": "Egg md",
+      "sourceLabel": "Eggs",
+      "nutrientKey": "arachidonicAcid",
+      "nutrientLabel": "Arachidonic acid",
+      "nutrientText": "Arachidonic acid 0.07 g",
+      "amount": 0.07,
+      "unit": "g",
+      "matched": true
+    },
+    {
+      "food": "Pork loin 3 oz",
+      "sourceLabel": "Beef & pork",
+      "nutrientKey": "arachidonicAcid",
+      "nutrientLabel": "Arachidonic acid",
+      "nutrientText": "Arachidonic acid 0.07 g",
+      "amount": 0.07,
+      "unit": "g",
+      "matched": true
+    },
+    {
+      "food": "Lamb Liver 3 oz palm-sized",
+      "sourceLabel": "Liver",
+      "nutrientKey": "arachidonicAcid",
+      "nutrientLabel": "Arachidonic acid",
+      "nutrientText": "Arachidonic acid 0.78 g",
+      "amount": 0.78,
+      "unit": "g",
+      "matched": true
+    },
+    {
+      "food": "Sardines canned 3 oz",
+      "sourceLabel": "Salmon & sardines",
+      "nutrientKey": "arachidonicAcid",
+      "nutrientLabel": "Arachidonic acid",
+      "nutrientText": "Arachidonic acid 0.12 g",
+      "amount": 0.12,
+      "unit": "g",
+      "matched": true
+    },
+    {
+      "food": "Shrimp 3 oz",
+      "sourceLabel": "Shrimp & shellfish",
+      "nutrientKey": "arachidonicAcid",
+      "nutrientLabel": "Arachidonic acid",
+      "nutrientText": "Arachidonic acid 0.06 g",
+      "amount": 0.06,
+      "unit": "g",
+      "matched": true
+    },
+    {
+      "food": "Olive oil 1 tablespoon",
+      "sourceLabel": "Olive oil",
+      "nutrientKey": "oleicAcid",
+      "nutrientLabel": "Oleic acid",
+      "nutrientText": "Oleic acid 9.9 g",
+      "amount": 9.9,
+      "unit": "g",
+      "matched": false
+    },
+    {
+      "food": "Avocado whole 1 tablespoon",
+      "sourceLabel": "Avocado & avocado oil",
+      "nutrientKey": "oleicAcid",
+      "nutrientLabel": "Oleic acid",
+      "nutrientText": "Oleic acid 12 g",
+      "amount": 12,
+      "unit": "g",
+      "matched": true
+    },
+    {
+      "food": "Almonds 1 oz",
+      "sourceLabel": "Almonds",
+      "nutrientKey": "oleicAcid",
+      "nutrientLabel": "Oleic acid",
+      "nutrientText": "Oleic acid 9 g",
+      "amount": 9,
+      "unit": "g",
+      "matched": false
+    },
+    {
+      "food": "Cashews 1 oz",
+      "sourceLabel": "Cashews",
+      "nutrientKey": "oleicAcid",
+      "nutrientLabel": "Oleic acid",
+      "nutrientText": "Oleic acid 6.7 g",
+      "amount": 6.7,
+      "unit": "g",
+      "matched": true
+    },
+    {
+      "food": "Hazelnuts 1 serving",
+      "sourceLabel": "Hazelnuts",
+      "nutrientKey": "oleicAcid",
+      "nutrientLabel": "Oleic acid",
+      "nutrientText": "Oleic acid 13 g",
+      "amount": 13,
+      "unit": "g",
+      "matched": false
+    },
+    {
+      "food": "Chicken fat (partial) 3 oz",
+      "sourceLabel": "Chicken fat (partial)",
+      "nutrientKey": "oleicAcid",
+      "nutrientLabel": "Oleic acid",
+      "nutrientText": "Oleic acid 5 g",
+      "amount": 5,
+      "unit": "g",
+      "matched": false
+    },
+    {
+      "food": "Canola oil 1 tablespoon",
+      "sourceLabel": "Canola (partial)",
+      "nutrientKey": "oleicAcid",
+      "nutrientLabel": "Oleic acid",
+      "nutrientText": "Oleic acid 8.9 g",
+      "amount": 8.9,
+      "unit": "g",
+      "matched": true
+    },
+    {
+      "food": "Macadamia nuts 1 oz (28g, about 10-12 nuts)",
+      "sourceLabel": "Macadamia nuts & oil",
+      "nutrientKey": "palmitoleicAcid",
+      "nutrientLabel": "Palmitoleic acid (ω-7)",
+      "nutrientText": "Palmitoleic acid (ω-7) 4.6 g",
+      "amount": 4.63,
+      "unit": "g",
+      "matched": true
+    },
+    {
+      "food": "Sea buckthorn 1 serving",
+      "sourceLabel": "Sea buckthorn",
+      "nutrientKey": "palmitoleicAcid",
+      "nutrientLabel": "Palmitoleic acid (ω-7)",
+      "nutrientText": "Palmitoleic acid (ω-7) 1 g",
+      "amount": 1,
+      "unit": "g",
+      "matched": false
+    },
+    {
+      "food": "Salmon 3 oz",
+      "sourceLabel": "Salmon & anchovies",
+      "nutrientKey": "palmitoleicAcid",
+      "nutrientLabel": "Palmitoleic acid (ω-7)",
+      "nutrientText": "Palmitoleic acid (ω-7) 0.6 g",
+      "amount": 0.6,
+      "unit": "g",
+      "matched": true
+    },
+    {
+      "food": "Avocado whole 1 medium",
+      "sourceLabel": "Avocado (trace)",
+      "nutrientKey": "palmitoleicAcid",
+      "nutrientLabel": "Palmitoleic acid (ω-7)",
+      "nutrientText": "Palmitoleic acid (ω-7) 0.5 g",
+      "amount": 0.5,
+      "unit": "g",
+      "matched": true
+    },
+    {
+      "food": "Cheese provolone 1 slice (28g)",
+      "sourceLabel": "Dairy fat (trace)",
+      "nutrientKey": "palmitoleicAcid",
+      "nutrientLabel": "Palmitoleic acid (ω-7)",
+      "nutrientText": "Palmitoleic acid (ω-7) 0.25 g",
+      "amount": 0.25,
+      "unit": "g",
+      "matched": true
+    },
+    {
+      "food": "Egg md",
+      "sourceLabel": "Eggs (trace)",
+      "nutrientKey": "palmitoleicAcid",
+      "nutrientLabel": "Palmitoleic acid (ω-7)",
+      "nutrientText": "Palmitoleic acid (ω-7) 0.08 g",
+      "amount": 0.08,
+      "unit": "g",
+      "matched": true
+    },
+    {
+      "food": "Almonds & sunflower seeds 1 oz",
+      "sourceLabel": "Almonds & sunflower seeds",
+      "nutrientKey": "vitaminE",
+      "nutrientLabel": "Vitamin E",
+      "nutrientText": "Vitamin E 7 mg",
+      "amount": 7,
+      "unit": "mg",
+      "matched": false
+    },
+    {
+      "food": "Safflower oil 1 tablespoon",
+      "sourceLabel": "Sunflower & safflower oil",
+      "nutrientKey": "vitaminE",
+      "nutrientLabel": "Vitamin E",
+      "nutrientText": "Vitamin E 4.6 mg",
+      "amount": 4.6,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Peanut Butter 2 tablespoons",
+      "sourceLabel": "Peanut butter",
+      "nutrientKey": "vitaminE",
+      "nutrientLabel": "Vitamin E",
+      "nutrientText": "Vitamin E 2.8 mg",
+      "amount": 2.8,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Hazelnuts 1 serving",
+      "sourceLabel": "Hazelnuts",
+      "nutrientKey": "vitaminE",
+      "nutrientLabel": "Vitamin E",
+      "nutrientText": "Vitamin E 4.3 mg",
+      "amount": 4.3,
+      "unit": "mg",
+      "matched": false
+    },
+    {
+      "food": "Spinach 1 cup",
+      "sourceLabel": "Kale & spinach",
+      "nutrientKey": "vitaminK",
+      "nutrientLabel": "Vitamin K",
+      "nutrientText": "Vitamin K 145 mcg",
+      "amount": 145,
+      "unit": "mcg",
+      "matched": true
+    },
+    {
+      "food": "Brussels sprouts 1 cup",
+      "sourceLabel": "Broccoli & Brussels sprouts",
+      "nutrientKey": "vitaminK",
+      "nutrientLabel": "Vitamin K",
+      "nutrientText": "Vitamin K 156 mcg",
+      "amount": 156,
+      "unit": "mcg",
+      "matched": true
+    },
+    {
+      "food": "Natto (K2) 1 serving",
+      "sourceLabel": "Natto (K2)",
+      "nutrientKey": "vitaminK",
+      "nutrientLabel": "Vitamin K",
+      "nutrientText": "Vitamin K 850 mcg",
+      "amount": 850,
+      "unit": "mcg",
+      "matched": false
+    },
+    {
+      "food": "Cheese American 1 slice (21g)",
+      "sourceLabel": "Egg yolks & cheese (K2)",
+      "nutrientKey": "vitaminK",
+      "nutrientLabel": "Vitamin K",
+      "nutrientText": "Vitamin K 0.8 mcg",
+      "amount": 0.8,
+      "unit": "mcg",
+      "matched": true
+    },
+    {
+      "food": "Chicken 4 oz palm-sized",
+      "sourceLabel": "Chicken & pork (K2)",
+      "nutrientKey": "vitaminK",
+      "nutrientLabel": "Vitamin K",
+      "nutrientText": "Vitamin K 1 mcg",
+      "amount": 1,
+      "unit": "mcg",
+      "matched": true
+    },
+    {
+      "food": "Parsley 1 cup chopped",
+      "sourceLabel": "Parsley",
+      "nutrientKey": "vitaminK",
+      "nutrientLabel": "Vitamin K",
+      "nutrientText": "Vitamin K 984 mcg",
+      "amount": 984,
+      "unit": "mcg",
+      "matched": true
+    },
+    {
+      "food": "Sauerkraut 1 serving",
+      "sourceLabel": "Sauerkraut",
+      "nutrientKey": "vitaminK",
+      "nutrientLabel": "Vitamin K",
+      "nutrientText": "Vitamin K 6 mcg",
+      "amount": 6,
+      "unit": "mcg",
+      "matched": false
+    },
+    {
+      "food": "Natto (verify label — K2 sometimes removed) 1 serving",
+      "sourceLabel": "Natto (verify label — K2 sometimes removed)",
+      "nutrientKey": "vitaminK2MK7",
+      "nutrientLabel": "MK-7 (Menaquinone-7)",
+      "nutrientText": "MK-7 (Menaquinone-7) 850 mcg",
+      "amount": 850,
+      "unit": "mcg",
+      "matched": false
+    },
+    {
+      "food": "Sauerkraut (variable) 1 serving",
+      "sourceLabel": "Sauerkraut (variable)",
+      "nutrientKey": "vitaminK2MK7",
+      "nutrientLabel": "MK-7 (Menaquinone-7)",
+      "nutrientText": "MK-7 (Menaquinone-7) 5 mcg",
+      "amount": 5,
+      "unit": "mcg",
+      "matched": false
+    },
+    {
+      "food": "MK-7 supplements 1 serving",
+      "sourceLabel": "MK-7 supplements",
+      "nutrientKey": "vitaminK2MK7",
+      "nutrientLabel": "MK-7 (Menaquinone-7)",
+      "nutrientText": "MK-7 (Menaquinone-7) 100 mcg",
+      "amount": 100,
+      "unit": "mcg",
+      "matched": false
+    },
+    {
+      "food": "Brazil Nut 1 piece",
+      "sourceLabel": "Brazil nuts (1–2/day max)",
+      "nutrientKey": "selenium",
+      "nutrientLabel": "Selenium",
+      "nutrientText": "Selenium 95.9 mcg",
+      "amount": 95.9,
+      "unit": "mcg",
+      "matched": true
+    },
+    {
+      "food": "Brown rice 1 cup",
+      "sourceLabel": "Brown rice",
+      "nutrientKey": "selenium",
+      "nutrientLabel": "Selenium",
+      "nutrientText": "Selenium 19 mcg",
+      "amount": 19,
+      "unit": "mcg",
+      "matched": false
+    },
+    {
+      "food": "Shrimp 3 oz",
+      "sourceLabel": "Oysters & shellfish",
+      "nutrientKey": "copper",
+      "nutrientLabel": "Copper",
+      "nutrientText": "Copper 250 mcg",
+      "amount": 250,
+      "unit": "mcg",
+      "matched": true
+    },
+    {
+      "food": "Beef Liver 3 oz palm-sized",
+      "sourceLabel": "Beef liver",
+      "nutrientKey": "copper",
+      "nutrientLabel": "Copper",
+      "nutrientText": "Copper 8250 mcg",
+      "amount": 8250,
+      "unit": "mcg",
+      "matched": true
+    },
+    {
+      "food": "Cashews 1 oz",
+      "sourceLabel": "Cashews & almonds",
+      "nutrientKey": "copper",
+      "nutrientLabel": "Copper",
+      "nutrientText": "Copper 622 mcg",
+      "amount": 622,
+      "unit": "mcg",
+      "matched": true
+    },
+    {
+      "food": "Sesame & sunflower seeds 1 oz",
+      "sourceLabel": "Sesame & sunflower seeds",
+      "nutrientKey": "copper",
+      "nutrientLabel": "Copper",
+      "nutrientText": "Copper 700 mcg",
+      "amount": 700,
+      "unit": "mcg",
+      "matched": false
+    },
+    {
+      "food": "Dark chocolate 70% 1 oz",
+      "sourceLabel": "Dark chocolate",
+      "nutrientKey": "copper",
+      "nutrientLabel": "Copper",
+      "nutrientText": "Copper 500 mcg",
+      "amount": 500,
+      "unit": "mcg",
+      "matched": true
+    },
+    {
+      "food": "Mushrooms 1 serving",
+      "sourceLabel": "Mushrooms",
+      "nutrientKey": "copper",
+      "nutrientLabel": "Copper",
+      "nutrientText": "Copper 300 mcg",
+      "amount": 300,
+      "unit": "mcg",
+      "matched": false
+    },
+    {
+      "food": "Lentils cooked 1 cup",
+      "sourceLabel": "Lentils",
+      "nutrientKey": "copper",
+      "nutrientLabel": "Copper",
+      "nutrientText": "Copper 500 mcg",
+      "amount": 500,
+      "unit": "mcg",
+      "matched": true
+    },
+    {
+      "food": "Chicken 4 oz palm-sized",
+      "sourceLabel": "Chicken & turkey",
+      "nutrientKey": "methionine",
+      "nutrientLabel": "Methionine",
+      "nutrientText": "Methionine 876 g",
+      "amount": 876,
+      "unit": "g",
+      "matched": true
+    },
+    {
+      "food": "Soy foods 1 serving",
+      "sourceLabel": "Soy foods",
+      "nutrientKey": "methionine",
+      "nutrientLabel": "Methionine",
+      "nutrientText": "Methionine 0.13 g",
+      "amount": 0.13,
+      "unit": "g",
+      "matched": false
+    },
+    {
+      "food": "Sesame seeds & tahini 1 oz",
+      "sourceLabel": "Sesame seeds & tahini",
+      "nutrientKey": "methionine",
+      "nutrientLabel": "Methionine",
+      "nutrientText": "Methionine 0.17 g",
+      "amount": 0.17,
+      "unit": "g",
+      "matched": false
+    },
+    {
+      "food": "Brazil Nut 1 piece",
+      "sourceLabel": "Brazil nuts",
+      "nutrientKey": "methionine",
+      "nutrientLabel": "Methionine",
+      "nutrientText": "Methionine 50.4 g",
+      "amount": 50.4,
+      "unit": "g",
+      "matched": true
+    },
+    {
+      "food": "Berries 1 cup",
+      "sourceLabel": "Berries",
+      "nutrientKey": "polyphenols",
+      "nutrientLabel": "Polyphenols",
+      "nutrientText": "Polyphenols 500 mg",
+      "amount": 500,
+      "unit": "mg",
+      "matched": false
+    },
+    {
+      "food": "Green beans 1 cup",
+      "sourceLabel": "Green & black tea",
+      "nutrientKey": "polyphenols",
+      "nutrientLabel": "Polyphenols",
+      "nutrientText": "Polyphenols 60 mg",
+      "amount": 60,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Dark cocoa (70%+) 1 serving",
+      "sourceLabel": "Dark cocoa (70%+)",
+      "nutrientKey": "polyphenols",
+      "nutrientLabel": "Polyphenols",
+      "nutrientText": "Polyphenols 500 mg",
+      "amount": 500,
+      "unit": "mg",
+      "matched": false
+    },
+    {
+      "food": "Red onion & apples 1 serving",
+      "sourceLabel": "Red onion & apples",
+      "nutrientKey": "polyphenols",
+      "nutrientLabel": "Polyphenols",
+      "nutrientText": "Polyphenols 200 mg",
+      "amount": 200,
+      "unit": "mg",
+      "matched": false
+    },
+    {
+      "food": "Extra-virgin olive oil 1 tablespoon",
+      "sourceLabel": "Extra-virgin olive oil",
+      "nutrientKey": "polyphenols",
+      "nutrientLabel": "Polyphenols",
+      "nutrientText": "Polyphenols 30 mg",
+      "amount": 30,
+      "unit": "mg",
+      "matched": false
+    },
+    {
+      "food": "Herbs & spices 1 serving",
+      "sourceLabel": "Herbs & spices",
+      "nutrientKey": "polyphenols",
+      "nutrientLabel": "Polyphenols",
+      "nutrientText": "Polyphenols 100 mg",
+      "amount": 100,
+      "unit": "mg",
+      "matched": false
+    },
+    {
+      "food": "Red wine (if used) 1 serving",
+      "sourceLabel": "Red wine (if used)",
+      "nutrientKey": "polyphenols",
+      "nutrientLabel": "Polyphenols",
+      "nutrientText": "Polyphenols 200 mg",
+      "amount": 200,
+      "unit": "mg",
+      "matched": false
+    },
+    {
+      "food": "Blueberries & strawberries 1 serving",
+      "sourceLabel": "Blueberries & strawberries",
+      "nutrientKey": "flavonoids",
+      "nutrientLabel": "Flavonoids",
+      "nutrientText": "Flavonoids 180 mg",
+      "amount": 180,
+      "unit": "mg",
+      "matched": false
+    },
+    {
+      "food": "Citrus fruit 1 serving",
+      "sourceLabel": "Citrus fruit",
+      "nutrientKey": "flavonoids",
+      "nutrientLabel": "Flavonoids",
+      "nutrientText": "Flavonoids 50 mg",
+      "amount": 50,
+      "unit": "mg",
+      "matched": false
+    },
+    {
+      "food": "Green tea 1 serving",
+      "sourceLabel": "Green tea",
+      "nutrientKey": "flavonoids",
+      "nutrientLabel": "Flavonoids",
+      "nutrientText": "Flavonoids 130 mg",
+      "amount": 130,
+      "unit": "mg",
+      "matched": false
+    },
+    {
+      "food": "Onions & kale 1 cup",
+      "sourceLabel": "Onions & kale",
+      "nutrientKey": "flavonoids",
+      "nutrientLabel": "Flavonoids",
+      "nutrientText": "Flavonoids 100 mg",
+      "amount": 100,
+      "unit": "mg",
+      "matched": false
+    },
+    {
+      "food": "Dark chocolate 70% 1 oz",
+      "sourceLabel": "Dark chocolate",
+      "nutrientKey": "flavonoids",
+      "nutrientLabel": "Flavonoids",
+      "nutrientText": "Flavonoids 50 mg",
+      "amount": 50,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Apples 1 serving",
+      "sourceLabel": "Apples",
+      "nutrientKey": "flavonoids",
+      "nutrientLabel": "Flavonoids",
+      "nutrientText": "Flavonoids 110 mg",
+      "amount": 110,
+      "unit": "mg",
+      "matched": false
+    },
+    {
+      "food": "Parsley 1 cup chopped",
+      "sourceLabel": "Parsley",
+      "nutrientKey": "flavonoids",
+      "nutrientLabel": "Flavonoids",
+      "nutrientText": "Flavonoids 90 mg",
+      "amount": 90,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Sweet Potato Fries lg",
+      "sourceLabel": "Carrots & sweet potato",
+      "nutrientKey": "carotenoids",
+      "nutrientLabel": "Carotenoids",
+      "nutrientText": "Carotenoids 10500 mg",
+      "amount": 10500,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Spinach 1 cup",
+      "sourceLabel": "Spinach & kale",
+      "nutrientKey": "carotenoids",
+      "nutrientLabel": "Carotenoids",
+      "nutrientText": "Carotenoids 4 mg",
+      "amount": 4,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Tomato md",
+      "sourceLabel": "Tomatoes & sauce",
+      "nutrientKey": "carotenoids",
+      "nutrientLabel": "Carotenoids",
+      "nutrientText": "Carotenoids 0.5 mg",
+      "amount": 0.5,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Red bell pepper 1 cup",
+      "sourceLabel": "Red bell pepper",
+      "nutrientKey": "carotenoids",
+      "nutrientLabel": "Carotenoids",
+      "nutrientText": "Carotenoids 2.5 mg",
+      "amount": 2.5,
+      "unit": "mg",
+      "matched": false
+    },
+    {
+      "food": "Watermelon 1 medium",
+      "sourceLabel": "Watermelon",
+      "nutrientKey": "carotenoids",
+      "nutrientLabel": "Carotenoids",
+      "nutrientText": "Carotenoids 6.9 mg",
+      "amount": 6.9,
+      "unit": "mg",
+      "matched": false
+    },
+    {
+      "food": "Egg md",
+      "sourceLabel": "Eggs (yolk)",
+      "nutrientKey": "carotenoids",
+      "nutrientLabel": "Carotenoids",
+      "nutrientText": "Carotenoids 0.1 mg",
+      "amount": 0.1,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Fruit - Mango md",
+      "sourceLabel": "Mango",
+      "nutrientKey": "carotenoids",
+      "nutrientLabel": "Carotenoids",
+      "nutrientText": "Carotenoids 1.1 mg",
+      "amount": 1.1,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Spinach 1 cup",
+      "sourceLabel": "Spinach & kale",
+      "nutrientKey": "lutein",
+      "nutrientLabel": "Lutein",
+      "nutrientText": "Lutein 3.7 mg",
+      "amount": 3.7,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Broccoli 1 cup",
+      "sourceLabel": "Parsley & broccoli",
+      "nutrientKey": "lutein",
+      "nutrientLabel": "Lutein",
+      "nutrientText": "Lutein 1.5 mg",
+      "amount": 1.5,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Corn oil 1 tablespoon",
+      "sourceLabel": "Corn",
+      "nutrientKey": "lutein",
+      "nutrientLabel": "Lutein",
+      "nutrientText": "Lutein 0.1 mg",
+      "amount": 0.1,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Egg yolks 1 medium",
+      "sourceLabel": "Egg yolks",
+      "nutrientKey": "lutein",
+      "nutrientLabel": "Lutein",
+      "nutrientText": "Lutein 0.2 mg",
+      "amount": 0.2,
+      "unit": "mg",
+      "matched": false
+    },
+    {
+      "food": "Eggs with yolk intact 1 medium",
+      "sourceLabel": "Eggs with yolk intact",
+      "nutrientKey": "lutein",
+      "nutrientLabel": "Lutein",
+      "nutrientText": "Lutein 0.2 mg",
+      "amount": 0.2,
+      "unit": "mg",
+      "matched": false
+    },
+    {
+      "food": "Yellow-orange vegetables 1 medium",
+      "sourceLabel": "Yellow-orange vegetables",
+      "nutrientKey": "lutein",
+      "nutrientLabel": "Lutein",
+      "nutrientText": "Lutein 1 mg",
+      "amount": 1,
+      "unit": "mg",
+      "matched": false
+    },
+    {
+      "food": "Turmeric root & powder 1 serving",
+      "sourceLabel": "Turmeric root & powder",
+      "nutrientKey": "curcumin",
+      "nutrientLabel": "Curcumin",
+      "nutrientText": "Curcumin 200 mg",
+      "amount": 200,
+      "unit": "mg",
+      "matched": false
+    },
+    {
+      "food": "Golden milk 1 cup",
+      "sourceLabel": "Golden milk",
+      "nutrientKey": "curcumin",
+      "nutrientLabel": "Curcumin",
+      "nutrientText": "Curcumin 150 mg",
+      "amount": 150,
+      "unit": "mg",
+      "matched": false
+    },
+    {
+      "food": "Curry dishes 1 serving",
+      "sourceLabel": "Curry dishes",
+      "nutrientKey": "curcumin",
+      "nutrientLabel": "Curcumin",
+      "nutrientText": "Curcumin 50 mg",
+      "amount": 50,
+      "unit": "mg",
+      "matched": false
+    },
+    {
+      "food": "Some mustards 1 serving",
+      "sourceLabel": "Some mustards",
+      "nutrientKey": "curcumin",
+      "nutrientLabel": "Curcumin",
+      "nutrientText": "Curcumin 5 mg",
+      "amount": 5,
+      "unit": "mg",
+      "matched": false
+    },
+    {
+      "food": "Blueberries & cranberries 1 serving",
+      "sourceLabel": "Blueberries & cranberries",
+      "nutrientKey": "resveratrol",
+      "nutrientLabel": "Resveratrol",
+      "nutrientText": "Resveratrol 0.2 mg",
+      "amount": 0.2,
+      "unit": "mg",
+      "matched": false
+    },
+    {
+      "food": "Peanuts 1 cup",
+      "sourceLabel": "Peanuts & pistachios",
+      "nutrientKey": "resveratrol",
+      "nutrientLabel": "Resveratrol",
+      "nutrientText": "Resveratrol 0.08 mg",
+      "amount": 0.08,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Red wine (optional) 1 serving",
+      "sourceLabel": "Red wine (optional)",
+      "nutrientKey": "resveratrol",
+      "nutrientLabel": "Resveratrol",
+      "nutrientText": "Resveratrol 0.5 mg",
+      "amount": 0.5,
+      "unit": "mg",
+      "matched": false
+    },
+    {
+      "food": "Itadori tea 1 serving",
+      "sourceLabel": "Itadori tea",
+      "nutrientKey": "resveratrol",
+      "nutrientLabel": "Resveratrol",
+      "nutrientText": "Resveratrol 5 mg",
+      "amount": 5,
+      "unit": "mg",
+      "matched": false
+    },
+    {
+      "food": "Beef Liver 3 oz palm-sized",
+      "sourceLabel": "Beef heart & liver",
+      "nutrientKey": "coq10",
+      "nutrientLabel": "Coenzyme Q10",
+      "nutrientText": "Coenzyme Q10 3.4 mg",
+      "amount": 3.39,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Sardines canned 3 oz",
+      "sourceLabel": "Sardines & mackerel",
+      "nutrientKey": "coq10",
+      "nutrientLabel": "Coenzyme Q10",
+      "nutrientText": "Coenzyme Q10 1.2 mg",
+      "amount": 1.2,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Chicken 4 oz palm-sized",
+      "sourceLabel": "Chicken",
+      "nutrientKey": "coq10",
+      "nutrientLabel": "Coenzyme Q10",
+      "nutrientText": "Coenzyme Q10 1.5 mg",
+      "amount": 1.5,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Pistachios 1 oz",
+      "sourceLabel": "Peanuts & pistachios",
+      "nutrientKey": "coq10",
+      "nutrientLabel": "Coenzyme Q10",
+      "nutrientText": "Coenzyme Q10 0.6 mg",
+      "amount": 0.6,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Broccoli 1 cup",
+      "sourceLabel": "Broccoli",
+      "nutrientKey": "coq10",
+      "nutrientLabel": "Coenzyme Q10",
+      "nutrientText": "Coenzyme Q10 0.5 mg",
+      "amount": 0.5,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Avocado whole 1 medium",
+      "sourceLabel": "Avocado",
+      "nutrientKey": "coq10",
+      "nutrientLabel": "Coenzyme Q10",
+      "nutrientText": "Coenzyme Q10 0.85 mg",
+      "amount": 0.85,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Beef 3 oz",
+      "sourceLabel": "Beef & red meat",
+      "nutrientKey": "creatine",
+      "nutrientLabel": "Creatine",
+      "nutrientText": "Creatine 0.7 g",
+      "amount": 0.7,
+      "unit": "g",
+      "matched": true
+    },
+    {
+      "food": "Pork loin 3 oz",
+      "sourceLabel": "Pork",
+      "nutrientKey": "creatine",
+      "nutrientLabel": "Creatine",
+      "nutrientText": "Creatine 0.7 g",
+      "amount": 0.7,
+      "unit": "g",
+      "matched": true
+    },
+    {
+      "food": "Salmon 3 oz",
+      "sourceLabel": "Salmon & tuna",
+      "nutrientKey": "creatine",
+      "nutrientLabel": "Creatine",
+      "nutrientText": "Creatine 0.5 g",
+      "amount": 0.5,
+      "unit": "g",
+      "matched": true
+    },
+    {
+      "food": "Herring 1 serving",
+      "sourceLabel": "Herring",
+      "nutrientKey": "creatine",
+      "nutrientLabel": "Creatine",
+      "nutrientText": "Creatine 0.8 g",
+      "amount": 0.8,
+      "unit": "g",
+      "matched": false
+    },
+    {
+      "food": "Chicken 4 oz palm-sized",
+      "sourceLabel": "Chicken (smaller amounts)",
+      "nutrientKey": "creatine",
+      "nutrientLabel": "Creatine",
+      "nutrientText": "Creatine 0.28 g",
+      "amount": 0.28,
+      "unit": "g",
+      "matched": true
+    },
+    {
+      "food": "Cod Liver 1 oz sm",
+      "sourceLabel": "Cod & other white fish",
+      "nutrientKey": "creatine",
+      "nutrientLabel": "Creatine",
+      "nutrientText": "Creatine 0.1 g",
+      "amount": 0.1,
+      "unit": "g",
+      "matched": true
+    },
+    {
+      "food": "Broccoli 1 cup",
+      "sourceLabel": "Broccoli & sprouts",
+      "nutrientKey": "sulforaphane",
+      "nutrientLabel": "Sulforaphane",
+      "nutrientText": "Sulforaphane 25 mg",
+      "amount": 25,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Brussels sprouts 1 cup",
+      "sourceLabel": "Brussels sprouts",
+      "nutrientKey": "sulforaphane",
+      "nutrientLabel": "Sulforaphane",
+      "nutrientText": "Sulforaphane 20 mg",
+      "amount": 20,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Kale & cabbage 1 cup",
+      "sourceLabel": "Kale & cabbage",
+      "nutrientKey": "sulforaphane",
+      "nutrientLabel": "Sulforaphane",
+      "nutrientText": "Sulforaphane 15 mg",
+      "amount": 15,
+      "unit": "mg",
+      "matched": false
+    },
+    {
+      "food": "Kohlrabi 1 serving",
+      "sourceLabel": "Kohlrabi",
+      "nutrientKey": "sulforaphane",
+      "nutrientLabel": "Sulforaphane",
+      "nutrientText": "Sulforaphane 10 mg",
+      "amount": 10,
+      "unit": "mg",
+      "matched": false
+    },
+    {
+      "food": "Arugula 1 serving",
+      "sourceLabel": "Arugula",
+      "nutrientKey": "sulforaphane",
+      "nutrientLabel": "Sulforaphane",
+      "nutrientText": "Sulforaphane 12 mg",
+      "amount": 12,
+      "unit": "mg",
+      "matched": false
+    },
+    {
+      "food": "Bok choy 1 serving",
+      "sourceLabel": "Bok choy",
+      "nutrientKey": "sulforaphane",
+      "nutrientLabel": "Sulforaphane",
+      "nutrientText": "Sulforaphane 10 mg",
+      "amount": 10,
+      "unit": "mg",
+      "matched": false
+    },
+    {
+      "food": "Mustard greens 1 cup",
+      "sourceLabel": "Mustard greens",
+      "nutrientKey": "sulforaphane",
+      "nutrientLabel": "Sulforaphane",
+      "nutrientText": "Sulforaphane 20 mg",
+      "amount": 20,
+      "unit": "mg",
+      "matched": false
+    },
+    {
+      "food": "Egg yolks 1 medium",
+      "sourceLabel": "Egg yolks",
+      "nutrientKey": "choline",
+      "nutrientLabel": "Choline",
+      "nutrientText": "Choline 115 mg",
+      "amount": 115,
+      "unit": "mg",
+      "matched": false
+    },
+    {
+      "food": "Chicken Liver 3 oz palm-sized",
+      "sourceLabel": "Red Meat, Beef & Chicken liver",
+      "nutrientKey": "choline",
+      "nutrientLabel": "Choline",
+      "nutrientText": "Choline 277.8 mg",
+      "amount": 277.78,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Soybeans cooked 1 cup",
+      "sourceLabel": "Soybeans & tofu",
+      "nutrientKey": "choline",
+      "nutrientLabel": "Choline",
+      "nutrientText": "Choline 107 mg",
+      "amount": 107,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Wheat germ 1 serving",
+      "sourceLabel": "Wheat germ",
+      "nutrientKey": "choline",
+      "nutrientLabel": "Choline",
+      "nutrientText": "Choline 25 mg",
+      "amount": 25,
+      "unit": "mg",
+      "matched": false
+    },
+    {
+      "food": "Milk reduced 2 cups",
+      "sourceLabel": "Milk",
+      "nutrientKey": "choline",
+      "nutrientLabel": "Choline",
+      "nutrientText": "Choline 86 mg",
+      "amount": 86,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Beef Liver 3 oz palm-sized",
+      "sourceLabel": "Beef & lamb (highest)",
+      "nutrientKey": "carnitine",
+      "nutrientLabel": "L-Carnitine",
+      "nutrientText": "L-Carnitine 67.5 mg",
+      "amount": 67.5,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Pork loin 3 oz",
+      "sourceLabel": "Pork & bacon",
+      "nutrientKey": "carnitine",
+      "nutrientLabel": "L-Carnitine",
+      "nutrientText": "L-Carnitine 20 mg",
+      "amount": 20,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Chicken 1 oz sm",
+      "sourceLabel": "Chicken (moderate)",
+      "nutrientKey": "carnitine",
+      "nutrientLabel": "L-Carnitine",
+      "nutrientText": "L-Carnitine 2 mg",
+      "amount": 2,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Avocado whole 1 medium",
+      "sourceLabel": "Avocado (trace)",
+      "nutrientKey": "carnitine",
+      "nutrientLabel": "L-Carnitine",
+      "nutrientText": "L-Carnitine 2 mg",
+      "amount": 2,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Wheat bran & whole wheat 1 serving",
+      "sourceLabel": "Wheat bran & whole wheat",
+      "nutrientKey": "betaine",
+      "nutrientLabel": "Betaine",
+      "nutrientText": "Betaine 200 mg",
+      "amount": 200,
+      "unit": "mg",
+      "matched": false
+    },
+    {
+      "food": "Spinach 1 cup",
+      "sourceLabel": "Beets & spinach",
+      "nutrientKey": "betaine",
+      "nutrientLabel": "Betaine",
+      "nutrientText": "Betaine 100 mg",
+      "amount": 100,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Quinoa 1 cup",
+      "sourceLabel": "Quinoa",
+      "nutrientKey": "betaine",
+      "nutrientLabel": "Betaine",
+      "nutrientText": "Betaine 60 mg",
+      "amount": 60,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Shrimp Fried - 3pc 1 serving",
+      "sourceLabel": "Shrimp (also has choline)",
+      "nutrientKey": "betaine",
+      "nutrientLabel": "Betaine",
+      "nutrientText": "Betaine 180 mg",
+      "amount": 180,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Betaine supplements 1 serving",
+      "sourceLabel": "Betaine supplements",
+      "nutrientKey": "betaine",
+      "nutrientLabel": "Betaine",
+      "nutrientText": "Betaine 500 mg",
+      "amount": 500,
+      "unit": "mg",
+      "matched": false
+    },
+    {
+      "food": "Breakfast cereals (some) 1 serving",
+      "sourceLabel": "Breakfast cereals (some)",
+      "nutrientKey": "betaine",
+      "nutrientLabel": "Betaine",
+      "nutrientText": "Betaine 150 mg",
+      "amount": 150,
+      "unit": "mg",
+      "matched": false
+    },
+    {
+      "food": "Meat & poultry 3 oz",
+      "sourceLabel": "Meat & poultry",
+      "nutrientKey": "phosphorus",
+      "nutrientLabel": "Phosphorus",
+      "nutrientText": "Phosphorus 200 mg",
+      "amount": 200,
+      "unit": "mg",
+      "matched": false
+    },
+    {
+      "food": "Dairy 1 serving",
+      "sourceLabel": "Dairy",
+      "nutrientKey": "phosphorus",
+      "nutrientLabel": "Phosphorus",
+      "nutrientText": "Phosphorus 230 mg",
+      "amount": 230,
+      "unit": "mg",
+      "matched": false
+    },
+    {
+      "food": "Lentils cooked 1 cup",
+      "sourceLabel": "Beans & lentils",
+      "nutrientKey": "phosphorus",
+      "nutrientLabel": "Phosphorus",
+      "nutrientText": "Phosphorus 356 mg",
+      "amount": 356,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Hemp seeds 1 oz",
+      "sourceLabel": "Nuts & seeds",
+      "nutrientKey": "phosphorus",
+      "nutrientLabel": "Phosphorus",
+      "nutrientText": "Phosphorus 462 mg",
+      "amount": 462,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Cola (phosphoric acid) 1 serving",
+      "sourceLabel": "Cola (phosphoric acid)",
+      "nutrientKey": "phosphorus",
+      "nutrientLabel": "Phosphorus",
+      "nutrientText": "Phosphorus 40 mg",
+      "amount": 40,
+      "unit": "mg",
+      "matched": false
+    },
+    {
+      "food": "Processed meats 1 serving",
+      "sourceLabel": "Processed meats",
+      "nutrientKey": "phosphorus",
+      "nutrientLabel": "Phosphorus",
+      "nutrientText": "Phosphorus 200 mg",
+      "amount": 200,
+      "unit": "mg",
+      "matched": false
+    },
+    {
+      "food": "Fast food (additives) 1 serving",
+      "sourceLabel": "Fast food (additives)",
+      "nutrientKey": "phosphorus",
+      "nutrientLabel": "Phosphorus",
+      "nutrientText": "Phosphorus 150 mg",
+      "amount": 150,
+      "unit": "mg",
+      "matched": false
+    },
+    {
+      "food": "Sweet Potato Fries sm",
+      "sourceLabel": "Medium: oats, sweet potato, brown rice",
+      "nutrientKey": "glycemicIndex",
+      "nutrientLabel": "Glycemic index",
+      "nutrientText": "Glycemic index 60 GI",
+      "amount": 60,
+      "unit": "GI",
+      "matched": true
+    },
+    {
+      "food": "Watermelon (high GI, lower GL) 1 medium",
+      "sourceLabel": "Watermelon (high GI, lower GL)",
+      "nutrientKey": "glycemicIndex",
+      "nutrientLabel": "Glycemic index",
+      "nutrientText": "Glycemic index 72 GI",
+      "amount": 72,
+      "unit": "GI",
+      "matched": false
+    },
+    {
+      "food": "Potato baked with skin md",
+      "sourceLabel": "Potatoes (variable prep)",
+      "nutrientKey": "glycemicIndex",
+      "nutrientLabel": "Glycemic index",
+      "nutrientText": "Glycemic index 85 GI",
+      "amount": 85,
+      "unit": "GI",
+      "matched": true
+    },
+    {
+      "food": "White bread & bagels 1 slice",
+      "sourceLabel": "White bread & bagels",
+      "nutrientKey": "refinedCarbs",
+      "nutrientLabel": "Refined carbohydrates",
+      "nutrientText": "Refined carbohydrates 13 g",
+      "amount": 13,
+      "unit": "g",
+      "matched": false
+    },
+    {
+      "food": "White rice 1 cup",
+      "sourceLabel": "White rice",
+      "nutrientKey": "refinedCarbs",
+      "nutrientLabel": "Refined carbohydrates",
+      "nutrientText": "Refined carbohydrates 45 g",
+      "amount": 45,
+      "unit": "g",
+      "matched": false
+    },
+    {
+      "food": "Most crackers 1 serving",
+      "sourceLabel": "Most crackers",
+      "nutrientKey": "refinedCarbs",
+      "nutrientLabel": "Refined carbohydrates",
+      "nutrientText": "Refined carbohydrates 20 g",
+      "amount": 20,
+      "unit": "g",
+      "matched": false
+    },
+    {
+      "food": "Pastries 1 serving",
+      "sourceLabel": "Pastries",
+      "nutrientKey": "refinedCarbs",
+      "nutrientLabel": "Refined carbohydrates",
+      "nutrientText": "Refined carbohydrates 30 g",
+      "amount": 30,
+      "unit": "g",
+      "matched": false
+    },
+    {
+      "food": "Pretzels 1 serving",
+      "sourceLabel": "Pretzels",
+      "nutrientKey": "refinedCarbs",
+      "nutrientLabel": "Refined carbohydrates",
+      "nutrientText": "Refined carbohydrates 22 g",
+      "amount": 22,
+      "unit": "g",
+      "matched": false
+    },
+    {
+      "food": "Instant noodles 1 serving",
+      "sourceLabel": "Instant noodles",
+      "nutrientKey": "refinedCarbs",
+      "nutrientLabel": "Refined carbohydrates",
+      "nutrientText": "Refined carbohydrates 40 g",
+      "amount": 40,
+      "unit": "g",
+      "matched": false
+    },
+    {
+      "food": "Beef Liver 3 oz palm-sized",
+      "sourceLabel": "Organ meats (kidney, heart, liver)",
+      "nutrientKey": "alphaLipoicAcid",
+      "nutrientLabel": "Alpha-lipoic acid (ALA)",
+      "nutrientText": "Alpha-lipoic acid (ALA) 0.7 mg",
+      "amount": 0.7,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Spinach 1 cup",
+      "sourceLabel": "Spinach",
+      "nutrientKey": "alphaLipoicAcid",
+      "nutrientLabel": "Alpha-lipoic acid (ALA)",
+      "nutrientText": "Alpha-lipoic acid (ALA) 0.15 mg",
+      "amount": 0.15,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Broccoli 1 cup",
+      "sourceLabel": "Broccoli",
+      "nutrientKey": "alphaLipoicAcid",
+      "nutrientLabel": "Alpha-lipoic acid (ALA)",
+      "nutrientText": "Alpha-lipoic acid (ALA) 0.45 mg",
+      "amount": 0.45,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Tomato md",
+      "sourceLabel": "Tomatoes",
+      "nutrientKey": "alphaLipoicAcid",
+      "nutrientLabel": "Alpha-lipoic acid (ALA)",
+      "nutrientText": "Alpha-lipoic acid (ALA) 0.05 mg",
+      "amount": 0.05,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Brussels sprouts 1 cup",
+      "sourceLabel": "Brussels sprouts",
+      "nutrientKey": "alphaLipoicAcid",
+      "nutrientLabel": "Alpha-lipoic acid (ALA)",
+      "nutrientText": "Alpha-lipoic acid (ALA) 0.25 mg",
+      "amount": 0.25,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Peas 1 cup",
+      "sourceLabel": "Peas",
+      "nutrientKey": "alphaLipoicAcid",
+      "nutrientLabel": "Alpha-lipoic acid (ALA)",
+      "nutrientText": "Alpha-lipoic acid (ALA) 0.15 mg",
+      "amount": 0.15,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Asparagus 1 serving",
+      "sourceLabel": "Asparagus",
+      "nutrientKey": "glutathione",
+      "nutrientLabel": "Glutathione",
+      "nutrientText": "Glutathione 30 mg",
+      "amount": 30,
+      "unit": "mg",
+      "matched": false
+    },
+    {
+      "food": "Avocado whole 1 medium",
+      "sourceLabel": "Avocado",
+      "nutrientKey": "glutathione",
+      "nutrientLabel": "Glutathione",
+      "nutrientText": "Glutathione 30 mg",
+      "amount": 30,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Spinach 1 cup",
+      "sourceLabel": "Spinach",
+      "nutrientKey": "glutathione",
+      "nutrientLabel": "Glutathione",
+      "nutrientText": "Glutathione 40 mg",
+      "amount": 40,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Okra 1 serving",
+      "sourceLabel": "Okra",
+      "nutrientKey": "glutathione",
+      "nutrientLabel": "Glutathione",
+      "nutrientText": "Glutathione 20 mg",
+      "amount": 20,
+      "unit": "mg",
+      "matched": false
+    },
+    {
+      "food": "Whey protein 1 serving",
+      "sourceLabel": "Whey protein",
+      "nutrientKey": "glutathione",
+      "nutrientLabel": "Glutathione",
+      "nutrientText": "Glutathione 50 mg",
+      "amount": 50,
+      "unit": "mg",
+      "matched": false
+    },
+    {
+      "food": "Beets 1 cup",
+      "sourceLabel": "Beet & beet juice (top source)",
+      "nutrientKey": "nitrate",
+      "nutrientLabel": "Nitrate",
+      "nutrientText": "Nitrate 250 mg",
+      "amount": 250,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Spinach 1 cup",
+      "sourceLabel": "Spinach & arugula",
+      "nutrientKey": "nitrate",
+      "nutrientLabel": "Nitrate",
+      "nutrientText": "Nitrate 250 mg",
+      "amount": 250,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Celery stalk 1 cup",
+      "sourceLabel": "Celery & lettuce",
+      "nutrientKey": "nitrate",
+      "nutrientLabel": "Nitrate",
+      "nutrientText": "Nitrate 44 mg",
+      "amount": 44,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Bok choy & Swiss chard 1 serving",
+      "sourceLabel": "Bok choy & Swiss chard",
+      "nutrientKey": "nitrate",
+      "nutrientLabel": "Nitrate",
+      "nutrientText": "Nitrate 150 mg",
+      "amount": 150,
+      "unit": "mg",
+      "matched": false
+    },
+    {
+      "food": "Radish & cabbage 1 cup",
+      "sourceLabel": "Radish & cabbage",
+      "nutrientKey": "nitrate",
+      "nutrientLabel": "Nitrate",
+      "nutrientText": "Nitrate 150 mg",
+      "amount": 150,
+      "unit": "mg",
+      "matched": false
+    },
+    {
+      "food": "Kohlrabi & turnip greens 1 cup",
+      "sourceLabel": "Kohlrabi & turnip greens",
+      "nutrientKey": "nitrate",
+      "nutrientLabel": "Nitrate",
+      "nutrientText": "Nitrate 200 mg",
+      "amount": 200,
+      "unit": "mg",
+      "matched": false
+    }
+  ]
+}
