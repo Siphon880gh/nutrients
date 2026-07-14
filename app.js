@@ -13948,7 +13948,7 @@
         longevityPanelOpen ? "true" : "false"
       );
       dashboardLongevityToggleEl.classList.toggle(
-        "dashboard__toggle--open",
+        "app-nav__btn--open",
         longevityPanelOpen
       );
     }
@@ -13969,7 +13969,7 @@
     weekTotalOpen = !!open;
     if (dashboardWeekToggleEl) {
       dashboardWeekToggleEl.setAttribute("aria-expanded", weekTotalOpen ? "true" : "false");
-      dashboardWeekToggleEl.classList.toggle("dashboard__toggle--open", weekTotalOpen);
+      dashboardWeekToggleEl.classList.toggle("app-nav__btn--open", weekTotalOpen);
     }
     if (weekSummaryEl) {
       weekSummaryEl.hidden = !weekTotalOpen;
@@ -13983,7 +13983,7 @@
     microRequirementsOpen = !!open;
     if (dashboardMicroToggleEl) {
       dashboardMicroToggleEl.setAttribute("aria-expanded", microRequirementsOpen ? "true" : "false");
-      dashboardMicroToggleEl.classList.toggle("dashboard__toggle--open", microRequirementsOpen);
+      dashboardMicroToggleEl.classList.toggle("app-nav__btn--open", microRequirementsOpen);
     }
     if (dashboardMicroPanelEl) {
       dashboardMicroPanelEl.hidden = !microRequirementsOpen;
@@ -20213,15 +20213,19 @@
     dashboardPrintBtn.addEventListener("click", printPage);
   }
 
-  if (dashboardWeekToggleEl) {
-    dashboardWeekToggleEl.addEventListener("click", function () {
-      setWeekTotalOpen(!weekTotalOpen);
-    });
-  }
-
   function scrollDashboardJumpTarget(el) {
     if (!el || typeof el.scrollIntoView !== "function") return;
     el.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
+  function openAndScrollPanel(isOpen, setOpen, panelEl) {
+    var nextOpen = !isOpen;
+    setOpen(nextOpen);
+    if (nextOpen) {
+      window.requestAnimationFrame(function () {
+        scrollDashboardJumpTarget(panelEl);
+      });
+    }
   }
 
   if (dashboardMacrosJumpEl) {
@@ -20240,9 +20244,19 @@
     dashboardFoodSourcesOpenBtn.addEventListener("click", openFoodSourcesModal);
   }
 
+  if (dashboardWeekToggleEl) {
+    dashboardWeekToggleEl.addEventListener("click", function () {
+      openAndScrollPanel(weekTotalOpen, setWeekTotalOpen, weekSummaryEl);
+    });
+  }
+
   if (dashboardMicroToggleEl) {
     dashboardMicroToggleEl.addEventListener("click", function () {
-      setMicroRequirementsOpen(!microRequirementsOpen);
+      openAndScrollPanel(
+        microRequirementsOpen,
+        setMicroRequirementsOpen,
+        dashboardMicroPanelEl
+      );
     });
   }
 
@@ -20537,7 +20551,11 @@
 
   if (dashboardLongevityToggleEl) {
     dashboardLongevityToggleEl.addEventListener("click", function () {
-      setLongevityPanelOpen(!longevityPanelOpen);
+      openAndScrollPanel(
+        longevityPanelOpen,
+        setLongevityPanelOpen,
+        dashboardLongevityPanelEl
+      );
     });
   }
 

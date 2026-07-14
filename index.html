@@ -38,19 +38,39 @@
       </div>
     </header>
 
+    <nav id="app-nav" class="app-nav" aria-label="App sections">
+      <div class="app-nav__inner">
+        <button type="button" id="dashboard-food-sources-open" class="app-nav__btn" aria-label="Food Sources" aria-haspopup="dialog" aria-controls="food-sources-modal">
+          <span class="app-nav__label app-nav__label--full" aria-hidden="true">Food Sources</span>
+          <span class="app-nav__label app-nav__label--short" aria-hidden="true">Sources</span>
+        </button>
+        <button type="button" id="dashboard-macros-jump" class="app-nav__btn" aria-label="Macros">
+          <span class="app-nav__label" aria-hidden="true">Macros</span>
+        </button>
+        <button type="button" id="dashboard-food-entry-jump" class="app-nav__btn" aria-label="Food Entry">
+          <span class="app-nav__label app-nav__label--full" aria-hidden="true">Food Entry</span>
+          <span class="app-nav__label app-nav__label--short" aria-hidden="true">Entry</span>
+        </button>
+        <button type="button" id="dashboard-week-toggle" class="app-nav__btn" aria-label="Week total" aria-expanded="false" aria-controls="week-summary">
+          <span class="app-nav__label app-nav__label--full" aria-hidden="true">Week total</span>
+          <span class="app-nav__label app-nav__label--short" aria-hidden="true">Week</span>
+        </button>
+        <button type="button" id="dashboard-micro-toggle" class="app-nav__btn" aria-label="Micro requirements" aria-expanded="false" aria-controls="dashboard-micro-panel">
+          <span class="app-nav__label app-nav__label--full" aria-hidden="true">Micro requirements</span>
+          <span class="app-nav__label app-nav__label--short" aria-hidden="true">Micros</span>
+        </button>
+        <button type="button" id="dashboard-longevity-toggle" class="app-nav__btn" aria-label="Longevity and wellness" aria-expanded="false" aria-controls="dashboard-longevity-panel">
+          <span class="app-nav__label app-nav__label--full" aria-hidden="true">Longevity and wellness</span>
+          <span class="app-nav__label app-nav__label--short" aria-hidden="true">Longevity</span>
+        </button>
+      </div>
+    </nav>
+
     <section class="dashboard" aria-labelledby="dashboard-heading">
       <div class="dashboard__header">
         <div class="dashboard__header-row">
           <h2 id="dashboard-heading" class="dashboard__title">Dashboard</h2>
           <button type="button" id="dashboard-print" class="dashboard__toggle dashboard__print" aria-label="Print preview">Print</button>
-        </div>
-        <div class="dashboard__toggles">
-          <button type="button" id="dashboard-food-sources-open" class="dashboard__toggle" aria-haspopup="dialog" aria-controls="food-sources-modal">Food Sources</button>
-          <button type="button" id="dashboard-macros-jump" class="dashboard__toggle">Macros</button>
-          <button type="button" id="dashboard-food-entry-jump" class="dashboard__toggle">Food Entry</button>
-          <button type="button" id="dashboard-week-toggle" class="dashboard__toggle" aria-expanded="false" aria-controls="week-summary">Week total</button>
-          <button type="button" id="dashboard-micro-toggle" class="dashboard__toggle" aria-expanded="false" aria-controls="dashboard-micro-panel">Micro requirements</button>
-          <button type="button" id="dashboard-longevity-toggle" class="dashboard__toggle" aria-expanded="false" aria-controls="dashboard-longevity-panel">Longevity and wellness</button>
         </div>
         <p class="dashboard__hint">Each food match in a day adds that food's macros (4 cal/g protein &amp; carbs, 9 cal/g fat)</p>
       </div>
@@ -277,25 +297,6 @@
         <nav id="dashboard-longevity-nav" class="dashboard__longevity-nav" hidden aria-label="Longevity topics">
           <div class="dashboard__longevity-nav-top">
             <h3 class="dashboard__longevity-nav-title">Longevity</h3>
-            <button type="button" id="dashboard-longevity-close" class="dashboard__panel-close" aria-label="Close longevity">×</button>
-          </div>
-          <div class="dashboard__longevity-nav-track">
-            <button type="button" id="dashboard-longevity-nav-prev" class="dashboard__longevity-nav-adj dashboard__longevity-nav-adj--prev" hidden>
-              <span class="dashboard__longevity-nav-adj-label">Previous</span>
-              <span id="dashboard-longevity-nav-prev-title" class="dashboard__longevity-nav-adj-title"></span>
-            </button>
-            <div class="dashboard__longevity-nav-current">
-              <span class="dashboard__longevity-nav-current-label">Current</span>
-              <span id="dashboard-longevity-nav-current-title" class="dashboard__longevity-nav-current-title"></span>
-            </div>
-            <button type="button" id="dashboard-longevity-nav-next" class="dashboard__longevity-nav-adj dashboard__longevity-nav-adj--next" hidden>
-              <span class="dashboard__longevity-nav-adj-label">Next</span>
-              <span id="dashboard-longevity-nav-next-title" class="dashboard__longevity-nav-adj-title"></span>
-            </button>
-          </div>
-          <div class="dashboard__longevity-nav-all-wrap">
-            <button type="button" id="dashboard-longevity-nav-all-toggle" class="dashboard__longevity-nav-all-toggle" aria-expanded="false" aria-controls="dashboard-longevity-nav-all-list">All topics</button>
-            <ul id="dashboard-longevity-nav-all-list" class="dashboard__longevity-nav-all-list" hidden></ul>
           </div>
           <div class="dashboard__sticky-options">
             <div class="dashboard__sticky-options-disclosures">
@@ -371,6 +372,25 @@
                 <button type="button" class="dashboard__sticky-options-toggle" data-acute-kind="adverse" aria-pressed="false">Adverse effects (A/E)</button>
               </div>
             </div>
+          </div>
+          <button type="button" id="dashboard-longevity-close" class="dashboard__panel-close" aria-label="Close longevity">×</button>
+          <div class="dashboard__longevity-nav-track">
+            <button type="button" id="dashboard-longevity-nav-prev" class="dashboard__longevity-nav-adj dashboard__longevity-nav-adj--prev" hidden>
+              <span class="dashboard__longevity-nav-adj-label">Previous</span>
+              <span id="dashboard-longevity-nav-prev-title" class="dashboard__longevity-nav-adj-title"></span>
+            </button>
+            <div class="dashboard__longevity-nav-current">
+              <span class="dashboard__longevity-nav-current-label">Current</span>
+              <span id="dashboard-longevity-nav-current-title" class="dashboard__longevity-nav-current-title"></span>
+            </div>
+            <button type="button" id="dashboard-longevity-nav-next" class="dashboard__longevity-nav-adj dashboard__longevity-nav-adj--next" hidden>
+              <span class="dashboard__longevity-nav-adj-label">Next</span>
+              <span id="dashboard-longevity-nav-next-title" class="dashboard__longevity-nav-adj-title"></span>
+            </button>
+          </div>
+          <div class="dashboard__longevity-nav-all-wrap">
+            <button type="button" id="dashboard-longevity-nav-all-toggle" class="dashboard__longevity-nav-all-toggle" aria-expanded="false" aria-controls="dashboard-longevity-nav-all-list">All topics</button>
+            <ul id="dashboard-longevity-nav-all-list" class="dashboard__longevity-nav-all-list" hidden></ul>
           </div>
         </nav>
         <p class="dashboard__longevity-hint">Weekly average per day (Mon–Sun). Micronutrients repeat from your micro entries so you can reason in one place. Green bars = good for “aim” nutrients; red bars on limit nutrients mean you are high. Click <em>explain</em> on a heading or nutrient for detail.</p>
