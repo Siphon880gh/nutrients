@@ -6933,20 +6933,45 @@
     );
   }
 
+  function foodSourcesFilterTerms(filterText) {
+    var raw = String(filterText || "")
+      .trim()
+      .toLowerCase();
+    if (!raw) return [];
+    // "spinach and kale", "spinach & kale", "spinach or kale" → multi-food search
+    if (!/\s+(?:and|or)\s+|\s*&\s*/i.test(raw)) return [raw];
+    return raw
+      .split(/\s+(?:and|or)\s+|\s*&\s*/i)
+      .map(function (term) {
+        return term.trim();
+      })
+      .filter(Boolean);
+  }
+
+  function foodSourcesRowMatchesFilter(row, terms) {
+    if (!terms || !terms.length) return true;
+    var haystack =
+      String(row.food || "").toLowerCase() +
+      "\n" +
+      String(row.sourceLabel || "").toLowerCase() +
+      "\n" +
+      String(row.nutrientText || "").toLowerCase() +
+      "\n" +
+      String(row.nutrientLabel || "").toLowerCase();
+    for (var i = 0; i < terms.length; i++) {
+      if (haystack.indexOf(terms[i]) !== -1) return true;
+    }
+    return false;
+  }
+
   function renderFoodSourcesBody() {
     if (!foodSourcesBodyEl) return;
     var rows = getFoodSourcesRows().slice();
-    var filter = String(activeFoodSourcesFilter || "")
-      .trim()
-      .toLowerCase();
-    if (filter) {
+    var filter = String(activeFoodSourcesFilter || "").trim();
+    var terms = foodSourcesFilterTerms(filter);
+    if (terms.length) {
       rows = rows.filter(function (row) {
-        return (
-          row.food.toLowerCase().indexOf(filter) !== -1 ||
-          row.sourceLabel.toLowerCase().indexOf(filter) !== -1 ||
-          row.nutrientText.toLowerCase().indexOf(filter) !== -1 ||
-          row.nutrientLabel.toLowerCase().indexOf(filter) !== -1
-        );
+        return foodSourcesRowMatchesFilter(row, terms);
       });
     }
     rows.sort(function (a, b) {
