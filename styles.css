@@ -1296,7 +1296,7 @@ body {
   grid-row: 1;
   display: flex;
   align-items: center;
-  gap: 0.3rem;
+  gap: 0.1rem;
   min-width: 0;
 }
 
@@ -1351,7 +1351,6 @@ button.dashboard__micro-name:focus-visible {
   background: #fff;
   color: #5c6b7a;
   cursor: pointer;
-  margin-left: 3px;
 }
 
 .dashboard__micro-sources-btn:hover {
@@ -1383,7 +1382,6 @@ button.dashboard__micro-name:focus-visible {
   background: #fff;
   color: #7a6a4a;
   cursor: pointer;
-  margin-left: 3px;
 }
 
 body.show-daily-intake-icons .dashboard__micro-daily-intake-btn {
@@ -2091,7 +2089,6 @@ body.highlight-daily-intake-icons .dashboard__micro-daily-intake-btn[aria-expand
   background: #fafafa;
   color: #9a9590;
   cursor: pointer;
-  margin-left: 3px;
 }
 
 body.show-acute-side-effects .dashboard__micro-acute-btn--side,
