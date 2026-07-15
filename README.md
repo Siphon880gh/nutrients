@@ -11,6 +11,74 @@ You log the foods you ate for each day of the week. Each line is matched to a **
 
 Client-only nutrition tracker for weekly meals and reusable food definitions. The app runs from static files: `index.html`, `styles.css`, and `app.js`. Sample food data lives in `samples/definitions-food.json`.
 
+## Quick start
+
+Serve the folder over HTTP (required for `fetch` of sample JSON), then open `index.html`:
+
+```bash
+python3 -m http.server 8765
+# open http://localhost:8765/
+```
+
+On first visit, use **Import sample** in two places:
+
+1. **Food definitions** — scroll to the Food definitions table and click **Import sample** (or **Import our sample** when the table is empty). This loads `samples/definitions-food.json`.
+2. **Food entry** — in the Mon–Sun day-meals area, click **Import sample**. This loads `samples/day-meals.json` for the current week.
+
+Type food names in day meals that match your definitions; macros, micros, and longevity totals update automatically.
+
+## How it works
+
+### Dashboard — macros and calories
+
+Empty week before any meals are logged:
+
+![Dashboard with no meals logged](docs/screenshots/01-dashboard-empty.png)
+
+After importing sample meals, each day shows protein, carbs, fats, and total calories:
+
+![Dashboard with sample meals](docs/screenshots/06-dashboard-populated.png)
+
+### Food definitions
+
+Define reusable foods with macros, micronutrients, and longevity fields. Start empty:
+
+![Food definitions empty state](docs/screenshots/02-food-definitions-empty.png)
+
+Click **Import sample** to load bundled definitions (trail mix, peanuts, eggs, rice, and more):
+
+![Food definitions after Import sample](docs/screenshots/03-food-definitions-sample.png)
+
+### Food entry — Mon–Sun meals
+
+Log what you ate each day. Lines can include a serving multiplier (e.g. `* 2`):
+
+![Food entry before Import sample](docs/screenshots/04-food-entry-empty.png)
+
+**Import sample** fills the week with example meals. Matched foods are highlighted and roll up to the dashboard:
+
+![Food entry with sample meals](docs/screenshots/05-food-entry-sample.png)
+
+### Micro requirements
+
+Weekly average (or per-day) intake vs FDA % DV or IOM body-weight minimums. Set body weight in Settings for nutrients without an FDA DV:
+
+![Micro requirements panel](docs/screenshots/07-micro-requirements.png)
+
+Nutrient cards show % of target with color-coded status:
+
+![Micronutrient cards](docs/screenshots/08-micro-nutrients.png)
+
+### Longevity and wellness
+
+Longevity nutrients by section — fats, omegas, fiber, and related compounds for healthy aging:
+
+![Longevity and wellness panel](docs/screenshots/09-longevity-wellness.png)
+
+% DV bars for aim nutrients (higher is better) and limit nutrients (lower is better):
+
+![Longevity nutrient bars](docs/screenshots/10-longevity-nutrients.png)
+
 ## App Data
 
 - `samples/definitions-food.json` contains bundled food definitions for import.
