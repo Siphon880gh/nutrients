@@ -1,9 +1,33 @@
 {
   "nad": {
     "enough": [
-      "NAD is made from vitamin B3 forms: niacin, nicotinamide, and tryptophan* can feed into it. NR and NMN are NAD precursors too, just different entry points.",
-      "For most people, getting the normal daily amount of vitamin B3 is generally enough for basic NAD needs. High-dose NR or NMN for \"longevity\" is still an open question as of June 2026.",
-      "*Tryptophan: No, tryptophan is not a vitamin, but rather an essential amino acid. However, your body can use tryptophan as a building block to synthesize Vitamin B3 (known as niacin)."
+      "NAD is a cellular fuel shuttle. It carries energy from the food you eat into your mitochondria so they can make ATP—the energy your muscles, brain, and DNA-repair systems use.",
+      "Age and stress can lower NAD+. When that happens, energy production slows. People often feel that as fatigue or brain fog. Better NAD+ support helps mitochondria work more efficiently.",
+      "Food does not contain meaningful amounts of NAD itself. Your body builds NAD from building blocks (precursors) in everyday foods.",
+      "Niacin (vitamin B3) is a direct building block. Your body turns it into NAD in a few steps (the Preiss-Handler pathway). Good food sources: chicken, turkey, tuna, salmon, mushrooms, and avocados.",
+      "Nicotinamide (NAM) is another B3 form. Your body recycles it over and over (the salvage pathway) to keep NAD levels steady.",
+      "Tryptophan is an amino acid, not a vitamin. When needed, your liver can turn it into NAD (the de novo pathway). Food sources: eggs, milk, nuts, seeds, and tofu.",
+      "Nicotinamide riboside (NR) is a more direct route: NR → NMN → NAD. Nicotinamide mononucleotide (NMN) sits one step away from NAD.",
+      "NR and NMN are found in food (see their food-source lists), but only in tiny amounts. Eating those foods alone will not sharply raise whole-body NAD. They still count as part of the precursor pattern, along with niacin and tryptophan.",
+      "Polyphenols help your body hang on to the NAD it already has. Good sources: green tea, dark chocolate, and extra-virgin olive oil.",
+      "For most people, getting enough vitamin B3 from food covers basic NAD needs. High-dose NR or NMN for longevity is still an open question as of June 2026."
+    ]
+  },
+  "urolithinA": {
+    "enough": [
+      "Urolithin A is a postbiotic—no food contains it directly. Your gut bacteria produce it when you eat foods rich in ellagitannins and ellagic acid.",
+      "In research it supports mitophagy: the cell's recycling of worn-out mitochondria so healthier ones can take over. That may help muscle and cellular energy, especially with age.",
+      "Not everyone's gut microbiome makes Urolithin A efficiently from food, which is why direct Urolithin A supplements are studied. Food-first still helps by supplying the ellagitannin precursors.",
+      "Richest food sources of the precursors: pomegranates (the highest source), strawberries, raspberries, and blackberries; walnuts and pecans."
+    ],
+    "foodSources": [
+      "Pomegranate (highest source)",
+      "Strawberries",
+      "Raspberries",
+      "Blackberries",
+      "Walnuts",
+      "Pecans",
+      "Supplements (if used)"
     ]
   },
   "saturatedFat": {
@@ -64,6 +88,7 @@
       "Soybean oil",
       "Chia & hemp seeds",
       "Tofu & edamame",
+      "Edamame ½ cup",
       "Eggs (omega-enriched)"
     ]
   },
@@ -590,6 +615,30 @@
       "Regular berries, citrus, tea, and onions supply the flavonoid diversity that helps cells resist oxidative DNA damage over decades."
     ]
   },
+  "quercetin": {
+    "tooLow": [
+      "Quercetin is a flavonol (a flavonoid subclass), not an essential nutrient—low intake simply reflects few onions, apples with skin, capers, berries, or tea in the diet.",
+      "Peeling apples and cooking in lots of water removes much of the quercetin, which concentrates in skins and outer layers."
+    ],
+    "enough": [
+      "Quercetin is an antioxidant and anti-inflammatory flavonoid studied for endothelial function, blood pressure, and as a natural mast-cell stabilizer that blunts histamine release.",
+      "It is the best-known dietary senolytic: paired with the prescription drug dasatinib in the landmark 'D+Q' protocol it helps clear senescent cells—though food amounts (roughly 10-25 mg/day in a typical diet) sit far below supplement trial doses.",
+      "Capers, red and yellow onions, apples with the skin, kale, berries, and black or green tea are the most reliable food sources; the longevity panel shows the amount without a % Daily Value because no official reference intake exists."
+    ],
+    "foodSources": [
+      "Capers",
+      "Onions",
+      "Apple",
+      "Blueberries",
+      "Kale",
+      "Broccoli",
+      "Black tea"
+    ],
+    "antiAging": [
+      "Quercetin is the flagship dietary senolytic—combined with dasatinib in 'D+Q' senolytic research—and also acts as a senomorphic that quiets NF-κB-driven inflammatory signaling.",
+      "Onions, capers, apples with skin, and tea supply food-level quercetin that supports antioxidant defense and endothelial health; supplement protocols use far higher, intermittent doses."
+    ]
+  },
   "carotenoids": {
     "tooLow": [
       "Low carotenoids reduce beta-carotene, lutein, and lycopene intake—important for eyes, skin, and antioxidant networks.",
@@ -709,6 +758,80 @@
     ],
     "brainLongevity": [
       "Supports mitochondrial electron transport in brain cells\u2014astrocyte glutamate clearance is ATP-dependent and draws on mitochondrial energy."
+    ]
+  },
+  "pqq": {
+    "tooLow": [
+      "PQQ (pyrroloquinoline quinone) is not an essential nutrient with a deficiency disease—low intake simply means little from PQQ-rich plant and fermented foods.",
+      "Food amounts are in micrograms, far below the milligram doses used in mitochondrial-biogenesis research, so a supplement is the only way to reach study-level intakes."
+    ],
+    "enough": [
+      "PQQ (pyrroloquinoline quinone) is a small redox cofactor found in plant and fermented foods. Unlike CoQ10, the body does not synthesize it—dietary intake and gut bacteria are the sources.",
+      "In research it supports mitochondrial biogenesis (activating PGC-1α, the master switch that builds new mitochondria) and acts as a durable antioxidant that can cycle through thousands of oxidation-reduction reactions.",
+      "Richest food sources are fermented soy (natto), parsley, green pepper, kiwi, papaya, tofu, spinach, and green tea; potatoes, carrots, and bananas contribute smaller amounts."
+    ],
+    "foodSources": [
+      "Natto & fermented soy",
+      "Parsley",
+      "Green tea",
+      "Green pepper",
+      "Kiwi",
+      "Papaya",
+      "Tofu & soybeans / edamame",
+      "Spinach",
+      "Carrot & potato",
+      "Supplements (if used)"
+    ],
+    "antiAging": [
+      "PQQ promotes mitochondrial biogenesis via PGC-1α, so adequate intake supports the cell's capacity to build fresh mitochondria—a capacity that declines with age.",
+      "As a stable antioxidant it helps protect mitochondrial DNA and membranes from oxidative stress; food gives microgram amounts, while trials use far higher supplemental doses."
+    ]
+  },
+  "nr": {
+    "tooLow": [
+      "Low NR from food usually means little dairy, fermented food, broccoli, or edamame in the diet.",
+      "Food does contain NR, but amounts are small. Choosing those foods on purpose—or logging a supplement—makes intake easier to see."
+    ],
+    "enough": [
+      "Nicotinamide riboside (NR) is a vitamin B3 form found in food. Your body turns it into NMN, then into NAD—skipping some early steps.",
+      "Food sources: cow’s milk and other dairy; yeast and fermented foods (nutritional yeast / nooch, sourdough, bread, craft beer); broccoli and cucumbers; bananas, oranges, wild chicory, and edamame.",
+      "Amounts in food are tiny. NR from diet alone will not sharply raise whole-body NAD. It still adds to the same precursor pattern as niacin, tryptophan, and NMN."
+    ],
+    "foodSources": [
+      "Milk (cow’s) & dairy",
+      "Nutritional yeast (nooch)",
+      "Sourdough & bread",
+      "Craft beer (if used)",
+      "Broccoli",
+      "Cucumbers",
+      "Bananas",
+      "Orange",
+      "Wild chicory",
+      "Edamame",
+      "Supplements (if used)"
+    ],
+    "antiAging": [
+      "NR helps build NAD for cellular energy. Food gives smaller amounts than most longevity-supplement doses."
+    ]
+  },
+  "nmn": {
+    "tooLow": [
+      "Low NMN from food usually means little milk, broccoli, or cucumber in the diet.",
+      "Food does contain NMN, but amounts are small. Logging rich foods or a supplement makes intake easier to see."
+    ],
+    "enough": [
+      "Nicotinamide mononucleotide (NMN) is the step right before NAD—your body needs only one more reaction to finish the conversion.",
+      "Food sources: cow’s milk, broccoli, and cucumbers (the same foods often listed for NR).",
+      "Amounts in food are tiny. NMN from diet alone will not sharply raise whole-body NAD. It still adds to the same precursor pattern as niacin, tryptophan, and NR."
+    ],
+    "foodSources": [
+      "Milk (cow’s)",
+      "Broccoli",
+      "Cucumbers",
+      "Supplements (if used)"
+    ],
+    "antiAging": [
+      "NMN feeds NAD, which tends to fall with age. Food amounts are modest—pair them with niacin-rich meals for a fuller precursor pattern."
     ]
   },
   "taurine": {
@@ -1446,16 +1569,19 @@
   },
   "sectionMitochondrial": {
     "enough": [
-      "Mitochondrial health is cellular energy health—NAD+, FAD, coenzyme A, and CoQ10 keep the electron transport chain running so ATP can fuel repair, immunity, and cognition.",
-      "Niacin (B3) is the main food precursor for NAD+; riboflavin (B2) builds FAD; pantothenic acid (B5) builds coenzyme A; thiamin (B1) feeds pyruvate into the Krebs cycle; magnesium stabilizes ATP; iron supports cytochromes; manganese supports mitochondrial antioxidant defense via manganese superoxide dismutase (MnSOD); CoQ10 shuttles electrons between mitochondrial complexes.",
-      "When these run low, cells shift into low-energy metabolism—fatigue, metabolic drift, and faster vascular aging follow over decades, not just on bad days."
+      "Mitochondrial health is cellular energy health. Helpers like NAD+, FAD, coenzyme A, and CoQ10 keep the energy chain running so cells can make ATP for repair, immunity, and thinking clearly.",
+      "For NAD+: niacin (B3) is the main food building block; tryptophan can also feed NAD; NR and NMN are more direct food precursors; polyphenols help preserve the NAD you already have.",
+      "Other cofactors: riboflavin (B2) builds FAD; pantothenic acid (B5) builds coenzyme A; thiamin (B1) helps carbs enter the energy cycle; magnesium helps stabilize ATP; iron supports electron transport; manganese supports MnSOD (an antioxidant enzyme inside mitochondria); CoQ10 carries electrons between mitochondrial complexes.",
+      "Choline builds phosphatidylcholine (PC), a major fat in mitochondrial membranes. PC keeps those membranes intact and fluid so the energy chain can make ATP without leaking as much oxidative stress.",
+      "EPA and DHA (both—no fixed ratio) go into mitochondrial membranes. That helps membrane fluidity, ATP production, and protection from oxidative stress. DHA is often the main structural omega-3 there; EPA also incorporates.",
+      "When these run low, cells tend toward low-energy mode—fatigue, metabolic drift, and faster vascular aging over years, not only on a bad day."
     ]
   },
   "sectionCellularAging": {
     "enough": [
       "Cellular aging is driven partly by chronic inflammation, oxidative DNA damage, and senescent cells that refuse to die cleanly—nutrition mainly helps through senomorphic pathways.",
       "Vitamin D downregulates age-related inflammatory signaling; vitamin C and E neutralize free radicals that damage DNA; selenium and plant polyphenols support antioxidant enzyme systems.",
-      "Essential vitamins function like a shield—protecting cells from oxidative stress and DNA damage that triggers aging. That is different from true senolytics (fisetin, quercetin, curcumin, resveratrol in supplement trials) that target senescent cells directly; food patterns support the senomorphic side."
+      "Essential vitamins function like a shield—protecting cells from oxidative stress and DNA damage that triggers aging. That is different from true senolytics (fisetin, and quercetin paired with dasatinib, in supplement trials) that selectively clear senescent cells. Apigenin and theaflavin are senomorphics that suppress the senescence-associated secretory phenotype (SASP); curcumin is largely senomorphic, while resveratrol acts as a sirtuin activator. Food patterns support the senomorphic side."
     ]
   },
   "sectionFats": {

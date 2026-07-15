@@ -70,9 +70,21 @@ function isGenericSupplementFoodSource(label) {
   return /^supplements?\b/i.test(String(label || "").trim());
 }
 
+/** Map unicode vulgar fractions to words so ½ survives token cleanup. */
+function normalizeFoodSourceFractions(text) {
+  return String(text || "")
+    .replace(/1½/g, "1 half")
+    .replace(/⅜/g, "three eighths")
+    .replace(/¾/g, "three quarters")
+    .replace(/⅓/g, "one third")
+    .replace(/⅔/g, "two thirds")
+    .replace(/¼/g, "one quarter")
+    .replace(/½/g, "half");
+}
+
 function foodSourceMatchTokens(sourceLabel) {
   const extras = [];
-  let raw = String(sourceLabel || "");
+  let raw = normalizeFoodSourceFractions(sourceLabel || "");
   raw = raw.replace(/\(([^)]*)\)/g, (_match, inner) => {
     String(inner || "")
       .split(/\s*(?:&|\/|,|\band\b|\bor\b)\s*/i)
@@ -83,7 +95,7 @@ function foodSourceMatchTokens(sourceLabel) {
     .split(/\s*(?:&|\/|,|\band\b|\bor\b)\s*/i)
     .concat(extras)
     .map((part) =>
-      part
+      normalizeFoodSourceFractions(part)
         .replace(/[^a-z0-9\s'-]/gi, " ")
         .replace(/\s+/g, " ")
         .trim()
@@ -119,9 +131,16 @@ function expandFoodSourceTokenCandidates(token) {
 }
 
 function foodNameHasServing(name) {
-  const n = String(name || "");
+  const n = normalizeFoodSourceFractions(name || "");
   if (
     /\b\d+([./]\d+)?\s*(cups?|tbsp|tsp|tablespoons?|teaspoons?|oz|g|kg|ml|l|lbs?|pieces?|slices?|softgels?|bites?|handfuls?|servings?)\b/i.test(
+      n
+    )
+  ) {
+    return true;
+  }
+  if (
+    /\b(half|one quarter|three quarters|three eighths|one third|two thirds)\s*(cups?|tbsp|tsp|tablespoons?|teaspoons?|oz|g|kg|ml|l|lbs?|pieces?|slices?|softgels?|bites?|handfuls?|servings?)\b/i.test(
       n
     )
   ) {
@@ -173,7 +192,7 @@ function withSuggestedFoodServing(foodName, sourceLabel) {
 }
 
 function scoreFoodNameAgainstToken(foodName, token) {
-  const name = String(foodName || "").toLowerCase();
+  const name = normalizeFoodSourceFractions(foodName || "").toLowerCase();
   if (!name || !token) return 0;
   const candidates = expandFoodSourceTokenCandidates(token);
   let best = 0;

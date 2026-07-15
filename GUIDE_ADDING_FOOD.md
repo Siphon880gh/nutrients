@@ -62,7 +62,7 @@ Amino acids (all in **mg**): `histidine`, `isoleucine`, `leucine`, `lysine`, `me
 ### `longevity` — units per key
 
 - Grams (`g`): `saturatedFat`, `monounsaturatedFat`, `polyunsaturatedFat`, `transFat`, `plantSterols`, `omega3`, `omega6`, `omega9`, `ala`, `epa`, `dha`, `linoleicAcid`, `arachidonicAcid`, `oleicAcid`, `palmitoleicAcid`, `methionine`
-- Milligrams (`mg`): `cholesterol`, `polyphenols`, `nitrate`, `flavonoids`, `carotenoids`, `lutein`, `curcumin`, `resveratrol`, `coq10`, `sulforaphane`, `phosphorus`, `choline`, `carnitine`, `betaine`, `taurine`
+- Milligrams (`mg`): `cholesterol`, `polyphenols`, `nitrate`, `flavonoids`, `carotenoids`, `lutein`, `curcumin`, `resveratrol`, `coq10`, `nr`, `nmn`, `sulforaphane`, `phosphorus`, `choline`, `carnitine`, `betaine`, `taurine`
 - Micrograms (`mcg`): `selenium`, `copper`
 
 ### `carbQuality`

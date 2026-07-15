@@ -4092,7 +4092,8 @@ button.dashboard__longevity-name:focus-visible {
   font-size: 0.7rem;
   text-align: right;
   font-variant-numeric: tabular-nums;
-  white-space: nowrap;
+  white-space: normal;
+  overflow-wrap: anywhere;
 }
 
 .dashboard__longevity-pct-wrap {
@@ -4122,7 +4123,8 @@ button.dashboard__longevity-name:focus-visible {
   text-align: right;
   font-variant-numeric: tabular-nums;
   font-size: 0.74rem;
-  white-space: nowrap;
+  white-space: normal;
+  overflow-wrap: anywhere;
 }
 
 .dashboard__longevity-bar-wrap {

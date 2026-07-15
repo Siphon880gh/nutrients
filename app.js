@@ -195,6 +195,8 @@
   );
   var fiberColonTipModalEl = document.getElementById("fiber-colon-tip-modal");
   var fiberColonTipModalDoneBtn = document.getElementById("fiber-colon-tip-modal-done");
+  var berberineTipModalEl = document.getElementById("berberine-tip-modal");
+  var berberineTipModalDoneBtn = document.getElementById("berberine-tip-modal-done");
   var pufaAntioxidantTipModalEl = document.getElementById("pufa-antioxidant-tip-modal");
   var pufaAntioxidantTipModalDoneBtn = document.getElementById(
     "pufa-antioxidant-tip-modal-done"
@@ -683,6 +685,7 @@
 
   var LONGEVITY_SECTION_DEFS = {
     nad: { label: "NAD" },
+    urolithinA: { label: "Urolithin A" },
     sectionFats: { label: "Fats & cholesterol" },
     sectionOmega: { label: "Omega fatty acids" },
     sectionGlutathione: { label: "Glutathione support" },
@@ -804,6 +807,7 @@
         "dha",
         "polyphenols",
         "flavonoids",
+        "quercetin",
         "resveratrol",
         "curcumin",
       ],
@@ -1830,6 +1834,7 @@
     { key: "curcumin", label: "Curcumin — NF-κB & COX-2 modulation", limiting: false },
     { key: "polyphenols", label: "Polyphenols — broad anti-inflammatory support", limiting: false },
     { key: "flavonoids", label: "Flavonoids — antioxidant & anti-inflammatory", limiting: false },
+    { key: "quercetin", label: "Quercetin — COX/LOX & NF-κB anti-inflammatory flavonoid", limiting: false },
     { key: "resveratrol", label: "Resveratrol — SIRT1 activation & inflammatory tone", limiting: false },
     { key: "sulforaphane", label: "Sulforaphane — Nrf2 activation & joint protection", limiting: false },
   ];
@@ -1921,6 +1926,7 @@
     { key: "choline", label: "Choline — acetylcholine & cell membranes", limiting: false },
     { key: "polyphenols", label: "Polyphenols — MIND diet neuroprotection", limiting: false },
     { key: "flavonoids", label: "Flavonoids — neurovascular & endothelial support", limiting: false },
+    { key: "quercetin", label: "Quercetin — neuroinflammation & blood-brain-barrier support", limiting: false },
     { key: "creatine", label: "Creatine — brain ATP for glutamate uptake & recycling", limiting: false },
     { key: "coq10", label: "Coenzyme Q10 — mitochondrial brain energy", limiting: false },
     { key: "taurine", label: "Taurine — calms glutamate excitability & astrocyte support", limiting: false },
@@ -2096,19 +2102,102 @@
     { microKey: "thiamin", label: "Thiamin (B1)", limiting: false },
     { microKey: "riboflavin", label: "Riboflavin (B2)", limiting: false },
     { microKey: "niacin", label: "Niacin (B3) — NAD precursor", limiting: false },
+    {
+      microKey: "tryptophan",
+      label: "Tryptophan — NAD via de novo pathway",
+      limiting: false,
+    },
     { microKey: "pantothenicAcid", label: "Pantothenic acid (B5)", limiting: false },
     { microKey: "biotin", label: "Biotin (B7)", limiting: false },
     { microKey: "iron", label: "Iron", limiting: false },
     { microKey: "magnesium", label: "Magnesium", limiting: false },
     { microKey: "manganese", label: "Manganese", limiting: false },
     {
+      microKey: "copper",
+      label: "Copper — Complex IV (cytochrome c oxidase)",
+      limiting: false,
+    },
+    {
       microKey: "taurine",
       label: "Taurine — mitochondrial antioxidant",
       limiting: false,
     },
+    {
+      microKey: "selenium",
+      label: "Selenium — glutathione peroxidase & mtDNA antioxidant defense",
+      limiting: false,
+    },
+    {
+      microKey: "zinc",
+      label: "Zinc — CuZn-SOD (SOD1) antioxidant defense",
+      limiting: false,
+    },
+    {
+      microKey: "choline",
+      label:
+        "Choline — phosphatidylcholine (mitochondrial membrane integrity)",
+      limiting: false,
+    },
   ];
 
-  var LONGEVITY_MITO_FROM_LONGEVITY = [{ key: "coq10", label: "Coenzyme Q10", limiting: false }];
+  var LONGEVITY_MITO_FROM_LONGEVITY = [
+    { key: "coq10", label: "Coenzyme Q10", limiting: false },
+    {
+      key: "pqq",
+      label: "PQQ — mitochondrial biogenesis (PGC-1α) & antioxidant",
+      limiting: false,
+    },
+    {
+      key: "carnitine",
+      label: "L-Carnitine — fatty-acid shuttle into mitochondria",
+      limiting: false,
+    },
+    {
+      key: "creatine",
+      label: "Creatine — phosphocreatine ATP buffer",
+      limiting: false,
+    },
+    {
+      key: "nr",
+      label: "Nicotinamide riboside (NR) — NAD precursor",
+      limiting: false,
+    },
+    { key: "nmn", label: "NMN — immediate NAD precursor", limiting: false },
+    {
+      key: "resveratrol",
+      label: "Resveratrol — sirtuin activation & NAD preservation",
+      limiting: false,
+    },
+    {
+      key: "polyphenols",
+      label: "Polyphenols — help preserve NAD",
+      limiting: false,
+    },
+    {
+      key: "alphaLipoicAcid",
+      label: "Alpha-lipoic acid — PDH/α-KGDH cofactor & antioxidant recycling",
+      limiting: false,
+    },
+    {
+      key: "glutathione",
+      label: "Glutathione — mitochondrial antioxidant (glutathione peroxidase)",
+      limiting: false,
+    },
+  ];
+
+  /** Both EPA and DHA incorporate into mitochondrial membranes; no fixed EPA:DHA ratio. DHA is often the dominant structural PUFA there. */
+  var LONGEVITY_MITO_OMEGA_FROM_LONGEVITY = [
+    {
+      key: "dha",
+      label: "DHA — primary mitochondrial membrane PUFA (fluidity & cardiolipin)",
+      limiting: false,
+    },
+    {
+      key: "epa",
+      label: "EPA — also incorporates into mitochondrial membranes",
+      limiting: false,
+    },
+  ];
 
   var LONGEVITY_CELLULAR_AGING_FROM_MICRO = [
     { microKey: "vitaminD", label: "Vitamin D", limiting: false },
@@ -2125,6 +2214,7 @@
     { key: "selenium", label: "Selenium", limiting: false },
     { key: "polyphenols", label: "Polyphenols", limiting: false },
     { key: "flavonoids", label: "Flavonoids", limiting: false },
+    { key: "quercetin", label: "Quercetin — senolytic flavonoid (D+Q protocol)", limiting: false },
     { key: "resveratrol", label: "Resveratrol", limiting: false },
     { key: "curcumin", label: "Curcumin", limiting: false },
     { key: "epa", label: "EPA", limiting: false },
@@ -2303,6 +2393,7 @@
   var LONGEVITY_VASCULAR_AIM_FROM_LONGEVITY = [
     { key: "nitrate", label: "Nitrate — systemic & brain BP" },
     { key: "flavonoids", label: "Flavonoids — endothelial support" },
+    { key: "quercetin", label: "Quercetin — endothelial & blood-pressure support" },
     { key: "polyphenols", label: "Polyphenols — vascular support" },
     { key: "monounsaturatedFat", label: "Monounsaturated fat — olive-oil pattern" },
   ];
@@ -2405,6 +2496,7 @@
     { key: "methionine", label: "Methionine — SAMe building block" },
     { key: "polyphenols", label: "Polyphenols — mast-cell support" },
     { key: "flavonoids", label: "Flavonoids — mast-cell support" },
+    { key: "quercetin", label: "Quercetin — mast-cell stabilizer & natural antihistamine" },
   ];
 
   var LONGEVITY_HISTAMINE_EPA_DHA_LABEL =
@@ -2709,6 +2801,7 @@
       group: "compounds",
     },
     { key: "flavonoids", label: "Flavonoids", unit: "mg", code: "flav", group: "compounds" },
+    { key: "quercetin", label: "Quercetin", unit: "mg", code: "quer", group: "compounds" },
     { key: "carotenoids", label: "Carotenoids", unit: "mg", code: "car", group: "compounds" },
     { key: "lutein", label: "Lutein", unit: "mg", code: "lut", group: "compounds" },
     { key: "curcumin", label: "Curcumin", unit: "mg", code: "cur", group: "compounds" },
@@ -2720,6 +2813,27 @@
       group: "compounds",
     },
     { key: "coq10", label: "Coenzyme Q10", unit: "mg", code: "coq", group: "compounds" },
+    {
+      key: "pqq",
+      label: "PQQ (pyrroloquinoline quinone)",
+      unit: "mcg",
+      code: "pqq",
+      group: "compounds",
+    },
+    {
+      key: "nr",
+      label: "Nicotinamide riboside (NR)",
+      unit: "mg",
+      code: "nr",
+      group: "compounds",
+    },
+    {
+      key: "nmn",
+      label: "NMN (nicotinamide mononucleotide)",
+      unit: "mg",
+      code: "nmn",
+      group: "compounds",
+    },
     {
       key: "sulforaphane",
       label: "Sulforaphane",
@@ -3671,6 +3785,12 @@
       "  - longevity.glutathione: asparagus, avocado, spinach, okra, whey; food amounts are modest vs supplements (mg)"
     );
     lines.push(
+      "  - longevity.nr: milk/dairy, nutritional yeast, sourdough/bread, broccoli, cucumbers, bananas, oranges, edamame; also supplements (mg; food amounts are tiny)"
+    );
+    lines.push(
+      "  - longevity.nmn: cow’s milk, broccoli, cucumbers; also supplements (mg; food amounts are tiny)"
+    );
+    lines.push(
       "  - longevity EPA/DHA/ALA: fatty fish for EPA & DHA; flax/chia/walnuts for ALA (omega-3 alpha-linolenic acid — not alpha-lipoic acid)"
     );
     lines.push(
@@ -4061,6 +4181,9 @@
     }
     if (fiberColonTipModalEl && !fiberColonTipModalEl.hidden) {
       closeFiberColonTipModal();
+    }
+    if (berberineTipModalEl && !berberineTipModalEl.hidden) {
+      closeBerberineTipModal();
     }
     if (dashDietTipModalEl && !dashDietTipModalEl.hidden) {
       closeDashDietTipModal();
@@ -5289,6 +5412,9 @@
     if (fiberColonTipModalEl && !fiberColonTipModalEl.hidden) {
       closeFiberColonTipModal();
     }
+    if (berberineTipModalEl && !berberineTipModalEl.hidden) {
+      closeBerberineTipModal();
+    }
     if (dashDietTipModalEl && !dashDietTipModalEl.hidden) {
       closeDashDietTipModal();
     }
@@ -6195,8 +6321,20 @@
     return target;
   }
 
+  /** Map unicode vulgar fractions to words so ½ survives token cleanup. */
+  function normalizeFoodSourceFractions(text) {
+    return String(text || "")
+      .replace(/1½/g, "1 half")
+      .replace(/⅜/g, "three eighths")
+      .replace(/¾/g, "three quarters")
+      .replace(/⅓/g, "one third")
+      .replace(/⅔/g, "two thirds")
+      .replace(/¼/g, "one quarter")
+      .replace(/½/g, "half");
+  }
+
   function foodSourceMatchTokens(sourceLabel) {
-    var raw = String(sourceLabel || "");
+    var raw = normalizeFoodSourceFractions(sourceLabel || "");
     var extras = [];
     raw = raw.replace(/\(([^)]*)\)/g, function (_match, inner) {
       String(inner || "")
@@ -6210,7 +6348,7 @@
       .split(/\s*(?:&|\/|,|\band\b|\bor\b)\s*/i)
       .concat(extras)
       .map(function (part) {
-        return part
+        return normalizeFoodSourceFractions(part)
           .replace(/[^a-z0-9\s'-]/gi, " ")
           .replace(/\s+/g, " ")
           .trim()
@@ -6297,9 +6435,16 @@
   }
 
   function foodNameHasServing(name) {
-    var n = String(name || "");
+    var n = normalizeFoodSourceFractions(name || "");
     if (
       /\b\d+([./]\d+)?\s*(cups?|tbsp|tsp|tablespoons?|teaspoons?|oz|g|kg|ml|l|lbs?|pieces?|slices?|softgels?|bites?|handfuls?|servings?)\b/i.test(
+        n
+      )
+    ) {
+      return true;
+    }
+    if (
+      /\b(half|one quarter|three quarters|three eighths|one third|two thirds)\s*(cups?|tbsp|tsp|tablespoons?|teaspoons?|oz|g|kg|ml|l|lbs?|pieces?|slices?|softgels?|bites?|handfuls?|servings?)\b/i.test(
         n
       )
     ) {
@@ -6349,7 +6494,7 @@
   }
 
   function scoreFoodNameAgainstToken(foodName, token) {
-    var name = String(foodName || "").toLowerCase();
+    var name = normalizeFoodSourceFractions(foodName || "").toLowerCase();
     if (!name || !token) return 0;
     var candidates = expandFoodSourceTokenCandidates(token);
     var best = 0;
@@ -7609,6 +7754,9 @@
     if (fiberColonTipModalEl && !fiberColonTipModalEl.hidden) {
       closeFiberColonTipModal();
     }
+    if (berberineTipModalEl && !berberineTipModalEl.hidden) {
+      closeBerberineTipModal();
+    }
     if (dashDietTipModalEl && !dashDietTipModalEl.hidden) {
       closeDashDietTipModal();
     }
@@ -7657,6 +7805,9 @@
     }
     if (fiberColonTipModalEl && !fiberColonTipModalEl.hidden) {
       closeFiberColonTipModal();
+    }
+    if (berberineTipModalEl && !berberineTipModalEl.hidden) {
+      closeBerberineTipModal();
     }
     if (dashDietTipModalEl && !dashDietTipModalEl.hidden) {
       closeDashDietTipModal();
@@ -7709,6 +7860,9 @@
     if (fiberColonTipModalEl && !fiberColonTipModalEl.hidden) {
       closeFiberColonTipModal();
     }
+    if (berberineTipModalEl && !berberineTipModalEl.hidden) {
+      closeBerberineTipModal();
+    }
     if (dashDietTipModalEl && !dashDietTipModalEl.hidden) {
       closeDashDietTipModal();
     }
@@ -7760,6 +7914,9 @@
     if (fiberColonTipModalEl && !fiberColonTipModalEl.hidden) {
       closeFiberColonTipModal();
     }
+    if (berberineTipModalEl && !berberineTipModalEl.hidden) {
+      closeBerberineTipModal();
+    }
     if (dashDietTipModalEl && !dashDietTipModalEl.hidden) {
       closeDashDietTipModal();
     }
@@ -7807,6 +7964,9 @@
     }
     if (fiberColonTipModalEl && !fiberColonTipModalEl.hidden) {
       closeFiberColonTipModal();
+    }
+    if (berberineTipModalEl && !berberineTipModalEl.hidden) {
+      closeBerberineTipModal();
     }
     if (dashDietTipModalEl && !dashDietTipModalEl.hidden) {
       closeDashDietTipModal();
@@ -7879,6 +8039,57 @@
     updateBodyModalOpen();
   }
 
+  function openBerberineTipModal() {
+    if (!berberineTipModalEl) return;
+
+    if (activeImportId) closeImportModal();
+    if (importAllModalEl && !importAllModalEl.hidden) closeImportAllModal();
+    if (importAllMealsModalEl && !importAllMealsModalEl.hidden) {
+      closeImportAllMealsModal();
+    }
+    if (microGapsModalEl && !microGapsModalEl.hidden) closeMicroGapsModal();
+    if (healthTimelineModalEl && !healthTimelineModalEl.hidden) closeHealthTimelineModal();
+    if (microDefModalEl && !microDefModalEl.hidden) closeMicroDefModal();
+    if (phosphorusBinderModalEl && !phosphorusBinderModalEl.hidden) {
+      closePhosphorusBinderModal();
+    }
+    if (caffeineTipModalEl && !caffeineTipModalEl.hidden) closeCaffeineTipModal();
+    if (foodNoteModalEl && !foodNoteModalEl.hidden) closeFoodNoteModal();
+    if (fatsCholesterolTipModalEl && !fatsCholesterolTipModalEl.hidden) {
+      closeFatsCholesterolTipModal();
+    }
+    if (tmaoProtectorsTipModalEl && !tmaoProtectorsTipModalEl.hidden) {
+      closeTmaoProtectorsTipModal();
+    }
+    if (fiberColonTipModalEl && !fiberColonTipModalEl.hidden) {
+      closeFiberColonTipModal();
+    }
+    if (berberineTipModalEl && !berberineTipModalEl.hidden) {
+      closeBerberineTipModal();
+    }
+    if (pufaAntioxidantTipModalEl && !pufaAntioxidantTipModalEl.hidden) {
+      closePufaAntioxidantTipModal();
+    }
+    if (activeMicroId) {
+      saveMicrosFromForm();
+      closeMicroModal();
+    }
+    if (activeLongevityId) {
+      saveLongevityFromForm();
+      closeLongevityModal();
+    }
+
+    berberineTipModalEl.hidden = false;
+    updateBodyModalOpen();
+    if (berberineTipModalDoneBtn) berberineTipModalDoneBtn.focus();
+  }
+
+  function closeBerberineTipModal() {
+    if (!berberineTipModalEl) return;
+    berberineTipModalEl.hidden = true;
+    updateBodyModalOpen();
+  }
+
   function openPufaAntioxidantTipModal() {
     if (!pufaAntioxidantTipModalEl) return;
 
@@ -7903,6 +8114,9 @@
     }
     if (fiberColonTipModalEl && !fiberColonTipModalEl.hidden) {
       closeFiberColonTipModal();
+    }
+    if (berberineTipModalEl && !berberineTipModalEl.hidden) {
+      closeBerberineTipModal();
     }
     if (dashDietTipModalEl && !dashDietTipModalEl.hidden) {
       closeDashDietTipModal();
@@ -7951,6 +8165,9 @@
     }
     if (fiberColonTipModalEl && !fiberColonTipModalEl.hidden) {
       closeFiberColonTipModal();
+    }
+    if (berberineTipModalEl && !berberineTipModalEl.hidden) {
+      closeBerberineTipModal();
     }
     if (dashDietTipModalEl && !dashDietTipModalEl.hidden) {
       closeDashDietTipModal();
@@ -8002,6 +8219,9 @@
     }
     if (fiberColonTipModalEl && !fiberColonTipModalEl.hidden) {
       closeFiberColonTipModal();
+    }
+    if (berberineTipModalEl && !berberineTipModalEl.hidden) {
+      closeBerberineTipModal();
     }
     if (pufaAntioxidantTipModalEl && !pufaAntioxidantTipModalEl.hidden) {
       closePufaAntioxidantTipModal();
@@ -8095,6 +8315,28 @@
       '<p class="dashboard__longevity-processed-note-text">' +
       "Adequate fiber supports colon health—high intake lowers colorectal cancer risk (about 10% per extra 10 g/day) and helps prevent other common conditions like diverticulitis, constipation, and hemorrhoids. The opposite pattern—low fiber with frequent red meat—raises those risks. Aim for 100%+ DV from beans, whole grains, vegetables, and fruit… " +
       '<button type="button" class="dashboard__longevity-tip-link" data-action="open-fiber-colon-tip-modal">Read more</button>' +
+      "</p>" +
+      "</aside>"
+    );
+  }
+
+  function berberineTipHtml(context) {
+    var lead;
+    if (context === "bloodSugar") {
+      lead =
+        "<strong>Berberine (herb / supplement / OTC — not tracked from food):</strong> A plant alkaloid studied for lowering fasting blood sugar and HbA1c and improving insulin sensitivity—small trials often compare it to metformin. It is not a substitute for prescribed diabetes care… ";
+    } else if (context === "cholesterol") {
+      lead =
+        "<strong>Berberine (herb / supplement / OTC — not tracked from food):</strong> A plant alkaloid studied for lowering LDL cholesterol and triglycerides (partly by upregulating LDL receptors), sometimes used alongside or in place of low-dose statins. It is not a substitute for prescribed lipid care… ";
+    } else {
+      lead =
+        "<strong>Berberine (herb / supplement / OTC — not tracked from food):</strong> A plant alkaloid used to help balance the gut microbiome and reduce gut inflammation. It is not a grocery-tracked nutrient and is not a substitute for medical care… ";
+    }
+    return (
+      '<aside class="dashboard__longevity-processed-note dashboard__longevity-processed-note--section" role="note">' +
+      '<p class="dashboard__longevity-processed-note-text">' +
+      lead +
+      '<button type="button" class="dashboard__longevity-tip-link" data-action="open-berberine-tip-modal">Read more</button>' +
       "</p>" +
       "</aside>"
     );
@@ -8355,6 +8597,79 @@
       '<aside class="dashboard__longevity-processed-note dashboard__longevity-processed-note--section" role="note">' +
       '<p class="dashboard__longevity-processed-note-text">' +
       "Omega-3 fatty acids are highly important for thyroid health. They reduce inflammation and oxidative stress, which helps protect the thyroid gland from damage. EPA and DHA also produce metabolic compounds called resolvins that are crucial for managing autoimmune conditions like Hashimoto's disease. Additionally, they ensure cell membrane integrity for proper hormone signaling." +
+      "</p>" +
+      "</aside>"
+    );
+  }
+
+  function mitochondrialEnergyTipHtml() {
+    return (
+      '<aside class="dashboard__longevity-processed-note dashboard__longevity-processed-note--section" role="note">' +
+      '<p class="dashboard__longevity-processed-note-text">' +
+      "<strong>What it means for me:</strong> Mitochondrial energy means you bounce back after workout, stress, etc." +
+      "</p>" +
+      "</aside>"
+    );
+  }
+
+  function mitochondrialNadTipHtml() {
+    return (
+      '<aside class="dashboard__longevity-processed-note dashboard__longevity-processed-note--section" role="note">' +
+      '<p class="dashboard__longevity-processed-note-text">' +
+      "<strong>NAD:</strong> A cellular fuel shuttle that carries energy from food into your mitochondria so they can make ATP. Age and stress can lower NAD+, which often shows up as fatigue or brain fog… " +
+      '<button type="button" class="dashboard__longevity-tip-link" data-longevity-def="nad" aria-haspopup="dialog">Read more</button>' +
+      "</p>" +
+      "</aside>"
+    );
+  }
+
+  function mitochondrialNadPrecursorsTipHtml() {
+    return (
+      '<aside class="dashboard__longevity-processed-note dashboard__longevity-processed-note--section" role="note">' +
+      '<p class="dashboard__longevity-processed-note-text">' +
+      "<strong>NAD from food:</strong> Food does not contain meaningful NAD itself. Your body builds it from niacin, tryptophan, NR, and NMN; polyphenols help preserve the NAD you already have. NR and NMN are in foods like milk, broccoli, and cucumbers, but amounts are tiny… " +
+      '<button type="button" class="dashboard__longevity-tip-link" data-longevity-def="nad" aria-haspopup="dialog">Read more</button>' +
+      "</p>" +
+      "</aside>"
+    );
+  }
+
+  function mitochondrialSupplementsTipHtml() {
+    return (
+      '<aside class="dashboard__longevity-processed-note dashboard__longevity-processed-note--section" role="note">' +
+      '<p class="dashboard__longevity-processed-note-text">' +
+      "<strong>Tip:</strong> Supplements that support mitochondria are CoQ10, phosphatidylcholine, Urolithin A (a postbiotic compound produced when specific gut bacteria break down plant polyphenols—ellagitannins—found in foods like pomegranates, berries, and walnuts), omega-3s, etc." +
+      "</p>" +
+      "</aside>"
+    );
+  }
+
+  function mitochondrialUrolithinTipHtml() {
+    return (
+      '<aside class="dashboard__longevity-processed-note dashboard__longevity-processed-note--section" role="note">' +
+      '<p class="dashboard__longevity-processed-note-text">' +
+      "<strong>Urolithin A:</strong> No food contains it directly—your gut bacteria make it from ellagitannins and ellagic acid in pomegranate (the richest source), berries, and walnuts… " +
+      '<button type="button" class="dashboard__longevity-tip-link" data-longevity-def="urolithinA" aria-haspopup="dialog">Read more</button>' +
+      "</p>" +
+      "</aside>"
+    );
+  }
+
+  function mitochondrialLifestyleTipHtml() {
+    return (
+      '<aside class="dashboard__longevity-processed-note dashboard__longevity-processed-note--section" role="note">' +
+      '<p class="dashboard__longevity-processed-note-text">' +
+      "<strong>Tip:</strong> Fasting and cold plunges. Improving metabolic health, exercising." +
+      "</p>" +
+      "</aside>"
+    );
+  }
+
+  function mitochondrialOmega3TipHtml() {
+    return (
+      '<aside class="dashboard__longevity-processed-note dashboard__longevity-processed-note--section" role="note">' +
+      '<p class="dashboard__longevity-processed-note-text">' +
+      "<strong>EPA &amp; DHA (both — no fixed ratio):</strong> Omega-3s incorporate directly into mitochondrial membranes, improving membrane fluidity, energy (ATP) production, and protecting cells from oxidative stress." +
       "</p>" +
       "</aside>"
     );
@@ -8653,7 +8968,22 @@
     return (
       '<aside class="dashboard__longevity-processed-note dashboard__longevity-processed-note--section" role="note">' +
       '<p class="dashboard__longevity-processed-note-text">' +
-      "<strong>Senomorphics vs senolytics:</strong> Essential vitamins and plant compounds work mainly as senomorphics—they quiet chronic age-related inflammation, neutralize free radicals, and shield DNA from oxidative damage that accelerates cellular aging. That is not the same as true senolytics, which target senescent “zombie” cells directly. For senolytic research compounds, supplements such as fisetin, quercetin, curcumin, and resveratrol are what trials study—food doses are supportive but rarely match supplement protocols." +
+      "<strong>Senomorphics vs senolytics:</strong> Essential vitamins and plant compounds work mainly as senomorphics—they quiet chronic age-related inflammation, neutralize free radicals, and shield DNA from oxidative damage that accelerates cellular aging. That is not the same as true senolytics, which selectively clear senescent “zombie” cells. The best-studied senolytics are fisetin and quercetin (the latter paired with the drug dasatinib); curcumin and resveratrol are usually studied as senomorphic / sirtuin-activating support rather than true senolytics. Food doses are supportive but rarely match supplement protocols." +
+      "</p>" +
+      "</aside>"
+    );
+  }
+
+  function cellularAgingSenolyticsTipHtml() {
+    return (
+      '<aside class="dashboard__longevity-processed-note dashboard__longevity-processed-note--section" role="note">' +
+      '<p class="dashboard__longevity-processed-note-text">' +
+      "<strong>Herbs, OTC &amp; supplements (not tracked from food):</strong> These sort into three mechanisms worth keeping distinct. " +
+      "<strong>Senolytics</strong> (selectively clear senescent cells): <strong>fisetin</strong> (strawberries) is the most potent natural flavonoid in senolytic screens and is in human trials; <strong>quercetin</strong> (onions, capers, apples) is a weak senolytic alone but synergizes with the prescription kinase inhibitor <strong>dasatinib</strong> in the landmark “D+Q” protocol, and is often sold with bromelain for absorption; <strong>piperlongumine</strong> (long pepper) and the curcumin analog EF24 are research-grade senolytics. " +
+      "<strong>Senomorphics / SASP inhibitors</strong> (quiet the senescence-associated secretory phenotype without killing the cell): <strong>apigenin</strong> (parsley, chamomile, celery) blocks the SASP via IKK/NF-κB and also inhibits CD38 to spare NAD+; <strong>theaflavin</strong> (black tea) and EGCG (green tea) act as antioxidant SASP suppressors; culinary curcumin sits here too (NF-κB modulation). " +
+      "<strong>Geroprotectors often grouped in but not senolytic:</strong> <strong>resveratrol</strong> (a sirtuin activator / CR mimetic) and <strong>spermidine</strong> (an autophagy inducer). " +
+      "None are ordinary grocery nutrients, so they have no dashboard rows, and food amounts rarely reach trial doses. Screen for interactions—quercetin and apigenin inhibit CYP3A4, and combining flavonoids with dasatinib, navitoclax, or anticoagulants warrants clinician oversight… " +
+      '<button type="button" class="dashboard__longevity-tip-link" data-longevity-def="sectionCellularAging" aria-haspopup="dialog">Read more</button>' +
       "</p>" +
       "</aside>"
     );
@@ -8945,6 +9275,9 @@
     if (fiberColonTipModalEl && !fiberColonTipModalEl.hidden) {
       closeFiberColonTipModal();
     }
+    if (berberineTipModalEl && !berberineTipModalEl.hidden) {
+      closeBerberineTipModal();
+    }
     if (dashDietTipModalEl && !dashDietTipModalEl.hidden) {
       closeDashDietTipModal();
     }
@@ -9010,6 +9343,9 @@
     if (fiberColonTipModalEl && !fiberColonTipModalEl.hidden) {
       closeFiberColonTipModal();
     }
+    if (berberineTipModalEl && !berberineTipModalEl.hidden) {
+      closeBerberineTipModal();
+    }
     if (dashDietTipModalEl && !dashDietTipModalEl.hidden) {
       closeDashDietTipModal();
     }
@@ -9070,6 +9406,9 @@
     }
     if (fiberColonTipModalEl && !fiberColonTipModalEl.hidden) {
       closeFiberColonTipModal();
+    }
+    if (berberineTipModalEl && !berberineTipModalEl.hidden) {
+      closeBerberineTipModal();
     }
     if (dashDietTipModalEl && !dashDietTipModalEl.hidden) {
       closeDashDietTipModal();
@@ -12126,7 +12465,8 @@
       "Fiber & colon health",
       "sectionFiber",
       '<p class="dashboard__longevity-note">Same fiber value as your micro entries—grouped here for colon health and disease prevention.</p>' +
-        fiberColonTipHtml(),
+        fiberColonTipHtml() +
+        berberineTipHtml("gut"),
       longevityListOpen() +
         longevitySubgroupHtml("From your micro entries", "micro") +
         longevityRowFromMicroKey("fiber", "Fiber", false, weekMicro) +
@@ -12913,7 +13253,13 @@
     html += longevitySectionWrap(
       "Mitochondrial health & cellular energy",
       "sectionMitochondrial",
-      '<p class="dashboard__longevity-note">B vitamins build <button type="button" class="dashboard__longevity-tip-link" data-longevity-def="nad" aria-haspopup="dialog">NAD</button> and related cofactors (FAD, coenzyme A); magnesium and iron support ATP production; manganese supports mitochondrial antioxidant defense via manganese superoxide dismutase (MnSOD); CoQ10 (is also a nutrient) carries electrons in mitochondria. These repeat values from your micro and longevity entries so you can spot gaps in cellular fuel—not just general % DV.</p>',
+      '<p class="dashboard__longevity-note">B vitamins build <button type="button" class="dashboard__longevity-tip-link" data-longevity-def="nad" aria-haspopup="dialog">NAD</button> and related cofactors (FAD, coenzyme A); tryptophan, NR, and NMN also feed NAD; polyphenols and resveratrol help preserve it (resveratrol also activates sirtuins); alpha-lipoic acid is a cofactor for the pyruvate and α-ketoglutarate dehydrogenase complexes that feed the TCA cycle; magnesium and iron support ATP production; carnitine shuttles fatty acids into mitochondria for β-oxidation, while creatine buffers ATP via phosphocreatine; CoQ10 (is also a nutrient) carries electrons in mitochondria, and copper powers Complex IV (cytochrome c oxidase) at the end of the electron transport chain; PQQ (pyrroloquinoline quinone) from plant and fermented foods promotes mitochondrial biogenesis (building new mitochondria via PGC-1α) and acts as a durable antioxidant; manganese (MnSOD), zinc (CuZn-SOD), selenium (glutathione peroxidase), and glutathione defend mitochondria and mtDNA from oxidative stress; choline builds phosphatidylcholine, a major mitochondrial membrane phospholipid that keeps membranes intact and fluid so the electron transport chain can make ATP; EPA and DHA (both) incorporate into mitochondrial membranes. These repeat values from your micro and longevity entries so you can spot gaps in cellular fuel—not just general % DV.</p>' +
+        mitochondrialEnergyTipHtml() +
+        mitochondrialNadTipHtml() +
+        mitochondrialNadPrecursorsTipHtml() +
+        mitochondrialSupplementsTipHtml() +
+        mitochondrialUrolithinTipHtml() +
+        mitochondrialLifestyleTipHtml(),
       longevityListOpen() +
         longevitySubgroupHtml("From your micro entries", "micro") +
         LONGEVITY_MITO_FROM_MICRO.map(function (item) {
@@ -12928,16 +13274,49 @@
         LONGEVITY_MITO_FROM_LONGEVITY.map(function (item) {
           var field = longevityFieldByKey(item.key);
           if (!field) return "";
-          return longevityRowFromLongevityField(field, weekLongevity, weekMicro);
+          return longevityRowFromLongevityField(
+            {
+              key: field.key,
+              label: item.label || field.label,
+              unit: field.unit,
+              code: field.code,
+              group: field.group,
+              limiting: !!item.limiting,
+            },
+            weekLongevity,
+            weekMicro
+          );
         }).join("") +
+        mitochondrialOmega3TipHtml() +
+        LONGEVITY_MITO_OMEGA_FROM_LONGEVITY.map(function (item) {
+          var field = longevityFieldByKey(item.key);
+          if (!field) return "";
+          return longevityRowFromLongevityField(
+            {
+              key: field.key,
+              label: item.label || field.label,
+              unit: field.unit,
+              code: field.code,
+              group: field.group,
+              limiting: !!item.limiting,
+            },
+            weekLongevity,
+            weekMicro
+          );
+        }).join("") +
+        vascularEpaDhaRowHtml(
+          derived,
+          "EPA + DHA — combined mitochondrial membrane omega-3s"
+        ) +
         longevityListClose()
     );
 
     html += longevitySectionWrap(
       "Cellular aging & senomorphics",
       "sectionCellularAging",
-      '<p class="dashboard__longevity-note">Vitamin D downregulates chronic age-related inflammation; vitamin C and E neutralize free radicals that damage DNA. Essential vitamins act like a shield against oxidative stress—the senomorphic side of longevity. See the note below on food vs supplement senolytics.</p>' +
-        senomorphicsTipHtml(),
+        '<p class="dashboard__longevity-note">Vitamin D downregulates chronic age-related inflammation; vitamin C and E neutralize free radicals that damage DNA. Essential vitamins act like a shield against oxidative stress—the senomorphic side of longevity. See the note below on food vs supplement senolytics.</p>' +
+        senomorphicsTipHtml() +
+        cellularAgingSenolyticsTipHtml(),
       longevityListOpen() +
         longevitySubgroupHtml("From your micro entries", "micro") +
         LONGEVITY_CELLULAR_AGING_FROM_MICRO.map(function (item) {
@@ -12962,7 +13341,8 @@
       "Insulin resistance / sensitivity",
       "sectionInsulinResistance",
       '<p class="dashboard__longevity-note">Aim for magnesium, fiber, vitamin D, omega-3s, and monounsaturated fat; watch saturated fat, refined carbs, and added sugar. When calorie-dense sources of those fats and fast carbs dominate, that pattern can support fat gain and insulin resistance over time—not from any single meal, but from years of excess.</p>' +
-        kidneyHerbsBloodGlucoseTipHtml(),
+        kidneyHerbsBloodGlucoseTipHtml() +
+        berberineTipHtml("bloodSugar"),
       longevityListOpen() +
         longevitySubgroupHtml("Aim — higher % DV is better", "aim") +
         LONGEVITY_INSULIN_FROM_MICRO.map(function (item) {
@@ -13395,7 +13775,8 @@
       var noteHtml =
         group.id === "fats"
           ? '<p class="dashboard__longevity-note">Nutrients here support healthy LDL, HDL, total cholesterol, and triglyceride labs—maximize protective fats, plant sterols, fiber, omega-3s, and supporting vitamins; minimize saturated fat, trans fat, and excess dietary cholesterol.</p>' +
-            fatsCholesterolTipHtml()
+            fatsCholesterolTipHtml() +
+            berberineTipHtml("cholesterol")
           : "";
       html += longevitySectionWrap(group.label, group.sectionDefKey, noteHtml, body);
       if (group.id === "compounds") {
@@ -20726,6 +21107,10 @@
         openFiberColonTipModal();
         return;
       }
+      if (e.target.closest('[data-action="open-berberine-tip-modal"]')) {
+        openBerberineTipModal();
+        return;
+      }
       if (e.target.closest('[data-action="open-pufa-antioxidant-tip-modal"]')) {
         openPufaAntioxidantTipModal();
         return;
@@ -21000,6 +21385,18 @@
     fiberColonTipModalEl.addEventListener("click", function (e) {
       if (e.target.closest('[data-action="close-fiber-colon-tip-modal"]')) {
         closeFiberColonTipModal();
+      }
+    });
+  }
+
+  if (berberineTipModalDoneBtn) {
+    berberineTipModalDoneBtn.addEventListener("click", closeBerberineTipModal);
+  }
+
+  if (berberineTipModalEl) {
+    berberineTipModalEl.addEventListener("click", function (e) {
+      if (e.target.closest('[data-action="close-berberine-tip-modal"]')) {
+        closeBerberineTipModal();
       }
     });
   }
