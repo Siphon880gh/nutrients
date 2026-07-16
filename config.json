@@ -84,6 +84,11 @@
     "omega6To3IdealMax": 4,
     "pufaVitaminEAlphaTocopherolPerGram": 0.6
   },
+  "macroSplitNeedTolerance": {
+    "protein": { "maxNeedG": 4, "maxOverG": 12 },
+    "carbs": { "maxNeedG": 4, "maxOverG": 12 },
+    "fats": { "maxNeedG": 2, "maxOverG": 4 }
+  },
   "longevityNavTopicColors": {
     "sectionFiber": "#707680",
     "sectionUpperGiMotility": "#707680",

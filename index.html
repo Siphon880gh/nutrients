@@ -1973,8 +1973,8 @@
           </div>
         </section>
         <section class="settings-modal__section" aria-labelledby="settings-tdee-heading">
-          <h4 id="settings-tdee-heading" class="settings-modal__heading">TDEE</h4>
-          <p class="settings-modal__hint">Total daily energy expenditure — your estimated maintenance calories per day.</p>
+          <h4 id="settings-tdee-heading" class="settings-modal__heading">TDEE and Body Goals</h4>
+          <p class="settings-modal__hint">Total daily energy expenditure — your estimated maintenance calories per day. Optionally pick a body type and goal for a macro split (same guidance as Macro split &amp; body type); the dashboard then shows how much more protein, carbs, and fat you need toward that split.</p>
           <div class="settings-modal__tdee-row">
             <label class="settings-modal__field" for="settings-tdee">
               <span class="settings-modal__field-label">Calories per day</span>
@@ -1982,6 +1982,30 @@
             </label>
             <button type="button" id="settings-tdee-calc-open" class="settings-modal__calc-link">Calculate TDEE…</button>
           </div>
+          <div class="settings-modal__tdee-row settings-modal__macro-split-row">
+            <label class="settings-modal__field" for="settings-macro-body-type">
+              <span class="settings-modal__field-label">Body type</span>
+              <select id="settings-macro-body-type" class="settings-modal__select">
+                <option value="">None</option>
+                <option value="ectomorph">Ectomorph</option>
+                <option value="ecto-mesomorph">Ecto-mesomorph</option>
+                <option value="mesomorph">Mesomorph</option>
+                <option value="meso-endomorph">Meso-endomorph</option>
+                <option value="endomorph">Endomorph</option>
+                <option value="ecto-endomorph">Ecto-endomorph</option>
+              </select>
+            </label>
+            <label class="settings-modal__field" for="settings-macro-goal">
+              <span class="settings-modal__field-label">Goal</span>
+              <select id="settings-macro-goal" class="settings-modal__select" disabled>
+                <option value="">None</option>
+                <option value="weight-loss">Weight loss</option>
+                <option value="bodybuilding">Bodybuilding</option>
+                <option value="maintenance">Maintenance</option>
+              </select>
+            </label>
+          </div>
+          <p id="settings-macro-split-preview" class="settings-modal__macro-split-preview" hidden></p>
         </section>
       </div>
       <footer class="modal__footer">

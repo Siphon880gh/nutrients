@@ -258,6 +258,7 @@ var NutrientsPersist = (function () {
       version: SCHEMA_VERSION,
       demographic: "male",
       tdee: null,
+      macroSplit: null,
       bodyWeightKg: null,
       viewedWeekStart: null,
       dayEditorHeight: null,

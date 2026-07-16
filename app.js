@@ -233,6 +233,11 @@
   var settingsDemographicIconEl = document.getElementById("settings-demographic-icon");
   var settingsDemographicAbbrEl = document.getElementById("settings-demographic-abbr");
   var settingsTdeeEl = document.getElementById("settings-tdee");
+  var settingsMacroBodyTypeEl = document.getElementById("settings-macro-body-type");
+  var settingsMacroGoalEl = document.getElementById("settings-macro-goal");
+  var settingsMacroSplitPreviewEl = document.getElementById(
+    "settings-macro-split-preview"
+  );
   var settingsWeightEl = document.getElementById("settings-weight");
   var settingsWeightKgBtn = document.getElementById("settings-weight-kg");
   var settingsWeightLbBtn = document.getElementById("settings-weight-lb");
@@ -407,6 +412,7 @@
   var microSaveTimer;
   var demographic = DEFAULT_DEMOGRAPHIC;
   var userTdee = null;
+  var userMacroSplit = null;
   var userBodyWeightKg = null;
   var settingsWeightUnit = "lb";
   var tdeeCalcSex = DEFAULT_DEMOGRAPHIC;
@@ -10764,6 +10770,34 @@
 
   var microDvStatus = DEFAULT_MICRO_DV_STATUS;
 
+  var DEFAULT_MACRO_SPLIT_NEED_TOLERANCE = {
+    protein: { maxNeedG: 4, maxOverG: 12 },
+    carbs: { maxNeedG: 4, maxOverG: 12 },
+    fats: { maxNeedG: 2, maxOverG: 4 },
+  };
+
+  var macroSplitNeedTolerance = DEFAULT_MACRO_SPLIT_NEED_TOLERANCE;
+
+  function normalizeMacroSplitNeedTolerance(raw) {
+    function one(src, fallback) {
+      var srcObj = src && typeof src === "object" ? src : {};
+      var maxNeedG = Number(srcObj.maxNeedG);
+      var maxOverG = Number(srcObj.maxOverG);
+      return {
+        maxNeedG:
+          !isNaN(maxNeedG) && maxNeedG >= 0 ? maxNeedG : fallback.maxNeedG,
+        maxOverG:
+          !isNaN(maxOverG) && maxOverG >= 0 ? maxOverG : fallback.maxOverG,
+      };
+    }
+    var rawObj = raw && typeof raw === "object" ? raw : {};
+    return {
+      protein: one(rawObj.protein, DEFAULT_MACRO_SPLIT_NEED_TOLERANCE.protein),
+      carbs: one(rawObj.carbs, DEFAULT_MACRO_SPLIT_NEED_TOLERANCE.carbs),
+      fats: one(rawObj.fats, DEFAULT_MACRO_SPLIT_NEED_TOLERANCE.fats),
+    };
+  }
+
   var DEFAULT_LIMITING_TIERS = [
     { id: "red", minPercent: 100, color: "#b42318", fontWeight: 800 },
     { id: "orange", minPercent: 70, color: "#c45c00", fontWeight: 800 },
@@ -10918,6 +10952,9 @@
         longevityNavTopicColors = normalizeLongevityNavTopicColors(
           data.longevityNavTopicColors
         );
+        macroSplitNeedTolerance = normalizeMacroSplitNeedTolerance(
+          data.macroSplitNeedTolerance
+        );
         refreshLongevityNavTopicColors();
         done();
       })
@@ -10925,6 +10962,7 @@
         microDvStatus = DEFAULT_MICRO_DV_STATUS;
         longevityDvStatus = DEFAULT_LONGEVITY_STATUS;
         longevityNavTopicColors = {};
+        macroSplitNeedTolerance = DEFAULT_MACRO_SPLIT_NEED_TOLERANCE;
         done();
       });
   }
@@ -14607,6 +14645,312 @@
     return userTdee != null && userTdee > 0 ? userTdee : null;
   }
 
+  var MACRO_SPLIT_GOALS = {
+    "weight-loss": { id: "weight-loss", label: "Weight loss" },
+    bodybuilding: { id: "bodybuilding", label: "Bodybuilding" },
+    maintenance: { id: "maintenance", label: "Maintenance" },
+  };
+
+  // Mid-range P/C/F % by body type × goal (aligned with MACRO_BODY_TYPES guidance).
+  var MACRO_SPLIT_BODY_TYPES = {
+    ectomorph: {
+      id: "ectomorph",
+      label: "Ectomorph",
+      goals: {
+        "weight-loss": { proteinPct: 30, carbsPct: 40, fatsPct: 30 },
+        bodybuilding: { proteinPct: 25, carbsPct: 50, fatsPct: 25 },
+        maintenance: { proteinPct: 30, carbsPct: 45, fatsPct: 25 },
+      },
+    },
+    "ecto-mesomorph": {
+      id: "ecto-mesomorph",
+      label: "Ecto-mesomorph",
+      goals: {
+        "weight-loss": { proteinPct: 35, carbsPct: 35, fatsPct: 30 },
+        bodybuilding: { proteinPct: 30, carbsPct: 45, fatsPct: 25 },
+        maintenance: { proteinPct: 30, carbsPct: 40, fatsPct: 30 },
+      },
+    },
+    mesomorph: {
+      id: "mesomorph",
+      label: "Mesomorph",
+      goals: {
+        "weight-loss": { proteinPct: 35, carbsPct: 35, fatsPct: 30 },
+        bodybuilding: { proteinPct: 30, carbsPct: 45, fatsPct: 25 },
+        maintenance: { proteinPct: 30, carbsPct: 40, fatsPct: 30 },
+      },
+    },
+    "meso-endomorph": {
+      id: "meso-endomorph",
+      label: "Meso-endomorph",
+      goals: {
+        "weight-loss": { proteinPct: 35, carbsPct: 30, fatsPct: 35 },
+        bodybuilding: { proteinPct: 32, carbsPct: 40, fatsPct: 28 },
+        maintenance: { proteinPct: 35, carbsPct: 35, fatsPct: 30 },
+      },
+    },
+    endomorph: {
+      id: "endomorph",
+      label: "Endomorph",
+      goals: {
+        "weight-loss": { proteinPct: 40, carbsPct: 30, fatsPct: 30 },
+        bodybuilding: { proteinPct: 35, carbsPct: 35, fatsPct: 30 },
+        maintenance: { proteinPct: 35, carbsPct: 35, fatsPct: 30 },
+      },
+    },
+    "ecto-endomorph": {
+      id: "ecto-endomorph",
+      label: "Ecto-endomorph",
+      goals: {
+        "weight-loss": { proteinPct: 35, carbsPct: 30, fatsPct: 35 },
+        bodybuilding: { proteinPct: 32, carbsPct: 40, fatsPct: 28 },
+        maintenance: { proteinPct: 35, carbsPct: 35, fatsPct: 30 },
+      },
+    },
+  };
+
+  function normalizeMacroSplitValue(value) {
+    if (!value) return null;
+    if (typeof value === "string") {
+      // Legacy goal-only ids → default mesomorph + that goal.
+      if (!MACRO_SPLIT_GOALS[value]) return null;
+      return { bodyType: "mesomorph", goal: value };
+    }
+    if (typeof value !== "object") return null;
+    var bodyType = value.bodyType;
+    var goal = value.goal;
+    if (!MACRO_SPLIT_BODY_TYPES[bodyType] || !MACRO_SPLIT_GOALS[goal]) {
+      return null;
+    }
+    return { bodyType: bodyType, goal: goal };
+  }
+
+  function getMacroSplit() {
+    return normalizeMacroSplitValue(userMacroSplit);
+  }
+
+  function getMacroSplitPreset() {
+    var split = getMacroSplit();
+    if (!split) return null;
+    var body = MACRO_SPLIT_BODY_TYPES[split.bodyType];
+    var goalMeta = MACRO_SPLIT_GOALS[split.goal];
+    var pct = body && body.goals ? body.goals[split.goal] : null;
+    if (!body || !goalMeta || !pct) return null;
+    return {
+      bodyType: split.bodyType,
+      goal: split.goal,
+      label: body.label + " · " + goalMeta.label,
+      proteinPct: pct.proteinPct,
+      carbsPct: pct.carbsPct,
+      fatsPct: pct.fatsPct,
+    };
+  }
+
+  function saveMacroSplit() {
+    if (!persist) return;
+    persist.setSetting("macroSplit", getMacroSplit());
+  }
+
+  function loadMacroSplit() {
+    if (!persist) {
+      userMacroSplit = null;
+      return;
+    }
+    userMacroSplit = normalizeMacroSplitValue(persist.getSetting("macroSplit"));
+  }
+
+  function syncSettingsMacroSplitPreview() {
+    if (!settingsMacroSplitPreviewEl) return;
+    var preset = getMacroSplitPreset();
+    if (!preset) {
+      settingsMacroSplitPreviewEl.hidden = true;
+      settingsMacroSplitPreviewEl.textContent = "";
+      return;
+    }
+    settingsMacroSplitPreviewEl.hidden = false;
+    settingsMacroSplitPreviewEl.textContent =
+      preset.label +
+      " — " +
+      preset.proteinPct +
+      "% P / " +
+      preset.carbsPct +
+      "% C / " +
+      preset.fatsPct +
+      "% F";
+  }
+
+  function syncSettingsMacroSplitInput() {
+    var split = getMacroSplit();
+    var bodyType = split ? split.bodyType : "";
+    var goal = split ? split.goal : "";
+    if (settingsMacroBodyTypeEl) {
+      settingsMacroBodyTypeEl.value = bodyType;
+    }
+    if (settingsMacroGoalEl) {
+      settingsMacroGoalEl.value = bodyType ? goal : "";
+      settingsMacroGoalEl.disabled = !bodyType;
+    }
+    syncSettingsMacroSplitPreview();
+  }
+
+  function readSettingsMacroSplitFromInput() {
+    var bodyType =
+      settingsMacroBodyTypeEl && settingsMacroBodyTypeEl.value
+        ? settingsMacroBodyTypeEl.value
+        : "";
+    var goal =
+      settingsMacroGoalEl && settingsMacroGoalEl.value
+        ? settingsMacroGoalEl.value
+        : "";
+    if (!bodyType) {
+      userMacroSplit = null;
+      if (settingsMacroGoalEl) {
+        settingsMacroGoalEl.value = "";
+        settingsMacroGoalEl.disabled = true;
+      }
+    } else if (!goal) {
+      userMacroSplit = null;
+      if (settingsMacroGoalEl) {
+        settingsMacroGoalEl.disabled = false;
+      }
+    } else {
+      userMacroSplit = normalizeMacroSplitValue({
+        bodyType: bodyType,
+        goal: goal,
+      });
+      if (settingsMacroGoalEl) {
+        settingsMacroGoalEl.disabled = false;
+      }
+    }
+    saveMacroSplit();
+    syncSettingsMacroSplitPreview();
+  }
+
+  function macroTargetsFromCalories(calories, split) {
+    if (!split || !(calories > 0)) {
+      return { protein: 0, carbs: 0, fats: 0 };
+    }
+    return {
+      protein: (calories * (split.proteinPct / 100)) / 4,
+      carbs: (calories * (split.carbsPct / 100)) / 4,
+      fats: (calories * (split.fatsPct / 100)) / 9,
+    };
+  }
+
+  function macroSplitCalorieBudget(fallbackCalories) {
+    var tdee = getTdee();
+    if (tdee != null) return tdee;
+    if (fallbackCalories > 0) return fallbackCalories;
+    return null;
+  }
+
+  function macroNeedDeltas(totals, calorieBudget, split) {
+    var targets = macroTargetsFromCalories(calorieBudget, split);
+    return {
+      protein: targets.protein - (totals.protein || 0),
+      carbs: targets.carbs - (totals.carbs || 0),
+      fats: targets.fats - (totals.fats || 0),
+    };
+  }
+
+  function macroNeedToleranceFor(macroKey) {
+    var tol =
+      macroSplitNeedTolerance && macroSplitNeedTolerance[macroKey]
+        ? macroSplitNeedTolerance[macroKey]
+        : DEFAULT_MACRO_SPLIT_NEED_TOLERANCE[macroKey];
+    return tol || { maxNeedG: 0, maxOverG: 0 };
+  }
+
+  function isMacroNeedMet(macroKey, deltaGrams) {
+    var tol = macroNeedToleranceFor(macroKey);
+    return deltaGrams >= -tol.maxOverG && deltaGrams <= tol.maxNeedG;
+  }
+
+  function formatMacroNeedDelta(macroKey, deltaGrams) {
+    var n = Math.round(deltaGrams);
+    if (isMacroNeedMet(macroKey, deltaGrams)) {
+      if (n === 0) return "Met 0";
+      return "Met " + (n > 0 ? "+" : "") + n + "g";
+    }
+    return (n > 0 ? "+" : "") + n + "g";
+  }
+
+  function macroNeedPartHtml(letter, macroKey, deltaGrams) {
+    var met = isMacroNeedMet(macroKey, deltaGrams);
+    return (
+      '<span class="dashboard__macro-need-item' +
+      (met ? " dashboard__macro-need-item--met" : "") +
+      '">' +
+      '<span class="dashboard__macro-need-key">' +
+      letter +
+      "</span>" +
+      '<span class="dashboard__macro-need-amt">' +
+      escapeHtml(formatMacroNeedDelta(macroKey, deltaGrams)) +
+      "</span></span>"
+    );
+  }
+
+  function macroNeedValsHtml(deltas) {
+    return (
+      macroNeedPartHtml("P", "protein", deltas.protein) +
+      '<span class="week-summary__macro-need-sep"> · </span>' +
+      macroNeedPartHtml("C", "carbs", deltas.carbs) +
+      '<span class="week-summary__macro-need-sep"> · </span>' +
+      macroNeedPartHtml("F", "fats", deltas.fats)
+    );
+  }
+
+  function dashboardMacroNeedBlockHtml(totals, isToday) {
+    var split = getMacroSplitPreset();
+    if (!split) return "";
+    var budget = macroSplitCalorieBudget(totals.totalCal);
+    if (budget == null) return "";
+    var deltas = macroNeedDeltas(totals, budget, split);
+    return (
+      '<aside class="dashboard__macro-need' +
+      (isToday ? " dashboard__macro-need--today" : "") +
+      '" aria-label="Macro split need">' +
+      '<span class="dashboard__macro-need-label">Need</span>' +
+      '<span class="dashboard__macro-need-list">' +
+      macroNeedPartHtml("P", "protein", deltas.protein) +
+      macroNeedPartHtml("C", "carbs", deltas.carbs) +
+      macroNeedPartHtml("F", "fats", deltas.fats) +
+      "</span></aside>"
+    );
+  }
+
+  function weekSummaryMacroNeedHtml(week) {
+    var split = getMacroSplitPreset();
+    if (!split) return "";
+    var dayCount = DAYS.length;
+    var dayAvgTotals = {
+      protein: week.protein / dayCount,
+      carbs: week.carbs / dayCount,
+      fats: week.fats / dayCount,
+      totalCal: week.totalCal / dayCount,
+    };
+    var budget = macroSplitCalorieBudget(dayAvgTotals.totalCal);
+    if (budget == null) return "";
+    var deltas = macroNeedDeltas(dayAvgTotals, budget, split);
+    return (
+      '<div class="week-summary__macros-block">' +
+      '<div class="week-summary__macro-need">' +
+      '<span class="week-summary__macro-need-label">Need vs ' +
+      escapeHtml(split.label) +
+      " (day avg)</span>" +
+      '<span class="week-summary__macro-need-vals">' +
+      macroNeedValsHtml(deltas) +
+      "</span>" +
+      " · target " +
+      split.proteinPct +
+      "/" +
+      split.carbsPct +
+      "/" +
+      split.fatsPct +
+      "</div></div>"
+    );
+  }
+
   function saveBodyWeight() {
     if (!persist) return;
     persist.setSetting(
@@ -14806,6 +15150,7 @@
     loadStickyIconHighlights();
     loadDemographic();
     loadTdee();
+    loadMacroSplit();
     loadBodyWeight();
   }
 
@@ -14825,6 +15170,7 @@
     renderDemographicUi();
     syncDayHighlightsToggleUi();
     syncSettingsTdeeInput();
+    syncSettingsMacroSplitInput();
     setSettingsWeightUnit(settingsWeightUnit);
     updateKeywordReorderUi();
     updateKeywordCaloriesUi();
@@ -14875,6 +15221,7 @@
   function openSettingsModal() {
     if (!settingsModalEl) return;
     syncSettingsTdeeInput();
+    syncSettingsMacroSplitInput();
     setSettingsWeightUnit(settingsWeightUnit);
     syncSettingsWeightInput();
     settingsModalEl.hidden = false;
@@ -14887,12 +15234,11 @@
   function closeSettingsModal() {
     if (!settingsModalEl) return;
     readSettingsTdeeFromInput();
+    readSettingsMacroSplitFromInput();
     readSettingsWeightFromInput();
     settingsModalEl.hidden = true;
     updateBodyModalOpen();
-    if (weekTotalOpen && lastWeekTotals) {
-      renderWeekSummary(lastWeekTotals);
-    }
+    renderDashboard();
     if (microRequirementsOpen) {
       renderMicroRequirements();
     }
@@ -15571,6 +15917,7 @@
     }
 
     return (
+      '<div class="dashboard__day">' +
       '<article class="dashboard__card' +
       (isToday ? " dashboard__card--today" : "") +
       '">' +
@@ -15602,7 +15949,9 @@
       '<div class="dashboard__row dashboard__row--total"><span class="dashboard__macro">Total</span><span class="dashboard__val">' +
       fmtNum(totals.totalCal) +
       " cal</span></div>" +
-      "</article>"
+      "</article>" +
+      dashboardMacroNeedBlockHtml(totals, isToday) +
+      "</div>"
     );
   }
 
@@ -15719,6 +16068,7 @@
         weekSummaryMacroExplainLinkHtml() +
         "</div>";
     }
+    var macroNeedHtml = weekSummaryMacroNeedHtml(week);
 
     weekSummaryEl.innerHTML =
       '<div class="week-summary__stats">' +
@@ -15742,6 +16092,7 @@
       '<div class="week-summary__detail">' +
       thirdStatHtml +
       macrosHtml +
+      macroNeedHtml +
       "</div>";
   }
 
@@ -21725,6 +22076,19 @@
 
   if (settingsTdeeEl) {
     settingsTdeeEl.addEventListener("change", readSettingsTdeeFromInput);
+  }
+
+  function onSettingsMacroSplitChange() {
+    readSettingsMacroSplitFromInput();
+    renderDashboard();
+  }
+
+  if (settingsMacroBodyTypeEl) {
+    settingsMacroBodyTypeEl.addEventListener("change", onSettingsMacroSplitChange);
+  }
+
+  if (settingsMacroGoalEl) {
+    settingsMacroGoalEl.addEventListener("change", onSettingsMacroSplitChange);
   }
 
   if (settingsWeightKgBtn) {

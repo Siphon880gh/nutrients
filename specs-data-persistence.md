@@ -150,6 +150,7 @@ One settings document per user:
   version: 2,
   demographic: "male" | "female",
   tdee: number | null,
+  macroSplit: null | { bodyType: "ectomorph" | "ecto-mesomorph" | "mesomorph" | "meso-endomorph" | "endomorph" | "ecto-endomorph", goal: "weight-loss" | "bodybuilding" | "maintenance" },
   bodyWeightKg: number | null,
   viewedWeekStart: string | null,   // Monday YYYY-MM-DD
   dayEditorHeight: number | null,
