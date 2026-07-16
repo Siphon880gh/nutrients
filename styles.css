@@ -4576,6 +4576,85 @@ button.dashboard__longevity-name:focus-visible {
   transform: scaleX(-1);
 }
 
+.macro-rank-modal__scope-wrap {
+  display: inline-flex;
+  align-items: center;
+  flex: 0 0 auto;
+  gap: 0.4rem;
+}
+
+.macro-rank-modal__scope {
+  flex: 0 0 auto;
+}
+
+.macro-rank-modal__scope-info {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.25rem;
+  height: 1.25rem;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: #b8b8b2;
+  cursor: pointer;
+}
+
+.macro-rank-modal__scope-info:hover,
+.macro-rank-modal__scope-info:focus-visible,
+.macro-rank-modal__scope-info[aria-expanded="true"] {
+  color: #7a7a74;
+  background: #f2f2ef;
+}
+
+.macro-rank-modal__scope-info:focus-visible {
+  outline: 2px solid #3d6b9e;
+  outline-offset: 1px;
+}
+
+.macro-rank-modal__scope-info-icon {
+  display: block;
+}
+
+.macro-rank-modal__scope-tip {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  z-index: 70;
+  width: min(16.5rem, calc(100vw - 3rem));
+  padding: 0.45rem 0.6rem;
+  border-radius: 4px;
+  background: #1a1a1a;
+  color: #fff;
+  font-size: 0.72rem;
+  font-weight: 500;
+  line-height: 1.35;
+  text-align: left;
+  white-space: normal;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+}
+
+.macro-rank-modal__scope-tip::before {
+  content: "";
+  position: absolute;
+  bottom: 100%;
+  left: 0.35rem;
+  border: 5px solid transparent;
+  border-bottom-color: #1a1a1a;
+}
+
+.macro-rank-modal__scope-info:hover .macro-rank-modal__scope-tip,
+.macro-rank-modal__scope-info:focus-visible .macro-rank-modal__scope-tip,
+.macro-rank-modal__scope-info[aria-expanded="true"] .macro-rank-modal__scope-tip {
+  opacity: 1;
+  visibility: visible;
+}
+
 .macro-rank-modal__tabs {
   display: flex;
   gap: 0;

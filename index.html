@@ -1852,6 +1852,30 @@
         <button type="button" class="macro-rank-modal__tab" role="tab" id="macro-rank-tab-fats" data-macro-rank-tab="fats" aria-selected="false" aria-controls="macro-rank-body" tabindex="-1">Fats</button>
       </div>
       <div class="micro-sources-modal__toolbar">
+        <div class="macro-rank-modal__scope-wrap">
+          <span class="micro-sources-modal__label" id="macro-rank-scope-label">Period</span>
+          <button
+            type="button"
+            id="macro-rank-scope-info"
+            class="macro-rank-modal__scope-info"
+            aria-expanded="false"
+            aria-controls="macro-rank-scope-tip"
+            aria-label="About Daily and Weekly ranking"
+          >
+            <svg class="macro-rank-modal__scope-info-icon" viewBox="0 0 16 16" width="13" height="13" aria-hidden="true" focusable="false">
+              <circle cx="8" cy="8" r="6.25" fill="none" stroke="currentColor" stroke-width="1.2"></circle>
+              <path d="M8 7.1v4.4" fill="none" stroke="currentColor" stroke-width="1.35" stroke-linecap="round"></path>
+              <circle cx="8" cy="4.75" r="0.7" fill="currentColor"></circle>
+            </svg>
+            <span id="macro-rank-scope-tip" class="macro-rank-modal__scope-tip" role="tooltip">
+              Daily ranks matched foods from this day only. Weekly ranks foods matched across Mon–Sun for the viewed week, combining amounts when the same food appears on multiple days.
+            </span>
+          </button>
+          <div class="dashboard__micro-segmented macro-rank-modal__scope" role="group" aria-labelledby="macro-rank-scope-label">
+            <button type="button" id="macro-rank-scope-daily" class="dashboard__micro-segment" aria-pressed="true">Daily</button>
+            <button type="button" id="macro-rank-scope-weekly" class="dashboard__micro-segment" aria-pressed="false">Weekly</button>
+          </div>
+        </div>
         <label class="micro-sources-modal__label" for="macro-rank-filter">Find</label>
         <input
           type="search"

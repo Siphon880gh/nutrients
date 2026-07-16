@@ -430,12 +430,16 @@
   var dashboardMacroPctView = false;
   var activeMacroRankDayId = null;
   var activeMacroRankTab = "protein";
+  var activeMacroRankScope = "daily";
   var activeMacroRankSort = { key: "amount", dir: "desc" };
   var activeMacroRankFilter = "";
   var macroRankModalEl = document.getElementById("macro-rank-modal");
   var macroRankModalTitleEl = document.getElementById("macro-rank-modal-title");
   var macroRankModalSubtitleEl = document.getElementById("macro-rank-modal-subtitle");
   var macroRankTabsEl = document.getElementById("macro-rank-tabs");
+  var macroRankScopeDailyBtn = document.getElementById("macro-rank-scope-daily");
+  var macroRankScopeWeeklyBtn = document.getElementById("macro-rank-scope-weekly");
+  var macroRankScopeInfoBtn = document.getElementById("macro-rank-scope-info");
   var macroRankFilterEl = document.getElementById("macro-rank-filter");
   var macroRankBodyEl = document.getElementById("macro-rank-body");
   var macroRankModalDoneBtn = document.getElementById("macro-rank-modal-done");
@@ -9969,6 +9973,43 @@
     return list;
   }
 
+  function macroContributionsForScope(macroKey, scope) {
+    if (scope === "weekly") {
+      var merged = {};
+      DAYS.forEach(function (day) {
+        var el = document.getElementById(day.id);
+        var text = el ? el.value : "";
+        macroContributionsFromText(text, macroKey).forEach(function (item) {
+          var k = item.name.toLowerCase();
+          if (merged[k]) {
+            merged[k].amount += item.amount;
+            merged[k].hits += item.hits;
+          } else {
+            merged[k] = {
+              name: item.name,
+              amount: item.amount,
+              hits: item.hits,
+              perServing: item.perServing,
+            };
+          }
+        });
+      });
+      return Object.keys(merged)
+        .map(function (k) {
+          return merged[k];
+        })
+        .sort(function (a, b) {
+          return b.amount - a.amount;
+        });
+    }
+
+    var dayEl = activeMacroRankDayId
+      ? document.getElementById(activeMacroRankDayId)
+      : null;
+    var dayText = dayEl ? dayEl.value : "";
+    return macroContributionsFromText(dayText, macroKey);
+  }
+
   function macroRankTabLabel(tab) {
     if (tab === "carbs") return "Carbs";
     if (tab === "fats") return "Fats";
@@ -9978,6 +10019,10 @@
   function normalizeMacroRankTab(tab) {
     if (tab === "carbs" || tab === "fats" || tab === "protein") return tab;
     return "protein";
+  }
+
+  function normalizeMacroRankScope(scope) {
+    return scope === "weekly" ? "weekly" : "daily";
   }
 
   function syncMacroRankTabsUi() {
@@ -9999,6 +10044,48 @@
     }
   }
 
+  function syncMacroRankScopeUi() {
+    var isWeekly = activeMacroRankScope === "weekly";
+    if (macroRankScopeDailyBtn) {
+      macroRankScopeDailyBtn.setAttribute("aria-pressed", isWeekly ? "false" : "true");
+    }
+    if (macroRankScopeWeeklyBtn) {
+      macroRankScopeWeeklyBtn.setAttribute("aria-pressed", isWeekly ? "true" : "false");
+    }
+  }
+
+  function syncMacroRankHeaderUi() {
+    var day = null;
+    if (activeMacroRankDayId) {
+      for (var i = 0; i < DAYS.length; i++) {
+        if (DAYS[i].id === activeMacroRankDayId) {
+          day = DAYS[i];
+          break;
+        }
+      }
+    }
+    if (macroRankModalTitleEl) {
+      if (activeMacroRankScope === "weekly") {
+        var weekLabel = formatWeekRangeLabel(viewedWeekStart);
+        macroRankModalTitleEl.textContent = weekLabel
+          ? "Week of " + weekLabel
+          : "Full week";
+      } else if (day) {
+        var dateLabel = dateLabelForDayId(activeMacroRankDayId);
+        macroRankModalTitleEl.textContent =
+          day.label + (dateLabel ? " " + dateLabel : "");
+      } else {
+        macroRankModalTitleEl.textContent = "Ranked macros";
+      }
+    }
+    if (macroRankModalSubtitleEl) {
+      macroRankModalSubtitleEl.textContent =
+        activeMacroRankScope === "weekly"
+          ? "Matched foods from Mon–Sun, ranked by protein, carbs, or fats"
+          : "Matched foods ranked by protein, carbs, or fats";
+    }
+  }
+
   function syncMacroRankFilterUi() {
     if (!macroRankFilterEl) return;
     if (macroRankFilterEl.value !== activeMacroRankFilter) {
@@ -10008,14 +10095,13 @@
 
   function renderMacroRankBody() {
     if (!macroRankBodyEl || !activeMacroRankDayId) return;
-    var dayEl = document.getElementById(activeMacroRankDayId);
-    var text = dayEl ? dayEl.value : "";
     var tab = normalizeMacroRankTab(activeMacroRankTab);
-    var list = macroContributionsFromText(text, tab);
+    var list = macroContributionsForScope(tab, activeMacroRankScope);
     if (!list.length) {
       macroRankBodyEl.innerHTML =
         '<p class="micro-sources-modal__empty">No matched foods with ' +
         escapeHtml(macroRankTabLabel(tab).toLowerCase()) +
+        (activeMacroRankScope === "weekly" ? " this week" : "") +
         ".</p>";
       return;
     }
@@ -10050,17 +10136,13 @@
 
     activeMacroRankDayId = dayId;
     activeMacroRankTab = "protein";
+    activeMacroRankScope = "daily";
     activeMacroRankSort = defaultSourcesSortForKey("amount");
     activeMacroRankFilter = "";
-    var dateLabel = dateLabelForDayId(dayId);
-    if (macroRankModalTitleEl) {
-      macroRankModalTitleEl.textContent = day.label + (dateLabel ? " " + dateLabel : "");
-    }
-    if (macroRankModalSubtitleEl) {
-      macroRankModalSubtitleEl.textContent =
-        "Matched foods ranked by protein, carbs, or fats";
-    }
+    setMacroRankScopeTipOpen(false);
     syncMacroRankTabsUi();
+    syncMacroRankScopeUi();
+    syncMacroRankHeaderUi();
     syncMacroRankFilterUi();
     renderMacroRankBody();
     macroRankModalEl.hidden = false;
@@ -10081,9 +10163,12 @@
     if (!macroRankModalEl) return;
     activeMacroRankDayId = null;
     activeMacroRankTab = "protein";
+    activeMacroRankScope = "daily";
     activeMacroRankSort = defaultSourcesSortForKey("amount");
     activeMacroRankFilter = "";
+    setMacroRankScopeTipOpen(false);
     syncMacroRankFilterUi();
+    syncMacroRankScopeUi();
     if (macroRankBodyEl) macroRankBodyEl.innerHTML = "";
     syncMacroRankTabsUi();
     macroRankModalEl.hidden = true;
@@ -10094,6 +10179,24 @@
     activeMacroRankTab = normalizeMacroRankTab(tab);
     syncMacroRankTabsUi();
     renderMacroRankBody();
+  }
+
+  function setMacroRankScope(scope) {
+    activeMacroRankScope = normalizeMacroRankScope(scope);
+    syncMacroRankScopeUi();
+    syncMacroRankHeaderUi();
+    renderMacroRankBody();
+  }
+
+  function setMacroRankScopeTipOpen(open) {
+    if (!macroRankScopeInfoBtn) return;
+    macroRankScopeInfoBtn.setAttribute("aria-expanded", open ? "true" : "false");
+  }
+
+  function toggleMacroRankScopeTip() {
+    if (!macroRankScopeInfoBtn) return;
+    var open = macroRankScopeInfoBtn.getAttribute("aria-expanded") === "true";
+    setMacroRankScopeTipOpen(!open);
   }
 
   function microContributionsForScope(microKey, scope) {
@@ -22254,6 +22357,25 @@
     macroRankModalDoneBtn.addEventListener("click", closeMacroRankModal);
   }
 
+  if (macroRankScopeDailyBtn) {
+    macroRankScopeDailyBtn.addEventListener("click", function () {
+      setMacroRankScope("daily");
+    });
+  }
+
+  if (macroRankScopeWeeklyBtn) {
+    macroRankScopeWeeklyBtn.addEventListener("click", function () {
+      setMacroRankScope("weekly");
+    });
+  }
+
+  if (macroRankScopeInfoBtn) {
+    macroRankScopeInfoBtn.addEventListener("click", function (e) {
+      e.stopPropagation();
+      toggleMacroRankScopeTip();
+    });
+  }
+
   if (macroRankFilterEl) {
     macroRankFilterEl.addEventListener("input", function () {
       activeMacroRankFilter = macroRankFilterEl.value || "";
@@ -22266,6 +22388,13 @@
       if (e.target.closest('[data-action="close-macro-rank-modal"]')) {
         closeMacroRankModal();
         return;
+      }
+      if (
+        macroRankScopeInfoBtn &&
+        macroRankScopeInfoBtn.getAttribute("aria-expanded") === "true" &&
+        !macroRankScopeInfoBtn.contains(e.target)
+      ) {
+        setMacroRankScopeTipOpen(false);
       }
       var tabBtn = e.target.closest("[data-macro-rank-tab]");
       if (tabBtn && macroRankModalEl.contains(tabBtn)) {
