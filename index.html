@@ -1837,6 +1837,38 @@
     </div>
   </div>
 
+  <div id="macro-rank-modal" class="modal" hidden>
+    <div class="modal__backdrop" data-action="close-macro-rank-modal"></div>
+    <div class="modal__panel modal__panel--wide" role="dialog" aria-modal="true" aria-labelledby="macro-rank-modal-title">
+      <header class="modal__header">
+        <div class="modal__header-text">
+          <h3 id="macro-rank-modal-title" class="modal__title">Ranked macros</h3>
+          <p id="macro-rank-modal-subtitle" class="modal__subtitle">Matched foods ranked by protein, carbs, or fats</p>
+        </div>
+      </header>
+      <div class="macro-rank-modal__tabs" id="macro-rank-tabs" role="tablist" aria-label="Macro type">
+        <button type="button" class="macro-rank-modal__tab macro-rank-modal__tab--active" role="tab" id="macro-rank-tab-protein" data-macro-rank-tab="protein" aria-selected="true" aria-controls="macro-rank-body" tabindex="0">Protein</button>
+        <button type="button" class="macro-rank-modal__tab" role="tab" id="macro-rank-tab-carbs" data-macro-rank-tab="carbs" aria-selected="false" aria-controls="macro-rank-body" tabindex="-1">Carbs</button>
+        <button type="button" class="macro-rank-modal__tab" role="tab" id="macro-rank-tab-fats" data-macro-rank-tab="fats" aria-selected="false" aria-controls="macro-rank-body" tabindex="-1">Fats</button>
+      </div>
+      <div class="micro-sources-modal__toolbar">
+        <label class="micro-sources-modal__label" for="macro-rank-filter">Find</label>
+        <input
+          type="search"
+          id="macro-rank-filter"
+          class="micro-sources-modal__filter"
+          placeholder="Filter by food name"
+          autocomplete="off"
+          spellcheck="false"
+        >
+      </div>
+      <div id="macro-rank-body" class="micro-sources-modal__body" role="tabpanel" aria-labelledby="macro-rank-tab-protein"></div>
+      <footer class="modal__footer">
+        <button type="button" id="macro-rank-modal-done" class="modal__done">Done</button>
+      </footer>
+    </div>
+  </div>
+
   <div id="micro-sources-modal" class="modal" hidden>
     <div class="modal__backdrop" data-action="close-micro-sources-modal"></div>
     <div class="modal__panel modal__panel--wide" role="dialog" aria-modal="true" aria-labelledby="micro-sources-modal-title">

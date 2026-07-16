@@ -422,6 +422,17 @@
   var favoriteEditPending = null;
   var favoritesManaging = false;
   var dashboardMacroPctView = false;
+  var activeMacroRankDayId = null;
+  var activeMacroRankTab = "protein";
+  var activeMacroRankSort = { key: "amount", dir: "desc" };
+  var activeMacroRankFilter = "";
+  var macroRankModalEl = document.getElementById("macro-rank-modal");
+  var macroRankModalTitleEl = document.getElementById("macro-rank-modal-title");
+  var macroRankModalSubtitleEl = document.getElementById("macro-rank-modal-subtitle");
+  var macroRankTabsEl = document.getElementById("macro-rank-tabs");
+  var macroRankFilterEl = document.getElementById("macro-rank-filter");
+  var macroRankBodyEl = document.getElementById("macro-rank-body");
+  var macroRankModalDoneBtn = document.getElementById("macro-rank-modal-done");
   var weekTotalOpen = false;
   var panelDisclaimerDismissed = false;
   var microRequirementsOpen = false;
@@ -5395,6 +5406,7 @@
     if (longevitySourcesModalEl && !longevitySourcesModalEl.hidden) {
       closeLongevitySourcesModal();
     }
+    if (macroRankModalEl && !macroRankModalEl.hidden) closeMacroRankModal();
     if (foodSourcesModalEl && !foodSourcesModalEl.hidden) {
       closeFoodSourcesModal();
     }
@@ -9491,6 +9503,7 @@
       (microDefModalEl && !microDefModalEl.hidden) ||
       (microSourcesModalEl && !microSourcesModalEl.hidden) ||
       (longevitySourcesModalEl && !longevitySourcesModalEl.hidden) ||
+      (macroRankModalEl && !macroRankModalEl.hidden) ||
       (foodSourcesModalEl && !foodSourcesModalEl.hidden) ||
       (phosphorusBinderModalEl && !phosphorusBinderModalEl.hidden) ||
       (caffeineTipModalEl && !caffeineTipModalEl.hidden) ||
@@ -9917,6 +9930,164 @@
       return b.amount - a.amount;
     });
     return list;
+  }
+
+  function macroContributionsFromText(text, macroKey) {
+    var list = [];
+    var seen = {};
+
+    keywords.forEach(function (kw) {
+      var name = kw.name.trim();
+      if (!name) return;
+      var key = name.toLowerCase();
+      if (seen[key]) return;
+      seen[key] = true;
+
+      var hits = countKeyword(text, name);
+      if (!hits) return;
+
+      var perServing = parseMacro(kw[macroKey]);
+      if (!perServing || isNaN(perServing) || perServing <= 0) return;
+
+      list.push({
+        name: name,
+        amount: hits * perServing,
+        hits: hits,
+        perServing: perServing,
+      });
+    });
+
+    list.sort(function (a, b) {
+      return b.amount - a.amount;
+    });
+    return list;
+  }
+
+  function macroRankTabLabel(tab) {
+    if (tab === "carbs") return "Carbs";
+    if (tab === "fats") return "Fats";
+    return "Protein";
+  }
+
+  function normalizeMacroRankTab(tab) {
+    if (tab === "carbs" || tab === "fats" || tab === "protein") return tab;
+    return "protein";
+  }
+
+  function syncMacroRankTabsUi() {
+    if (!macroRankTabsEl) return;
+    var tabs = macroRankTabsEl.querySelectorAll("[data-macro-rank-tab]");
+    for (var i = 0; i < tabs.length; i++) {
+      var tab = tabs[i];
+      var key = normalizeMacroRankTab(tab.getAttribute("data-macro-rank-tab"));
+      var selected = key === activeMacroRankTab;
+      tab.setAttribute("aria-selected", selected ? "true" : "false");
+      tab.classList.toggle("macro-rank-modal__tab--active", selected);
+      tab.tabIndex = selected ? 0 : -1;
+    }
+    if (macroRankBodyEl) {
+      macroRankBodyEl.setAttribute(
+        "aria-labelledby",
+        "macro-rank-tab-" + activeMacroRankTab
+      );
+    }
+  }
+
+  function syncMacroRankFilterUi() {
+    if (!macroRankFilterEl) return;
+    if (macroRankFilterEl.value !== activeMacroRankFilter) {
+      macroRankFilterEl.value = activeMacroRankFilter;
+    }
+  }
+
+  function renderMacroRankBody() {
+    if (!macroRankBodyEl || !activeMacroRankDayId) return;
+    var dayEl = document.getElementById(activeMacroRankDayId);
+    var text = dayEl ? dayEl.value : "";
+    var tab = normalizeMacroRankTab(activeMacroRankTab);
+    var list = macroContributionsFromText(text, tab);
+    if (!list.length) {
+      macroRankBodyEl.innerHTML =
+        '<p class="micro-sources-modal__empty">No matched foods with ' +
+        escapeHtml(macroRankTabLabel(tab).toLowerCase()) +
+        ".</p>";
+      return;
+    }
+    var prepared = prepareSourcesList(list, activeMacroRankFilter, activeMacroRankSort);
+    if (!prepared.length && (activeMacroRankFilter || "").trim()) {
+      macroRankBodyEl.innerHTML = sourcesFilterEmptyHtml(activeMacroRankFilter);
+      return;
+    }
+    macroRankBodyEl.innerHTML = nutrientSourcesListHtml(
+      prepared,
+      "g",
+      activeMacroRankSort
+    );
+  }
+
+  function openMacroRankModal(dayId) {
+    if (!macroRankModalEl || !dayId) return;
+    var day = null;
+    for (var i = 0; i < DAYS.length; i++) {
+      if (DAYS[i].id === dayId) {
+        day = DAYS[i];
+        break;
+      }
+    }
+    if (!day) return;
+
+    if (microSourcesModalEl && !microSourcesModalEl.hidden) closeMicroSourcesModal();
+    if (longevitySourcesModalEl && !longevitySourcesModalEl.hidden) {
+      closeLongevitySourcesModal();
+    }
+    if (foodSourcesModalEl && !foodSourcesModalEl.hidden) closeFoodSourcesModal();
+
+    activeMacroRankDayId = dayId;
+    activeMacroRankTab = "protein";
+    activeMacroRankSort = defaultSourcesSortForKey("amount");
+    activeMacroRankFilter = "";
+    var dateLabel = dateLabelForDayId(dayId);
+    if (macroRankModalTitleEl) {
+      macroRankModalTitleEl.textContent = day.label + (dateLabel ? " " + dateLabel : "");
+    }
+    if (macroRankModalSubtitleEl) {
+      macroRankModalSubtitleEl.textContent =
+        "Matched foods ranked by protein, carbs, or fats";
+    }
+    syncMacroRankTabsUi();
+    syncMacroRankFilterUi();
+    renderMacroRankBody();
+    macroRankModalEl.hidden = false;
+    updateBodyModalOpen();
+    if (macroRankFilterEl) {
+      macroRankFilterEl.focus();
+    } else {
+      var activeTab = macroRankTabsEl
+        ? macroRankTabsEl.querySelector(
+            '[data-macro-rank-tab="' + activeMacroRankTab + '"]'
+          )
+        : null;
+      if (activeTab) activeTab.focus();
+    }
+  }
+
+  function closeMacroRankModal() {
+    if (!macroRankModalEl) return;
+    activeMacroRankDayId = null;
+    activeMacroRankTab = "protein";
+    activeMacroRankSort = defaultSourcesSortForKey("amount");
+    activeMacroRankFilter = "";
+    syncMacroRankFilterUi();
+    if (macroRankBodyEl) macroRankBodyEl.innerHTML = "";
+    syncMacroRankTabsUi();
+    macroRankModalEl.hidden = true;
+    updateBodyModalOpen();
+  }
+
+  function setMacroRankTab(tab) {
+    activeMacroRankTab = normalizeMacroRankTab(tab);
+    syncMacroRankTabsUi();
+    renderMacroRankBody();
   }
 
   function microContributionsForScope(microKey, scope) {
@@ -15338,21 +15509,27 @@
   }
 
   function dashboardCardToggleIconHtml(isPct) {
-    if (isPct) {
-      return (
-        '<svg class="dashboard__card-toggle-icon" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" focusable="false">' +
-        '<rect x="2" y="3" width="12" height="2" rx="0.4"></rect>' +
-        '<rect x="2" y="7" width="8" height="2" rx="0.4"></rect>' +
-        '<rect x="2" y="11" width="10" height="2" rx="0.4"></rect>' +
-        "</svg>"
-      );
-    }
     return (
-      '<svg class="dashboard__card-toggle-icon" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" focusable="false">' +
+      '<svg class="dashboard__card-toggle-icon' +
+      (isPct ? " dashboard__card-toggle-icon--flipped" : "") +
+      '" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" focusable="false">' +
       '<circle cx="8" cy="8" r="6" fill="none" stroke="currentColor" stroke-width="1.5"></circle>' +
       '<path d="M8 8 L8 2 A6 6 0 0 1 13.2 10 Z" fill="currentColor" opacity="0.35"></path>' +
       '<path d="M8 8 L13.2 10 A6 6 0 0 1 8 14 Z" fill="currentColor" opacity="0.6"></path>' +
       "</svg>"
+    );
+  }
+
+  function dashboardCardRankIconHtml(dayId) {
+    return (
+      '<button type="button" class="dashboard__card-rank" data-action="open-macro-rank-modal" data-day-id="' +
+      escapeHtml(dayId) +
+      '" aria-label="Show ranked macros for this day" title="Ranked macros">' +
+      '<svg class="dashboard__card-rank-icon" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" focusable="false">' +
+      '<rect x="1" y="8" width="3" height="7" rx="0.5"></rect>' +
+      '<rect x="6.5" y="4" width="3" height="11" rx="0.5"></rect>' +
+      '<rect x="12" y="1" width="3" height="14" rx="0.5"></rect>' +
+      "</svg></button>"
     );
   }
 
@@ -15408,6 +15585,8 @@
         ? '<span class="dashboard__date">' + escapeHtml(dateLabel) + "</span>"
         : "") +
       "</div>" +
+      '<div class="dashboard__card-actions">' +
+      dashboardCardRankIconHtml(dayId) +
       '<button type="button" class="dashboard__card-toggle" data-action="toggle-dashboard-macro-view" data-day-id="' +
       escapeHtml(dayId) +
       '" aria-label="' +
@@ -15417,6 +15596,7 @@
       '">' +
       dashboardCardToggleIconHtml(isPct) +
       "</button>" +
+      "</div>" +
       "</div>" +
       rowsHtml +
       '<div class="dashboard__row dashboard__row--total"><span class="dashboard__macro">Total</span><span class="dashboard__val">' +
@@ -20102,6 +20282,10 @@
       closeAuthLoginModal();
       return;
     }
+    if (macroRankModalEl && !macroRankModalEl.hidden) {
+      closeMacroRankModal();
+      return;
+    }
     if (microSourcesModalEl && !microSourcesModalEl.hidden) {
       if (microSourcesFullscreen) {
         setMicroSourcesFullscreen(false);
@@ -21690,10 +21874,74 @@
 
   if (dashboardGridEl) {
     dashboardGridEl.addEventListener("click", function (e) {
+      var rankBtn = e.target.closest('[data-action="open-macro-rank-modal"]');
+      if (rankBtn) {
+        openMacroRankModal(rankBtn.getAttribute("data-day-id"));
+        return;
+      }
       var btn = e.target.closest('[data-action="toggle-dashboard-macro-view"]');
       if (!btn) return;
       dashboardMacroPctView = !dashboardMacroPctView;
       renderDashboard();
+    });
+  }
+
+  if (macroRankModalDoneBtn) {
+    macroRankModalDoneBtn.addEventListener("click", closeMacroRankModal);
+  }
+
+  if (macroRankFilterEl) {
+    macroRankFilterEl.addEventListener("input", function () {
+      activeMacroRankFilter = macroRankFilterEl.value || "";
+      renderMacroRankBody();
+    });
+  }
+
+  if (macroRankModalEl) {
+    macroRankModalEl.addEventListener("click", function (e) {
+      if (e.target.closest('[data-action="close-macro-rank-modal"]')) {
+        closeMacroRankModal();
+        return;
+      }
+      var tabBtn = e.target.closest("[data-macro-rank-tab]");
+      if (tabBtn && macroRankModalEl.contains(tabBtn)) {
+        setMacroRankTab(tabBtn.getAttribute("data-macro-rank-tab"));
+        return;
+      }
+      var sortBtn = e.target.closest("[data-sources-sort]");
+      if (sortBtn && macroRankModalEl.contains(sortBtn)) {
+        activeMacroRankSort = nextSourcesSort(
+          activeMacroRankSort,
+          sortBtn.getAttribute("data-sources-sort")
+        );
+        renderMacroRankBody();
+      }
+    });
+  }
+
+  if (macroRankTabsEl) {
+    macroRankTabsEl.addEventListener("keydown", function (e) {
+      var tabs = Array.prototype.slice.call(
+        macroRankTabsEl.querySelectorAll("[data-macro-rank-tab]")
+      );
+      if (!tabs.length) return;
+      var current = e.target.closest("[data-macro-rank-tab]");
+      if (!current || tabs.indexOf(current) === -1) return;
+      var idx = tabs.indexOf(current);
+      var nextIdx = -1;
+      if (e.key === "ArrowRight" || e.key === "ArrowDown") {
+        nextIdx = (idx + 1) % tabs.length;
+      } else if (e.key === "ArrowLeft" || e.key === "ArrowUp") {
+        nextIdx = (idx - 1 + tabs.length) % tabs.length;
+      } else if (e.key === "Home") {
+        nextIdx = 0;
+      } else if (e.key === "End") {
+        nextIdx = tabs.length - 1;
+      }
+      if (nextIdx < 0) return;
+      e.preventDefault();
+      setMacroRankTab(tabs[nextIdx].getAttribute("data-macro-rank-tab"));
+      tabs[nextIdx].focus();
     });
   }
 

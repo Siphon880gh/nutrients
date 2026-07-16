@@ -4522,7 +4522,15 @@ button.dashboard__longevity-name:focus-visible {
   color: #3d6b9e;
 }
 
-.dashboard__card-toggle {
+.dashboard__card-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  flex-shrink: 0;
+}
+
+.dashboard__card-toggle,
+.dashboard__card-rank {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -4537,14 +4545,57 @@ button.dashboard__longevity-name:focus-visible {
   cursor: pointer;
 }
 
-.dashboard__card-toggle:hover {
+.dashboard__card-toggle:hover,
+.dashboard__card-rank:hover {
   border-color: #9eb4cc;
   color: #2a4a6e;
   background: #e8eef4;
 }
 
-.dashboard__card-toggle-icon {
+.dashboard__card-toggle-icon,
+.dashboard__card-rank-icon {
   display: block;
+}
+
+.dashboard__card-toggle-icon--flipped {
+  transform: scaleX(-1);
+}
+
+.macro-rank-modal__tabs {
+  display: flex;
+  gap: 0;
+  margin: 0 1rem;
+  border-bottom: 1px solid #e0e0dc;
+}
+
+.macro-rank-modal__tab {
+  appearance: none;
+  margin: 0;
+  padding: 0.55rem 0.9rem;
+  border: none;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  background: transparent;
+  color: #6a6a66;
+  font: inherit;
+  font-size: 0.86rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.macro-rank-modal__tab:hover {
+  color: #2a4a6e;
+}
+
+.macro-rank-modal__tab:focus-visible {
+  outline: 2px solid #3d6b9e;
+  outline-offset: 2px;
+}
+
+.macro-rank-modal__tab--active,
+.macro-rank-modal__tab[aria-selected="true"] {
+  color: #2a4a6e;
+  border-bottom-color: #3d6b9e;
 }
 
 .dashboard__card {
@@ -5898,6 +5949,16 @@ button.dashboard__longevity-name:focus-visible {
   border-radius: 4px;
   background: #fff;
   color: inherit;
+}
+
+/* Hide native search clear; custom #keywords-search-clear is used instead. */
+.keywords__filter-input::-webkit-search-decoration,
+.keywords__filter-input::-webkit-search-cancel-button,
+.keywords__filter-input::-webkit-search-results-button,
+.keywords__filter-input::-webkit-search-results-decoration {
+  -webkit-appearance: none;
+  appearance: none;
+  display: none;
 }
 
 .keywords__filter-input:focus-visible {
@@ -8263,7 +8324,9 @@ button.longevity-form__label-link:focus-visible {
   .dashboard__micro-acute-btn,
   .dashboard__micro-sticky,
   .dashboard__sticky-options,
+  .dashboard__card-actions,
   .dashboard__card-toggle,
+  .dashboard__card-rank,
   .dashboard__longevity-nav,
   .dashboard__longevity-section-link {
     display: none !important;
@@ -8381,7 +8444,9 @@ body.print-preview .dashboard__micro-daily-intake-btn,
 body.print-preview .dashboard__micro-acute-btn,
 body.print-preview .dashboard__micro-sticky,
 body.print-preview .dashboard__sticky-options,
+body.print-preview .dashboard__card-actions,
 body.print-preview .dashboard__card-toggle,
+body.print-preview .dashboard__card-rank,
 body.print-preview .dashboard__longevity-section-link {
   display: none !important;
 }
