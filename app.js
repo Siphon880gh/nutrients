@@ -21260,6 +21260,82 @@
     }
   }
 
+  var appNavModifiersHeld = false;
+
+  function isAppNavShortcutBlockedTarget(el) {
+    if (!el || !el.tagName) return false;
+    var tag = el.tagName;
+    return tag === "INPUT" || tag === "TEXTAREA";
+  }
+
+  function syncAppNavShortcutHintVisibility() {
+    document.body.classList.toggle(
+      "app-nav-shortcuts-visible",
+      appNavModifiersHeld && !isAppNavShortcutBlockedTarget(document.activeElement)
+    );
+  }
+
+  function handleAppNavShortcutKey(e) {
+    if (e.defaultPrevented || e.repeat) return;
+    if (e.shiftKey || e.ctrlKey || e.metaKey || e.altKey) return;
+    if (isAppNavShortcutBlockedTarget(document.activeElement)) return;
+    if (e.key === "f" || e.key === "F") {
+      if (!dashboardFoodSourcesOpenBtn) return;
+      e.preventDefault();
+      dashboardFoodSourcesOpenBtn.click();
+      return;
+    }
+    if (e.key === "m" || e.key === "M") {
+      if (!dashboardMacrosJumpEl) return;
+      e.preventDefault();
+      dashboardMacrosJumpEl.click();
+      return;
+    }
+    if (e.key === "e" || e.key === "E") {
+      if (!dashboardFoodEntryJumpEl) return;
+      e.preventDefault();
+      dashboardFoodEntryJumpEl.click();
+      return;
+    }
+    if (e.key === "w" || e.key === "W") {
+      if (!dashboardWeekToggleEl) return;
+      e.preventDefault();
+      dashboardWeekToggleEl.click();
+      return;
+    }
+    if (e.key === "r" || e.key === "R") {
+      if (!dashboardMicroToggleEl) return;
+      e.preventDefault();
+      dashboardMicroToggleEl.click();
+      return;
+    }
+    if (e.key === "l" || e.key === "L") {
+      if (!dashboardLongevityToggleEl) return;
+      e.preventDefault();
+      dashboardLongevityToggleEl.click();
+    }
+  }
+
+  document.addEventListener("keydown", function (e) {
+    if (e.shiftKey || e.ctrlKey || e.metaKey || e.altKey) {
+      appNavModifiersHeld = true;
+      syncAppNavShortcutHintVisibility();
+    }
+    handleAppNavShortcutKey(e);
+  });
+
+  document.addEventListener("keyup", function (e) {
+    appNavModifiersHeld = e.shiftKey || e.ctrlKey || e.metaKey || e.altKey;
+    syncAppNavShortcutHintVisibility();
+  });
+
+  document.addEventListener("focusin", syncAppNavShortcutHintVisibility);
+
+  window.addEventListener("blur", function () {
+    appNavModifiersHeld = false;
+    syncAppNavShortcutHintVisibility();
+  });
+
   if (dashboardMacrosJumpEl) {
     dashboardMacrosJumpEl.addEventListener("click", function () {
       scrollDashboardJumpTarget(dashboardGridEl);
