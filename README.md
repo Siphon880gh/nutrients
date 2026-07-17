@@ -59,6 +59,10 @@ Log what you ate each day. Lines can include a serving multiplier (e.g. `* 2`):
 
 ![Food entry with sample meals](docs/screenshots/05-food-entry-sample.png)
 
+Here's a food entry that uses multipliers `*4` and divider lines (doesn't cause matching errors):
+![Food entry with multipliers and dividers](docs/screenshots/05b-food-entry-sample-divider.png)
+
+
 ### Micro requirements
 
 Weekly average (or per-day) intake vs FDA % DV or IOM body-weight minimums. Set body weight in Settings for nutrients without an FDA DV:
