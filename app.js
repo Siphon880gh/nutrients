@@ -11334,12 +11334,9 @@
       .map(nutrientFilterChipHtml)
       .join("");
     document
-      .querySelectorAll("[data-nutrient-filter-disclosure]")
-      .forEach(function (btn) {
-        btn.classList.toggle(
-          "dashboard__nutrient-filter-disclosure--active",
-          hasKeys
-        );
+      .querySelectorAll(".dashboard__filter-panel-section--nutrients")
+      .forEach(function (el) {
+        el.classList.toggle("dashboard__filter-panel-section--active", hasKeys);
       });
     document
       .querySelectorAll("[data-nutrient-filter-chips]")
@@ -11383,19 +11380,16 @@
     }
     saveStickyIconFilters();
     syncStickyIconFilterUi();
-    setNutrientFilterSectionOpen(filterStickyNutrientKeys.length > 0);
     refreshStickyIconFilterViews();
   }
 
-  function setNutrientFilterSectionOpen(open) {
-    document
-      .querySelectorAll("[data-nutrient-filter-disclosure]")
-      .forEach(function (btn) {
-        var panelId = btn.getAttribute("aria-controls");
-        var panel = panelId ? document.getElementById(panelId) : null;
-        btn.setAttribute("aria-expanded", open ? "true" : "false");
-        if (panel) panel.hidden = !open;
-      });
+  function focusNutrientFilterInput(panel) {
+    if (!panel) return;
+    var input = panel.querySelector("[data-nutrient-filter-input]");
+    if (!input) return;
+    requestAnimationFrame(function () {
+      input.focus({ preventScroll: true });
+    });
   }
 
   function hideNutrientFilterSuggest(input) {
@@ -11551,12 +11545,10 @@
   function addStickyNutrientFilter(key) {
     if (!key || !microFieldByKey(key)) return;
     if (filterStickyNutrientKeys.indexOf(key) !== -1) return;
-    var wasEmpty = filterStickyNutrientKeys.length === 0;
     clearMicroConditionFocusForStickyFilter();
     filterStickyNutrientKeys = filterStickyNutrientKeys.concat([key]);
     saveStickyIconFilters();
     syncStickyIconFilterUi();
-    if (wasEmpty) setNutrientFilterSectionOpen(true);
     refreshStickyIconFilterViews();
   }
 
@@ -11607,7 +11599,6 @@
     filterStickyNutrientKeys = [];
     saveStickyIconFilters();
     syncStickyIconFilterUi();
-    setNutrientFilterSectionOpen(false);
     document
       .querySelectorAll("[data-nutrient-filter-input]")
       .forEach(function (input) {
@@ -15266,9 +15257,6 @@
     syncAcuteToxicityToggleUi();
     syncDailyIntakeIconsToggleUi();
     syncStickyIconFilterUi();
-    if (filterStickyNutrientKeys.length) {
-      setNutrientFilterSectionOpen(true);
-    }
     syncStickyIconHighlightUi();
     renderDemographicUi();
     syncDayHighlightsToggleUi();
@@ -21330,29 +21318,6 @@
   }
 
   document.addEventListener("click", function (e) {
-    var nutrientFilterDisclosure = e.target.closest(
-      "[data-nutrient-filter-disclosure]"
-    );
-    if (nutrientFilterDisclosure) {
-      e.preventDefault();
-      e.stopPropagation();
-      var nutrientPanelId = nutrientFilterDisclosure.getAttribute("aria-controls");
-      var nutrientPanel = nutrientPanelId
-        ? document.getElementById(nutrientPanelId)
-        : null;
-      var nutrientOpen =
-        nutrientFilterDisclosure.getAttribute("aria-expanded") === "true";
-      var nextNutrientOpen = !nutrientOpen;
-      nutrientFilterDisclosure.setAttribute(
-        "aria-expanded",
-        nextNutrientOpen ? "true" : "false"
-      );
-      if (nutrientPanel) nutrientPanel.hidden = !nextNutrientOpen;
-      if (typeof syncLongevityNavHeightVar === "function") {
-        syncLongevityNavHeightVar();
-      }
-      return;
-    }
     var nutrientFilterRemove = e.target.closest("[data-nutrient-filter-remove]");
     if (nutrientFilterRemove) {
       e.preventDefault();
@@ -21421,6 +21386,14 @@
           nextOpen ? "true" : "false"
         );
         if (panel) panel.hidden = !nextOpen;
+      }
+      if (
+        nextOpen &&
+        panel &&
+        (panelId === "micro-filter-options-panel" ||
+          panelId === "longevity-filter-options-panel")
+      ) {
+        focusNutrientFilterInput(panel);
       }
       if (typeof syncLongevityNavHeightVar === "function") {
         syncLongevityNavHeightVar();
