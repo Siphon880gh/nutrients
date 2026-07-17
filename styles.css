@@ -3560,6 +3560,12 @@ button.dashboard__micro-day-name:focus-visible {
   border: 1px solid #e4e4e0;
   border-radius: 5px;
   background: #fafaf8;
+  max-height: min(50vh, 22rem);
+  max-height: min(50dvh, 22rem);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
 }
 
 .dashboard__longevity-nav-all-list[hidden] {
@@ -8128,6 +8134,8 @@ button.longevity-form__label-link:focus-visible {
 
   .dashboard__longevity-nav-all-list {
     grid-template-columns: 1fr;
+    max-height: min(40vh, 16rem);
+    max-height: min(40dvh, 16rem);
   }
 
   .keywords__panel {
