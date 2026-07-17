@@ -4083,14 +4083,25 @@ button.dashboard__longevity-name:focus-visible {
 }
 
 .dashboard__longevity-name-wrap {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.3rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.25rem;
   min-width: 0;
+  max-width: 100%;
+  width: 100%;
 }
 
 .dashboard__longevity-name-wrap .dashboard__longevity-name {
+  flex: 1 1 auto;
   min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.dashboard__longevity-name-wrap .dashboard__micro-sources-btn,
+.dashboard__longevity-name-wrap .dashboard__micro-daily-intake-btn,
+.dashboard__longevity-name-wrap .dashboard__micro-acute-btn {
+  flex-shrink: 0;
+  align-self: center;
 }
 
 .dashboard__longevity-amt {
@@ -8280,13 +8291,45 @@ button.longevity-form__label-link:focus-visible {
 @media (max-width: 520px) {
   .dashboard__longevity-thead,
   .dashboard__longevity-row {
-    grid-template-columns: minmax(5rem, 1fr) minmax(3.5rem, 0.85fr) minmax(2.5rem, 0.5fr) minmax(2.5rem, 0.55fr);
-    gap: 0.25rem 0.35rem;
+    grid-template-columns: minmax(0, 1.5fr) minmax(2.4rem, 0.7fr) minmax(2.6rem, 0.65fr);
+    gap: 0.15rem 0.25rem;
     font-size: 0.7rem;
+    padding: 0.22rem 0.28rem;
   }
 
   .dashboard__longevity-thead {
     font-size: 0.58rem;
+    padding: 0.15rem 0.28rem 0.25rem;
+  }
+
+  /* Free width for long labels + source icons; % DV stays visible */
+  .dashboard__longevity-thead span:last-child,
+  .dashboard__longevity-bar-wrap,
+  .dashboard__longevity-row > .dashboard__longevity-bar {
+    display: none;
+  }
+
+  .dashboard__longevity-name-wrap {
+    gap: 0.15rem;
+  }
+
+  .dashboard__longevity-name-wrap .dashboard__micro-sources-btn,
+  .dashboard__longevity-name-wrap .dashboard__micro-daily-intake-btn,
+  .dashboard__longevity-name-wrap .dashboard__micro-acute-btn {
+    width: 1.2rem;
+    height: 1.2rem;
+  }
+
+  .dashboard__longevity-amt {
+    font-size: 0.64rem;
+  }
+
+  .dashboard__longevity-pct {
+    font-size: 0.68rem;
+  }
+
+  .dashboard__longevity-target-kind {
+    font-size: 0.5rem;
   }
 
   .week__settings-icon {
