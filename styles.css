@@ -715,8 +715,16 @@ body {
   pointer-events: none;
 }
 
-body.app-nav-shortcuts-visible .app-nav__btn[data-app-shortcut] .app-nav__shortcut {
+body.app-nav-shortcuts-visible [data-app-shortcut] .app-nav__shortcut {
   display: inline-flex;
+}
+
+body.app-nav-shortcuts-visible .dashboard__micro-segmented {
+  overflow: visible;
+}
+
+.dashboard__micro-segment[data-app-shortcut] {
+  position: relative;
 }
 
 .app-nav__btn:hover,

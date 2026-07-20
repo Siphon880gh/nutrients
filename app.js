@@ -21313,6 +21313,12 @@
       if (!dashboardLongevityToggleEl) return;
       e.preventDefault();
       dashboardLongevityToggleEl.click();
+      return;
+    }
+    if (e.key === "d" || e.key === "D") {
+      if (!dashboardMicroViewDailyEl && !dashboardMicroViewWeeklyEl) return;
+      e.preventDefault();
+      setMicroViewDaily(!microViewDaily);
     }
   }
 
