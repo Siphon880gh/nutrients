@@ -86,6 +86,9 @@
   var dashboardPrintBtn = document.getElementById("dashboard-print");
   var dashboardWeekToggleEl = document.getElementById("dashboard-week-toggle");
   var dashboardMacrosJumpEl = document.getElementById("dashboard-macros-jump");
+  var dashboardFoodDefinitionsJumpEl = document.getElementById(
+    "dashboard-food-definitions-jump"
+  );
   var dashboardFoodEntryJumpEl = document.getElementById(
     "dashboard-food-entry-jump"
   );
@@ -97,6 +100,18 @@
   var dashboardMicroListEl = document.getElementById("dashboard-micro-list");
   var dashboardMicroDailyGridEl = document.getElementById("dashboard-micro-daily-grid");
   var dashboardMicroHintTextEl = document.getElementById("dashboard-micro-hint-text");
+  var dashboardMicroIntakeToggleEl = document.getElementById(
+    "dashboard-micro-intake-toggle"
+  );
+  var dashboardMicroIntakeLabelEl = document.getElementById(
+    "dashboard-micro-intake-label"
+  );
+  var dashboardMicroIntakeClearEl = document.getElementById(
+    "dashboard-micro-intake-clear"
+  );
+  var dashboardMicroIntakeListEl = document.getElementById(
+    "dashboard-micro-intake-list"
+  );
   var dashboardMicroConditionToggleEl = document.getElementById(
     "dashboard-micro-condition-toggle"
   );
@@ -106,12 +121,24 @@
   var dashboardMicroConditionClearEl = document.getElementById(
     "dashboard-micro-condition-clear"
   );
-  var dashboardMicroConditionClearItemEl = document.getElementById(
-    "dashboard-micro-condition-clear-item"
-  );
   var dashboardMicroConditionListEl = document.getElementById(
     "dashboard-micro-condition-list"
   );
+  var dashboardMicroStatusToggleEl = document.getElementById(
+    "dashboard-micro-status-toggle"
+  );
+  var dashboardMicroStatusLabelEl = document.getElementById(
+    "dashboard-micro-status-label"
+  );
+  var dashboardMicroStatusClearEl = document.getElementById(
+    "dashboard-micro-status-clear"
+  );
+  var dashboardMicroStatusListEl = document.getElementById(
+    "dashboard-micro-status-list"
+  );
+  var dashboardMicroStatusToggleIconEl = dashboardMicroStatusToggleEl
+    ? dashboardMicroStatusToggleEl.querySelector(".dashboard__micro-status-toggle-icon use")
+    : null;
   var dashboardMicroViewWeeklyEl = document.getElementById("dashboard-micro-view-weekly");
   var dashboardMicroViewDailyEl = document.getElementById("dashboard-micro-view-daily");
   var dashboardMicroDvToggleEl = document.getElementById("dashboard-micro-dv-toggle");
@@ -387,6 +414,7 @@
   var copyDatePending = null;
   var EARLIEST_DIARY_DATE = "2026-05-01";
   var dayHighlightsToggleBtn = document.getElementById("day-highlights-toggle");
+  var dayWordWrapToggleBtn = document.getElementById("day-word-wrap-toggle");
   var dayFoodNotesEl = document.getElementById("day-food-notes");
   var dayFoodNotesLabelsEl = document.getElementById("day-food-notes-labels");
   var dayFoodNotesPopoverEl = document.getElementById("day-food-notes-popover");
@@ -421,6 +449,7 @@
   var tdeeCalcResistanceMode = "days";
   var tdeeCalcLastResult = null;
   var dayHighlightsEnabled = true;
+  var dayWordWrapEnabled = true;
   var dayMealsByDate = {};
   var viewedWeekStart = null;
   var diaryFavorites = [];
@@ -445,9 +474,30 @@
   var macroRankModalDoneBtn = document.getElementById("macro-rank-modal-done");
   var weekTotalOpen = false;
   var panelDisclaimerDismissed = false;
+  var collapsedTipIds = Object.create(null);
+  var DISMISSIBLE_TIP_SELECTOR =
+    ".dashboard__micro-tip, .dashboard__longevity-processed-note";
   var microRequirementsOpen = false;
-  var microConditionExpanded = false;
+  var microFilterMenuOpen = null; // null | "intake" | "conditions" | "status"
   var microConditionFocus = null;
+  var MICRO_INTAKE_FILTER_IDS = {
+    wellAbsorbed: true,
+    poorlyAbsorbed: true,
+    fatSolubleVitamins: true,
+    americanCommonDeficiencies: true,
+  };
+  var microStatusFilter = null;
+  var MICRO_STATUS_FILTERS = {
+    zero: { id: "zero", label: "Zero", icon: "#icon-micro-status-zero" },
+    redOrZero: {
+      id: "redOrZero",
+      label: "Red or zero",
+      icon: "#icon-micro-status-red-zero",
+    },
+    green: { id: "green", label: "Green", icon: "#icon-micro-status-green" },
+    excess: { id: "excess", label: "Excess", icon: "#icon-micro-status-excess" },
+  };
+  var MICRO_STATUS_FILTER_DEFAULT_ICON = "#icon-micro-status-green";
   var showMicroDailyDv = false;
   var showAcuteSideEffects = false;
   var showAcuteAdverseEffects = false;
@@ -7506,11 +7556,22 @@
     return html;
   }
 
-  function positionMicroAcuteToxicityPopover(anchor) {
-    if (!microAcuteToxicityPopoverEl || !anchor) return;
+  function positionFixedPopoverBelow(popoverEl, anchor) {
+    if (!popoverEl || !anchor) return;
     var rect = anchor.getBoundingClientRect();
-    microAcuteToxicityPopoverEl.style.left = Math.max(8, rect.left) + "px";
-    microAcuteToxicityPopoverEl.style.top = rect.bottom + 6 + "px";
+    var margin = 8;
+    var width = popoverEl.offsetWidth;
+    var left = rect.left;
+    if (width > 0) {
+      left = Math.min(left, window.innerWidth - width - margin);
+    }
+    left = Math.max(margin, left);
+    popoverEl.style.left = left + "px";
+    popoverEl.style.top = rect.bottom + 6 + "px";
+  }
+
+  function positionMicroAcuteToxicityPopover(anchor) {
+    positionFixedPopoverBelow(microAcuteToxicityPopoverEl, anchor);
   }
 
   function hideMicroAcuteToxicityPopover() {
@@ -7562,8 +7623,8 @@
       escapeHtml(effects.join(" · ")) +
       "</p>";
     microAcuteToxicityPopoverAnchor = btn;
-    positionMicroAcuteToxicityPopover(btn);
     microAcuteToxicityPopoverEl.hidden = false;
+    positionMicroAcuteToxicityPopover(btn);
     btn.setAttribute("aria-expanded", "true");
   }
 
@@ -7577,10 +7638,7 @@
   }
 
   function positionMicroDailyIntakePopover(anchor) {
-    if (!microDailyIntakePopoverEl || !anchor) return;
-    var rect = anchor.getBoundingClientRect();
-    microDailyIntakePopoverEl.style.left = Math.max(8, rect.left) + "px";
-    microDailyIntakePopoverEl.style.top = rect.bottom + 6 + "px";
+    positionFixedPopoverBelow(microDailyIntakePopoverEl, anchor);
   }
 
   function hideMicroDailyIntakePopover() {
@@ -7602,8 +7660,8 @@
     hideMicroDailyIntakePopover();
     hideMicroAcuteToxicityPopover();
     microDailyIntakePopoverAnchor = btn;
-    positionMicroDailyIntakePopover(btn);
     microDailyIntakePopoverEl.hidden = false;
+    positionMicroDailyIntakePopover(btn);
     btn.setAttribute("aria-expanded", "true");
   }
 
@@ -7650,10 +7708,7 @@
   }
 
   function positionTargetRefPopover(anchor) {
-    if (!targetRefPopoverEl || !anchor) return;
-    var rect = anchor.getBoundingClientRect();
-    targetRefPopoverEl.style.left = Math.max(8, rect.left) + "px";
-    targetRefPopoverEl.style.top = rect.bottom + 6 + "px";
+    positionFixedPopoverBelow(targetRefPopoverEl, anchor);
   }
 
   function hideTargetRefPopover() {
@@ -7692,8 +7747,8 @@
       "</p>" +
       targetRefDetailHtml(detail);
     targetRefPopoverAnchor = btn;
-    positionTargetRefPopover(btn);
     targetRefPopoverEl.hidden = false;
+    positionTargetRefPopover(btn);
   }
 
   function toggleTargetRefPopover(btn) {
@@ -8277,6 +8332,231 @@
     document.querySelectorAll(".dashboard__panel-disclaimer").forEach(function (el) {
       el.hidden = true;
     });
+  }
+
+  function dismissibleTipId(el) {
+    if (el.id) return el.id;
+    var existing = el.getAttribute("data-tip-id");
+    if (existing) return existing;
+    var text = (el.textContent || "").replace(/\s+/g, " ").trim();
+    var h = 2166136261;
+    for (var i = 0; i < text.length; i++) {
+      h ^= text.charCodeAt(i);
+      h = Math.imul(h, 16777619);
+    }
+    var id = "tip-" + (h >>> 0).toString(36);
+    el.setAttribute("data-tip-id", id);
+    return id;
+  }
+
+  function isMicroTipEl(tipEl) {
+    return !!(tipEl && tipEl.classList && tipEl.classList.contains("dashboard__micro-tip"));
+  }
+
+  function tipsInSection(sectionEl) {
+    if (!sectionEl) return [];
+    var tips = [];
+    var children = sectionEl.children;
+    for (var i = 0; i < children.length; i++) {
+      var child = children[i];
+      if (
+        child.classList &&
+        (child.classList.contains("dashboard__micro-tip") ||
+          child.classList.contains("dashboard__longevity-processed-note"))
+      ) {
+        tips.push(child);
+      }
+    }
+    return tips;
+  }
+
+  function applyTipCollapsedState(tipEl) {
+    var id = dismissibleTipId(tipEl);
+    if (!tipEl.getAttribute("title")) {
+      tipEl.setAttribute("title", "Click to hide tip");
+    }
+    if (collapsedTipIds[id]) {
+      tipEl.setAttribute("data-tip-collapsed", "1");
+    } else {
+      tipEl.removeAttribute("data-tip-collapsed");
+    }
+  }
+
+  function findGroupedTipsReopenButton(sectionEl) {
+    var children = sectionEl.children;
+    for (var i = 0; i < children.length; i++) {
+      if (
+        children[i].classList &&
+        children[i].classList.contains("dashboard__tips-reopen") &&
+        !children[i].getAttribute("data-tip-reopen-for")
+      ) {
+        return children[i];
+      }
+    }
+    return null;
+  }
+
+  function ensureGroupedTipsReopenButton(sectionEl, tips) {
+    var btn = findGroupedTipsReopenButton(sectionEl);
+    if (!btn) {
+      btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "dashboard__tips-reopen";
+      btn.setAttribute("data-action", "reopen-tips");
+      btn.hidden = true;
+      btn.textContent = "Tips (0)";
+      if (tips[0]) {
+        sectionEl.insertBefore(btn, tips[0]);
+      } else {
+        sectionEl.appendChild(btn);
+      }
+    }
+    return btn;
+  }
+
+  function syncGroupedTipsReopen(sectionEl) {
+    if (!sectionEl) return;
+    var tips = tipsInSection(sectionEl);
+    if (!tips.length) return;
+    var count = 0;
+    tips.forEach(function (tip) {
+      applyTipCollapsedState(tip);
+      if (!tip.hidden && tip.getAttribute("data-tip-collapsed") === "1") {
+        count += 1;
+      }
+    });
+    var btn = findGroupedTipsReopenButton(sectionEl);
+    if (count > 0) {
+      if (!btn) btn = ensureGroupedTipsReopenButton(sectionEl, tips);
+      btn.hidden = false;
+      btn.textContent = "Tips (" + count + ")";
+    } else if (btn) {
+      btn.hidden = true;
+    }
+  }
+
+  function findTipReopenButton(tipEl) {
+    var id = dismissibleTipId(tipEl);
+    var prev = tipEl.previousElementSibling;
+    if (
+      prev &&
+      prev.classList &&
+      prev.classList.contains("dashboard__tips-reopen") &&
+      prev.getAttribute("data-tip-reopen-for") === id
+    ) {
+      return prev;
+    }
+    return null;
+  }
+
+  function ensureTipReopenButton(tipEl) {
+    var btn = findTipReopenButton(tipEl);
+    if (btn) return btn;
+    var id = dismissibleTipId(tipEl);
+    btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "dashboard__tips-reopen";
+    btn.setAttribute("data-action", "reopen-tips");
+    btn.setAttribute("data-tip-reopen-for", id);
+    btn.hidden = true;
+    btn.textContent = "Tips (1)";
+    tipEl.parentElement.insertBefore(btn, tipEl);
+    return btn;
+  }
+
+  function syncTipReopenInPlace(tipEl) {
+    if (!tipEl) return;
+    applyTipCollapsedState(tipEl);
+    var collapsed =
+      !tipEl.hidden && tipEl.getAttribute("data-tip-collapsed") === "1";
+    var btn = findTipReopenButton(tipEl);
+    if (collapsed) {
+      if (!btn) btn = ensureTipReopenButton(tipEl);
+      btn.hidden = false;
+      btn.textContent = "Tips (1)";
+    } else if (btn) {
+      btn.hidden = true;
+    }
+  }
+
+  function tipElForReopenButton(reopenBtn) {
+    var tipId = reopenBtn.getAttribute("data-tip-reopen-for");
+    if (!tipId) return null;
+    var next = reopenBtn.nextElementSibling;
+    if (
+      next &&
+      next.matches &&
+      next.matches(DISMISSIBLE_TIP_SELECTOR) &&
+      dismissibleTipId(next) === tipId
+    ) {
+      return next;
+    }
+    return document.querySelector(
+      DISMISSIBLE_TIP_SELECTOR + '[data-tip-id="' + tipId + '"], #' + tipId
+    );
+  }
+
+  function syncAllDismissibleTips() {
+    if (dashboardMicroPanelEl) {
+      syncGroupedTipsReopen(dashboardMicroPanelEl);
+    }
+    if (dashboardLongevityPanelEl) {
+      dashboardLongevityPanelEl
+        .querySelectorAll(".dashboard__longevity-processed-note")
+        .forEach(function (tip) {
+          syncTipReopenInPlace(tip);
+        });
+    }
+  }
+
+  function collapseDismissibleTip(tipEl) {
+    collapsedTipIds[dismissibleTipId(tipEl)] = true;
+    tipEl.setAttribute("data-tip-collapsed", "1");
+    if (isMicroTipEl(tipEl)) {
+      syncGroupedTipsReopen(dashboardMicroPanelEl);
+    } else {
+      syncTipReopenInPlace(tipEl);
+    }
+  }
+
+  function reopenTipsInSection(sectionEl) {
+    tipsInSection(sectionEl).forEach(function (tip) {
+      delete collapsedTipIds[dismissibleTipId(tip)];
+      tip.removeAttribute("data-tip-collapsed");
+    });
+    syncGroupedTipsReopen(sectionEl);
+  }
+
+  function reopenSingleTip(tipEl) {
+    if (!tipEl) return;
+    delete collapsedTipIds[dismissibleTipId(tipEl)];
+    tipEl.removeAttribute("data-tip-collapsed");
+    syncTipReopenInPlace(tipEl);
+  }
+
+  function handleDismissibleTipClick(e) {
+    var reopenBtn = e.target.closest('[data-action="reopen-tips"]');
+    if (reopenBtn) {
+      e.preventDefault();
+      if (reopenBtn.getAttribute("data-tip-reopen-for")) {
+        reopenSingleTip(tipElForReopenButton(reopenBtn));
+      } else {
+        reopenTipsInSection(reopenBtn.parentElement);
+      }
+      return true;
+    }
+    var tip = e.target.closest(DISMISSIBLE_TIP_SELECTOR);
+    if (!tip) return false;
+    if (
+      e.target.closest(
+        "a, button, input, select, textarea, label, [data-action], [data-longevity-def], [data-micro-def]"
+      )
+    ) {
+      return false;
+    }
+    e.preventDefault();
+    collapseDismissibleTip(tip);
+    return true;
   }
 
   function cholesterolPlaqueTipHtml() {
@@ -10607,6 +10887,23 @@
     return fmtNum(pct) + "%";
   }
 
+  /** When there is no scoreable daily target, show bare intake (no %) instead of "—". */
+  function formatNoTargetAmountText(dailyAmount) {
+    var n = Number(dailyAmount);
+    if (!isFinite(n) || n === 0) return "—";
+    return fmtNum(n);
+  }
+
+  function targetTextIsAmountOnly(targetDisplay) {
+    return (
+      !!targetDisplay &&
+      (targetDisplay.pct == null || isNaN(targetDisplay.pct)) &&
+      !!targetDisplay.text &&
+      targetDisplay.text !== "—" &&
+      targetDisplay.text.indexOf("%") === -1
+    );
+  }
+
   var STUDY_MIN_MICRO_REFS = {
     glycine: {
       amount: 10000,
@@ -10694,7 +10991,7 @@
       if (!getBodyWeightKg()) {
         return {
           pct: null,
-          text: "—",
+          text: formatNoTargetAmountText(dailyAmount),
           kind: "iom",
           kindLabel: "IOM bw min · set weight",
           reqAmount: "",
@@ -10742,7 +11039,7 @@
     if (microHasNoStandaloneRef(key)) {
       return {
         pct: null,
-        text: "—",
+        text: formatNoTargetAmountText(dailyAmount),
         kind: "none",
         kindLabel: "No ref",
         reqAmount: "",
@@ -10750,7 +11047,15 @@
         refKey: key,
       };
     }
-    return { pct: null, text: "—", kind: "none", kindLabel: "", reqAmount: "", limiting: false, refKey: key };
+    return {
+      pct: null,
+      text: formatNoTargetAmountText(dailyAmount),
+      kind: "none",
+      kindLabel: "",
+      reqAmount: "",
+      limiting: false,
+      refKey: key,
+    };
   }
 
   function microTargetReqText(field) {
@@ -10800,7 +11105,15 @@
           refKey: bridged.refKey || field.key,
         };
       }
-      return { pct: null, text: "—", kindLabel: "", reqAmount: "", reqText: "—", limiting: false, refKey: field.key };
+      return {
+        pct: null,
+        text: formatNoTargetAmountText(dailyAmount),
+        kindLabel: "",
+        reqAmount: "",
+        reqText: "—",
+        limiting: false,
+        refKey: field.key,
+      };
     }
     var target = microNutrientTargetPct(field.key, dailyAmount);
     return {
@@ -10836,6 +11149,12 @@
     var reqClass = options.reqClass || "dashboard__micro-dv-req";
     var pctStyle =
       options.pctStyle != null ? options.pctStyle : microTargetPctInlineStyle(targetDisplay);
+    if (targetTextIsAmountOnly(targetDisplay)) {
+      pctClass +=
+        pctClass.indexOf("dashboard__micro-day-pct") !== -1
+          ? " dashboard__micro-day-pct--amount"
+          : " dashboard__micro-pct--amount";
+    }
 
     var html = '<div class="' + statsClass + '">';
     html +=
@@ -11799,6 +12118,10 @@
       : "Average daily intake vs FDA % DV or IOM bw min (Mon–Sun)." + weightNote;
   }
 
+  function microIncludesExtendedDisplayFields() {
+    return !!microMoreExpanded || !!microStatusFilter;
+  }
+
   function microBaseDisplayFields() {
     var fields = [];
     MICRO_FIELDS.forEach(function (field) {
@@ -11813,7 +12136,7 @@
         }
       });
     });
-    if (microMoreExpanded) {
+    if (microIncludesExtendedDisplayFields()) {
       MICRO_EXTENDED_FIELDS.forEach(function (field) {
         fields.push({ source: "micro", field: field });
       });
@@ -11940,26 +12263,164 @@
     return appendMicroDailyIntakeIconHtml(microSourcesIconHtml(key, dayId), key);
   }
 
-  function microConditionRowHtml(entry, weekMicro, weekLongevity) {
+  function microEntryStatusSnapshot(entry, microTotals, longevityTotals, perDay) {
     var field = entry.field;
     var isLongevity = entry.source === "longevity";
     var isDerived = entry.source === "derived";
     var total = isLongevity
-      ? weekLongevity[field.key] || 0
+      ? (longevityTotals && longevityTotals[field.key]) || 0
       : isDerived
         ? 0
         : field.key === "fiber"
-          ? fiberTotalFromParts(weekMicro)
-          : weekMicro[field.key] || 0;
-    var dailyAmount = isDerived ? 0 : total / DAYS.length;
+          ? fiberTotalFromParts(microTotals)
+          : (microTotals && microTotals[field.key]) || 0;
+    var dailyAmount = isDerived ? 0 : perDay ? total : total / DAYS.length;
     var targetDisplay = isDerived
-      ? microDerivedRowTargetDisplay(field.key, weekMicro, false)
-      : microRowTargetDisplay(field, dailyAmount, entry.source, weekMicro);
-    var pct = targetDisplay.pct;
+      ? microDerivedRowTargetDisplay(field.key, microTotals, !!perDay)
+      : microRowTargetDisplay(field, dailyAmount, entry.source, microTotals);
+    var tier = tierForMicroTargetPct(targetDisplay.pct, !!targetDisplay.limiting);
+    var isZero;
+    if (isDerived) {
+      var derivedAmt = microDerivedAmtText(field.key, microTotals, !!perDay);
+      isZero = !derivedAmt || derivedAmt === "—";
+    } else {
+      isZero = !(total > 0);
+    }
+    return {
+      total: total,
+      dailyAmount: dailyAmount,
+      targetDisplay: targetDisplay,
+      tier: tier,
+      isZero: isZero,
+    };
+  }
+
+  function microEntryMatchesStatusFilter(entry, microTotals, longevityTotals, perDay) {
+    if (!microStatusFilter || !MICRO_STATUS_FILTERS[microStatusFilter]) return true;
+    var snap = microEntryStatusSnapshot(
+      entry,
+      microTotals,
+      longevityTotals,
+      perDay
+    );
+    if (microStatusFilter === "zero") return snap.isZero;
+    if (microStatusFilter === "redOrZero") {
+      return snap.isZero || !!(snap.tier && snap.tier.id === "red");
+    }
+    if (microStatusFilter === "green") {
+      return !!(snap.tier && snap.tier.id === "green");
+    }
+    if (microStatusFilter === "excess") {
+      var pct = snap.targetDisplay && snap.targetDisplay.pct;
+      if (pct == null || isNaN(pct)) return false;
+      // Ceiling / study-max nutrients: at or over the limit.
+      // Aim nutrients: strictly over 100% (100% itself stays Green).
+      if (snap.targetDisplay.limiting) return pct >= 100;
+      return pct > 100;
+    }
+    return true;
+  }
+
+  function syncMicroMoreToggleUi() {
+    var microMoreToggleEl = document.getElementById("dashboard-micro-more-toggle");
+    if (!microMoreToggleEl) return;
+    var wrap = microMoreToggleEl.closest(".dashboard__micro-more-wrap");
+    if (wrap) {
+      // Status filters already include extended nutrients (e.g. Valine).
+      wrap.hidden = !!microStatusFilter;
+    }
+    if (microStatusFilter) return;
+    microMoreToggleEl.setAttribute(
+      "aria-expanded",
+      microMoreExpanded ? "true" : "false"
+    );
+    var moreLabel =
+      microMoreToggleEl.querySelector(".dashboard__micro-more-toggle-label") ||
+      microMoreToggleEl;
+    moreLabel.textContent = microMoreExpanded
+      ? "Less"
+      : "More vitamins, minerals & amino acids";
+  }
+
+  function syncMicroStatusFilterUi() {
+    var active = !!(microStatusFilter && MICRO_STATUS_FILTERS[microStatusFilter]);
+    var meta = active ? MICRO_STATUS_FILTERS[microStatusFilter] : null;
+    var statusToneClass = {
+      zero: "dashboard__micro-status-toggle--zero",
+      redOrZero: "dashboard__micro-status-toggle--red-zero",
+      green: "dashboard__micro-status-toggle--green",
+      excess: "dashboard__micro-status-toggle--excess",
+    };
+    if (dashboardMicroStatusToggleEl) {
+      dashboardMicroStatusToggleEl.classList.toggle(
+        "dashboard__micro-condition-toggle--active",
+        active
+      );
+      Object.keys(statusToneClass).forEach(function (id) {
+        dashboardMicroStatusToggleEl.classList.toggle(
+          statusToneClass[id],
+          active && microStatusFilter === id
+        );
+      });
+    }
+    if (dashboardMicroStatusLabelEl) {
+      dashboardMicroStatusLabelEl.textContent = active ? meta.label : "Status";
+    }
+    if (dashboardMicroStatusClearEl) {
+      dashboardMicroStatusClearEl.hidden = !active;
+    }
+    if (dashboardMicroStatusToggleIconEl) {
+      dashboardMicroStatusToggleIconEl.setAttribute(
+        "href",
+        active ? meta.icon : MICRO_STATUS_FILTER_DEFAULT_ICON
+      );
+    }
+    var clearItem = document.querySelector("[data-micro-status-clear-item]");
+    if (clearItem) clearItem.hidden = !active;
+    if (dashboardMicroStatusListEl) {
+      dashboardMicroStatusListEl
+        .querySelectorAll(
+          ".dashboard__micro-condition-link[data-micro-status-filter]:not([data-micro-status-filter=''])"
+        )
+        .forEach(function (btn) {
+          var id = btn.getAttribute("data-micro-status-filter");
+          var selected = id === microStatusFilter;
+          btn.classList.toggle("dashboard__micro-condition-link--active", selected);
+          btn.setAttribute("aria-selected", selected ? "true" : "false");
+        });
+    }
+    syncMicroMoreToggleUi();
+  }
+
+  function setMicroStatusFilter(id) {
+    var next =
+      id && MICRO_STATUS_FILTERS[id]
+        ? id === microStatusFilter
+          ? null
+          : id
+        : null;
+    microStatusFilter = next;
+    setMicroFilterMenuOpen(null);
+    syncMicroStatusFilterUi();
+    if (microRequirementsOpen) {
+      renderMicroRequirements();
+    }
+  }
+
+  function microConditionRowHtml(entry, weekMicro, weekLongevity) {
+    if (!microEntryMatchesStatusFilter(entry, weekMicro, weekLongevity, false)) {
+      return "";
+    }
+    var field = entry.field;
+    var isLongevity = entry.source === "longevity";
+    var isDerived = entry.source === "derived";
+    var snap = microEntryStatusSnapshot(entry, weekMicro, weekLongevity, false);
+    var total = snap.total;
+    var targetDisplay = snap.targetDisplay;
     var amtText = isDerived
       ? microDerivedAmtText(field.key, weekMicro, false)
       : microConditionAmtText(entry, total, false);
-    var tier = tierForMicroTargetPct(pct, !!targetDisplay.limiting);
+    var tier = snap.tier;
     var tierAttr = tier ? ' data-dv-tier="' + escapeAttr(tier.id) + '"' : "";
     var rowCls =
       "dashboard__micro-row dashboard__micro-row--clickable" +
@@ -11989,51 +12450,215 @@
     return html;
   }
 
-  function setMicroConditionExpanded(open) {
-    microConditionExpanded = !!open;
+  function microFilterGroupForId(id) {
+    if (!id) return null;
+    return MICRO_INTAKE_FILTER_IDS[id] ? "intake" : "conditions";
+  }
+
+  function clearMicroFilterMenuFixed(listEl) {
+    if (!listEl) return;
+    if (listEl._microFilterMenuHomeParent) {
+      listEl._microFilterMenuHomeParent.insertBefore(
+        listEl,
+        listEl._microFilterMenuHomeNext || null
+      );
+      listEl._microFilterMenuHomeParent = null;
+      listEl._microFilterMenuHomeNext = null;
+    }
+    listEl.classList.remove("dashboard__micro-condition-list--fixed");
+    listEl.style.position = "";
+    listEl.style.top = "";
+    listEl.style.left = "";
+    listEl.style.right = "";
+    listEl.style.maxWidth = "";
+    listEl.style.maxHeight = "";
+    listEl.style.overflowY = "";
+    listEl.style.zIndex = "";
+  }
+
+  function positionMicroFilterMenuFixed(listEl, toggleEl) {
+    if (!listEl || !toggleEl || listEl.hidden) return;
+    // Escape sticky/backdrop-filter containing blocks so fixed coords match the viewport.
+    if (listEl.parentElement !== document.body) {
+      listEl._microFilterMenuHomeParent = listEl.parentElement;
+      listEl._microFilterMenuHomeNext = listEl.nextSibling;
+      document.body.appendChild(listEl);
+    }
+    var rect = toggleEl.getBoundingClientRect();
+    var gap = 2;
+    listEl.classList.add("dashboard__micro-condition-list--fixed");
+    listEl.style.position = "fixed";
+    listEl.style.zIndex = "60";
+    listEl.style.right = "auto";
+    listEl.style.maxWidth =
+      Math.max(12, window.innerWidth - 16) + "px";
+    var width = Math.max(listEl.offsetWidth, 16 * 16);
+    var left = Math.max(
+      8,
+      Math.min(rect.left, window.innerWidth - width - 8)
+    );
+    var spaceBelow = window.innerHeight - rect.bottom - gap - 8;
+    var spaceAbove = rect.top - gap - 8;
+    var placeAbove = spaceBelow < 160 && spaceAbove > spaceBelow;
+    var estimatedH = Math.min(listEl.offsetHeight || 200, placeAbove ? spaceAbove : spaceBelow);
+    var top = placeAbove
+      ? Math.max(8, rect.top - gap - estimatedH)
+      : rect.bottom + gap;
+    var maxH = Math.max(
+      120,
+      placeAbove ? spaceAbove : window.innerHeight - top - 8
+    );
+    listEl.style.left = left + "px";
+    listEl.style.top = top + "px";
+    listEl.style.maxHeight = maxH + "px";
+    listEl.style.overflowY = "auto";
+  }
+
+  function shouldFixMicroFilterMenus() {
+    var track = document.querySelector(
+      ".dashboard__micro-sticky-filters [data-sticky-filters-track]"
+    );
+    if (!track) return false;
+    var overflowX = window.getComputedStyle(track).overflowX;
+    return (
+      overflowX === "auto" ||
+      overflowX === "scroll" ||
+      overflowX === "hidden"
+    );
+  }
+
+  function syncMicroFilterMenuPositions() {
+    var useFixed = shouldFixMicroFilterMenus();
+    if (!useFixed || !microFilterMenuOpen) {
+      clearMicroFilterMenuFixed(dashboardMicroIntakeListEl);
+      clearMicroFilterMenuFixed(dashboardMicroConditionListEl);
+      clearMicroFilterMenuFixed(dashboardMicroStatusListEl);
+      return;
+    }
+    if (microFilterMenuOpen === "intake") {
+      clearMicroFilterMenuFixed(dashboardMicroConditionListEl);
+      clearMicroFilterMenuFixed(dashboardMicroStatusListEl);
+      positionMicroFilterMenuFixed(
+        dashboardMicroIntakeListEl,
+        dashboardMicroIntakeToggleEl
+      );
+    } else if (microFilterMenuOpen === "conditions") {
+      clearMicroFilterMenuFixed(dashboardMicroIntakeListEl);
+      clearMicroFilterMenuFixed(dashboardMicroStatusListEl);
+      positionMicroFilterMenuFixed(
+        dashboardMicroConditionListEl,
+        dashboardMicroConditionToggleEl
+      );
+    } else if (microFilterMenuOpen === "status") {
+      clearMicroFilterMenuFixed(dashboardMicroIntakeListEl);
+      clearMicroFilterMenuFixed(dashboardMicroConditionListEl);
+      positionMicroFilterMenuFixed(
+        dashboardMicroStatusListEl,
+        dashboardMicroStatusToggleEl
+      );
+    }
+  }
+
+  function setMicroFilterMenuOpen(which) {
+    microFilterMenuOpen =
+      which === "intake" || which === "conditions" || which === "status"
+        ? which
+        : null;
+    if (dashboardMicroIntakeToggleEl) {
+      dashboardMicroIntakeToggleEl.setAttribute(
+        "aria-expanded",
+        microFilterMenuOpen === "intake" ? "true" : "false"
+      );
+    }
+    if (dashboardMicroIntakeListEl) {
+      dashboardMicroIntakeListEl.hidden = microFilterMenuOpen !== "intake";
+    }
     if (dashboardMicroConditionToggleEl) {
       dashboardMicroConditionToggleEl.setAttribute(
         "aria-expanded",
-        microConditionExpanded ? "true" : "false"
+        microFilterMenuOpen === "conditions" ? "true" : "false"
       );
     }
     if (dashboardMicroConditionListEl) {
-      dashboardMicroConditionListEl.hidden = !microConditionExpanded;
+      dashboardMicroConditionListEl.hidden = microFilterMenuOpen !== "conditions";
     }
+    if (dashboardMicroStatusToggleEl) {
+      dashboardMicroStatusToggleEl.setAttribute(
+        "aria-expanded",
+        microFilterMenuOpen === "status" ? "true" : "false"
+      );
+    }
+    if (dashboardMicroStatusListEl) {
+      dashboardMicroStatusListEl.hidden = microFilterMenuOpen !== "status";
+    }
+    window.requestAnimationFrame(syncMicroFilterMenuPositions);
+  }
+
+  function setMicroConditionExpanded(open) {
+    setMicroFilterMenuOpen(open ? microFilterMenuOpen || "conditions" : null);
+  }
+
+  function syncMicroFilterListSelection(listEl) {
+    if (!listEl) return;
+    listEl
+      .querySelectorAll(
+        ".dashboard__micro-condition-link[data-micro-condition]:not([data-micro-condition=''])"
+      )
+      .forEach(function (btn) {
+        var id = btn.getAttribute("data-micro-condition");
+        var selected = id === microConditionFocus;
+        btn.classList.toggle("dashboard__micro-condition-link--active", selected);
+        btn.setAttribute("aria-selected", selected ? "true" : "false");
+      });
   }
 
   function syncMicroConditionUi() {
     var active = !!microConditionFocus;
+    var activeGroup = microFilterGroupForId(microConditionFocus);
+    var filterMeta = microFilterMeta(microConditionFocus);
+    var intakeActive = activeGroup === "intake";
+    var conditionsActive = activeGroup === "conditions";
+
+    if (dashboardMicroIntakeToggleEl) {
+      dashboardMicroIntakeToggleEl.classList.toggle(
+        "dashboard__micro-condition-toggle--active",
+        intakeActive
+      );
+    }
+    if (dashboardMicroIntakeLabelEl) {
+      dashboardMicroIntakeLabelEl.textContent = intakeActive
+        ? filterMeta.label
+        : "Nutrition Intake";
+    }
+    if (dashboardMicroIntakeClearEl) {
+      dashboardMicroIntakeClearEl.hidden = !intakeActive;
+    }
+
     if (dashboardMicroConditionToggleEl) {
       dashboardMicroConditionToggleEl.classList.toggle(
         "dashboard__micro-condition-toggle--active",
-        active
+        conditionsActive
       );
     }
     if (dashboardMicroConditionLabelEl) {
-      var filterMeta = microFilterMeta(microConditionFocus);
-      dashboardMicroConditionLabelEl.textContent = active
-        ? "Filter: " + filterMeta.label
-        : "Filter";
+      dashboardMicroConditionLabelEl.textContent = conditionsActive
+        ? filterMeta.label
+        : "Conditions";
     }
     if (dashboardMicroConditionClearEl) {
-      dashboardMicroConditionClearEl.hidden = !active;
+      dashboardMicroConditionClearEl.hidden = !conditionsActive;
     }
-    if (dashboardMicroConditionClearItemEl) {
-      dashboardMicroConditionClearItemEl.hidden = !active;
-    }
-    if (dashboardMicroConditionListEl) {
-      dashboardMicroConditionListEl
-        .querySelectorAll(
-          ".dashboard__micro-condition-link[data-micro-condition]:not([data-micro-condition=''])"
-        )
-        .forEach(function (btn) {
-          var id = btn.getAttribute("data-micro-condition");
-          var selected = id === microConditionFocus;
-          btn.classList.toggle("dashboard__micro-condition-link--active", selected);
-          btn.setAttribute("aria-selected", selected ? "true" : "false");
-        });
-    }
+
+    document
+      .querySelectorAll("[data-micro-filter-clear-item]")
+      .forEach(function (item) {
+        var group = item.getAttribute("data-micro-filter-clear-item");
+        item.hidden = !(active && activeGroup === group);
+      });
+
+    syncMicroFilterListSelection(dashboardMicroIntakeListEl);
+    syncMicroFilterListSelection(dashboardMicroConditionListEl);
+
     if (microTipCaffeineEl) {
       microTipCaffeineEl.hidden = active;
     }
@@ -12057,12 +12682,13 @@
     if (microTipHairLossPrescriptionsEl) {
       microTipHairLossPrescriptionsEl.hidden = microConditionFocus !== "hairLoss";
     }
+    syncGroupedTipsReopen(dashboardMicroPanelEl);
   }
 
   function setMicroConditionFocus(id) {
     var next = id && microFilterMeta(id) ? id : null;
     microConditionFocus = next;
-    setMicroConditionExpanded(false);
+    setMicroFilterMenuOpen(null);
     syncMicroConditionUi();
     if (next && microStickyFilterActive()) {
       clearStickyIconFilters();
@@ -12077,24 +12703,19 @@
     var isToday = dayId === activeTodayDayId();
     var rows = "";
     microConditionDisplayFields().forEach(function (entry) {
+      if (!microEntryMatchesStatusFilter(entry, microTotals, longevityTotals, true)) {
+        return;
+      }
       var field = entry.field;
       var isLongevity = entry.source === "longevity";
       var isDerived = entry.source === "derived";
-      var total = isLongevity
-        ? longevityTotals[field.key] || 0
-        : isDerived
-          ? 0
-          : field.key === "fiber"
-            ? fiberTotalFromParts(microTotals)
-            : microTotals[field.key] || 0;
-      var targetDisplay = isDerived
-        ? microDerivedRowTargetDisplay(field.key, microTotals, true)
-        : microRowTargetDisplay(field, total, entry.source, microTotals);
-      var pct = targetDisplay.pct;
+      var snap = microEntryStatusSnapshot(entry, microTotals, longevityTotals, true);
+      var total = snap.total;
+      var targetDisplay = snap.targetDisplay;
       var amtText = isDerived
         ? microDerivedAmtText(field.key, microTotals, true)
         : microConditionAmtText(entry, total, true);
-      var tier = tierForMicroTargetPct(pct, !!targetDisplay.limiting);
+      var tier = snap.tier;
       var tierAttr = tier ? ' data-dv-tier="' + escapeAttr(tier.id) + '"' : "";
       var rowCls =
         "dashboard__micro-day-row dashboard__micro-day-row--clickable" +
@@ -12186,6 +12807,7 @@
     syncMicroViewToggleUi();
     syncMicroHintText();
     syncMicroConditionUi();
+    syncMicroStatusFilterUi();
 
     if (dashboardMicroListEl) {
       dashboardMicroListEl.hidden = microViewDaily;
@@ -12404,9 +13026,20 @@
         "</span>";
     }
     var pctInner = pctHtml || escapeHtml(pctText);
+    var longevityPctClass = "dashboard__longevity-pct";
+    if (
+      targetTextIsAmountOnly({
+        pct: pct,
+        text: pctHtml ? "" : pctText,
+      })
+    ) {
+      longevityPctClass += " dashboard__longevity-pct--amount";
+    }
     var pctBlock =
       '<span class="dashboard__longevity-pct-wrap">' +
-      '<span class="dashboard__longevity-pct"' +
+      '<span class="' +
+      longevityPctClass +
+      '"' +
       longevityPctInlineStyle(pct, !!limiting) +
       ">" +
       pctInner +
@@ -14269,6 +14902,7 @@
       }
     }
     syncLongevityNav(true);
+    syncAllDismissibleTips();
   }
 
   function longevityNavSectionEl(sectionDefKey) {
@@ -14666,6 +15300,7 @@
     }
     if (longevityPanelOpen) {
       renderLongevityPanel();
+      initStickyFiltersCarousel();
     } else {
       setLongevityNavExpanded(false);
       clearLongevityNavHash();
@@ -14699,6 +15334,7 @@
     }
     if (microRequirementsOpen) {
       renderMicroRequirements();
+      initStickyFiltersCarousel();
     } else {
       setMicroConditionExpanded(false);
     }
@@ -15235,6 +15871,7 @@
     loadDayNotes();
     loadFavorites();
     loadDayHighlightsPreference();
+    loadDayWordWrapPreference();
     loadDayEditorHeight();
     loadMicroViewDaily();
     loadShowMicroDailyDv();
@@ -15260,6 +15897,7 @@
     syncStickyIconHighlightUi();
     renderDemographicUi();
     syncDayHighlightsToggleUi();
+    syncDayWordWrapToggleUi();
     syncSettingsTdeeInput();
     syncSettingsMacroSplitInput();
     setSettingsWeightUnit(settingsWeightUnit);
@@ -18846,6 +19484,136 @@
     });
   }
 
+  var stickyFiltersCarouselMq =
+    typeof window.matchMedia === "function"
+      ? window.matchMedia("(max-width: 900px)")
+      : null;
+  var stickyFiltersCarouselState = new WeakMap();
+
+  function isStickyFiltersCarouselActive() {
+    return !!(stickyFiltersCarouselMq && stickyFiltersCarouselMq.matches);
+  }
+
+  function stickyFiltersTrackSlides(track) {
+    return Array.prototype.slice.call(
+      track.querySelectorAll(":scope > .dashboard__sticky-filter-group")
+    );
+  }
+
+  function stickyFiltersCarouselRoot(track) {
+    return track.closest(
+      ".dashboard__micro-sticky-filters, .dashboard__longevity-sticky-filters"
+    );
+  }
+
+  function syncStickyFiltersCarouselNav(track) {
+    var root = stickyFiltersCarouselRoot(track);
+    if (!root) return;
+    var slides = stickyFiltersTrackSlides(track);
+    var state = stickyFiltersCarouselState.get(track) || { index: 0 };
+    var index = Math.max(0, Math.min(slides.length - 1, state.index || 0));
+    state.index = index;
+    stickyFiltersCarouselState.set(track, state);
+    var currentId = track.getAttribute("data-sticky-filters-current");
+    var currentEl = currentId ? document.getElementById(currentId) : null;
+    if (currentEl) {
+      var labelEl = slides[index]
+        ? slides[index].querySelector(".dashboard__sticky-filter-group-label")
+        : null;
+      currentEl.textContent = labelEl
+        ? (labelEl.textContent || "").trim()
+        : "";
+    }
+    var prevBtn = root.querySelector(
+      '[data-sticky-filters-carousel="prev"]'
+    );
+    var nextBtn = root.querySelector(
+      '[data-sticky-filters-carousel="next"]'
+    );
+    if (prevBtn) prevBtn.disabled = index <= 0;
+    if (nextBtn) nextBtn.disabled = index >= slides.length - 1;
+  }
+
+  function scrollStickyFiltersCarouselToIndex(track, index) {
+    var slides = stickyFiltersTrackSlides(track);
+    if (!track || !slides.length || !isStickyFiltersCarouselActive()) {
+      syncStickyFiltersCarouselNav(track);
+      return;
+    }
+    var clamped = Math.max(0, Math.min(slides.length - 1, index));
+    stickyFiltersCarouselState.set(track, { index: clamped });
+    var slide = slides[clamped];
+    var trackRect = track.getBoundingClientRect();
+    var slideRect = slide.getBoundingClientRect();
+    track.scrollLeft += slideRect.left - trackRect.left;
+    syncStickyFiltersCarouselNav(track);
+  }
+
+  function stepStickyFiltersCarousel(track, delta) {
+    var state = stickyFiltersCarouselState.get(track) || { index: 0 };
+    if (
+      track.closest(".dashboard__micro-sticky-filters") &&
+      microFilterMenuOpen
+    ) {
+      setMicroFilterMenuOpen(null);
+    }
+    scrollStickyFiltersCarouselToIndex(track, (state.index || 0) + delta);
+  }
+
+  function syncStickyFiltersCarouselFromScroll(track) {
+    var slides = stickyFiltersTrackSlides(track);
+    if (!track || !slides.length || !isStickyFiltersCarouselActive()) return;
+    var trackLeft = track.getBoundingClientRect().left;
+    var bestIndex = 0;
+    var bestDist = Infinity;
+    for (var i = 0; i < slides.length; i++) {
+      var dist = Math.abs(
+        slides[i].getBoundingClientRect().left - trackLeft
+      );
+      if (dist < bestDist) {
+        bestDist = dist;
+        bestIndex = i;
+      }
+    }
+    stickyFiltersCarouselState.set(track, { index: bestIndex });
+    syncStickyFiltersCarouselNav(track);
+  }
+
+  function initStickyFiltersCarousel() {
+    var tracks = document.querySelectorAll("[data-sticky-filters-track]");
+    for (var i = 0; i < tracks.length; i++) {
+      (function (track) {
+        if (!stickyFiltersCarouselState.has(track)) {
+          stickyFiltersCarouselState.set(track, { index: 0 });
+        }
+        if (!track._stickyFiltersCarouselBound) {
+          track._stickyFiltersCarouselBound = true;
+          var scrollTimer = null;
+          track.addEventListener(
+            "scroll",
+            function () {
+              if (scrollTimer) window.clearTimeout(scrollTimer);
+              scrollTimer = window.setTimeout(function () {
+                syncStickyFiltersCarouselFromScroll(track);
+              }, 80);
+            },
+            { passive: true }
+          );
+        }
+        if (!isStickyFiltersCarouselActive()) {
+          syncStickyFiltersCarouselNav(track);
+          return;
+        }
+        var state = stickyFiltersCarouselState.get(track) || { index: 0 };
+        window.requestAnimationFrame(function () {
+          window.requestAnimationFrame(function () {
+            scrollStickyFiltersCarouselToIndex(track, state.index || 0);
+          });
+        });
+      })(tracks[i]);
+    }
+  }
+
   function dayNotesPayload() {
     flushEditorsToDayMeals();
     return {
@@ -18900,6 +19668,42 @@
       updateDayEditorMode(el);
     });
     updateWeekUnmatchedLines();
+  }
+
+  function saveDayWordWrapPreference() {
+    if (!persist) return;
+    persist.setSetting("dayWordWrap", !!dayWordWrapEnabled);
+  }
+
+  function loadDayWordWrapPreference() {
+    if (!persist) {
+      dayWordWrapEnabled = true;
+      return;
+    }
+    dayWordWrapEnabled = persist.getSetting("dayWordWrap") !== false;
+  }
+
+  function syncDayWordWrapToggleUi() {
+    document.body.classList.toggle("day-word-wrap-off", !dayWordWrapEnabled);
+    if (!dayWordWrapToggleBtn) return;
+    dayWordWrapToggleBtn.classList.toggle(
+      "week__highlight-toggle--off",
+      !dayWordWrapEnabled
+    );
+    dayWordWrapToggleBtn.setAttribute(
+      "aria-pressed",
+      dayWordWrapEnabled ? "true" : "false"
+    );
+    dayWordWrapToggleBtn.setAttribute(
+      "aria-label",
+      dayWordWrapEnabled ? "Turn word wrap off" : "Turn word wrap on"
+    );
+  }
+
+  function setDayWordWrapEnabled(enabled) {
+    dayWordWrapEnabled = !!enabled;
+    saveDayWordWrapPreference();
+    syncDayWordWrapToggleUi();
   }
 
   function clampDayEditorHeight(px) {
@@ -21026,6 +21830,34 @@
     }
   }
 
+  document.addEventListener("click", function (e) {
+    var adj = e.target.closest("[data-sticky-filters-carousel]");
+    if (!adj || adj.disabled) return;
+    var root = adj.closest(
+      ".dashboard__micro-sticky-filters, .dashboard__longevity-sticky-filters"
+    );
+    if (!root) return;
+    var track = root.querySelector("[data-sticky-filters-track]");
+    if (!track) return;
+    var action = adj.getAttribute("data-sticky-filters-carousel");
+    if (action === "prev") stepStickyFiltersCarousel(track, -1);
+    else if (action === "next") stepStickyFiltersCarousel(track, 1);
+  });
+
+  if (stickyFiltersCarouselMq) {
+    var onStickyFiltersCarouselMqChange = function () {
+      initStickyFiltersCarousel();
+    };
+    if (typeof stickyFiltersCarouselMq.addEventListener === "function") {
+      stickyFiltersCarouselMq.addEventListener(
+        "change",
+        onStickyFiltersCarouselMqChange
+      );
+    } else if (typeof stickyFiltersCarouselMq.addListener === "function") {
+      stickyFiltersCarouselMq.addListener(onStickyFiltersCarouselMqChange);
+    }
+  }
+
   if (clearAllDaysBtn) {
     clearAllDaysBtn.addEventListener("click", clearAllDayNotes);
   }
@@ -21268,6 +22100,19 @@
     return tag === "INPUT" || tag === "TEXTAREA";
   }
 
+  function isAppNavModifierKey(e) {
+    return (
+      e.key === "Shift" ||
+      e.key === "Control" ||
+      e.key === "Alt" ||
+      e.key === "Meta"
+    );
+  }
+
+  function anyAppNavModifierDown(e) {
+    return !!(e.shiftKey || e.ctrlKey || e.metaKey || e.altKey);
+  }
+
   function syncAppNavShortcutHintVisibility() {
     document.body.classList.toggle(
       "app-nav-shortcuts-visible",
@@ -21275,26 +22120,56 @@
     );
   }
 
+  function clearAppNavShortcutHints() {
+    if (!appNavModifiersHeld) return;
+    appNavModifiersHeld = false;
+    syncAppNavShortcutHintVisibility();
+  }
+
   function handleAppNavShortcutKey(e) {
     if (e.defaultPrevented || e.repeat) return;
-    if (e.shiftKey || e.ctrlKey || e.metaKey || e.altKey) return;
     if (isAppNavShortcutBlockedTarget(document.activeElement)) return;
-    if (e.key === "f" || e.key === "F") {
+    // + / = expand more micros; allow Shift so Shift+= matches the "+" hint.
+    if (
+      !e.ctrlKey &&
+      !e.metaKey &&
+      !e.altKey &&
+      (e.key === "=" ||
+        e.key === "+" ||
+        e.code === "Equal" ||
+        e.code === "NumpadAdd")
+    ) {
+      var microMoreShortcutEl = document.getElementById(
+        "dashboard-micro-more-toggle"
+      );
+      if (!microMoreShortcutEl) return;
+      e.preventDefault();
+      microMoreShortcutEl.click();
+      return;
+    }
+    if (anyAppNavModifierDown(e)) return;
+    if (e.key === "s" || e.key === "S") {
       if (!dashboardFoodSourcesOpenBtn) return;
       e.preventDefault();
       dashboardFoodSourcesOpenBtn.click();
       return;
     }
-    if (e.key === "m" || e.key === "M") {
-      if (!dashboardMacrosJumpEl) return;
+    if (e.key === "d" || e.key === "D") {
+      if (!dashboardFoodDefinitionsJumpEl) return;
       e.preventDefault();
-      dashboardMacrosJumpEl.click();
+      dashboardFoodDefinitionsJumpEl.click();
       return;
     }
     if (e.key === "e" || e.key === "E") {
       if (!dashboardFoodEntryJumpEl) return;
       e.preventDefault();
       dashboardFoodEntryJumpEl.click();
+      return;
+    }
+    if (e.key === "m" || e.key === "M") {
+      if (!dashboardMacrosJumpEl) return;
+      e.preventDefault();
+      dashboardMacrosJumpEl.click();
       return;
     }
     if (e.key === "w" || e.key === "W") {
@@ -21315,7 +22190,7 @@
       dashboardLongevityToggleEl.click();
       return;
     }
-    if (e.key === "d" || e.key === "D") {
+    if (e.key === "v" || e.key === "V") {
       if (!dashboardMicroViewDailyEl && !dashboardMicroViewWeeklyEl) return;
       e.preventDefault();
       setMicroViewDaily(!microViewDaily);
@@ -21323,7 +22198,9 @@
   }
 
   document.addEventListener("keydown", function (e) {
-    if (e.shiftKey || e.ctrlKey || e.metaKey || e.altKey) {
+    // Only the modifier key itself reveals hints — not letter keys while a
+    // modifier is held, and not pointer clicks that happen to include modifiers.
+    if (isAppNavModifierKey(e)) {
       appNavModifiersHeld = true;
       syncAppNavShortcutHintVisibility();
     }
@@ -21331,20 +22208,36 @@
   });
 
   document.addEventListener("keyup", function (e) {
-    appNavModifiersHeld = e.shiftKey || e.ctrlKey || e.metaKey || e.altKey;
+    if (!isAppNavModifierKey(e) && anyAppNavModifierDown(e)) return;
+    appNavModifiersHeld = anyAppNavModifierDown(e);
     syncAppNavShortcutHintVisibility();
   });
+
+  document.addEventListener(
+    "pointerdown",
+    function () {
+      clearAppNavShortcutHints();
+    },
+    true
+  );
 
   document.addEventListener("focusin", syncAppNavShortcutHintVisibility);
 
   window.addEventListener("blur", function () {
-    appNavModifiersHeld = false;
-    syncAppNavShortcutHintVisibility();
+    clearAppNavShortcutHints();
   });
 
   if (dashboardMacrosJumpEl) {
     dashboardMacrosJumpEl.addEventListener("click", function () {
       scrollDashboardJumpTarget(dashboardGridEl);
+    });
+  }
+
+  if (dashboardFoodDefinitionsJumpEl) {
+    dashboardFoodDefinitionsJumpEl.addEventListener("click", function () {
+      scrollDashboardJumpTarget(
+        document.getElementById("food-definitions-heading")
+      );
     });
   }
 
@@ -21469,14 +22362,6 @@
         );
         if (panel) panel.hidden = !nextOpen;
       }
-      if (
-        nextOpen &&
-        panel &&
-        (panelId === "micro-filter-options-panel" ||
-          panelId === "longevity-filter-options-panel")
-      ) {
-        focusNutrientFilterInput(panel);
-      }
       if (typeof syncLongevityNavHeightVar === "function") {
         syncLongevityNavHeightVar();
       }
@@ -21596,23 +22481,35 @@
     }
   });
 
-  if (dashboardMicroConditionToggleEl) {
-    dashboardMicroConditionToggleEl.addEventListener("click", function () {
-      setMicroConditionExpanded(!microConditionExpanded);
+  function bindMicroFilterMenuToggle(toggleEl, menuId) {
+    if (!toggleEl) return;
+    toggleEl.addEventListener("click", function () {
+      setMicroFilterMenuOpen(microFilterMenuOpen === menuId ? null : menuId);
     });
   }
 
-  if (dashboardMicroConditionClearEl) {
-    dashboardMicroConditionClearEl.addEventListener("click", function () {
-      setMicroConditionFocus(null);
+  function bindMicroFilterClear(clearEl, clearFn) {
+    if (!clearEl) return;
+    clearEl.addEventListener("click", function () {
+      clearFn();
     });
   }
 
-  if (dashboardMicroConditionListEl) {
-    dashboardMicroConditionListEl.addEventListener("click", function (e) {
+  function bindMicroFilterList(listEl) {
+    if (!listEl) return;
+    listEl.addEventListener("click", function (e) {
       var btn = e.target.closest(".dashboard__micro-condition-link");
       if (!btn) return;
       e.preventDefault();
+      var statusId = btn.getAttribute("data-micro-status-filter");
+      if (statusId != null) {
+        if (!statusId) {
+          setMicroStatusFilter(null);
+          return;
+        }
+        setMicroStatusFilter(statusId === microStatusFilter ? null : statusId);
+        return;
+      }
       var id = btn.getAttribute("data-micro-condition");
       if (!id) {
         setMicroConditionFocus(null);
@@ -21622,30 +22519,58 @@
     });
   }
 
+  function clickInsideEl(el, target) {
+    return !!(el && (el === target || el.contains(target)));
+  }
+
+  bindMicroFilterMenuToggle(dashboardMicroIntakeToggleEl, "intake");
+  bindMicroFilterMenuToggle(dashboardMicroConditionToggleEl, "conditions");
+  bindMicroFilterMenuToggle(dashboardMicroStatusToggleEl, "status");
+  bindMicroFilterClear(dashboardMicroIntakeClearEl, function () {
+    setMicroConditionFocus(null);
+  });
+  bindMicroFilterClear(dashboardMicroConditionClearEl, function () {
+    setMicroConditionFocus(null);
+  });
+  bindMicroFilterClear(dashboardMicroStatusClearEl, function () {
+    setMicroStatusFilter(null);
+  });
+  bindMicroFilterList(dashboardMicroIntakeListEl);
+  bindMicroFilterList(dashboardMicroConditionListEl);
+  bindMicroFilterList(dashboardMicroStatusListEl);
+  syncMicroStatusFilterUi();
+
+  window.addEventListener(
+    "resize",
+    function () {
+      if (microFilterMenuOpen) syncMicroFilterMenuPositions();
+    },
+    { passive: true }
+  );
+  window.addEventListener(
+    "scroll",
+    function () {
+      if (microFilterMenuOpen) syncMicroFilterMenuPositions();
+    },
+    { passive: true, capture: true }
+  );
+
   document.addEventListener("click", function (e) {
-    if (!microConditionExpanded) return;
+    if (!microFilterMenuOpen) return;
     if (
-      dashboardMicroConditionToggleEl &&
-      (dashboardMicroConditionToggleEl === e.target ||
-        dashboardMicroConditionToggleEl.contains(e.target))
+      clickInsideEl(dashboardMicroIntakeToggleEl, e.target) ||
+      clickInsideEl(dashboardMicroIntakeClearEl, e.target) ||
+      clickInsideEl(dashboardMicroIntakeListEl, e.target) ||
+      clickInsideEl(dashboardMicroConditionToggleEl, e.target) ||
+      clickInsideEl(dashboardMicroConditionClearEl, e.target) ||
+      clickInsideEl(dashboardMicroConditionListEl, e.target) ||
+      clickInsideEl(dashboardMicroStatusToggleEl, e.target) ||
+      clickInsideEl(dashboardMicroStatusClearEl, e.target) ||
+      clickInsideEl(dashboardMicroStatusListEl, e.target)
     ) {
       return;
     }
-    if (
-      dashboardMicroConditionClearEl &&
-      (dashboardMicroConditionClearEl === e.target ||
-        dashboardMicroConditionClearEl.contains(e.target))
-    ) {
-      return;
-    }
-    if (
-      dashboardMicroConditionListEl &&
-      (dashboardMicroConditionListEl === e.target ||
-        dashboardMicroConditionListEl.contains(e.target))
-    ) {
-      return;
-    }
-    setMicroConditionExpanded(false);
+    setMicroFilterMenuOpen(null);
   });
 
   if (dashboardLongevityToggleEl) {
@@ -21752,10 +22677,7 @@
   if (microMoreToggleEl) {
     microMoreToggleEl.addEventListener("click", function () {
       microMoreExpanded = !microMoreExpanded;
-      microMoreToggleEl.setAttribute("aria-expanded", microMoreExpanded ? "true" : "false");
-      microMoreToggleEl.textContent = microMoreExpanded
-        ? "Less"
-        : "More vitamins, minerals & amino acids";
+      syncMicroMoreToggleUi();
       if (microRequirementsOpen) renderMicroRequirements();
     });
   }
@@ -21768,7 +22690,9 @@
       }
       if (e.target.closest('[data-action="open-caffeine-tip-modal"]')) {
         openCaffeineTipModal();
+        return;
       }
+      handleDismissibleTipClick(e);
     });
   }
 
@@ -21776,7 +22700,9 @@
     dashboardLongevityPanelEl.addEventListener("click", function (e) {
       if (e.target.closest('[data-action="dismiss-panel-disclaimer"]')) {
         dismissPanelDisclaimer();
+        return;
       }
+      handleDismissibleTipClick(e);
     });
   }
 
@@ -22499,6 +23425,12 @@
     });
   }
 
+  if (dayWordWrapToggleBtn) {
+    dayWordWrapToggleBtn.addEventListener("click", function () {
+      setDayWordWrapEnabled(!dayWordWrapEnabled);
+    });
+  }
+
   if (dayUnmatchedLinesEl) {
     dayUnmatchedLinesEl.addEventListener("mousedown", function (e) {
       var btn = e.target.closest("[data-unmatched-action]");
@@ -22684,6 +23616,7 @@
   function boot() {
     loadPersistedAppState();
     initDaysCarousel();
+    initStickyFiltersCarousel();
     initLongevityNav();
     initTargetRefPopoverEvents();
     applyLoadedAppStateToUi();

@@ -14,16 +14,16 @@ Parent: [AGENTS_CODE_REFERENCE.md](./AGENTS_CODE_REFERENCE.md)
 │   └── .week__header-actions
 │       ├── #auth-logged-out / #auth-logged-in (.week__auth — Sign up / Log in / email / Log out)
 │       └── #settings-open (.week__settings — sex icon + “Settings”)
+├── #app-nav.app-nav           (Sources / Defs / Entry / Macros / Week / Micros / Longevity; bottom bar ≤720px)
 ├── .dashboard
 │   ├── .dashboard__header
 │   │   ├── .dashboard__header-row  (Dashboard title + Print)
-│   │   ├── .dashboard__toggles  (Food Sources, Week total, Micro requirements, Longevity)
 │   │   └── .dashboard__hint
 │   ├── #dashboard-grid            (7 cards; .dashboard__date; today’s weekday .dashboard__card--today when on this week)
 │   ├── #dashboard-micro-panel     (hidden until toggle)
-│   │   ├── #dashboard-micro-sticky (title, View, Daily Targets, Highlight/Filter/
-│   │   │     By Nutrients / daily-intake/acute disclosures, #dashboard-micro-close)
-│   │   ├── intro + Ask AI + condition focus dropdown (Nutrition Intake group)
+│   │   ├── #dashboard-micro-sticky (title, View, Daily Targets, sticky Filter +
+│   │   │     condition/status filters row, Highlight/daily-intake/acute, close)
+│   │   ├── intro + Ask AI
 │   │   ├── tip asides (#micro-tip-*)
 │   │   ├── #dashboard-micro-list / #dashboard-micro-daily-grid
 │   │   └── More nutrients
@@ -35,8 +35,9 @@ Parent: [AGENTS_CODE_REFERENCE.md](./AGENTS_CODE_REFERENCE.md)
 ├── .week__nav              (Previous/Next week, range, This week, Favorites)
 ├── .week__days-toolbar     (* N hint + Export / Import / Import sample / Clear)
 │   └── .week__days-actions
-├── .week__highlight-bar    (pen + food notes)
+├── .week__highlight-bar    (Food visibility: pen + wrap + food notes)
 │   ├── #day-highlights-toggle
+│   ├── #day-word-wrap-toggle
 │   └── #day-food-notes
 ├── #day-unmatched-lines    (collapsible Unmatched carousel; JS)
 ├── .week__days
@@ -96,7 +97,7 @@ Native `<textarea>` cannot color individual words, and overlaying a transparent 
 
 **Diary favorites** — **Favorite week** (`#week-nav-favorite`) sits above the Mon–Sun day grid (`.week__days-favorite-week`). Per-day Favorite uses `data-action="favorite-day"`; disabled when that day has no notes (same as Clear/Copy). Add/edit uses `#favorite-edit-modal` (`#favorite-edit-name`, `#favorite-edit-description`, `#favorite-edit-modal-hint`, `#favorite-edit-error`). `#favorites-sidebar` is a fixed right slide-in (not a `.modal`): backdrop + `.favorites-sidebar__panel`, class `favorites-sidebar--open`, `inert` when closed. Browse list `#favorites-list`; **Manage** (`#favorites-manage-toggle`) swaps to `#favorites-manage-list` (↑↓ / Edit / Delete). Empty copy `#favorites-empty`; hint `#favorites-sidebar-hint`. Persisted in `nutrients_favorites` (per `userId`). Jumping to a favorite **day** sets session `activeFavoriteDayKey` and applies `.day--favorite-day` (teal `#1f5c53` / `#2a7a6e` / `#eef7f5`, distinct from `.day--today` blue); choosing another favorite day clears the previous highlight first; jumping to a favorite **week** clears the day highlight. When both today and favorite apply, `.day--today.day--favorite-day` keeps the teal favorite styling.
 
-**`.week__highlight-bar`** — separate row below the toolbar (`position: relative; z-index: 10` so popovers stack above `.week__grid`): the `#day-highlights-toggle` pen (`.week__highlight-toggle`, persisted on/off) and `#day-food-notes`.
+**`.week__highlight-bar`** — separate row below the toolbar (`position: relative; z-index: 10` so popovers stack above `.week__grid`): **Food visibility** controls — `#day-highlights-toggle` pen and `#day-word-wrap-toggle` wrap icon (both `.week__highlight-toggle`, persisted on/off; wrap off sets body `day-word-wrap-off`) — plus `#day-food-notes`.
 
 **`#day-unmatched-lines`** (`.week__unmatched-lines`, `role="status"`) — sibling below the highlight bar; `[hidden]` only when there are zero unmatched lines. JS injects:
 
@@ -129,38 +130,39 @@ Pen + notes markup is **static** in `index.html`; only labels and popover **cont
 **`.week-summary`** — below grid, full width; hidden until **Week total** toggle. Blocks: **Week total**, **Day average**, **Deficit/Surplus vs TDEE** (or prompt to set TDEE), **Macro split (week avg)** with explain links.
 
 **Micro panel** — `.dashboard__micro-panel`:
-- **`#dashboard-micro-sticky`** (`.dashboard__micro-sticky`) — sticky top chrome: `.dashboard__micro-sticky-title` (**Micro Requirements**), View segmented control, **Daily Targets** group + `#dashboard-micro-dv-toggle` (“Show daily targets”), `.dashboard__sticky-options` disclosures, `#dashboard-micro-close` (`.dashboard__panel-close`).
+- **`#dashboard-micro-sticky`** (`.dashboard__micro-sticky`) — sticky top chrome: `.dashboard__micro-sticky-title` (**Micro Requirements**), View + **Daily Targets**, `.dashboard__micro-sticky-filters` row (inline S/E·A/E + nutrient search + condition/status filters), Highlight / Poor storage / One-day excess disclosures, `#dashboard-micro-close`.
 - **Sticky options** (shared pattern with longevity nav):
   - **Highlight** (`#micro-highlight-options-panel`) — free-combine toggles for Required daily intake / S/E / A/E; clear × (`data-sticky-highlight-clear`).
-  - **Filter** (`#micro-filter-options-panel`) — checkboxes for daily / S/E / A/E; clear × (`data-sticky-filter-clear`); nested **By Nutrients** (`.dashboard__nutrient-filter`):
-    - Disclosure `[data-nutrient-filter-disclosure]` → `#micro-nutrient-filter-panel`
-    - Presets `[data-nutrient-filter-preset="common-deficiencies"|"fat-soluble"]`
-    - Combobox `#micro-nutrient-filter-input` + `#micro-nutrient-filter-suggest`
-    - Chips `[data-nutrient-filter-chips]`
-  - Same Filter / By Nutrients markup is mirrored under `#dashboard-longevity-nav` (`#longevity-nutrient-filter-panel`, `#longevity-nutrient-filter-input`, …) and shares `filterStickyNutrientKeys` state.
+  - **Micro sticky filters row** (`.dashboard__micro-sticky-filters`) — inline S/E + A/E checkboxes (`data-sticky-filter`), clear × (`data-sticky-filter-clear`), nutrient search (`#micro-nutrient-filter-input` + chips), condition Filter dropdown + Zero / Red-or-zero / Green status filters.
+  - Longevity sticky filters row (`.dashboard__longevity-sticky-filters`) — inline daily/S/E/A/E checkboxes + nutrient search/chips (no Quick Add presets); shares `filterStickyNutrientKeys` / sticky icon filter state with micro.
   - **Poor storage / daily intake** — Show icons toggle (`data-daily-intake-icons-toggle`).
   - **One-day excess consumption** — S/E and A/E show toggles (`data-acute-kind`).
-- `.dashboard__micro-condition-wrap` — focus dropdown grouped into **Nutrition Intake** (well/poorly absorbed, **American Common Deficiencies**, **Fat-soluble vitamins**) and **Conditions** (ADHD, anemia, anti-aging, bowel movements, cataracts, coffee/tea, hair loss) + clear ×.
+- `.dashboard__micro-condition-wrap` (in sticky filters row) — three dropdowns: **Nutrition Intake**, **Conditions**, **Status** (Zero / Red-or-zero / Green / Excess) + per-dropdown clear ×.
 - `.dashboard__micro-list` (weekly avg list) and `.dashboard__micro-daily-grid` (each-day grid; today column uses `.dashboard__card--today`). Each-day grid has a **More nutrients** control for extended fields + condition-linked longevity rows.
 - **% target** text color / `font-weight` from `config.json` `microDvStatus` tiers. Nutrient rows carry `data-micro-def`, `.dashboard__micro-sources-btn`, a `.dashboard__target-ref` badge, optionally `.dashboard__micro-daily-intake-btn`, and optionally `.dashboard__micro-acute-btn--side` / `--adverse` (S/E · A/E badges).
 - Icon visibility/highlight is CSS-gated by body classes: `show-daily-intake-icons`, `show-acute-side-effects`, `show-acute-adverse-effects`, `highlight-daily-intake-icons`, `highlight-side-effects`, `highlight-adverse-effects` (Highlight forces red styling and visibility).
 - `#micro-tip-hair-loss`, `#micro-tip-hair-loss-herbs`, `#micro-tip-hair-loss-prescriptions` — shown when **Hair loss** condition filter is active.
-- `#micro-tip-common-deficiencies` — stays visible for **American Common Deficiencies** (and when no condition filter is active); points users at Filter → By Nutrients → Common Deficiencies preset.
+- `#micro-tip-common-deficiencies` — stays visible for **American Common Deficiencies** (and when no condition filter is active); points users at the sticky condition Filter / nutrient search.
 - `#micro-tip-fat-soluble` — stays visible for **Fat-soluble vitamins** condition focus.
+- Tip asides (`.dashboard__micro-tip`, `.dashboard__longevity-processed-note`) — click body to collapse (`data-tip-collapsed`); **Read more** / links still open modals. Micro tips: grouped `.dashboard__tips-reopen` (`Tips (n)`). Longevity tips: in-place `.dashboard__tips-reopen[data-tip-reopen-for]` (`Tips (1)`) at each tip. State: `collapsedTipIds` + `syncAllDismissibleTips` / `handleDismissibleTipClick`.
 - `#micro-daily-intake-popover` / `#micro-acute-toxicity-popover` / `#target-ref-popover` — fixed tooltip siblings.
 
 **Longevity panel** — `.dashboard__longevity-panel`:
-- **`#dashboard-longevity-nav`** — sticky: `.dashboard__longevity-nav-title` (**Longevity**), `#dashboard-longevity-close`, mirrored Highlight/Filter (incl. By Nutrients)/daily/acute option panels, topic carousel + All topics list.
+- **`#dashboard-longevity-nav`** — sticky: `.dashboard__longevity-nav-title` (**Longevity**), Highlight / Poor storage / One-day excess, `.dashboard__longevity-sticky-filters` (daily/S/E/A/E + nutrient search), `#dashboard-longevity-close`, topic carousel + All topics list.
 - Intro / disclaimer / processed-food note (Yuka / Bobby links) live in content area as applicable.
 - `#dashboard-longevity-content` — grouped sections with % DV **Level** bars inside `.dashboard__longevity-bar-wrap` (fill + optional `.dashboard__longevity-bar-notch` at 100%). Notable section keys: `sectionUpperGiMotility`, `sectionThyroid`, `sectionLiver`, `sectionKidney`, `sectionGrayHair`, `sectionAches` (includes omega-6:3 row), `sectionBrainLongevity` (brain + astrocytes), `sectionVascularBloodPressure` (FDA/WHO/AHA sodium limit rows), visceral fat, fats & cholesterol, TMAO, etc. Headings carry `data-longevity-def` / `data-micro-def`; rows may include sources / daily-intake / acute icons.
 
 **Responsive / print** (lower `styles.css`): dashboard/table column counts shrink at breakpoints. At `max-width: 520px`, the Mon–Sun **day editors** use a horizontal scroll-snap carousel (not a stacked single-column grid) — see **Mobile days carousel** above. Day editors keep `resize: vertical` unless print/print-preview (`resize: none`). Icon buttons, week nav, Favorite week, Favorites sidebar, unmatched UI, and day Copy/Favorite/Clear are hidden in print / print-preview.
 
+**Horizontal pill/tab carousels** (nowrap + `overflow-x: auto`, scrollbar hidden): `#app-nav .app-nav__inner` (bottom tabs at `max-width: 720px`; never wraps Longevity onto a second row), `.dashboard__sticky-options-disclosures` (Highlight / Poor storage / One-day excess).
+
+**Sticky filters section carousel** (≤900px): `.dashboard__micro-sticky-filters` / `.dashboard__longevity-sticky-filters` — each `.dashboard__sticky-filter-group` is one scroll-snap slide inside `.dashboard__sticky-filters-track`. Micro order: **Filter by** → Show nutrients with → By nutrient; longevity: Show → By nutrient. Chevron nav `.dashboard__sticky-filters-carousel-nav` (`data-sticky-filters-carousel="prev|next"`, current label `#micro-sticky-filters-carousel-current` / `#longevity-sticky-filters-carousel-current`). While a Filter-by menu is open in the carousel, lists are moved to `document.body` with `.dashboard__micro-condition-list--fixed` (`position: fixed` via `syncMicroFilterMenuPositions`) so they escape track overflow and sticky `backdrop-filter` containing blocks; restored to their dropdown home on close. Desktop keeps groups in one wrapping row (`display: contents` on the track).
+
 ## Food definitions table
 
 **`.keywords__toolbar`** — top action bar above the table: hint + `.keywords__toolbar-actions` with duplicate bulk buttons using `-top` id suffixes (`#sort-foods-alphabetically-top`, `#export-all-foods-top`, `#import-all-foods-top`, `#import-sample-foods-top`).
 
-**`.keywords__filter`** — search box `#keywords-search` (`type="search"`) + `#keywords-search-clear` (×, hidden when empty); filters by food-name substring. **Categories** button `#keywords-category-open` opens `#keywords-category-modal`; active category shows `#keywords-category-chip` + `#keywords-category-clear` (× exits category filter).
+**`.keywords__filter`** — search box `#keywords-search` (`type="search"`) + `#keywords-search-clear` (× inside the field, hidden when empty); filters by food-name substring. **Categories** button `#keywords-category-open` opens `#keywords-category-modal`; active category shows `#keywords-category-chip` + `#keywords-category-clear` (× exits category filter).
 
 **`.keywords__panel`** — white panel, table `#keywords-table` inside; body `#keywords-list` (renders only the current page).
 
@@ -182,7 +184,7 @@ Horizontal scroll on narrow screens: `.keywords__panel { overflow-x: auto }`, `m
 
 ## Auth header & modals
 
-**Header** — `.week__header-actions` (top-right): `#auth-logged-out` shows **Log in** (`#auth-login-open`) + **Sign up** (`#auth-signup-open`); `#auth-logged-in` shows `#auth-user-email` + **Log out** (`#auth-logout`). `syncAuthUi` toggles which block is visible.
+**Header** — `.week__header-actions` (top-right): `#auth-logged-out` shows **Log in** (`#auth-login-open`) + **Sign up** (`#auth-signup-open`); `#auth-logged-in` shows `#auth-user-email` + **Log out** (`#auth-logout`). `syncAuthUi` toggles which block is visible. At `max-width: 720px`, `.week__header` stacks (title/hint full width, then actions full-width right-aligned) so a long email cannot crush `.week__hint` into a one-word column; email ellipsis tightens further at `max-width: 520px`.
 
 **`#auth-signup-modal` / `#auth-login-modal`** — standard `.modal` pattern; email + password fields (`#auth-signup-email` / `#auth-signup-password`, `#auth-login-email` / `#auth-login-password`); error paragraphs `#auth-signup-error` / `#auth-login-error`; submit via `#auth-signup-submit` / `#auth-login-submit`. CSS: `.week__auth`, `.week__auth-btn`, `.week__auth-btn--primary`, `.week__auth-email`. Passwords are plaintext local-testing accounts only ([AGENTS-data-persistence.md](./AGENTS-data-persistence.md)).
 
@@ -258,7 +260,7 @@ Critical hooks (do not rename without updating the element lookups near the top 
 - TDEE: `tdee-calculator-modal`, `tdee-calculator-apply`, `tdee-calculator-cancel`, `tdee-calc-*`, `tdee-hint-modal`, `tdee-hint-modal-done`
 - Macro split: `macro-split-hint-modal`, `macro-split-carousel`, `macro-split-carousel-prev`, `macro-split-carousel-next`, `macro-split-carousel-indicator`, `macro-split-carousel-card`, `macro-split-hint-modal-done`
 - Sources: `food-sources-modal`, `food-sources-modal-title`, `food-sources-body`, `food-sources-filter`, `food-sources-modal-done`, `food-sources-fullscreen-toggle`, `micro-sources-modal`, `micro-sources-modal-title`, `micro-sources-body`, `micro-sources-scope`, `micro-sources-modal-done`, `micro-sources-fullscreen-toggle`, `longevity-sources-modal`, `longevity-sources-modal-title`, `longevity-sources-body`, `longevity-sources-modal-done`, `longevity-sources-fullscreen-toggle`
-- Day / week / favorites: `mon` … `sun`, `week-nav-prev`, `week-nav-next`, `week-nav-label`, `week-nav-label-text`, `week-nav-this`, `week-nav-favorite`, `favorites-open`, `favorites-sidebar`, `favorites-sidebar-title`, `favorites-sidebar-hint`, `favorites-list`, `favorites-manage-toggle`, `favorites-manage-list`, `favorites-empty`, `favorite-edit-modal`, `favorite-edit-modal-title`, `favorite-edit-modal-hint`, `favorite-edit-name`, `favorite-edit-description`, `favorite-edit-error`, `favorite-edit-save`, `favorite-edit-cancel`, `days-carousel-current`, `week-jump-modal`, `week-jump-date`, `week-jump-typed`, `week-jump-preview`, `week-jump-error`, `week-jump-apply`, `week-jump-cancel`, `copy-date-modal`, `copy-date-modal-title`, `copy-date-modal-hint`, `copy-date-input`, `copy-date-modal-error`, `copy-date-apply`, `copy-date-cancel`, `day-highlights-toggle`, `day-food-notes`, `day-food-notes-labels`, `day-food-notes-popover`, `day-unmatched-lines`, `export-all-meals`, `import-all-meals`, `import-all-meals-modal`, `clear-all-days`
+- Day / week / favorites: `mon` … `sun`, `week-nav-prev`, `week-nav-next`, `week-nav-label`, `week-nav-label-text`, `week-nav-this`, `week-nav-favorite`, `favorites-open`, `favorites-sidebar`, `favorites-sidebar-title`, `favorites-sidebar-hint`, `favorites-list`, `favorites-manage-toggle`, `favorites-manage-list`, `favorites-empty`, `favorite-edit-modal`, `favorite-edit-modal-title`, `favorite-edit-modal-hint`, `favorite-edit-name`, `favorite-edit-description`, `favorite-edit-error`, `favorite-edit-save`, `favorite-edit-cancel`, `days-carousel-current`, `week-jump-modal`, `week-jump-date`, `week-jump-typed`, `week-jump-preview`, `week-jump-error`, `week-jump-apply`, `week-jump-cancel`, `copy-date-modal`, `copy-date-modal-title`, `copy-date-modal-hint`, `copy-date-input`, `copy-date-modal-error`, `copy-date-apply`, `copy-date-cancel`, `day-highlights-toggle`, `day-word-wrap-toggle`, `day-food-notes`, `day-food-notes-labels`, `day-food-notes-popover`, `day-unmatched-lines`, `export-all-meals`, `import-all-meals`, `import-all-meals-modal`, `clear-all-days`
 - Dashboard: `dashboard-grid`, `dashboard-print`, `week-summary`, `dashboard-food-sources-open`, `dashboard-week-toggle`, `dashboard-micro-toggle`, `dashboard-micro-panel`, `dashboard-micro-list`, `dashboard-micro-daily-grid`, `micro-daily-intake-popover`, `target-ref-popover`, `target-ref-popover-text`, `dashboard-micro-view-weekly`, `dashboard-micro-view-daily`, `dashboard-micro-dv-toggle`, `dashboard-micro-hint`, `dashboard-micro-hint-text`, `micro-tip-caffeine`, `micro-tip-cataracts`, `micro-tip-hair-loss`, `micro-tip-hair-loss-herbs`, `micro-tip-hair-loss-prescriptions`, `micro-tip-common-deficiencies`, `micro-tip-fat-soluble`, `dashboard-micro-condition-toggle`, `dashboard-micro-condition-list`, `dashboard-micro-condition-label`, `dashboard-micro-condition-clear`, `micro-nutrient-filter-panel`, `micro-nutrient-filter-input`, `micro-nutrient-filter-suggest`, `longevity-nutrient-filter-panel`, `longevity-nutrient-filter-input`, `longevity-nutrient-filter-suggest`, `micro-gaps-ai-open`, `health-timeline-ai-open`
 - Longevity: `dashboard-longevity-toggle`, `dashboard-longevity-panel`, `dashboard-longevity-content`, `dashboard-longevity-nav`, `dashboard-longevity-nav-prev`, `dashboard-longevity-nav-next`, `dashboard-longevity-nav-current-title`, `dashboard-longevity-nav-all-toggle`, `dashboard-longevity-nav-all-list`, `longevity-modal`, `longevity-form`, `longevity-modal-food`, `longevity-modal-done`
 - Micro gaps: `micro-gaps-modal`, `micro-gaps-preference`, `micro-gaps-additional`, `micro-gaps-ai-preview`, `micro-gaps-ai-copy`, `micro-gaps-open-chatgpt`, `micro-gaps-open-claude`, `micro-gaps-modal-done`

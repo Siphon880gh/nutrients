@@ -32,6 +32,22 @@
     <symbol id="icon-sticky-acute-excess" viewBox="0 0 16 16">
       <path fill="currentColor" d="M8 1.5 1.25 14h13.5L8 1.5zm0 3.25a.75.75 0 0 1 .75.75v4.5a.75.75 0 0 1-1.5 0V5.5A.75.75 0 0 1 8 4.75zM8 12a.875.875 0 1 0 0-1.75A.875.875 0 0 0 8 12z"></path>
     </symbol>
+    <symbol id="icon-micro-status-zero" viewBox="0 0 16 16">
+      <circle cx="8" cy="8" r="6.1" fill="none" stroke="currentColor" stroke-width="1.5"></circle>
+      <path fill="currentColor" d="M8 4.35c-1.55 0-2.55 1.2-2.55 3.65S6.45 11.65 8 11.65s2.55-1.2 2.55-3.65S9.55 4.35 8 4.35zm0 1.2c.78 0 1.25.85 1.25 2.45S8.78 10.45 8 10.45s-1.25-.85-1.25-2.45S7.22 5.55 8 5.55z"></path>
+    </symbol>
+    <symbol id="icon-micro-status-red-zero" viewBox="0 0 16 16">
+      <circle cx="8" cy="8" r="6.25" fill="currentColor"></circle>
+      <path fill="#fff" d="M8 4.35c-1.55 0-2.55 1.2-2.55 3.65S6.45 11.65 8 11.65s2.55-1.2 2.55-3.65S9.55 4.35 8 4.35zm0 1.2c.78 0 1.25.85 1.25 2.45S8.78 10.45 8 10.45s-1.25-.85-1.25-2.45S7.22 5.55 8 5.55z"></path>
+    </symbol>
+    <symbol id="icon-micro-status-green" viewBox="0 0 16 16">
+      <circle cx="8" cy="8" r="6.25" fill="currentColor"></circle>
+      <path fill="#fff" d="M7.15 10.55 4.7 8.15l.95-.95 1.5 1.45 3.2-3.25.95.95-4.15 4.2z"></path>
+    </symbol>
+    <symbol id="icon-micro-status-excess" viewBox="0 0 16 16">
+      <circle cx="8" cy="8" r="6.25" fill="currentColor"></circle>
+      <path fill="#fff" d="M8 3.6 11.4 9.1H4.6L8 3.6zm0 1.85L6.15 8.2h3.7L8 5.45zM7.25 10.1h1.5v1.5h-1.5z"></path>
+    </symbol>
   </svg>
   <main class="week">
     <header class="week__header">
@@ -58,19 +74,24 @@
 
     <nav id="app-nav" class="app-nav" aria-label="App sections">
       <div class="app-nav__inner">
-        <button type="button" id="dashboard-food-sources-open" class="app-nav__btn" data-app-shortcut="F" aria-label="Food Sources" aria-keyshortcuts="F" aria-haspopup="dialog" aria-controls="food-sources-modal">
+        <button type="button" id="dashboard-food-sources-open" class="app-nav__btn" data-app-shortcut="S" aria-label="Food Sources" aria-keyshortcuts="S" aria-haspopup="dialog" aria-controls="food-sources-modal">
           <span class="app-nav__label app-nav__label--full" aria-hidden="true">Food Sources</span>
           <span class="app-nav__label app-nav__label--short" aria-hidden="true">Sources</span>
-          <span class="app-nav__shortcut" aria-hidden="true">F</span>
+          <span class="app-nav__shortcut" aria-hidden="true">S</span>
         </button>
-        <button type="button" id="dashboard-macros-jump" class="app-nav__btn" data-app-shortcut="M" aria-label="Macros" aria-keyshortcuts="M">
-          <span class="app-nav__label" aria-hidden="true">Macros</span>
-          <span class="app-nav__shortcut" aria-hidden="true">M</span>
+        <button type="button" id="dashboard-food-definitions-jump" class="app-nav__btn" data-app-shortcut="D" aria-label="Food Definitions" aria-keyshortcuts="D">
+          <span class="app-nav__label app-nav__label--full" aria-hidden="true">Food Definitions</span>
+          <span class="app-nav__label app-nav__label--short" aria-hidden="true">Defs</span>
+          <span class="app-nav__shortcut" aria-hidden="true">D</span>
         </button>
         <button type="button" id="dashboard-food-entry-jump" class="app-nav__btn" data-app-shortcut="E" aria-label="Food Entry" aria-keyshortcuts="E">
           <span class="app-nav__label app-nav__label--full" aria-hidden="true">Food Entry</span>
           <span class="app-nav__label app-nav__label--short" aria-hidden="true">Entry</span>
           <span class="app-nav__shortcut" aria-hidden="true">E</span>
+        </button>
+        <button type="button" id="dashboard-macros-jump" class="app-nav__btn" data-app-shortcut="M" aria-label="Macros" aria-keyshortcuts="M">
+          <span class="app-nav__label" aria-hidden="true">Macros</span>
+          <span class="app-nav__shortcut" aria-hidden="true">M</span>
         </button>
         <button type="button" id="dashboard-week-toggle" class="app-nav__btn" data-app-shortcut="W" aria-label="Week total" aria-expanded="false" aria-controls="week-summary" aria-keyshortcuts="W">
           <span class="app-nav__label app-nav__label--full" aria-hidden="true">Week total</span>
@@ -106,10 +127,10 @@
           </div>
           <div class="dashboard__micro-intro-actions">
             <div class="dashboard__micro-toggle-group" role="group" aria-label="Micro view">
-              <span class="dashboard__micro-toggle-label">View</span>
+              <span class="dashboard__micro-toggle-label" data-app-shortcut="V" aria-keyshortcuts="V">View<span class="app-nav__shortcut" aria-hidden="true">V</span></span>
               <div class="dashboard__micro-segmented">
                 <button type="button" id="dashboard-micro-view-weekly" class="dashboard__micro-segment" aria-pressed="true">Weekly average</button>
-                <button type="button" id="dashboard-micro-view-daily" class="dashboard__micro-segment" data-app-shortcut="D" aria-pressed="false" aria-keyshortcuts="D">Each day<span class="app-nav__shortcut" aria-hidden="true">D</span></button>
+                <button type="button" id="dashboard-micro-view-daily" class="dashboard__micro-segment" aria-pressed="false">Each day</button>
               </div>
             </div>
             <div class="dashboard__micro-toggle-group" role="group" aria-label="Display options">
@@ -117,15 +138,173 @@
               <button type="button" id="dashboard-micro-dv-toggle" class="dashboard__micro-segment dashboard__micro-segment--solo" aria-pressed="false">Show daily targets</button>
             </div>
           </div>
+          <div class="dashboard__micro-sticky-filters">
+            <div class="dashboard__sticky-filters-carousel-nav" aria-label="Filter sections">
+              <button type="button" class="dashboard__sticky-filters-carousel-adj" data-sticky-filters-carousel="prev" aria-label="Previous filter section">‹</button>
+              <span id="micro-sticky-filters-carousel-current" class="dashboard__sticky-filters-carousel-current" aria-live="polite">Filter by</span>
+              <button type="button" class="dashboard__sticky-filters-carousel-adj" data-sticky-filters-carousel="next" aria-label="Next filter section">›</button>
+            </div>
+            <div class="dashboard__sticky-filters-track" data-sticky-filters-track data-sticky-filters-current="micro-sticky-filters-carousel-current">
+            <div class="dashboard__sticky-filter-group dashboard__sticky-filter-group--grow">
+              <span class="dashboard__sticky-filter-group-label" id="micro-sticky-filter-by-label">Filter by</span>
+              <div class="dashboard__micro-condition-wrap" role="group" aria-labelledby="micro-sticky-filter-by-label">
+              <div class="dashboard__micro-condition-controls">
+                <span class="dashboard__micro-condition-dropdown">
+                  <button type="button" id="dashboard-micro-intake-toggle" class="dashboard__micro-hint-action-btn dashboard__micro-condition-toggle" aria-expanded="false" aria-controls="dashboard-micro-intake-list" aria-haspopup="listbox">
+                    <svg class="dashboard__micro-condition-icon" viewBox="0 0 16 16" width="13" height="13" aria-hidden="true" focusable="false">
+                      <path fill="currentColor" d="M8 2.25C4.55 2.25 1.68 4.73 1 8c.68 3.27 3.55 5.75 7 5.75S14.32 11.27 15 8c-.68-3.27-3.45-5.75-7-5.75zm0 9.5A3.75 3.75 0 1 1 8 4.25 3.75 3.75 0 0 1 8 11.75zm0-6A2.25 2.25 0 1 0 5.75 8 2.25 2.25 0 0 0 8 5.75z"></path>
+                    </svg>
+                    <span id="dashboard-micro-intake-label">Nutrition Intake</span>
+                  </button>
+                  <button type="button" id="dashboard-micro-intake-clear" class="dashboard__micro-condition-clear" hidden aria-label="Clear nutrition intake filter">×</button>
+                  <ul id="dashboard-micro-intake-list" class="dashboard__micro-condition-list" role="listbox" hidden aria-label="Nutrition intake filters">
+                    <li class="dashboard__micro-condition-item dashboard__micro-condition-item--clear" data-micro-filter-clear-item="intake" role="presentation" hidden>
+                      <button type="button" class="dashboard__micro-condition-link dashboard__micro-condition-link--clear" role="option" data-micro-condition="">Clear filter</button>
+                    </li>
+                    <li class="dashboard__micro-condition-item" role="presentation">
+                      <button type="button" class="dashboard__micro-condition-link" role="option" data-micro-condition="wellAbsorbed">Well absorbed / average the week</button>
+                    </li>
+                    <li class="dashboard__micro-condition-item" role="presentation">
+                      <button type="button" class="dashboard__micro-condition-link" role="option" data-micro-condition="fatSolubleVitamins">Fat-soluble vitamins (A, D, E, K)</button>
+                    </li>
+                    <li class="dashboard__micro-condition-item" role="presentation">
+                      <button type="button" class="dashboard__micro-condition-link" role="option" data-micro-condition="poorlyAbsorbed">Poorly absorbed / take daily</button>
+                    </li>
+                    <li class="dashboard__micro-condition-item" role="presentation">
+                      <button type="button" class="dashboard__micro-condition-link" role="option" data-micro-condition="americanCommonDeficiencies">American Common Deficiencies</button>
+                    </li>
+                  </ul>
+                </span>
+                <span class="dashboard__micro-condition-dropdown">
+                  <button type="button" id="dashboard-micro-condition-toggle" class="dashboard__micro-hint-action-btn dashboard__micro-condition-toggle" aria-expanded="false" aria-controls="dashboard-micro-condition-list" aria-haspopup="listbox">
+                    <svg class="dashboard__micro-condition-icon" viewBox="0 0 16 16" width="13" height="13" aria-hidden="true" focusable="false">
+                      <path fill="currentColor" d="M8 2.25C4.55 2.25 1.68 4.73 1 8c.68 3.27 3.55 5.75 7 5.75S14.32 11.27 15 8c-.68-3.27-3.45-5.75-7-5.75zm0 9.5A3.75 3.75 0 1 1 8 4.25 3.75 3.75 0 0 1 8 11.75zm0-6A2.25 2.25 0 1 0 5.75 8 2.25 2.25 0 0 0 8 5.75z"></path>
+                    </svg>
+                    <span id="dashboard-micro-condition-label">Conditions</span>
+                  </button>
+                  <button type="button" id="dashboard-micro-condition-clear" class="dashboard__micro-condition-clear" hidden aria-label="Clear condition filter">×</button>
+                  <ul id="dashboard-micro-condition-list" class="dashboard__micro-condition-list" role="listbox" hidden aria-label="Condition filters">
+                    <li class="dashboard__micro-condition-item dashboard__micro-condition-item--clear" data-micro-filter-clear-item="conditions" role="presentation" hidden>
+                      <button type="button" class="dashboard__micro-condition-link dashboard__micro-condition-link--clear" role="option" data-micro-condition="">Clear filter</button>
+                    </li>
+                    <li class="dashboard__micro-condition-item" role="presentation">
+                      <button type="button" class="dashboard__micro-condition-link" role="option" data-micro-condition="adhd">ADHD</button>
+                    </li>
+                    <li class="dashboard__micro-condition-item" role="presentation">
+                      <button type="button" class="dashboard__micro-condition-link" role="option" data-micro-condition="anemia">Anemia</button>
+                    </li>
+                    <li class="dashboard__micro-condition-item" role="presentation">
+                      <button type="button" class="dashboard__micro-condition-link" role="option" data-micro-condition="antiAging">Anti-aging & longevity</button>
+                    </li>
+                    <li class="dashboard__micro-condition-item" role="presentation">
+                      <button type="button" class="dashboard__micro-condition-link" role="option" data-micro-condition="bowelMovementsAltered">Bowel movements altered</button>
+                    </li>
+                    <li class="dashboard__micro-condition-item" role="presentation">
+                      <button type="button" class="dashboard__micro-condition-link" role="option" data-micro-condition="cataractsPrevention">Cataracts prevention</button>
+                    </li>
+                    <li class="dashboard__micro-condition-item" role="presentation">
+                      <button type="button" class="dashboard__micro-condition-link" role="option" data-micro-condition="coffeeTeaUser">Chronic coffee / tea / energy drink user</button>
+                    </li>
+                    <li class="dashboard__micro-condition-item" role="presentation">
+                      <button type="button" class="dashboard__micro-condition-link" role="option" data-micro-condition="hairLoss">Hair loss</button>
+                    </li>
+                  </ul>
+                </span>
+                <span class="dashboard__micro-condition-dropdown dashboard__micro-status-dropdown">
+                  <button type="button" id="dashboard-micro-status-toggle" class="dashboard__micro-hint-action-btn dashboard__micro-condition-toggle dashboard__micro-status-toggle" aria-expanded="false" aria-controls="dashboard-micro-status-list" aria-haspopup="listbox">
+                    <span class="dashboard__micro-status-toggle-badge" aria-hidden="true">
+                      <svg class="dashboard__micro-condition-icon dashboard__micro-status-toggle-icon" viewBox="0 0 16 16" width="12" height="12" focusable="false">
+                        <use href="#icon-micro-status-green"></use>
+                      </svg>
+                    </span>
+                    <span id="dashboard-micro-status-label">Status</span>
+                  </button>
+                  <button type="button" id="dashboard-micro-status-clear" class="dashboard__micro-condition-clear" hidden aria-label="Clear status filter">×</button>
+                  <ul id="dashboard-micro-status-list" class="dashboard__micro-condition-list dashboard__micro-status-list" role="listbox" hidden aria-label="Status filters">
+                    <li class="dashboard__micro-condition-item dashboard__micro-condition-item--clear" data-micro-status-clear-item role="presentation" hidden>
+                      <button type="button" class="dashboard__micro-condition-link dashboard__micro-condition-link--clear" role="option" data-micro-status-filter="">Clear filter</button>
+                    </li>
+                    <li class="dashboard__micro-condition-item" role="presentation">
+                      <button type="button" class="dashboard__micro-condition-link dashboard__micro-status-link" role="option" data-micro-status-filter="zero">
+                        <span class="dashboard__micro-status-badge dashboard__micro-status-badge--zero" aria-hidden="true">
+                          <svg class="dashboard__micro-status-filter-icon" viewBox="0 0 16 16" width="14" height="14" focusable="false"><use href="#icon-micro-status-zero"></use></svg>
+                        </span>
+                        <span class="dashboard__micro-status-copy">
+                          <span class="dashboard__micro-status-name">Zero</span>
+                          <span class="dashboard__micro-status-desc">No intake logged</span>
+                        </span>
+                      </button>
+                    </li>
+                    <li class="dashboard__micro-condition-item" role="presentation">
+                      <button type="button" class="dashboard__micro-condition-link dashboard__micro-status-link" role="option" data-micro-status-filter="redOrZero">
+                        <span class="dashboard__micro-status-badge dashboard__micro-status-badge--red-zero" aria-hidden="true">
+                          <svg class="dashboard__micro-status-filter-icon" viewBox="0 0 16 16" width="14" height="14" focusable="false"><use href="#icon-micro-status-red-zero"></use></svg>
+                        </span>
+                        <span class="dashboard__micro-status-copy">
+                          <span class="dashboard__micro-status-name">Red or zero</span>
+                          <span class="dashboard__micro-status-desc">Below target or empty</span>
+                        </span>
+                      </button>
+                    </li>
+                    <li class="dashboard__micro-condition-item" role="presentation">
+                      <button type="button" class="dashboard__micro-condition-link dashboard__micro-status-link" role="option" data-micro-status-filter="green">
+                        <span class="dashboard__micro-status-badge dashboard__micro-status-badge--green" aria-hidden="true">
+                          <svg class="dashboard__micro-status-filter-icon" viewBox="0 0 16 16" width="14" height="14" focusable="false"><use href="#icon-micro-status-green"></use></svg>
+                        </span>
+                        <span class="dashboard__micro-status-copy">
+                          <span class="dashboard__micro-status-name">Green</span>
+                          <span class="dashboard__micro-status-desc">On track</span>
+                        </span>
+                      </button>
+                    </li>
+                    <li class="dashboard__micro-condition-item" role="presentation">
+                      <button type="button" class="dashboard__micro-condition-link dashboard__micro-status-link" role="option" data-micro-status-filter="excess">
+                        <span class="dashboard__micro-status-badge dashboard__micro-status-badge--excess" aria-hidden="true">
+                          <svg class="dashboard__micro-status-filter-icon" viewBox="0 0 16 16" width="14" height="14" focusable="false"><use href="#icon-micro-status-excess"></use></svg>
+                        </span>
+                        <span class="dashboard__micro-status-copy">
+                          <span class="dashboard__micro-status-name">Excess</span>
+                          <span class="dashboard__micro-status-desc">Over target</span>
+                        </span>
+                      </button>
+                    </li>
+                  </ul>
+                </span>
+              </div>
+              </div>
+            </div>            <div class="dashboard__sticky-filter-group">
+              <span class="dashboard__sticky-filter-group-label" id="micro-sticky-filter-effects-label">Show nutrients with</span>
+              <div class="dashboard__micro-sticky-filter-icons dashboard__filter-panel-pills" role="group" aria-labelledby="micro-sticky-filter-effects-label">
+                <label class="dashboard__sticky-options-check">
+                  <input type="checkbox" data-sticky-filter="side" />
+                  <span>Side effects (S/E)</span>
+                </label>
+                <label class="dashboard__sticky-options-check">
+                  <input type="checkbox" data-sticky-filter="adverse" />
+                  <span>Adverse effects (A/E)</span>
+                </label>
+                <button type="button" class="dashboard__sticky-filter-clear" data-sticky-filter-clear hidden aria-label="Clear filters">×</button>
+              </div>
+            </div>
+            <div class="dashboard__sticky-filter-group dashboard__filter-panel-section--nutrients">
+              <span class="dashboard__sticky-filter-group-label" id="micro-sticky-filter-nutrient-label">By nutrient</span>
+              <div id="micro-nutrient-filter-panel" class="dashboard__nutrient-filter-panel dashboard__nutrient-filter-panel--inline">
+                <div class="dashboard__nutrient-filter-combobox dashboard__nutrient-filter-combobox--search">
+                  <svg class="dashboard__nutrient-filter-search-icon" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" focusable="false"><use href="#icon-search"></use></svg>
+                  <input type="text" id="micro-nutrient-filter-input" class="dashboard__nutrient-filter-input" data-nutrient-filter-input placeholder="Search nutrients…" autocomplete="off" spellcheck="false" aria-label="Search nutrients" aria-autocomplete="list" aria-controls="micro-nutrient-filter-suggest" aria-expanded="false" />
+                  <div id="micro-nutrient-filter-suggest" class="dashboard__nutrient-filter-suggest" role="listbox" hidden aria-label="Nutrient suggestions"></div>
+                </div>
+                <div class="dashboard__nutrient-filter-chips" data-nutrient-filter-chips role="list" aria-label="Selected nutrients"></div>
+              </div>
+            </div>
+
+            </div>
+          </div>
           <div class="dashboard__sticky-options">
             <div class="dashboard__sticky-options-disclosures">
               <span class="dashboard__sticky-filter-wrap">
                 <button type="button" class="dashboard__sticky-options-disclosure" data-sticky-options-toggle data-sticky-highlight-disclosure aria-expanded="false" aria-controls="micro-highlight-options-panel"><svg class="dashboard__sticky-options-disclosure-icon" viewBox="0 0 24 24" width="12" height="12" aria-hidden="true" focusable="false"><use href="#icon-sticky-highlight"></use></svg><span>Highlight</span></button>
                 <button type="button" class="dashboard__sticky-filter-clear" data-sticky-highlight-clear hidden aria-label="Clear highlights">×</button>
-              </span>
-              <span class="dashboard__sticky-filter-wrap">
-                <button type="button" class="dashboard__sticky-options-disclosure" data-sticky-options-toggle data-sticky-filter-disclosure aria-expanded="false" aria-controls="micro-filter-options-panel"><svg class="dashboard__sticky-options-disclosure-icon" viewBox="0 0 16 16" width="12" height="12" aria-hidden="true" focusable="false"><use href="#icon-sticky-filter"></use></svg><span>Filter</span></button>
-                <button type="button" class="dashboard__sticky-filter-clear" data-sticky-filter-clear hidden aria-label="Clear filters">×</button>
               </span>
               <button type="button" class="dashboard__sticky-options-disclosure" data-sticky-options-toggle aria-expanded="false" aria-controls="micro-daily-options-panel"><svg class="dashboard__sticky-options-disclosure-icon" viewBox="0 0 16 16" width="12" height="12" aria-hidden="true" focusable="false"><use href="#icon-sticky-daily-intake"></use></svg><span>Poor storage / daily intake</span></button>
               <button type="button" class="dashboard__sticky-options-disclosure" data-sticky-options-toggle aria-expanded="false" aria-controls="micro-acute-options-panel"><svg class="dashboard__sticky-options-disclosure-icon" viewBox="0 0 16 16" width="12" height="12" aria-hidden="true" focusable="false"><use href="#icon-sticky-acute-excess"></use></svg><span>One-day excess consumption</span></button>
@@ -136,49 +315,6 @@
                 <button type="button" class="dashboard__sticky-options-toggle" data-sticky-highlight="daily" aria-pressed="false">Required daily intake</button>
                 <button type="button" class="dashboard__sticky-options-toggle" data-sticky-highlight="side" aria-pressed="false">Side effects (S/E)</button>
                 <button type="button" class="dashboard__sticky-options-toggle" data-sticky-highlight="adverse" aria-pressed="false">Adverse effects (A/E)</button>
-              </div>
-            </div>
-            <div id="micro-filter-options-panel" class="dashboard__sticky-options-panel dashboard__sticky-options-panel--filter" hidden>
-              <div class="dashboard__filter-panel">
-                <section class="dashboard__filter-panel-section" aria-labelledby="micro-filter-icons-label">
-                  <h4 id="micro-filter-icons-label" class="dashboard__filter-panel-label">Show nutrients with</h4>
-                  <div class="dashboard__sticky-options-checks dashboard__filter-panel-pills" role="group" aria-label="Filter nutrients">
-                    <label class="dashboard__sticky-options-check">
-                      <input type="checkbox" data-sticky-filter="daily" />
-                      <span>Daily intake needed</span>
-                    </label>
-                    <label class="dashboard__sticky-options-check">
-                      <input type="checkbox" data-sticky-filter="side" />
-                      <span>Side effects (S/E)</span>
-                    </label>
-                    <label class="dashboard__sticky-options-check">
-                      <input type="checkbox" data-sticky-filter="adverse" />
-                      <span>Adverse effects (A/E)</span>
-                    </label>
-                  </div>
-                </section>
-                <section class="dashboard__filter-panel-section dashboard__filter-panel-section--nutrients" aria-labelledby="micro-filter-nutrients-label">
-                  <h4 id="micro-filter-nutrients-label" class="dashboard__filter-panel-label">By nutrient</h4>
-                  <div id="micro-nutrient-filter-panel" class="dashboard__nutrient-filter-panel">
-                    <div class="dashboard__nutrient-filter-combobox dashboard__nutrient-filter-combobox--search">
-                      <svg class="dashboard__nutrient-filter-search-icon" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" focusable="false"><use href="#icon-search"></use></svg>
-                      <input type="text" id="micro-nutrient-filter-input" class="dashboard__nutrient-filter-input" data-nutrient-filter-input placeholder="Search vitamins &amp; minerals…" autocomplete="off" spellcheck="false" aria-label="Search nutrients" aria-autocomplete="list" aria-controls="micro-nutrient-filter-suggest" aria-expanded="false" />
-                      <div id="micro-nutrient-filter-suggest" class="dashboard__nutrient-filter-suggest" role="listbox" hidden aria-label="Nutrient suggestions"></div>
-                    </div>
-                    <div class="dashboard__nutrient-filter-chips" data-nutrient-filter-chips role="list" aria-label="Selected nutrients"></div>
-                    <div class="dashboard__nutrient-filter-presets" role="group" aria-label="Nutrient filter presets">
-                      <span class="dashboard__nutrient-filter-prefix">Quick add</span>
-                      <button type="button" class="dashboard__nutrient-filter-preset" data-nutrient-filter-preset="common-deficiencies" aria-pressed="false">
-                        <span class="dashboard__nutrient-filter-preset-title">Common deficiencies</span>
-                        <span class="dashboard__nutrient-filter-preset-meta">A · D · Ca · Mg · Iodine</span>
-                      </button>
-                      <button type="button" class="dashboard__nutrient-filter-preset" data-nutrient-filter-preset="fat-soluble" aria-pressed="false">
-                        <span class="dashboard__nutrient-filter-preset-title">Fat-soluble vitamins</span>
-                        <span class="dashboard__nutrient-filter-preset-meta">A · D · E · K</span>
-                      </button>
-                    </div>
-                  </div>
-                </section>
               </div>
             </div>
             <div id="micro-daily-options-panel" class="dashboard__sticky-options-panel" hidden>
@@ -202,61 +338,6 @@
             <div class="dashboard__micro-hint-actions">
               <button type="button" id="micro-gaps-ai-open" class="dashboard__micro-hint-action-btn dashboard__micro-hint-ai" aria-label="Ask AI to help fill in the gaps"><span class="dashboard__micro-hint-action-icon" aria-hidden="true">✨</span><span>Ask AI to help fill gaps</span></button>
               <button type="button" id="health-timeline-ai-open" class="dashboard__micro-hint-action-btn dashboard__micro-hint-ai" aria-label="Ask AI what happens to your health if you keep eating like this weekly"><span class="dashboard__micro-hint-action-icon" aria-hidden="true">✨</span><span>Ask AI: health timeline</span></button>
-              <div class="dashboard__micro-condition-wrap">
-                <div class="dashboard__micro-condition-controls">
-                  <button type="button" id="dashboard-micro-condition-toggle" class="dashboard__micro-hint-action-btn dashboard__micro-condition-toggle" aria-expanded="false" aria-controls="dashboard-micro-condition-list" aria-haspopup="listbox">
-                    <svg class="dashboard__micro-condition-icon" viewBox="0 0 16 16" width="13" height="13" aria-hidden="true" focusable="false">
-                      <path fill="currentColor" d="M8 2.25C4.55 2.25 1.68 4.73 1 8c.68 3.27 3.55 5.75 7 5.75S14.32 11.27 15 8c-.68-3.27-3.45-5.75-7-5.75zm0 9.5A3.75 3.75 0 1 1 8 4.25 3.75 3.75 0 0 1 8 11.75zm0-6A2.25 2.25 0 1 0 5.75 8 2.25 2.25 0 0 0 8 5.75z"></path>
-                    </svg>
-                    <span id="dashboard-micro-condition-label">Filter</span>
-                  </button>
-                  <button type="button" id="dashboard-micro-condition-clear" class="dashboard__micro-condition-clear" hidden aria-label="Clear filter">×</button>
-                </div>
-                <ul id="dashboard-micro-condition-list" class="dashboard__micro-condition-list" role="listbox" hidden>
-                  <li id="dashboard-micro-condition-clear-item" class="dashboard__micro-condition-item dashboard__micro-condition-item--clear" role="presentation" hidden>
-                    <button type="button" class="dashboard__micro-condition-link dashboard__micro-condition-link--clear" role="option" data-micro-condition="">Clear filter</button>
-                  </li>
-                  <li class="dashboard__micro-condition-group" role="presentation">
-                    <span class="dashboard__micro-condition-group-label">Nutrition Intake</span>
-                  </li>
-                  <li class="dashboard__micro-condition-item" role="presentation">
-                    <button type="button" class="dashboard__micro-condition-link" role="option" data-micro-condition="wellAbsorbed">Well absorbed / average the week</button>
-                  </li>
-                  <li class="dashboard__micro-condition-item" role="presentation">
-                    <button type="button" class="dashboard__micro-condition-link" role="option" data-micro-condition="fatSolubleVitamins">Fat-soluble vitamins (A, D, E, K)</button>
-                  </li>
-                  <li class="dashboard__micro-condition-item" role="presentation">
-                    <button type="button" class="dashboard__micro-condition-link" role="option" data-micro-condition="poorlyAbsorbed">Poorly absorbed / take daily</button>
-                  </li>
-                  <li class="dashboard__micro-condition-item" role="presentation">
-                    <button type="button" class="dashboard__micro-condition-link" role="option" data-micro-condition="americanCommonDeficiencies">American Common Deficiencies</button>
-                  </li>
-                  <li class="dashboard__micro-condition-group" role="presentation">
-                    <span class="dashboard__micro-condition-group-label">Conditions</span>
-                  </li>
-                  <li class="dashboard__micro-condition-item" role="presentation">
-                    <button type="button" class="dashboard__micro-condition-link" role="option" data-micro-condition="adhd">ADHD</button>
-                  </li>
-                  <li class="dashboard__micro-condition-item" role="presentation">
-                    <button type="button" class="dashboard__micro-condition-link" role="option" data-micro-condition="anemia">Anemia</button>
-                  </li>
-                  <li class="dashboard__micro-condition-item" role="presentation">
-                    <button type="button" class="dashboard__micro-condition-link" role="option" data-micro-condition="antiAging">Anti-aging & longevity</button>
-                  </li>
-                  <li class="dashboard__micro-condition-item" role="presentation">
-                    <button type="button" class="dashboard__micro-condition-link" role="option" data-micro-condition="bowelMovementsAltered">Bowel movements altered</button>
-                  </li>
-                  <li class="dashboard__micro-condition-item" role="presentation">
-                    <button type="button" class="dashboard__micro-condition-link" role="option" data-micro-condition="cataractsPrevention">Cataracts prevention</button>
-                  </li>
-                  <li class="dashboard__micro-condition-item" role="presentation">
-                    <button type="button" class="dashboard__micro-condition-link" role="option" data-micro-condition="coffeeTeaUser">Chronic coffee / tea / energy drink user</button>
-                  </li>
-                  <li class="dashboard__micro-condition-item" role="presentation">
-                    <button type="button" class="dashboard__micro-condition-link" role="option" data-micro-condition="hairLoss">Hair loss</button>
-                  </li>
-                </ul>
-              </div>
             </div>
           </div>
         </div>
@@ -268,38 +349,39 @@
           </button>
         </aside>
 
-        <aside id="micro-tip-fat-soluble" class="dashboard__micro-tip" role="note">
+        <button type="button" class="dashboard__tips-reopen" data-action="reopen-tips" hidden>Tips (0)</button>
+        <aside id="micro-tip-fat-soluble" class="dashboard__micro-tip" role="note" title="Click to hide tip">
           <p class="dashboard__micro-tip-text">
             Vitamins A, D, E, and K need dietary fat to absorb well. Aim for about <strong>3–5 g fat</strong> with a single vitamin-rich serving (≈½–1 tsp oil or butter, or 1 tsp peanut butter), and about <strong>10–15 g fat</strong> in a meal that covers a full day’s DV of ADEK (≈1 tbsp oil, or 1–2 tsp butter). Example: with 1 cup carrot juice (~100% DV vitamin A as carotenoids), eat at least about 1 teaspoon of peanut butter (~5 g fat).
           </p>
         </aside>
-        <aside id="micro-tip-common-deficiencies" class="dashboard__micro-tip" role="note">
+        <aside id="micro-tip-common-deficiencies" class="dashboard__micro-tip" role="note" title="Click to hide tip">
           <p class="dashboard__micro-tip-text">
-            In a typical American diet—high-yield crops that leave soil less mineral-rich, limited seafood (often avoided over mercury concerns), and meals that simply omit these foods—common deficiencies are vitamin A, vitamin D, calcium, magnesium, and iodine. Use <strong>Filter → By Nutrients</strong> and the <strong>Common Deficiencies</strong> preset to show only those. For nutrients the body can store, rebuilding stores can take about 90 days of adequate intake.
+            In a typical American diet—high-yield crops that leave soil less mineral-rich, limited seafood (often avoided over mercury concerns), and meals that simply omit these foods—common deficiencies are vitamin A, vitamin D, calcium, magnesium, and iodine. Use the sticky <strong>Filter</strong> (American Common Deficiencies) or search nutrients above to show only those. For nutrients the body can store, rebuilding stores can take about 90 days of adequate intake.
           </p>
         </aside>
-        <aside id="micro-tip-caffeine" class="dashboard__micro-tip" role="note">
+        <aside id="micro-tip-caffeine" class="dashboard__micro-tip" role="note" title="Click to hide tip">
           <p class="dashboard__micro-tip-text">
             Caffeine gum or patches can give you caffeine without the tannins and polyphenols in coffee and tea that bind iron and other minerals in your gut before you absorb them…
             <button type="button" class="dashboard__micro-tip-expand" data-action="open-caffeine-tip-modal">Read more</button>
           </p>
         </aside>
-        <aside id="micro-tip-cataracts" class="dashboard__micro-tip" role="note" hidden>
+        <aside id="micro-tip-cataracts" class="dashboard__micro-tip" role="note" title="Click to hide tip" hidden>
           <p class="dashboard__micro-tip-text">
             While vitamins cannot reverse an existing cataract, a balanced diet including vitamin A, vitamin C, vitamin E, and carotenoids (like lutein and zeaxanthin) is linked to a reduced risk of cataract development and progression.
           </p>
         </aside>
-        <aside id="micro-tip-hair-loss" class="dashboard__micro-tip" role="note" hidden>
+        <aside id="micro-tip-hair-loss" class="dashboard__micro-tip" role="note" title="Click to hide tip" hidden>
           <p class="dashboard__micro-tip-text">
             Zinc acts as a 5-alpha reductase inhibitor, which can reduce DHT conversion—helpful for androgenetic alopecia. Iodine supports thyroid function, which regulates hair growth cycles; deficiency leads to brittleness and hair loss. Limiting nutrients (saturated fat, high-GI foods, creatine) may influence testosterone/DHT levels.
           </p>
         </aside>
-        <aside id="micro-tip-hair-loss-herbs" class="dashboard__micro-tip" role="note" hidden>
+        <aside id="micro-tip-hair-loss-herbs" class="dashboard__micro-tip" role="note" title="Click to hide tip" hidden>
           <p class="dashboard__micro-tip-text">
             <strong>Herbs (not tracked from food):</strong> Saw palmetto and pumpkin seed oil contain phytosterols that may mildly inhibit 5-alpha reductase, lowering DHT conversion—generally weaker than prescription finasteride. Topical rosemary oil has shown hair-density gains comparable to 2% minoxidil in a small trial. Evidence quality varies; herbs do not replace medical care.
           </p>
         </aside>
-        <aside id="micro-tip-hair-loss-prescriptions" class="dashboard__micro-tip" role="note" hidden>
+        <aside id="micro-tip-hair-loss-prescriptions" class="dashboard__micro-tip" role="note" title="Click to hide tip" hidden>
           <p class="dashboard__micro-tip-text">
             <strong>Prescriptions:</strong> FDA-approved options for androgenetic alopecia include topical minoxidil (OTC 2–5%; prolongs the anagen growth phase) and oral finasteride (and sometimes dutasteride), which strongly inhibit 5-alpha reductase to lower DHT. Spironolactone is sometimes used off-label in women. These need clinician guidance—discuss side effects, fertility plans, and whether nutrient gaps are also contributing.
           </p>
@@ -307,7 +389,10 @@
         <div id="dashboard-micro-list" class="dashboard__micro-list" role="list"></div>
         <div id="dashboard-micro-daily-grid" class="dashboard__micro-daily-grid" hidden></div>
         <div class="dashboard__micro-more-wrap">
-          <button type="button" id="dashboard-micro-more-toggle" class="dashboard__micro-more-toggle" aria-expanded="false">More vitamins, minerals &amp; amino acids</button>
+          <button type="button" id="dashboard-micro-more-toggle" class="dashboard__micro-more-toggle" data-app-shortcut="+" aria-expanded="false" aria-keyshortcuts="+ =">
+            <span class="dashboard__micro-more-toggle-label">More vitamins, minerals &amp; amino acids</span>
+            <span class="app-nav__shortcut" aria-hidden="true">+</span>
+          </button>
         </div>
       </div>
       <div id="micro-daily-intake-popover" class="dashboard__micro-daily-intake-popover" role="tooltip" hidden>
@@ -330,10 +415,6 @@
                 <button type="button" class="dashboard__sticky-options-disclosure" data-sticky-options-toggle data-sticky-highlight-disclosure aria-expanded="false" aria-controls="longevity-highlight-options-panel"><svg class="dashboard__sticky-options-disclosure-icon" viewBox="0 0 24 24" width="12" height="12" aria-hidden="true" focusable="false"><use href="#icon-sticky-highlight"></use></svg><span>Highlight</span></button>
                 <button type="button" class="dashboard__sticky-filter-clear" data-sticky-highlight-clear hidden aria-label="Clear highlights">×</button>
               </span>
-              <span class="dashboard__sticky-filter-wrap">
-                <button type="button" class="dashboard__sticky-options-disclosure" data-sticky-options-toggle data-sticky-filter-disclosure aria-expanded="false" aria-controls="longevity-filter-options-panel"><svg class="dashboard__sticky-options-disclosure-icon" viewBox="0 0 16 16" width="12" height="12" aria-hidden="true" focusable="false"><use href="#icon-sticky-filter"></use></svg><span>Filter</span></button>
-                <button type="button" class="dashboard__sticky-filter-clear" data-sticky-filter-clear hidden aria-label="Clear filters">×</button>
-              </span>
               <button type="button" class="dashboard__sticky-options-disclosure" data-sticky-options-toggle aria-expanded="false" aria-controls="longevity-daily-options-panel"><svg class="dashboard__sticky-options-disclosure-icon" viewBox="0 0 16 16" width="12" height="12" aria-hidden="true" focusable="false"><use href="#icon-sticky-daily-intake"></use></svg><span>Poor storage / daily intake</span></button>
               <button type="button" class="dashboard__sticky-options-disclosure" data-sticky-options-toggle aria-expanded="false" aria-controls="longevity-acute-options-panel"><svg class="dashboard__sticky-options-disclosure-icon" viewBox="0 0 16 16" width="12" height="12" aria-hidden="true" focusable="false"><use href="#icon-sticky-acute-excess"></use></svg><span>One-day excess consumption</span></button>
             </div>
@@ -343,49 +424,6 @@
                 <button type="button" class="dashboard__sticky-options-toggle" data-sticky-highlight="daily" aria-pressed="false">Required daily intake</button>
                 <button type="button" class="dashboard__sticky-options-toggle" data-sticky-highlight="side" aria-pressed="false">Side effects (S/E)</button>
                 <button type="button" class="dashboard__sticky-options-toggle" data-sticky-highlight="adverse" aria-pressed="false">Adverse effects (A/E)</button>
-              </div>
-            </div>
-            <div id="longevity-filter-options-panel" class="dashboard__sticky-options-panel dashboard__sticky-options-panel--filter" hidden>
-              <div class="dashboard__filter-panel">
-                <section class="dashboard__filter-panel-section" aria-labelledby="longevity-filter-icons-label">
-                  <h4 id="longevity-filter-icons-label" class="dashboard__filter-panel-label">Show nutrients with</h4>
-                  <div class="dashboard__sticky-options-checks dashboard__filter-panel-pills" role="group" aria-label="Filter nutrients">
-                    <label class="dashboard__sticky-options-check">
-                      <input type="checkbox" data-sticky-filter="daily" />
-                      <span>Daily intake needed</span>
-                    </label>
-                    <label class="dashboard__sticky-options-check">
-                      <input type="checkbox" data-sticky-filter="side" />
-                      <span>Side effects (S/E)</span>
-                    </label>
-                    <label class="dashboard__sticky-options-check">
-                      <input type="checkbox" data-sticky-filter="adverse" />
-                      <span>Adverse effects (A/E)</span>
-                    </label>
-                  </div>
-                </section>
-                <section class="dashboard__filter-panel-section dashboard__filter-panel-section--nutrients" aria-labelledby="longevity-filter-nutrients-label">
-                  <h4 id="longevity-filter-nutrients-label" class="dashboard__filter-panel-label">By nutrient</h4>
-                  <div id="longevity-nutrient-filter-panel" class="dashboard__nutrient-filter-panel">
-                    <div class="dashboard__nutrient-filter-combobox dashboard__nutrient-filter-combobox--search">
-                      <svg class="dashboard__nutrient-filter-search-icon" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" focusable="false"><use href="#icon-search"></use></svg>
-                      <input type="text" id="longevity-nutrient-filter-input" class="dashboard__nutrient-filter-input" data-nutrient-filter-input placeholder="Search vitamins &amp; minerals…" autocomplete="off" spellcheck="false" aria-label="Search nutrients" aria-autocomplete="list" aria-controls="longevity-nutrient-filter-suggest" aria-expanded="false" />
-                      <div id="longevity-nutrient-filter-suggest" class="dashboard__nutrient-filter-suggest" role="listbox" hidden aria-label="Nutrient suggestions"></div>
-                    </div>
-                    <div class="dashboard__nutrient-filter-chips" data-nutrient-filter-chips role="list" aria-label="Selected nutrients"></div>
-                    <div class="dashboard__nutrient-filter-presets" role="group" aria-label="Nutrient filter presets">
-                      <span class="dashboard__nutrient-filter-prefix">Quick add</span>
-                      <button type="button" class="dashboard__nutrient-filter-preset" data-nutrient-filter-preset="common-deficiencies" aria-pressed="false">
-                        <span class="dashboard__nutrient-filter-preset-title">Common deficiencies</span>
-                        <span class="dashboard__nutrient-filter-preset-meta">A · D · Ca · Mg · Iodine</span>
-                      </button>
-                      <button type="button" class="dashboard__nutrient-filter-preset" data-nutrient-filter-preset="fat-soluble" aria-pressed="false">
-                        <span class="dashboard__nutrient-filter-preset-title">Fat-soluble vitamins</span>
-                        <span class="dashboard__nutrient-filter-preset-meta">A · D · E · K</span>
-                      </button>
-                    </div>
-                  </div>
-                </section>
               </div>
             </div>
             <div id="longevity-daily-options-panel" class="dashboard__sticky-options-panel" hidden>
@@ -399,6 +437,44 @@
                 <button type="button" class="dashboard__sticky-options-toggle" data-acute-kind="side" aria-pressed="false">Side effects (S/E)</button>
                 <button type="button" class="dashboard__sticky-options-toggle" data-acute-kind="adverse" aria-pressed="false">Adverse effects (A/E)</button>
               </div>
+            </div>
+          </div>
+          <div class="dashboard__longevity-sticky-filters">
+            <div class="dashboard__sticky-filters-carousel-nav" aria-label="Filter sections">
+              <button type="button" class="dashboard__sticky-filters-carousel-adj" data-sticky-filters-carousel="prev" aria-label="Previous filter section">‹</button>
+              <span id="longevity-sticky-filters-carousel-current" class="dashboard__sticky-filters-carousel-current" aria-live="polite">Show nutrients with</span>
+              <button type="button" class="dashboard__sticky-filters-carousel-adj" data-sticky-filters-carousel="next" aria-label="Next filter section">›</button>
+            </div>
+            <div class="dashboard__sticky-filters-track" data-sticky-filters-track data-sticky-filters-current="longevity-sticky-filters-carousel-current">
+            <div class="dashboard__sticky-filter-group">
+              <span class="dashboard__sticky-filter-group-label" id="longevity-sticky-filter-effects-label">Show nutrients with</span>
+              <div class="dashboard__micro-sticky-filter-icons dashboard__filter-panel-pills" role="group" aria-labelledby="longevity-sticky-filter-effects-label">
+                <label class="dashboard__sticky-options-check">
+                  <input type="checkbox" data-sticky-filter="daily" />
+                  <span>Daily intake needed</span>
+                </label>
+                <label class="dashboard__sticky-options-check">
+                  <input type="checkbox" data-sticky-filter="side" />
+                  <span>Side effects (S/E)</span>
+                </label>
+                <label class="dashboard__sticky-options-check">
+                  <input type="checkbox" data-sticky-filter="adverse" />
+                  <span>Adverse effects (A/E)</span>
+                </label>
+                <button type="button" class="dashboard__sticky-filter-clear" data-sticky-filter-clear hidden aria-label="Clear filters">×</button>
+              </div>
+            </div>
+            <div class="dashboard__sticky-filter-group dashboard__filter-panel-section--nutrients">
+              <span class="dashboard__sticky-filter-group-label" id="longevity-sticky-filter-nutrient-label">By nutrient</span>
+              <div id="longevity-nutrient-filter-panel" class="dashboard__nutrient-filter-panel dashboard__nutrient-filter-panel--inline">
+                <div class="dashboard__nutrient-filter-combobox dashboard__nutrient-filter-combobox--search">
+                  <svg class="dashboard__nutrient-filter-search-icon" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" focusable="false"><use href="#icon-search"></use></svg>
+                  <input type="text" id="longevity-nutrient-filter-input" class="dashboard__nutrient-filter-input" data-nutrient-filter-input placeholder="Search nutrients…" autocomplete="off" spellcheck="false" aria-label="Search nutrients" aria-autocomplete="list" aria-controls="longevity-nutrient-filter-suggest" aria-expanded="false" />
+                  <div id="longevity-nutrient-filter-suggest" class="dashboard__nutrient-filter-suggest" role="listbox" hidden aria-label="Nutrient suggestions"></div>
+                </div>
+                <div class="dashboard__nutrient-filter-chips" data-nutrient-filter-chips role="list" aria-label="Selected nutrients"></div>
+              </div>
+            </div>
             </div>
           </div>
           <button type="button" id="dashboard-longevity-close" class="dashboard__panel-close" aria-label="Close longevity">×</button>
@@ -434,7 +510,7 @@
             <strong>What “longevity” means here:</strong> nutrients and compounds that support extending healthy years—slowing age-related decline, improving day-to-day performance (energy, cognition, recovery), and protecting quality of life (heart, brain, eyes, bones, metabolism). This panel supports preventive medicine: diet patterns that over decades can lower risk of type 2 diabetes, high blood pressure, heart disease, stroke, osteoporosis, and cognitive decline. It tracks fats, omegas, inflammation-related compounds, carb quality, and gut-linked markers like TMAO—not just basic % DV, but the patterns behind those outcomes.
           </p>
         </aside>
-        <aside class="dashboard__longevity-processed-note" role="note">
+        <aside class="dashboard__longevity-processed-note" role="note" title="Click to hide tip">
           <p class="dashboard__longevity-processed-note-text">
             Limit your processed food. This dashboard does not track processed food. Use an app like
             <a href="https://yuka.io/en/app/" target="_blank" rel="noopener noreferrer">Yuka</a>
@@ -476,11 +552,16 @@
       </div>
     </div>
     <div class="week__highlight-bar">
-      <div style="color: #8a8a8a; vertical-align: top; display:inline-flex;">
-        <span class="visually-hidden-off" onclick="this.nextElementSibling.click();">Food highlighting:&nbsp;</span>
+      <div class="week__visibility-controls">
+        <span class="visually-hidden-off" onclick="this.nextElementSibling.click();">Food visibility:&nbsp;</span>
         <button type="button" id="day-highlights-toggle" class="week__highlight-toggle" aria-pressed="true" aria-label="Turn food highlighting off">
           <svg class="week__highlight-toggle-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
             <path d="M15.7 3.3a1.8 1.8 0 0 1 2.5 0l2.5 2.5a1.8 1.8 0 0 1 0 2.5l-8.3 8.3-5.1 1.2 1.2-5.1 8.2-8.4ZM5.2 19.3h13.6a1 1 0 1 1 0 2H5.2a1 1 0 1 1 0-2Z"></path>
+          </svg>
+        </button>
+        <button type="button" id="day-word-wrap-toggle" class="week__highlight-toggle" aria-pressed="true" aria-label="Turn word wrap off">
+          <svg class="week__highlight-toggle-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path d="M4 19h6v-2H4v2Zm16-14H4v2h16V5Zm-3 6H4v2h13.25c1.1 0 2 .9 2 2s-.9 2-2 2H15v2l-3-3 3-3v2h2c2.21 0 4-1.79 4-4s-1.79-4-4-4Z"></path>
           </svg>
         </button>
       </div>

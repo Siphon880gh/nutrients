@@ -263,6 +263,7 @@ var NutrientsPersist = (function () {
       viewedWeekStart: null,
       dayEditorHeight: null,
       dayHighlights: true,
+      dayWordWrap: true,
       microViewDaily: false,
       microShowDv: false,
       showAcuteSideEffects: false,

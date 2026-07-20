@@ -155,6 +155,7 @@ One settings document per user:
   viewedWeekStart: string | null,   // Monday YYYY-MM-DD
   dayEditorHeight: number | null,
   dayHighlights: boolean,           // default true
+  dayWordWrap: boolean,             // default true
   microViewDaily: boolean,
   microShowDv: boolean,
   showAcuteSideEffects: boolean,

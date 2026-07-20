@@ -1518,8 +1518,13 @@
   },
   "histidine": {
     "enough": [
-      "Histidine is an essential amino acid that produces histamine (immune signaling), carnosine (muscle buffer), and supports hemoglobin structure.",
+      "Histidine is an essential amino acid that produces histamine, carnosine (muscle buffer), and supports hemoglobin structure.",
+      "Histamine helps maintain health by signaling immune cells to respond to injury or pathogens, stimulating stomach acid for digestion, acting as a brain neurotransmitter for alertness, and regulating blood-vessel dilation during healing.",
       "Found in meat, fish, dairy, and legumes; deficiency is rare with adequate protein intake."
+    ],
+    "tooHigh": [
+      "Too much histamine—from allergy, mast-cell release, or histamine-rich aged/fermented foods when clearance is poor—can cause itching, hives, flushing, headache, runny nose, and digestive upset.",
+      "Severe excess drives overactive inflammation and, in allergic reactions, can escalate to swelling or anaphylaxis; food histidine itself rarely overloads histamine when diamine oxidase (DAO) clearance is normal."
     ],
     "foodSources": ["Beef & poultry", "Tuna & salmon", "Soybeans", "Cheese", "Rice", "Wheat germ", "Beans"]
   },

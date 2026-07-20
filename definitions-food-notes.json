@@ -41,22 +41,22 @@
       "note": "Parsley is far more than a mere garnish. This nutrient-dense herb is loaded with vitamins A, C, and K, and offers practical, targeted health benefits like supporting strong bones, flushing out excess fluids, and fighting bad breath"
     },
     {
-      "label": "Cereal",
+      "label": "Cereal*",
       "pattern": "\\bcereal\\b.*¾",
       "note": "<p><code>*</code> means into a bowl that fills one cup (8oz) to the rim</p><p>¾ Cup Cereals is the likely count when you fill up cereal in a bowl (that normally fills water 8z to the rim) so that about 1/4 cup height remains at the top of the bowl so later you can pour a reasonable amount of milk</p>"
     },
     {
-      "label": "Cereal",
+      "label": "Cereal**",
       "pattern": "\\bcereal\\b.*1½",
       "note": "<p><code>**</code> means into a bowl that fills two cups (16oz) to the rim</p><p>1½ Cup Cereals is the likely count when you fill up cereal in a bowl (that normally fills water 16oz to the rim) so that about 1/4 cup height remains at the top of the bowl so later you can pour a reasonable amount of milk</p>"
     },
     {
-      "label": "Milk",
+      "label": "Milk*",
       "pattern": "\\bmilk\\b.*⅜",
       "note": "<p><code>*</code> means into a bowl that fills one cup (8oz) to the rim</p><p>⅜ Cup milk is the likely count when you pour milk over cereals in a bowl (that normally fills water 8oz to the rim) so that about 1cm height breathing room is at the top so you don't have to worry about spilling when consuming</p>"
     },
     {
-      "label": "Milk",
+      "label": "Milk**",
       "pattern": "\\bmilk\\b.*¾",
       "note": "<p><code>**</code> means into a bowl that fills one cup (8oz) to the rim</p><p>¾ Cup Cereals is the likely count when you pour milk over cereals in a bowl (that normally fills water 16oz to the rim) so that about 1cm height breathing room is at the top so you don't have to worry about spilling when consuming</p>"
     },

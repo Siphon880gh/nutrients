@@ -80,7 +80,7 @@
       "carotenoids": 0,
       "curcumin": 0,
       "resveratrol": 0.01,
-      "coq10": 0,
+      "coq10": 0.6,
       "pqq": 0,
       "sulforaphane": 0,
       "choline": true,
@@ -183,7 +183,7 @@
       "carotenoids": 0,
       "curcumin": 0,
       "resveratrol": 0.02,
-      "coq10": 0,
+      "coq10": 1,
       "pqq": 0,
       "sulforaphane": 0,
       "choline": true,
@@ -1322,7 +1322,7 @@
       "carotenoids": 1,
       "curcumin": 0,
       "resveratrol": 0,
-      "coq10": 0,
+      "coq10": 0.8,
       "pqq": 0,
       "sulforaphane": 0,
       "phosphorus": true,
@@ -1408,6 +1408,9 @@
       "phosphorus": true,
       "methionine": true,
       "plantSterols": 0,
+      "coq10": 3,
+      "epa": 0.003,
+      "dha": 0.001,
       "creatine": 0.55,
       "pqq": 0
     },
@@ -1483,6 +1486,9 @@
       "phosphorus": true,
       "methionine": true,
       "plantSterols": 0,
+      "coq10": 2.4,
+      "epa": 0.01,
+      "dha": 0.009,
       "creatine": 0.5,
       "pqq": 0
     },
@@ -1558,6 +1564,9 @@
       "methionine": true,
       "vitaminK": true,
       "plantSterols": 0,
+      "coq10": 1.2,
+      "epa": 0.69,
+      "dha": 1.46,
       "creatine": 0.4,
       "pqq": 0
     },
@@ -2071,7 +2080,7 @@
       "carotenoids": 0.1,
       "curcumin": 0,
       "resveratrol": 0,
-      "coq10": 0,
+      "coq10": 0.03,
       "pqq": 2,
       "sulforaphane": 0,
       "phosphorus": true,
@@ -2175,7 +2184,7 @@
       "carotenoids": 0.1,
       "curcumin": 0,
       "resveratrol": 0,
-      "coq10": 0,
+      "coq10": 0.03,
       "pqq": 1.9,
       "sulforaphane": 0,
       "phosphorus": true,
@@ -2279,7 +2288,7 @@
       "carotenoids": 0.3,
       "curcumin": 0,
       "resveratrol": 0,
-      "coq10": 0,
+      "coq10": 0.04,
       "pqq": 1.9,
       "sulforaphane": 0,
       "phosphorus": true,
@@ -2383,7 +2392,7 @@
       "carotenoids": 0.3,
       "curcumin": 0,
       "resveratrol": 0,
-      "coq10": 0,
+      "coq10": 0.04,
       "pqq": 1.8,
       "sulforaphane": 0,
       "phosphorus": true,
@@ -2488,7 +2497,7 @@
       "carotenoids": 0.1,
       "curcumin": 0,
       "resveratrol": 0,
-      "coq10": 0,
+      "coq10": 0.22,
       "pqq": 0,
       "sulforaphane": 0,
       "phosphorus": true,
@@ -2593,7 +2602,7 @@
       "carotenoids": 0.1,
       "curcumin": 0,
       "resveratrol": 0,
-      "coq10": 0,
+      "coq10": 0.19,
       "pqq": 0,
       "sulforaphane": 0,
       "phosphorus": true,
@@ -2697,7 +2706,7 @@
       "carotenoids": 0.06,
       "curcumin": 0,
       "resveratrol": 0,
-      "coq10": 0,
+      "coq10": 0.1,
       "pqq": 1.5,
       "nr": 0.1,
       "nmn": 0.05,
@@ -2803,7 +2812,7 @@
       "carotenoids": 0.06,
       "curcumin": 0,
       "resveratrol": 0,
-      "coq10": 0,
+      "coq10": 0.1,
       "pqq": 1.5,
       "nr": 0.1,
       "nmn": 0.05,
@@ -2909,7 +2918,7 @@
       "carotenoids": 0.45,
       "curcumin": 0,
       "resveratrol": 0,
-      "coq10": 0,
+      "coq10": 0.27,
       "pqq": 0.8,
       "nr": 0.08,
       "nmn": 0.03,
@@ -3015,7 +3024,7 @@
       "carotenoids": 0.4,
       "curcumin": 0,
       "resveratrol": 0,
-      "coq10": 0,
+      "coq10": 0.23,
       "pqq": 0.8,
       "nr": 0.08,
       "nmn": 0.03,
@@ -3121,7 +3130,7 @@
       "carotenoids": 0.2,
       "curcumin": 0,
       "resveratrol": 0,
-      "coq10": 0,
+      "coq10": 0.64,
       "pqq": 0,
       "sulforaphane": 0,
       "phosphorus": true,
@@ -3225,7 +3234,7 @@
       "carotenoids": 0.2,
       "curcumin": 0,
       "resveratrol": 0,
-      "coq10": 0,
+      "coq10": 0.62,
       "pqq": 0,
       "sulforaphane": 0,
       "phosphorus": true,
@@ -3329,7 +3338,7 @@
       "carotenoids": 0.05,
       "curcumin": 0,
       "resveratrol": 0,
-      "coq10": 0,
+      "coq10": 0.2,
       "pqq": 0,
       "sulforaphane": 0,
       "phosphorus": true,
@@ -3433,7 +3442,7 @@
       "carotenoids": 0.05,
       "curcumin": 0,
       "resveratrol": 0,
-      "coq10": 0,
+      "coq10": 0.19,
       "pqq": 0,
       "sulforaphane": 0,
       "phosphorus": true,
@@ -3537,7 +3546,7 @@
       "carotenoids": 0.1,
       "curcumin": 0,
       "resveratrol": 0,
-      "coq10": 0,
+      "coq10": 0.88,
       "pqq": 0,
       "sulforaphane": 0,
       "phosphorus": true,
@@ -3641,7 +3650,7 @@
       "carotenoids": 0.1,
       "curcumin": 0,
       "resveratrol": 0,
-      "coq10": 0,
+      "coq10": 0.8,
       "pqq": 0,
       "sulforaphane": 0,
       "phosphorus": true,
@@ -3745,7 +3754,7 @@
       "carotenoids": 0.05,
       "curcumin": 0,
       "resveratrol": 0,
-      "coq10": 0,
+      "coq10": 0.33,
       "pqq": 0,
       "sulforaphane": 0,
       "phosphorus": true,
@@ -3849,7 +3858,7 @@
       "carotenoids": 0.05,
       "curcumin": 0,
       "resveratrol": 0,
-      "coq10": 0,
+      "coq10": 0.3,
       "pqq": 0,
       "sulforaphane": 0,
       "phosphorus": true,
@@ -3953,7 +3962,7 @@
       "carotenoids": 0.05,
       "curcumin": 0,
       "resveratrol": 0,
-      "coq10": 0,
+      "coq10": 1.84,
       "pqq": 0,
       "sulforaphane": 0,
       "phosphorus": true,
@@ -4057,7 +4066,7 @@
       "carotenoids": 0.05,
       "curcumin": 0,
       "resveratrol": 0,
-      "coq10": 0,
+      "coq10": 1.79,
       "pqq": 0,
       "sulforaphane": 0,
       "phosphorus": true,
@@ -4113,6 +4122,18 @@
       "molybdenum": 0,
       "fluoride": 0,
       "chloride": 0,
+      "histidine": 31,
+      "isoleucine": 48,
+      "leucine": 83,
+      "lysine": 109,
+      "methionine": 13,
+      "phenylalanine": 45,
+      "threonine": 51,
+      "tryptophan": 21,
+      "valine": 66,
+      "arginine": 51,
+      "cysteine": 33,
+      "tyrosine": 26,
       "solubleFiber": 0.8,
       "insolubleFiber": 1.8,
       "fiber": 2.6,
@@ -4222,6 +4243,7 @@
       "omega6": 0.1,
       "omega9": 1.26,
       "ala": 0.03,
+      "epa": 0.002,
       "linoleicAcid": 0.1,
       "arachidonicAcid": 0.01,
       "oleicAcid": 1.26,
@@ -4233,6 +4255,8 @@
       "methionine": true,
       "phosphorus": true,
       "choline": true,
+      "coq10": 0.14,
+      "creatine": 0.016,
       "pqq": 0
     },
     "carbQuality": {
@@ -4326,7 +4350,8 @@
       "carotenoids": 0,
       "curcumin": 0,
       "resveratrol": 0,
-      "coq10": 0,
+      "coq10": 0.03,
+      "creatine": 0.012,
       "pqq": 0,
       "sulforaphane": 0,
       "phosphorus": true,
@@ -4430,7 +4455,8 @@
       "carotenoids": 0,
       "curcumin": 0,
       "resveratrol": 0,
-      "coq10": 0,
+      "coq10": 0.01,
+      "creatine": 0.012,
       "pqq": 0,
       "sulforaphane": 0,
       "phosphorus": true,
@@ -4519,6 +4545,8 @@
       "vitaminE": true,
       "phosphorus": true,
       "methionine": true,
+      "coq10": 0.09,
+      "creatine": 0.012,
       "vitaminK1": true,
       "vitaminK2": true,
       "vitaminK": true,
@@ -5191,7 +5219,7 @@
       "omega6": 2,
       "omega9": 4.3,
       "ala": 0.06,
-      "epa": 0,
+      "epa": 0.014,
       "dha": 0.03,
       "linoleicAcid": 1.9,
       "arachidonicAcid": 0.1,
@@ -5296,7 +5324,7 @@
       "omega6": 1.2,
       "omega9": 4.5,
       "ala": 0.04,
-      "epa": 0,
+      "epa": 0.003,
       "dha": 0.03,
       "linoleicAcid": 1.1,
       "arachidonicAcid": 0.08,
@@ -5358,7 +5386,19 @@
       "vitaminC": 8,
       "phosphorus": 110,
       "choline": 8,
-      "chloride": 100
+      "chloride": 100,
+      "histidine": 23,
+      "isoleucine": 39,
+      "leucine": 74,
+      "lysine": 44,
+      "methionine": 19,
+      "phenylalanine": 51,
+      "threonine": 36,
+      "tryptophan": 12,
+      "valine": 61,
+      "arginine": 164,
+      "cysteine": 20,
+      "tyrosine": 31
     },
     "longevity": {
       "saturatedFat": 3.5,
@@ -5983,6 +6023,7 @@
       "omega6": 4.3,
       "omega9": 9.2,
       "ala": 0.08,
+      "epa": 0.014,
       "linoleicAcid": 4.1,
       "arachidonicAcid": 0.12,
       "oleicAcid": 9.1,
@@ -6083,7 +6124,7 @@
       "omega6": 0.188,
       "omega9": 0.35,
       "ala": 0.005,
-      "epa": 0,
+      "epa": 0.003,
       "dha": 0.005,
       "linoleicAcid": 0.175,
       "arachidonicAcid": 0.013,
@@ -6188,7 +6229,7 @@
       "omega6": 0.75,
       "omega9": 1.4,
       "ala": 0.02,
-      "epa": 0,
+      "epa": 0.011,
       "dha": 0.02,
       "linoleicAcid": 0.7,
       "arachidonicAcid": 0.05,
@@ -6290,6 +6331,7 @@
       "omega6": 2.2,
       "omega9": 5,
       "ala": 0.05,
+      "epa": 0.013,
       "linoleicAcid": 2.1,
       "arachidonicAcid": 0.08,
       "oleicAcid": 4.9,
@@ -8779,6 +8821,7 @@
       "polyunsaturatedFat": 4.5,
       "transFat": 0,
       "cholesterol": 0,
+      "epa": 0.003,
       "vitaminE": true,
       "selenium": true,
       "polyphenols": 25,
@@ -8868,6 +8911,7 @@
       "polyunsaturatedFat": 7,
       "transFat": 0,
       "cholesterol": 0,
+      "epa": 0.0045,
       "vitaminE": true,
       "selenium": true,
       "polyphenols": 38,
@@ -8957,6 +9001,7 @@
       "polyunsaturatedFat": 10,
       "transFat": 0,
       "cholesterol": 0,
+      "epa": 0.0065,
       "vitaminE": true,
       "selenium": true,
       "polyphenols": 55,
@@ -10422,7 +10467,7 @@
       "omega6": 2.2,
       "omega9": 4.8,
       "ala": 0.08,
-      "epa": 0,
+      "epa": 0.005,
       "dha": 0.02,
       "linoleicAcid": 2.1,
       "arachidonicAcid": 0.04,
@@ -10531,7 +10576,8 @@
       "vitaminK2MK4": true,
       "vitaminK2MK7": true,
       "plantSterols": 0.02,
-      "pqq": 0
+      "pqq": 0,
+      "epa": 0
     },
     "carbQuality": {
       "glycemicIndex": 73,
@@ -10615,7 +10661,8 @@
       "vitaminK2MK4": true,
       "vitaminK2MK7": true,
       "plantSterols": 0.04,
-      "pqq": 0
+      "pqq": 0,
+      "epa": 0
     },
     "carbQuality": {
       "glycemicIndex": 68,
@@ -10701,7 +10748,8 @@
       "vitaminK2MK7": true,
       "plantSterols": 0.06,
       "betaine": 60,
-      "pqq": 0
+      "pqq": 0,
+      "epa": 0
     },
     "carbQuality": {
       "glycemicIndex": 53,
@@ -10793,7 +10841,8 @@
       "resveratrol": 0,
       "coq10": 0.1,
       "pqq": 0,
-      "sulforaphane": 0.8
+      "sulforaphane": 0.8,
+      "epa": 0
     },
     "carbQuality": {
       "glycemicIndex": 20,
@@ -10958,7 +11007,8 @@
       "plantSterols": 0.04,
       "nr": 0.1,
       "nmn": 0.02,
-      "pqq": 0
+      "pqq": 0,
+      "epa": 0
     },
     "carbQuality": {
       "glycemicIndex": 69,
@@ -11128,7 +11178,8 @@
       "plantSterols": 0.06,
       "nr": 0.1,
       "nmn": 0.02,
-      "pqq": 0
+      "pqq": 0,
+      "epa": 0
     },
     "carbQuality": {
       "glycemicIndex": 69,
@@ -11175,6 +11226,7 @@
       "threonine": 100,
       "tryptophan": 46,
       "valine": 148,
+      "arginine": 206,
       "cysteine": 68,
       "tyrosine": 96
     },
@@ -11197,7 +11249,8 @@
       "methionine": true,
       "phosphorus": true,
       "choline": true,
-      "betaine": 54
+      "betaine": 54,
+      "epa": 0
     },
     "carbQuality": {
       "glycemicIndex": 51,
@@ -11390,7 +11443,8 @@
       "plantSterols": 0.03,
       "nr": 0.15,
       "nmn": 0.02,
-      "pqq": 0
+      "pqq": 0,
+      "epa": 0
     },
     "carbQuality": {
       "glycemicIndex": 54,
@@ -11474,7 +11528,8 @@
       "vitaminK2MK4": true,
       "vitaminK2MK7": true,
       "plantSterols": 0,
-      "pqq": 0
+      "pqq": 0,
+      "epa": 0
     },
     "carbQuality": {
       "glycemicIndex": 50,
@@ -11559,7 +11614,8 @@
       "vitaminK2MK4": true,
       "vitaminK2MK7": true,
       "plantSterols": 0,
-      "pqq": 0
+      "pqq": 0,
+      "epa": 0.002
     },
     "carbQuality": {
       "glycemicIndex": 75,
@@ -11644,7 +11700,8 @@
       "vitaminK2MK4": true,
       "vitaminK2MK7": true,
       "plantSterols": 0,
-      "pqq": 0
+      "pqq": 0,
+      "epa": 0.003
     },
     "carbQuality": {
       "glycemicIndex": 75,
@@ -11723,7 +11780,8 @@
       "phosphorus": true,
       "methionine": true,
       "plantSterols": 0,
-      "pqq": 0
+      "pqq": 0,
+      "epa": 0.012
     },
     "carbQuality": {
       "glycemicIndex": 50,
@@ -11800,7 +11858,8 @@
       "phosphorus": true,
       "methionine": true,
       "plantSterols": 0,
-      "pqq": 0
+      "pqq": 0,
+      "epa": 0.018
     },
     "carbQuality": {
       "glycemicIndex": 50,
@@ -11887,7 +11946,8 @@
       "vitaminK2MK4": true,
       "vitaminK2MK7": true,
       "plantSterols": 0.01,
-      "pqq": 0
+      "pqq": 0,
+      "epa": 0
     },
     "carbQuality": {
       "glycemicIndex": 55,
@@ -11974,7 +12034,8 @@
       "vitaminK2MK4": true,
       "vitaminK2MK7": true,
       "plantSterols": 0.01,
-      "pqq": 0
+      "pqq": 0,
+      "epa": 0
     },
     "carbQuality": {
       "glycemicIndex": 55,
@@ -12061,7 +12122,8 @@
       "vitaminK2MK4": true,
       "vitaminK2MK7": true,
       "plantSterols": 0.01,
-      "pqq": 0
+      "pqq": 0,
+      "epa": 0
     },
     "carbQuality": {
       "glycemicIndex": 55,
@@ -12148,7 +12210,8 @@
       "vitaminK2MK4": true,
       "vitaminK2MK7": true,
       "plantSterols": 0.01,
-      "pqq": 0
+      "pqq": 0,
+      "epa": 0
     },
     "carbQuality": {
       "glycemicIndex": 55,
@@ -12234,7 +12297,8 @@
       "vitaminK2MK4": true,
       "vitaminK2MK7": true,
       "plantSterols": 0,
-      "pqq": 0
+      "pqq": 0,
+      "epa": 0
     },
     "carbQuality": {
       "glycemicIndex": 60,
@@ -12315,7 +12379,8 @@
       "vitaminK2MK4": true,
       "vitaminK2MK7": true,
       "plantSterols": 0,
-      "pqq": 0
+      "pqq": 0,
+      "epa": 0
     },
     "carbQuality": {
       "glycemicIndex": 0,
@@ -12396,7 +12461,8 @@
       "vitaminK2MK4": true,
       "vitaminK2MK7": true,
       "plantSterols": 0,
-      "pqq": 0
+      "pqq": 0,
+      "epa": 0
     },
     "carbQuality": {
       "glycemicIndex": 0,
@@ -12477,7 +12543,8 @@
       "vitaminK2MK4": true,
       "vitaminK2MK7": true,
       "plantSterols": 0,
-      "pqq": 0
+      "pqq": 0,
+      "epa": 0
     },
     "carbQuality": {
       "glycemicIndex": 65,
@@ -12558,7 +12625,8 @@
       "vitaminK2MK4": true,
       "vitaminK2MK7": true,
       "plantSterols": 0,
-      "pqq": 0
+      "pqq": 0,
+      "epa": 0
     },
     "carbQuality": {
       "glycemicIndex": 65,
@@ -12642,7 +12710,8 @@
       "vitaminK2MK4": true,
       "vitaminK2MK7": true,
       "plantSterols": 0,
-      "pqq": 0
+      "pqq": 0,
+      "epa": 0
     },
     "carbQuality": {
       "glycemicIndex": 35,
@@ -16514,7 +16583,19 @@
       "folate": 2,
       "vitaminC": 1.6,
       "phosphorus": 4,
-      "choline": 2.2
+      "choline": 2.2,
+      "histidine": 2.2,
+      "isoleucine": 2.4,
+      "leucine": 3.6,
+      "lysine": 3.9,
+      "methionine": 0.85,
+      "phenylalanine": 3.6,
+      "threonine": 3.2,
+      "tryptophan": 0.85,
+      "valine": 2.4,
+      "arginine": 2.7,
+      "cysteine": 0.85,
+      "tyrosine": 1.5
     },
     "longevity": {
       "saturatedFat": 0.003,
@@ -16572,7 +16653,19 @@
       "folate": 1,
       "vitaminC": 0.5,
       "phosphorus": 1,
-      "choline": 0.7
+      "choline": 0.7,
+      "histidine": 0.8,
+      "isoleucine": 0.8,
+      "leucine": 1.3,
+      "lysine": 1.4,
+      "methionine": 0.3,
+      "phenylalanine": 1.3,
+      "threonine": 1.1,
+      "tryptophan": 0.3,
+      "valine": 0.8,
+      "arginine": 1,
+      "cysteine": 0.3,
+      "tyrosine": 0.5
     },
     "longevity": {
       "saturatedFat": 0.001,
@@ -17215,7 +17308,19 @@
       "vitaminB12": 0.02,
       "vitaminC": 0.2,
       "phosphorus": 9,
-      "choline": 3
+      "choline": 3,
+      "histidine": 7,
+      "isoleucine": 15,
+      "leucine": 25,
+      "lysine": 22,
+      "methionine": 9,
+      "phenylalanine": 17,
+      "threonine": 17,
+      "tryptophan": 3,
+      "valine": 23,
+      "arginine": 22,
+      "cysteine": 7,
+      "tyrosine": 14
     },
     "longevity": {
       "saturatedFat": 0.9,
@@ -17335,7 +17440,19 @@
       "iron": 0.7,
       "calcium": 0,
       "potassium": 0,
-      "vitaminD": 0
+      "vitaminD": 0,
+      "histidine": 29,
+      "isoleucine": 50,
+      "leucine": 98,
+      "lysine": 26,
+      "methionine": 22,
+      "phenylalanine": 68,
+      "threonine": 39,
+      "tryptophan": 17,
+      "valine": 60,
+      "arginine": 52,
+      "cysteine": 35,
+      "tyrosine": 27
     },
     "longevity": {
       "saturatedFat": 0,
@@ -17360,7 +17477,19 @@
       "iron": 5.18,
       "calcium": 0,
       "potassium": 0,
-      "vitaminD": 0
+      "vitaminD": 0,
+      "histidine": 219,
+      "isoleucine": 370,
+      "leucine": 724,
+      "lysine": 191,
+      "methionine": 163,
+      "phenylalanine": 502,
+      "threonine": 299,
+      "tryptophan": 126,
+      "valine": 443,
+      "arginine": 387,
+      "cysteine": 258,
+      "tyrosine": 202
     },
     "longevity": {
       "saturatedFat": 0,
@@ -20256,7 +20385,19 @@
       "folate": 60,
       "vitaminC": 2,
       "phosphorus": 35,
-      "choline": 3
+      "choline": 3,
+      "histidine": 24,
+      "isoleucine": 45,
+      "leucine": 87,
+      "lysine": 32,
+      "methionine": 21,
+      "phenylalanine": 47,
+      "threonine": 40,
+      "tryptophan": 7,
+      "valine": 70,
+      "arginine": 50,
+      "cysteine": 5,
+      "tyrosine": 44
     },
     "longevity": {
       "saturatedFat": 0.2,
@@ -20312,7 +20453,19 @@
       "vitaminB6": 0.05,
       "folate": 17,
       "phosphorus": 84,
-      "choline": 6
+      "choline": 6,
+      "histidine": 68,
+      "isoleucine": 125,
+      "leucine": 352,
+      "lysine": 83,
+      "methionine": 46,
+      "phenylalanine": 108,
+      "threonine": 82,
+      "tryptophan": 18,
+      "valine": 120,
+      "arginine": 109,
+      "cysteine": 36,
+      "tyrosine": 90
     },
     "longevity": {
       "saturatedFat": 1,
@@ -20373,7 +20526,19 @@
       "folate": 4,
       "vitaminC": 2.6,
       "phosphorus": 10,
-      "choline": 2.5
+      "choline": 2.5,
+      "histidine": 7,
+      "isoleucine": 8,
+      "leucine": 16,
+      "lysine": 15,
+      "methionine": 3,
+      "phenylalanine": 12,
+      "threonine": 10,
+      "tryptophan": 4.2,
+      "valine": 6,
+      "arginine": 13,
+      "cysteine": 6.3,
+      "tyrosine": 4
     },
     "longevity": {
       "saturatedFat": 0.02,
@@ -21474,7 +21639,7 @@
       "iron": 8.3,
       "magnesium": 4,
       "zinc": 0.3,
-      "vitaminA": 0,
+      "vitaminA": 7.6,
       "vitaminD": 2.3,
       "vitaminB12": 0.5,
       "vitaminB6": 0.38,
@@ -21576,7 +21741,7 @@
       "iron": 16.6,
       "magnesium": 8,
       "zinc": 0.6,
-      "vitaminA": 0,
+      "vitaminA": 15.2,
       "vitaminD": 4.6,
       "vitaminB12": 1.1,
       "vitaminB6": 0.76,
@@ -21678,7 +21843,7 @@
       "iron": 12.45,
       "magnesium": 6,
       "zinc": 0.45,
-      "vitaminA": 0,
+      "vitaminA": 11.4,
       "vitaminD": 3.5,
       "vitaminB12": 0.8,
       "vitaminB6": 0.57,
@@ -21780,7 +21945,7 @@
       "iron": 6.23,
       "magnesium": 3,
       "zinc": 0.22,
-      "vitaminA": 0,
+      "vitaminA": 5.7,
       "vitaminD": 1.7,
       "vitaminB12": 0.4,
       "vitaminB6": 0.29,
@@ -24274,7 +24439,19 @@
       "phosphorus": 98,
       "fiber": 1.9,
       "solubleFiber": 0.3,
-      "insolubleFiber": 1.6
+      "insolubleFiber": 1.6,
+      "histidine": 97,
+      "isoleucine": 177,
+      "leucine": 332,
+      "lysine": 120,
+      "methionine": 67,
+      "phenylalanine": 173,
+      "threonine": 169,
+      "tryptophan": 48,
+      "valine": 214,
+      "arginine": 646,
+      "cysteine": 59,
+      "tyrosine": 122
     },
     "longevity": {
       "saturatedFat": 1.7,
@@ -24326,7 +24503,19 @@
       "insolubleFiber": 1.3,
       "copper": 85,
       "phosphorus": 45,
-      "manganese": 0.17
+      "manganese": 0.17,
+      "histidine": 33,
+      "isoleucine": 63,
+      "leucine": 86,
+      "lysine": 60,
+      "methionine": 26,
+      "phenylalanine": 67,
+      "threonine": 54,
+      "tryptophan": 21,
+      "valine": 80,
+      "arginine": 134,
+      "cysteine": 24,
+      "tyrosine": 34
     },
     "longevity": {
       "saturatedFat": 0.25,
@@ -24376,7 +24565,19 @@
       "insolubleFiber": 6.3,
       "phosphorus": 265,
       "copper": 260,
-      "manganese": 0.6
+      "manganese": 0.6,
+      "histidine": 151,
+      "isoleucine": 227,
+      "leucine": 388,
+      "lysine": 275,
+      "methionine": 167,
+      "phenylalanine": 289,
+      "threonine": 201,
+      "tryptophan": 124,
+      "valine": 270,
+      "arginine": 608,
+      "cysteine": 115,
+      "tyrosine": 160
     },
     "longevity": {
       "saturatedFat": 0.9,
@@ -24726,7 +24927,17 @@
       "chromium": 9,
       "copper": 45,
       "arginine": 120,
-      "cysteine": 25
+      "cysteine": 25,
+      "histidine": 54,
+      "isoleucine": 72,
+      "leucine": 117,
+      "lysine": 123,
+      "methionine": 35,
+      "phenylalanine": 106,
+      "threonine": 80,
+      "tryptophan": 30,
+      "valine": 114,
+      "tyrosine": 46
     },
     "longevity": {
       "saturatedFat": 0,
@@ -24785,7 +24996,17 @@
       "chromium": 0.5,
       "copper": 40,
       "arginine": 48,
-      "cysteine": 12
+      "cysteine": 12,
+      "histidine": 19,
+      "isoleucine": 44,
+      "leucine": 67,
+      "lysine": 52,
+      "methionine": 16,
+      "phenylalanine": 39,
+      "threonine": 37,
+      "tryptophan": 12,
+      "valine": 48,
+      "tyrosine": 32
     },
     "longevity": {
       "saturatedFat": 0,
@@ -24841,7 +25062,17 @@
       "chromium": 1,
       "copper": 55,
       "arginine": 140,
-      "cysteine": 28
+      "cysteine": 28,
+      "histidine": 67,
+      "isoleucine": 116,
+      "leucine": 134,
+      "lysine": 136,
+      "methionine": 28,
+      "phenylalanine": 86,
+      "threonine": 106,
+      "tryptophan": 33,
+      "valine": 136,
+      "tyrosine": 53
     },
     "longevity": {
       "saturatedFat": 0,
@@ -24897,7 +25128,17 @@
       "chromium": 0.5,
       "copper": 60,
       "arginine": 20,
-      "cysteine": 8
+      "cysteine": 8,
+      "histidine": 17,
+      "isoleucine": 22,
+      "leucine": 31,
+      "lysine": 33,
+      "methionine": 7,
+      "phenylalanine": 33,
+      "threonine": 33,
+      "tryptophan": 7,
+      "valine": 22,
+      "tyrosine": 17
     },
     "longevity": {
       "saturatedFat": 0,
@@ -24951,7 +25192,17 @@
       "chromium": 2,
       "copper": 180,
       "arginine": 420,
-      "cysteine": 75
+      "cysteine": 75,
+      "histidine": 155,
+      "isoleucine": 283,
+      "leucine": 468,
+      "lysine": 460,
+      "methionine": 119,
+      "phenylalanine": 290,
+      "threonine": 294,
+      "tryptophan": 54,
+      "valine": 371,
+      "tyrosine": 165
     },
     "longevity": {
       "saturatedFat": 0,
@@ -24990,6 +25241,7 @@
       "sodium": 106,
       "potassium": 442,
       "calcium": 22,
+      "vitaminA": 2.7,
       "iron": 1.1,
       "magnesium": 31,
       "zinc": 0.5,
@@ -25002,7 +25254,17 @@
       "choline": 9,
       "copper": 100,
       "arginine": 50,
-      "cysteine": 15
+      "cysteine": 15,
+      "histidine": 29,
+      "isoleucine": 65,
+      "leucine": 92,
+      "lysine": 79,
+      "methionine": 24,
+      "phenylalanine": 63,
+      "threonine": 64,
+      "tryptophan": 26,
+      "valine": 76,
+      "tyrosine": 52
     },
     "longevity": {
       "saturatedFat": 0,
@@ -25035,6 +25297,7 @@
       "potassium": 300,
       "calcium": 8,
       "iron": 0.4,
+      "vitaminA": 10.2,
       "magnesium": 25,
       "zinc": 0.5,
       "vitaminD": 11,
@@ -25046,7 +25309,17 @@
       "chloride": 50,
       "arginine": 1020,
       "cysteine": 180,
-      "phosphorus": 220
+      "phosphorus": 220,
+      "histidine": 467,
+      "isoleucine": 777,
+      "leucine": 1373,
+      "lysine": 1590,
+      "methionine": 532,
+      "phenylalanine": 659,
+      "threonine": 731,
+      "tryptophan": 189,
+      "valine": 869,
+      "tyrosine": 570
     },
     "longevity": {
       "saturatedFat": 1.5,
@@ -25088,6 +25361,7 @@
       "iron": 2.5,
       "magnesium": 35,
       "zinc": 1.2,
+      "vitaminA": 27.2,
       "vitaminD": 4.5,
       "vitaminB12": 7.5,
       "selenium": 45,
@@ -25096,7 +25370,17 @@
       "chloride": 200,
       "arginine": 1200,
       "cysteine": 190,
-      "phosphorus": 420
+      "phosphorus": 420,
+      "histidine": 616,
+      "isoleucine": 964,
+      "leucine": 1701,
+      "lysine": 1921,
+      "methionine": 620,
+      "phenylalanine": 817,
+      "threonine": 917,
+      "tryptophan": 235,
+      "valine": 1078,
+      "tyrosine": 706
     },
     "longevity": {
       "saturatedFat": 2,
@@ -25146,7 +25430,17 @@
       "solubleFiber": 0.2,
       "insolubleFiber": 0.9,
       "chloride": 10,
-      "chromium": 1
+      "chromium": 1,
+      "histidine": 218,
+      "isoleucine": 359,
+      "leucine": 678,
+      "lysine": 346,
+      "methionine": 169,
+      "phenylalanine": 486,
+      "threonine": 280,
+      "tryptophan": 162,
+      "valine": 443,
+      "tyrosine": 306
     },
     "longevity": {
       "saturatedFat": 2.3,
@@ -25195,7 +25489,17 @@
       "insolubleFiber": 7,
       "chloride": 20,
       "chromium": 3,
-      "folate": 185
+      "folate": 185,
+      "histidine": 772,
+      "isoleucine": 1388,
+      "leucine": 2331,
+      "lysine": 1906,
+      "methionine": 385,
+      "phenylalanine": 1495,
+      "threonine": 1244,
+      "tryptophan": 416,
+      "valine": 1429,
+      "tyrosine": 1084
     },
     "longevity": {
       "saturatedFat": 2.2,
@@ -25235,6 +25539,7 @@
       "iron": 1.1,
       "magnesium": 34,
       "zinc": 0.7,
+      "vitaminA": 7.4,
       "copper": 370,
       "choline": 20,
       "arginine": 580,
@@ -25242,7 +25547,17 @@
       "fiber": 3,
       "solubleFiber": 0.5,
       "insolubleFiber": 2.5,
-      "chromium": 1
+      "chromium": 1,
+      "histidine": 145,
+      "isoleucine": 260,
+      "leucine": 456,
+      "lysine": 323,
+      "methionine": 102,
+      "phenylalanine": 310,
+      "threonine": 194,
+      "tryptophan": 71,
+      "valine": 355,
+      "tyrosine": 145
     },
     "longevity": {
       "saturatedFat": 1.5,
@@ -25282,6 +25597,7 @@
       "iron": 0.4,
       "magnesium": 25,
       "zinc": 0.7,
+      "vitaminA": 5.1,
       "selenium": 22,
       "choline": 70,
       "copper": 40,
@@ -25291,7 +25607,17 @@
       "chromium": 1,
       "vitaminB6": 0.5,
       "vitaminB12": 0.3,
-      "phosphorus": 200
+      "phosphorus": 200,
+      "histidine": 819,
+      "isoleucine": 1392,
+      "leucine": 1979,
+      "lysine": 2240,
+      "methionine": 730,
+      "phenylalanine": 1046,
+      "threonine": 1114,
+      "tryptophan": 308,
+      "valine": 1308,
+      "tyrosine": 890
     },
     "longevity": {
       "saturatedFat": 0.8,
@@ -25332,6 +25658,7 @@
       "iron": 0.7,
       "magnesium": 22,
       "zinc": 1.2,
+      "vitaminA": 2.6,
       "selenium": 25,
       "choline": 70,
       "copper": 60,
@@ -25340,7 +25667,17 @@
       "cysteine": 280,
       "vitaminB6": 0.4,
       "vitaminB12": 0.3,
-      "phosphorus": 200
+      "phosphorus": 200,
+      "histidine": 621,
+      "isoleucine": 657,
+      "leucine": 1589,
+      "lysine": 1891,
+      "methionine": 599,
+      "phenylalanine": 739,
+      "threonine": 832,
+      "tryptophan": 244,
+      "valine": 733,
+      "tyrosine": 681
     },
     "longevity": {
       "saturatedFat": 0.5,
@@ -25389,7 +25726,17 @@
       "cysteine": 280,
       "vitaminB6": 0.4,
       "vitaminB12": 2.2,
-      "phosphorus": 200
+      "phosphorus": 200,
+      "histidine": 796,
+      "isoleucine": 1135,
+      "leucine": 2004,
+      "lysine": 2107,
+      "methionine": 649,
+      "phenylalanine": 985,
+      "threonine": 996,
+      "tryptophan": 164,
+      "valine": 1237,
+      "tyrosine": 795
     },
     "longevity": {
       "saturatedFat": 3.2,
@@ -25430,6 +25777,7 @@
       "iron": 0.8,
       "magnesium": 22,
       "zinc": 2.2,
+      "vitaminA": 2,
       "selenium": 25,
       "choline": 70,
       "copper": 60,
@@ -25439,7 +25787,17 @@
       "vitaminB6": 0.4,
       "vitaminB12": 0.6,
       "phosphorus": 200,
-      "thiamin": 0.7
+      "thiamin": 0.7,
+      "histidine": 971,
+      "isoleucine": 1137,
+      "leucine": 1948,
+      "lysine": 2184,
+      "methionine": 643,
+      "phenylalanine": 969,
+      "threonine": 1109,
+      "tryptophan": 309,
+      "valine": 1318,
+      "tyrosine": 846
     },
     "longevity": {
       "saturatedFat": 2.1,
@@ -25480,6 +25838,7 @@
       "iron": 0.4,
       "magnesium": 35,
       "zinc": 1.4,
+      "vitaminA": 68,
       "vitaminB12": 1.3,
       "vitaminB6": 0.15,
       "selenium": 40,
@@ -25489,7 +25848,17 @@
       "chloride": 180,
       "arginine": 1700,
       "cysteine": 220,
-      "phosphorus": 200
+      "phosphorus": 200,
+      "histidine": 426,
+      "isoleucine": 893,
+      "leucine": 1658,
+      "lysine": 1846,
+      "methionine": 565,
+      "phenylalanine": 843,
+      "threonine": 768,
+      "tryptophan": 221,
+      "valine": 907,
+      "tyrosine": 733
     },
     "longevity": {
       "saturatedFat": 0.2,
@@ -25540,7 +25909,17 @@
       "cysteine": 220,
       "chloride": 20,
       "chromium": 2,
-      "phosphorus": 356
+      "phosphorus": 356,
+      "histidine": 503,
+      "isoleucine": 772,
+      "leucine": 1295,
+      "lysine": 1247,
+      "methionine": 152,
+      "phenylalanine": 881,
+      "threonine": 640,
+      "tryptophan": 160,
+      "valine": 887,
+      "tyrosine": 477
     },
     "longevity": {
       "saturatedFat": 0.1,
@@ -25588,7 +25967,17 @@
       "cysteine": 140,
       "chloride": 15,
       "chromium": 3,
-      "thiamin": 0.2
+      "thiamin": 0.2,
+      "histidine": 126,
+      "isoleucine": 271,
+      "leucine": 505,
+      "lysine": 316,
+      "methionine": 108,
+      "phenylalanine": 332,
+      "threonine": 225,
+      "tryptophan": 94,
+      "valine": 374,
+      "tyrosine": 236
     },
     "longevity": {
       "saturatedFat": 0.6,
@@ -25632,7 +26021,17 @@
       "arginine": 550,
       "cysteine": 80,
       "fiber": 1,
-      "chromium": 1
+      "chromium": 1,
+      "histidine": 113,
+      "isoleucine": 224,
+      "leucine": 418,
+      "lysine": 264,
+      "methionine": 103,
+      "phenylalanine": 270,
+      "threonine": 195,
+      "tryptophan": 81,
+      "valine": 311,
+      "tyrosine": 144
     },
     "longevity": {
       "saturatedFat": 2.2,
@@ -25670,10 +26069,23 @@
       "iron": 3.4,
       "magnesium": 65,
       "zinc": 0.9,
+      "vitaminA": 0.6,
       "copper": 500,
       "fiber": 3,
       "chromium": 5,
-      "choline": 10
+      "choline": 10,
+      "cysteine": 35,
+      "arginine": 125,
+      "histidine": 68,
+      "isoleucine": 85,
+      "leucine": 97.3,
+      "lysine": 93,
+      "methionine": 28,
+      "phenylalanine": 106,
+      "threonine": 86.4,
+      "tryptophan": 58,
+      "valine": 101,
+      "tyrosine": 57.7
     },
     "longevity": {
       "saturatedFat": 7,
@@ -25713,6 +26125,7 @@
       "iron": 1,
       "magnesium": 25,
       "zinc": 0.2,
+      "vitaminA": 35,
       "vitaminC": 12,
       "vitaminK": 14,
       "fiber": 2.7,
@@ -25721,7 +26134,17 @@
       "chloride": 20,
       "choline": 12,
       "arginine": 60,
-      "cysteine": 15
+      "cysteine": 15,
+      "histidine": 34,
+      "isoleucine": 66,
+      "leucine": 112,
+      "lysine": 88,
+      "methionine": 22,
+      "phenylalanine": 67,
+      "threonine": 79,
+      "tryptophan": 19,
+      "valine": 90,
+      "tyrosine": 42
     },
     "longevity": {
       "saturatedFat": 0,
@@ -25755,6 +26178,7 @@
       "iron": 1.9,
       "magnesium": 48,
       "zinc": 0.6,
+      "vitaminA": 1.7,
       "vitaminC": 17,
       "fiber": 3.8,
       "copper": 200,
@@ -25762,7 +26186,17 @@
       "choline": 25,
       "chromium": 2,
       "arginine": 120,
-      "cysteine": 40
+      "cysteine": 40,
+      "histidine": 73,
+      "isoleucine": 138,
+      "leucine": 206,
+      "lysine": 225,
+      "methionine": 66,
+      "phenylalanine": 171,
+      "threonine": 140,
+      "tryptophan": 43,
+      "valine": 216,
+      "tyrosine": 100
     },
     "longevity": {
       "saturatedFat": 0,
@@ -25793,6 +26227,7 @@
       "iron": 2.2,
       "magnesium": 197,
       "zinc": 2.8,
+      "vitaminA": 0.3,
       "copper": 450,
       "phosphorus": 462,
       "manganese": 2.2,
@@ -25804,7 +26239,17 @@
       "insolubleFiber": 0.9,
       "arginine": 1000,
       "cysteine": 150,
-      "choline": 20
+      "choline": 20,
+      "histidine": 275,
+      "isoleucine": 365,
+      "leucine": 614,
+      "lysine": 362,
+      "methionine": 265,
+      "phenylalanine": 410,
+      "threonine": 360,
+      "tryptophan": 105,
+      "valine": 505,
+      "tyrosine": 359
     },
     "longevity": {
       "saturatedFat": 1.3,
@@ -25894,7 +26339,19 @@
       "phosphorus": 100,
       "solubleFiber": 1,
       "insolubleFiber": 2,
-      "fiber": 3
+      "fiber": 3,
+      "arginine": 334,
+      "cysteine": 125,
+      "histidine": 138,
+      "isoleucine": 380,
+      "leucine": 474,
+      "lysine": 541,
+      "methionine": 117,
+      "phenylalanine": 336,
+      "threonine": 326.4,
+      "tryptophan": 94,
+      "valine": 392,
+      "tyrosine": 217.6
     },
     "longevity": {
       "nr": 0.3,
@@ -25943,7 +26400,19 @@
       "manganese": 0.1,
       "solubleFiber": 0.3,
       "insolubleFiber": 0.9,
-      "fiber": 1.2
+      "fiber": 1.2,
+      "arginine": 36,
+      "cysteine": 6,
+      "histidine": 8,
+      "isoleucine": 29,
+      "leucine": 21,
+      "lysine": 19,
+      "methionine": 3,
+      "phenylalanine": 12,
+      "threonine": 14,
+      "tryptophan": 9,
+      "valine": 22,
+      "tyrosine": 17.2
     },
     "longevity": {
       "nr": 0.05,
@@ -25977,7 +26446,19 @@
       "choline": 6.7,
       "solubleFiber": 0.9,
       "insolubleFiber": 1,
-      "fiber": 1.9
+      "fiber": 1.9,
+      "arginine": 110,
+      "cysteine": 4.4,
+      "histidine": 15.4,
+      "isoleucine": 15.4,
+      "leucine": 27.5,
+      "lysine": 42.9,
+      "methionine": 2.2,
+      "phenylalanine": 27.5,
+      "threonine": 23.1,
+      "tryptophan": 15.4,
+      "valine": 23.1,
+      "tyrosine": 15.4
     },
     "longevity": {
       "saturatedFat": 0.04,
@@ -26015,6 +26496,7 @@
       "iron": 0.15,
       "magnesium": 3,
       "zinc": 0.03,
+      "vitaminA": 0.6,
       "vitaminC": 0.4,
       "folate": 2,
       "vitaminK": 2.2,
@@ -26023,7 +26505,18 @@
       "phosphorus": 1,
       "solubleFiber": 0.1,
       "insolubleFiber": 0.2,
-      "fiber": 0.3
+      "fiber": 0.3,
+      "arginine": 12,
+      "cysteine": 2,
+      "histidine": 2.8,
+      "isoleucine": 17.6,
+      "leucine": 14.31,
+      "lysine": 22.14,
+      "methionine": 0.99,
+      "phenylalanine": 11.7,
+      "threonine": 6.12,
+      "tryptophan": 1.44,
+      "valine": 13.86
     },
     "longevity": {
       "saturatedFat": 0.02,
@@ -26075,7 +26568,19 @@
       "solubleFiber": 0.4,
       "insolubleFiber": 3.2,
       "fiber": 3.6,
-      "vitaminK1": 28
+      "vitaminK1": 28,
+      "arginine": 55,
+      "cysteine": 12,
+      "histidine": 16,
+      "isoleucine": 34,
+      "leucine": 65.12,
+      "lysine": 19,
+      "methionine": 17.76,
+      "phenylalanine": 38.48,
+      "threonine": 29.6,
+      "tryptophan": 4.44,
+      "valine": 45.88,
+      "tyrosine": 13.32
     },
     "longevity": {
       "saturatedFat": 0.03,
