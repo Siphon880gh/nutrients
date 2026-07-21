@@ -408,6 +408,11 @@
       <div id="target-ref-popover" class="dashboard__target-ref-popover" role="tooltip" hidden>
         <div id="target-ref-popover-text" class="dashboard__target-ref-popover-text"></div>
       </div>
+      <div id="max-hr-popover" class="settings-modal__max-hr-popover" role="tooltip" hidden>
+        <p class="settings-modal__max-hr-popover-copy"><strong>Approximate:</strong> Fox formula — max HR ≈ 220 − age (e.g. age 40 → ~180 bpm).</p>
+        <p class="settings-modal__max-hr-popover-copy"><strong>More accurately:</strong> Tanaka formula — max HR ≈ 208 − (0.7 × age). Better still: the highest heart rate you reach in a hard all-out effort with a chest-strap monitor, or a graded exercise test.</p>
+        <p class="settings-modal__max-hr-popover-copy">Zone 2 is then about 60–70% of that max. A practical check: conversational pace — you can speak in full sentences but not sing.</p>
+      </div>
       <div id="dashboard-longevity-panel" class="dashboard__longevity-panel" hidden>
         <nav id="dashboard-longevity-nav" class="dashboard__longevity-nav" hidden aria-label="Longevity topics">
           <div class="dashboard__longevity-nav-top">
@@ -2145,7 +2150,7 @@
               </select>
             </label>
           </div>
-          <p id="settings-macro-split-preview" class="settings-modal__macro-split-preview" hidden></p>
+          <div id="settings-macro-split-preview" class="settings-modal__macro-split-preview" hidden></div>
         </section>
       </div>
       <footer class="modal__footer">

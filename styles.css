@@ -6700,9 +6700,147 @@ body.day-word-wrap-off .day__input {
 
 .settings-modal__macro-split-preview {
   margin: 0.5rem 0 0;
+  display: grid;
+  gap: 0.55rem;
+}
+
+.settings-modal__macro-split-preview-line {
+  margin: 0;
   font-size: 0.8rem;
   color: #2a4a6e;
   font-weight: 600;
+}
+
+.settings-modal__protein-evidence {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.45rem;
+}
+
+.settings-modal__protein-evidence-tile {
+  display: grid;
+  gap: 0.15rem;
+  padding: 0.55rem 0.6rem;
+  background: #f6f8fa;
+  border: 1px solid #e2e8ef;
+  border-radius: 8px;
+  min-width: 0;
+}
+
+.settings-modal__protein-evidence-title {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #5a6f86;
+}
+
+.settings-modal__protein-evidence-rate {
+  font-size: 0.72rem;
+  color: #6a6a66;
+  line-height: 1.3;
+}
+
+.settings-modal__protein-evidence-val {
+  margin-top: 0.15rem;
+  font-size: 1.05rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: #1a1a1a;
+  letter-spacing: -0.02em;
+}
+
+.settings-modal__protein-evidence-val--tip {
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0;
+  line-height: 1.35;
+  font-variant-numeric: normal;
+}
+
+.settings-modal__max-hr-trigger {
+  display: inline;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 2px;
+  background: none;
+  font: inherit;
+  font-weight: inherit;
+  color: inherit;
+  cursor: pointer;
+  text-decoration: underline dotted rgba(106, 106, 102, 0.55);
+  text-underline-offset: 0.14em;
+}
+
+.settings-modal__max-hr-trigger:hover,
+.settings-modal__max-hr-trigger:focus-visible,
+.settings-modal__max-hr-trigger[aria-expanded="true"] {
+  color: #555;
+  text-decoration-color: rgba(85, 85, 85, 0.75);
+}
+
+.settings-modal__max-hr-trigger:focus-visible {
+  outline: 2px solid #9eb4cc;
+  outline-offset: 2px;
+}
+
+.settings-modal__max-hr-popover {
+  position: fixed;
+  z-index: 130;
+  min-width: 14rem;
+  max-width: min(22rem, calc(100vw - 2rem));
+  padding: 0.65rem 0.75rem;
+  font-size: 0.76rem;
+  line-height: 1.45;
+  color: #444;
+  background: #fff;
+  border: 1px solid #d8dce2;
+  border-radius: 6px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+}
+
+.settings-modal__max-hr-popover[hidden] {
+  display: none;
+}
+
+.settings-modal__max-hr-popover-copy {
+  margin: 0;
+}
+
+.settings-modal__max-hr-popover-copy + .settings-modal__max-hr-popover-copy {
+  margin-top: 0.5rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid #ecece8;
+}
+
+.settings-modal__protein-evidence-error {
+  margin: 0.15rem 0 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #2a4a6e;
+  text-decoration: underline;
+  text-underline-offset: 0.12em;
+  cursor: pointer;
+  text-align: left;
+}
+
+.settings-modal__protein-evidence-error:hover,
+.settings-modal__protein-evidence-error:focus-visible {
+  color: #1a3350;
+}
+
+@media (max-width: 560px) {
+  .settings-modal__protein-evidence {
+    grid-template-columns: 1fr;
+  }
 }
 
 .settings-modal__field {

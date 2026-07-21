@@ -265,6 +265,10 @@
   var settingsMacroSplitPreviewEl = document.getElementById(
     "settings-macro-split-preview"
   );
+  var maxHrPopoverEl = document.getElementById("max-hr-popover");
+  var maxHrPopoverAnchor = null;
+  var maxHrPopoverPinned = false;
+  var maxHrPopoverHideTimer = null;
   var settingsWeightEl = document.getElementById("settings-weight");
   var settingsWeightKgBtn = document.getElementById("settings-weight-kg");
   var settingsWeightLbBtn = document.getElementById("settings-weight-lb");
@@ -15577,24 +15581,217 @@
     userMacroSplit = normalizeMacroSplitValue(persist.getSetting("macroSplit"));
   }
 
+  function settingsPreviewBodyWeightKg() {
+    if (settingsModalEl && !settingsModalEl.hidden && settingsWeightEl) {
+      if (settingsWeightEl.value.trim() === "") return null;
+      var fromInput = settingsWeightKgFromInput();
+      return isNaN(fromInput) ? null : fromInput;
+    }
+    return getBodyWeightKg();
+  }
+
+  function settingsPreviewBodyWeightLb() {
+    var kg = settingsPreviewBodyWeightKg();
+    if (kg == null || kg <= 0) return null;
+    return kg / 0.453592;
+  }
+
+  var MACRO_GOAL_PROTEIN_GUIDANCE = {
+    bodybuilding: [
+      {
+        title: "Evidence",
+        rateLabel: "0.7 g/lb · building muscle",
+        gPerLb: 0.7,
+      },
+      {
+        title: "Other evidence",
+        rateLabel: "0.82 g/lb · building muscle",
+        gPerLb: 0.82,
+      },
+      {
+        title: "Bro science",
+        rateLabel: "1 g/lb · building muscle",
+        gPerLb: 1,
+      },
+    ],
+    maintenance: [
+      {
+        title: "Evidence",
+        rateLabel: "0.36 g/lb · RDA minimum (0.8 g/kg)",
+        gPerLb: 0.36,
+      },
+      {
+        title: "Other evidence",
+        rateLabel: "0.55 g/lb · active adults (1.2 g/kg)",
+        gPerLb: 0.55,
+      },
+      {
+        title: "Bro science",
+        rateLabel: "0.7 g/lb · gym rule of thumb",
+        gPerLb: 0.7,
+      },
+    ],
+  };
+
+  var WEIGHT_LOSS_GOAL_TIPS = [
+    {
+      title: "Calories",
+      rateLabel: "Energy balance rule of thumb",
+      body: "≈3,500 kcal deficit ≈ 1 lb lost",
+    },
+    {
+      title: "Zone 2",
+      rateHtml:
+        '60–70% of <button type="button" class="settings-modal__max-hr-trigger" data-action="toggle-max-hr-popover" aria-expanded="false" aria-controls="max-hr-popover">max heart rate</button>',
+      body: "Conversational pace — helps burn fat for fuel",
+    },
+    {
+      title: "Carbs & habits",
+      rateLabel: "Limit refined carbs & sugary drinks",
+      body: "Keep protein & fiber high; train to keep muscle",
+    },
+  ];
+
+  function clearMaxHrPopoverHideTimer() {
+    if (maxHrPopoverHideTimer == null) return;
+    clearTimeout(maxHrPopoverHideTimer);
+    maxHrPopoverHideTimer = null;
+  }
+
+  function hideMaxHrPopover() {
+    clearMaxHrPopoverHideTimer();
+    if (!maxHrPopoverEl) return;
+    maxHrPopoverEl.hidden = true;
+    maxHrPopoverPinned = false;
+    if (maxHrPopoverAnchor) {
+      maxHrPopoverAnchor.setAttribute("aria-expanded", "false");
+      maxHrPopoverAnchor = null;
+    }
+  }
+
+  function showMaxHrPopover(anchor, pinned) {
+    if (!maxHrPopoverEl || !anchor) return;
+    clearMaxHrPopoverHideTimer();
+    maxHrPopoverAnchor = anchor;
+    maxHrPopoverPinned = !!pinned;
+    maxHrPopoverEl.hidden = false;
+    positionFixedPopoverBelow(maxHrPopoverEl, anchor);
+    anchor.setAttribute("aria-expanded", "true");
+  }
+
+  function scheduleHideMaxHrPopover() {
+    if (maxHrPopoverPinned) return;
+    clearMaxHrPopoverHideTimer();
+    maxHrPopoverHideTimer = setTimeout(function () {
+      maxHrPopoverHideTimer = null;
+      if (!maxHrPopoverPinned) hideMaxHrPopover();
+    }, 160);
+  }
+
+  function toggleMaxHrPopover(anchor) {
+    if (!anchor) return;
+    if (
+      maxHrPopoverAnchor === anchor &&
+      maxHrPopoverEl &&
+      !maxHrPopoverEl.hidden &&
+      maxHrPopoverPinned
+    ) {
+      hideMaxHrPopover();
+      return;
+    }
+    showMaxHrPopover(anchor, true);
+  }
+
+  function proteinEvidenceTileHtml(title, rateLabel, gPerLb, weightLb) {
+    var amountHtml =
+      weightLb == null
+        ? '<button type="button" class="settings-modal__protein-evidence-error" data-action="focus-settings-weight">Enter body weight</button>'
+        : '<span class="settings-modal__protein-evidence-val">' +
+          escapeHtml(fmtNum(Math.round(weightLb * gPerLb)) + " g") +
+          "</span>";
+    return (
+      '<li class="settings-modal__protein-evidence-tile">' +
+      '<span class="settings-modal__protein-evidence-title">' +
+      escapeHtml(title) +
+      "</span>" +
+      '<span class="settings-modal__protein-evidence-rate">' +
+      escapeHtml(rateLabel) +
+      "</span>" +
+      amountHtml +
+      "</li>"
+    );
+  }
+
+  function weightLossTipTileHtml(tip) {
+    var rateInner = tip.rateHtml
+      ? tip.rateHtml
+      : escapeHtml(tip.rateLabel || "");
+    return (
+      '<li class="settings-modal__protein-evidence-tile settings-modal__protein-evidence-tile--tip">' +
+      '<span class="settings-modal__protein-evidence-title">' +
+      escapeHtml(tip.title) +
+      "</span>" +
+      '<span class="settings-modal__protein-evidence-rate">' +
+      rateInner +
+      "</span>" +
+      '<span class="settings-modal__protein-evidence-val settings-modal__protein-evidence-val--tip">' +
+      escapeHtml(tip.body) +
+      "</span>" +
+      "</li>"
+    );
+  }
+
+  function macroGoalGuidanceHtml(preset) {
+    if (preset.goal === "weight-loss") {
+      return (
+        '<ul class="settings-modal__protein-evidence" aria-label="Weight loss tips">' +
+        WEIGHT_LOSS_GOAL_TIPS.map(weightLossTipTileHtml).join("") +
+        "</ul>"
+      );
+    }
+    var rows = MACRO_GOAL_PROTEIN_GUIDANCE[preset.goal];
+    if (!rows) return "";
+    var weightLb = settingsPreviewBodyWeightLb();
+    return (
+      '<ul class="settings-modal__protein-evidence" aria-label="Protein per pound guidance">' +
+      rows
+        .map(function (row) {
+          return proteinEvidenceTileHtml(
+            row.title,
+            row.rateLabel,
+            row.gPerLb,
+            weightLb
+          );
+        })
+        .join("") +
+      "</ul>"
+    );
+  }
+
   function syncSettingsMacroSplitPreview() {
     if (!settingsMacroSplitPreviewEl) return;
+    hideMaxHrPopover();
     var preset = getMacroSplitPreset();
     if (!preset) {
       settingsMacroSplitPreviewEl.hidden = true;
-      settingsMacroSplitPreviewEl.textContent = "";
+      settingsMacroSplitPreviewEl.innerHTML = "";
       return;
     }
     settingsMacroSplitPreviewEl.hidden = false;
-    settingsMacroSplitPreviewEl.textContent =
-      preset.label +
-      " — " +
-      preset.proteinPct +
-      "% P / " +
-      preset.carbsPct +
-      "% C / " +
-      preset.fatsPct +
-      "% F";
+    settingsMacroSplitPreviewEl.innerHTML =
+      '<p class="settings-modal__macro-split-preview-line">' +
+      escapeHtml(
+        preset.label +
+          " — " +
+          preset.proteinPct +
+          "% P / " +
+          preset.carbsPct +
+          "% C / " +
+          preset.fatsPct +
+          "% F"
+      ) +
+      "</p>" +
+      macroGoalGuidanceHtml(preset);
   }
 
   function syncSettingsMacroSplitInput() {
@@ -15837,6 +16034,16 @@
     var kg = settingsWeightKgFromInput();
     userBodyWeightKg = isNaN(kg) ? null : kg;
     saveBodyWeight();
+    syncSettingsMacroSplitPreview();
+  }
+
+  function focusSettingsWeightField() {
+    if (!settingsWeightEl) return;
+    var section = settingsWeightEl.closest(".settings-modal__section");
+    if (section && section.scrollIntoView) {
+      section.scrollIntoView({ block: "nearest" });
+    }
+    settingsWeightEl.focus();
   }
 
   function syncSettingsTdeeInput() {
@@ -16038,9 +16245,9 @@
   function openSettingsModal() {
     if (!settingsModalEl) return;
     syncSettingsTdeeInput();
-    syncSettingsMacroSplitInput();
     setSettingsWeightUnit(settingsWeightUnit);
     syncSettingsWeightInput();
+    syncSettingsMacroSplitInput();
     settingsModalEl.hidden = false;
     updateBodyModalOpen();
     if (settingsTdeeEl) {
@@ -16050,6 +16257,7 @@
 
   function closeSettingsModal() {
     if (!settingsModalEl) return;
+    hideMaxHrPopover();
     readSettingsTdeeFromInput();
     readSettingsMacroSplitFromInput();
     readSettingsWeightFromInput();
@@ -23303,8 +23511,75 @@
   }
 
   if (settingsWeightEl) {
+    settingsWeightEl.addEventListener("input", syncSettingsMacroSplitPreview);
     settingsWeightEl.addEventListener("change", readSettingsWeightFromInput);
   }
+
+  if (settingsMacroSplitPreviewEl) {
+    settingsMacroSplitPreviewEl.addEventListener("click", function (e) {
+      var maxHrBtn = e.target.closest('[data-action="toggle-max-hr-popover"]');
+      if (maxHrBtn) {
+        e.preventDefault();
+        e.stopPropagation();
+        toggleMaxHrPopover(maxHrBtn);
+        return;
+      }
+      if (!e.target.closest('[data-action="focus-settings-weight"]')) return;
+      focusSettingsWeightField();
+    });
+    settingsMacroSplitPreviewEl.addEventListener("mouseover", function (e) {
+      var maxHrBtn = e.target.closest('[data-action="toggle-max-hr-popover"]');
+      if (!maxHrBtn) return;
+      showMaxHrPopover(maxHrBtn, maxHrPopoverPinned && maxHrPopoverAnchor === maxHrBtn);
+    });
+    settingsMacroSplitPreviewEl.addEventListener("mouseout", function (e) {
+      var maxHrBtn = e.target.closest('[data-action="toggle-max-hr-popover"]');
+      if (!maxHrBtn) return;
+      var related = e.relatedTarget;
+      if (
+        related &&
+        (maxHrBtn.contains(related) ||
+          (maxHrPopoverEl && maxHrPopoverEl.contains(related)))
+      ) {
+        return;
+      }
+      scheduleHideMaxHrPopover();
+    });
+  }
+
+  if (maxHrPopoverEl) {
+    maxHrPopoverEl.addEventListener("mouseenter", function () {
+      clearMaxHrPopoverHideTimer();
+    });
+    maxHrPopoverEl.addEventListener("mouseleave", function () {
+      scheduleHideMaxHrPopover();
+    });
+  }
+
+  document.addEventListener("click", function (e) {
+    if (!maxHrPopoverEl || maxHrPopoverEl.hidden) return;
+    if (
+      e.target.closest('[data-action="toggle-max-hr-popover"]') ||
+      e.target.closest("#max-hr-popover")
+    ) {
+      return;
+    }
+    hideMaxHrPopover();
+  });
+
+  window.addEventListener(
+    "scroll",
+    function () {
+      if (maxHrPopoverEl && !maxHrPopoverEl.hidden) hideMaxHrPopover();
+    },
+    true
+  );
+
+  window.addEventListener("resize", function () {
+    if (maxHrPopoverAnchor && maxHrPopoverEl && !maxHrPopoverEl.hidden) {
+      positionFixedPopoverBelow(maxHrPopoverEl, maxHrPopoverAnchor);
+    }
+  });
 
   if (settingsTdeeCalcOpenBtn) {
     settingsTdeeCalcOpenBtn.addEventListener("click", openTdeeCalculatorModal);
