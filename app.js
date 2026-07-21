@@ -1113,7 +1113,7 @@
   }
 
   function insolubleToSolubleFiberRatio(microTotals, perDay) {
-    var divisor = perDay ? 1 : DAYS.length;
+    var divisor = perDay ? 1 : weekAverageDayCount();
     var insoluble = (microTotals.insolubleFiber || 0) / divisor;
     var soluble = (microTotals.solubleFiber || 0) / divisor;
     if (soluble <= 0) return null;
@@ -4017,7 +4017,7 @@
     MICRO_ALL_FIELDS.forEach(function (field) {
       var total = week[field.key];
       if (!total && field.group === "amino") return;
-      var avgDaily = total / DAYS.length;
+      var avgDaily = total / weekAverageDayCount();
       var target = microNutrientTargetPct(field.key, avgDaily);
       var pct = target.pct;
       var amtText =
@@ -4128,7 +4128,7 @@
         total = weekMicro[field.key];
       }
       if (!total) return;
-      var avgDaily = total / DAYS.length;
+      var avgDaily = total / weekAverageDayCount();
       var pct = avgDailyLongevityPct(field.key, total);
       var pctText =
         pct == null || isNaN(pct) ? "—" : fmtNum(pct) + "% DV";
@@ -5794,7 +5794,7 @@
   }
 
   function glycemicLoadWeekCompareHtml(weekTotal) {
-    var dayCount = DAYS.length;
+    var dayCount = weekAverageDayCount();
     var favDaily = longevityDvStatus.glycemicLoadMaxPerDay || 100;
     var modDailyMax =
       longevityDvStatus.glycemicLoadModerateMaxPerDay || 120;
@@ -5928,7 +5928,7 @@
         "</li>";
     });
     html += "</ol>";
-    var dailyAvg = total / DAYS.length;
+    var dailyAvg = total / weekAverageDayCount();
     html +=
       '<p class="micro-sources-modal__total">Week total GL from listed foods: ' +
       escapeHtml(fmtNum(total) + " GL") +
@@ -10728,7 +10728,7 @@
     return {
       avgGi: avgGi,
       highShare: Math.round((buckets.high / carbG) * 100),
-      dailyCarbG: carbG / DAYS.length,
+      dailyCarbG: carbG / weekAverageDayCount(),
     };
   }
 
@@ -10781,8 +10781,19 @@
     return 0;
   }
 
+  /**
+   * Divisor for weekly → daily averages used by % DV panels.
+   * Past and future viewed weeks: full Mon–Sun (7).
+   * Current calendar week: Mon through today’s blue column (inclusive).
+   */
+  function weekAverageDayCount() {
+    if (!isCurrentWeek()) return DAYS.length;
+    var idx = dayIndexById(todayDayId());
+    return idx >= 0 ? idx + 1 : DAYS.length;
+  }
+
   function avgDailyLongevity(key, weekTotal) {
-    return weekTotal / DAYS.length;
+    return weekTotal / weekAverageDayCount();
   }
 
   function avgDailyLongevityPct(key, weekTotal) {
@@ -10860,8 +10871,9 @@
     var pufaVitaminEProtection =
       pufaG > 0 && pufaTarget > 0 ? (vitEMg / (pufaG * pufaTarget)) * 100 : null;
     var giBuckets = giBucketsFromWeek();
-    var sodiumMg = (weekMicro.sodium || 0) / DAYS.length;
-    var potassiumMg = (weekMicro.potassium || 0) / DAYS.length;
+    var dayCount = weekAverageDayCount();
+    var sodiumMg = (weekMicro.sodium || 0) / dayCount;
+    var potassiumMg = (weekMicro.potassium || 0) / dayCount;
     var ratioKNa = sodiumMg > 0 ? potassiumMg / sodiumMg : null;
     return {
       omega6To3: ratioO6O3,
@@ -10875,7 +10887,7 @@
       vitaminEMg: vitEMg,
       pufaVitaminERatio: pufaVitaminERatio,
       pufaVitaminEProtection: pufaVitaminEProtection,
-      weekGl: weekGlycemicLoadTotal() / DAYS.length,
+      weekGl: weekGlycemicLoadTotal() / dayCount,
       giBuckets: giBuckets,
       giSummary: giSummaryFromBuckets(giBuckets),
     };
@@ -10901,7 +10913,7 @@
   }
 
   function avgDailyMicroPct(key, weekTotal) {
-    return dailyMicroPct(key, weekTotal / DAYS.length);
+    return dailyMicroPct(key, weekTotal / weekAverageDayCount());
   }
 
   function iomBwMinMgPerKg(key) {
@@ -11140,7 +11152,7 @@
         var microField = microFieldByKey(field.key) || field;
         var microDaily =
           weekMicro && weekMicro[field.key] > 0
-            ? weekMicro[field.key] / DAYS.length
+            ? weekMicro[field.key] / weekAverageDayCount()
             : dailyAmount;
         var bridged = microNutrientTargetPct(field.key, microDaily);
         return {
@@ -12163,7 +12175,8 @@
       : " Set body weight in Settings for IOM bw min on nutrients without FDA % DV.";
     dashboardMicroHintTextEl.textContent = microViewDaily
       ? "Per-day intake vs FDA % DV or IOM bw min (Mon–Sun)." + weightNote
-      : "Average daily intake vs FDA % DV or IOM bw min (Mon–Sun)." + weightNote;
+      : "Average daily intake vs FDA % DV or IOM bw min (Mon–Sun; current week uses Mon–today)." +
+        weightNote;
   }
 
   function microIncludesExtendedDisplayFields() {
@@ -12291,7 +12304,7 @@
         : "—";
     }
     return total > 0
-      ? fmtNum(perDay ? total : total / DAYS.length) +
+      ? fmtNum(perDay ? total : total / weekAverageDayCount()) +
           " " +
           field.unit +
           (perDay ? "" : "/day avg")
@@ -12322,7 +12335,11 @@
         : field.key === "fiber"
           ? fiberTotalFromParts(microTotals)
           : (microTotals && microTotals[field.key]) || 0;
-    var dailyAmount = isDerived ? 0 : perDay ? total : total / DAYS.length;
+    var dailyAmount = isDerived
+      ? 0
+      : perDay
+        ? total
+        : total / weekAverageDayCount();
     var targetDisplay = isDerived
       ? microDerivedRowTargetDisplay(field.key, microTotals, !!perDay)
       : microRowTargetDisplay(field, dailyAmount, entry.source, microTotals);
@@ -13176,7 +13193,7 @@
     var unit = field ? field.unit : "";
     var total =
       microKey === "fiber" ? fiberTotalFromParts(weekMicro) : weekMicro[microKey] || 0;
-    var daily = total / DAYS.length;
+    var daily = total / weekAverageDayCount();
     var target = microNutrientTargetPct(microKey, daily);
     var pct = target.pct;
     var pctText = target.text;
@@ -13205,7 +13222,7 @@
     var unit = field ? field.unit : "mg";
     var total =
       microKey === "fiber" ? fiberTotalFromParts(weekMicro) : weekMicro[microKey] || 0;
-    var daily = total / DAYS.length;
+    var daily = total / weekAverageDayCount();
     var pct =
       limitAmount > 0 && daily >= 0 ? (daily / limitAmount) * 100 : null;
     var pctText = formatTargetPctNumber(pct);
@@ -13244,7 +13261,7 @@
 
   function longevityRowFromProtein(weekMacro, label) {
     var total = weekMacro.protein || 0;
-    var daily = total / DAYS.length;
+    var daily = total / weekAverageDayCount();
     var target = proteinTargetPct(daily);
     var amtText = total > 0 ? fmtNum(daily) + " g" : "—";
     var proteinReqAmount = dailyProteinTargetG()
@@ -13309,7 +13326,7 @@
     if (sum <= 0) {
       return '<p class="dashboard__longevity-note dashboard__longevity-note--gi">No GI data yet — add glycemic index and carbs on matched foods.</p>';
     }
-    var dayCount = DAYS.length;
+    var dayCount = weekAverageDayCount();
     var pct = function (v) {
       return Math.round((v / sum) * 100);
     };
