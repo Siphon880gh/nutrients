@@ -3081,6 +3081,54 @@
     return escapeHtml(text).replace(/"/g, "&quot;");
   }
 
+  /** Vitamin A / K breakdown forms — shown less dominant than parent totals. */
+  var MICRO_FORM_SUBTYPE_KEYS = {
+    vitaminARetinol: true,
+    vitaminABetaCarotene: true,
+    vitaminK1: true,
+    vitaminK2: true,
+    vitaminK2MK4: true,
+    vitaminK2MK7: true,
+  };
+
+  function isMicroFormSubtypeKey(key) {
+    return !!(key && MICRO_FORM_SUBTYPE_KEYS[key]);
+  }
+
+  /**
+   * Nutrient name HTML: keep the primary name dominant; mute form/type
+   * annotations in trailing parentheses and " — …" suffixes
+   * (e.g. "Vitamin A (preform retinol)", "MK-4 (Menaquinone-4)").
+   */
+  function nutrientLabelHtml(label) {
+    var s = String(label || "");
+    var primary = s;
+    var suffix = "";
+    var dashIdx = s.indexOf(" — ");
+    if (dashIdx > 0) {
+      primary = s.slice(0, dashIdx);
+      suffix = s.slice(dashIdx);
+    }
+    var html;
+    var paren = primary.match(/^(.*?)(\s+\([^)]+\))$/);
+    if (paren && paren[1]) {
+      html =
+        escapeHtml(paren[1]) +
+        '<span class="dashboard__nutrient-form">' +
+        escapeHtml(paren[2]) +
+        "</span>";
+    } else {
+      html = escapeHtml(primary);
+    }
+    if (suffix) {
+      html +=
+        '<span class="dashboard__nutrient-form">' +
+        escapeHtml(suffix) +
+        "</span>";
+    }
+    return html;
+  }
+
   function escapeRegex(text) {
     return text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
   }
@@ -12429,6 +12477,9 @@
       (isDerived ? " dashboard__micro-row--derived" : "");
     var defAttr = isLongevity ? "data-longevity-def" : "data-micro-def";
 
+    var nameCls =
+      "dashboard__micro-name" +
+      (isMicroFormSubtypeKey(field.key) ? " dashboard__micro-name--form" : "");
     var html =
       '<div class="' +
       rowCls +
@@ -12436,12 +12487,14 @@
       tierAttr +
       ' role="listitem">' +
       '<span class="dashboard__micro-name-wrap">' +
-      '<button type="button" class="dashboard__micro-name" ' +
+      '<button type="button" class="' +
+      nameCls +
+      '" ' +
       defAttr +
       '="' +
       escapeAttr(field.key) +
       '" aria-haspopup="dialog">' +
-      escapeHtml(field.label) +
+      nutrientLabelHtml(field.label) +
       "</button>" +
       microConditionSourcesIconHtml(entry) +
       "</span>" +
@@ -12723,6 +12776,11 @@
         (isDerived ? " dashboard__micro-day-row--derived" : "");
       var defAttr = isLongevity ? "data-longevity-def" : "data-micro-def";
 
+      var nameCls =
+        "dashboard__micro-day-name" +
+        (isMicroFormSubtypeKey(field.key)
+          ? " dashboard__micro-day-name--form"
+          : "");
       rows +=
         '<div class="' +
         rowCls +
@@ -12730,12 +12788,14 @@
         tierAttr +
         ">" +
         '<span class="dashboard__micro-day-name-wrap">' +
-        '<button type="button" class="dashboard__micro-day-name" ' +
+        '<button type="button" class="' +
+        nameCls +
+        '" ' +
         defAttr +
         '="' +
         escapeAttr(field.key) +
         '" aria-haspopup="dialog">' +
-        escapeHtml(field.label) +
+        nutrientLabelHtml(field.label) +
         "</button>" +
         microConditionSourcesIconHtml(entry, dayId) +
         "</span>" +
@@ -12999,21 +13059,32 @@
     var tierAttr = tier ? ' data-dv-tier="' + escapeAttr(tier.id) + '"' : "";
     var rowCls = "dashboard__longevity-row" + (extraClass ? " " + extraClass : "");
     if (limiting) rowCls += " dashboard__longevity-row--limiting";
+    var formName =
+      isMicroFormSubtypeKey(defKey) || isMicroFormSubtypeKey(sourcesKey);
+    var nameCls =
+      "dashboard__longevity-name" +
+      (formName ? " dashboard__longevity-name--form" : "");
     var nameHtml;
     if (defKey) {
       rowCls += " dashboard__longevity-row--clickable";
       var defAttr = useMicroDef ? "data-micro-def" : "data-longevity-def";
       nameHtml =
-        '<button type="button" class="dashboard__longevity-name" ' +
+        '<button type="button" class="' +
+        nameCls +
+        '" ' +
         defAttr +
         '="' +
         escapeAttr(defKey) +
         '" aria-haspopup="dialog">' +
-        escapeHtml(label) +
+        nutrientLabelHtml(label) +
         "</button>";
     } else {
       nameHtml =
-        '<span class="dashboard__longevity-name">' + escapeHtml(label) + "</span>";
+        '<span class="' +
+        nameCls +
+        '">' +
+        nutrientLabelHtml(label) +
+        "</span>";
     }
     if (sourcesKey && sourcesKind) {
       nameHtml =

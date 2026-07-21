@@ -1767,6 +1767,23 @@ button.dashboard__micro-name:hover {
   color: #333;
 }
 
+.dashboard__nutrient-form {
+  color: #8a8a8a;
+  font-weight: 400;
+}
+
+.dashboard__micro-name--form,
+button.dashboard__micro-name--form {
+  color: #6a6a6a;
+  font-weight: 500;
+}
+
+.dashboard__micro-name--form .dashboard__nutrient-form,
+button.dashboard__micro-name--form .dashboard__nutrient-form {
+  color: #8a8a8a;
+  font-weight: 400;
+}
+
 button.dashboard__micro-name:focus-visible {
   outline: 2px solid #3d6b9e;
   outline-offset: 2px;
@@ -3932,6 +3949,18 @@ button.dashboard__micro-day-name:hover {
   color: #2a4a6e;
 }
 
+.dashboard__micro-day-name--form,
+button.dashboard__micro-day-name--form {
+  color: #6a6a6a;
+  font-weight: 500;
+}
+
+.dashboard__micro-day-name--form .dashboard__nutrient-form,
+button.dashboard__micro-day-name--form .dashboard__nutrient-form {
+  color: #8a8a8a;
+  font-weight: 400;
+}
+
 button.dashboard__micro-day-name:focus-visible {
   outline: 2px solid #3d6b9e;
   outline-offset: 1px;
@@ -4744,6 +4773,18 @@ button.dashboard__longevity-name {
 
 button.dashboard__longevity-name:hover {
   color: #333;
+}
+
+.dashboard__longevity-name--form,
+button.dashboard__longevity-name--form {
+  color: #6a6a6a;
+  font-weight: 500;
+}
+
+.dashboard__longevity-name--form .dashboard__nutrient-form,
+button.dashboard__longevity-name--form .dashboard__nutrient-form {
+  color: #8a8a8a;
+  font-weight: 400;
 }
 
 button.dashboard__longevity-name:focus-visible {
