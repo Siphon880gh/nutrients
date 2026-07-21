@@ -211,13 +211,16 @@
                   </ul>
                 </span>
                 <span class="dashboard__micro-condition-dropdown dashboard__micro-status-dropdown">
-                  <button type="button" id="dashboard-micro-status-toggle" class="dashboard__micro-hint-action-btn dashboard__micro-condition-toggle dashboard__micro-status-toggle" aria-expanded="false" aria-controls="dashboard-micro-status-list" aria-haspopup="listbox">
+                  <button type="button" id="dashboard-micro-status-toggle" class="dashboard__micro-hint-action-btn dashboard__micro-condition-toggle dashboard__micro-status-toggle" data-app-shortcut="1 2 3 4" aria-keyshortcuts="1 2 3 4" aria-expanded="false" aria-controls="dashboard-micro-status-list" aria-haspopup="listbox">
                     <span class="dashboard__micro-status-toggle-badge" aria-hidden="true">
                       <svg class="dashboard__micro-condition-icon dashboard__micro-status-toggle-icon" viewBox="0 0 16 16" width="12" height="12" focusable="false">
                         <use href="#icon-micro-status-green"></use>
                       </svg>
                     </span>
                     <span id="dashboard-micro-status-label">Status</span>
+                    <span class="app-nav__shortcut app-nav__shortcut--cluster" aria-hidden="true">
+                      <span>1</span><span>2</span><span>3</span><span>4</span>
+                    </span>
                   </button>
                   <button type="button" id="dashboard-micro-status-clear" class="dashboard__micro-condition-clear" hidden aria-label="Clear status filter">×</button>
                   <ul id="dashboard-micro-status-list" class="dashboard__micro-condition-list dashboard__micro-status-list" role="listbox" hidden aria-label="Status filters">
@@ -279,9 +282,10 @@
                   <input type="checkbox" data-sticky-filter="side" />
                   <span>Side effects (S/E)</span>
                 </label>
-                <label class="dashboard__sticky-options-check">
+                <label class="dashboard__sticky-options-check" data-app-shortcut="5" aria-keyshortcuts="5">
                   <input type="checkbox" data-sticky-filter="adverse" />
                   <span>Adverse effects (A/E)</span>
+                  <span class="app-nav__shortcut" aria-hidden="true">5</span>
                 </label>
                 <button type="button" class="dashboard__sticky-filter-clear" data-sticky-filter-clear hidden aria-label="Clear filters">×</button>
               </div>
@@ -457,9 +461,10 @@
                   <input type="checkbox" data-sticky-filter="side" />
                   <span>Side effects (S/E)</span>
                 </label>
-                <label class="dashboard__sticky-options-check">
+                <label class="dashboard__sticky-options-check" data-app-shortcut="5" aria-keyshortcuts="5">
                   <input type="checkbox" data-sticky-filter="adverse" />
                   <span>Adverse effects (A/E)</span>
+                  <span class="app-nav__shortcut" aria-hidden="true">5</span>
                 </label>
                 <button type="button" class="dashboard__sticky-filter-clear" data-sticky-filter-clear hidden aria-label="Clear filters">×</button>
               </div>

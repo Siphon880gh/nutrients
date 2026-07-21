@@ -22265,6 +22265,33 @@
       if (!dashboardMicroViewDailyEl && !dashboardMicroViewWeeklyEl) return;
       e.preventDefault();
       setMicroViewDaily(!microViewDaily);
+      return;
+    }
+    if (
+      e.key === "1" ||
+      e.key === "2" ||
+      e.key === "3" ||
+      e.key === "4" ||
+      e.key === "5"
+    ) {
+      var statusByKey = {
+        1: "zero",
+        2: "redOrZero",
+        3: "green",
+        4: "excess",
+      };
+      if (e.key === "5") {
+        e.preventDefault();
+        setStickyIconFilter("adverse", !filterStickyAdverseEffects);
+        return;
+      }
+      var statusId = statusByKey[e.key];
+      if (!statusId) return;
+      e.preventDefault();
+      if (!microRequirementsOpen) {
+        setMicroRequirementsOpen(true);
+      }
+      setMicroStatusFilter(statusId);
     }
   }
 
