@@ -5549,6 +5549,12 @@ button.dashboard__longevity-name:focus-visible {
   display: flex;
   flex-direction: column;
   gap: 0.15rem;
+  cursor: pointer;
+}
+
+.dashboard__macro-need:hover {
+  border-color: #b0b0aa;
+  background: #f2f2ef;
 }
 
 .dashboard__macro-need--today {
@@ -5556,22 +5562,92 @@ button.dashboard__longevity-name:focus-visible {
   background: #f5f8fc;
 }
 
+.dashboard__macro-need--today:hover {
+  border-color: #335f8f;
+  background: #eef4fa;
+}
+
+.dashboard__macro-need--consumed {
+  border-style: dashed;
+}
+
 .dashboard__macro-need-label {
+  align-self: flex-start;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
   color: #444;
+  font: inherit;
   font-weight: 700;
   letter-spacing: 0.03em;
   text-transform: uppercase;
   font-size: 0.62rem;
+  cursor: help;
+  text-decoration: underline dotted rgba(100, 100, 96, 0.55);
+  text-underline-offset: 0.14em;
+}
+
+.dashboard__macro-need-label:hover,
+.dashboard__macro-need-label:focus-visible {
+  color: #2a2a28;
+}
+
+.dashboard__macro-need-label:focus-visible {
+  outline: 2px solid #3d6b9e;
+  outline-offset: 2px;
+  border-radius: 2px;
 }
 
 .dashboard__macro-need--today .dashboard__macro-need-label {
   color: #3d6b9e;
 }
 
+.dashboard__macro-need--today .dashboard__macro-need-label:hover,
+.dashboard__macro-need--today .dashboard__macro-need-label:focus-visible {
+  color: #2a5080;
+}
+
 .dashboard__macro-need-list {
   display: flex;
   flex-direction: column;
   gap: 0.06rem;
+  border-radius: 3px;
+}
+
+.dashboard__macro-need-list:focus-visible {
+  outline: 2px solid #3d6b9e;
+  outline-offset: 2px;
+}
+
+.dashboard__macro-need-popover {
+  position: fixed;
+  z-index: 120;
+  min-width: 12rem;
+  max-width: min(20rem, calc(100vw - 2rem));
+  padding: 0.6rem 0.7rem;
+  font-size: 0.76rem;
+  line-height: 1.45;
+  color: #444;
+  background: #fff;
+  border: 1px solid #d8dce2;
+  border-radius: 6px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+  pointer-events: auto;
+}
+
+.dashboard__macro-need-popover[hidden] {
+  display: none;
+}
+
+.dashboard__macro-need-popover-copy {
+  margin: 0;
+}
+
+.dashboard__macro-need-popover-copy + .dashboard__macro-need-popover-copy {
+  margin-top: 0.55rem;
+  padding-top: 0.55rem;
+  border-top: 1px solid #ecece8;
 }
 
 .dashboard__macro-need-item {

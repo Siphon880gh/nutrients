@@ -461,6 +461,7 @@
   var favoriteEditPending = null;
   var favoritesManaging = false;
   var dashboardMacroPctView = false;
+  var macroNeedDenomMode = "target";
   var activeMacroRankDayId = null;
   var activeMacroRankTab = "protein";
   var activeMacroRankScope = "daily";
@@ -602,6 +603,10 @@
   var targetRefPopoverEl = document.getElementById("target-ref-popover");
   var targetRefPopoverTextEl = document.getElementById("target-ref-popover-text");
   var targetRefPopoverAnchor = null;
+  var macroNeedPopoverEl = document.getElementById("macro-need-popover");
+  var macroNeedPopoverAnchor = null;
+  var macroNeedPopoverPinned = false;
+  var macroNeedPopoverHideTimer = null;
 
   /**
    * Nutrients that can cause harm from a single-day excess (often supplements).
@@ -15867,6 +15872,7 @@
       protein: targets.protein - (totals.protein || 0),
       carbs: targets.carbs - (totals.carbs || 0),
       fats: targets.fats - (totals.fats || 0),
+      targets: targets,
     };
   }
 
@@ -15883,16 +15889,32 @@
     return deltaGrams >= -tol.maxOverG && deltaGrams <= tol.maxNeedG;
   }
 
-  function formatMacroNeedDelta(macroKey, deltaGrams) {
-    var n = Math.round(deltaGrams);
-    if (isMacroNeedMet(macroKey, deltaGrams)) {
-      if (n === 0) return "Met 0";
-      return "Met " + (n > 0 ? "+" : "") + n + "g";
+  function formatMacroNeedDenomSuffix(deltaGrams, targetGrams, denomMode) {
+    var mode = denomMode === "consumed" ? "consumed" : "target";
+    if (mode === "consumed") {
+      var consumed = Math.round((targetGrams || 0) - (deltaGrams || 0));
+      if (consumed === 0) return "/0g";
+      return "/" + -consumed + "g";
     }
-    return (n > 0 ? "+" : "") + n + "g";
+    var t = Math.round(targetGrams || 0);
+    return t > 0 ? "/" + t + "g" : "";
   }
 
-  function macroNeedPartHtml(letter, macroKey, deltaGrams) {
+  function formatMacroNeedDelta(macroKey, deltaGrams, targetGrams, denomMode) {
+    var n = Math.round(deltaGrams);
+    var denomSuffix = formatMacroNeedDenomSuffix(
+      deltaGrams,
+      targetGrams,
+      denomMode
+    );
+    if (isMacroNeedMet(macroKey, deltaGrams)) {
+      if (n === 0) return "Met 0" + denomSuffix;
+      return "Met " + (n > 0 ? "+" : "") + n + "g" + denomSuffix;
+    }
+    return (n > 0 ? "+" : "") + n + "g" + denomSuffix;
+  }
+
+  function macroNeedPartHtml(letter, macroKey, deltaGrams, targetGrams, denomMode) {
     var met = isMacroNeedMet(macroKey, deltaGrams);
     return (
       '<span class="dashboard__macro-need-item' +
@@ -15902,19 +15924,72 @@
       letter +
       "</span>" +
       '<span class="dashboard__macro-need-amt">' +
-      escapeHtml(formatMacroNeedDelta(macroKey, deltaGrams)) +
+      escapeHtml(
+        formatMacroNeedDelta(macroKey, deltaGrams, targetGrams, denomMode)
+      ) +
       "</span></span>"
     );
   }
 
   function macroNeedValsHtml(deltas) {
+    var targets = deltas.targets || {};
     return (
-      macroNeedPartHtml("P", "protein", deltas.protein) +
+      macroNeedPartHtml("P", "protein", deltas.protein, targets.protein) +
       '<span class="week-summary__macro-need-sep"> · </span>' +
-      macroNeedPartHtml("C", "carbs", deltas.carbs) +
+      macroNeedPartHtml("C", "carbs", deltas.carbs, targets.carbs) +
       '<span class="week-summary__macro-need-sep"> · </span>' +
-      macroNeedPartHtml("F", "fats", deltas.fats)
+      macroNeedPartHtml("F", "fats", deltas.fats, targets.fats)
     );
+  }
+
+  function clearMacroNeedPopoverHideTimer() {
+    if (macroNeedPopoverHideTimer == null) return;
+    clearTimeout(macroNeedPopoverHideTimer);
+    macroNeedPopoverHideTimer = null;
+  }
+
+  function hideMacroNeedPopover() {
+    clearMacroNeedPopoverHideTimer();
+    if (!macroNeedPopoverEl) return;
+    macroNeedPopoverEl.hidden = true;
+    macroNeedPopoverPinned = false;
+    if (macroNeedPopoverAnchor) {
+      macroNeedPopoverAnchor.setAttribute("aria-expanded", "false");
+      macroNeedPopoverAnchor = null;
+    }
+  }
+
+  function showMacroNeedPopover(anchor, pinned) {
+    if (!macroNeedPopoverEl || !anchor) return;
+    clearMacroNeedPopoverHideTimer();
+    macroNeedPopoverAnchor = anchor;
+    macroNeedPopoverPinned = !!pinned;
+    macroNeedPopoverEl.hidden = false;
+    positionFixedPopoverBelow(macroNeedPopoverEl, anchor);
+    anchor.setAttribute("aria-expanded", "true");
+  }
+
+  function scheduleHideMacroNeedPopover() {
+    if (macroNeedPopoverPinned) return;
+    clearMacroNeedPopoverHideTimer();
+    macroNeedPopoverHideTimer = setTimeout(function () {
+      macroNeedPopoverHideTimer = null;
+      if (!macroNeedPopoverPinned) hideMacroNeedPopover();
+    }, 160);
+  }
+
+  function toggleMacroNeedPopover(anchor) {
+    if (!anchor) return;
+    if (
+      macroNeedPopoverAnchor === anchor &&
+      macroNeedPopoverEl &&
+      !macroNeedPopoverEl.hidden &&
+      macroNeedPopoverPinned
+    ) {
+      hideMacroNeedPopover();
+      return;
+    }
+    showMacroNeedPopover(anchor, true);
   }
 
   function dashboardMacroNeedBlockHtml(totals, isToday) {
@@ -15923,15 +15998,24 @@
     var budget = macroSplitCalorieBudget(totals.totalCal);
     if (budget == null) return "";
     var deltas = macroNeedDeltas(totals, budget, split);
+    var targets = deltas.targets || {};
+    var mode = macroNeedDenomMode === "consumed" ? "consumed" : "target";
+    var denomHint =
+      mode === "consumed"
+        ? "Showing remaining / consumed. Click to show remaining / target total."
+        : "Showing remaining / target total. Click to show remaining / consumed.";
     return (
       '<aside class="dashboard__macro-need' +
       (isToday ? " dashboard__macro-need--today" : "") +
-      '" aria-label="Macro split need">' +
-      '<span class="dashboard__macro-need-label">Need</span>' +
-      '<span class="dashboard__macro-need-list">' +
-      macroNeedPartHtml("P", "protein", deltas.protein) +
-      macroNeedPartHtml("C", "carbs", deltas.carbs) +
-      macroNeedPartHtml("F", "fats", deltas.fats) +
+      (mode === "consumed" ? " dashboard__macro-need--consumed" : "") +
+      '" data-action="toggle-macro-need-denom">' +
+      '<button type="button" class="dashboard__macro-need-label" data-action="toggle-macro-need-popover" aria-expanded="false" aria-controls="macro-need-popover">Need</button>' +
+      '<span class="dashboard__macro-need-list" role="button" tabindex="0" aria-label="' +
+      escapeAttr("Macro split need. " + denomHint) +
+      '">' +
+      macroNeedPartHtml("P", "protein", deltas.protein, targets.protein, mode) +
+      macroNeedPartHtml("C", "carbs", deltas.carbs, targets.carbs, mode) +
+      macroNeedPartHtml("F", "fats", deltas.fats, targets.fats, mode) +
       "</span></aside>"
     );
   }
@@ -23726,6 +23810,24 @@
 
   if (dashboardGridEl) {
     dashboardGridEl.addEventListener("click", function (e) {
+      var needLabel = e.target.closest(
+        '[data-action="toggle-macro-need-popover"]'
+      );
+      if (needLabel) {
+        e.preventDefault();
+        e.stopPropagation();
+        toggleMacroNeedPopover(needLabel);
+        return;
+      }
+      var needCard = e.target.closest('[data-action="toggle-macro-need-denom"]');
+      if (needCard) {
+        e.preventDefault();
+        hideMacroNeedPopover();
+        macroNeedDenomMode =
+          macroNeedDenomMode === "consumed" ? "target" : "consumed";
+        renderDashboard();
+        return;
+      }
       var rankBtn = e.target.closest('[data-action="open-macro-rank-modal"]');
       if (rankBtn) {
         openMacroRankModal(rankBtn.getAttribute("data-day-id"));
@@ -23736,7 +23838,88 @@
       dashboardMacroPctView = !dashboardMacroPctView;
       renderDashboard();
     });
+
+    dashboardGridEl.addEventListener("keydown", function (e) {
+      if (e.key !== "Enter" && e.key !== " ") return;
+      if (e.target.closest('[data-action="toggle-macro-need-popover"]')) return;
+      var needList = e.target.closest(".dashboard__macro-need-list");
+      if (!needList || !needList.closest('[data-action="toggle-macro-need-denom"]')) {
+        return;
+      }
+      e.preventDefault();
+      hideMacroNeedPopover();
+      macroNeedDenomMode =
+        macroNeedDenomMode === "consumed" ? "target" : "consumed";
+      renderDashboard();
+    });
+
+    dashboardGridEl.addEventListener("mouseover", function (e) {
+      var needLabel = e.target.closest(
+        '[data-action="toggle-macro-need-popover"]'
+      );
+      if (!needLabel) return;
+      showMacroNeedPopover(
+        needLabel,
+        macroNeedPopoverPinned && macroNeedPopoverAnchor === needLabel
+      );
+    });
+
+    dashboardGridEl.addEventListener("mouseout", function (e) {
+      var needLabel = e.target.closest(
+        '[data-action="toggle-macro-need-popover"]'
+      );
+      if (!needLabel) return;
+      var related = e.relatedTarget;
+      if (
+        related &&
+        (needLabel.contains(related) ||
+          (macroNeedPopoverEl && macroNeedPopoverEl.contains(related)))
+      ) {
+        return;
+      }
+      scheduleHideMacroNeedPopover();
+    });
   }
+
+  if (macroNeedPopoverEl) {
+    macroNeedPopoverEl.addEventListener("mouseenter", function () {
+      clearMacroNeedPopoverHideTimer();
+    });
+    macroNeedPopoverEl.addEventListener("mouseleave", function () {
+      scheduleHideMacroNeedPopover();
+    });
+  }
+
+  document.addEventListener("click", function (e) {
+    if (!macroNeedPopoverEl || macroNeedPopoverEl.hidden) return;
+    if (
+      e.target.closest('[data-action="toggle-macro-need-popover"]') ||
+      e.target.closest("#macro-need-popover")
+    ) {
+      return;
+    }
+    hideMacroNeedPopover();
+  });
+
+  window.addEventListener(
+    "scroll",
+    function () {
+      if (macroNeedPopoverEl && !macroNeedPopoverEl.hidden) {
+        hideMacroNeedPopover();
+      }
+    },
+    true
+  );
+
+  window.addEventListener("resize", function () {
+    if (
+      macroNeedPopoverAnchor &&
+      macroNeedPopoverEl &&
+      !macroNeedPopoverEl.hidden
+    ) {
+      positionFixedPopoverBelow(macroNeedPopoverEl, macroNeedPopoverAnchor);
+    }
+  });
 
   if (macroRankModalDoneBtn) {
     macroRankModalDoneBtn.addEventListener("click", closeMacroRankModal);
