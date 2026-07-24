@@ -3145,7 +3145,7 @@
     return KEYWORD_BOUNDARY_BEFORE + escapedName + KEYWORD_BOUNDARY_AFTER;
   }
 
-  var KEYWORD_SERVING_MULTIPLIER_RE = /^\s*\*\s*(\d+(?:\.\d+)?)/;
+  var KEYWORD_SERVING_MULTIPLIER_RE = /^\s*\*\s*((?:\d+(?:\.\d+)?)|(?:\.\d+))/;
 
   function keywordServingMultiplier(text, afterIndex) {
     var m = text.slice(afterIndex).match(KEYWORD_SERVING_MULTIPLIER_RE);
@@ -3155,7 +3155,9 @@
   }
 
   function stripKeywordServingMultiplier(text) {
-    return String(text).replace(/\s*\*\s*\d+(?:\.\d+)?\s*$/, "").trim();
+    return String(text)
+      .replace(/\s*\*\s*(?:\d+(?:\.\d+)?|\.\d+)\s*$/, "")
+      .trim();
   }
 
   function makeId() {
@@ -10139,7 +10141,7 @@
     return html;
   }
 
-  var SERVING_MULTIPLIER_HTML_RE = /(\s*\*\s*\d+(?:\.\d+)?)/g;
+  var SERVING_MULTIPLIER_HTML_RE = /(\s*\*\s*(?:\d+(?:\.\d+)?|\.\d+))/g;
 
   function highlightServingMultipliersHtml(html) {
     return String(html).replace(
@@ -22490,6 +22492,18 @@
       if (!dashboardMicroViewDailyEl && !dashboardMicroViewWeeklyEl) return;
       e.preventDefault();
       setMicroViewDaily(!microViewDaily);
+      return;
+    }
+    if (e.key === "0") {
+      e.preventDefault();
+      if (!microRequirementsOpen) {
+        setMicroRequirementsOpen(true);
+      }
+      setMicroConditionFocus(
+        microConditionFocus === "americanCommonDeficiencies"
+          ? null
+          : "americanCommonDeficiencies"
+      );
       return;
     }
     if (

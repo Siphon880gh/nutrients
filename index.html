@@ -150,16 +150,20 @@
               <div class="dashboard__micro-condition-wrap" role="group" aria-labelledby="micro-sticky-filter-by-label">
               <div class="dashboard__micro-condition-controls">
                 <span class="dashboard__micro-condition-dropdown">
-                  <button type="button" id="dashboard-micro-intake-toggle" class="dashboard__micro-hint-action-btn dashboard__micro-condition-toggle" aria-expanded="false" aria-controls="dashboard-micro-intake-list" aria-haspopup="listbox">
+                  <button type="button" id="dashboard-micro-intake-toggle" class="dashboard__micro-hint-action-btn dashboard__micro-condition-toggle" data-app-shortcut="0" aria-keyshortcuts="0" aria-expanded="false" aria-controls="dashboard-micro-intake-list" aria-haspopup="listbox">
                     <svg class="dashboard__micro-condition-icon" viewBox="0 0 16 16" width="13" height="13" aria-hidden="true" focusable="false">
                       <path fill="currentColor" d="M8 2.25C4.55 2.25 1.68 4.73 1 8c.68 3.27 3.55 5.75 7 5.75S14.32 11.27 15 8c-.68-3.27-3.45-5.75-7-5.75zm0 9.5A3.75 3.75 0 1 1 8 4.25 3.75 3.75 0 0 1 8 11.75zm0-6A2.25 2.25 0 1 0 5.75 8 2.25 2.25 0 0 0 8 5.75z"></path>
                     </svg>
                     <span id="dashboard-micro-intake-label">Nutrition Intake</span>
+                    <span class="app-nav__shortcut" aria-hidden="true">0</span>
                   </button>
                   <button type="button" id="dashboard-micro-intake-clear" class="dashboard__micro-condition-clear" hidden aria-label="Clear nutrition intake filter">×</button>
                   <ul id="dashboard-micro-intake-list" class="dashboard__micro-condition-list" role="listbox" hidden aria-label="Nutrition intake filters">
                     <li class="dashboard__micro-condition-item dashboard__micro-condition-item--clear" data-micro-filter-clear-item="intake" role="presentation" hidden>
                       <button type="button" class="dashboard__micro-condition-link dashboard__micro-condition-link--clear" role="option" data-micro-condition="">Clear filter</button>
+                    </li>
+                    <li class="dashboard__micro-condition-item" role="presentation">
+                      <button type="button" class="dashboard__micro-condition-link" role="option" data-micro-condition="americanCommonDeficiencies">American Common Deficiencies</button>
                     </li>
                     <li class="dashboard__micro-condition-item" role="presentation">
                       <button type="button" class="dashboard__micro-condition-link" role="option" data-micro-condition="wellAbsorbed">Well absorbed / average the week</button>
@@ -169,9 +173,6 @@
                     </li>
                     <li class="dashboard__micro-condition-item" role="presentation">
                       <button type="button" class="dashboard__micro-condition-link" role="option" data-micro-condition="poorlyAbsorbed">Poorly absorbed / take daily</button>
-                    </li>
-                    <li class="dashboard__micro-condition-item" role="presentation">
-                      <button type="button" class="dashboard__micro-condition-link" role="option" data-micro-condition="americanCommonDeficiencies">American Common Deficiencies</button>
                     </li>
                   </ul>
                 </span>

@@ -6266,7 +6266,7 @@
     }
   },
   {
-    "name": "Chicken 1 oz sm",
+    "name": "Chicken 1 oz (sm)",
     "protein": 8.75,
     "carbs": 0,
     "fats": 1,
@@ -6371,7 +6371,7 @@
     }
   },
   {
-    "name": "Chicken 4 oz palm-sized",
+    "name": "Chicken 4 oz (palm-sized)",
     "protein": 35,
     "carbs": 0,
     "fats": 4,
@@ -14786,7 +14786,7 @@
     }
   },
   {
-    "name": "Cod Liver 1 oz sm",
+    "name": "Cod Liver 1 oz (sm)",
     "protein": 1.1,
     "carbs": 0.2,
     "fats": 12.8,
@@ -14876,7 +14876,7 @@
     }
   },
   {
-    "name": "Cod Liver 3 oz palm-sized",
+    "name": "Cod Liver 3 oz (palm-sized)",
     "protein": 3.3,
     "carbs": 0.6,
     "fats": 38.4,
@@ -14966,7 +14966,7 @@
     }
   },
   {
-    "name": "Beef Liver 1 oz sm",
+    "name": "Beef Liver 1 oz (sm)",
     "protein": 5.8,
     "carbs": 1.1,
     "fats": 1,
@@ -15062,7 +15062,7 @@
     }
   },
   {
-    "name": "Beef Liver 3 oz palm-sized",
+    "name": "Beef Liver 3 oz (palm-sized)",
     "protein": 17.4,
     "carbs": 3.3,
     "fats": 3,
@@ -15159,7 +15159,7 @@
     }
   },
   {
-    "name": "Lamb Liver 1 oz sm",
+    "name": "Lamb Liver 1 oz (sm)",
     "protein": 7.23,
     "carbs": 1.07,
     "fats": 3.6,
@@ -15249,7 +15249,7 @@
     }
   },
   {
-    "name": "Lamb Liver 3 oz palm-sized",
+    "name": "Lamb Liver 3 oz (palm-sized)",
     "protein": 21.69,
     "carbs": 3.21,
     "fats": 10.8,
@@ -15339,7 +15339,7 @@
     }
   },
   {
-    "name": "Chicken Liver 1 oz sm",
+    "name": "Chicken Liver 1 oz (sm)",
     "protein": 7.31,
     "carbs": 0.313,
     "fats": 1.813,
@@ -15434,7 +15434,7 @@
     }
   },
   {
-    "name": "Chicken Liver 3 oz palm-sized",
+    "name": "Chicken Liver 3 oz (palm-sized)",
     "protein": 21.93,
     "carbs": 0.94,
     "fats": 5.44,
@@ -25498,7 +25498,7 @@
     }
   },
   {
-    "name": "Salmon 3 oz",
+    "name": "Salmon 3 oz (palm-sized)",
     "protein": 17,
     "carbs": 0,
     "fats": 7,
@@ -25560,7 +25560,7 @@
     }
   },
   {
-    "name": "Sardines canned 3 oz",
+    "name": "Sardines canned 3 oz (palm-sized)",
     "protein": 21,
     "carbs": 0,
     "fats": 10,
@@ -25796,7 +25796,7 @@
     }
   },
   {
-    "name": "Chicken breast 3 oz",
+    "name": "Chicken breast 3 oz (palm-sized)",
     "protein": 26,
     "carbs": 0,
     "fats": 3,
@@ -25962,7 +25962,7 @@
     }
   },
   {
-    "name": "Turkey breast 3 oz",
+    "name": "Turkey breast 3 oz (palm-sized)",
     "protein": 26,
     "carbs": 0,
     "fats": 2,
@@ -26022,7 +26022,7 @@
     }
   },
   {
-    "name": "Beef 3 oz",
+    "name": "Beef 3 oz (palm-sized)",
     "protein": 25,
     "carbs": 0,
     "fats": 8,
@@ -26081,7 +26081,7 @@
     }
   },
   {
-    "name": "Pork loin 3 oz",
+    "name": "Pork loin 3 oz (palm-sized)",
     "protein": 24,
     "carbs": 0,
     "fats": 6,
@@ -26142,7 +26142,7 @@
     }
   },
   {
-    "name": "Shrimp 3 oz",
+    "name": "Shrimp md 3 oz (palm-sized or ~10 shrimps)",
     "protein": 20,
     "carbs": 0,
     "fats": 1,
@@ -26190,6 +26190,67 @@
       "arachidonicAcid": 0.06,
       "oleicAcid": 0.1,
       "coq10": 0.5,
+      "pqq": 0,
+      "choline": true,
+      "selenium": true,
+      "copper": true
+    },
+    "carbQuality": {
+      "glycemicIndex": 0,
+      "addedSugar": 0,
+      "refinedCarbs": 0,
+      "netCarbs": 0
+    }
+  },
+  {
+    "name": "Shrimp md x 7",
+    "protein": 14,
+    "carbs": 0,
+    "fats": 0.7,
+    "micros": {
+      "sodium": 133,
+      "potassium": 154,
+      "calcium": 49,
+      "iron": 0.3,
+      "magnesium": 25,
+      "zinc": 1,
+      "vitaminA": 48,
+      "vitaminB12": 0.9,
+      "vitaminB6": 0.1,
+      "selenium": 28,
+      "iodine": 25,
+      "choline": 70,
+      "copper": 175,
+      "chloride": 126,
+      "arginine": 1190,
+      "cysteine": 154,
+      "phosphorus": 140,
+      "histidine": 298,
+      "isoleucine": 625,
+      "leucine": 1161,
+      "lysine": 1292,
+      "methionine": 396,
+      "phenylalanine": 590,
+      "threonine": 538,
+      "tryptophan": 155,
+      "valine": 635,
+      "tyrosine": 513
+    },
+    "longevity": {
+      "saturatedFat": 0.14,
+      "monounsaturatedFat": 0.11,
+      "polyunsaturatedFat": 0.24,
+      "transFat": 0,
+      "cholesterol": 112,
+      "omega3": 0.21,
+      "omega6": 0.07,
+      "ala": 0.01,
+      "epa": 0.11,
+      "dha": 0.08,
+      "linoleicAcid": 0.01,
+      "arachidonicAcid": 0.04,
+      "oleicAcid": 0.07,
+      "coq10": 0.35,
       "pqq": 0,
       "choline": true,
       "selenium": true,
@@ -26925,6 +26986,275 @@
       "addedSugar": 0,
       "refinedCarbs": 0,
       "netCarbs": 17.8
+    }
+  },
+  {
+    "name": "Egg yolks 1 medium",
+    "protein": 2.7,
+    "carbs": 0.6,
+    "fats": 4.5,
+    "micros": {
+      "sodium": 8,
+      "potassium": 19,
+      "calcium": 22,
+      "iron": 0.5,
+      "magnesium": 1,
+      "zinc": 0.4,
+      "vitaminA": 65,
+      "vitaminD": 1.1,
+      "vitaminB12": 0.33,
+      "vitaminB6": 0.06,
+      "folate": 25,
+      "thiamin": 0.03,
+      "riboflavin": 0.09,
+      "pantothenicAcid": 0.51,
+      "vitaminE": 0.44,
+      "vitaminK": 0.1,
+      "selenium": 9.5,
+      "copper": 10,
+      "phosphorus": 66,
+      "choline": 139,
+      "vitaminK1": 0.1,
+      "vitaminK2": 4,
+      "vitaminK2MK4": 4,
+      "vitaminK2MK7": 0
+    },
+    "longevity": {
+      "saturatedFat": 1.6,
+      "monounsaturatedFat": 2,
+      "polyunsaturatedFat": 0.7,
+      "transFat": 0,
+      "cholesterol": 185,
+      "omega3": 0.04,
+      "omega6": 0.6,
+      "ala": 0.02,
+      "dha": 0.02,
+      "vitaminE": true,
+      "vitaminK": true,
+      "vitaminK1": true,
+      "vitaminK2": true,
+      "vitaminK2MK4": true,
+      "selenium": true,
+      "copper": true,
+      "phosphorus": true,
+      "choline": true,
+      "lutein": 0.19
+    },
+    "carbQuality": {
+      "glycemicIndex": 0,
+      "addedSugar": 0,
+      "refinedCarbs": 0,
+      "netCarbs": 0.6
+    }
+  },
+  {
+    "name": "Fortified milk 1 cup",
+    "protein": 8.1,
+    "carbs": 12.2,
+    "fats": 4.8,
+    "micros": {
+      "sodium": 105,
+      "potassium": 366,
+      "calcium": 293,
+      "iron": 0.1,
+      "magnesium": 27,
+      "zinc": 1,
+      "vitaminA": 139,
+      "vitaminD": 2.9,
+      "vitaminB12": 1.3,
+      "vitaminB6": 0.09,
+      "folate": 12,
+      "thiamin": 0.1,
+      "riboflavin": 0.45,
+      "niacin": 0.2,
+      "pantothenicAcid": 0.9,
+      "iodine": 56,
+      "vitaminE": 0.1,
+      "vitaminK": 0.5,
+      "selenium": 9,
+      "copper": 25,
+      "phosphorus": 224,
+      "choline": 43,
+      "vitaminK2": 2,
+      "vitaminK2MK4": 2,
+      "vitaminK2MK7": 0
+    },
+    "longevity": {
+      "saturatedFat": 3.1,
+      "monounsaturatedFat": 1.3,
+      "polyunsaturatedFat": 0.2,
+      "transFat": 0.2,
+      "cholesterol": 20,
+      "omega3": 0.05,
+      "omega6": 0.12,
+      "ala": 0.04,
+      "vitaminE": true,
+      "vitaminK": true,
+      "vitaminK2": true,
+      "vitaminK2MK4": true,
+      "selenium": true,
+      "copper": true,
+      "phosphorus": true,
+      "choline": true
+    },
+    "carbQuality": {
+      "glycemicIndex": 31,
+      "addedSugar": 0,
+      "refinedCarbs": 0,
+      "netCarbs": 12.2
+    }
+  },
+  {
+    "name": "Orange juice (fortified) 1 cup",
+    "protein": 1.7,
+    "carbs": 26,
+    "fats": 0.5,
+    "micros": {
+      "sodium": 5,
+      "potassium": 450,
+      "calcium": 350,
+      "iron": 0.3,
+      "magnesium": 27,
+      "vitaminA": 25,
+      "vitaminD": 2.5,
+      "vitaminC": 84,
+      "folate": 47,
+      "thiamin": 0.2,
+      "riboflavin": 0.06,
+      "niacin": 0.5,
+      "vitaminB6": 0.1,
+      "copper": 60,
+      "phosphorus": 42
+    },
+    "longevity": {
+      "saturatedFat": 0.1,
+      "monounsaturatedFat": 0.1,
+      "polyunsaturatedFat": 0.1,
+      "transFat": 0,
+      "cholesterol": 0,
+      "flavonoids": 40,
+      "polyphenols": 70,
+      "copper": true,
+      "phosphorus": true
+    },
+    "carbQuality": {
+      "glycemicIndex": 50,
+      "addedSugar": 0,
+      "refinedCarbs": 0,
+      "netCarbs": 26
+    }
+  },
+  {
+    "name": "Fortified cereals 1 serving",
+    "protein": 3,
+    "carbs": 24,
+    "fats": 1,
+    "micros": {
+      "sodium": 180,
+      "potassium": 60,
+      "calcium": 100,
+      "iron": 4.5,
+      "vitaminD": 2,
+      "vitaminA": 150,
+      "vitaminB12": 1.5,
+      "folate": 100,
+      "thiamin": 0.4,
+      "riboflavin": 0.4,
+      "niacin": 5,
+      "vitaminB6": 0.5,
+      "zinc": 1.5,
+      "solubleFiber": 0.5,
+      "insolubleFiber": 2,
+      "fiber": 2.5
+    },
+    "longevity": {
+      "saturatedFat": 0.2,
+      "monounsaturatedFat": 0.3,
+      "polyunsaturatedFat": 0.4,
+      "transFat": 0,
+      "cholesterol": 0
+    },
+    "carbQuality": {
+      "glycemicIndex": 70,
+      "addedSugar": 3,
+      "refinedCarbs": 20,
+      "netCarbs": 21.5
+    }
+  },
+  {
+    "name": "Mushrooms (UV-exposed) ½ cup",
+    "protein": 1.6,
+    "carbs": 2.2,
+    "fats": 0.2,
+    "micros": {
+      "sodium": 3,
+      "potassium": 220,
+      "calcium": 2,
+      "iron": 0.3,
+      "magnesium": 6,
+      "zinc": 0.3,
+      "vitaminD": 9.2,
+      "riboflavin": 0.2,
+      "niacin": 2.2,
+      "pantothenicAcid": 0.8,
+      "vitaminB6": 0.06,
+      "folate": 10,
+      "copper": 160,
+      "selenium": 6,
+      "phosphorus": 60,
+      "choline": 10,
+      "solubleFiber": 0.1,
+      "insolubleFiber": 0.6,
+      "fiber": 0.7
+    },
+    "longevity": {
+      "saturatedFat": 0,
+      "monounsaturatedFat": 0,
+      "polyunsaturatedFat": 0.1,
+      "transFat": 0,
+      "cholesterol": 0,
+      "selenium": true,
+      "copper": true,
+      "phosphorus": true,
+      "choline": true
+    },
+    "carbQuality": {
+      "glycemicIndex": 15,
+      "addedSugar": 0,
+      "refinedCarbs": 0,
+      "netCarbs": 1.5
+    }
+  },
+  {
+    "name": "Cod liver oil 1 tablespoon",
+    "protein": 0,
+    "carbs": 0,
+    "fats": 13.6,
+    "micros": {
+      "vitaminA": 4080,
+      "vitaminD": 34,
+      "vitaminE": 0
+    },
+    "longevity": {
+      "saturatedFat": 3.1,
+      "monounsaturatedFat": 6.4,
+      "polyunsaturatedFat": 3.1,
+      "transFat": 0,
+      "cholesterol": 78,
+      "omega3": 2.6,
+      "omega6": 0.1,
+      "ala": 0.1,
+      "epa": 0.94,
+      "dha": 1.5,
+      "linoleicAcid": 0.13,
+      "arachidonicAcid": 0.13,
+      "oleicAcid": 2.8
+    },
+    "carbQuality": {
+      "glycemicIndex": 0,
+      "addedSugar": 0,
+      "refinedCarbs": 0,
+      "netCarbs": 0
     }
   }
 ]

@@ -735,6 +735,7 @@ body.app-nav-shortcuts-visible [data-app-shortcut] > .app-nav__shortcut {
   position: relative;
 }
 
+.dashboard__micro-condition-toggle[data-app-shortcut],
 .dashboard__micro-status-toggle[data-app-shortcut] {
   position: relative;
 }

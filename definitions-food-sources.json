@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-07-15T03:47:07.360Z",
-  "sampleFoods": 288,
+  "generatedAt": "2026-07-24T08:34:53.533Z",
+  "sampleFoods": 304,
   "rowCount": 667,
   "rows": [
     {
@@ -304,14 +304,14 @@
       "matched": true
     },
     {
-      "food": "Oranges & orange juice 1 medium",
+      "food": "Orange juice (fortified) 1 cup",
       "sourceLabel": "Oranges & orange juice",
       "nutrientKey": "potassium",
       "nutrientLabel": "Potassium",
-      "nutrientText": "Potassium",
-      "amount": null,
+      "nutrientText": "Potassium 450 mg",
+      "amount": 450,
       "unit": "mg",
-      "matched": false
+      "matched": true
     },
     {
       "food": "Dried apricots 1 serving",
@@ -414,7 +414,7 @@
       "matched": true
     },
     {
-      "food": "Salmon 3 oz",
+      "food": "Salmon 3 oz (palm-sized)",
       "sourceLabel": "Salmon & other fish",
       "nutrientKey": "potassium",
       "nutrientLabel": "Potassium",
@@ -464,7 +464,7 @@
       "matched": false
     },
     {
-      "food": "Sardines canned 3 oz",
+      "food": "Sardines canned 3 oz (palm-sized)",
       "sourceLabel": "Sardines & canned salmon (with bones)",
       "nutrientKey": "calcium",
       "nutrientLabel": "Calcium",
@@ -494,7 +494,7 @@
       "matched": true
     },
     {
-      "food": "Beef Liver 3 oz palm-sized",
+      "food": "Beef Liver 3 oz (palm-sized)",
       "sourceLabel": "Beef & liver",
       "nutrientKey": "iron",
       "nutrientLabel": "Iron",
@@ -504,12 +504,12 @@
       "matched": true
     },
     {
-      "food": "Shrimp 3 oz",
+      "food": "Shrimp md x 7",
       "sourceLabel": "Shellfish",
       "nutrientKey": "iron",
       "nutrientLabel": "Iron",
-      "nutrientText": "Iron 0.4 mg",
-      "amount": 0.4,
+      "nutrientText": "Iron 0.3 mg",
+      "amount": 0.3,
       "unit": "mg",
       "matched": true
     },
@@ -538,10 +538,10 @@
       "sourceLabel": "Fortified cereals",
       "nutrientKey": "iron",
       "nutrientLabel": "Iron",
-      "nutrientText": "Iron",
-      "amount": null,
+      "nutrientText": "Iron 4.5 mg",
+      "amount": 4.5,
       "unit": "mg",
-      "matched": false
+      "matched": true
     },
     {
       "food": "Pumpkin seeds 1 oz",
@@ -674,7 +674,7 @@
       "matched": false
     },
     {
-      "food": "Beef 3 oz",
+      "food": "Beef 3 oz (palm-sized)",
       "sourceLabel": "Beef & crab",
       "nutrientKey": "zinc",
       "nutrientLabel": "Zinc",
@@ -724,7 +724,7 @@
       "matched": true
     },
     {
-      "food": "Chicken 4 oz palm-sized",
+      "food": "Chicken 4 oz (palm-sized)",
       "sourceLabel": "Chicken & turkey",
       "nutrientKey": "zinc",
       "nutrientLabel": "Zinc",
@@ -764,7 +764,7 @@
       "matched": true
     },
     {
-      "food": "Beef Liver 3 oz palm-sized",
+      "food": "Beef Liver 3 oz (palm-sized)",
       "sourceLabel": "Liver (small portions)",
       "nutrientKey": "vitaminA",
       "nutrientLabel": "Vitamin A",
@@ -804,7 +804,7 @@
       "matched": false
     },
     {
-      "food": "Chicken Liver 1 oz sm",
+      "food": "Chicken Liver 1 oz (sm)",
       "sourceLabel": "Beef & chicken liver (small portions)",
       "nutrientKey": "vitaminARetinol",
       "nutrientLabel": "Vitamin A (preform retinol)",
@@ -834,7 +834,7 @@
       "matched": true
     },
     {
-      "food": "Cereal - Cheerios 1 cup",
+      "food": "Fortified milk 1 cup",
       "sourceLabel": "Fortified milk & cereals",
       "nutrientKey": "vitaminARetinol",
       "nutrientLabel": "Vitamin A (preform retinol)",
@@ -871,7 +871,7 @@
       "nutrientText": "Vitamin A (preform retinol)",
       "amount": null,
       "unit": "mcg",
-      "matched": false
+      "matched": true
     },
     {
       "food": "Sweet Potato Fries sm",
@@ -944,7 +944,7 @@
       "matched": true
     },
     {
-      "food": "Sardines canned 3 oz",
+      "food": "Sardines canned 3 oz (palm-sized)",
       "sourceLabel": "Salmon & sardines",
       "nutrientKey": "vitaminD",
       "nutrientLabel": "Vitamin D",
@@ -958,50 +958,50 @@
       "sourceLabel": "Egg yolks",
       "nutrientKey": "vitaminD",
       "nutrientLabel": "Vitamin D",
-      "nutrientText": "Vitamin D",
-      "amount": null,
+      "nutrientText": "Vitamin D 1.1 mcg",
+      "amount": 1.1,
       "unit": "mcg",
-      "matched": false
+      "matched": true
     },
     {
-      "food": "Fortified milk & OJ 1 cup",
-      "sourceLabel": "Fortified milk & OJ",
+      "food": "Fortified milk 1 cup",
+      "sourceLabel": "Fortified milk & orange juice",
       "nutrientKey": "vitaminD",
       "nutrientLabel": "Vitamin D",
-      "nutrientText": "Vitamin D",
-      "amount": null,
+      "nutrientText": "Vitamin D 2.9 mcg",
+      "amount": 2.9,
       "unit": "mcg",
-      "matched": false
+      "matched": true
     },
     {
       "food": "Fortified cereals 1 serving",
       "sourceLabel": "Fortified cereals",
       "nutrientKey": "vitaminD",
       "nutrientLabel": "Vitamin D",
-      "nutrientText": "Vitamin D",
-      "amount": null,
+      "nutrientText": "Vitamin D 2 mcg",
+      "amount": 2,
       "unit": "mcg",
-      "matched": false
+      "matched": true
     },
     {
-      "food": "Mushrooms (UV-exposed) 1 serving",
+      "food": "Mushrooms (UV-exposed) ½ cup",
       "sourceLabel": "Mushrooms (UV-exposed)",
       "nutrientKey": "vitaminD",
       "nutrientLabel": "Vitamin D",
-      "nutrientText": "Vitamin D",
-      "amount": null,
+      "nutrientText": "Vitamin D 9.2 mcg",
+      "amount": 9.2,
       "unit": "mcg",
-      "matched": false
+      "matched": true
     },
     {
       "food": "Cod liver oil 1 tablespoon",
       "sourceLabel": "Cod liver oil",
       "nutrientKey": "vitaminD",
       "nutrientLabel": "Vitamin D",
-      "nutrientText": "Vitamin D",
-      "amount": null,
+      "nutrientText": "Vitamin D 34 mcg",
+      "amount": 34,
       "unit": "mcg",
-      "matched": false
+      "matched": true
     },
     {
       "food": "Safe sun exposure 1 serving",
@@ -1024,7 +1024,7 @@
       "matched": true
     },
     {
-      "food": "Salmon 3 oz",
+      "food": "Salmon 3 oz (palm-sized)",
       "sourceLabel": "Salmon & tuna",
       "nutrientKey": "vitaminB12",
       "nutrientLabel": "Vitamin B12",
@@ -1034,7 +1034,7 @@
       "matched": true
     },
     {
-      "food": "Beef Liver 3 oz palm-sized",
+      "food": "Beef Liver 3 oz (palm-sized)",
       "sourceLabel": "Beef & liver",
       "nutrientKey": "vitaminB12",
       "nutrientLabel": "Vitamin B12",
@@ -1068,10 +1068,10 @@
       "sourceLabel": "Fortified cereals",
       "nutrientKey": "vitaminB12",
       "nutrientLabel": "Vitamin B12",
-      "nutrientText": "Vitamin B12",
-      "amount": null,
+      "nutrientText": "Vitamin B12 1.5 mcg",
+      "amount": 1.5,
       "unit": "mcg",
-      "matched": false
+      "matched": true
     },
     {
       "food": "Yogurt 1 cup",
@@ -1204,12 +1204,12 @@
       "matched": true
     },
     {
-      "food": "Shrimp 3 oz",
+      "food": "Shrimp md x 7",
       "sourceLabel": "Shrimp & tuna",
       "nutrientKey": "iodine",
       "nutrientLabel": "Iodine",
-      "nutrientText": "Iodine 35 mcg",
-      "amount": 35,
+      "nutrientText": "Iodine 25 mcg",
+      "amount": 25,
       "unit": "mcg",
       "matched": true
     },
@@ -1244,7 +1244,7 @@
       "matched": true
     },
     {
-      "food": "Salmon 3 oz",
+      "food": "Salmon 3 oz (palm-sized)",
       "sourceLabel": "Salmon & tuna",
       "nutrientKey": "vitaminB6",
       "nutrientLabel": "Vitamin B6",
@@ -1254,7 +1254,7 @@
       "matched": true
     },
     {
-      "food": "Chicken 4 oz palm-sized",
+      "food": "Chicken 4 oz (palm-sized)",
       "sourceLabel": "Chicken & turkey",
       "nutrientKey": "vitaminB6",
       "nutrientLabel": "Vitamin B6",
@@ -1288,10 +1288,10 @@
       "sourceLabel": "Fortified cereals",
       "nutrientKey": "vitaminB6",
       "nutrientLabel": "Vitamin B6",
-      "nutrientText": "Vitamin B6",
-      "amount": null,
+      "nutrientText": "Vitamin B6 0.5 mg",
+      "amount": 0.5,
       "unit": "mg",
-      "matched": false
+      "matched": true
     },
     {
       "food": "Sunflower seeds 1 oz",
@@ -1364,14 +1364,14 @@
       "matched": false
     },
     {
-      "food": "Orange juice (fortified) 1 medium",
+      "food": "Orange juice (fortified) 1 cup",
       "sourceLabel": "Orange juice (fortified)",
       "nutrientKey": "folate",
       "nutrientLabel": "Folate (B9)",
-      "nutrientText": "Folate (B9)",
-      "amount": null,
+      "nutrientText": "Folate (B9) 47 mcg",
+      "amount": 47,
       "unit": "mcg",
-      "matched": false
+      "matched": true
     },
     {
       "food": "Egg md",
@@ -1384,7 +1384,7 @@
       "matched": true
     },
     {
-      "food": "Sardines canned 3 oz",
+      "food": "Sardines canned 3 oz (palm-sized)",
       "sourceLabel": "Salmon & sardines",
       "nutrientKey": "biotin",
       "nutrientLabel": "Biotin (B7)",
@@ -1444,7 +1444,7 @@
       "matched": false
     },
     {
-      "food": "Pork loin 3 oz",
+      "food": "Pork loin 3 oz (palm-sized)",
       "sourceLabel": "Pork & ham",
       "nutrientKey": "thiamin",
       "nutrientLabel": "Thiamin (B1)",
@@ -1454,12 +1454,12 @@
       "matched": true
     },
     {
-      "food": "Bread, Sourdough - 1 slice",
+      "food": "Fortified cereals 1 serving",
       "sourceLabel": "Fortified cereals & bread",
       "nutrientKey": "thiamin",
       "nutrientLabel": "Thiamin (B1)",
-      "nutrientText": "Thiamin (B1) 0.12 mg",
-      "amount": 0.12,
+      "nutrientText": "Thiamin (B1) 0.4 mg",
+      "amount": 0.4,
       "unit": "mg",
       "matched": true
     },
@@ -1484,7 +1484,7 @@
       "matched": false
     },
     {
-      "food": "Salmon 3 oz",
+      "food": "Salmon 3 oz (palm-sized)",
       "sourceLabel": "Salmon & trout",
       "nutrientKey": "thiamin",
       "nutrientLabel": "Thiamin (B1)",
@@ -1534,7 +1534,7 @@
       "matched": true
     },
     {
-      "food": "Lamb Liver 3 oz palm-sized",
+      "food": "Lamb Liver 3 oz (palm-sized)",
       "sourceLabel": "Lean beef & organ meats",
       "nutrientKey": "riboflavin",
       "nutrientLabel": "Riboflavin (B2)",
@@ -1568,13 +1568,13 @@
       "sourceLabel": "Fortified cereals",
       "nutrientKey": "riboflavin",
       "nutrientLabel": "Riboflavin (B2)",
-      "nutrientText": "Riboflavin (B2)",
-      "amount": null,
+      "nutrientText": "Riboflavin (B2) 0.4 mg",
+      "amount": 0.4,
       "unit": "mg",
-      "matched": false
+      "matched": true
     },
     {
-      "food": "Salmon 3 oz",
+      "food": "Salmon 3 oz (palm-sized)",
       "sourceLabel": "Salmon",
       "nutrientKey": "riboflavin",
       "nutrientLabel": "Riboflavin (B2)",
@@ -1584,7 +1584,7 @@
       "matched": true
     },
     {
-      "food": "Chicken 4 oz palm-sized",
+      "food": "Chicken 4 oz (palm-sized)",
       "sourceLabel": "Chicken & turkey",
       "nutrientKey": "niacin",
       "nutrientLabel": "Niacin (B3)",
@@ -1594,7 +1594,7 @@
       "matched": true
     },
     {
-      "food": "Salmon 3 oz",
+      "food": "Salmon 3 oz (palm-sized)",
       "sourceLabel": "Tuna & salmon",
       "nutrientKey": "niacin",
       "nutrientLabel": "Niacin (B3)",
@@ -1614,14 +1614,14 @@
       "matched": true
     },
     {
-      "food": "Mushrooms 1 serving",
+      "food": "Mushrooms (UV-exposed) ½ cup",
       "sourceLabel": "Mushrooms",
       "nutrientKey": "niacin",
       "nutrientLabel": "Niacin (B3)",
-      "nutrientText": "Niacin (B3)",
-      "amount": null,
+      "nutrientText": "Niacin (B3) 2.2 mg",
+      "amount": 2.2,
       "unit": "mg",
-      "matched": false
+      "matched": true
     },
     {
       "food": "Avocado whole 1 serving",
@@ -1634,12 +1634,12 @@
       "matched": true
     },
     {
-      "food": "Bread, Sourdough - 1 slice",
+      "food": "Fortified cereals 1 serving",
       "sourceLabel": "Fortified cereals & bread",
       "nutrientKey": "niacin",
       "nutrientLabel": "Niacin (B3)",
-      "nutrientText": "Niacin (B3) 1.5 mg",
-      "amount": 1.5,
+      "nutrientText": "Niacin (B3) 5 mg",
+      "amount": 5,
       "unit": "mg",
       "matched": true
     },
@@ -1664,7 +1664,7 @@
       "matched": false
     },
     {
-      "food": "Chicken 4 oz palm-sized",
+      "food": "Chicken 4 oz (palm-sized)",
       "sourceLabel": "Chicken & beef",
       "nutrientKey": "pantothenicAcid",
       "nutrientLabel": "Pantothenic acid (B5)",
@@ -1674,14 +1674,14 @@
       "matched": true
     },
     {
-      "food": "Mushrooms 1 serving",
+      "food": "Mushrooms (UV-exposed) ½ cup",
       "sourceLabel": "Mushrooms",
       "nutrientKey": "pantothenicAcid",
       "nutrientLabel": "Pantothenic acid (B5)",
-      "nutrientText": "Pantothenic acid (B5)",
-      "amount": null,
+      "nutrientText": "Pantothenic acid (B5) 0.8 mg",
+      "amount": 0.8,
       "unit": "mg",
-      "matched": false
+      "matched": true
     },
     {
       "food": "Avocado whole 1 medium",
@@ -1774,7 +1774,7 @@
       "matched": false
     },
     {
-      "food": "Beef Liver 3 oz palm-sized",
+      "food": "Beef Liver 3 oz (palm-sized)",
       "sourceLabel": "Beef & turkey",
       "nutrientKey": "chromium",
       "nutrientLabel": "Chromium",
@@ -1814,7 +1814,7 @@
       "matched": true
     },
     {
-      "food": "Sardines canned 3 oz",
+      "food": "Sardines canned 3 oz (palm-sized)",
       "sourceLabel": "Tuna & sardines",
       "nutrientKey": "selenium",
       "nutrientLabel": "Selenium",
@@ -1824,7 +1824,7 @@
       "matched": true
     },
     {
-      "food": "Chicken 4 oz palm-sized",
+      "food": "Chicken 4 oz (palm-sized)",
       "sourceLabel": "Chicken & turkey",
       "nutrientKey": "selenium",
       "nutrientLabel": "Selenium",
@@ -1854,14 +1854,14 @@
       "matched": true
     },
     {
-      "food": "Mushrooms 1 serving",
+      "food": "Mushrooms (UV-exposed) ½ cup",
       "sourceLabel": "Mushrooms",
       "nutrientKey": "selenium",
       "nutrientLabel": "Selenium",
-      "nutrientText": "Selenium",
-      "amount": null,
+      "nutrientText": "Selenium 6 mcg",
+      "amount": 6,
       "unit": "mcg",
-      "matched": false
+      "matched": true
     },
     {
       "food": "Sunflower seeds 1 oz",
@@ -1874,12 +1874,12 @@
       "matched": false
     },
     {
-      "food": "Shrimp 3 oz",
+      "food": "Shrimp md x 7",
       "sourceLabel": "Liver & shellfish",
       "nutrientKey": "copper",
       "nutrientLabel": "Copper",
-      "nutrientText": "Copper 250 mcg",
-      "amount": 250,
+      "nutrientText": "Copper 175 mcg",
+      "amount": 175,
       "unit": "mcg",
       "matched": true
     },
@@ -2114,14 +2114,14 @@
       "matched": false
     },
     {
-      "food": "Egg yolks (K2) 1 medium",
+      "food": "Egg yolks 1 medium",
       "sourceLabel": "Egg yolks (K2)",
       "nutrientKey": "vitaminK",
       "nutrientLabel": "Vitamin K",
-      "nutrientText": "Vitamin K",
-      "amount": null,
+      "nutrientText": "Vitamin K 0.1 mcg",
+      "amount": 0.1,
       "unit": "mcg",
-      "matched": false
+      "matched": true
     },
     {
       "food": "Hard cheeses (K2) 1 serving",
@@ -2134,7 +2134,7 @@
       "matched": false
     },
     {
-      "food": "Chicken Liver 1 oz sm",
+      "food": "Chicken Liver 1 oz (sm)",
       "sourceLabel": "Chicken & liver (K2)",
       "nutrientKey": "vitaminK",
       "nutrientLabel": "Vitamin K",
@@ -2248,13 +2248,13 @@
       "sourceLabel": "Egg yolks",
       "nutrientKey": "vitaminK2",
       "nutrientLabel": "Vitamin K2",
-      "nutrientText": "Vitamin K2",
-      "amount": null,
+      "nutrientText": "Vitamin K2 4 mcg",
+      "amount": 4,
       "unit": "mcg",
-      "matched": false
+      "matched": true
     },
     {
-      "food": "Chicken 4 oz palm-sized",
+      "food": "Chicken 4 oz (palm-sized)",
       "sourceLabel": "Chicken & pork",
       "nutrientKey": "vitaminK2",
       "nutrientLabel": "Vitamin K2",
@@ -2264,7 +2264,7 @@
       "matched": true
     },
     {
-      "food": "Beef Liver 3 oz palm-sized",
+      "food": "Beef Liver 3 oz (palm-sized)",
       "sourceLabel": "Beef liver",
       "nutrientKey": "vitaminK2",
       "nutrientLabel": "Vitamin K2",
@@ -2298,13 +2298,13 @@
       "sourceLabel": "Egg yolks",
       "nutrientKey": "vitaminK2MK4",
       "nutrientLabel": "MK-4 (Menaquinone-4)",
-      "nutrientText": "MK-4 (Menaquinone-4)",
-      "amount": null,
+      "nutrientText": "MK-4 (Menaquinone-4) 4 mcg",
+      "amount": 4,
       "unit": "mcg",
-      "matched": false
+      "matched": true
     },
     {
-      "food": "Chicken 4 oz palm-sized",
+      "food": "Chicken 4 oz (palm-sized)",
       "sourceLabel": "Chicken & pork",
       "nutrientKey": "vitaminK2MK4",
       "nutrientLabel": "MK-4 (Menaquinone-4)",
@@ -2314,7 +2314,7 @@
       "matched": true
     },
     {
-      "food": "Chicken Liver 1 oz sm",
+      "food": "Chicken Liver 1 oz (sm)",
       "sourceLabel": "Beef & chicken liver",
       "nutrientKey": "vitaminK2MK4",
       "nutrientLabel": "MK-4 (Menaquinone-4)",
@@ -2404,7 +2404,7 @@
       "matched": true
     },
     {
-      "food": "Chicken 4 oz palm-sized",
+      "food": "Chicken 4 oz (palm-sized)",
       "sourceLabel": "Chicken & turkey",
       "nutrientKey": "phosphorus",
       "nutrientLabel": "Phosphorus",
@@ -2414,7 +2414,7 @@
       "matched": true
     },
     {
-      "food": "Sardines canned 3 oz",
+      "food": "Sardines canned 3 oz (palm-sized)",
       "sourceLabel": "Salmon & sardines",
       "nutrientKey": "phosphorus",
       "nutrientLabel": "Phosphorus",
@@ -2474,7 +2474,7 @@
       "matched": true
     },
     {
-      "food": "Beef Liver 3 oz palm-sized",
+      "food": "Beef Liver 3 oz (palm-sized)",
       "sourceLabel": "Liver & beef",
       "nutrientKey": "choline",
       "nutrientLabel": "Choline",
@@ -2484,7 +2484,7 @@
       "matched": true
     },
     {
-      "food": "Salmon 3 oz",
+      "food": "Salmon 3 oz (palm-sized)",
       "sourceLabel": "Salmon & cod",
       "nutrientKey": "choline",
       "nutrientLabel": "Choline",
@@ -2494,7 +2494,7 @@
       "matched": true
     },
     {
-      "food": "Chicken 4 oz palm-sized",
+      "food": "Chicken 4 oz (palm-sized)",
       "sourceLabel": "Chicken & turkey",
       "nutrientKey": "choline",
       "nutrientLabel": "Choline",
@@ -2674,22 +2674,22 @@
       "matched": false
     },
     {
-      "food": "Beef Liver 3 oz palm-sized",
+      "food": "Beef 3 oz (palm-sized)",
       "sourceLabel": "Beef & poultry",
       "nutrientKey": "histidine",
       "nutrientLabel": "Histidine",
-      "nutrientText": "Histidine 487.5 mg",
-      "amount": 487.5,
+      "nutrientText": "Histidine 796 mg",
+      "amount": 796,
       "unit": "mg",
       "matched": true
     },
     {
-      "food": "Salmon 3 oz",
+      "food": "Salmon 3 oz (palm-sized)",
       "sourceLabel": "Tuna & salmon",
       "nutrientKey": "histidine",
       "nutrientLabel": "Histidine",
-      "nutrientText": "Histidine",
-      "amount": null,
+      "nutrientText": "Histidine 467 mg",
+      "amount": 467,
       "unit": "mg",
       "matched": true
     },
@@ -2698,8 +2698,8 @@
       "sourceLabel": "Soybeans",
       "nutrientKey": "histidine",
       "nutrientLabel": "Histidine",
-      "nutrientText": "Histidine",
-      "amount": null,
+      "nutrientText": "Histidine 772 mg",
+      "amount": 772,
       "unit": "mg",
       "matched": true
     },
@@ -2738,13 +2738,13 @@
       "sourceLabel": "Beans",
       "nutrientKey": "histidine",
       "nutrientLabel": "Histidine",
-      "nutrientText": "Histidine",
-      "amount": null,
+      "nutrientText": "Histidine 34 mg",
+      "amount": 34,
       "unit": "mg",
       "matched": true
     },
     {
-      "food": "Chicken 4 oz palm-sized",
+      "food": "Chicken 4 oz (palm-sized)",
       "sourceLabel": "Chicken & turkey",
       "nutrientKey": "isoleucine",
       "nutrientLabel": "Isoleucine",
@@ -2788,8 +2788,8 @@
       "sourceLabel": "Lentils",
       "nutrientKey": "isoleucine",
       "nutrientLabel": "Isoleucine",
-      "nutrientText": "Isoleucine",
-      "amount": null,
+      "nutrientText": "Isoleucine 772 mg",
+      "amount": 772,
       "unit": "mg",
       "matched": true
     },
@@ -2814,32 +2814,32 @@
       "matched": false
     },
     {
-      "food": "Chicken breast 3 oz",
+      "food": "Chicken breast 3 oz (palm-sized)",
       "sourceLabel": "Chicken breast",
       "nutrientKey": "leucine",
       "nutrientLabel": "Leucine",
-      "nutrientText": "Leucine",
-      "amount": null,
+      "nutrientText": "Leucine 1979 mg",
+      "amount": 1979,
       "unit": "mg",
       "matched": true
     },
     {
-      "food": "Beef Liver 3 oz palm-sized",
+      "food": "Beef 3 oz (palm-sized)",
       "sourceLabel": "Beef & pork",
       "nutrientKey": "leucine",
       "nutrientLabel": "Leucine",
-      "nutrientText": "Leucine 1425 mg",
-      "amount": 1425,
+      "nutrientText": "Leucine 2004 mg",
+      "amount": 2004,
       "unit": "mg",
       "matched": true
     },
     {
-      "food": "Salmon 3 oz",
+      "food": "Salmon 3 oz (palm-sized)",
       "sourceLabel": "Tuna & salmon",
       "nutrientKey": "leucine",
       "nutrientLabel": "Leucine",
-      "nutrientText": "Leucine",
-      "amount": null,
+      "nutrientText": "Leucine 1373 mg",
+      "amount": 1373,
       "unit": "mg",
       "matched": true
     },
@@ -2858,8 +2858,8 @@
       "sourceLabel": "Soybeans & tofu",
       "nutrientKey": "leucine",
       "nutrientLabel": "Leucine",
-      "nutrientText": "Leucine",
-      "amount": null,
+      "nutrientText": "Leucine 2331 mg",
+      "amount": 2331,
       "unit": "mg",
       "matched": true
     },
@@ -2884,7 +2884,7 @@
       "matched": true
     },
     {
-      "food": "Chicken 4 oz palm-sized",
+      "food": "Chicken 4 oz (palm-sized)",
       "sourceLabel": "Beef & chicken",
       "nutrientKey": "lysine",
       "nutrientLabel": "Lysine",
@@ -2894,12 +2894,12 @@
       "matched": true
     },
     {
-      "food": "Shrimp Fried - 3pc 3 oz",
+      "food": "Shrimp md x 7",
       "sourceLabel": "Fish & shellfish",
       "nutrientKey": "lysine",
       "nutrientLabel": "Lysine",
-      "nutrientText": "Lysine 792 mg",
-      "amount": 792,
+      "nutrientText": "Lysine 1292 mg",
+      "amount": 1292,
       "unit": "mg",
       "matched": true
     },
@@ -2918,8 +2918,8 @@
       "sourceLabel": "Soybeans & tofu",
       "nutrientKey": "lysine",
       "nutrientLabel": "Lysine",
-      "nutrientText": "Lysine",
-      "amount": null,
+      "nutrientText": "Lysine 1906 mg",
+      "amount": 1906,
       "unit": "mg",
       "matched": true
     },
@@ -2928,8 +2928,8 @@
       "sourceLabel": "Lentils & beans",
       "nutrientKey": "lysine",
       "nutrientLabel": "Lysine",
-      "nutrientText": "Lysine",
-      "amount": null,
+      "nutrientText": "Lysine 1247 mg",
+      "amount": 1247,
       "unit": "mg",
       "matched": true
     },
@@ -2938,8 +2938,8 @@
       "sourceLabel": "Pumpkin seeds",
       "nutrientKey": "lysine",
       "nutrientLabel": "Lysine",
-      "nutrientText": "Lysine",
-      "amount": null,
+      "nutrientText": "Lysine 346 mg",
+      "amount": 346,
       "unit": "mg",
       "matched": true
     },
@@ -2964,7 +2964,7 @@
       "matched": true
     },
     {
-      "food": "Chicken 4 oz palm-sized",
+      "food": "Chicken 4 oz (palm-sized)",
       "sourceLabel": "Fish & chicken",
       "nutrientKey": "methionine",
       "nutrientLabel": "Methionine",
@@ -2974,12 +2974,12 @@
       "matched": true
     },
     {
-      "food": "Beef Liver 3 oz palm-sized",
+      "food": "Beef 3 oz (palm-sized)",
       "sourceLabel": "Beef & pork",
       "nutrientKey": "methionine",
       "nutrientLabel": "Methionine",
-      "nutrientText": "Methionine 390 g",
-      "amount": 390,
+      "nutrientText": "Methionine 649 g",
+      "amount": 649,
       "unit": "g",
       "matched": true
     },
@@ -3008,8 +3008,8 @@
       "sourceLabel": "Oats",
       "nutrientKey": "methionine",
       "nutrientLabel": "Methionine",
-      "nutrientText": "Methionine",
-      "amount": null,
+      "nutrientText": "Methionine 108 g",
+      "amount": 108,
       "unit": "g",
       "matched": true
     },
@@ -3018,8 +3018,8 @@
       "sourceLabel": "Spinach",
       "nutrientKey": "methionine",
       "nutrientLabel": "Methionine",
-      "nutrientText": "Methionine",
-      "amount": null,
+      "nutrientText": "Methionine 16 g",
+      "amount": 16,
       "unit": "g",
       "matched": true
     },
@@ -3058,18 +3058,18 @@
       "sourceLabel": "Soybeans & tofu",
       "nutrientKey": "phenylalanine",
       "nutrientLabel": "Phenylalanine",
-      "nutrientText": "Phenylalanine",
-      "amount": null,
+      "nutrientText": "Phenylalanine 1495 mg",
+      "amount": 1495,
       "unit": "mg",
       "matched": true
     },
     {
-      "food": "Cereal -  Grape-Nuts 1 oz",
+      "food": "Pumpkin seeds 1 oz",
       "sourceLabel": "Nuts & seeds",
       "nutrientKey": "phenylalanine",
       "nutrientLabel": "Phenylalanine",
-      "nutrientText": "Phenylalanine 240 mg",
-      "amount": 240,
+      "nutrientText": "Phenylalanine 486 mg",
+      "amount": 486,
       "unit": "mg",
       "matched": true
     },
@@ -3078,8 +3078,8 @@
       "sourceLabel": "Lentils & beans",
       "nutrientKey": "phenylalanine",
       "nutrientLabel": "Phenylalanine",
-      "nutrientText": "Phenylalanine",
-      "amount": null,
+      "nutrientText": "Phenylalanine 881 mg",
+      "amount": 881,
       "unit": "mg",
       "matched": true
     },
@@ -3094,7 +3094,7 @@
       "matched": false
     },
     {
-      "food": "Chicken 4 oz palm-sized",
+      "food": "Chicken 4 oz (palm-sized)",
       "sourceLabel": "Chicken & turkey",
       "nutrientKey": "threonine",
       "nutrientLabel": "Threonine",
@@ -3104,12 +3104,12 @@
       "matched": true
     },
     {
-      "food": "Beef Liver 3 oz palm-sized",
+      "food": "Beef 3 oz (palm-sized)",
       "sourceLabel": "Beef",
       "nutrientKey": "threonine",
       "nutrientLabel": "Threonine",
-      "nutrientText": "Threonine 750 mg",
-      "amount": 750,
+      "nutrientText": "Threonine 996 mg",
+      "amount": 996,
       "unit": "mg",
       "matched": true
     },
@@ -3138,8 +3138,8 @@
       "sourceLabel": "Lentils",
       "nutrientKey": "threonine",
       "nutrientLabel": "Threonine",
-      "nutrientText": "Threonine",
-      "amount": null,
+      "nutrientText": "Threonine 640 mg",
+      "amount": 640,
       "unit": "mg",
       "matched": true
     },
@@ -3164,7 +3164,7 @@
       "matched": false
     },
     {
-      "food": "Chicken 4 oz palm-sized",
+      "food": "Chicken 4 oz (palm-sized)",
       "sourceLabel": "Turkey & chicken",
       "nutrientKey": "tryptophan",
       "nutrientLabel": "Tryptophan",
@@ -3198,8 +3198,8 @@
       "sourceLabel": "Pumpkin seeds",
       "nutrientKey": "tryptophan",
       "nutrientLabel": "Tryptophan",
-      "nutrientText": "Tryptophan",
-      "amount": null,
+      "nutrientText": "Tryptophan 162 mg",
+      "amount": 162,
       "unit": "mg",
       "matched": true
     },
@@ -3214,12 +3214,12 @@
       "matched": true
     },
     {
-      "food": "Salmon 3 oz",
+      "food": "Salmon 3 oz (palm-sized)",
       "sourceLabel": "Salmon & tuna",
       "nutrientKey": "tryptophan",
       "nutrientLabel": "Tryptophan",
-      "nutrientText": "Tryptophan",
-      "amount": null,
+      "nutrientText": "Tryptophan 189 mg",
+      "amount": 189,
       "unit": "mg",
       "matched": true
     },
@@ -3234,7 +3234,7 @@
       "matched": false
     },
     {
-      "food": "Chicken 4 oz palm-sized",
+      "food": "Chicken 4 oz (palm-sized)",
       "sourceLabel": "Beef & chicken",
       "nutrientKey": "valine",
       "nutrientLabel": "Valine",
@@ -3268,8 +3268,8 @@
       "sourceLabel": "Soybeans",
       "nutrientKey": "valine",
       "nutrientLabel": "Valine",
-      "nutrientText": "Valine",
-      "amount": null,
+      "nutrientText": "Valine 1429 mg",
+      "amount": 1429,
       "unit": "mg",
       "matched": true
     },
@@ -3284,14 +3284,14 @@
       "matched": true
     },
     {
-      "food": "Mushrooms 1 serving",
+      "food": "Mushrooms (UV-exposed) ½ cup",
       "sourceLabel": "Mushrooms",
       "nutrientKey": "valine",
       "nutrientLabel": "Valine",
       "nutrientText": "Valine",
       "amount": null,
       "unit": "mg",
-      "matched": false
+      "matched": true
     },
     {
       "food": "Whole grains 1 serving",
@@ -3304,7 +3304,7 @@
       "matched": false
     },
     {
-      "food": "Chicken 4 oz palm-sized",
+      "food": "Chicken 4 oz (palm-sized)",
       "sourceLabel": "Turkey & chicken",
       "nutrientKey": "arginine",
       "nutrientLabel": "Arginine",
@@ -3364,7 +3364,7 @@
       "matched": false
     },
     {
-      "food": "Beef 3 oz",
+      "food": "Beef 3 oz (palm-sized)",
       "sourceLabel": "Beef",
       "nutrientKey": "arginine",
       "nutrientLabel": "Arginine",
@@ -3374,7 +3374,7 @@
       "matched": true
     },
     {
-      "food": "Chicken 4 oz palm-sized",
+      "food": "Chicken 4 oz (palm-sized)",
       "sourceLabel": "Chicken & turkey",
       "nutrientKey": "cysteine",
       "nutrientLabel": "Cysteine",
@@ -3398,8 +3398,8 @@
       "sourceLabel": "Garlic & onion",
       "nutrientKey": "cysteine",
       "nutrientLabel": "Cysteine",
-      "nutrientText": "Cysteine",
-      "amount": null,
+      "nutrientText": "Cysteine 4.4 mg",
+      "amount": 4.4,
       "unit": "mg",
       "matched": true
     },
@@ -3444,7 +3444,7 @@
       "matched": true
     },
     {
-      "food": "Chicken 4 oz palm-sized",
+      "food": "Chicken 4 oz (palm-sized)",
       "sourceLabel": "Beef & chicken",
       "nutrientKey": "glutamine",
       "nutrientLabel": "Glutamine",
@@ -3534,7 +3534,7 @@
       "matched": false
     },
     {
-      "food": "Chicken 4 oz palm-sized",
+      "food": "Chicken 4 oz (palm-sized)",
       "sourceLabel": "Beef & chicken",
       "nutrientKey": "glycine",
       "nutrientLabel": "Glycine",
@@ -3614,7 +3614,7 @@
       "matched": false
     },
     {
-      "food": "Chicken 4 oz palm-sized",
+      "food": "Chicken 4 oz (palm-sized)",
       "sourceLabel": "Beef & chicken",
       "nutrientKey": "proline",
       "nutrientLabel": "Proline",
@@ -3644,17 +3644,17 @@
       "matched": false
     },
     {
-      "food": "Mushrooms 1 serving",
+      "food": "Mushrooms (UV-exposed) ½ cup",
       "sourceLabel": "Mushrooms",
       "nutrientKey": "proline",
       "nutrientLabel": "Proline",
       "nutrientText": "Proline",
       "amount": null,
       "unit": "mg",
-      "matched": false
+      "matched": true
     },
     {
-      "food": "Chicken 4 oz palm-sized",
+      "food": "Chicken 4 oz (palm-sized)",
       "sourceLabel": "Chicken & turkey",
       "nutrientKey": "tyrosine",
       "nutrientLabel": "Tyrosine",
@@ -3664,12 +3664,12 @@
       "matched": true
     },
     {
-      "food": "Shrimp Fried - 3pc 3 oz",
+      "food": "Shrimp md x 7",
       "sourceLabel": "Fish & shrimp",
       "nutrientKey": "tyrosine",
       "nutrientLabel": "Tyrosine",
-      "nutrientText": "Tyrosine 352 mg",
-      "amount": 352,
+      "nutrientText": "Tyrosine 513 mg",
+      "amount": 513,
       "unit": "mg",
       "matched": true
     },
@@ -3688,8 +3688,8 @@
       "sourceLabel": "Soybeans & tofu",
       "nutrientKey": "tyrosine",
       "nutrientLabel": "Tyrosine",
-      "nutrientText": "Tyrosine",
-      "amount": null,
+      "nutrientText": "Tyrosine 1084 mg",
+      "amount": 1084,
       "unit": "mg",
       "matched": true
     },
@@ -3734,7 +3734,7 @@
       "matched": true
     },
     {
-      "food": "Turkey breast 3 oz",
+      "food": "Turkey breast 3 oz (palm-sized)",
       "sourceLabel": "Dark meat chicken & turkey",
       "nutrientKey": "taurine",
       "nutrientLabel": "Taurine",
@@ -3744,7 +3744,7 @@
       "matched": true
     },
     {
-      "food": "Beef Liver 3 oz palm-sized",
+      "food": "Beef Liver 3 oz (palm-sized)",
       "sourceLabel": "Beef & pork",
       "nutrientKey": "taurine",
       "nutrientLabel": "Taurine",
@@ -3754,7 +3754,7 @@
       "matched": true
     },
     {
-      "food": "Salmon 3 oz",
+      "food": "Salmon 3 oz (palm-sized)",
       "sourceLabel": "Fish (tuna, salmon)",
       "nutrientKey": "taurine",
       "nutrientLabel": "Taurine",
@@ -3794,7 +3794,7 @@
       "matched": true
     },
     {
-      "food": "Beef 3 oz",
+      "food": "Beef 3 oz (palm-sized)",
       "sourceLabel": "Beef & lamb",
       "nutrientKey": "saturatedFat",
       "nutrientLabel": "Saturated fat",
@@ -3914,7 +3914,7 @@
       "matched": false
     },
     {
-      "food": "Chicken 4 oz palm-sized",
+      "food": "Chicken 4 oz (palm-sized)",
       "sourceLabel": "Chicken & turkey",
       "nutrientKey": "monounsaturatedFat",
       "nutrientLabel": "Monounsaturated fat",
@@ -4074,27 +4074,27 @@
       "matched": false
     },
     {
-      "food": "Egg md",
+      "food": "Egg yolks 1 medium",
       "sourceLabel": "Eggs",
       "nutrientKey": "cholesterol",
       "nutrientLabel": "Cholesterol",
-      "nutrientText": "Cholesterol 164 mg",
-      "amount": 164,
+      "nutrientText": "Cholesterol 185 mg",
+      "amount": 185,
       "unit": "mg",
       "matched": true
     },
     {
-      "food": "Shrimp 3 oz",
+      "food": "Shrimp md x 7",
       "sourceLabel": "Shrimp & shellfish",
       "nutrientKey": "cholesterol",
       "nutrientLabel": "Cholesterol",
-      "nutrientText": "Cholesterol 160 mg",
-      "amount": 160,
+      "nutrientText": "Cholesterol 112 mg",
+      "amount": 112,
       "unit": "mg",
       "matched": true
     },
     {
-      "food": "Chicken Liver 3 oz palm-sized",
+      "food": "Chicken Liver 3 oz (palm-sized)",
       "sourceLabel": "Liver",
       "nutrientKey": "cholesterol",
       "nutrientLabel": "Cholesterol",
@@ -4124,7 +4124,7 @@
       "matched": false
     },
     {
-      "food": "Chicken 4 oz palm-sized",
+      "food": "Chicken 4 oz (palm-sized)",
       "sourceLabel": "Chicken (with skin)",
       "nutrientKey": "cholesterol",
       "nutrientLabel": "Cholesterol",
@@ -4204,7 +4204,7 @@
       "matched": false
     },
     {
-      "food": "Sardines canned 3 oz",
+      "food": "Sardines canned 3 oz (palm-sized)",
       "sourceLabel": "Salmon & sardines",
       "nutrientKey": "omega3",
       "nutrientLabel": "Omega-3 (total)",
@@ -4484,7 +4484,7 @@
       "matched": true
     },
     {
-      "food": "Salmon 3 oz",
+      "food": "Salmon 3 oz (palm-sized)",
       "sourceLabel": "Salmon",
       "nutrientKey": "epa",
       "nutrientLabel": "EPA",
@@ -4494,7 +4494,7 @@
       "matched": true
     },
     {
-      "food": "Sardines canned 3 oz",
+      "food": "Sardines canned 3 oz (palm-sized)",
       "sourceLabel": "Sardines",
       "nutrientKey": "epa",
       "nutrientLabel": "EPA",
@@ -4554,7 +4554,7 @@
       "matched": true
     },
     {
-      "food": "Salmon 3 oz",
+      "food": "Salmon 3 oz (palm-sized)",
       "sourceLabel": "Salmon & trout",
       "nutrientKey": "dha",
       "nutrientLabel": "DHA",
@@ -4564,7 +4564,7 @@
       "matched": true
     },
     {
-      "food": "Sardines canned 3 oz",
+      "food": "Sardines canned 3 oz (palm-sized)",
       "sourceLabel": "Sardines",
       "nutrientKey": "dha",
       "nutrientLabel": "DHA",
@@ -4694,7 +4694,7 @@
       "matched": false
     },
     {
-      "food": "Chicken breast 3 oz",
+      "food": "Chicken breast 3 oz (palm-sized)",
       "sourceLabel": "Chicken breast & turkey",
       "nutrientKey": "arachidonicAcid",
       "nutrientLabel": "Arachidonic acid",
@@ -4714,7 +4714,7 @@
       "matched": true
     },
     {
-      "food": "Pork loin 3 oz",
+      "food": "Pork loin 3 oz (palm-sized)",
       "sourceLabel": "Beef & pork",
       "nutrientKey": "arachidonicAcid",
       "nutrientLabel": "Arachidonic acid",
@@ -4724,7 +4724,7 @@
       "matched": true
     },
     {
-      "food": "Lamb Liver 3 oz palm-sized",
+      "food": "Lamb Liver 3 oz (palm-sized)",
       "sourceLabel": "Liver",
       "nutrientKey": "arachidonicAcid",
       "nutrientLabel": "Arachidonic acid",
@@ -4734,7 +4734,7 @@
       "matched": true
     },
     {
-      "food": "Sardines canned 3 oz",
+      "food": "Sardines canned 3 oz (palm-sized)",
       "sourceLabel": "Salmon & sardines",
       "nutrientKey": "arachidonicAcid",
       "nutrientLabel": "Arachidonic acid",
@@ -4744,12 +4744,12 @@
       "matched": true
     },
     {
-      "food": "Shrimp 3 oz",
+      "food": "Shrimp md x 7",
       "sourceLabel": "Shrimp & shellfish",
       "nutrientKey": "arachidonicAcid",
       "nutrientLabel": "Arachidonic acid",
-      "nutrientText": "Arachidonic acid 0.06 g",
-      "amount": 0.06,
+      "nutrientText": "Arachidonic acid 0.04 g",
+      "amount": 0.04,
       "unit": "g",
       "matched": true
     },
@@ -4844,7 +4844,7 @@
       "matched": false
     },
     {
-      "food": "Salmon 3 oz",
+      "food": "Salmon 3 oz (palm-sized)",
       "sourceLabel": "Salmon & anchovies",
       "nutrientKey": "palmitoleicAcid",
       "nutrientLabel": "Palmitoleic acid (ω-7)",
@@ -4954,17 +4954,17 @@
       "matched": false
     },
     {
-      "food": "Cheese American 1 slice (21g)",
+      "food": "Egg yolks 1 medium",
       "sourceLabel": "Egg yolks & cheese (K2)",
       "nutrientKey": "vitaminK",
       "nutrientLabel": "Vitamin K",
-      "nutrientText": "Vitamin K 0.8 mcg",
-      "amount": 0.8,
+      "nutrientText": "Vitamin K 0.1 mcg",
+      "amount": 0.1,
       "unit": "mcg",
       "matched": true
     },
     {
-      "food": "Chicken 4 oz palm-sized",
+      "food": "Chicken 4 oz (palm-sized)",
       "sourceLabel": "Chicken & pork (K2)",
       "nutrientKey": "vitaminK",
       "nutrientLabel": "Vitamin K",
@@ -5044,17 +5044,17 @@
       "matched": false
     },
     {
-      "food": "Shrimp 3 oz",
+      "food": "Shrimp md x 7",
       "sourceLabel": "Oysters & shellfish",
       "nutrientKey": "copper",
       "nutrientLabel": "Copper",
-      "nutrientText": "Copper 250 mcg",
-      "amount": 250,
+      "nutrientText": "Copper 175 mcg",
+      "amount": 175,
       "unit": "mcg",
       "matched": true
     },
     {
-      "food": "Beef Liver 3 oz palm-sized",
+      "food": "Beef Liver 3 oz (palm-sized)",
       "sourceLabel": "Beef liver",
       "nutrientKey": "copper",
       "nutrientLabel": "Copper",
@@ -5094,14 +5094,14 @@
       "matched": true
     },
     {
-      "food": "Mushrooms 1 serving",
+      "food": "Mushrooms (UV-exposed) ½ cup",
       "sourceLabel": "Mushrooms",
       "nutrientKey": "copper",
       "nutrientLabel": "Copper",
-      "nutrientText": "Copper",
-      "amount": null,
+      "nutrientText": "Copper 160 mcg",
+      "amount": 160,
       "unit": "mcg",
-      "matched": false
+      "matched": true
     },
     {
       "food": "Lentils cooked 1 cup",
@@ -5114,7 +5114,7 @@
       "matched": true
     },
     {
-      "food": "Chicken 4 oz palm-sized",
+      "food": "Chicken 4 oz (palm-sized)",
       "sourceLabel": "Chicken & turkey",
       "nutrientKey": "methionine",
       "nutrientLabel": "Methionine",
@@ -5324,12 +5324,12 @@
       "matched": true
     },
     {
-      "food": "Fruit - Apple md with skin",
+      "food": "Fruit - Apple lg with skin",
       "sourceLabel": "Apple",
       "nutrientKey": "quercetin",
       "nutrientLabel": "Quercetin",
-      "nutrientText": "Quercetin 8 mg",
-      "amount": 8,
+      "nutrientText": "Quercetin 9.8 mg",
+      "amount": 9.8,
       "unit": "mg",
       "matched": true
     },
@@ -5424,12 +5424,12 @@
       "matched": false
     },
     {
-      "food": "Egg md",
+      "food": "Egg yolks 1 medium",
       "sourceLabel": "Eggs (yolk)",
       "nutrientKey": "carotenoids",
       "nutrientLabel": "Carotenoids",
-      "nutrientText": "Carotenoids 0.1 mg",
-      "amount": 0.1,
+      "nutrientText": "Carotenoids 0.7 mg",
+      "amount": 0.7,
       "unit": "mg",
       "matched": true
     },
@@ -5478,10 +5478,10 @@
       "sourceLabel": "Egg yolks",
       "nutrientKey": "lutein",
       "nutrientLabel": "Lutein",
-      "nutrientText": "Lutein",
-      "amount": null,
+      "nutrientText": "Lutein 0.19 mg",
+      "amount": 0.19,
       "unit": "mg",
-      "matched": false
+      "matched": true
     },
     {
       "food": "Cook greens in olive oil 1 tablespoon",
@@ -5634,7 +5634,7 @@
       "matched": false
     },
     {
-      "food": "Beef Liver 3 oz palm-sized",
+      "food": "Beef Liver 3 oz (palm-sized)",
       "sourceLabel": "Beef heart & liver",
       "nutrientKey": "coq10",
       "nutrientLabel": "Coenzyme Q10",
@@ -5644,7 +5644,7 @@
       "matched": true
     },
     {
-      "food": "Sardines canned 3 oz",
+      "food": "Sardines canned 3 oz (palm-sized)",
       "sourceLabel": "Sardines & mackerel",
       "nutrientKey": "coq10",
       "nutrientLabel": "Coenzyme Q10",
@@ -5654,7 +5654,7 @@
       "matched": true
     },
     {
-      "food": "Chicken 4 oz palm-sized",
+      "food": "Chicken 4 oz (palm-sized)",
       "sourceLabel": "Chicken",
       "nutrientKey": "coq10",
       "nutrientLabel": "Coenzyme Q10",
@@ -5914,7 +5914,7 @@
       "matched": true
     },
     {
-      "food": "Beef 3 oz",
+      "food": "Beef 3 oz (palm-sized)",
       "sourceLabel": "Beef & red meat",
       "nutrientKey": "creatine",
       "nutrientLabel": "Creatine",
@@ -5924,7 +5924,7 @@
       "matched": true
     },
     {
-      "food": "Pork loin 3 oz",
+      "food": "Pork loin 3 oz (palm-sized)",
       "sourceLabel": "Pork",
       "nutrientKey": "creatine",
       "nutrientLabel": "Creatine",
@@ -5934,7 +5934,7 @@
       "matched": true
     },
     {
-      "food": "Salmon 3 oz",
+      "food": "Salmon 3 oz (palm-sized)",
       "sourceLabel": "Salmon & tuna",
       "nutrientKey": "creatine",
       "nutrientLabel": "Creatine",
@@ -5954,7 +5954,7 @@
       "matched": false
     },
     {
-      "food": "Chicken 4 oz palm-sized",
+      "food": "Chicken 4 oz (palm-sized)",
       "sourceLabel": "Chicken (smaller amounts)",
       "nutrientKey": "creatine",
       "nutrientLabel": "Creatine",
@@ -5964,7 +5964,7 @@
       "matched": true
     },
     {
-      "food": "Cod Liver 1 oz sm",
+      "food": "Cod Liver 1 oz (sm)",
       "sourceLabel": "Cod & other white fish",
       "nutrientKey": "creatine",
       "nutrientLabel": "Creatine",
@@ -6048,13 +6048,13 @@
       "sourceLabel": "Egg yolks",
       "nutrientKey": "choline",
       "nutrientLabel": "Choline",
-      "nutrientText": "Choline",
-      "amount": null,
+      "nutrientText": "Choline 139 mg",
+      "amount": 139,
       "unit": "mg",
-      "matched": false
+      "matched": true
     },
     {
-      "food": "Chicken Liver 3 oz palm-sized",
+      "food": "Chicken Liver 3 oz (palm-sized)",
       "sourceLabel": "Red Meat, Beef & Chicken liver",
       "nutrientKey": "choline",
       "nutrientLabel": "Choline",
@@ -6094,7 +6094,7 @@
       "matched": true
     },
     {
-      "food": "Beef Liver 3 oz palm-sized",
+      "food": "Beef Liver 3 oz (palm-sized)",
       "sourceLabel": "Beef & lamb (highest)",
       "nutrientKey": "carnitine",
       "nutrientLabel": "L-Carnitine",
@@ -6104,7 +6104,7 @@
       "matched": true
     },
     {
-      "food": "Pork loin 3 oz",
+      "food": "Pork loin 3 oz (palm-sized)",
       "sourceLabel": "Pork & bacon",
       "nutrientKey": "carnitine",
       "nutrientLabel": "L-Carnitine",
@@ -6114,7 +6114,7 @@
       "matched": true
     },
     {
-      "food": "Chicken 1 oz sm",
+      "food": "Chicken 1 oz (sm)",
       "sourceLabel": "Chicken (moderate)",
       "nutrientKey": "carnitine",
       "nutrientLabel": "L-Carnitine",
@@ -6334,14 +6334,14 @@
       "matched": false
     },
     {
-      "food": "Soda & juice 1 serving",
+      "food": "Orange juice (fortified) 1 cup",
       "sourceLabel": "Soda & juice",
       "nutrientKey": "glycemicIndex",
       "nutrientLabel": "Glycemic index",
       "nutrientText": "Glycemic index",
       "amount": null,
       "unit": "GI",
-      "matched": false
+      "matched": true
     },
     {
       "food": "Potato baked with skin md",
@@ -6494,7 +6494,7 @@
       "matched": false
     },
     {
-      "food": "Beef Liver 3 oz palm-sized",
+      "food": "Beef Liver 3 oz (palm-sized)",
       "sourceLabel": "Organ meats (kidney, heart, liver)",
       "nutrientKey": "alphaLipoicAcid",
       "nutrientLabel": "Alpha-lipoic acid (ALA)",
