@@ -3944,11 +3944,14 @@
       "Please fill in the nutrient data for " +
       phrase +
       ".\n\n" +
-      "Return only valid JSON (no markdown fences or commentary) matching this structure. " +
+      "Return only valid JSON (no markdown fences or commentary) matching this structure " +
+      "(a single object, or an array of objects when there is more than one common serving). " +
       'Use the portion in the name field (e.g. "' +
       nameExample +
       '"). Omit any nutrient keys you cannot estimate.\n\n' +
-      'Rule: If the food is missing serving information, append a common serving size to the end of the food name (e.g. 1/2 cup, 1 cup, 1 oz, 2 oz, 3 oz). Prefer everyday portions people actually log. If the serving is in oz, add a visual reference in parentheses (e.g. "3 oz (palm-sized)", "1 oz (about a small handful)"). If it\'s usually eaten all in one sitting from a container or bag, name it as container or bag followed by oz etc in parenthesis.\n\n' +
+      'Rule: If the food is missing serving information, append a common serving size to the end of the food name (e.g. 1/2 cup, 1 cup, 1 oz, 2 oz, 3 oz). Prefer everyday portions people actually log. If the serving is in oz, add a visual reference in parentheses if possible (e.g. "3 oz (palm-sized)", "1 oz (about a small handful)"). If it\'s usually eaten all in one sitting from a container or bag, name it as container or bag followed by oz etc in parenthesis.\n\n' +
+      "Rule: If the food has more than one common serving size people actually log, return an array of objects — one object per serving — with all nutrients scaled to that serving. " +
+      "Example: peanuts as both 1 oz and 1 cup → [{ \"name\": \"Peanuts 1 oz (...)\", ... }, { \"name\": \"Peanuts 1 cup\", ... }].\n\n" +
       "Rule: Amounts for the micro requirements panel belong in micros. " +
       "When the same nutrient key also appears in longevity, store the number in micros only and set longevity[key] to true.\n\n" +
       "Rule: If the food is a multivitamin or vitamin entry: Don't just list the label DV. " +
@@ -9999,22 +10002,38 @@
       throw new Error("Invalid JSON");
     }
 
-    if (!data || typeof data !== "object" || Array.isArray(data)) {
-      throw new Error("JSON must be an object");
-    }
-
-    if (data.name == null || String(data.name).trim() === "") {
-      throw new Error("Name is required");
+    if (!data || typeof data !== "object") {
+      throw new Error("JSON must be an object or an array of objects");
     }
 
     if (index < 0 || index >= keywords.length) {
       throw new Error("Food definition not found");
     }
 
+    var items = Array.isArray(data) ? data : [data];
+    if (items.length === 0) {
+      throw new Error("JSON array is empty");
+    }
+
+    var first = items[0];
+    if (!first || typeof first !== "object" || Array.isArray(first)) {
+      throw new Error("JSON must be an object or an array of objects");
+    }
+    if (first.name == null || String(first.name).trim() === "") {
+      throw new Error("Name is required");
+    }
+
     var fresh = blankKeyword();
     fresh.id = keywords[index].id;
-    applyImportItemToKeyword(fresh, data);
+    applyImportItemToKeyword(fresh, first);
     keywords[index] = fresh;
+
+    for (var i = 1; i < items.length; i++) {
+      keywords.push(keywordFromImportItem(items[i], i));
+    }
+    if (items.length > 1) {
+      ensureUniqueKeywordIds();
+    }
 
     saveFoodDefinitions();
   }
