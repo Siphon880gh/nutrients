@@ -3948,7 +3948,7 @@
       'Use the portion in the name field (e.g. "' +
       nameExample +
       '"). Omit any nutrient keys you cannot estimate.\n\n' +
-      'Rule: If the food is missing serving information, add one serving whatever units it\'s usually in. If it\'s usually eaten all in one sitting from a container or bag, then name it as container or bag followed by oz etc in parenthesis. Add it to the end of the food name.\n\n' +
+      'Rule: If the food is missing serving information, append a common serving size to the end of the food name (e.g. 1/2 cup, 1 cup, 1 oz, 2 oz, 3 oz). Prefer everyday portions people actually log. If the serving is in oz, add a visual reference in parentheses (e.g. "3 oz (palm-sized)", "1 oz (about a small handful)"). If it\'s usually eaten all in one sitting from a container or bag, name it as container or bag followed by oz etc in parenthesis.\n\n' +
       "Rule: Amounts for the micro requirements panel belong in micros. " +
       "When the same nutrient key also appears in longevity, store the number in micros only and set longevity[key] to true.\n\n" +
       "Rule: If the food is a multivitamin or vitamin entry: Don't just list the label DV. " +

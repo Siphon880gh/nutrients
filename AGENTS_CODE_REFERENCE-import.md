@@ -71,7 +71,7 @@ Used when opening import with AI panel **closed** (`setImportAiPanelOpen(false)`
 
 - Opening line: `Please fill in the nutrient data for {portion|___}.`
 - Instructions: JSON only, no fences; example name uses **`1 cup of peanuts`** when portion empty (`jsonSchemaExample`, `nameExample`).
-- Serving-name rule: if serving info is missing, invent a typical one-sitting unit and append it to the food name.
+- Serving-name rule: if serving info is missing, append a common serving (e.g. 1/2 cup, 1 cup, 1 oz, 2 oz, 3 oz); for oz servings, add a visual reference in parentheses (e.g. palm-sized).
 - Micro↔longevity bridge rule: amounts for the micro panel belong in `micros`; when the same key also appears in longevity, store the number in `micros` only and set `longevity[key]` to `true`.
 - Multivitamin / vitamin absorption rule: do not paste label %DV alone — adjust both DV and actual values for typical absorption (pills are not 100% absorbed); for fat-soluble vitamins (A, D, E, K), assume enough dietary fat was eaten for absorption.
 - Appends full schema sample + `nutrientListForPrompt()` (lists all `MICRO_ALL_FIELDS` — core + extended trace minerals + amino acids — **and** `LONGEVITY_FIELDS` keys with units, including `alphaLipoicAcid` / `glutathione`).
