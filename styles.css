@@ -5488,9 +5488,19 @@ button.dashboard__longevity-name:focus-visible {
 }
 
 .macro-rank-modal__tab--calories {
+  position: relative;
   margin-left: auto;
-  padding-left: 1rem;
-  border-left: 1px solid #e0e0dc;
+  padding-left: 1.15rem;
+}
+
+.macro-rank-modal__tab--calories::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.55rem;
+  bottom: 0.55rem;
+  width: 1px;
+  background: #e0e0dc;
 }
 
 .dashboard__card {

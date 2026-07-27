@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-07-24T08:34:53.533Z",
-  "sampleFoods": 304,
+  "generatedAt": "2026-07-27T06:12:52.433Z",
+  "sampleFoods": 333,
   "rowCount": 667,
   "rows": [
     {
@@ -354,12 +354,12 @@
       "matched": true
     },
     {
-      "food": "Tomato md",
+      "food": "Tomato lg",
       "sourceLabel": "Tomatoes & tomato sauce",
       "nutrientKey": "potassium",
       "nutrientLabel": "Potassium",
-      "nutrientText": "Potassium 237 mg",
-      "amount": 237,
+      "nutrientText": "Potassium 351 mg",
+      "amount": 351,
       "unit": "mg",
       "matched": true
     },
@@ -414,22 +414,22 @@
       "matched": true
     },
     {
-      "food": "Salmon 3 oz (palm-sized)",
+      "food": "Salmon 2 fillets (~12 oz)",
       "sourceLabel": "Salmon & other fish",
       "nutrientKey": "potassium",
       "nutrientLabel": "Potassium",
-      "nutrientText": "Potassium 300 mg",
-      "amount": 300,
+      "nutrientText": "Potassium 1200 mg",
+      "amount": 1200,
       "unit": "mg",
       "matched": true
     },
     {
-      "food": "Pistachios 1 oz",
+      "food": "Pistachios 1 cup",
       "sourceLabel": "Nuts (almonds, pistachios)",
       "nutrientKey": "potassium",
       "nutrientLabel": "Potassium",
-      "nutrientText": "Potassium 285 mg",
-      "amount": 285,
+      "nutrientText": "Potassium 1236.5 mg",
+      "amount": 1236.5,
       "unit": "mg",
       "matched": true
     },
@@ -1024,12 +1024,12 @@
       "matched": true
     },
     {
-      "food": "Salmon 3 oz (palm-sized)",
+      "food": "Salmon 2 fillets (~12 oz)",
       "sourceLabel": "Salmon & tuna",
       "nutrientKey": "vitaminB12",
       "nutrientLabel": "Vitamin B12",
-      "nutrientText": "Vitamin B12 2.4 mcg",
-      "amount": 2.4,
+      "nutrientText": "Vitamin B12 9.6 mcg",
+      "amount": 9.6,
       "unit": "mcg",
       "matched": true
     },
@@ -1124,12 +1124,12 @@
       "matched": true
     },
     {
-      "food": "Tomato md",
+      "food": "Tomato lg",
       "sourceLabel": "Tomatoes",
       "nutrientKey": "vitaminC",
       "nutrientLabel": "Vitamin C",
-      "nutrientText": "Vitamin C 14 mg",
-      "amount": 14,
+      "nutrientText": "Vitamin C 21 mg",
+      "amount": 21,
       "unit": "mg",
       "matched": true
     },
@@ -1244,12 +1244,12 @@
       "matched": true
     },
     {
-      "food": "Salmon 3 oz (palm-sized)",
+      "food": "Salmon 2 fillets (~12 oz)",
       "sourceLabel": "Salmon & tuna",
       "nutrientKey": "vitaminB6",
       "nutrientLabel": "Vitamin B6",
-      "nutrientText": "Vitamin B6 0.5 mg",
-      "amount": 0.5,
+      "nutrientText": "Vitamin B6 2 mg",
+      "amount": 2,
       "unit": "mg",
       "matched": true
     },
@@ -2484,12 +2484,12 @@
       "matched": true
     },
     {
-      "food": "Salmon 3 oz (palm-sized)",
+      "food": "Salmon 2 fillets (~12 oz)",
       "sourceLabel": "Salmon & cod",
       "nutrientKey": "choline",
       "nutrientLabel": "Choline",
-      "nutrientText": "Choline 75 mg",
-      "amount": 75,
+      "nutrientText": "Choline 300 mg",
+      "amount": 300,
       "unit": "mg",
       "matched": true
     },
@@ -2624,12 +2624,12 @@
       "matched": true
     },
     {
-      "food": "Tomato md",
+      "food": "Tomato lg",
       "sourceLabel": "Tomatoes",
       "nutrientKey": "chloride",
       "nutrientLabel": "Chloride",
-      "nutrientText": "Chloride 50 mg",
-      "amount": 50,
+      "nutrientText": "Chloride 74 mg",
+      "amount": 74,
       "unit": "mg",
       "matched": true
     },
@@ -2684,12 +2684,12 @@
       "matched": true
     },
     {
-      "food": "Salmon 3 oz (palm-sized)",
+      "food": "Salmon 2 fillets (~12 oz)",
       "sourceLabel": "Tuna & salmon",
       "nutrientKey": "histidine",
       "nutrientLabel": "Histidine",
-      "nutrientText": "Histidine 467 mg",
-      "amount": 467,
+      "nutrientText": "Histidine 1868 mg",
+      "amount": 1868,
       "unit": "mg",
       "matched": true
     },
@@ -2834,12 +2834,12 @@
       "matched": true
     },
     {
-      "food": "Salmon 3 oz (palm-sized)",
+      "food": "Salmon 2 fillets (~12 oz)",
       "sourceLabel": "Tuna & salmon",
       "nutrientKey": "leucine",
       "nutrientLabel": "Leucine",
-      "nutrientText": "Leucine 1373 mg",
-      "amount": 1373,
+      "nutrientText": "Leucine 5492 mg",
+      "amount": 5492,
       "unit": "mg",
       "matched": true
     },
@@ -3214,12 +3214,12 @@
       "matched": true
     },
     {
-      "food": "Salmon 3 oz (palm-sized)",
+      "food": "Salmon 2 fillets (~12 oz)",
       "sourceLabel": "Salmon & tuna",
       "nutrientKey": "tryptophan",
       "nutrientLabel": "Tryptophan",
-      "nutrientText": "Tryptophan 189 mg",
-      "amount": 189,
+      "nutrientText": "Tryptophan 756 mg",
+      "amount": 756,
       "unit": "mg",
       "matched": true
     },
@@ -3794,6 +3794,76 @@
       "matched": true
     },
     {
+      "food": "Capers 1 tablespoon (drained, about 9 g)",
+      "sourceLabel": "Capers",
+      "nutrientKey": "quercetin",
+      "nutrientLabel": "Quercetin",
+      "nutrientText": "Quercetin 12 mg",
+      "amount": 12,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Onion Red md (raw, about 110 g)",
+      "sourceLabel": "Onions",
+      "nutrientKey": "quercetin",
+      "nutrientLabel": "Quercetin",
+      "nutrientText": "Quercetin 22 mg",
+      "amount": 22,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Fruit - Apple lg with skin",
+      "sourceLabel": "Apple",
+      "nutrientKey": "quercetin",
+      "nutrientLabel": "Quercetin",
+      "nutrientText": "Quercetin 9.8 mg",
+      "amount": 9.8,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Fruit - Blueberries 1 cup (148 g)",
+      "sourceLabel": "Blueberries",
+      "nutrientKey": "quercetin",
+      "nutrientLabel": "Quercetin",
+      "nutrientText": "Quercetin 5 mg",
+      "amount": 5,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Kale 1 cup",
+      "sourceLabel": "Kale",
+      "nutrientKey": "quercetin",
+      "nutrientLabel": "Quercetin",
+      "nutrientText": "Quercetin",
+      "amount": null,
+      "unit": "mg",
+      "matched": false
+    },
+    {
+      "food": "Broccoli 1 cup",
+      "sourceLabel": "Broccoli",
+      "nutrientKey": "quercetin",
+      "nutrientLabel": "Quercetin",
+      "nutrientText": "Quercetin",
+      "amount": null,
+      "unit": "mg",
+      "matched": true
+    },
+    {
+      "food": "Black tea 1 serving",
+      "sourceLabel": "Black tea",
+      "nutrientKey": "quercetin",
+      "nutrientLabel": "Quercetin",
+      "nutrientText": "Quercetin",
+      "amount": null,
+      "unit": "mg",
+      "matched": false
+    },
+    {
       "food": "Beef 3 oz (palm-sized)",
       "sourceLabel": "Beef & lamb",
       "nutrientKey": "saturatedFat",
@@ -4224,12 +4294,12 @@
       "matched": false
     },
     {
-      "food": "Walnuts 1 oz",
+      "food": "Walnuts 1 cup",
       "sourceLabel": "Walnuts",
       "nutrientKey": "omega3",
       "nutrientLabel": "Omega-3 (total)",
-      "nutrientText": "Omega-3 (total) 2.5 g",
-      "amount": 2.5,
+      "nutrientText": "Omega-3 (total) 10.3 g",
+      "amount": 10.3,
       "unit": "g",
       "matched": true
     },
@@ -4434,12 +4504,12 @@
       "matched": true
     },
     {
-      "food": "Walnuts 1 oz",
+      "food": "Walnuts 1 cup",
       "sourceLabel": "Walnuts",
       "nutrientKey": "ala",
       "nutrientLabel": "ALA",
-      "nutrientText": "ALA 2.5 g",
-      "amount": 2.5,
+      "nutrientText": "ALA 10.3 g",
+      "amount": 10.3,
       "unit": "g",
       "matched": true
     },
@@ -4484,12 +4554,12 @@
       "matched": true
     },
     {
-      "food": "Salmon 3 oz (palm-sized)",
+      "food": "Salmon 2 fillets (~12 oz)",
       "sourceLabel": "Salmon",
       "nutrientKey": "epa",
       "nutrientLabel": "EPA",
-      "nutrientText": "EPA 0.5 g",
-      "amount": 0.5,
+      "nutrientText": "EPA 2 g",
+      "amount": 2,
       "unit": "g",
       "matched": true
     },
@@ -4554,12 +4624,12 @@
       "matched": true
     },
     {
-      "food": "Salmon 3 oz (palm-sized)",
+      "food": "Salmon 2 fillets (~12 oz)",
       "sourceLabel": "Salmon & trout",
       "nutrientKey": "dha",
       "nutrientLabel": "DHA",
-      "nutrientText": "DHA 0.9 g",
-      "amount": 0.9,
+      "nutrientText": "DHA 3.6 g",
+      "amount": 3.6,
       "unit": "g",
       "matched": true
     },
@@ -5304,76 +5374,6 @@
       "matched": true
     },
     {
-      "food": "Capers 1 tablespoon (drained, about 9 g)",
-      "sourceLabel": "Capers",
-      "nutrientKey": "quercetin",
-      "nutrientLabel": "Quercetin",
-      "nutrientText": "Quercetin 12 mg",
-      "amount": 12,
-      "unit": "mg",
-      "matched": true
-    },
-    {
-      "food": "Onion Red md (raw, about 110 g)",
-      "sourceLabel": "Onions",
-      "nutrientKey": "quercetin",
-      "nutrientLabel": "Quercetin",
-      "nutrientText": "Quercetin 22 mg",
-      "amount": 22,
-      "unit": "mg",
-      "matched": true
-    },
-    {
-      "food": "Fruit - Apple lg with skin",
-      "sourceLabel": "Apple",
-      "nutrientKey": "quercetin",
-      "nutrientLabel": "Quercetin",
-      "nutrientText": "Quercetin 9.8 mg",
-      "amount": 9.8,
-      "unit": "mg",
-      "matched": true
-    },
-    {
-      "food": "Fruit - Blueberries 1 cup (148 g)",
-      "sourceLabel": "Blueberries",
-      "nutrientKey": "quercetin",
-      "nutrientLabel": "Quercetin",
-      "nutrientText": "Quercetin 5 mg",
-      "amount": 5,
-      "unit": "mg",
-      "matched": true
-    },
-    {
-      "food": "Kale 1 cup",
-      "sourceLabel": "Kale",
-      "nutrientKey": "quercetin",
-      "nutrientLabel": "Quercetin",
-      "nutrientText": "Quercetin",
-      "amount": null,
-      "unit": "mg",
-      "matched": false
-    },
-    {
-      "food": "Broccoli 1 cup",
-      "sourceLabel": "Broccoli",
-      "nutrientKey": "quercetin",
-      "nutrientLabel": "Quercetin",
-      "nutrientText": "Quercetin",
-      "amount": null,
-      "unit": "mg",
-      "matched": true
-    },
-    {
-      "food": "Black tea 1 serving",
-      "sourceLabel": "Black tea",
-      "nutrientKey": "quercetin",
-      "nutrientLabel": "Quercetin",
-      "nutrientText": "Quercetin",
-      "amount": null,
-      "unit": "mg",
-      "matched": false
-    },
-    {
       "food": "Sweet Potato Fries lg",
       "sourceLabel": "Carrots & sweet potato",
       "nutrientKey": "carotenoids",
@@ -5394,12 +5394,12 @@
       "matched": true
     },
     {
-      "food": "Tomato md",
+      "food": "Tomato lg",
       "sourceLabel": "Tomatoes & sauce",
       "nutrientKey": "carotenoids",
       "nutrientLabel": "Carotenoids",
-      "nutrientText": "Carotenoids 0.5 mg",
-      "amount": 0.5,
+      "nutrientText": "Carotenoids 0.7 mg",
+      "amount": 0.7,
       "unit": "mg",
       "matched": true
     },
@@ -5664,12 +5664,12 @@
       "matched": true
     },
     {
-      "food": "Pistachios 1 oz",
+      "food": "Pistachios 1 cup",
       "sourceLabel": "Peanuts & pistachios",
       "nutrientKey": "coq10",
       "nutrientLabel": "Coenzyme Q10",
-      "nutrientText": "Coenzyme Q10 0.6 mg",
-      "amount": 0.6,
+      "nutrientText": "Coenzyme Q10 2.6 mg",
+      "amount": 2.6,
       "unit": "mg",
       "matched": true
     },
@@ -6524,12 +6524,12 @@
       "matched": true
     },
     {
-      "food": "Tomato md",
+      "food": "Tomato lg",
       "sourceLabel": "Tomatoes",
       "nutrientKey": "alphaLipoicAcid",
       "nutrientLabel": "Alpha-lipoic acid (ALA)",
-      "nutrientText": "Alpha-lipoic acid (ALA) 0.05 mg",
-      "amount": 0.05,
+      "nutrientText": "Alpha-lipoic acid (ALA) 0.07 mg",
+      "amount": 0.07,
       "unit": "mg",
       "matched": true
     },

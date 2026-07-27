@@ -600,6 +600,9 @@
       "B12 is required for red blood cells, nerve myelination, DNA synthesis, and homocysteine control.",
       "In a one-year trial, vitamin D plus B12, B6, and folate lowered fasting TMAO more than vitamin D alone—likely through homocysteine and choline metabolism cross-talk, though mechanisms are still unclear."
     ],
+    "bVitamins": [
+      "Vitamin B12 (cobalamin) is the stored exception among B vitamins—the liver can hold years of reserve—so short gaps matter less than for B1–B9, but vegans and low-acid stomachs still need a reliable source."
+    ],
     "tooHigh": [
       "While deficiency can harm DNA, some studies link very high B12—especially from long-term high-dose supplements—to lung, pancreatic, and liver cancer, certain myeloid blood cancers, and poorer outcomes in some cancer patients.",
       "Food sources are safe at normal intake; routine megadose supplements beyond correcting deficiency are rarely warranted."
@@ -741,6 +744,9 @@
       "Vitamin B6 supports neurotransmitters, homocysteine metabolism, and immune function—working with folate and B12 in one-carbon metabolism.",
       "It was included in the B-vitamin arm that lowered TMAO alongside vitamin D in a year-long trial; correcting low B6 may help cardiovascular and gut-metabolite balance."
     ],
+    "bVitamins": [
+      "Vitamin B6 covers pyridoxine, pyridoxal, and pyridoxamine (active form PLP)—needed daily with folate and B12 for neurotransmitter and homocysteine chemistry."
+    ],
     "tooHigh": [
       "Very high B6 supplements (often 50–100 mg) for months can cause nerve tingling and numbness—stay near food-level intake unless prescribed.",
       "Chronic megadoses are not needed for TMAO and can harm nerves."
@@ -785,6 +791,9 @@
     "enough": [
       "Folate (B9) supports DNA synthesis, red blood cell formation, and methylation reactions that affect mood and homocysteine—a marker tied to cardiovascular risk.",
       "Together with B12 and B6, folate was part of the combination that lowered TMAO alongside vitamin D in clinical research—adequacy matters more than megadoses."
+    ],
+    "bVitamins": [
+      "Vitamin B9 (folate) is water-soluble and pairs with B6 and B12 in one-carbon metabolism—leafy greens, legumes, and fortified grains cover most daily needs."
     ],
     "tooHigh": [
       "Very high folic acid from supplements can mask B12 deficiency, allowing nerve damage to progress unnoticed.",
@@ -836,6 +845,9 @@
       "Biotin (B7) supports keratin production for hair and nails, fatty acid synthesis, and glucose metabolism—helping energy and skin barrier health.",
       "Most people cover needs from eggs, nuts, and varied whole foods without supplements."
     ],
+    "bVitamins": [
+      "Vitamin B7 (biotin) is water-soluble; eggs, nuts, and varied whole foods usually meet the ~30 mcg/day target without megadose supplements."
+    ],
     "tooHigh": [
       "Biotin from food is safe; very high supplement doses can interfere with some lab tests (especially thyroid and troponin)—tell clinicians before blood work.",
       "Megadoses are not needed for hair or nails unless a clinician confirms deficiency."
@@ -875,6 +887,9 @@
     "enough": [
       "Thiamin helps convert carbs into energy and supports nerve and heart muscle function—keeping you alert and steady during long workdays.",
       "Most varied diets with grains, pork, or legumes cover needs without supplements."
+    ],
+    "bVitamins": [
+      "Vitamin B1 (thiamine) is water-soluble and stores poorly—pork, fortified grains, legumes, and sunflower seeds keep daily carb-to-energy conversion on track."
     ],
     "tooHigh": [
       "Thiamin from food is safe; high-dose supplements are rarely needed and can cause stomach upset in sensitive people.",
@@ -918,6 +933,9 @@
       "Riboflavin supports energy production, antioxidant enzymes, and healthy skin and eyes—helping you recover from daily oxidative stress.",
       "Milk, eggs, and leafy greens usually cover needs in mixed diets."
     ],
+    "bVitamins": [
+      "Vitamin B2 (riboflavin) is water-soluble; milk, eggs, almonds, and greens usually cover daily needs and support FAD-dependent energy enzymes."
+    ],
     "tooHigh": [
       "Riboflavin from food is safe; excess turns urine bright yellow harmlessly.",
       "Supplements above needs rarely help performance and are unnecessary for most people."
@@ -958,6 +976,9 @@
       "Niacin supports energy metabolism, DNA repair, and cholesterol balance at food-level intakes—keeping cells fueled and skin healthy.",
       "Poultry, fish, peanuts, and fortified grains typically cover needs."
     ],
+    "bVitamins": [
+      "Vitamin B3 (niacin) is the main food precursor for NAD+; poultry, fish, peanuts, and fortified grains cover typical daily needs at food-level doses."
+    ],
     "tooHigh": [
       "High-dose niacin supplements (often 500 mg+) can cause flushing, liver stress, and glucose changes—prescription doses need monitoring.",
       "Food niacin is safe; megadoses are not needed for heart health without medical supervision."
@@ -997,6 +1018,9 @@
     "enough": [
       "Pantothenic acid helps make coenzyme A for energy, hormones, and fat metabolism—supporting steady energy and stress resilience.",
       "It is widespread in animal and plant foods, so varied diets usually cover the ~5 mg/day target."
+    ],
+    "bVitamins": [
+      "Vitamin B5 (pantothenic acid) builds coenzyme A; it is widespread in animal and plant foods, so varied diets usually hit ~5 mg/day."
     ],
     "tooHigh": [
       "Pantothenic acid from food is safe; very high supplements may cause diarrhea in some people.",
@@ -1653,6 +1677,30 @@
     ],
     "brainLongevity": [
       "Binds GABA-A and glycine receptors to calm glutamate-driven excitability; also supports astrocyte and mitochondrial antioxidant defense."
+    ]
+  },
+  "quercetin": {
+    "tooLow": [
+      "Quercetin is a flavonol (a flavonoid subclass), not an essential nutrient—low intake simply reflects few onions, apples with skin, capers, berries, or tea in the diet.",
+      "Peeling apples and cooking in lots of water removes much of the quercetin, which concentrates in skins and outer layers."
+    ],
+    "enough": [
+      "Quercetin is an antioxidant and anti-inflammatory flavonoid studied for endothelial function, blood pressure, and as a natural mast-cell stabilizer that blunts histamine release.",
+      "It is the best-known dietary senolytic: paired with the prescription drug dasatinib in the landmark 'D+Q' protocol it helps clear senescent cells—though food amounts (roughly 10-25 mg/day in a typical diet) sit far below supplement trial doses.",
+      "Capers, red and yellow onions, apples with the skin, kale, berries, and black or green tea are the most reliable food sources; this panel shows the amount without a % Daily Value because no official reference intake exists."
+    ],
+    "foodSources": [
+      "Capers",
+      "Onions",
+      "Apple",
+      "Blueberries",
+      "Kale",
+      "Broccoli",
+      "Black tea"
+    ],
+    "antiAging": [
+      "Quercetin is the flagship dietary senolytic—combined with dasatinib in 'D+Q' senolytic research—and also acts as a senomorphic that quiets NF-κB-driven inflammatory signaling.",
+      "Onions, capers, apples with skin, and tea supply food-level quercetin that supports antioxidant defense and endothelial health; supplement protocols use far higher, intermittent doses."
     ]
   }
 }

@@ -210,6 +210,7 @@
     "micro-tip-common-deficiencies"
   );
   var microTipFatSolubleEl = document.getElementById("micro-tip-fat-soluble");
+  var microTipBVitaminsEl = document.getElementById("micro-tip-b-vitamins");
   var caffeineTipModalEl = document.getElementById("caffeine-tip-modal");
   var caffeineTipModalDoneBtn = document.getElementById("caffeine-tip-modal-done");
   var fatsCholesterolTipModalEl = document.getElementById("fats-cholesterol-tip-modal");
@@ -489,6 +490,7 @@
     wellAbsorbed: true,
     poorlyAbsorbed: true,
     fatSolubleVitamins: true,
+    bVitamins: true,
     americanCommonDeficiencies: true,
   };
   var microStatusFilter = null;
@@ -836,6 +838,19 @@
         "vitaminK",
       ],
     },
+    bVitamins: {
+      label: "B vitamins (B1–B7, B9, B12)",
+      nutrients: [
+        "thiamin",
+        "riboflavin",
+        "niacin",
+        "pantothenicAcid",
+        "vitaminB6",
+        "biotin",
+        "folate",
+        "vitaminB12",
+      ],
+    },
     americanCommonDeficiencies: {
       label: "American Common Deficiencies",
       nutrients: [
@@ -880,6 +895,7 @@
         "vitaminB6",
         "vitaminB12",
         "taurine",
+        "quercetin",
       ],
       longevityNutrients: [
         "coq10",
@@ -887,7 +903,6 @@
         "dha",
         "polyphenols",
         "flavonoids",
-        "quercetin",
         "resveratrol",
         "curcumin",
       ],
@@ -970,9 +985,21 @@
     "vitaminK",
   ];
 
+  var B_VITAMIN_NUTRIENT_KEYS = [
+    "thiamin",
+    "riboflavin",
+    "niacin",
+    "pantothenicAcid",
+    "vitaminB6",
+    "biotin",
+    "folate",
+    "vitaminB12",
+  ];
+
   var NUTRIENT_FILTER_PRESETS = {
     "common-deficiencies": COMMON_DEFICIENCY_NUTRIENT_KEYS,
     "fat-soluble": FAT_SOLUBLE_NUTRIENT_KEYS,
+    "b-vitamins": B_VITAMIN_NUTRIENT_KEYS,
   };
 
   var MICRO_FIELDS = [
@@ -1010,14 +1037,24 @@
     { key: "vitaminK2", label: "Vitamin K2", unit: "mcg", code: "k2" },
     { key: "vitaminK2MK4", label: "MK-4 (Menaquinone-4)", unit: "mcg", code: "mk4" },
     { key: "vitaminK2MK7", label: "MK-7 (Menaquinone-7)", unit: "mcg", code: "mk7" },
-    { key: "thiamin", label: "Thiamin (B1)", unit: "mg", code: "b1" },
-    { key: "riboflavin", label: "Riboflavin (B2)", unit: "mg", code: "b2" },
-    { key: "niacin", label: "Niacin (B3)", unit: "mg", code: "b3" },
-    { key: "pantothenicAcid", label: "Pantothenic acid (B5)", unit: "mg", code: "b5" },
-    { key: "vitaminB6", label: "Vitamin B6", unit: "mg", code: "b6" },
-    { key: "biotin", label: "Biotin (B7)", unit: "mcg", code: "b7" },
-    { key: "folate", label: "Folate (B9)", unit: "mcg", code: "fol" },
-    { key: "vitaminB12", label: "Vitamin B12", unit: "mcg", code: "b12" },
+    { key: "thiamin", label: "Thiamine (Vitamin B1)", unit: "mg", code: "b1" },
+    { key: "riboflavin", label: "Riboflavin (Vitamin B2)", unit: "mg", code: "b2" },
+    { key: "niacin", label: "Niacin (Vitamin B3)", unit: "mg", code: "b3" },
+    {
+      key: "pantothenicAcid",
+      label: "Pantothenic Acid (Vitamin B5)",
+      unit: "mg",
+      code: "b5",
+    },
+    {
+      key: "vitaminB6",
+      label: "Pyridoxine, Pyridoxal and Pyridoxamine (Vitamin B6)",
+      unit: "mg",
+      code: "b6",
+    },
+    { key: "biotin", label: "Biotin (Vitamin B7)", unit: "mcg", code: "b7" },
+    { key: "folate", label: "Folate (Vitamin B9)", unit: "mcg", code: "fol" },
+    { key: "vitaminB12", label: "Cobalamin (Vitamin B12)", unit: "mcg", code: "b12" },
     { key: "vitaminC", label: "Vitamin C", unit: "mg", code: "c" },
   ];
 
@@ -1042,6 +1079,7 @@
     { key: "proline", label: "Proline", unit: "mg", code: "pro", group: "amino" },
     { key: "tyrosine", label: "Tyrosine", unit: "mg", code: "tyr", group: "amino" },
     { key: "taurine", label: "Taurine", unit: "mg", code: "tau", group: "amino" },
+    { key: "quercetin", label: "Quercetin", unit: "mg", code: "quer", group: "compound" },
   ];
 
   var MICRO_ALL_FIELDS = MICRO_FIELDS.concat(MICRO_EXTENDED_FIELDS);
@@ -12787,6 +12825,10 @@
       microTipFatSolubleEl.hidden =
         active && microConditionFocus !== "fatSolubleVitamins";
     }
+    if (microTipBVitaminsEl) {
+      microTipBVitaminsEl.hidden =
+        active && microConditionFocus !== "bVitamins";
+    }
     if (microTipCommonDeficienciesEl) {
       microTipCommonDeficienciesEl.hidden =
         active && microConditionFocus !== "americanCommonDeficiencies";
@@ -18148,6 +18190,9 @@
     var html = MICRO_FIELDS.map(microFormFieldHtml).join("");
     var minerals = MICRO_EXTENDED_FIELDS.filter(function (f) { return !f.group; });
     var aminos = MICRO_EXTENDED_FIELDS.filter(function (f) { return f.group === "amino"; });
+    var compounds = MICRO_EXTENDED_FIELDS.filter(function (f) {
+      return f.group === "compound";
+    });
     if (minerals.length) {
       html += '<div class="micro-form__separator">Additional trace minerals</div>';
       html += minerals.map(microFormFieldHtml).join("");
@@ -18155,6 +18200,10 @@
     if (aminos.length) {
       html += '<div class="micro-form__separator">Amino acids</div>';
       html += aminos.map(microFormFieldHtml).join("");
+    }
+    if (compounds.length) {
+      html += '<div class="micro-form__separator">Plant compounds</div>';
+      html += compounds.map(microFormFieldHtml).join("");
     }
     microFormEl.innerHTML = html;
   }

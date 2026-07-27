@@ -53,7 +53,7 @@ Pick a realistic, easy-to-measure portion and state its unit (oz, g, cup, tbsp, 
 
 | Key (`mg`)                                                                                                                                                 | Key (`mcg`)                                                                                     | Key (`g`)                                     |
 | ---------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- | --------------------------------------------- |
-| `sodium`, `potassium`, `calcium`, `iron`, `magnesium`, `zinc`, `manganese`, `vitaminE`, `thiamin`, `riboflavin`, `niacin`, `pantothenicAcid`, `vitaminB6`, `vitaminC`, `phosphorus`, `choline`, `chloride` | `copper`, `selenium`, `chromium`, `iodine`, `vitaminA`, `vitaminD`, `vitaminK`, `vitaminK1`, `vitaminK2`, `vitaminK2MK4`, `vitaminK2MK7`, `biotin`, `folate`, `vitaminB12`, `molybdenum` | `fiber`, `solubleFiber`, `insolubleFiber`     |
+| `sodium`, `potassium`, `calcium`, `iron`, `magnesium`, `zinc`, `manganese`, `vitaminE`, `thiamin`, `riboflavin`, `niacin`, `pantothenicAcid`, `vitaminB6`, `vitaminC`, `phosphorus`, `choline`, `chloride`, `quercetin` | `copper`, `selenium`, `chromium`, `iodine`, `vitaminA`, `vitaminD`, `vitaminK`, `vitaminK1`, `vitaminK2`, `vitaminK2MK4`, `vitaminK2MK7`, `biotin`, `folate`, `vitaminB12`, `molybdenum` | `fiber`, `solubleFiber`, `insolubleFiber`     |
 
 Amino acids (all in **mg**): `histidine`, `isoleucine`, `leucine`, `lysine`, `methionine`, `phenylalanine`, `threonine`, `tryptophan`, `valine`, `arginine`, `cysteine`, `glutamine`, `glycine`, `proline`, `tyrosine`, `taurine`.
 
@@ -62,7 +62,7 @@ Amino acids (all in **mg**): `histidine`, `isoleucine`, `leucine`, `lysine`, `me
 ### `longevity` — units per key
 
 - Grams (`g`): `saturatedFat`, `monounsaturatedFat`, `polyunsaturatedFat`, `transFat`, `plantSterols`, `omega3`, `omega6`, `omega9`, `ala`, `epa`, `dha`, `linoleicAcid`, `arachidonicAcid`, `oleicAcid`, `palmitoleicAcid`, `methionine`
-- Milligrams (`mg`): `cholesterol`, `polyphenols`, `nitrate`, `flavonoids`, `carotenoids`, `lutein`, `curcumin`, `resveratrol`, `coq10`, `nr`, `nmn`, `sulforaphane`, `phosphorus`, `choline`, `carnitine`, `betaine`, `taurine`
+- Milligrams (`mg`): `cholesterol`, `polyphenols`, `nitrate`, `flavonoids`, `carotenoids`, `lutein`, `curcumin`, `resveratrol`, `coq10`, `nr`, `nmn`, `sulforaphane`, `phosphorus`, `choline`, `carnitine`, `betaine`, `taurine`, `quercetin` (prefer numeric amount in `micros` with `quercetin: true` here)
 - Micrograms (`mcg`): `selenium`, `copper`
 
 ### `carbQuality`
@@ -76,7 +76,7 @@ Amino acids (all in **mg**): `histidine`, `isoleucine`, `leucine`, `lysine`, `me
 
 ## 4. Shared keys: number in `micros`, `true` in `longevity`
 
-A few nutrients appear in **both** panels: `vitaminE`, `vitaminK`, `vitaminK1`, `vitaminK2`, `vitaminK2MK4`, `vitaminK2MK7`, `selenium`, `copper`, `methionine`, `phosphorus`, `choline`, `taurine`.
+A few nutrients appear in **both** panels: `vitaminE`, `vitaminK`, `vitaminK1`, `vitaminK2`, `vitaminK2MK4`, `vitaminK2MK7`, `selenium`, `copper`, `methionine`, `phosphorus`, `choline`, `taurine`, `quercetin`.
 
 Rule: put the **numeric amount in `micros`**, and set the same key in `longevity` to `true`. The app reads the number from `micros` and uses `true` as a "look it up over there" flag.
 
