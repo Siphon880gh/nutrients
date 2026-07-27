@@ -353,6 +353,7 @@
   var starterGuideTextEl = document.getElementById("starter-guide-text");
   var starterGuideDismissEl = document.getElementById("starter-guide-dismiss");
   var starterGuideEligible = false;
+  var starterGuideFinished = false;
   var starterGuideStep = null;
   var starterGuideTarget = null;
   var starterGuideScrollResizeBound = false;
@@ -9949,7 +9950,16 @@
     );
   }
 
-  function importSampleFoods() {
+  function fetchSampleFoodItems() {
+    return fetch(IMPORT_SAMPLE_FOODS_URL).then(function (res) {
+      if (!res.ok) throw new Error("Could not load sample food definitions");
+      return res.text();
+    }).then(function (raw) {
+      return parseImportAllItems(raw);
+    });
+  }
+
+  function closeModalsForSampleFoodImport() {
     if (activeImportId) closeImportModal();
     if (activeMicroId) {
       saveMicrosFromForm();
@@ -9966,18 +9976,21 @@
     if (microDefModalEl && !microDefModalEl.hidden) closeMicroDefModal();
     if (microGapsModalEl && !microGapsModalEl.hidden) closeMicroGapsModal();
     if (healthTimelineModalEl && !healthTimelineModalEl.hidden) closeHealthTimelineModal();
+  }
 
-    fetch(IMPORT_SAMPLE_FOODS_URL)
-      .then(function (res) {
-        if (!res.ok) throw new Error("Could not load sample food definitions");
-        return res.text();
-      })
-      .then(function (raw) {
-        var items = parseImportAllItems(raw);
+  function applySampleFoodItems(items) {
+    applyImportAllReplace(items, true);
+    renderKeywords();
+    refreshAll();
+  }
+
+  function importSampleFoods() {
+    closeModalsForSampleFoodImport();
+
+    fetchSampleFoodItems()
+      .then(function (items) {
         if (!confirmImportSampleReplace(items.length)) return;
-        applyImportAllReplace(items, true);
-        renderKeywords();
-        refreshAll();
+        applySampleFoodItems(items);
         advanceStarterGuideAfterImport();
       })
       .catch(function (e) {
@@ -16375,6 +16388,7 @@
   function afterAuthSessionChange() {
     loadPersistedAppState();
     applyLoadedAppStateToUi();
+    maybeAutoImportSampleFoodsAndShowStarterGuide();
   }
 
   function submitAuthSignup() {
@@ -20302,8 +20316,8 @@
       }
     }
 
-    viewedWeekStart =
-      clampWeekMondayKey(loadViewedWeekStartKey() || currentWeekMondayKey());
+    // Always open on the current calendar week (do not restore last viewed week).
+    viewedWeekStart = currentWeekMondayKey();
     loadEditorsFromDayMeals();
     updateWeekNavUi();
     updateDayDateLabels();
@@ -24202,6 +24216,13 @@
   }
 
   function starterGuideTargetForStep(step) {
+    if (step === "foods") {
+      return (
+        (keywordsListEl && keywordsListEl.querySelector(".keywords__row")) ||
+        document.getElementById("add-keyword") ||
+        document.getElementById("food-definitions-heading")
+      );
+    }
     if (step === "import") {
       return (
         importSampleFoodsTopBtn ||
@@ -24226,15 +24247,11 @@
     var maxLeft = window.innerWidth - panelWidth / 2 - 12;
     left = Math.max(minLeft, Math.min(maxLeft, left));
 
-    if (starterGuideStep === "import") {
-      starterGuideEl.style.left = left + "px";
-      starterGuideEl.style.top = rect.top - gap + "px";
-      starterGuideEl.style.transform = "translate(-50%, -100%)";
-      starterGuideEl.setAttribute("data-placement", "bottom");
-      return;
-    }
-
-    if (starterGuideStep === "meals") {
+    if (
+      starterGuideStep === "foods" ||
+      starterGuideStep === "import" ||
+      starterGuideStep === "meals"
+    ) {
       starterGuideEl.style.left = left + "px";
       starterGuideEl.style.top = rect.top - gap + "px";
       starterGuideEl.style.transform = "translate(-50%, -100%)";
@@ -24251,8 +24268,14 @@
   }
 
   function dismissStarterGuide() {
+    if (starterGuideStep === "foods") {
+      hideStarterGuide();
+      advanceStarterGuideAfterImport();
+      return;
+    }
     if (starterGuideStep === "meals") {
       starterGuideEligible = false;
+      starterGuideFinished = true;
     }
     hideStarterGuide();
   }
@@ -24277,9 +24300,24 @@
     bindStarterGuideScrollResize();
   }
 
-  function maybeShowStarterGuideImportStep() {
-    if (keywords.length > 0) return;
-    starterGuideEligible = true;
+  function showStarterGuideFoodsStep() {
+    if (!starterGuideEligible || keywords.length === 0) return;
+    window.requestAnimationFrame(function () {
+      window.requestAnimationFrame(function () {
+        if (!starterGuideEligible || keywords.length === 0) return;
+        var firstRow =
+          keywordsListEl && keywordsListEl.querySelector(".keywords__row");
+        showStarterGuideStep(
+          "foods",
+          "Sample food definitions were loaded for you. This is the first one. You can still add your own food definitions.",
+          firstRow || document.querySelector(".keywords")
+        );
+      });
+    });
+  }
+
+  function showStarterGuideImportStepFallback() {
+    if (keywords.length > 0 || !starterGuideEligible) return;
     window.requestAnimationFrame(function () {
       window.requestAnimationFrame(function () {
         if (keywords.length > 0 || !starterGuideEligible) return;
@@ -24291,6 +24329,30 @@
         );
       });
     });
+  }
+
+  function maybeAutoImportSampleFoodsAndShowStarterGuide() {
+    if (keywords.length > 0) return;
+
+    fetchSampleFoodItems()
+      .then(function (items) {
+        if (keywords.length > 0) {
+          if (!starterGuideFinished) {
+            starterGuideEligible = true;
+            showStarterGuideFoodsStep();
+          }
+          return;
+        }
+        applySampleFoodItems(items);
+        if (starterGuideFinished) return;
+        starterGuideEligible = true;
+        showStarterGuideFoodsStep();
+      })
+      .catch(function () {
+        if (starterGuideFinished) return;
+        starterGuideEligible = true;
+        showStarterGuideImportStepFallback();
+      });
   }
 
   function advanceStarterGuideAfterImport() {
@@ -24312,7 +24374,7 @@
     initTargetRefPopoverEvents();
     applyLoadedAppStateToUi();
     applyInitialLongevityHash();
-    maybeShowStarterGuideImportStep();
+    maybeAutoImportSampleFoodsAndShowStarterGuide();
   }
 
   loadAppConfig(function () {
