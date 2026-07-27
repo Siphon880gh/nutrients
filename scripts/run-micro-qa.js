@@ -135,7 +135,7 @@ const FOOD_PATCHES = {
   "Costco Rotisserie Chicken 1 cup (of 4)": { vitaminD: 0 },
   "Starbucks Bacon & Gruyère Egg Bites - 2 bites": { selenium: 18, vitaminK: 1, iodine: 15 },
   "Milk reduced 1 cup": { vitaminD: 2.5, iodine: 56, selenium: 6, vitaminB12: 1.1 },
-  "Chicken Steak - Asian": { vitaminD: 0 },
+  "Chicken Steak - Asian 5 oz": { vitaminD: 0 },
   "Shrimp Fried - 3pc": { selenium: 25, vitaminB12: 1.5, iodine: 20, vitaminD: 0 },
   "Guacamole": { selenium: 0.4, vitaminK: 15, phosphorus: 35, molybdenum: 8 },
   "Carrot md": { selenium: 0.1, vitaminK: 8, molybdenum: 5 },

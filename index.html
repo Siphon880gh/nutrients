@@ -291,7 +291,6 @@
                   <span>Adverse effects (A/E)</span>
                   <span class="app-nav__shortcut" aria-hidden="true">5</span>
                 </label>
-                <button type="button" class="dashboard__sticky-filter-clear" data-sticky-filter-clear hidden aria-label="Clear filters">×</button>
               </div>
             </div>
             <div class="dashboard__sticky-filter-group dashboard__filter-panel-section--nutrients">
@@ -302,7 +301,10 @@
                   <input type="text" id="micro-nutrient-filter-input" class="dashboard__nutrient-filter-input" data-nutrient-filter-input placeholder="Search nutrients…" autocomplete="off" spellcheck="false" aria-label="Search nutrients" aria-autocomplete="list" aria-controls="micro-nutrient-filter-suggest" aria-expanded="false" />
                   <div id="micro-nutrient-filter-suggest" class="dashboard__nutrient-filter-suggest" role="listbox" hidden aria-label="Nutrient suggestions"></div>
                 </div>
-                <div class="dashboard__nutrient-filter-chips" data-nutrient-filter-chips role="list" aria-label="Selected nutrients"></div>
+                <div class="dashboard__nutrient-filter-chips-wrap">
+                  <div class="dashboard__nutrient-filter-chips" data-nutrient-filter-chips role="list" aria-label="Selected nutrients"></div>
+                  <button type="button" class="dashboard__sticky-filter-clear" data-sticky-filter-clear data-app-shortcut="Escape Escape" aria-keyshortcuts="Escape Escape" hidden aria-label="Clear filters"><span class="app-nav__shortcut app-nav__shortcut--cluster" aria-hidden="true"><span>Esc</span><span>Esc</span></span>×</button>
+                </div>
               </div>
             </div>
 
@@ -484,7 +486,6 @@
                   <span>Adverse effects (A/E)</span>
                   <span class="app-nav__shortcut" aria-hidden="true">5</span>
                 </label>
-                <button type="button" class="dashboard__sticky-filter-clear" data-sticky-filter-clear hidden aria-label="Clear filters">×</button>
               </div>
             </div>
             <div class="dashboard__sticky-filter-group dashboard__filter-panel-section--nutrients">
@@ -495,7 +496,10 @@
                   <input type="text" id="longevity-nutrient-filter-input" class="dashboard__nutrient-filter-input" data-nutrient-filter-input placeholder="Search nutrients…" autocomplete="off" spellcheck="false" aria-label="Search nutrients" aria-autocomplete="list" aria-controls="longevity-nutrient-filter-suggest" aria-expanded="false" />
                   <div id="longevity-nutrient-filter-suggest" class="dashboard__nutrient-filter-suggest" role="listbox" hidden aria-label="Nutrient suggestions"></div>
                 </div>
-                <div class="dashboard__nutrient-filter-chips" data-nutrient-filter-chips role="list" aria-label="Selected nutrients"></div>
+                <div class="dashboard__nutrient-filter-chips-wrap">
+                  <div class="dashboard__nutrient-filter-chips" data-nutrient-filter-chips role="list" aria-label="Selected nutrients"></div>
+                  <button type="button" class="dashboard__sticky-filter-clear" data-sticky-filter-clear data-app-shortcut="Escape Escape" aria-keyshortcuts="Escape Escape" hidden aria-label="Clear filters"><span class="app-nav__shortcut app-nav__shortcut--cluster" aria-hidden="true"><span>Esc</span><span>Esc</span></span>×</button>
+                </div>
               </div>
             </div>
             </div>

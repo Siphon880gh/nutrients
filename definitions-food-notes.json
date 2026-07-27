@@ -64,6 +64,21 @@
       "label": "Trifecta Burrito",
       "pattern": "\\btrifecta.*burrito\\b",
       "note": "Nutrients include the side of guac vacuum-sealed with the burrito. Calories and macros in the food definition match the nutrition label on the vacuum-sealed tray. If Trifecta later adjusts the ingredients and the label no longer matches, re-base from the new label and add about +75 calories for the guac (the guac is definitely more than that)."
+    },
+    {
+      "label": "Sprouts Blend",
+      "pattern": "\\bsprouts\\b.*alfalfa.*broccoli.*kale|\\balfalfa,?\\s*broccoli\\s*&\\s*kale\\b.*nutritional\\s*blend",
+      "note": "<p>You can buy a brand like <strong>Wild About Sprouts Alfalfa, Broccoli &amp; Kale Nutritional Blend</strong> from Ralphs. Eat them raw straight out of the package.</p><p><strong>Prep ideas:</strong></p><ul><li>Salad topping for crunch</li><li>Thick pinch inside a sandwich or cheese sandwich</li><li>Pile them on warm rice or quinoa</li><li>Eat as a side to proteins</li></ul><p>Sprouting fundamentally changes the nutrition profile by concentrating specific protective antioxidants and altering how your body absorbs nutrients. While full-grown vegetables provide significantly more dietary fiber and overall food volume, sprouts offer a massive surge in micronutrient density and enzyme activity per gram.</p>"
+    },
+    {
+      "label": "Mandarin",
+      "pattern": "\\bmandarins?\\b",
+      "note": "Orange-colored and not red-tinted = tangerine. Most other mandarins tend to be reddish. All tangerines are mandarins. Mandarins have different species."
+    },
+    {
+      "label": "Tangerine",
+      "pattern": "\\btangerines?\\b",
+      "note": "Orange-colored and not red-tinted = tangerine. Most other mandarins tend to be reddish. All tangerines are mandarins. Mandarins have different species."
     }
   ]
 }

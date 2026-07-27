@@ -40,6 +40,7 @@
       "label": "Meat & poultry",
       "patterns": [
         "^Chicken\\b",
+        "^Duck\\b",
         "^Beef Liver",
         "^Lamb Liver",
         "^Ham slice",
@@ -79,7 +80,8 @@
         "^Russet Potato",
         "^Sweet Potato",
         "^Yukon Gold",
-        "^Smashed Potatoes"
+        "^Smashed Potatoes",
+        "^Sprouts\\b"
       ]
     },
     {

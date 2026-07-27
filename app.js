@@ -513,6 +513,7 @@
   var filterStickySideEffects = false;
   var filterStickyAdverseEffects = false;
   var filterStickyNutrientKeys = [];
+  var stickyFilterEscapeArmedAt = 0;
   var highlightStickyDailyIntake = false;
   var highlightStickySideEffects = false;
   var highlightStickyAdverseEffects = false;
@@ -22052,7 +22053,21 @@
     if (activeMicroId) {
       saveMicrosFromForm();
       closeMicroModal();
+      return;
     }
+    // Escape twice within 1s clears sticky Filter (when any filter is active).
+    if (!microStickyFilterActive()) {
+      stickyFilterEscapeArmedAt = 0;
+      return;
+    }
+    var now = Date.now();
+    if (stickyFilterEscapeArmedAt && now - stickyFilterEscapeArmedAt <= 1000) {
+      e.preventDefault();
+      stickyFilterEscapeArmedAt = 0;
+      clearStickyIconFilters();
+      return;
+    }
+    stickyFilterEscapeArmedAt = now;
   });
 
   initMicroForm();

@@ -96,7 +96,6 @@ These names do **not** spell out a measurable portion (no `1 cup`, `1 oz`, count
 | `Cereal -  Raisin Bran` | Add cup or grams (label serving) |
 | `Cereal -  Grape-Nuts` | Add cup or grams (label serving) |
 | `Shredded Wheat` | Add biscuits / grams |
-| `Chicken Steak - Asian` | Add oz or grams |
 | `AM Shot - Avocado Oil` | Add tbsp / tsp / ml |
 | `AM Shot - Apple Cider Vinegar` | Add tbsp / tsp / ml |
 | `AM Shot - Coconut Oil` | Add tbsp / tsp / ml |
