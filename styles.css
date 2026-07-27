@@ -5487,6 +5487,12 @@ button.dashboard__longevity-name:focus-visible {
   border-bottom-color: #3d6b9e;
 }
 
+.macro-rank-modal__tab--calories {
+  margin-left: auto;
+  padding-left: 1rem;
+  border-left: 1px solid #e0e0dc;
+}
+
 .dashboard__card {
   padding: 0.55rem 0.6rem;
   border: 1px solid #c8c8c4;

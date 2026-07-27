@@ -10314,7 +10314,15 @@
       var hits = countKeyword(text, name);
       if (!hits) return;
 
-      var perServing = parseMacro(kw[macroKey]);
+      var perServing;
+      if (macroKey === "calories") {
+        perServing =
+          parseMacro(kw.protein) * CAL_PROTEIN +
+          parseMacro(kw.carbs) * CAL_CARBS +
+          parseMacro(kw.fats) * CAL_FATS;
+      } else {
+        perServing = parseMacro(kw[macroKey]);
+      }
       if (!perServing || isNaN(perServing) || perServing <= 0) return;
 
       list.push({
@@ -10371,11 +10379,14 @@
   function macroRankTabLabel(tab) {
     if (tab === "carbs") return "Carbs";
     if (tab === "fats") return "Fats";
+    if (tab === "calories") return "Calories";
     return "Protein";
   }
 
   function normalizeMacroRankTab(tab) {
-    if (tab === "carbs" || tab === "fats" || tab === "protein") return tab;
+    if (tab === "carbs" || tab === "fats" || tab === "protein" || tab === "calories") {
+      return tab;
+    }
     return "protein";
   }
 
@@ -10439,8 +10450,8 @@
     if (macroRankModalSubtitleEl) {
       macroRankModalSubtitleEl.textContent =
         activeMacroRankScope === "weekly"
-          ? "Matched foods from Mon–Sun, ranked by protein, carbs, or fats"
-          : "Matched foods ranked by protein, carbs, or fats";
+          ? "Matched foods from Mon–Sun, ranked by protein, carbs, fats, or calories"
+          : "Matched foods ranked by protein, carbs, fats, or calories";
     }
   }
 
@@ -10470,7 +10481,7 @@
     }
     macroRankBodyEl.innerHTML = nutrientSourcesListHtml(
       prepared,
-      "g",
+      tab === "calories" ? "cal" : "g",
       activeMacroRankSort
     );
   }
