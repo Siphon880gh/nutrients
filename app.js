@@ -11821,6 +11821,10 @@
     filterStickyNutrientKeys.forEach(function (key) {
       selected[key] = true;
     });
+    // Single vitamin letters: prefer "Vitamin A/B/C/D/E/K…" over other prefix/code hits.
+    var vitaminLetterBoost =
+      ql.length === 1 && "abcdek".indexOf(ql) !== -1;
+    var vitaminLabelPrefix = vitaminLetterBoost ? "vitamin " + ql : "";
     var results = [];
     MICRO_ALL_FIELDS.forEach(function (field) {
       if (selected[field.key]) return;
@@ -11830,28 +11834,34 @@
       var keyl = field.key.toLowerCase();
       var score = null;
       var highlight = { start: 0, len: 0 };
-      var at = ll.indexOf(ql);
-      if (at === 0) {
-        score = 0;
-        highlight = { start: 0, len: q.length };
-      } else if (at > 0) {
-        score = 2;
-        highlight = { start: at, len: q.length };
-      } else if (code === ql || keyl === ql) {
-        score = 1;
-        highlight = { start: 0, len: Math.min(q.length, label.length) };
-      } else if (code.indexOf(ql) === 0 || keyl.indexOf(ql) === 0) {
-        score = 3;
-        highlight = { start: 0, len: Math.min(q.length, label.length) };
+      if (vitaminLetterBoost && ll.indexOf(vitaminLabelPrefix) === 0) {
+        // Exact "Vitamin A" ahead of "Vitamin A (…)" / "Vitamin B6".
+        score = ll === vitaminLabelPrefix ? -2 : -1;
+        highlight = { start: 8, len: 1 };
       } else {
-        var prefixLen = commonPrefixLen(q, label);
-        if (prefixLen >= 2) {
-          var slice = ll.slice(0, q.length);
-          var dist = levenshtein(ql, slice);
-          var maxDist = q.length <= 4 ? 1 : Math.max(1, Math.floor(q.length / 4));
-          if (dist <= maxDist) {
-            score = 4 + dist;
-            highlight = { start: 0, len: prefixLen };
+        var at = ll.indexOf(ql);
+        if (at === 0) {
+          score = 0;
+          highlight = { start: 0, len: q.length };
+        } else if (at > 0) {
+          score = 2;
+          highlight = { start: at, len: q.length };
+        } else if (code === ql || keyl === ql) {
+          score = 1;
+          highlight = { start: 0, len: Math.min(q.length, label.length) };
+        } else if (code.indexOf(ql) === 0 || keyl.indexOf(ql) === 0) {
+          score = 3;
+          highlight = { start: 0, len: Math.min(q.length, label.length) };
+        } else {
+          var prefixLen = commonPrefixLen(q, label);
+          if (prefixLen >= 2) {
+            var slice = ll.slice(0, q.length);
+            var dist = levenshtein(ql, slice);
+            var maxDist = q.length <= 4 ? 1 : Math.max(1, Math.floor(q.length / 4));
+            if (dist <= maxDist) {
+              score = 4 + dist;
+              highlight = { start: 0, len: prefixLen };
+            }
           }
         }
       }
