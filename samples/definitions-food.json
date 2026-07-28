@@ -5701,7 +5701,7 @@
     }
   },
   {
-    "name": "Cereal - Cheerios 1½ cups**",
+    "name": "Cereal - Cheerios 1\u00bd cups**",
     "protein": 5.3,
     "carbs": 30.8,
     "fats": 2.7,
@@ -5785,7 +5785,7 @@
     }
   },
   {
-    "name": "Cereal - Cheerios ¾ cup*",
+    "name": "Cereal - Cheerios \u00be cup*",
     "protein": 2.6,
     "carbs": 15.4,
     "fats": 1.4,
@@ -6226,7 +6226,7 @@
     }
   },
   {
-    "name": "Starbucks Bacon & Gruyère Egg Bites - 2 bites",
+    "name": "Starbucks Bacon & Gruy\u00e8re Egg Bites - 2 bites",
     "protein": 19,
     "carbs": 9,
     "fats": 20,
@@ -6610,7 +6610,7 @@
     }
   },
   {
-    "name": "Milk reduced ¾ cup**",
+    "name": "Milk reduced \u00be cup**",
     "protein": 6.1,
     "carbs": 9.1,
     "fats": 3.6,
@@ -6716,7 +6716,7 @@
     }
   },
   {
-    "name": "Milk reduced ½ cup",
+    "name": "Milk reduced \u00bd cup",
     "protein": 4.1,
     "carbs": 6.1,
     "fats": 2.4,
@@ -6822,7 +6822,7 @@
     }
   },
   {
-    "name": "Milk reduced ⅜ cup*",
+    "name": "Milk reduced \u215c cup*",
     "protein": 3,
     "carbs": 4.6,
     "fats": 1.8,
@@ -15547,7 +15547,7 @@
     }
   },
   {
-    "name": "Milk whole ¾ cup**",
+    "name": "Milk whole \u00be cup**",
     "protein": 5.8,
     "carbs": 8.8,
     "fats": 5.9,
@@ -15653,7 +15653,7 @@
     }
   },
   {
-    "name": "Milk whole ½ cup",
+    "name": "Milk whole \u00bd cup",
     "protein": 3.9,
     "carbs": 5.9,
     "fats": 4,
@@ -15759,7 +15759,7 @@
     }
   },
   {
-    "name": "Milk whole ⅜ cup*",
+    "name": "Milk whole \u215c cup*",
     "protein": 2.9,
     "carbs": 4.4,
     "fats": 3,
@@ -22455,7 +22455,7 @@
     }
   },
   {
-    "name": "Lactaid whole milk ¾ cup**",
+    "name": "Lactaid whole milk \u00be cup**",
     "protein": 6,
     "carbs": 9.8,
     "fats": 6,
@@ -22561,7 +22561,7 @@
     }
   },
   {
-    "name": "Lactaid whole milk ½ cup",
+    "name": "Lactaid whole milk \u00bd cup",
     "protein": 4,
     "carbs": 6.5,
     "fats": 4,
@@ -22667,7 +22667,7 @@
     }
   },
   {
-    "name": "Lactaid whole milk ⅜ cup*",
+    "name": "Lactaid whole milk \u215c cup*",
     "protein": 3,
     "carbs": 4.9,
     "fats": 3,
@@ -22985,7 +22985,7 @@
     }
   },
   {
-    "name": "Lactaid calcium enriched milk ¾ cup**",
+    "name": "Lactaid calcium enriched milk \u00be cup**",
     "protein": 6,
     "carbs": 9.8,
     "fats": 6,
@@ -23091,7 +23091,7 @@
     }
   },
   {
-    "name": "Lactaid calcium enriched milk ½ cup",
+    "name": "Lactaid calcium enriched milk \u00bd cup",
     "protein": 4,
     "carbs": 6.5,
     "fats": 4,
@@ -23197,7 +23197,7 @@
     }
   },
   {
-    "name": "Lactaid calcium enriched milk ⅜ cup*",
+    "name": "Lactaid calcium enriched milk \u215c cup*",
     "protein": 3,
     "carbs": 4.9,
     "fats": 3,
@@ -23507,7 +23507,7 @@
     }
   },
   {
-    "name": "Cereal - Crispix 1½ cups**",
+    "name": "Cereal - Crispix 1\u00bd cups**",
     "protein": 3.5,
     "carbs": 38.3,
     "fats": 0,
@@ -23609,7 +23609,7 @@
     }
   },
   {
-    "name": "Cereal - Crispix ¾ cup*",
+    "name": "Cereal - Crispix \u00be cup*",
     "protein": 1.7,
     "carbs": 19.1,
     "fats": 0,
@@ -23915,7 +23915,7 @@
     }
   },
   {
-    "name": "Cereal - Signature Select's Crispy Rice 1½ cups**",
+    "name": "Cereal - Signature Select's Crispy Rice 1\u00bd cups**",
     "protein": 3,
     "carbs": 36,
     "fats": 0.5,
@@ -24017,7 +24017,7 @@
     }
   },
   {
-    "name": "Cereal - Signature Select's Crispy Rice ¾ cup*",
+    "name": "Cereal - Signature Select's Crispy Rice \u00be cup*",
     "protein": 1.5,
     "carbs": 18,
     "fats": 0.2,
@@ -24323,7 +24323,7 @@
     }
   },
   {
-    "name": "Cereal - Kellogg's Rice Krispies 1½ cups**",
+    "name": "Cereal - Kellogg's Rice Krispies 1\u00bd cups**",
     "protein": 3,
     "carbs": 36,
     "fats": 0,
@@ -24425,7 +24425,7 @@
     }
   },
   {
-    "name": "Cereal - Kellogg's Rice Krispies ¾ cup*",
+    "name": "Cereal - Kellogg's Rice Krispies \u00be cup*",
     "protein": 1.5,
     "carbs": 18,
     "fats": 0,
@@ -24735,7 +24735,7 @@
     }
   },
   {
-    "name": "Cereal - Instant oats 1½ cups**",
+    "name": "Cereal - Instant oats 1\u00bd cups**",
     "protein": 14.6,
     "carbs": 84.4,
     "fats": 8.4,
@@ -24839,7 +24839,7 @@
     }
   },
   {
-    "name": "Cereal - Instant oats ¾ cup*",
+    "name": "Cereal - Instant oats \u00be cup*",
     "protein": 7.3,
     "carbs": 42.2,
     "fats": 4.2,
@@ -25151,7 +25151,7 @@
     }
   },
   {
-    "name": "Cereal - Rolled oats 1½ cups**",
+    "name": "Cereal - Rolled oats 1\u00bd cups**",
     "protein": 16,
     "carbs": 82.2,
     "fats": 8,
@@ -25255,7 +25255,7 @@
     }
   },
   {
-    "name": "Cereal - Rolled oats ¾ cup*",
+    "name": "Cereal - Rolled oats \u00be cup*",
     "protein": 8,
     "carbs": 41.1,
     "fats": 4,
@@ -25465,7 +25465,7 @@
     }
   },
   {
-    "name": "Edamame ½ cup (78g, shelled)",
+    "name": "Edamame \u00bd cup (78g, shelled)",
     "protein": 9.3,
     "carbs": 6.9,
     "fats": 4.1,
@@ -25989,7 +25989,7 @@
     }
   },
   {
-    "name": "Denny's Regular Acai Bowl",
+    "name": "Denny's Acai Bowl (Regular Size)",
     "protein": 10,
     "carbs": 100,
     "fats": 20,
@@ -26090,6 +26090,110 @@
       "addedSugar": 20,
       "refinedCarbs": 25,
       "netCarbs": 90
+    }
+  },
+  {
+    "name": "Denny's Acai Bowl (Small)",
+    "protein": 7.3,
+    "carbs": 73,
+    "fats": 14.5,
+    "micros": {
+      "sodium": 102,
+      "potassium": 523,
+      "calcium": 58,
+      "iron": 1.6,
+      "magnesium": 62,
+      "zinc": 0.9,
+      "vitaminA": 33,
+      "vitaminD": 0,
+      "vitaminB12": 0,
+      "vitaminB6": 0.4,
+      "vitaminC": 33,
+      "folate": 40,
+      "biotin": 6,
+      "thiamin": 0.18,
+      "riboflavin": 0.15,
+      "niacin": 1.8,
+      "pantothenicAcid": 0.7,
+      "chromium": 4,
+      "iodine": 4,
+      "vitaminE": 2.5,
+      "vitaminK": 13,
+      "selenium": 6,
+      "copper": 203,
+      "phosphorus": 131,
+      "choline": 25,
+      "manganese": 1.0,
+      "molybdenum": 6,
+      "fluoride": 0,
+      "chloride": 152,
+      "histidine": 160,
+      "isoleucine": 276,
+      "leucine": 472,
+      "lysine": 305,
+      "methionine": 116,
+      "phenylalanine": 305,
+      "threonine": 218,
+      "tryptophan": 80,
+      "valine": 327,
+      "arginine": 348,
+      "cysteine": 102,
+      "glutamine": 1016,
+      "glycine": 276,
+      "proline": 363,
+      "tyrosine": 203,
+      "taurine": 0,
+      "solubleFiber": 2.2,
+      "insolubleFiber": 5.1,
+      "fiber": 7.3,
+      "vitaminK1": 13,
+      "vitaminK2": 0,
+      "vitaminK2MK4": 0,
+      "vitaminK2MK7": 0
+    },
+    "longevity": {
+      "saturatedFat": 5.8,
+      "monounsaturatedFat": 4.4,
+      "polyunsaturatedFat": 2.9,
+      "transFat": 0,
+      "cholesterol": 0,
+      "omega3": 0.11,
+      "omega6": 2.5,
+      "omega9": 4.0,
+      "ala": 0.09,
+      "epa": 0,
+      "dha": 0,
+      "linoleicAcid": 2.3,
+      "arachidonicAcid": 0,
+      "oleicAcid": 3.8,
+      "palmitoleicAcid": 0.2,
+      "vitaminE": true,
+      "vitaminK": true,
+      "vitaminK1": true,
+      "vitaminK2": true,
+      "selenium": true,
+      "polyphenols": 254,
+      "flavonoids": 87,
+      "carotenoids": 1.1,
+      "curcumin": 0,
+      "resveratrol": 0.4,
+      "coq10": 0,
+      "pqq": 0,
+      "sulforaphane": 0,
+      "phosphorus": true,
+      "choline": true,
+      "copper": true,
+      "lutein": 0.3,
+      "methionine": true,
+      "vitaminK2MK4": true,
+      "vitaminK2MK7": true,
+      "plantSterols": 0.01
+    },
+    "carbQuality": {
+      "glycemicIndex": 50,
+      "addedSugar": 15,
+      "refinedCarbs": 18,
+      "netCarbs": 66
     }
   },
   {
@@ -29845,7 +29949,7 @@
     }
   },
   {
-    "name": "Mushrooms (UV-exposed) ½ cup",
+    "name": "Mushrooms (UV-exposed) \u00bd cup",
     "protein": 1.6,
     "carbs": 2.2,
     "fats": 0.2,
@@ -29983,7 +30087,7 @@
     }
   },
   {
-    "name": "Sprouts Alfalfa, Broccoli & Kale Nutritional Blend ½ cup",
+    "name": "Sprouts Alfalfa, Broccoli & Kale Nutritional Blend \u00bd cup",
     "protein": 0.7,
     "carbs": 0.3,
     "fats": 0.1,

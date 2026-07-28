@@ -827,15 +827,15 @@
 
       <div class="keywords__filter">
         <label for="keywords-search" class="keywords__filter-label">Search</label>
-        <div class="keywords__filter-controls">
+        <form class="keywords__filter-controls">
+          <!-- do-not-autofill is a workaround to prevent Chrome from autofilling the field -->
           <input
             type="search"
             id="keywords-search"
             name="nutrients-food-filter"
             class="keywords__filter-input"
             placeholder="Filter by food name"
-            autocomplete="off"
-            autocorrect="off"
+            autocomplete="do-not-autofill"
             autocapitalize="off"
             spellcheck="false"
             role="searchbox"
@@ -845,7 +845,7 @@
             data-form-type="other"
           >
           <button type="button" id="keywords-search-clear" class="keywords__filter-clear" hidden aria-label="Clear search">×</button>
-        </div>
+        </form>
         <div class="keywords__category-controls">
           <button
             type="button"
