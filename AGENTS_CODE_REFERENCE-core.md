@@ -35,7 +35,7 @@ Parent overview: [AGENTS_CODE_REFERENCE.md](./AGENTS_CODE_REFERENCE.md)
 | Sticky filters carousel | `stickyFiltersCarouselState`, `stickyFiltersCarouselMq` (`max-width: 900px`), `isStickyFiltersCarouselActive`, `initStickyFiltersCarousel`, `scrollStickyFiltersCarouselToIndex`, `stepStickyFiltersCarousel`, `syncStickyFiltersCarouselNav`, `syncStickyFiltersCarouselFromScroll`, `[data-sticky-filters-track]` / `data-sticky-filters-carousel="prev\|next"`; re-inits when micro/longevity panels open |
 | Multi-week diary | `dayMealsByDate`, `viewedWeekStart`, `EARLIEST_DIARY_DATE` (`2026-05-01`) / `earliestWeekMondayKey` / `clampWeekMondayKey`, `toDateKey` / `parseDateKey` / `parseTypedDate` / `mondayOf` / `addDays` / `weekDateKeys` / `formatDayDateLabel` / `formatWeekRangeLabel`, `flushEditorsToDayMeals` / `loadEditorsFromDayMeals`, `setViewedWeekStart` / `stepViewedWeek` / `goToThisWeek` / `openWeekJumpModal` / `#week-jump-modal` / `updateWeekNavUi` / `updateDayDateLabels`, `copyDayToDateKey` / `copyWeekToMondayKey` / `copyDayToToday` / `copyDayToYesterday` / `copyDayToTomorrow` / `copyViewedWeekToThisWeek` / `#copy-date-modal` / `handleDayCopyAction` / `updateCopyActionButtons`, `viewedWeekStart` (settings) |
 | Unmatched lines | `unmatchedDayLines`, `allUnmatchedDayLines`, `weekUnmatchedLinesHtml`, `weekUnmatchedCarouselHtml`, `renderWeekUnmatchedLines`, `updateWeekUnmatchedLines`, `stepUnmatchedCarousel`, `toggleUnmatchedCarousel`, `focusDayLine` |
-| Food-name suggestions | `updateDaySuggest`, `positionDaySuggest`, `foodSuggestMatches`, `applyDayFoodSuggest`, `daySuggestPickItem`, `hideDaySuggest`, `hideAllDaySuggests`, `DAY_SUGGEST_MAX`; Tab accepts hovered/first (`daySuggestPickItem`); per-item fit/scroll: `updateDaySuggestItemHover`, `bindDaySuggestHover`, `bindDaySuggestResize`, `slowScrollDaySuggestItemRight`, `daySuggestItemScrollTo`, `daySuggestItemUpdateChevrons` |
+| Food-name suggestions | `updateDaySuggest`, `positionDaySuggest`, `foodSuggestMatches`, `applyDayFoodSuggest`, `daySuggestPickItem`, `hideDaySuggest`, `hideAllDaySuggests`; Tab accepts hovered/first (`daySuggestPickItem`); per-item fit/scroll: `updateDaySuggestItemHover`, `bindDaySuggestHover`, `bindDaySuggestResize`, `slowScrollDaySuggestItemRight`, `daySuggestItemScrollTo`, `daySuggestItemUpdateChevrons` |
 | Food notes (toolbar) | `loadFoodNotesDefinitions`, `normalizeFoodNotesDefinitions`, `detectedFoodNotes`, `updateDayFoodNotesUi`, `dayFoodNotesLabelsHtml`, `showDayFoodNotesPopoverForIndex`, `initDayFoodNotesEvents`, `foodNotesDefinitions`, `FOOD_NOTES_URL` |
 | Food categories (table filter) | `loadFoodCategoriesDefinitions`, `normalizeFoodCategories`, `foodCategoryIdForName`, `keywordsCategoryCounts`, `foodCategories`, `FOOD_CATEGORIES_URL` |
 | Starter guide | `maybeShowStarterGuideImportStep`, `advanceStarterGuideAfterImport`, `showStarterGuideStep`, `repositionStarterGuide`, `dismissStarterGuide`, `hideStarterGuide`, `starterGuideEligible`, `starterGuideStep` |
@@ -391,7 +391,7 @@ At `max-width: 900px`, micro / longevity sticky filter groups become a one-secti
 
 ## Food-name suggestions (day autocomplete)
 
-While typing on the **current line** of a day textarea, a popover suggests matching food-definition names (up to `DAY_SUGGEST_MAX` = 8).
+While typing on the **current line** of a day textarea, a popover suggests matching food-definition names (all matches).
 
 **Show/hide** — `updateDaySuggest(textarea)` (called from `bindDay` on `input` / `keyup` / `click`, plus a document `selectionchange` handler when a day textarea is focused):
 
@@ -488,7 +488,7 @@ All seven `.day__editor` boxes share one height.
 | Sample day meals | `IMPORT_SAMPLE_MEALS_URL` + `importSampleMeals` + `samples/day-meals.json` (applies to viewed week) |
 | Add explanatory text | key entry in `definitions-micronutrients.json` / `definitions-longevity.json` |
 | Change day clear copy | `confirmClearDay`, `confirmClearAllDays` (viewed week) |
-| Tune food suggestions | `DAY_SUGGEST_MAX`, `foodSuggestMatches`, `positionDaySuggest`, `levenshtein` thresholds |
+| Tune food suggestions | `foodSuggestMatches`, `positionDaySuggest`, `levenshtein` thresholds |
 | Tune starter guide copy/steps | `maybeShowStarterGuideImportStep`, `advanceStarterGuideAfterImport`, `showStarterGuideStep`, `starterGuideTargetForStep` |
 | Change shared editor height limits | `clampDayEditorHeight`, `.day__editor` min/max in CSS |
 | Eighth column | extend `DAYS`, HTML, CSS `repeat(n)` for dashboard + week grid |

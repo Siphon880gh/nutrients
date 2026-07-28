@@ -21016,7 +21016,6 @@
   }
 
   var DAY_SUGGEST_MIN_CHARS = 2;
-  var DAY_SUGGEST_MAX = 8;
 
   function clearDaySuggestDismissed(textarea) {
     if (!textarea) return;
@@ -21171,7 +21170,7 @@
       return a.name.length - b.name.length;
     });
 
-    return results.slice(0, DAY_SUGGEST_MAX);
+    return results;
   }
 
   function daySuggestItemHtml(match) {
