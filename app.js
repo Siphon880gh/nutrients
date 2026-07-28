@@ -1039,24 +1039,24 @@
     { key: "vitaminK2", label: "Vitamin K2", unit: "mcg", code: "k2" },
     { key: "vitaminK2MK4", label: "MK-4 (Menaquinone-4)", unit: "mcg", code: "mk4" },
     { key: "vitaminK2MK7", label: "MK-7 (Menaquinone-7)", unit: "mcg", code: "mk7" },
-    { key: "thiamin", label: "Thiamine (Vitamin B1)", unit: "mg", code: "b1" },
-    { key: "riboflavin", label: "Riboflavin (Vitamin B2)", unit: "mg", code: "b2" },
-    { key: "niacin", label: "Niacin (Vitamin B3)", unit: "mg", code: "b3" },
+    { key: "thiamin", label: "Thiamine (B1)", unit: "mg", code: "b1" },
+    { key: "riboflavin", label: "Riboflavin (B2)", unit: "mg", code: "b2" },
+    { key: "niacin", label: "Niacin (B3)", unit: "mg", code: "b3" },
     {
       key: "pantothenicAcid",
-      label: "Pantothenic Acid (Vitamin B5)",
+      label: "Pantothenic Acid (B5)",
       unit: "mg",
       code: "b5",
     },
     {
       key: "vitaminB6",
-      label: "Pyridoxine, Pyridoxal and Pyridoxamine (Vitamin B6)",
+      label: "Pyridoxine, Pyridoxal and Pyridoxamine (B6)",
       unit: "mg",
       code: "b6",
     },
-    { key: "biotin", label: "Biotin (Vitamin B7)", unit: "mcg", code: "b7" },
-    { key: "folate", label: "Folate (Vitamin B9)", unit: "mcg", code: "fol" },
-    { key: "vitaminB12", label: "Cobalamin (Vitamin B12)", unit: "mcg", code: "b12" },
+    { key: "biotin", label: "Biotin (B7)", unit: "mcg", code: "b7" },
+    { key: "folate", label: "Folate (B9)", unit: "mcg", code: "fol" },
+    { key: "vitaminB12", label: "Cobalamin (B12)", unit: "mcg", code: "b12" },
     { key: "vitaminC", label: "Vitamin C", unit: "mg", code: "c" },
   ];
 
@@ -1367,7 +1367,7 @@
     },
     {
       microKey: "vitaminB12",
-      label: "Vitamin B12 — upper GI motility; deficiency may slow emptying",
+      label: "Cobalamin (B12) — upper GI motility; deficiency may slow emptying",
       limiting: false,
     },
     {
@@ -1454,7 +1454,7 @@
     },
     {
       microKey: "vitaminB6",
-      label: "Vitamin B6 — transsulfuration & glutathione pathway",
+      label: "Pyridoxine (B6) — transsulfuration & glutathione pathway",
       limiting: false,
     },
     {
@@ -1477,12 +1477,12 @@
     },
     {
       microKey: "vitaminB12",
-      label: "Vitamin B12 — methylation & methionine cycle",
+      label: "Cobalamin (B12) — methylation & methionine cycle",
       limiting: false,
     },
     {
       microKey: "vitaminB6",
-      label: "Vitamin B6 — homocysteine & sulfur amino-acid metabolism",
+      label: "Pyridoxine (B6) — homocysteine & sulfur amino-acid metabolism",
       limiting: false,
     },
     {
@@ -1589,7 +1589,7 @@
     },
     {
       microKey: "thiamin",
-      label: "Thiamin (B1) — carbohydrate → energy in liver",
+      label: "Thiamine (B1) — carbohydrate → energy in liver",
       limiting: false,
     },
     {
@@ -1844,7 +1844,7 @@
     },
     {
       microKey: "vitaminB12",
-      label: "Vitamin B12 — methylation & anemia-related needs",
+      label: "Cobalamin (B12) — methylation & anemia-related needs",
       limiting: false,
     },
     {
@@ -1944,7 +1944,7 @@
     { microKey: "vitaminE", label: "Vitamin E — tissue antioxidant protection", limiting: false },
     { microKey: "selenium", label: "Selenium — selenoprotein antioxidant defense", limiting: false },
     { microKey: "zinc", label: "Zinc — immune regulation & tissue repair", limiting: false },
-    { microKey: "vitaminB6", label: "Vitamin B6 — inflammatory cytokine modulation", limiting: false },
+    { microKey: "vitaminB6", label: "Pyridoxine (B6) — inflammatory cytokine modulation", limiting: false },
   ];
 
   var LONGEVITY_ACHES_ANTI_INFLAMMATORY_FROM_LONGEVITY = [
@@ -1978,9 +1978,9 @@
     { microKey: "magnesium", label: "Magnesium — muscle cramp & spasm prevention", limiting: false },
     { microKey: "calcium", label: "Calcium — bone pain & osteoporotic aches", limiting: false },
     { microKey: "potassium", label: "Potassium — muscle cramping & electrolyte balance", limiting: false },
-    { microKey: "vitaminB12", label: "Vitamin B12 — neuropathic pain & tingling", limiting: false },
+    { microKey: "vitaminB12", label: "Cobalamin (B12) — neuropathic pain & tingling", limiting: false },
     { microKey: "iron", label: "Iron — restless legs & muscle fatigue", limiting: false },
-    { microKey: "folate", label: "Folate — homocysteine-driven inflammation", limiting: false },
+    { microKey: "folate", label: "Folate (B9) — homocysteine-driven inflammation", limiting: false },
   ];
 
   var LONGEVITY_ACHES_AGE_RELATED_FROM_LONGEVITY = [
@@ -2001,12 +2001,12 @@
     { microKey: "vitaminC", label: "Vitamin C — adrenal antioxidant support", limiting: false },
     {
       microKey: "pantothenicAcid",
-      label: "Pantothenic acid (B5) — coenzyme A & adrenal cofactors",
+      label: "Pantothenic Acid (B5) — coenzyme A & adrenal cofactors",
       limiting: false,
     },
-    { microKey: "vitaminB6", label: "Vitamin B6 — neurotransmitter synthesis", limiting: false },
+    { microKey: "vitaminB6", label: "Pyridoxine (B6) — neurotransmitter synthesis", limiting: false },
     { microKey: "folate", label: "Folate (B9) — methylation support", limiting: false },
-    { microKey: "vitaminB12", label: "Vitamin B12 — methylation support", limiting: false },
+    { microKey: "vitaminB12", label: "Cobalamin (B12) — methylation support", limiting: false },
     { microKey: "zinc", label: "Zinc — immunity under stress", limiting: false },
     { microKey: "tyrosine", label: "Tyrosine — catecholamine precursor", limiting: false },
     { microKey: "vitaminD", label: "Vitamin D", limiting: false },
@@ -2024,9 +2024,9 @@
     { microKey: "magnesium", label: "Magnesium — NMDA receptor regulation & glutamate balance", limiting: false },
     { microKey: "potassium", label: "Potassium — ion gradients for astrocyte glutamate transporters", limiting: false },
     { microKey: "glutamine", label: "Glutamine — glutamate–glutamine cycle & astrocyte clearance", limiting: false },
-    { microKey: "vitaminB6", label: "Vitamin B6 — converts glutamate to GABA", limiting: false },
+    { microKey: "vitaminB6", label: "Pyridoxine (B6) — converts glutamate to GABA", limiting: false },
     { microKey: "folate", label: "Folate (B9) — methylation & homocysteine balance", limiting: false },
-    { microKey: "vitaminB12", label: "Vitamin B12 — nerve health & myelin support", limiting: false },
+    { microKey: "vitaminB12", label: "Cobalamin (B12) — nerve health & myelin support", limiting: false },
     { microKey: "vitaminD", label: "Vitamin D — neuroinflammation & cognitive aging", limiting: false },
     { microKey: "vitaminC", label: "Vitamin C — antioxidant & glutathione recycling", limiting: false },
     { microKey: "zinc", label: "Zinc — synaptic signaling & antioxidant defense", limiting: false },
@@ -2034,7 +2034,7 @@
     { microKey: "glycine", label: "Glycine — calming neurotransmitter & glutathione building block", limiting: false },
     { microKey: "tyrosine", label: "Tyrosine — dopamine & catecholamine precursor", limiting: false },
     { microKey: "tryptophan", label: "Tryptophan — serotonin precursor", limiting: false },
-    { microKey: "thiamin", label: "Thiamin (B1) — brain energy metabolism", limiting: false },
+    { microKey: "thiamin", label: "Thiamine (B1) — brain energy metabolism", limiting: false },
     { microKey: "niacin", label: "Niacin (B3) — NAD+ precursor for brain energy", limiting: false },
     { microKey: "riboflavin", label: "Riboflavin (B2) — MTHFR & methylation support", limiting: false },
     { microKey: "selenium", label: "Selenium — glutathione peroxidase in brain tissue", limiting: false },
@@ -2062,11 +2062,11 @@
     { microKey: "potassium", label: "Potassium — ion gradients for astrocyte glutamate transporters", limiting: false },
     { microKey: "glutamine", label: "Glutamine — glutamate–glutamine cycle & astrocyte clearance", limiting: false },
     { microKey: "magnesium", label: "Magnesium — NMDA receptor regulation & glutamate balance", limiting: false },
-    { microKey: "vitaminB6", label: "Vitamin B6 — converts glutamate to GABA", limiting: false },
+    { microKey: "vitaminB6", label: "Pyridoxine (B6) — converts glutamate to GABA", limiting: false },
     { microKey: "vitaminC", label: "Vitamin C — astrocyte antioxidant & glutathione recycling", limiting: false },
     { microKey: "zinc", label: "Zinc — synaptic signaling & astrocyte antioxidant defense", limiting: false },
     { microKey: "glycine", label: "Glycine — glutathione building block & calming neurotransmitter", limiting: false },
-    { microKey: "thiamin", label: "Thiamin (B1) — brain ATP for glutamate uptake", limiting: false },
+    { microKey: "thiamin", label: "Thiamine (B1) — brain ATP for glutamate uptake", limiting: false },
     { microKey: "niacin", label: "Niacin (B3) — NAD+ precursor for astrocyte energy", limiting: false },
     { microKey: "riboflavin", label: "Riboflavin (B2) — MTHFR & glutathione recycling support", limiting: false },
     { microKey: "selenium", label: "Selenium — glutathione peroxidase in brain tissue", limiting: false },
@@ -2085,7 +2085,7 @@
     { microKey: "magnesium", label: "Magnesium", limiting: false },
     { microKey: "tryptophan", label: "Tryptophan — serotonin & melatonin precursor", limiting: false },
     { microKey: "glycine", label: "Glycine", limiting: false },
-    { microKey: "vitaminB6", label: "Vitamin B6 — serotonin synthesis", limiting: false },
+    { microKey: "vitaminB6", label: "Pyridoxine (B6) — serotonin synthesis", limiting: false },
     { microKey: "vitaminD", label: "Vitamin D", limiting: false },
   ];
 
@@ -2144,12 +2144,12 @@
   ];
 
   var LONGEVITY_VISCERAL_FAT_MOBILIZE_FROM_MICRO = [
-    { microKey: "thiamin", label: "Thiamin (B1) — glucose → ATP", limiting: false },
+    { microKey: "thiamin", label: "Thiamine (B1) — glucose → ATP", limiting: false },
     { microKey: "riboflavin", label: "Riboflavin (B2) — FAD for oxidation", limiting: false },
     { microKey: "niacin", label: "Niacin (B3) — NAD+ for fuel oxidation", limiting: false },
     {
       microKey: "pantothenicAcid",
-      label: "Pantothenic acid (B5) — coenzyme A",
+      label: "Pantothenic Acid (B5) — coenzyme A",
       limiting: false,
     },
     { microKey: "biotin", label: "Biotin (B7) — carboxylase cofactor", limiting: false },
@@ -2189,12 +2189,12 @@
   ];
 
   var LONGEVITY_FAT_GAIN_ENERGY_FROM_MICRO = [
-    { microKey: "thiamin", label: "Thiamin (B1) — glucose → ATP", limiting: false },
+    { microKey: "thiamin", label: "Thiamine (B1) — glucose → ATP", limiting: false },
     { microKey: "riboflavin", label: "Riboflavin (B2) — FAD for oxidation", limiting: false },
     { microKey: "niacin", label: "Niacin (B3) — NAD+ for fuel oxidation", limiting: false },
     {
       microKey: "pantothenicAcid",
-      label: "Pantothenic acid (B5) — coenzyme A",
+      label: "Pantothenic Acid (B5) — coenzyme A",
       limiting: false,
     },
     { microKey: "biotin", label: "Biotin (B7) — carboxylase cofactor", limiting: false },
@@ -2219,7 +2219,7 @@
   ];
 
   var LONGEVITY_MITO_FROM_MICRO = [
-    { microKey: "thiamin", label: "Thiamin (B1)", limiting: false },
+    { microKey: "thiamin", label: "Thiamine (B1)", limiting: false },
     { microKey: "riboflavin", label: "Riboflavin (B2)", limiting: false },
     { microKey: "niacin", label: "Niacin (B3) — NAD precursor", limiting: false },
     {
@@ -2227,7 +2227,7 @@
       label: "Tryptophan — NAD via de novo pathway",
       limiting: false,
     },
-    { microKey: "pantothenicAcid", label: "Pantothenic acid (B5)", limiting: false },
+    { microKey: "pantothenicAcid", label: "Pantothenic Acid (B5)", limiting: false },
     { microKey: "biotin", label: "Biotin (B7)", limiting: false },
     { microKey: "iron", label: "Iron", limiting: false },
     { microKey: "magnesium", label: "Magnesium", limiting: false },
@@ -2343,7 +2343,7 @@
 
   var LONGEVITY_FEMALE_PMS_FROM_MICRO = [
     { microKey: "magnesium", label: "Magnesium — mood & cramping", limiting: false },
-    { microKey: "vitaminB6", label: "Vitamin B6 — neurotransmitters & PMS", limiting: false },
+    { microKey: "vitaminB6", label: "Pyridoxine (B6) — neurotransmitters & PMS", limiting: false },
     { microKey: "calcium", label: "Calcium — luteal-phase mood support", limiting: false },
     { microKey: "vitaminE", label: "Vitamin E — breast tenderness support", limiting: false },
     { microKey: "zinc", label: "Zinc — hormone synthesis & mood", limiting: false },
@@ -2364,14 +2364,14 @@
     },
     { microKey: "vitaminC", label: "Vitamin C — non-heme iron absorption", limiting: false },
     { microKey: "folate", label: "Folate (B9) — red blood cell production", limiting: false },
-    { microKey: "vitaminB12", label: "Vitamin B12 — red blood cell production", limiting: false },
+    { microKey: "vitaminB12", label: "Cobalamin (B12) — red blood cell production", limiting: false },
     { microKey: "copper", label: "Copper — iron metabolism cofactor", limiting: false },
     { microKey: "riboflavin", label: "Riboflavin (B2) — iron utilization", limiting: false },
   ];
 
   var LONGEVITY_FEMALE_ESTROGEN_FROM_MICRO = [
     { microKey: "fiber", label: "Fiber — binds excess estrogen in the gut", limiting: false },
-    { microKey: "vitaminB6", label: "Vitamin B6 — estrogen metabolism support", limiting: false },
+    { microKey: "vitaminB6", label: "Pyridoxine (B6) — estrogen metabolism support", limiting: false },
     { microKey: "folate", label: "Folate (B9) — methylation & estrogen clearance", limiting: false },
   ];
 
@@ -2393,8 +2393,8 @@
     { microKey: "vitaminK2MK4", label: "MK-4 — spread across meals for steady K2", limiting: false },
     { microKey: "vitaminK2MK7", label: "MK-7 — once-daily K2 from fermentation", limiting: false },
     { microKey: "fiber", label: "Fiber — cardiometabolic support", limiting: false },
-    { microKey: "vitaminB6", label: "Vitamin B6 — mood & homocysteine support", limiting: false },
-    { microKey: "vitaminB12", label: "Vitamin B12 — nerve & blood support", limiting: false },
+    { microKey: "vitaminB6", label: "Pyridoxine (B6) — mood & homocysteine support", limiting: false },
+    { microKey: "vitaminB12", label: "Cobalamin (B12) — nerve & blood support", limiting: false },
   ];
 
   var LONGEVITY_FEMALE_POST_MENO_FROM_LONGEVITY = [
@@ -2413,7 +2413,7 @@
     { microKey: "magnesium", label: "Magnesium — free testosterone support", limiting: false },
     { microKey: "vitaminD", label: "Vitamin D — androgen receptor signaling", limiting: false },
     { microKey: "selenium", label: "Selenium — antioxidant support for gonads", limiting: false },
-    { microKey: "vitaminB6", label: "Vitamin B6 — steroid hormone metabolism", limiting: false },
+    { microKey: "vitaminB6", label: "Pyridoxine (B6) — steroid hormone metabolism", limiting: false },
     { microKey: "iron", label: "Iron — oxygen delivery & energy (avoid excess)", limiting: false },
   ];
 
@@ -2456,7 +2456,7 @@
   var LONGEVITY_GLUTATHIONE_FROM_MICRO = [
     { microKey: "vitaminC", label: "Vitamin C", limiting: false },
     { microKey: "riboflavin", label: "Riboflavin (B2)", limiting: false },
-    { microKey: "vitaminB6", label: "Vitamin B6", limiting: false },
+    { microKey: "vitaminB6", label: "Pyridoxine (B6)", limiting: false },
   ];
 
   var LONGEVITY_GLUTATHIONE_FROM_LONGEVITY = [
@@ -2470,9 +2470,9 @@
     { microKey: "vitaminC", label: "Vitamin C — antioxidant defense", limiting: false },
     { microKey: "riboflavin", label: "Riboflavin (B2) — redox support", limiting: false },
     { microKey: "niacin", label: "Niacin (B3) — NAD for repair enzymes", limiting: false },
-    { microKey: "vitaminB6", label: "Vitamin B6 — methylation support", limiting: false },
+    { microKey: "vitaminB6", label: "Pyridoxine (B6) — methylation support", limiting: false },
     { microKey: "folate", label: "Folate (B9) — nucleotide synthesis", limiting: false },
-    { microKey: "vitaminB12", label: "Vitamin B12 — methylation support", limiting: false },
+    { microKey: "vitaminB12", label: "Cobalamin (B12) — methylation support", limiting: false },
     { microKey: "magnesium", label: "Magnesium — DNA polymerase cofactor", limiting: false },
     { microKey: "zinc", label: "Zinc — DNA repair protein cofactor", limiting: false },
   ];
@@ -2489,9 +2489,9 @@
 
   var LONGEVITY_HOMOCYSTEINE_FROM_MICRO = [
     { microKey: "riboflavin", label: "Riboflavin (B2) — MTHFR/FAD support" },
-    { microKey: "vitaminB6", label: "Vitamin B6 — transsulfuration" },
+    { microKey: "vitaminB6", label: "Pyridoxine (B6) — transsulfuration" },
     { microKey: "folate", label: "Folate (B9) — remethylation" },
-    { microKey: "vitaminB12", label: "Vitamin B12 — remethylation" },
+    { microKey: "vitaminB12", label: "Cobalamin (B12) — remethylation" },
   ];
 
   var LONGEVITY_HOMOCYSTEINE_FROM_LONGEVITY = [
@@ -2534,7 +2534,7 @@
   var LONGEVITY_VASCULAR_GLUTATHIONE_FROM_MICRO = [
     { microKey: "vitaminC", label: "Vitamin C — glutathione recycling" },
     { microKey: "riboflavin", label: "Riboflavin (B2) — glutathione reductase cofactor" },
-    { microKey: "vitaminB6", label: "Vitamin B6 — transsulfuration pathway" },
+    { microKey: "vitaminB6", label: "Pyridoxine (B6) — transsulfuration pathway" },
   ];
 
   var LONGEVITY_VASCULAR_GLUTATHIONE_FROM_LONGEVITY = [
@@ -2589,9 +2589,9 @@
   var LONGEVITY_TMAO_LOWERING_FROM_MICRO = [
     { microKey: "fiber", label: "Fiber (prebiotic)" },
     { microKey: "vitaminD", label: "Vitamin D" },
-    { microKey: "vitaminB6", label: "Vitamin B6" },
+    { microKey: "vitaminB6", label: "Pyridoxine (B6)" },
     { microKey: "folate", label: "Folate (B9)" },
-    { microKey: "vitaminB12", label: "Vitamin B12" },
+    { microKey: "vitaminB12", label: "Cobalamin (B12)" },
   ];
 
   var LONGEVITY_TMAO_LOWERING_LONGEVITY = [
@@ -2604,9 +2604,9 @@
   var LONGEVITY_HISTAMINE_FROM_MICRO = [
     { microKey: "vitaminC", label: "Vitamin C — histamine breakdown support" },
     { microKey: "riboflavin", label: "Riboflavin (B2) — methylation cofactor" },
-    { microKey: "vitaminB6", label: "Vitamin B6 — histamine enzyme support" },
+    { microKey: "vitaminB6", label: "Pyridoxine (B6) — histamine enzyme support" },
     { microKey: "folate", label: "Folate (B9) — HNMT methylation support" },
-    { microKey: "vitaminB12", label: "Vitamin B12 — SAMe/methylation support" },
+    { microKey: "vitaminB12", label: "Cobalamin (B12) — SAMe/methylation support" },
     { microKey: "magnesium", label: "Magnesium — nervous-system tolerance" },
     { microKey: "zinc", label: "Zinc — immune and gut barrier support" },
   ];
@@ -13619,13 +13619,13 @@
         upperGiB1B6TipHtml() +
         longevityRowFromMicroKey(
           "thiamin",
-          "Vitamin B1 (Thiamine) — autonomic nervous system & digestion",
+          "Thiamine (B1) — autonomic nervous system & digestion",
           false,
           weekMicro
         ) +
         longevityRowFromMicroKey(
           "vitaminB6",
-          "Vitamin B6 (Pyridoxine) — neurotransmitters for smooth-muscle movement",
+          "Pyridoxine (B6) — neurotransmitters for smooth-muscle movement",
           false,
           weekMicro
         ) +
