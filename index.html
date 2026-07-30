@@ -552,15 +552,17 @@
     </section>
 
     <div id="food-entry" class="week__nav" role="navigation" aria-label="Week">
-      <button type="button" id="week-nav-prev" class="week__nav-adj" aria-label="Previous week">
+      <button type="button" id="week-nav-prev" class="week__nav-adj" data-app-shortcut="←" aria-label="Previous week" aria-keyshortcuts="ArrowLeft">
         <span aria-hidden="true">‹</span> Previous week
+        <span class="app-nav__shortcut" aria-hidden="true">←</span>
       </button>
       <button type="button" id="week-nav-label" class="week__nav-label" aria-haspopup="dialog" aria-label="Choose week">
         <span id="week-nav-label-text" aria-live="polite"></span>
         <span class="week__nav-label-hint">Pick week</span>
       </button>
-      <button type="button" id="week-nav-next" class="week__nav-adj" aria-label="Next week">
+      <button type="button" id="week-nav-next" class="week__nav-adj" data-app-shortcut="→" aria-label="Next week" aria-keyshortcuts="ArrowRight">
         Next week <span aria-hidden="true">›</span>
+        <span class="app-nav__shortcut" aria-hidden="true">→</span>
       </button>
       <button type="button" id="week-nav-this" class="week__nav-this">This week</button>
       <button type="button" id="favorites-open" class="week__favorites-toggle" aria-haspopup="dialog" aria-expanded="false" aria-controls="favorites-sidebar">

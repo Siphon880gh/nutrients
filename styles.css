@@ -117,6 +117,7 @@ body {
 }
 
 .week__nav-adj {
+  position: relative;
   display: inline-flex;
   align-items: center;
   gap: 0.25rem;
@@ -168,6 +169,71 @@ body {
 .week__nav-label:focus-visible {
   border-color: #3d6b9e;
   background: #f5f8fc;
+  outline: none;
+}
+
+.week__nav-label--current {
+  border-color: #3d6b9e;
+  background: #f5f8fc;
+  color: #3d6b9e;
+}
+
+.week__nav-label--current #week-nav-label-text {
+  color: #3d6b9e;
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.2em;
+}
+
+.week__nav-label--current .week__nav-label-hint {
+  color: #3d6b9e;
+}
+
+.week__nav-label--past {
+  border-color: #c4a35a;
+  background: #faf4e0;
+  color: #8a6d1f;
+  font-weight: 500;
+}
+
+.week__nav-label--past #week-nav-label-text {
+  color: #8a6d1f;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.week__nav-label--past .week__nav-label-hint {
+  color: #a67c2a;
+}
+
+.week__nav-label--past:hover,
+.week__nav-label--past:focus-visible {
+  border-color: #a67c2a;
+  background: #f5edd0;
+  outline: none;
+}
+
+.week__nav-label--future {
+  border-color: #e879f9;
+  background: #fdf2ff;
+  color: #c026d3;
+  font-weight: 500;
+}
+
+.week__nav-label--future #week-nav-label-text {
+  color: #c026d3;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.week__nav-label--future .week__nav-label-hint {
+  color: #e11d8f;
+}
+
+.week__nav-label--future:hover,
+.week__nav-label--future:focus-visible {
+  border-color: #d946ef;
+  background: #fae8ff;
   outline: none;
 }
 

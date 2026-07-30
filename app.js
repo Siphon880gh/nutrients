@@ -19790,6 +19790,18 @@
         "aria-label",
         label ? "Choose week, currently " + label : "Choose week"
       );
+      var currentMon = currentWeekMondayKey();
+      var onCurrentWeek = viewedWeekStart === currentMon;
+      var onPastWeek = !!(viewedWeekStart && viewedWeekStart < currentMon);
+      var onFutureWeek = !!(viewedWeekStart && viewedWeekStart > currentMon);
+      weekNavLabelEl.classList.toggle("week__nav-label--current", onCurrentWeek);
+      weekNavLabelEl.classList.toggle("week__nav-label--past", onPastWeek);
+      weekNavLabelEl.classList.toggle("week__nav-label--future", onFutureWeek);
+      if (onCurrentWeek) {
+        weekNavLabelEl.setAttribute("aria-current", "date");
+      } else {
+        weekNavLabelEl.removeAttribute("aria-current");
+      }
     }
     if (weekNavThisBtn) {
       weekNavThisBtn.disabled = isCurrentWeek();
@@ -22647,6 +22659,14 @@
       return;
     }
     if (anyAppNavModifierDown(e)) return;
+    if (e.key === "ArrowLeft" || e.key === "ArrowRight") {
+      var ae = document.activeElement;
+      if (ae && ae.tagName === "SELECT") return;
+      e.preventDefault();
+      scrollDashboardJumpTarget(document.getElementById("food-entry"));
+      stepViewedWeek(e.key === "ArrowLeft" ? -1 : 1);
+      return;
+    }
     if (e.key === "s" || e.key === "S") {
       if (!dashboardFoodSourcesOpenBtn) return;
       e.preventDefault();
