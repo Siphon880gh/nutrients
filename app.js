@@ -515,6 +515,7 @@
   var filterStickyAdverseEffects = false;
   var filterStickyNutrientKeys = [];
   var stickyFilterEscapeArmedAt = 0;
+  var nutrientFilterFArmedAt = 0;
   var highlightStickyDailyIntake = false;
   var highlightStickySideEffects = false;
   var highlightStickyAdverseEffects = false;
@@ -11864,6 +11865,85 @@
     });
   }
 
+  function stickyFilterGroupLabelText(labelEl) {
+    if (!labelEl) return "";
+    var parts = [];
+    for (var i = 0; i < labelEl.childNodes.length; i++) {
+      var node = labelEl.childNodes[i];
+      if (node.nodeType === 3) parts.push(node.textContent || "");
+    }
+    var text = parts.join("").trim();
+    return text || (labelEl.textContent || "").trim();
+  }
+
+  function panelViewportVisibleScore(el) {
+    if (!el || el.hidden) return 0;
+    var rect = el.getBoundingClientRect();
+    var vh = window.innerHeight || document.documentElement.clientHeight || 0;
+    if (vh <= 0 || rect.bottom <= 0 || rect.top >= vh) return 0;
+    var visibleTop = Math.max(0, rect.top);
+    var visibleBottom = Math.min(vh, rect.bottom);
+    return Math.max(0, visibleBottom - visibleTop);
+  }
+
+  function nutrientFilterSearchTargetFromViewport() {
+    var microScore = microRequirementsOpen
+      ? panelViewportVisibleScore(dashboardMicroPanelEl)
+      : 0;
+    var longevityScore = longevityPanelOpen
+      ? panelViewportVisibleScore(dashboardLongevityPanelEl)
+      : 0;
+    if (microScore <= 0 && longevityScore <= 0) return null;
+    if (longevityScore > microScore) return "longevity";
+    if (microScore > longevityScore) return "micro";
+    var active = document.activeElement;
+    if (
+      active &&
+      dashboardLongevityPanelEl &&
+      dashboardLongevityPanelEl.contains(active)
+    ) {
+      return "longevity";
+    }
+    if (
+      active &&
+      dashboardMicroPanelEl &&
+      dashboardMicroPanelEl.contains(active)
+    ) {
+      return "micro";
+    }
+    // Equal visible area: prefer the panel whose top is nearer the viewport top.
+    var microTop =
+      dashboardMicroPanelEl && !dashboardMicroPanelEl.hidden
+        ? dashboardMicroPanelEl.getBoundingClientRect().top
+        : Infinity;
+    var longevityTop =
+      dashboardLongevityPanelEl && !dashboardLongevityPanelEl.hidden
+        ? dashboardLongevityPanelEl.getBoundingClientRect().top
+        : Infinity;
+    return Math.abs(longevityTop) < Math.abs(microTop) ? "longevity" : "micro";
+  }
+
+  function focusNutrientFilterSearch(target) {
+    var panelId =
+      target === "longevity"
+        ? "longevity-nutrient-filter-panel"
+        : "micro-nutrient-filter-panel";
+    var panel = document.getElementById(panelId);
+    if (!panel) return;
+    var group = panel.closest(".dashboard__sticky-filter-group");
+    var track = group && group.closest("[data-sticky-filters-track]");
+    if (track && group && isStickyFiltersCarouselActive()) {
+      var slides = stickyFiltersTrackSlides(track);
+      var index = slides.indexOf(group);
+      if (index >= 0) scrollStickyFiltersCarouselToIndex(track, index);
+    }
+    var input = panel.querySelector("[data-nutrient-filter-input]");
+    if (!input) return;
+    requestAnimationFrame(function () {
+      input.focus();
+    });
+  }
+
   function hideNutrientFilterSuggest(input) {
     if (!input) return;
     var wrap = input.closest(".dashboard__nutrient-filter-combobox");
@@ -20018,9 +20098,7 @@
       var labelEl = slides[index]
         ? slides[index].querySelector(".dashboard__sticky-filter-group-label")
         : null;
-      currentEl.textContent = labelEl
-        ? (labelEl.textContent || "").trim()
-        : "";
+      currentEl.textContent = stickyFilterGroupLabelText(labelEl);
     }
     var prevBtn = root.querySelector(
       '[data-sticky-filters-carousel="prev"]'
@@ -22847,6 +22925,25 @@
       if (!dashboardMicroViewDailyEl && !dashboardMicroViewWeeklyEl) return;
       e.preventDefault();
       setMicroViewDaily(!microViewDaily);
+      return;
+    }
+    // F twice within 1s focuses By nutrient search for the panel in viewport.
+    if (e.key === "f" || e.key === "F") {
+      var nutrientSearchTarget = nutrientFilterSearchTargetFromViewport();
+      if (!nutrientSearchTarget) {
+        nutrientFilterFArmedAt = 0;
+        return;
+      }
+      var fNow = Date.now();
+      if (nutrientFilterFArmedAt && fNow - nutrientFilterFArmedAt <= 1000) {
+        e.preventDefault();
+        nutrientFilterFArmedAt = 0;
+        focusNutrientFilterSearch(
+          nutrientFilterSearchTargetFromViewport() || nutrientSearchTarget
+        );
+        return;
+      }
+      nutrientFilterFArmedAt = fNow;
       return;
     }
     if (e.key === "0") {
