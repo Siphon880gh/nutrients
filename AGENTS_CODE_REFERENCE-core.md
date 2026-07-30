@@ -401,6 +401,7 @@ While typing on the **current line** of a day textarea, a popover suggests match
 **Matching** — `foodSuggestMatches(query)` against `keywordNames()`:
 
 - Prefix match (score 0), fuzzy prefix via Levenshtein on the first `query.length` chars (score 1+), or word-boundary substring (score 2).
+- When the query has multiple space-separated words, also match if **each** token appears at a word boundary in **any order** (score 3 in typed order, 4 otherwise) — e.g. `Chinese chicken` → `Chicken - Chinese…`.
 - Highlight range from `foodSuggestHighlightRange` → `daySuggestItemHtml`.
 
 **DOM** — `ensureDaySuggestEl` appends `.day__suggest` (`role="listbox"`) inside `.day__editor`:

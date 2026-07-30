@@ -20218,6 +20218,50 @@
     return height;
   }
 
+  function resetDayEditorWidth(editor) {
+    if (!editor) return;
+    editor.style.removeProperty("width");
+    syncWeekGridColumnsFromEditors();
+  }
+
+  function weekGridColumnCount() {
+    if (typeof window.matchMedia !== "function") return 7;
+    if (window.matchMedia("(max-width: 520px)").matches) return 1;
+    if (window.matchMedia("(max-width: 900px)").matches) return 3;
+    if (window.matchMedia("(max-width: 1100px)").matches) return 4;
+    return 7;
+  }
+
+  function syncWeekGridColumnsFromEditors() {
+    var grid = document.querySelector(".week__grid");
+    if (!grid) return;
+    if (isDaysCarouselActive()) {
+      grid.style.removeProperty("grid-template-columns");
+      return;
+    }
+    var colCount = weekGridColumnCount();
+    var days = grid.querySelectorAll(":scope > .day");
+    var tracks = [];
+    var hasCustom = false;
+    for (var c = 0; c < colCount; c++) {
+      var track = "minmax(0, 1fr)";
+      for (var i = c; i < days.length; i += colCount) {
+        var editor = days[i].querySelector(".day__editor");
+        if (editor && editor.style.width) {
+          track = editor.style.width;
+          hasCustom = true;
+          break;
+        }
+      }
+      tracks.push(track);
+    }
+    if (hasCustom) {
+      grid.style.gridTemplateColumns = tracks.join(" ");
+    } else {
+      grid.style.removeProperty("grid-template-columns");
+    }
+  }
+
   function saveDayEditorHeight(px) {
     if (!persist) return;
     persist.setSetting("dayEditorHeight", px);
@@ -20241,6 +20285,7 @@
   }
 
   var dayEditorResizeTarget = null;
+  var dayEditorResizeStartWidth = null;
 
   function bindDayEditorResize() {
     document.addEventListener(
@@ -20251,21 +20296,44 @@
         if (!editor) return;
         if (!isDayEditorResizeIntent(e, editor)) return;
         dayEditorResizeTarget = editor;
+        dayEditorResizeStartWidth = editor.offsetWidth;
       },
       true
     );
 
     function finishDayEditorResize() {
       if (!dayEditorResizeTarget) return;
-      var height = applyDayEditorHeight(dayEditorResizeTarget.offsetHeight);
+      var editor = dayEditorResizeTarget;
+      var height = applyDayEditorHeight(editor.offsetHeight);
       saveDayEditorHeight(height);
+      // Height-only drags often stamp an inline width; drop it if width did not change.
+      if (
+        dayEditorResizeStartWidth != null &&
+        Math.abs(editor.offsetWidth - dayEditorResizeStartWidth) < 2
+      ) {
+        editor.style.removeProperty("width");
+      }
+      syncWeekGridColumnsFromEditors();
       dayEditorResizeTarget = null;
+      dayEditorResizeStartWidth = null;
     }
 
     document.addEventListener("pointerup", finishDayEditorResize);
     document.addEventListener("pointercancel", function () {
       dayEditorResizeTarget = null;
+      dayEditorResizeStartWidth = null;
     });
+
+    if (typeof ResizeObserver === "function") {
+      var editorResizeObserver = new ResizeObserver(function () {
+        syncWeekGridColumnsFromEditors();
+      });
+      document.querySelectorAll(".day__editor").forEach(function (editor) {
+        editorResizeObserver.observe(editor);
+      });
+    }
+
+    window.addEventListener("resize", syncWeekGridColumnsFromEditors);
   }
 
   function isV2DayMealsData(data) {
@@ -21125,6 +21193,24 @@
     return false;
   }
 
+  function foodSuggestWordIndex(haystack, needle) {
+    if (!needle) return -1;
+    var at = 0;
+    while (at <= haystack.length - needle.length) {
+      var idx = haystack.indexOf(needle, at);
+      if (idx < 0) return -1;
+      if (
+        idx === 0 ||
+        haystack.charAt(idx - 1) === " " ||
+        haystack.charAt(idx - 1) === "-"
+      ) {
+        return idx;
+      }
+      at = idx + 1;
+    }
+    return -1;
+  }
+
   function foodSuggestHighlightRange(name, query) {
     var q = query.trim();
     if (!q) return { start: 0, len: 0 };
@@ -21132,6 +21218,24 @@
     var nl = name.toLowerCase();
     var at = nl.indexOf(ql);
     if (at >= 0) return { start: at, len: q.length };
+    var tokens = ql.split(/\s+/).filter(Boolean);
+    if (tokens.length > 1) {
+      var minStart = Infinity;
+      var maxEnd = -1;
+      var t;
+      for (t = 0; t < tokens.length; t++) {
+        var ti = foodSuggestWordIndex(nl, tokens[t]);
+        if (ti < 0) {
+          minStart = Infinity;
+          break;
+        }
+        if (ti < minStart) minStart = ti;
+        if (ti + tokens[t].length > maxEnd) maxEnd = ti + tokens[t].length;
+      }
+      if (minStart !== Infinity && maxEnd > minStart) {
+        return { start: minStart, len: maxEnd - minStart };
+      }
+    }
     return { start: 0, len: commonPrefixLen(q, name) };
   }
 
@@ -21140,6 +21244,7 @@
     if (!q) return [];
 
     var ql = q.toLowerCase();
+    var tokens = ql.split(/\s+/).filter(Boolean);
     var results = [];
 
     keywordNames().forEach(function (name) {
@@ -21160,16 +21265,44 @@
             highlight: { start: 0, len: prefixLen },
           };
         }
-      } else {
-        var wordAt = nl.indexOf(ql);
-        if (
-          wordAt > 0 &&
-          (nl.charAt(wordAt - 1) === " " || nl.charAt(wordAt - 1) === "-")
-        ) {
+      }
+
+      if (!match) {
+        var wordAt = foodSuggestWordIndex(nl, ql);
+        if (wordAt > 0) {
           match = {
             name: name,
             score: 2,
             highlight: { start: wordAt, len: q.length },
+          };
+        }
+      }
+
+      // Multi-word query: each token may appear in any order (word-boundary).
+      if (!match && tokens.length > 1) {
+        var minStart = Infinity;
+        var maxEnd = -1;
+        var prevEnd = -1;
+        var inOrder = true;
+        var allFound = true;
+        var t;
+        for (t = 0; t < tokens.length; t++) {
+          var token = tokens[t];
+          var ti = foodSuggestWordIndex(nl, token);
+          if (ti < 0) {
+            allFound = false;
+            break;
+          }
+          if (ti < prevEnd) inOrder = false;
+          prevEnd = ti + token.length;
+          if (ti < minStart) minStart = ti;
+          if (ti + token.length > maxEnd) maxEnd = ti + token.length;
+        }
+        if (allFound) {
+          match = {
+            name: name,
+            score: inOrder ? 3 : 4,
+            highlight: { start: minStart, len: maxEnd - minStart },
           };
         }
       }
@@ -21671,6 +21804,7 @@
     textarea.addEventListener("blur", function () {
       textarea._daySelectAnchor = null;
       hideDaySuggest(textarea);
+      resetDayEditorWidth(editor);
       updateDayEditorMode(textarea);
     });
 

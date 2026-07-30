@@ -6334,6 +6334,7 @@ button.dashboard__longevity-name:focus-visible {
   grid-template-columns: repeat(7, minmax(0, 1fr));
   gap: 0.75rem;
   min-height: 8rem;
+  overflow-x: auto;
 }
 
 .day {
@@ -6341,6 +6342,7 @@ button.dashboard__longevity-name:focus-visible {
   flex-direction: column;
   gap: 0.35rem;
   min-height: 0;
+  min-width: 0;
 }
 
 .day__head {
@@ -6434,10 +6436,12 @@ button.dashboard__longevity-name:focus-visible {
 .day__editor {
   position: relative;
   flex: 0 0 auto;
+  width: 100%;
+  min-width: 100%;
   height: var(--day-editor-height, calc(45vh - 2.5rem));
   min-height: 6rem;
   max-height: 80vh;
-  resize: vertical;
+  resize: both;
   border: 1px solid #c8c8c4;
   border-radius: 6px;
   background: #fff;
@@ -9795,8 +9799,11 @@ button.longevity-form__label-link:focus-visible {
 
   .day__editor {
     flex: none;
+    width: auto;
+    min-width: 0;
     min-height: 6rem;
     max-height: none;
+    resize: vertical;
   }
 
   .day__input {
