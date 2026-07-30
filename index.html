@@ -119,6 +119,11 @@
         </div>
         <p class="dashboard__hint">Each food match in a day adds that food's macros (4 cal/g protein &amp; carbs, 9 cal/g fat)</p>
       </div>
+      <div class="dashboard__days-carousel-nav" aria-label="Day macros">
+        <button type="button" class="dashboard__days-carousel-adj" data-dashboard-carousel="prev" aria-label="Previous day">‹</button>
+        <span id="dashboard-carousel-current" class="dashboard__days-carousel-current" aria-live="polite">Mon</span>
+        <button type="button" class="dashboard__days-carousel-adj" data-dashboard-carousel="next" aria-label="Next day">›</button>
+      </div>
       <div id="dashboard-grid" class="dashboard__grid"></div>
       <div id="dashboard-micro-panel" class="dashboard__micro-panel" hidden>
         <nav id="dashboard-micro-sticky" class="dashboard__micro-sticky" aria-label="Micro requirements">

@@ -17167,37 +17167,67 @@
     );
   }
 
+  function dashboardMacroLabelHtml(full, abbr) {
+    return (
+      '<span class="dashboard__macro" aria-label="' +
+      escapeHtml(full) +
+      '">' +
+      '<span class="dashboard__macro-long">' +
+      escapeHtml(full) +
+      "</span>" +
+      '<span class="dashboard__macro-short" aria-hidden="true">' +
+      escapeHtml(abbr) +
+      "</span></span>"
+    );
+  }
+
   function dashboardCardHtml(label, totals, dayId, dateLabel) {
     var isToday = dayId === activeTodayDayId();
     var isPct = dashboardMacroPctView;
     var pct = macroPctFromTotals(totals);
     var toggleLabel = isPct ? "Show grams and calories" : "Show macro percentages";
+    var proteinLabel = dashboardMacroLabelHtml("Protein", "P");
+    var carbsLabel = dashboardMacroLabelHtml("Carbs", "C");
+    var fatsLabel = dashboardMacroLabelHtml("Fats", "F");
+    var totalLabel = dashboardMacroLabelHtml("Total", "T");
     var rowsHtml;
 
     if (isPct) {
       rowsHtml =
-        '<div class="dashboard__row"><span class="dashboard__macro">Protein</span><span class="dashboard__val">' +
+        '<div class="dashboard__row">' +
+        proteinLabel +
+        '<span class="dashboard__val">' +
         (pct.p == null ? "—" : Math.round(pct.p) + "%") +
         "</span></div>" +
-        '<div class="dashboard__row"><span class="dashboard__macro">Carbs</span><span class="dashboard__val">' +
+        '<div class="dashboard__row">' +
+        carbsLabel +
+        '<span class="dashboard__val">' +
         (pct.c == null ? "—" : Math.round(pct.c) + "%") +
         "</span></div>" +
-        '<div class="dashboard__row"><span class="dashboard__macro">Fats</span><span class="dashboard__val">' +
+        '<div class="dashboard__row">' +
+        fatsLabel +
+        '<span class="dashboard__val">' +
         (pct.f == null ? "—" : Math.round(pct.f) + "%") +
         "</span></div>";
     } else {
       rowsHtml =
-        '<div class="dashboard__row"><span class="dashboard__macro">Protein</span><span class="dashboard__val">' +
+        '<div class="dashboard__row">' +
+        proteinLabel +
+        '<span class="dashboard__val">' +
         fmtNum(totals.protein) +
         "g · " +
         fmtNum(totals.proteinCal) +
         " cal</span></div>" +
-        '<div class="dashboard__row"><span class="dashboard__macro">Carbs</span><span class="dashboard__val">' +
+        '<div class="dashboard__row">' +
+        carbsLabel +
+        '<span class="dashboard__val">' +
         fmtNum(totals.carbs) +
         "g · " +
         fmtNum(totals.carbsCal) +
         " cal</span></div>" +
-        '<div class="dashboard__row"><span class="dashboard__macro">Fats</span><span class="dashboard__val">' +
+        '<div class="dashboard__row">' +
+        fatsLabel +
+        '<span class="dashboard__val">' +
         fmtNum(totals.fats) +
         "g · " +
         fmtNum(totals.fatsCal) +
@@ -17234,7 +17264,9 @@
       "</div>" +
       "</div>" +
       rowsHtml +
-      '<div class="dashboard__row dashboard__row--total"><span class="dashboard__macro">Total</span><span class="dashboard__val">' +
+      '<div class="dashboard__row dashboard__row--total">' +
+      totalLabel +
+      '<span class="dashboard__val">' +
       fmtNum(totals.totalCal) +
       " cal</span></div>" +
       "</article>" +
@@ -17400,6 +17432,7 @@
 
     dashboardGridEl.innerHTML = html;
     lastWeekTotals = week;
+    syncDashboardCarouselAfterRender();
     if (weekTotalOpen) {
       renderWeekSummary(week);
     }
@@ -20062,6 +20095,115 @@
     });
   }
 
+  var dashboardCarouselIndex = 0;
+  var dashboardCarouselMq =
+    typeof window.matchMedia === "function"
+      ? window.matchMedia("(max-width: 520px)")
+      : null;
+  var dashboardCarouselNavEl = document.querySelector(
+    ".dashboard__days-carousel-nav"
+  );
+  var dashboardCarouselCurrentEl = document.getElementById(
+    "dashboard-carousel-current"
+  );
+  var dashboardCarouselScrollTimer = null;
+
+  function isDashboardCarouselActive() {
+    return !!(dashboardCarouselMq && dashboardCarouselMq.matches);
+  }
+
+  function dashboardGridDayEls() {
+    if (!dashboardGridEl) return [];
+    return Array.prototype.slice.call(
+      dashboardGridEl.querySelectorAll(":scope > .dashboard__day")
+    );
+  }
+
+  function syncDashboardCarouselNav() {
+    if (!dashboardCarouselNavEl) return;
+    var day = DAYS[dashboardCarouselIndex];
+    if (dashboardCarouselCurrentEl) {
+      var label = day ? day.label : "";
+      var dateLabel = day ? dateLabelForDayId(day.id) : "";
+      dashboardCarouselCurrentEl.textContent = dateLabel
+        ? label + " · " + dateLabel
+        : label;
+    }
+    var prevBtn = dashboardCarouselNavEl.querySelector(
+      '[data-dashboard-carousel="prev"]'
+    );
+    var nextBtn = dashboardCarouselNavEl.querySelector(
+      '[data-dashboard-carousel="next"]'
+    );
+    if (prevBtn) prevBtn.disabled = dashboardCarouselIndex <= 0;
+    if (nextBtn) {
+      nextBtn.disabled = dashboardCarouselIndex >= DAYS.length - 1;
+    }
+  }
+
+  function scrollDashboardCarouselToIndex(index) {
+    var dayEls = dashboardGridDayEls();
+    if (!dashboardGridEl || !dayEls.length || !isDashboardCarouselActive()) {
+      syncDashboardCarouselNav();
+      return;
+    }
+    var clamped = Math.max(0, Math.min(dayEls.length - 1, index));
+    dashboardCarouselIndex = clamped;
+    var dayEl = dayEls[clamped];
+    var gridRect = dashboardGridEl.getBoundingClientRect();
+    var dayRect = dayEl.getBoundingClientRect();
+    dashboardGridEl.scrollLeft += dayRect.left - gridRect.left;
+    syncDashboardCarouselNav();
+  }
+
+  function stepDashboardCarousel(delta) {
+    scrollDashboardCarouselToIndex(dashboardCarouselIndex + delta);
+  }
+
+  function syncDashboardCarouselFromScroll() {
+    var dayEls = dashboardGridDayEls();
+    if (!dashboardGridEl || !dayEls.length || !isDashboardCarouselActive()) {
+      return;
+    }
+    var gridLeft = dashboardGridEl.getBoundingClientRect().left;
+    var bestIndex = 0;
+    var bestDist = Infinity;
+    for (var i = 0; i < dayEls.length; i++) {
+      var dist = Math.abs(dayEls[i].getBoundingClientRect().left - gridLeft);
+      if (dist < bestDist) {
+        bestDist = dist;
+        bestIndex = i;
+      }
+    }
+    dashboardCarouselIndex = bestIndex;
+    syncDashboardCarouselNav();
+  }
+
+  function syncDashboardCarouselAfterRender() {
+    if (!isDashboardCarouselActive()) {
+      syncDashboardCarouselNav();
+      return;
+    }
+    scrollDashboardCarouselToIndex(dashboardCarouselIndex);
+  }
+
+  function initDashboardCarousel() {
+    if (!dashboardGridEl) return;
+    if (!isDashboardCarouselActive()) {
+      syncDashboardCarouselNav();
+      return;
+    }
+    var startId = todayDayId();
+    var startIndex = dayCarouselIndexById(startId);
+    if (startIndex < 0) startIndex = 0;
+    dashboardCarouselIndex = startIndex;
+    window.requestAnimationFrame(function () {
+      window.requestAnimationFrame(function () {
+        scrollDashboardCarouselToIndex(startIndex);
+      });
+    });
+  }
+
   var stickyFiltersCarouselMq =
     typeof window.matchMedia === "function"
       ? window.matchMedia("(max-width: 900px)")
@@ -22553,6 +22695,47 @@
     }
   }
 
+  if (dashboardGridEl) {
+    dashboardGridEl.addEventListener(
+      "scroll",
+      function () {
+        if (!isDashboardCarouselActive()) return;
+        if (dashboardCarouselScrollTimer) {
+          window.clearTimeout(dashboardCarouselScrollTimer);
+        }
+        dashboardCarouselScrollTimer = window.setTimeout(function () {
+          dashboardCarouselScrollTimer = null;
+          syncDashboardCarouselFromScroll();
+        }, 60);
+      },
+      { passive: true }
+    );
+  }
+
+  if (dashboardCarouselNavEl) {
+    dashboardCarouselNavEl.addEventListener("click", function (e) {
+      var adj = e.target.closest("[data-dashboard-carousel]");
+      if (!adj || adj.disabled) return;
+      var action = adj.getAttribute("data-dashboard-carousel");
+      if (action === "prev") stepDashboardCarousel(-1);
+      else if (action === "next") stepDashboardCarousel(1);
+    });
+  }
+
+  if (dashboardCarouselMq) {
+    var onDashboardCarouselMqChange = function () {
+      initDashboardCarousel();
+    };
+    if (typeof dashboardCarouselMq.addEventListener === "function") {
+      dashboardCarouselMq.addEventListener(
+        "change",
+        onDashboardCarouselMqChange
+      );
+    } else if (typeof dashboardCarouselMq.addListener === "function") {
+      dashboardCarouselMq.addListener(onDashboardCarouselMqChange);
+    }
+  }
+
   document.addEventListener("click", function (e) {
     var adj = e.target.closest("[data-sticky-filters-carousel]");
     if (!adj || adj.disabled) return;
@@ -24619,6 +24802,7 @@
   function boot() {
     loadPersistedAppState();
     initDaysCarousel();
+    initDashboardCarousel();
     initStickyFiltersCarousel();
     initLongevityNav();
     initTargetRefPopoverEvents();
