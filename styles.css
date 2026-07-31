@@ -4567,6 +4567,479 @@ button.dashboard__micro-day-name:focus-visible {
   color: #5c5c5c;
 }
 
+.dashboard__longevity-analysis-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.55rem;
+  margin: 0 0 0.75rem;
+}
+
+.dashboard__longevity-analysis-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.4rem 0.75rem;
+  border: 1px solid #3d6b9e;
+  border-radius: 5px;
+  background: #2a4a6e;
+  color: #fff;
+  font: inherit;
+  font-size: 0.8rem;
+  font-weight: 650;
+  line-height: 1.3;
+  cursor: pointer;
+}
+
+.dashboard__longevity-analysis-btn:hover,
+.dashboard__longevity-analysis-btn:focus-visible {
+  background: #1f3a58;
+  border-color: #1f3a58;
+}
+
+.dashboard__longevity-analysis-btn:focus-visible {
+  outline: 2px solid #3d6b9e;
+  outline-offset: 2px;
+}
+
+.longevity-analysis-modal__panel {
+  max-height: min(92vh, 56rem);
+}
+
+.longevity-analysis-modal__body {
+  overflow: auto;
+  max-height: min(68vh, 42rem);
+}
+
+.longevity-analysis-report__meta {
+  margin: 0 0 0.85rem;
+  font-size: 0.82rem;
+  line-height: 1.45;
+  color: #444;
+}
+
+.longevity-analysis-report__note {
+  margin: 0 0 0.75rem;
+  font-size: 0.75rem;
+  line-height: 1.4;
+  color: #666;
+}
+
+.longevity-analysis-report__filters-wrap {
+  display: grid;
+  gap: 0.45rem;
+  margin: 0 0 1rem;
+}
+
+.longevity-analysis-report__filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+  margin: 0;
+  padding: 0.55rem 0.6rem;
+  border: 1px solid #e4e8ee;
+  border-radius: 6px;
+  background: #f4f6f8;
+}
+
+.longevity-analysis-report__filters--limit {
+  border-color: #ecd9c4;
+  background: #fff8f0;
+}
+
+.longevity-analysis-report__filters-label {
+  margin-right: 0.15rem;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: #6a7380;
+}
+
+.longevity-analysis-report__filter-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.28rem 0.5rem;
+  border: 1px solid #cfd5dd;
+  border-radius: 5px;
+  background: #fff;
+  color: #333;
+  font: inherit;
+  font-size: 0.72rem;
+  font-weight: 600;
+  line-height: 1.2;
+  cursor: pointer;
+}
+
+.longevity-analysis-report__filter-btn:hover,
+.longevity-analysis-report__filter-btn:focus-visible {
+  border-color: #9aa6b5;
+  background: #f8fafc;
+}
+
+.longevity-analysis-report__filter-btn:focus-visible {
+  outline: 2px solid #3d6b9e;
+  outline-offset: 1px;
+}
+
+.longevity-analysis-report__filter-btn--active {
+  box-shadow: inset 0 0 0 1px currentColor;
+}
+
+.longevity-analysis-report__filter-btn--red {
+  color: #b42318;
+  border-color: #e8b4af;
+}
+
+.longevity-analysis-report__filter-btn--red.longevity-analysis-report__filter-btn--active {
+  background: #fdeceb;
+  border-color: #b42318;
+}
+
+.longevity-analysis-report__filter-btn--yellow {
+  color: #9a6700;
+  border-color: #e6c97a;
+}
+
+.longevity-analysis-report__filter-btn--yellow.longevity-analysis-report__filter-btn--active {
+  background: #fff6d9;
+  border-color: #9a6700;
+}
+
+.longevity-analysis-report__filter-btn--green {
+  color: #1a7a36;
+  border-color: #a8d4b4;
+}
+
+.longevity-analysis-report__filter-btn--green.longevity-analysis-report__filter-btn--active {
+  background: #e8f6ec;
+  border-color: #1a7a36;
+}
+
+.longevity-analysis-report__filter-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.25rem;
+  padding: 0.05rem 0.3rem;
+  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.06);
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: inherit;
+}
+
+.longevity-analysis-report__avg {
+  font-weight: 750;
+}
+
+.longevity-analysis-report__avg--red {
+  color: #b42318;
+}
+
+.longevity-analysis-report__avg--yellow {
+  color: #9a6700;
+}
+
+.longevity-analysis-report__avg--green {
+  color: #1a7a36;
+}
+
+.longevity-analysis-report__section {
+  margin: 0 0 0.85rem;
+  padding: 0.65rem 0.75rem;
+  border: 1px solid #e4e8ee;
+  border-radius: 6px;
+  background: #fafbfc;
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+.longevity-analysis-report__section--goto {
+  cursor: pointer;
+  transition: border-color 0.12s ease, background-color 0.12s ease, box-shadow 0.12s ease;
+}
+
+.longevity-analysis-report__section--goto:hover,
+.longevity-analysis-report__section--goto:focus-visible {
+  border-color: #3d6b9e;
+  background: #f3f7fb;
+  box-shadow: 0 0 0 1px rgba(61, 107, 158, 0.18);
+  outline: none;
+}
+
+.longevity-analysis-report__section-title {
+  margin: 0 0 0.45rem;
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: #1a2a38;
+}
+
+.longevity-analysis-report__goto-hint {
+  margin: 0.55rem 0 0;
+  font-size: 0.72rem;
+  font-weight: 650;
+  color: #3d6b9e;
+}
+
+.longevity-analysis-return {
+  position: fixed;
+  right: 1rem;
+  bottom: 1rem;
+  z-index: 95;
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+  border: 1px solid #2a4a6e;
+  border-radius: 8px;
+  background: #2a4a6e;
+  box-shadow: 0 8px 24px rgba(26, 42, 56, 0.28);
+}
+
+.longevity-analysis-return[hidden] {
+  display: none !important;
+}
+
+.longevity-analysis-return__open {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin: 0;
+  padding: 0.65rem 0.8rem;
+  border: none;
+  border-radius: 7px 0 0 7px;
+  background: transparent;
+  color: #fff;
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 650;
+  line-height: 1.2;
+  cursor: pointer;
+}
+
+.longevity-analysis-return__open:hover,
+.longevity-analysis-return__open:focus-visible {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.longevity-analysis-return__open:focus-visible {
+  outline: 2px solid #9ec0e6;
+  outline-offset: -2px;
+}
+
+.longevity-analysis-return__open-icon {
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.longevity-analysis-return__dismiss {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.2rem;
+  margin: 0;
+  padding: 0;
+  border: none;
+  border-left: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 0 7px 7px 0;
+  background: transparent;
+  color: #fff;
+  font: inherit;
+  font-size: 1.15rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.longevity-analysis-return__dismiss:hover,
+.longevity-analysis-return__dismiss:focus-visible {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.longevity-analysis-return__dismiss:focus-visible {
+  outline: 2px solid #9ec0e6;
+  outline-offset: -2px;
+}
+
+@media (max-width: 720px) {
+  .longevity-analysis-return {
+    right: 0.75rem;
+    bottom: 4.75rem;
+  }
+}
+
+.longevity-analysis-report__metric-group {
+  margin: 0 0 0.55rem;
+  padding: 0.55rem 0.65rem;
+  border: 1px solid #d7e4f2;
+  border-left: 3px solid #3d6b9e;
+  border-radius: 5px;
+  background: #f4f8fc;
+}
+
+.longevity-analysis-report__metric-group:last-of-type {
+  margin-bottom: 0;
+}
+
+.longevity-analysis-report__metric-group--limit {
+  border-color: #ecd9c4;
+  border-left-color: #c45c00;
+  background: #fff8f0;
+}
+
+.longevity-analysis-report__metric-heading {
+  margin: 0 0 0.1rem;
+  font-size: 0.78rem;
+  font-weight: 750;
+  letter-spacing: 0.01em;
+  color: #2a4a6e;
+}
+
+.longevity-analysis-report__metric-group--limit .longevity-analysis-report__metric-heading {
+  color: #8a5a2b;
+}
+
+.longevity-analysis-report__metric-sub {
+  margin: 0 0 0.45rem;
+  font-size: 0.68rem;
+  line-height: 1.35;
+  color: #6a7380;
+}
+
+.longevity-analysis-report__hero {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.2rem 0.75rem;
+  margin: 0 0 0.45rem;
+  padding: 0.35rem 0.45rem;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.longevity-analysis-report__hero-main {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.3rem 0.55rem;
+  min-width: 0;
+}
+
+.longevity-analysis-report__hero-pct {
+  font-size: 1.35rem;
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+.longevity-analysis-report__hero-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #5c6670;
+}
+
+.longevity-analysis-report__hero-unit {
+  font-size: 0.68rem;
+  color: #6a7380;
+}
+
+.longevity-analysis-report__details {
+  display: grid;
+  gap: 0.28rem;
+}
+
+.longevity-analysis-report__detail-row {
+  display: grid;
+  grid-template-columns: 3.6rem minmax(0, 1fr) auto;
+  gap: 0.35rem 0.55rem;
+  align-items: baseline;
+  padding: 0.2rem 0.15rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+  font-size: 0.78rem;
+  line-height: 1.3;
+}
+
+.longevity-analysis-report__detail-row:first-child {
+  border-top: none;
+  padding-top: 0;
+}
+
+.longevity-analysis-report__detail-kind {
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: #6a7380;
+}
+
+.longevity-analysis-report__detail-name {
+  min-width: 0;
+  color: #333;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.longevity-analysis-report__detail-pct {
+  font-weight: 700;
+  color: #1a2a38;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.longevity-analysis-report__detail-row--mode .longevity-analysis-report__detail-name {
+  white-space: normal;
+}
+
+.longevity-analysis-report__single {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.25rem 0.45rem;
+  margin: 0;
+  padding: 0.35rem 0.45rem;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.72);
+  font-size: 0.84rem;
+  line-height: 1.35;
+  color: #222;
+}
+
+.longevity-analysis-report__single-name {
+  font-weight: 600;
+  min-width: 0;
+}
+
+.longevity-analysis-report__single-pct {
+  font-size: 1.05rem;
+  font-weight: 800;
+}
+
+.longevity-analysis-report__single-unit {
+  font-size: 0.72rem;
+  color: #6a7380;
+}
+
+.longevity-analysis-report__empty {
+  margin: 0;
+  font-size: 0.8rem;
+  color: #777;
+}
+
+@media (max-width: 560px) {
+  .longevity-analysis-report__detail-row {
+    grid-template-columns: 3.4rem minmax(0, 1fr);
+  }
+
+  .longevity-analysis-report__detail-pct {
+    grid-column: 2;
+    justify-self: start;
+  }
+}
+
 .dashboard__longevity-intro {
   margin: 0 0 0.65rem;
   padding: 0.65rem 0.75rem;
@@ -10067,8 +10540,58 @@ button.longevity-form__label-link:focus-visible {
   .dashboard__card-toggle,
   .dashboard__card-rank,
   .dashboard__longevity-nav,
-  .dashboard__longevity-section-link {
+  .dashboard__longevity-section-link,
+  .dashboard__longevity-analysis-actions {
     display: none !important;
+  }
+
+  body.print-longevity-analysis .week,
+  body.print-longevity-analysis .app-nav,
+  body.print-longevity-analysis .favorites-sidebar,
+  body.print-longevity-analysis .starter-guide,
+  body.print-longevity-analysis .modal:not(#longevity-analysis-modal) {
+    display: none !important;
+  }
+
+  body.print-longevity-analysis #longevity-analysis-modal {
+    display: block !important;
+    position: static;
+    inset: auto;
+    z-index: auto;
+    padding: 0;
+    background: none;
+  }
+
+  body.print-longevity-analysis #longevity-analysis-modal .modal__backdrop,
+  body.print-longevity-analysis #longevity-analysis-modal .modal__footer,
+  body.print-longevity-analysis .longevity-analysis-report__filters-wrap,
+  body.print-longevity-analysis .longevity-analysis-report__filters,
+  body.print-longevity-analysis .longevity-analysis-report__goto-hint,
+  .longevity-analysis-return {
+    display: none !important;
+  }
+
+  body.print-longevity-analysis .longevity-analysis-report__section[hidden] {
+    display: none !important;
+  }
+
+  body.print-longevity-analysis #longevity-analysis-modal .modal__panel {
+    max-width: none;
+    max-height: none;
+    width: auto;
+    margin: 0;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  body.print-longevity-analysis #longevity-analysis-modal .longevity-analysis-modal__body {
+    max-height: none;
+    overflow: visible;
+  }
+
+  body.print-longevity-analysis .longevity-analysis-report__section {
+    background: #fff;
   }
 
   .dashboard__hint,

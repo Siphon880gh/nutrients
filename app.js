@@ -183,6 +183,41 @@
   var healthTimelineOpenChatgptEl = document.getElementById("health-timeline-open-chatgpt");
   var healthTimelineOpenClaudeEl = document.getElementById("health-timeline-open-claude");
   var healthTimelineModalDoneBtn = document.getElementById("health-timeline-modal-done");
+  var dashboardLongevityAnalysisBtn = document.getElementById(
+    "dashboard-longevity-analysis"
+  );
+  var longevityAnalysisModalEl = document.getElementById("longevity-analysis-modal");
+  var longevityAnalysisSubtitleEl = document.getElementById(
+    "longevity-analysis-subtitle"
+  );
+  var longevityAnalysisReportEl = document.getElementById("longevity-analysis-report");
+  var longevityAnalysisPrintBtn = document.getElementById("longevity-analysis-print");
+  var longevityAnalysisDoneBtn = document.getElementById("longevity-analysis-done");
+  var longevityAnalysisReturnEl = document.getElementById("longevity-analysis-return");
+  var longevityAnalysisReturnOpenBtn = document.getElementById(
+    "longevity-analysis-return-open"
+  );
+  var longevityAnalysisReturnDismissBtn = document.getElementById(
+    "longevity-analysis-return-dismiss"
+  );
+  var longevityAnalysisBypassFilter = false;
+  var longevityAnalysisActiveAimBand = null;
+  var longevityAnalysisActiveLimitBand = null;
+  var longevityAnalysisReturnPending = false;
+  var LONGEVITY_ANALYSIS_AVG_BANDS = [
+    { id: "0-20", label: "0–20%", min: 0, max: 20, maxInclusive: false, color: "red" },
+    { id: "20-50", label: "20–50%", min: 20, max: 50, maxInclusive: false, color: "red" },
+    { id: "50-75", label: "50–75%", min: 50, max: 75, maxInclusive: false, color: "yellow" },
+    { id: "75-85", label: "75–85%", min: 75, max: 85, maxInclusive: false, color: "yellow" },
+    { id: "85-100", label: "85–100%", min: 85, max: 100, maxInclusive: true, color: "green" },
+  ];
+  var LONGEVITY_ANALYSIS_LIMIT_BANDS = [
+    { id: "limit-0-20", label: "0–20%", min: 0, max: 20, maxInclusive: false, color: "green" },
+    { id: "limit-20-50", label: "20–50%", min: 20, max: 50, maxInclusive: false, color: "green" },
+    { id: "limit-50-75", label: "50–75%", min: 50, max: 75, maxInclusive: false, color: "yellow" },
+    { id: "limit-75-85", label: "75–85%", min: 75, max: 85, maxInclusive: false, color: "yellow" },
+    { id: "limit-85-plus", label: "85%+", min: 85, max: Infinity, maxInclusive: true, color: "red" },
+  ];
   var microDefModalEl = document.getElementById("micro-def-modal");
   var microDefModalTitleEl = document.getElementById("micro-def-modal-title");
   var microDefTargetsEl = document.getElementById("micro-def-targets");
@@ -4341,6 +4376,9 @@
     }
     if (microGapsModalEl && !microGapsModalEl.hidden) closeMicroGapsModal();
     if (healthTimelineModalEl && !healthTimelineModalEl.hidden) closeHealthTimelineModal();
+    if (longevityAnalysisModalEl && !longevityAnalysisModalEl.hidden) {
+      closeLongevityAnalysisModal();
+    }
     if (microDefModalEl && !microDefModalEl.hidden) closeMicroDefModal();
     if (phosphorusBinderModalEl && !phosphorusBinderModalEl.hidden) {
       closePhosphorusBinderModal();
@@ -9893,6 +9931,7 @@
       isFavoritesSidebarOpen() ||
       (microGapsModalEl && !microGapsModalEl.hidden) ||
       (healthTimelineModalEl && !healthTimelineModalEl.hidden) ||
+      (longevityAnalysisModalEl && !longevityAnalysisModalEl.hidden) ||
       (microDefModalEl && !microDefModalEl.hidden) ||
       (microSourcesModalEl && !microSourcesModalEl.hidden) ||
       (longevitySourcesModalEl && !longevitySourcesModalEl.hidden) ||
@@ -13255,12 +13294,23 @@
     kindRefKey,
     refAmount
   ) {
-    if (microStickyFilterActive()) {
+    if (microStickyFilterActive() && !longevityAnalysisBypassFilter) {
       var filterKey = sourcesKey || defKey || kindRefKey;
       if (!microKeyMatchesStickyFilter(filterKey)) return "";
     }
     var tier = tierForLongevityPct(pct, !!limiting);
     var tierAttr = tier ? ' data-dv-tier="' + escapeAttr(tier.id) + '"' : "";
+    var analysisAttrs = "";
+    if (pct != null && !isNaN(pct)) {
+      analysisAttrs =
+        ' data-longevity-pct="' +
+        escapeAttr(String(pct)) +
+        '" data-longevity-label="' +
+        escapeAttr(label || "") +
+        '" data-longevity-limiting="' +
+        (limiting ? "1" : "0") +
+        '"';
+    }
     var rowCls = "dashboard__longevity-row" + (extraClass ? " " + extraClass : "");
     if (limiting) rowCls += " dashboard__longevity-row--limiting";
     var formName =
@@ -13335,6 +13385,7 @@
       rowCls +
       '"' +
       tierAttr +
+      analysisAttrs +
       ' role="listitem">' +
       nameHtml +
       '<span class="dashboard__longevity-amt">' +
@@ -15180,6 +15231,723 @@
     syncAllDismissibleTips();
   }
 
+  function collectLongevityAnalysisEntriesBySection() {
+    if (!dashboardLongevityContentEl) return {};
+    var restoreBypass = longevityAnalysisBypassFilter;
+    longevityAnalysisBypassFilter = true;
+    renderLongevityPanel();
+    longevityAnalysisBypassFilter = restoreBypass;
+
+    var byKey = {};
+    var sectionEls = dashboardLongevityContentEl.querySelectorAll(
+      ".dashboard__longevity-section[data-longevity-nav]"
+    );
+    Array.prototype.forEach.call(sectionEls, function (sectionEl) {
+      var key = sectionEl.getAttribute("data-longevity-nav");
+      if (!key) return;
+      var aim = [];
+      var limit = [];
+      var rows = sectionEl.querySelectorAll(
+        ".dashboard__longevity-row[data-longevity-pct]"
+      );
+      Array.prototype.forEach.call(rows, function (row) {
+        var pct = parseFloat(row.getAttribute("data-longevity-pct"));
+        if (!isFinite(pct)) return;
+        var entry = {
+          label: row.getAttribute("data-longevity-label") || "",
+          pct: pct,
+        };
+        if (row.getAttribute("data-longevity-limiting") === "1") {
+          limit.push(entry);
+        } else {
+          aim.push(entry);
+        }
+      });
+      byKey[key] = { aim: aim, limit: limit };
+    });
+
+    if (microStickyFilterActive()) {
+      renderLongevityPanel();
+    }
+    return byKey;
+  }
+
+  function longevityAnalysisFormatNamedPct(labels, pctValue) {
+    var unique = [];
+    labels.forEach(function (name) {
+      if (unique.indexOf(name) === -1) unique.push(name);
+    });
+    var names =
+      unique.length <= 3
+        ? unique.join("; ")
+        : unique.slice(0, 3).join("; ") + " +" + (unique.length - 3) + " more";
+    return formatTargetPctNumber(pctValue) + " — " + names;
+  }
+
+  function longevityAnalysisModeText(modeCounts, entryCount) {
+    var maxCount = 0;
+    Object.keys(modeCounts).forEach(function (bucket) {
+      if (modeCounts[bucket] > maxCount) maxCount = modeCounts[bucket];
+    });
+    if (entryCount > 1 && maxCount === 1) return "— (all unique)";
+    return Object.keys(modeCounts)
+      .filter(function (bucket) {
+        return modeCounts[bucket] === maxCount;
+      })
+      .map(function (bucket) {
+        return Number(bucket);
+      })
+      .sort(function (a, b) {
+        return a - b;
+      })
+      .map(function (n) {
+        return formatTargetPctNumber(n);
+      })
+      .join(", ");
+  }
+
+  function longevityAnalysisUniqueLabels(labels) {
+    var unique = [];
+    labels.forEach(function (name) {
+      if (unique.indexOf(name) === -1) unique.push(name);
+    });
+    if (unique.length <= 2) return unique.join("; ");
+    return unique.slice(0, 2).join("; ") + " +" + (unique.length - 2) + " more";
+  }
+
+  function longevityAnalysisStatForEntries(entries, options) {
+    options = options || {};
+    var capAverage = options.capAverage !== false;
+    if (!entries || !entries.length) {
+      return {
+        lowest: "—",
+        highest: "—",
+        lowestPct: null,
+        highestPct: null,
+        lowestNames: "",
+        highestNames: "",
+        average: "—",
+        averagePct: null,
+        mode: "—",
+        modeUseful: false,
+        count: 0,
+        singleLabel: "",
+        singlePct: null,
+      };
+    }
+
+    var lowestPct = Infinity;
+    var highestPct = -Infinity;
+    var lowestLabels = [];
+    var highestLabels = [];
+    var sumForAvg = 0;
+    var modeCounts = {};
+    var i;
+
+    for (i = 0; i < entries.length; i++) {
+      var entry = entries[i];
+      var pct = entry.pct;
+      var label = entry.label || "Untitled";
+      if (pct < lowestPct) {
+        lowestPct = pct;
+        lowestLabels = [label];
+      } else if (pct === lowestPct) {
+        lowestLabels.push(label);
+      }
+      if (pct > highestPct) {
+        highestPct = pct;
+        highestLabels = [label];
+      } else if (pct === highestPct) {
+        highestLabels.push(label);
+      }
+      sumForAvg += capAverage ? Math.min(pct, 100) : pct;
+      var bucket = String(Math.round(pct));
+      modeCounts[bucket] = (modeCounts[bucket] || 0) + 1;
+    }
+
+    var averagePct = sumForAvg / entries.length;
+    var modeText = longevityAnalysisModeText(modeCounts, entries.length);
+    return {
+      lowest: longevityAnalysisFormatNamedPct(lowestLabels, lowestPct),
+      highest: longevityAnalysisFormatNamedPct(highestLabels, highestPct),
+      lowestPct: lowestPct,
+      highestPct: highestPct,
+      lowestNames: longevityAnalysisUniqueLabels(lowestLabels),
+      highestNames: longevityAnalysisUniqueLabels(highestLabels),
+      average: formatTargetPctNumber(averagePct),
+      averagePct: averagePct,
+      mode: modeText,
+      modeUseful: modeText.indexOf("all unique") === -1,
+      count: entries.length,
+      singleLabel: entries[0].label || "Untitled",
+      singlePct: entries[0].pct,
+    };
+  }
+
+  function longevityAnalysisBandForPct(averagePct, bands) {
+    if (averagePct == null || !isFinite(averagePct) || !bands || !bands.length) {
+      return null;
+    }
+    var i;
+    for (i = 0; i < bands.length; i++) {
+      var band = bands[i];
+      if (averagePct < band.min) continue;
+      if (!isFinite(band.max)) return band;
+      if (band.maxInclusive ? averagePct <= band.max : averagePct < band.max) {
+        return band;
+      }
+    }
+    return null;
+  }
+
+  function longevityAnalysisBandForAvg(averagePct) {
+    var band = longevityAnalysisBandForPct(averagePct, LONGEVITY_ANALYSIS_AVG_BANDS);
+    if (band) return band;
+    if (averagePct != null && isFinite(averagePct) && averagePct > 100) {
+      return LONGEVITY_ANALYSIS_AVG_BANDS[LONGEVITY_ANALYSIS_AVG_BANDS.length - 1];
+    }
+    return null;
+  }
+
+  function longevityAnalysisBandForLimitAvg(averagePct) {
+    return longevityAnalysisBandForPct(averagePct, LONGEVITY_ANALYSIS_LIMIT_BANDS);
+  }
+
+  function longevityAnalysisAvgColorClass(averagePct) {
+    var band = longevityAnalysisBandForAvg(averagePct);
+    return band ? "longevity-analysis-report__avg--" + band.color : "";
+  }
+
+  /** Limit load: low is good (green), high is concerning (red). */
+  function longevityAnalysisLimitColorClass(averagePct) {
+    var band = longevityAnalysisBandForLimitAvg(averagePct);
+    return band ? "longevity-analysis-report__avg--" + band.color : "";
+  }
+
+  function longevityAnalysisSingleStatHtml(stats, colorClass, unitLabel) {
+    return (
+      '<p class="longevity-analysis-report__single">' +
+      '<span class="longevity-analysis-report__single-name">' +
+      escapeHtml(stats.singleLabel) +
+      "</span>" +
+      '<span class="longevity-analysis-report__single-pct longevity-analysis-report__avg ' +
+      escapeAttr(colorClass) +
+      '">' +
+      escapeHtml(formatTargetPctNumber(stats.singlePct)) +
+      "</span>" +
+      '<span class="longevity-analysis-report__single-unit">' +
+      escapeHtml(unitLabel) +
+      "</span></p>"
+    );
+  }
+
+  function longevityAnalysisDetailRowHtml(kind, label, pct, names) {
+    return (
+      '<div class="longevity-analysis-report__detail-row longevity-analysis-report__detail-row--' +
+      escapeAttr(kind) +
+      '">' +
+      '<span class="longevity-analysis-report__detail-kind">' +
+      escapeHtml(label) +
+      "</span>" +
+      '<span class="longevity-analysis-report__detail-name">' +
+      escapeHtml(names) +
+      "</span>" +
+      '<span class="longevity-analysis-report__detail-pct">' +
+      escapeHtml(formatTargetPctNumber(pct)) +
+      "</span></div>"
+    );
+  }
+
+  function longevityAnalysisMultiStatsHtml(stats, colorClass, unitLabel) {
+    var html =
+      '<div class="longevity-analysis-report__hero">' +
+      '<div class="longevity-analysis-report__hero-main">' +
+      '<span class="longevity-analysis-report__hero-pct longevity-analysis-report__avg ' +
+      escapeAttr(colorClass) +
+      '">' +
+      escapeHtml(stats.average) +
+      "</span>" +
+      '<span class="longevity-analysis-report__hero-label">average · ' +
+      escapeHtml(String(stats.count)) +
+      " nutrient" +
+      (stats.count === 1 ? "" : "s") +
+      "</span></div>" +
+      '<span class="longevity-analysis-report__hero-unit">' +
+      escapeHtml(unitLabel) +
+      "</span></div>" +
+      '<div class="longevity-analysis-report__details">' +
+      longevityAnalysisDetailRowHtml(
+        "low",
+        "Lowest",
+        stats.lowestPct,
+        stats.lowestNames
+      ) +
+      longevityAnalysisDetailRowHtml(
+        "high",
+        "Highest",
+        stats.highestPct,
+        stats.highestNames
+      );
+    if (stats.modeUseful) {
+      html +=
+        '<div class="longevity-analysis-report__detail-row longevity-analysis-report__detail-row--mode">' +
+        '<span class="longevity-analysis-report__detail-kind">Mode</span>' +
+        '<span class="longevity-analysis-report__detail-name">' +
+        escapeHtml(stats.mode) +
+        "</span></div>";
+    }
+    html += "</div>";
+    return html;
+  }
+
+  function longevityAnalysisAimStatsHtml(stats) {
+    if (!stats.count) return "";
+    var avgColorClass = longevityAnalysisAvgColorClass(stats.averagePct);
+    var body =
+      stats.count === 1
+        ? longevityAnalysisSingleStatHtml(
+            stats,
+            avgColorClass,
+            "of daily target"
+          )
+        : longevityAnalysisMultiStatsHtml(
+            stats,
+            avgColorClass,
+            "of daily target"
+          );
+    return (
+      '<div class="longevity-analysis-report__metric-group">' +
+      '<p class="longevity-analysis-report__metric-heading">Want more of these</p>' +
+      '<p class="longevity-analysis-report__metric-sub">Closer to 100% is better</p>' +
+      body +
+      "</div>"
+    );
+  }
+
+  function longevityAnalysisLimitStatsHtml(stats) {
+    if (!stats.count) return "";
+    var avgColorClass = longevityAnalysisLimitColorClass(stats.averagePct);
+    var body =
+      stats.count === 1
+        ? longevityAnalysisSingleStatHtml(
+            stats,
+            avgColorClass,
+            "of daily max"
+          )
+        : longevityAnalysisMultiStatsHtml(
+            stats,
+            avgColorClass,
+            "of daily max"
+          );
+    return (
+      '<div class="longevity-analysis-report__metric-group longevity-analysis-report__metric-group--limit">' +
+      '<p class="longevity-analysis-report__metric-heading">Want less of these</p>' +
+      '<p class="longevity-analysis-report__metric-sub">Lower % of daily max is better · over 100% = over ceiling</p>' +
+      body +
+      "</div>"
+    );
+  }
+
+  function longevityAnalysisClearBandFilters() {
+    longevityAnalysisActiveAimBand = null;
+    longevityAnalysisActiveLimitBand = null;
+  }
+
+  function longevityAnalysisParseSectionPct(sectionEl, attrName) {
+    var raw = sectionEl.getAttribute(attrName);
+    if (raw == null || raw === "") return null;
+    var pct = parseFloat(raw);
+    return isFinite(pct) ? pct : null;
+  }
+
+  function sortLongevityAnalysisSectionEls() {
+    if (!longevityAnalysisReportEl) return;
+    var sections = Array.prototype.slice.call(
+      longevityAnalysisReportEl.querySelectorAll(
+        ".longevity-analysis-report__section"
+      )
+    );
+    if (!sections.length) return;
+
+    var sortByLimit = !!longevityAnalysisActiveLimitBand;
+    sections.sort(function (a, b) {
+      if (sortByLimit) {
+        var aLimit = longevityAnalysisParseSectionPct(a, "data-limit-pct");
+        var bLimit = longevityAnalysisParseSectionPct(b, "data-limit-pct");
+        var aLimitHas = aLimit != null;
+        var bLimitHas = bLimit != null;
+        if (aLimitHas && bLimitHas) return bLimit - aLimit;
+        if (aLimitHas) return -1;
+        if (bLimitHas) return 1;
+      }
+      var aAim = longevityAnalysisParseSectionPct(a, "data-avg-pct");
+      var bAim = longevityAnalysisParseSectionPct(b, "data-avg-pct");
+      var aAimHas = aAim != null;
+      var bAimHas = bAim != null;
+      if (aAimHas && bAimHas) return aAim - bAim;
+      if (aAimHas) return -1;
+      if (bAimHas) return 1;
+      if (!sortByLimit) {
+        var aLimitFallback = longevityAnalysisParseSectionPct(a, "data-limit-pct");
+        var bLimitFallback = longevityAnalysisParseSectionPct(b, "data-limit-pct");
+        var aLimitFallbackHas = aLimitFallback != null;
+        var bLimitFallbackHas = bLimitFallback != null;
+        if (aLimitFallbackHas && bLimitFallbackHas) {
+          return aLimitFallback - bLimitFallback;
+        }
+        if (aLimitFallbackHas) return -1;
+        if (bLimitFallbackHas) return 1;
+      }
+      var aTitle = a.querySelector(".longevity-analysis-report__section-title");
+      var bTitle = b.querySelector(".longevity-analysis-report__section-title");
+      return String((aTitle && aTitle.textContent) || "").localeCompare(
+        String((bTitle && bTitle.textContent) || "")
+      );
+    });
+
+    sections.forEach(function (sectionEl) {
+      longevityAnalysisReportEl.appendChild(sectionEl);
+    });
+  }
+
+  function syncLongevityAnalysisBandFilter() {
+    if (!longevityAnalysisReportEl) return;
+    var aimActive = !!longevityAnalysisActiveAimBand;
+    var limitActive = !!longevityAnalysisActiveLimitBand;
+    var filterBtns = longevityAnalysisReportEl.querySelectorAll(
+      "[data-longevity-analysis-band]"
+    );
+    Array.prototype.forEach.call(filterBtns, function (btn) {
+      var id = btn.getAttribute("data-longevity-analysis-band");
+      var kind = btn.getAttribute("data-longevity-analysis-band-kind");
+      var pressed =
+        kind === "limit"
+          ? longevityAnalysisActiveLimitBand === id
+          : longevityAnalysisActiveAimBand === id;
+      btn.setAttribute("aria-pressed", pressed ? "true" : "false");
+      btn.classList.toggle("longevity-analysis-report__filter-btn--active", pressed);
+    });
+    sortLongevityAnalysisSectionEls();
+    var sections = longevityAnalysisReportEl.querySelectorAll(
+      ".longevity-analysis-report__section"
+    );
+    Array.prototype.forEach.call(sections, function (sectionEl) {
+      var aimBandId = sectionEl.getAttribute("data-avg-band") || "";
+      var limitBandId = sectionEl.getAttribute("data-limit-band") || "";
+      var matchesAim =
+        !aimActive || (!!aimBandId && aimBandId === longevityAnalysisActiveAimBand);
+      var matchesLimit =
+        !limitActive ||
+        (!!limitBandId && limitBandId === longevityAnalysisActiveLimitBand);
+      sectionEl.hidden = !(matchesAim && matchesLimit);
+    });
+  }
+
+  function longevityAnalysisFilterRowHtml(kind, label, bands, bandCounts) {
+    var buttonsHtml = "";
+    bands.forEach(function (band) {
+      var count = bandCounts[band.id] || 0;
+      if (count <= 0) return;
+      buttonsHtml +=
+        '<button type="button" class="longevity-analysis-report__filter-btn longevity-analysis-report__filter-btn--' +
+        escapeAttr(band.color) +
+        '" data-longevity-analysis-band="' +
+        escapeAttr(band.id) +
+        '" data-longevity-analysis-band-kind="' +
+        escapeAttr(kind) +
+        '" aria-pressed="false">' +
+        '<span class="longevity-analysis-report__filter-label">' +
+        escapeHtml(band.label) +
+        "</span>" +
+        '<span class="longevity-analysis-report__filter-count">' +
+        escapeHtml(String(count)) +
+        "</span>" +
+        "</button>";
+    });
+    if (!buttonsHtml) return "";
+    return (
+      '<div class="longevity-analysis-report__filters longevity-analysis-report__filters--' +
+      escapeAttr(kind) +
+      '" role="group" aria-label="Filter by ' +
+      escapeAttr(label) +
+      ' average">' +
+      '<span class="longevity-analysis-report__filters-label">' +
+      escapeHtml(label) +
+      "</span>" +
+      buttonsHtml +
+      "</div>"
+    );
+  }
+
+  function longevityAnalysisFilterBarHtml(aimBandCounts, limitBandCounts) {
+    var aimRow = longevityAnalysisFilterRowHtml(
+      "aim",
+      "Want more",
+      LONGEVITY_ANALYSIS_AVG_BANDS,
+      aimBandCounts
+    );
+    var limitRow = longevityAnalysisFilterRowHtml(
+      "limit",
+      "Want less",
+      LONGEVITY_ANALYSIS_LIMIT_BANDS,
+      limitBandCounts
+    );
+    if (!aimRow && !limitRow) return "";
+    return (
+      '<div class="longevity-analysis-report__filters-wrap">' +
+      aimRow +
+      limitRow +
+      "</div>"
+    );
+  }
+
+  function longevityAnalysisReportHtml(bySection) {
+    var dayCount = weekAverageDayCount();
+    var weekLabel = formatWeekRangeLabel(viewedWeekStart) || "this week";
+    var sexLabel = demographic === "female" ? "Female" : "Male";
+    var avgNote = isCurrentWeek()
+      ? "Current week average uses Mon–today (" + dayCount + " day" + (dayCount === 1 ? "" : "s") + ")."
+      : "Full week average uses 7 days.";
+
+    var aimBandCounts = {};
+    var limitBandCounts = {};
+    LONGEVITY_ANALYSIS_AVG_BANDS.forEach(function (band) {
+      aimBandCounts[band.id] = 0;
+    });
+    LONGEVITY_ANALYSIS_LIMIT_BANDS.forEach(function (band) {
+      limitBandCounts[band.id] = 0;
+    });
+
+    var rankedSections = getLongevityNavSections().map(function (section) {
+      var key = section.sectionDefKey;
+      var buckets = bySection[key] || { aim: [], limit: [] };
+      var aimStats = longevityAnalysisStatForEntries(buckets.aim || [], {
+        capAverage: true,
+      });
+      var limitStats = longevityAnalysisStatForEntries(buckets.limit || [], {
+        capAverage: false,
+      });
+      var band = longevityAnalysisBandForAvg(aimStats.averagePct);
+      var limitBand = longevityAnalysisBandForLimitAvg(limitStats.averagePct);
+      if (band) aimBandCounts[band.id] += 1;
+      if (limitBand) limitBandCounts[limitBand.id] += 1;
+      return {
+        key: key,
+        label: section.label,
+        aimStats: aimStats,
+        limitStats: limitStats,
+        band: band,
+        limitBand: limitBand,
+      };
+    });
+    rankedSections.sort(function (a, b) {
+      var aPct = a.aimStats.averagePct;
+      var bPct = b.aimStats.averagePct;
+      var aHas = aPct != null && isFinite(aPct);
+      var bHas = bPct != null && isFinite(bPct);
+      if (aHas && bHas) return aPct - bPct;
+      if (aHas) return -1;
+      if (bHas) return 1;
+      var aLimit = a.limitStats.averagePct;
+      var bLimit = b.limitStats.averagePct;
+      var aLimitHas = aLimit != null && isFinite(aLimit);
+      var bLimitHas = bLimit != null && isFinite(bLimit);
+      if (aLimitHas && bLimitHas) return aLimit - bLimit;
+      if (aLimitHas) return -1;
+      if (bLimitHas) return 1;
+      return a.label.localeCompare(b.label);
+    });
+
+    var sectionBlocks = rankedSections.map(function (section) {
+      var aimStats = section.aimStats;
+      var limitStats = section.limitStats;
+      var band = section.band;
+      var limitBand = section.limitBand;
+      var sectionAttrs =
+        ' data-longevity-analysis-goto="' +
+        escapeAttr(section.key) +
+        '"' +
+        (band
+          ? ' data-avg-band="' +
+            escapeAttr(band.id) +
+            '" data-avg-pct="' +
+            escapeAttr(String(aimStats.averagePct)) +
+            '"'
+          : "") +
+        (limitBand
+          ? ' data-limit-band="' +
+            escapeAttr(limitBand.id) +
+            '" data-limit-pct="' +
+            escapeAttr(String(limitStats.averagePct)) +
+            '"'
+          : "");
+      var html =
+        '<section class="longevity-analysis-report__section longevity-analysis-report__section--goto"' +
+        sectionAttrs +
+        ' role="button" tabindex="0" aria-label="Open ' +
+        escapeAttr(section.label) +
+        ' section">' +
+        '<h4 class="longevity-analysis-report__section-title">' +
+        escapeHtml(section.label) +
+        "</h4>";
+      if (!aimStats.count && !limitStats.count) {
+        html +=
+          '<p class="longevity-analysis-report__empty">No scored % target nutrients in this section.</p>';
+      } else {
+        html += longevityAnalysisAimStatsHtml(aimStats);
+        html += longevityAnalysisLimitStatsHtml(limitStats);
+      }
+      html +=
+        '<p class="longevity-analysis-report__goto-hint">Open section →</p>' +
+        "</section>";
+      return html;
+    });
+
+    return (
+      '<p class="longevity-analysis-report__meta"><strong>Week:</strong> ' +
+      escapeHtml(weekLabel) +
+      " · <strong>Sex profile:</strong> " +
+      escapeHtml(sexLabel) +
+      " · <strong>Days in average:</strong> " +
+      escapeHtml(String(dayCount)) +
+      "</p>" +
+      '<p class="longevity-analysis-report__note">' +
+      escapeHtml(avgNote) +
+      " “Want more” averages ignore limit nutrients and treat values over 100% as 100%. “Want less” shows % of the daily max with no cap (over 100% = over the ceiling). Only one filter can be active at a time across both rows.</p>" +
+      longevityAnalysisFilterBarHtml(aimBandCounts, limitBandCounts) +
+      sectionBlocks.join("")
+    );
+  }
+
+  function hideLongevityAnalysisReturnWidget() {
+    if (!longevityAnalysisReturnEl) return;
+    longevityAnalysisReturnEl.hidden = true;
+  }
+
+  function showLongevityAnalysisReturnWidget() {
+    if (!longevityAnalysisReturnEl) return;
+    longevityAnalysisReturnEl.hidden = false;
+  }
+
+  function dismissLongevityAnalysisReturnWidget() {
+    longevityAnalysisReturnPending = false;
+    hideLongevityAnalysisReturnWidget();
+  }
+
+  function closeLongevityAnalysisModal() {
+    if (!longevityAnalysisModalEl) return;
+    longevityAnalysisModalEl.hidden = true;
+    longevityAnalysisClearBandFilters();
+    longevityAnalysisReturnPending = false;
+    hideLongevityAnalysisReturnWidget();
+    document.body.classList.remove("print-longevity-analysis");
+    updateBodyModalOpen();
+  }
+
+  function hideLongevityAnalysisModalForSectionJump() {
+    if (!longevityAnalysisModalEl) return;
+    longevityAnalysisModalEl.hidden = true;
+    longevityAnalysisReturnPending = true;
+    document.body.classList.remove("print-longevity-analysis");
+    updateBodyModalOpen();
+    showLongevityAnalysisReturnWidget();
+  }
+
+  function returnToLongevityAnalysisModal() {
+    if (!longevityAnalysisModalEl || !longevityAnalysisReturnPending) {
+      openLongevityAnalysisModal();
+      return;
+    }
+    hideLongevityAnalysisReturnWidget();
+    longevityAnalysisReturnPending = false;
+    if (!longevityPanelOpen) {
+      setLongevityPanelOpen(true);
+    }
+    longevityAnalysisModalEl.hidden = false;
+    updateBodyModalOpen();
+    if (longevityAnalysisDoneBtn) longevityAnalysisDoneBtn.focus();
+  }
+
+  function jumpFromLongevityAnalysisToSection(sectionDefKey) {
+    if (!sectionDefKey) return;
+    hideLongevityAnalysisModalForSectionJump();
+    if (!longevityPanelOpen) {
+      setLongevityPanelOpen(true);
+    }
+    var index = longevityNavIndexForSection(sectionDefKey);
+    if (index < 0) return;
+    setLongevityNavHash(sectionDefKey, false);
+    window.requestAnimationFrame(function () {
+      scrollToLongevityNavSection(sectionDefKey, index, "smooth");
+    });
+  }
+
+  function printLongevityAnalysisReport() {
+    if (!longevityAnalysisModalEl || longevityAnalysisModalEl.hidden) return;
+    document.body.classList.add("print-longevity-analysis");
+    window.print();
+  }
+
+  function openLongevityAnalysisModal() {
+    if (!longevityAnalysisModalEl || !longevityAnalysisReportEl) return;
+
+    if (activeImportId) closeImportModal();
+    if (importAllModalEl && !importAllModalEl.hidden) closeImportAllModal();
+    if (importAllMealsModalEl && !importAllMealsModalEl.hidden) {
+      closeImportAllMealsModal();
+    }
+    if (microGapsModalEl && !microGapsModalEl.hidden) closeMicroGapsModal();
+    if (healthTimelineModalEl && !healthTimelineModalEl.hidden) {
+      closeHealthTimelineModal();
+    }
+    if (microDefModalEl && !microDefModalEl.hidden) closeMicroDefModal();
+    if (activeMicroId) {
+      saveMicrosFromForm();
+      closeMicroModal();
+    }
+    if (activeLongevityId) {
+      saveLongevityFromForm();
+      closeLongevityModal();
+    }
+
+    dismissLongevityAnalysisReturnWidget();
+
+    if (!longevityPanelOpen) {
+      setLongevityPanelOpen(true);
+    }
+
+    longevityAnalysisClearBandFilters();
+    var bySection = collectLongevityAnalysisEntriesBySection();
+    var weekLabel = formatWeekRangeLabel(viewedWeekStart) || "this week";
+    if (longevityAnalysisSubtitleEl) {
+      longevityAnalysisSubtitleEl.textContent =
+        "Weekly % target stats for " +
+        weekLabel +
+        " (÷ " +
+        weekAverageDayCount() +
+        " day" +
+        (weekAverageDayCount() === 1 ? "" : "s") +
+        ")";
+    }
+    longevityAnalysisReportEl.innerHTML = longevityAnalysisReportHtml(bySection);
+    syncLongevityAnalysisBandFilter();
+    longevityAnalysisModalEl.hidden = false;
+    updateBodyModalOpen();
+    if (longevityAnalysisDoneBtn) longevityAnalysisDoneBtn.focus();
+  }
+
+  function toggleLongevityAnalysisModal() {
+    if (longevityAnalysisModalEl && !longevityAnalysisModalEl.hidden) {
+      closeLongevityAnalysisModal();
+      return;
+    }
+    if (longevityAnalysisReturnPending) {
+      returnToLongevityAnalysisModal();
+      return;
+    }
+    openLongevityAnalysisModal();
+  }
+
   function longevityNavSectionEl(sectionDefKey) {
     return document.getElementById("longevity-section-" + sectionDefKey);
   }
@@ -15581,6 +16349,11 @@
       clearLongevityNavHash();
       longevityNavPushDepth = 0;
       syncLongevityNavVisibility();
+      if (longevityAnalysisModalEl && !longevityAnalysisModalEl.hidden) {
+        closeLongevityAnalysisModal();
+      } else {
+        dismissLongevityAnalysisReturnWidget();
+      }
     }
   }
 
@@ -22253,6 +23026,78 @@
     });
   }
 
+  if (dashboardLongevityAnalysisBtn) {
+    dashboardLongevityAnalysisBtn.addEventListener("click", openLongevityAnalysisModal);
+  }
+
+  if (longevityAnalysisDoneBtn) {
+    longevityAnalysisDoneBtn.addEventListener("click", closeLongevityAnalysisModal);
+  }
+
+  if (longevityAnalysisPrintBtn) {
+    longevityAnalysisPrintBtn.addEventListener("click", printLongevityAnalysisReport);
+  }
+
+  if (longevityAnalysisModalEl) {
+    longevityAnalysisModalEl.addEventListener("click", function (e) {
+      if (e.target.closest('[data-action="close-longevity-analysis-modal"]')) {
+        closeLongevityAnalysisModal();
+        return;
+      }
+      var bandBtn = e.target.closest("[data-longevity-analysis-band]");
+      if (bandBtn && longevityAnalysisReportEl.contains(bandBtn)) {
+        var bandId = bandBtn.getAttribute("data-longevity-analysis-band");
+        var bandKind = bandBtn.getAttribute("data-longevity-analysis-band-kind");
+        if (!bandId) return;
+        if (bandKind === "limit") {
+          if (longevityAnalysisActiveLimitBand === bandId) {
+            longevityAnalysisActiveLimitBand = null;
+          } else {
+            longevityAnalysisActiveAimBand = null;
+            longevityAnalysisActiveLimitBand = bandId;
+          }
+        } else if (longevityAnalysisActiveAimBand === bandId) {
+          longevityAnalysisActiveAimBand = null;
+        } else {
+          longevityAnalysisActiveLimitBand = null;
+          longevityAnalysisActiveAimBand = bandId;
+        }
+        syncLongevityAnalysisBandFilter();
+        return;
+      }
+      var gotoSection = e.target.closest("[data-longevity-analysis-goto]");
+      if (gotoSection && longevityAnalysisReportEl.contains(gotoSection)) {
+        jumpFromLongevityAnalysisToSection(
+          gotoSection.getAttribute("data-longevity-analysis-goto")
+        );
+      }
+    });
+    longevityAnalysisModalEl.addEventListener("keydown", function (e) {
+      if (e.key !== "Enter" && e.key !== " ") return;
+      var gotoSection = e.target.closest("[data-longevity-analysis-goto]");
+      if (!gotoSection || !longevityAnalysisReportEl.contains(gotoSection)) return;
+      if (e.target !== gotoSection) return;
+      e.preventDefault();
+      jumpFromLongevityAnalysisToSection(
+        gotoSection.getAttribute("data-longevity-analysis-goto")
+      );
+    });
+  }
+
+  if (longevityAnalysisReturnOpenBtn) {
+    longevityAnalysisReturnOpenBtn.addEventListener(
+      "click",
+      returnToLongevityAnalysisModal
+    );
+  }
+
+  if (longevityAnalysisReturnDismissBtn) {
+    longevityAnalysisReturnDismissBtn.addEventListener(
+      "click",
+      dismissLongevityAnalysisReturnWidget
+    );
+  }
+
   if (healthTimelineAiCopyBtn) {
     healthTimelineAiCopyBtn.addEventListener("click", function () {
       copyHealthTimelinePromptToClipboard(function () {
@@ -22357,6 +23202,10 @@
     }
     if (healthTimelineModalEl && !healthTimelineModalEl.hidden) {
       closeHealthTimelineModal();
+      return;
+    }
+    if (longevityAnalysisModalEl && !longevityAnalysisModalEl.hidden) {
+      closeLongevityAnalysisModal();
       return;
     }
     if (microGapsModalEl && !microGapsModalEl.hidden) {
@@ -22977,6 +23826,7 @@
 
   window.addEventListener("afterprint", function () {
     document.body.classList.remove("print-preview");
+    document.body.classList.remove("print-longevity-analysis");
   });
 
   if (dashboardPrintBtn) {
@@ -23102,6 +23952,11 @@
       if (!dashboardLongevityToggleEl) return;
       e.preventDefault();
       dashboardLongevityToggleEl.click();
+      return;
+    }
+    if (e.key === "a" || e.key === "A") {
+      e.preventDefault();
+      toggleLongevityAnalysisModal();
       return;
     }
     if (e.key === "v" || e.key === "V") {
