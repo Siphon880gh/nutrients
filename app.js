@@ -5842,6 +5842,7 @@
     DAYS.forEach(function (day) {
       var el = document.getElementById(day.id);
       var text = el ? el.value : "";
+      var hitCounts = keywordHitCounts(text);
       var seen = {};
       keywords.forEach(function (kw) {
         var name = kw.name.trim();
@@ -5856,7 +5857,7 @@
         var carbs = parseMacro(kw.carbs);
         if (!carbs) return;
 
-        var hits = countKeyword(text, name);
+        var hits = hitCounts[nameKey] || 0;
         if (!hits) return;
 
         var perServingGl = (gi * carbs) / 100;
@@ -6158,6 +6159,7 @@
     DAYS.forEach(function (day) {
       var el = document.getElementById(day.id);
       var text = el ? el.value : "";
+      var hitCounts = keywordHitCounts(text);
       var seen = {};
       keywords.forEach(function (kw) {
         var name = kw.name.trim();
@@ -6166,7 +6168,7 @@
         if (seen[nameKey]) return;
         seen[nameKey] = true;
 
-        var hits = countKeyword(text, name);
+        var hits = hitCounts[nameKey] || 0;
         if (!hits) return;
 
         var v =
@@ -10271,23 +10273,45 @@
     return highlightServingMultipliersHtml(html);
   }
 
-  function countKeyword(text, name) {
-    var re = new RegExp(keywordMatchPattern(escapeRegex(name)), "gi");
-    var count = 0;
+  /**
+   * Count non-overlapping food hits in text, longest name first.
+   * Prevents a shorter definition (e.g. "Trifecta Salmon") from also
+   * matching inside a longer one ("Trifecta Salmon Rice and Green Beans").
+   * Returns lowercase name → hit count (serving multipliers applied).
+   */
+  function keywordHitCounts(text) {
+    var counts = {};
+    if (!text) return counts;
+    var names = keywordNames();
+    var regex = buildHighlightRegex(names);
+    if (!regex) return counts;
+
     var match;
-    while ((match = re.exec(text)) !== null) {
-      count += keywordServingMultiplier(text, match.index + match[0].length);
+    regex.lastIndex = 0;
+    while ((match = regex.exec(text)) !== null) {
+      var matched = match[1] || match[0];
+      var key = matched.toLowerCase();
+      counts[key] =
+        (counts[key] || 0) +
+        keywordServingMultiplier(text, match.index + match[0].length);
       if (match[0].length === 0) {
-        re.lastIndex += 1;
+        regex.lastIndex += 1;
       }
     }
-    return count;
+    return counts;
+  }
+
+  function countKeyword(text, name) {
+    var key = String(name || "").trim().toLowerCase();
+    if (!key) return 0;
+    return keywordHitCounts(text)[key] || 0;
   }
 
   function totalsFromText(text) {
     var protein = 0;
     var carbs = 0;
     var fats = 0;
+    var hitCounts = keywordHitCounts(text);
     var seen = {};
 
     keywords.forEach(function (kw) {
@@ -10297,7 +10321,7 @@
       if (seen[key]) return;
       seen[key] = true;
 
-      var hits = countKeyword(text, name);
+      var hits = hitCounts[key] || 0;
       if (!hits) return;
 
       protein += hits * parseMacro(kw.protein);
@@ -10331,6 +10355,7 @@
 
   function microTotalsFromText(text) {
     var totals = emptyMicroTotals();
+    var hitCounts = keywordHitCounts(text);
     var seen = {};
 
     keywords.forEach(function (kw) {
@@ -10340,7 +10365,7 @@
       if (seen[key]) return;
       seen[key] = true;
 
-      var hits = countKeyword(text, name);
+      var hits = hitCounts[key] || 0;
       if (!hits) return;
 
       MICRO_ALL_FIELDS.forEach(function (field) {
@@ -10356,6 +10381,7 @@
 
   function microContributionsFromText(text, microKey) {
     var list = [];
+    var hitCounts = keywordHitCounts(text);
     var seen = {};
 
     keywords.forEach(function (kw) {
@@ -10365,7 +10391,7 @@
       if (seen[key]) return;
       seen[key] = true;
 
-      var hits = countKeyword(text, name);
+      var hits = hitCounts[key] || 0;
       if (!hits) return;
 
       var perServing;
@@ -10394,6 +10420,7 @@
 
   function macroContributionsFromText(text, macroKey) {
     var list = [];
+    var hitCounts = keywordHitCounts(text);
     var seen = {};
 
     keywords.forEach(function (kw) {
@@ -10403,7 +10430,7 @@
       if (seen[key]) return;
       seen[key] = true;
 
-      var hits = countKeyword(text, name);
+      var hits = hitCounts[key] || 0;
       if (!hits) return;
 
       var perServing;
@@ -10728,6 +10755,7 @@
 
   function longevityTotalsFromText(text) {
     var totals = emptyLongevityTotals();
+    var hitCounts = keywordHitCounts(text);
     var seen = {};
 
     keywords.forEach(function (kw) {
@@ -10737,7 +10765,7 @@
       if (seen[key]) return;
       seen[key] = true;
 
-      var hits = countKeyword(text, name);
+      var hits = hitCounts[key] || 0;
       if (!hits) return;
 
       LONGEVITY_FIELDS.forEach(function (field) {
@@ -10812,6 +10840,7 @@
     DAYS.forEach(function (day) {
       var el = document.getElementById(day.id);
       var text = el ? el.value : "";
+      var hitCounts = keywordHitCounts(text);
       var seen = {};
       keywords.forEach(function (kw) {
         var name = kw.name.trim();
@@ -10826,7 +10855,7 @@
         var carbs = parseMacro(kw.carbs);
         if (!carbs) return;
 
-        var hits = countKeyword(text, name);
+        var hits = hitCounts[key] || 0;
         if (!hits) return;
 
         var weight = hits * carbs;
@@ -10883,6 +10912,7 @@
     DAYS.forEach(function (day) {
       var el = document.getElementById(day.id);
       var text = el ? el.value : "";
+      var hitCounts = keywordHitCounts(text);
       var seen = {};
       keywords.forEach(function (kw) {
         var name = kw.name.trim();
@@ -10897,7 +10927,7 @@
         var carbs = parseMacro(kw.carbs);
         if (!carbs) return;
 
-        var hits = countKeyword(text, name);
+        var hits = hitCounts[key] || 0;
         if (!hits) return;
 
         total += hits * ((gi * carbs) / 100);
