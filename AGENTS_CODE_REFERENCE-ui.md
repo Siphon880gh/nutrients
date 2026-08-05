@@ -80,8 +80,8 @@ Native `<textarea>` cannot color individual words, and overlaying a transparent 
 
 **Food-name popover** — `.day__suggest`:
 
-- `position: absolute; left/right` inside `.day__editor`, `z-index: 2`, content-sized (`height: auto`); JS sets `top` or `bottom` from the caret and caps list height — does not stretch full editor height.
-- `positionDaySuggest` prefers below the caret; `.day__suggest--above` only when space below is too tight (anchored just above the caret, not pinned to the editor top).
+- `position: absolute; left/right` inside `.day__editor`, `z-index: 2`. Food lists stretch to fill the remaining editor area below/above the caret; empty-line tips stay content-sized (`.day__suggest--tip`).
+- `positionDaySuggest` prefers below the caret; `.day__suggest--above` only when space below is too tight (food lists pin `top: 0` and sit above the caret).
 - `.day__suggest-list` — `overflow-y: auto`, `overscroll-behavior: contain`, `scrollbar-width: thin`; pill items `.day__suggest-item` with match highlight `.day__suggest-match`.
 - Empty-line tip uses `.day__suggest-item--tip` rows (**Add comment with //** / **Add comment with #** / **Add divider ---**); comment lines in the backdrop use `.day__line-comment` (muted italic).
 - Hidden in print / print-preview.

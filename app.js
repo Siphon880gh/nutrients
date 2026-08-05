@@ -22751,8 +22751,8 @@
     var list = suggestEl.querySelector(".day__suggest-list");
 
     suggestEl.classList.toggle("day__suggest--tip", isTip);
-    suggestEl.style.left = "0";
-    suggestEl.style.right = "0";
+    suggestEl.style.left = "1px";
+    suggestEl.style.right = "1px";
     suggestEl.style.overflow = "hidden";
 
     // Prefer below the caret so the line being typed stays visible.
@@ -22762,44 +22762,44 @@
       minPanelHeight,
       placeAbove ? spaceAbove : spaceBelow
     );
-    // Cap so long food lists do not dominate the editor under the caret.
-    var foodListCap = headerHeight + rowHeight * 8 + 12;
-    var maxSpace = isTip
-      ? available
-      : Math.min(available, Math.max(minPanelHeight, foodListCap));
 
     if (list) {
-      list.style.flex = isTip ? "0 0 auto" : "0 1 auto";
+      list.style.flex = isTip ? "0 0 auto" : "1 1 auto";
       list.style.overflowY = isTip ? "visible" : "auto";
-    }
-
-    if (placeAbove) {
-      suggestEl.classList.add("day__suggest--above");
-      suggestEl.style.top = "auto";
-      suggestEl.style.bottom = editorHeight - caretTop + gap + "px";
-    } else {
-      suggestEl.classList.remove("day__suggest--above");
-      suggestEl.style.top = caretBottom + gap + "px";
-      suggestEl.style.bottom = "auto";
+      list.style.maxHeight = "";
     }
 
     if (isTip) {
-      // Measure content without a max-height floor so scrollHeight is not inflated.
+      if (placeAbove) {
+        suggestEl.classList.add("day__suggest--above");
+        suggestEl.style.top = "auto";
+        suggestEl.style.bottom = editorHeight - caretTop + gap + "px";
+      } else {
+        suggestEl.classList.remove("day__suggest--above");
+        suggestEl.style.top = caretBottom + gap + "px";
+        suggestEl.style.bottom = "auto";
+      }
+      // Content-sized: three tip rows should not stretch across empty editor space.
       suggestEl.style.height = "auto";
       suggestEl.style.maxHeight = "none";
-      if (list) list.style.maxHeight = "";
       var tipContentH = suggestEl.scrollHeight;
-      var tipH = Math.min(tipContentH, maxSpace);
+      var tipH = Math.min(tipContentH, available);
       suggestEl.style.height = tipH + "px";
       suggestEl.style.maxHeight = tipH + "px";
       return;
     }
 
-    suggestEl.style.height = "auto";
-    suggestEl.style.maxHeight = maxSpace + "px";
-    if (list) {
-      list.style.maxHeight =
-        Math.max(rowHeight, maxSpace - headerHeight) + "px";
+    // Food lists fill the remaining editor area so the panel reads as part of the box.
+    suggestEl.style.height = "";
+    suggestEl.style.maxHeight = "";
+    if (placeAbove) {
+      suggestEl.classList.add("day__suggest--above");
+      suggestEl.style.top = "0";
+      suggestEl.style.bottom = editorHeight - caretTop + gap + "px";
+    } else {
+      suggestEl.classList.remove("day__suggest--above");
+      suggestEl.style.top = caretBottom + gap + "px";
+      suggestEl.style.bottom = "0";
     }
   }
 

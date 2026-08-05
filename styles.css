@@ -7119,9 +7119,8 @@ body.day-word-wrap-off .day__input {
   padding: 0.65rem 0.75rem 0;
 }
 
-.day__suggest--above .day__suggest-list,
-.day__suggest--tip .day__suggest-list {
-  flex: 0 1 auto;
+.day__suggest--above .day__suggest-list {
+  flex: 1 1 auto;
 }
 
 .day__suggest--tip .day__suggest-list {
