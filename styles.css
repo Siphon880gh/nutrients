@@ -9270,6 +9270,10 @@ button.longevity-form__label-link:focus-visible {
   max-height: 14rem;
 }
 
+.micro-gaps-modal__mode {
+  margin-bottom: 0.75rem;
+}
+
 .micro-gaps-modal__select {
   margin-bottom: 0.55rem;
 }
@@ -9282,6 +9286,81 @@ button.longevity-form__label-link:focus-visible {
   min-height: 3rem;
   resize: vertical;
   margin-bottom: 0.55rem;
+}
+
+.micro-gaps-modal__foods {
+  margin: 0 0 0.55rem;
+  border: 1px solid #e0e0dc;
+  border-radius: 6px;
+  background: #fafaf8;
+}
+
+.micro-gaps-modal__foods-summary {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.35rem 0.55rem;
+  padding: 0.5rem 0.65rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #333;
+  cursor: pointer;
+  list-style: none;
+}
+
+.micro-gaps-modal__foods-summary::-webkit-details-marker {
+  display: none;
+}
+
+.micro-gaps-modal__foods-summary::before {
+  content: "▸ ";
+  color: #5c5c5c;
+}
+
+.micro-gaps-modal__foods[open] .micro-gaps-modal__foods-summary::before {
+  content: "▾ ";
+}
+
+.micro-gaps-modal__foods-count {
+  font-weight: 500;
+  color: #6a6a66;
+}
+
+.micro-gaps-modal__foods-body {
+  padding: 0 0.65rem 0.55rem;
+  border-top: 1px solid #e8e8e4;
+}
+
+.micro-gaps-modal__foods-empty {
+  margin: 0.45rem 0 0;
+  font-size: 0.78rem;
+  color: #6a6a66;
+}
+
+.micro-gaps-modal__foods-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  max-height: 11rem;
+  overflow: auto;
+  margin-top: 0.4rem;
+}
+
+.micro-gaps-modal__food-option {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.4rem;
+  margin: 0;
+  padding: 0.22rem 0;
+  font-size: 0.8rem;
+  line-height: 1.35;
+  color: #333;
+  cursor: pointer;
+}
+
+.micro-gaps-modal__food-option input {
+  margin-top: 0.15rem;
+  flex-shrink: 0;
 }
 
 .micro-gaps-modal__panel {

@@ -169,8 +169,15 @@
   var longevityModalDoneBtn = document.getElementById("longevity-modal-done");
   var microGapsAiOpenBtn = document.getElementById("micro-gaps-ai-open");
   var microGapsModalEl = document.getElementById("micro-gaps-modal");
+  var microGapsAnyPanelEl = document.getElementById("micro-gaps-any-panel");
+  var microGapsReeatPanelEl = document.getElementById("micro-gaps-reeat-panel");
   var microGapsPreferenceEl = document.getElementById("micro-gaps-preference");
   var microGapsAdditionalEl = document.getElementById("micro-gaps-additional");
+  var microGapsWeeksEl = document.getElementById("micro-gaps-weeks");
+  var microGapsFoodsDetailsEl = document.getElementById("micro-gaps-foods-details");
+  var microGapsFoodsCountEl = document.getElementById("micro-gaps-foods-count");
+  var microGapsFoodsEmptyEl = document.getElementById("micro-gaps-foods-empty");
+  var microGapsFoodsListEl = document.getElementById("micro-gaps-foods-list");
   var microGapsAiPreviewEl = document.getElementById("micro-gaps-ai-preview");
   var microGapsAiCopyBtn = document.getElementById("micro-gaps-ai-copy");
   var microGapsOpenChatgptEl = document.getElementById("micro-gaps-open-chatgpt");
@@ -4099,6 +4106,126 @@
     return MICRO_GAPS_PREF_LABELS[id] || MICRO_GAPS_PREF_LABELS.none;
   }
 
+  function getMicroGapsMode() {
+    var checked = document.querySelector(
+      'input[name="micro-gaps-mode"]:checked'
+    );
+    return checked && checked.value === "reeat" ? "reeat" : "any";
+  }
+
+  function getMicroGapsWeeksLookback() {
+    if (!microGapsWeeksEl) return 2;
+    var n = parseInt(microGapsWeeksEl.value, 10);
+    return n > 0 ? n : 2;
+  }
+
+  function microGapsLookbackMondayKeys(weeks) {
+    var end = viewedWeekStart || currentWeekMondayKey();
+    var mon = parseDateKey(end);
+    var keys = [];
+    if (!mon) return keys;
+    var earliest = earliestWeekMondayKey();
+    var count = weeks > 0 ? weeks : 1;
+    for (var i = 0; i < count; i++) {
+      var key = toDateKey(addDays(mon, -7 * i));
+      if (key < earliest) break;
+      keys.push(key);
+    }
+    return keys;
+  }
+
+  function microGapsLookbackMealsText(weeks) {
+    flushEditorsToDayMeals();
+    var parts = [];
+    microGapsLookbackMondayKeys(weeks).forEach(function (monKey) {
+      weekDateKeys(monKey).forEach(function (dateKey) {
+        var text = dayMealsByDate[dateKey] || "";
+        if (text) parts.push(text);
+      });
+    });
+    return parts.join("\n");
+  }
+
+  function uniqueFoodNamesFromMealsText(text) {
+    var counts = keywordHitCounts(text);
+    var names = [];
+    var seen = {};
+    keywords.forEach(function (kw) {
+      var name = kw.name.trim();
+      if (!name) return;
+      var key = name.toLowerCase();
+      if (seen[key]) return;
+      seen[key] = true;
+      if (counts[key]) names.push(name);
+    });
+    names.sort(function (a, b) {
+      return a.toLowerCase().localeCompare(b.toLowerCase());
+    });
+    return names;
+  }
+
+  function microGapsSelectedReeatFoods() {
+    if (!microGapsFoodsListEl) return [];
+    var boxes = microGapsFoodsListEl.querySelectorAll(
+      'input[type="checkbox"][data-micro-gaps-food]'
+    );
+    var names = [];
+    for (var i = 0; i < boxes.length; i++) {
+      if (boxes[i].checked) names.push(boxes[i].value);
+    }
+    return names;
+  }
+
+  function updateMicroGapsFoodsCount(total, selected) {
+    if (!microGapsFoodsCountEl) return;
+    if (!total) {
+      microGapsFoodsCountEl.textContent = "";
+      return;
+    }
+    microGapsFoodsCountEl.textContent =
+      selected === total
+        ? "(" + total + ")"
+        : "(" + selected + " of " + total + " selected)";
+  }
+
+  function renderMicroGapsReeatFoods() {
+    if (!microGapsFoodsListEl) return;
+    var weeks = getMicroGapsWeeksLookback();
+    var names = uniqueFoodNamesFromMealsText(microGapsLookbackMealsText(weeks));
+    var html = "";
+    names.forEach(function (name, i) {
+      var id = "micro-gaps-food-" + i;
+      html +=
+        '<label class="micro-gaps-modal__food-option" for="' +
+        id +
+        '">' +
+        '<input type="checkbox" id="' +
+        id +
+        '" data-micro-gaps-food value="' +
+        escapeAttr(name) +
+        '" checked>' +
+        "<span>" +
+        escapeHtml(name) +
+        "</span></label>";
+    });
+    microGapsFoodsListEl.innerHTML = html;
+    if (microGapsFoodsEmptyEl) {
+      microGapsFoodsEmptyEl.hidden = names.length > 0;
+    }
+    if (microGapsFoodsDetailsEl && names.length) {
+      microGapsFoodsDetailsEl.open = true;
+    }
+    updateMicroGapsFoodsCount(names.length, names.length);
+  }
+
+  function syncMicroGapsModeUi() {
+    var isReeat = getMicroGapsMode() === "reeat";
+    if (microGapsAnyPanelEl) microGapsAnyPanelEl.hidden = isReeat;
+    if (microGapsReeatPanelEl) microGapsReeatPanelEl.hidden = !isReeat;
+    if (isReeat) renderMicroGapsReeatFoods();
+    renderMicroGapsAiPreview();
+  }
+
   function buildMicroGapsSnapshotLines() {
     var week = weekMicroTotals();
     var lines = [];
@@ -4138,10 +4265,8 @@
 
   function buildMicroGapsAiPrompt() {
     var snapshot = buildMicroGapsSnapshotLines();
-    var pref = microGapsPreferenceText();
-    var additional =
-      microGapsAdditionalEl && microGapsAdditionalEl.value.trim();
     var demo = demographicLabelForPrompt();
+    var mode = getMicroGapsMode();
 
     var parts = [
       "I track meals Mon–Sun in a weekly log. The numbers below are my average daily intake compared to daily values for a " +
@@ -4163,14 +4288,48 @@
       parts.push("");
     }
 
-    parts.push(
-      "How can I meet these gaps? This is the average over the week, not a single day. Suggest specific foods I can add to my week. For each food, include how many times per week, a typical serving size, and which nutrients it mainly helps. Keep suggestions practical for my preferences."
-    );
-    parts.push("");
-    parts.push("Dietary preferences: " + pref + ".");
-    if (additional) {
-      parts.push(additional);
+    if (mode === "reeat") {
+      var weeks = getMicroGapsWeeksLookback();
+      var foods = microGapsSelectedReeatFoods();
+      parts.push(
+        "How can I meet these gaps? This is the average over the week, not a single day."
+      );
+      parts.push("");
+      parts.push(
+        "I want to eat more of foods I already ate in the last " +
+          weeks +
+          " week" +
+          (weeks === 1 ? "" : "s") +
+          " to make up nutrient deficiencies. These are the foods I am willing to re-eat more of:"
+      );
+      if (foods.length) {
+        foods.forEach(function (name) {
+          parts.push("- " + name);
+        });
+      } else {
+        parts.push("- (none selected)");
+      }
+      parts.push("");
+      parts.push(
+        "Prefer suggesting more of these foods. For each suggestion, include how many more times per week, a typical serving size, and which nutrients it mainly helps."
+      );
+      parts.push(
+        "Only if a gap cannot be closed with these foods — because they lack the needed types of nutrients, or filling it would require an unreasonable amount of eating — then suggest other foods besides this list. When you do that, note clearly that I have no choice and must add something outside these foods."
+      );
+    } else {
+      var pref = microGapsPreferenceText();
+      var additional =
+        microGapsAdditionalEl && microGapsAdditionalEl.value.trim();
+      parts.push(
+        "How can I meet these gaps? This is the average over the week, not a single day. Suggest specific foods I can add to my week. For each food, include how many times per week, a typical serving size, and which nutrients it mainly helps. Keep suggestions practical for my preferences."
+      );
+      parts.push("");
+      parts.push("Dietary preferences: " + pref + ".");
+      if (additional) {
+        parts.push(additional);
+      }
     }
+
     parts.push("");
     parts.push(
       "Reply in plain language (no JSON). Use short sections or a simple list."
@@ -9870,10 +10029,12 @@
       closeLongevityModal();
     }
 
-    renderMicroGapsAiPreview();
+    syncMicroGapsModeUi();
     microGapsModalEl.hidden = false;
     updateBodyModalOpen();
-    if (microGapsPreferenceEl) {
+    if (getMicroGapsMode() === "reeat") {
+      if (microGapsWeeksEl) microGapsWeeksEl.focus();
+    } else if (microGapsPreferenceEl) {
       microGapsPreferenceEl.focus();
     }
   }
@@ -23390,6 +23551,32 @@
     microGapsModalEl.addEventListener("click", function (e) {
       if (e.target.closest('[data-action="close-micro-gaps-modal"]')) {
         closeMicroGapsModal();
+      }
+    });
+    microGapsModalEl.addEventListener("change", function (e) {
+      var t = e.target;
+      if (!t) return;
+      if (t.name === "micro-gaps-mode") {
+        syncMicroGapsModeUi();
+        return;
+      }
+      if (t === microGapsWeeksEl) {
+        renderMicroGapsReeatFoods();
+        renderMicroGapsAiPreview();
+        return;
+      }
+      if (t.getAttribute && t.getAttribute("data-micro-gaps-food") != null) {
+        var boxes = microGapsFoodsListEl
+          ? microGapsFoodsListEl.querySelectorAll(
+              'input[type="checkbox"][data-micro-gaps-food]'
+            )
+          : [];
+        var selected = 0;
+        for (var i = 0; i < boxes.length; i++) {
+          if (boxes[i].checked) selected += 1;
+        }
+        updateMicroGapsFoodsCount(boxes.length, selected);
+        renderMicroGapsAiPreview();
       }
     });
   }

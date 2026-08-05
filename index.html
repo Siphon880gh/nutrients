@@ -1351,19 +1351,53 @@
       </header>
       <div class="import-modal__body">
         <p class="import-modal__hint">Builds a prompt from your current week averages and % DV. Copy it, then use ChatGPT or Claude for food ideas you can add to your day notes.</p>
-        <label class="import-ai-panel__label" for="micro-gaps-preference">Dietary preferences</label>
-        <select id="micro-gaps-preference" class="import-ai-panel__portion micro-gaps-modal__select">
-          <option value="none" selected>No preferences</option>
-          <option value="gluten_free">Gluten free</option>
-          <option value="dairy_free">Free of dairy ingredients</option>
-          <option value="nut_free">Free of nuts</option>
-          <option value="vegan">Vegan</option>
-          <option value="infrequent">Only a few times per week at most</option>
-          <option value="easy_prep">Easy to prepare</option>
-          <option value="portable">Portable finger food I can bring to work</option>
-        </select>
-        <label class="import-ai-panel__label micro-gaps-modal__additional-label" for="micro-gaps-additional">Additional dietary preferences</label>
-        <textarea id="micro-gaps-additional" class="import-ai-panel__portion micro-gaps-modal__additional" rows="2" placeholder="I prefer whole foods and easy breakfasts I can pack for work." autocomplete="off" spellcheck="true"></textarea>
+        <fieldset class="import-all-mode micro-gaps-modal__mode">
+          <legend class="import-all-mode__legend">How to fill gaps</legend>
+          <label class="import-all-mode__option">
+            <input type="radio" name="micro-gaps-mode" value="any" checked>
+            <span class="import-all-mode__text"><strong>Eat any food</strong> — suggest foods that fit dietary preferences.</span>
+          </label>
+          <label class="import-all-mode__option">
+            <input type="radio" name="micro-gaps-mode" value="reeat">
+            <span class="import-all-mode__text"><strong>Eat more of what I ate</strong> — prefer foods from a recent weeks window.</span>
+          </label>
+        </fieldset>
+        <div id="micro-gaps-any-panel">
+          <label class="import-ai-panel__label" for="micro-gaps-preference">Dietary preferences</label>
+          <select id="micro-gaps-preference" class="import-ai-panel__portion micro-gaps-modal__select">
+            <option value="none" selected>No preferences</option>
+            <option value="gluten_free">Gluten free</option>
+            <option value="dairy_free">Free of dairy ingredients</option>
+            <option value="nut_free">Free of nuts</option>
+            <option value="vegan">Vegan</option>
+            <option value="infrequent">Only a few times per week at most</option>
+            <option value="easy_prep">Easy to prepare</option>
+            <option value="portable">Portable finger food I can bring to work</option>
+          </select>
+          <label class="import-ai-panel__label micro-gaps-modal__additional-label" for="micro-gaps-additional">Additional dietary preferences</label>
+          <textarea id="micro-gaps-additional" class="import-ai-panel__portion micro-gaps-modal__additional" rows="2" placeholder="I prefer whole foods and easy breakfasts I can pack for work." autocomplete="off" spellcheck="true"></textarea>
+        </div>
+        <div id="micro-gaps-reeat-panel" hidden>
+          <label class="import-ai-panel__label" for="micro-gaps-weeks">Look back how many weeks</label>
+          <select id="micro-gaps-weeks" class="import-ai-panel__portion micro-gaps-modal__select">
+            <option value="1">1 week</option>
+            <option value="2" selected>2 weeks</option>
+            <option value="3">3 weeks</option>
+            <option value="4">4 weeks</option>
+            <option value="6">6 weeks</option>
+            <option value="8">8 weeks</option>
+          </select>
+          <details id="micro-gaps-foods-details" class="micro-gaps-modal__foods" open>
+            <summary class="micro-gaps-modal__foods-summary">
+              Foods from this window
+              <span id="micro-gaps-foods-count" class="micro-gaps-modal__foods-count"></span>
+            </summary>
+            <div class="micro-gaps-modal__foods-body">
+              <p id="micro-gaps-foods-empty" class="micro-gaps-modal__foods-empty" hidden>No matched foods in this window.</p>
+              <div id="micro-gaps-foods-list" class="micro-gaps-modal__foods-list" role="group" aria-label="Foods willing to re-eat"></div>
+            </div>
+          </details>
+        </div>
         <div class="import-ai-panel micro-gaps-modal__panel">
           <p class="import-ai-panel__preview-label">Prompt preview</p>
           <pre id="micro-gaps-ai-preview" class="import-ai-panel__preview import-ai-panel__preview--tall"></pre>
