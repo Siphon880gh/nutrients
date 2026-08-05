@@ -51,7 +51,7 @@ Click **Import sample** to load bundled definitions (trail mix, peanuts, eggs, r
 
 ### Food entry — Mon–Sun meals
 
-Log what you ate each day. Lines can include a serving multiplier (e.g. `* 2`):
+Log what you ate each day. Lines can include a serving multiplier (e.g. `* 2`). Start a line with `//` or `#` to add a comment (ignored for matching and totals). On an empty line, the food-entry tip offers **Add comment with //**, **Add comment with #**, and **Add divider ---**.
 
 ![Food entry before Import sample](docs/screenshots/04-food-entry-empty.png)
 
@@ -59,7 +59,7 @@ Log what you ate each day. Lines can include a serving multiplier (e.g. `* 2`):
 
 ![Food entry with sample meals](docs/screenshots/05-food-entry-sample.png)
 
-Here's a food entry that uses multipliers `*4` and divider lines (doesn't cause matching errors):
+Here's a food entry that uses multipliers `*4`, divider lines, and comments (doesn't cause matching errors):
 ![Food entry with multipliers and dividers](docs/screenshots/05b-food-entry-sample-divider.png)
 
 

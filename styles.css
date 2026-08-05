@@ -7011,7 +7011,8 @@ body.day-word-wrap-off .day__backdrop {
 
 .day__editor--editing .day__backdrop,
 .day__editor--plain .day__backdrop {
-  visibility: hidden;
+  /* opacity (not visibility) so caret rect measurement still works while editing */
+  opacity: 0;
   pointer-events: none;
 }
 
@@ -7045,6 +7046,11 @@ body.day-word-wrap-off .day__backdrop {
   padding: 0;
   margin: 0;
   line-height: inherit;
+}
+
+.day__backdrop .day__line-comment {
+  color: #8a8a86;
+  font-style: italic;
 }
 
 .day__backdrop-placeholder {
@@ -7093,12 +7099,13 @@ body.day-word-wrap-off .day__input {
   position: absolute;
   left: 0;
   right: 0;
-  bottom: 0;
   z-index: 2;
   display: flex;
   flex-direction: column;
   gap: 0;
   min-height: 0;
+  height: auto;
+  bottom: auto;
   padding: 0 0.75rem 0.65rem;
   box-sizing: border-box;
   background: rgba(255, 255, 255, 0.97);
@@ -7110,11 +7117,16 @@ body.day-word-wrap-off .day__input {
   border-top: none;
   border-bottom: 1px solid #c8c8c4;
   padding: 0.65rem 0.75rem 0;
-  height: auto;
 }
 
-.day__suggest--above .day__suggest-list {
+.day__suggest--above .day__suggest-list,
+.day__suggest--tip .day__suggest-list {
   flex: 0 1 auto;
+}
+
+.day__suggest--tip .day__suggest-list {
+  flex: 0 0 auto;
+  overflow-y: visible;
 }
 
 .day__suggest-header {
@@ -7269,6 +7281,22 @@ body.day-word-wrap-off .day__input {
 }
 
 .day__suggest-item:hover {
+  background: #eef4fa;
+}
+
+.day__suggest-item--tip {
+  color: #666;
+  font-style: italic;
+  cursor: pointer;
+}
+
+.day__suggest-item--tip .day__suggest-match {
+  font-style: normal;
+  font-weight: 600;
+  color: #2f5680;
+}
+
+.day__suggest-item--tip:hover {
   background: #eef4fa;
 }
 

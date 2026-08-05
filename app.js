@@ -10269,8 +10269,36 @@
   }
 
   function highlightedDayHtml(text, foodRegex) {
-    var html = foodRegex ? highlightedHtml(text, foodRegex) : escapeHtml(text);
-    return highlightServingMultipliersHtml(html);
+    var parts = String(text || "").split(/(\r\n|\n|\r)/);
+    var html = "";
+    var i;
+    for (i = 0; i < parts.length; i++) {
+      var part = parts[i];
+      if (part === "\r\n" || part === "\n" || part === "\r") {
+        html += part;
+        continue;
+      }
+      if (isCommentDayMealLine(part)) {
+        html +=
+          '<span class="day__line-comment">' + escapeHtml(part) + "</span>";
+        continue;
+      }
+      var lineHtml = foodRegex
+        ? highlightedHtml(part, foodRegex)
+        : escapeHtml(part);
+      html += highlightServingMultipliersHtml(lineHtml);
+    }
+    return html;
+  }
+
+  /** Drop // and # comment lines so food names inside them do not count. */
+  function dayMealsTextWithoutComments(text) {
+    return normalizeDayMealsText(text)
+      .split("\n")
+      .map(function (line) {
+        return isCommentDayMealLine(line) ? "" : line;
+      })
+      .join("\n");
   }
 
   /**
@@ -10281,19 +10309,20 @@
    */
   function keywordHitCounts(text) {
     var counts = {};
-    if (!text) return counts;
+    var matchText = dayMealsTextWithoutComments(text);
+    if (!matchText) return counts;
     var names = keywordNames();
     var regex = buildHighlightRegex(names);
     if (!regex) return counts;
 
     var match;
     regex.lastIndex = 0;
-    while ((match = regex.exec(text)) !== null) {
+    while ((match = regex.exec(matchText)) !== null) {
       var matched = match[1] || match[0];
       var key = matched.toLowerCase();
       counts[key] =
         (counts[key] || 0) +
-        keywordServingMultiplier(text, match.index + match[0].length);
+        keywordServingMultiplier(matchText, match.index + match[0].length);
       if (match[0].length === 0) {
         regex.lastIndex += 1;
       }
@@ -18299,11 +18328,17 @@
     return !/[A-Za-z0-9]/.test(visible);
   }
 
+  /** Lines starting with // or # are comments (ignored for matching / unmatched). */
+  function isCommentDayMealLine(line) {
+    var visible = visibleDayLineText(line);
+    return visible.indexOf("//") === 0 || visible.charAt(0) === "#";
+  }
+
   function unmatchedDayLines(text) {
     var lines = normalizeDayMealsText(text).split("\n");
     var unmatched = [];
     lines.forEach(function (line, index) {
-      if (isBlankDayMealLine(line)) return;
+      if (isBlankDayMealLine(line) || isCommentDayMealLine(line)) return;
       var visible = visibleDayLineText(line);
       if (!lineMatchesFoodDefinition(visible)) {
         unmatched.push({ lineNum: index + 1, text: visible });
@@ -18559,17 +18594,27 @@
     if (!backdrop) return;
 
     if (!dayHighlightsEnabled) {
-      backdrop.textContent = "";
+      // Keep a plain-text mirror so suggestion caret placement still works.
+      backdrop.textContent = textarea.value;
+      syncScroll(textarea, backdrop);
       return;
     }
 
     if (!textarea.value) {
-      var placeholder = textarea.getAttribute("placeholder") || "";
-      backdrop.innerHTML = placeholder
-        ? '<span class="day__backdrop-placeholder">' +
-          escapeHtml(placeholder) +
-          "</span>"
-        : "";
+      var editingEmpty =
+        editor.classList.contains("day__editor--editing") ||
+        editor.classList.contains("day__editor--plain");
+      if (editingEmpty) {
+        // Empty mirror (not placeholder) so caret metrics match the real empty field.
+        backdrop.textContent = "";
+      } else {
+        var placeholder = textarea.getAttribute("placeholder") || "";
+        backdrop.innerHTML = placeholder
+          ? '<span class="day__backdrop-placeholder">' +
+            escapeHtml(placeholder) +
+            "</span>"
+          : "";
+      }
       syncScroll(textarea, backdrop);
       return;
     }
@@ -18603,7 +18648,7 @@
   }
 
   function detectedFoodNotes() {
-    var text = allDayMealsText();
+    var text = dayMealsTextWithoutComments(allDayMealsText());
     if (!text.trim() || !foodNotesDefinitions.length) return [];
     return foodNotesDefinitions.filter(function (defn) {
       try {
@@ -22157,6 +22202,53 @@
     );
   }
 
+  function daySuggestTipItemHtml(lineText, labelHtml, title) {
+    return (
+      '<button type="button" class="day__suggest-item day__suggest-item--tip" data-action="insert-line-text" data-line-text="' +
+      escapeAttr(lineText) +
+      '" role="option" title="' +
+      escapeAttr(title) +
+      '">' +
+      '<span class="day__suggest-item-label">' +
+      labelHtml +
+      "</span>" +
+      "</button>"
+    );
+  }
+
+  function daySuggestCommentTipItemHtml(prefix) {
+    return daySuggestTipItemHtml(
+      prefix + " ",
+      '<span class="day__suggest-rest">Add comment with </span>' +
+        '<span class="day__suggest-match">' +
+        escapeHtml(prefix) +
+        "</span>",
+      "Start a comment line with " + prefix
+    );
+  }
+
+  function daySuggestDividerTipItemHtml() {
+    return daySuggestTipItemHtml(
+      "---",
+      '<span class="day__suggest-rest">Add divider </span>' +
+        '<span class="day__suggest-match">---</span>',
+      "Insert a divider line"
+    );
+  }
+
+  function daySuggestCommentTipHtml() {
+    return (
+      '<div class="day__suggest-header">' +
+      '<button type="button" class="day__suggest-dismiss" data-action="dismiss-suggest" aria-label="Dismiss tip for this line">Dismiss</button>' +
+      "</div>" +
+      '<div class="day__suggest-list" role="presentation">' +
+      daySuggestCommentTipItemHtml("//") +
+      daySuggestCommentTipItemHtml("#") +
+      daySuggestDividerTipItemHtml() +
+      "</div>"
+    );
+  }
+
   function daySuggestRowHeight(suggestEl) {
     var item = suggestEl && suggestEl.querySelector(".day__suggest-item");
     if (item) return item.offsetHeight;
@@ -22540,13 +22632,9 @@
 
   function hideAllDaySuggests() {
     document.querySelectorAll(".day__suggest").forEach(function (el) {
+      resetDaySuggestPosition(el);
       el.hidden = true;
       el.innerHTML = "";
-      el.classList.remove("day__suggest--above");
-      el.style.top = "";
-      el.style.bottom = "";
-      el.style.height = "";
-      el.style.maxHeight = "";
     });
   }
 
@@ -22556,13 +22644,83 @@
     if (!editor) return;
     var suggestEl = editor.querySelector(".day__suggest");
     if (!suggestEl) return;
+    resetDaySuggestPosition(suggestEl);
     suggestEl.hidden = true;
     suggestEl.innerHTML = "";
+  }
+
+  function resetDaySuggestPosition(suggestEl) {
+    if (!suggestEl) return;
     suggestEl.classList.remove("day__suggest--above");
+    suggestEl.classList.remove("day__suggest--tip");
     suggestEl.style.top = "";
     suggestEl.style.bottom = "";
     suggestEl.style.height = "";
     suggestEl.style.maxHeight = "";
+    suggestEl.style.overflow = "";
+    var list = suggestEl.querySelector(".day__suggest-list");
+    if (list) {
+      list.style.maxHeight = "";
+      list.style.flex = "";
+      list.style.overflowY = "";
+    }
+  }
+
+  /** Caret line box in viewport coords for suggestion placement. */
+  function daySuggestCaretRect(textarea, backdrop) {
+    if (!textarea) return null;
+    var pos =
+      typeof textarea.selectionStart === "number"
+        ? textarea.selectionStart
+        : 0;
+    var pad = getComputedStyle(textarea);
+    var lineHeight = parseFloat(pad.lineHeight);
+    if (!lineHeight || isNaN(lineHeight)) lineHeight = 24;
+    var box = textarea.getBoundingClientRect();
+    var paddingTop = parseFloat(pad.paddingTop) || 0;
+    var paddingLeft = parseFloat(pad.paddingLeft) || 0;
+
+    function lineRectFromIndex(lineIndex) {
+      var top =
+        box.top + paddingTop + lineIndex * lineHeight - (textarea.scrollTop || 0);
+      return {
+        left: box.left + paddingLeft,
+        top: top,
+        bottom: top + lineHeight,
+        height: lineHeight,
+        width: 0,
+      };
+    }
+
+    var info = getCurrentLineInfo(textarea);
+    var lineIndex = String(textarea.value || "")
+      .slice(0, info.lineStart)
+      .split("\n").length - 1;
+    if (lineIndex < 0) lineIndex = 0;
+
+    // Empty field or empty current line: line-index math is more reliable than
+    // the highlight backdrop (trailing empty lines may have no text node).
+    if (!textarea.value || !visibleDayLineText(info.fullLine)) {
+      return lineRectFromIndex(lineIndex);
+    }
+
+    if (!backdrop) return lineRectFromIndex(lineIndex);
+    syncScroll(textarea, backdrop);
+    var rect = backdropCaretRect(backdrop, pos);
+    if (
+      !rect ||
+      (rect.height === 0 && rect.top === 0 && rect.left === 0) ||
+      !isFinite(rect.top)
+    ) {
+      return lineRectFromIndex(lineIndex);
+    }
+    return {
+      left: rect.left,
+      top: rect.top,
+      bottom: rect.top + (rect.height || lineHeight),
+      height: rect.height || lineHeight,
+      width: rect.width || 0,
+    };
   }
 
   function positionDaySuggest(textarea, suggestEl) {
@@ -22572,47 +22730,77 @@
     var backdrop = editor.querySelector(".day__backdrop");
     if (!backdrop) return;
 
-    var info = getCurrentLineInfo(textarea);
-    var caretPos = info.lineStart + info.text.length;
-    var rect = backdropCaretRect(backdrop, caretPos);
+    var rect = daySuggestCaretRect(textarea, backdrop);
     if (!rect) return;
 
     var editorRect = editor.getBoundingClientRect();
-    var gap = 2;
+    var gap = 4;
     var caretTop = rect.top - editorRect.top;
     var caretBottom = rect.bottom - editorRect.top;
+    if (caretBottom <= caretTop) caretBottom = caretTop + (rect.height || 24);
+    caretTop = Math.max(0, Math.min(caretTop, editor.clientHeight));
+    caretBottom = Math.max(caretTop, Math.min(caretBottom, editor.clientHeight));
     var editorHeight = editor.clientHeight;
-    var placeAbove = caretTop >= editorHeight / 2;
+    var spaceBelow = editorHeight - caretBottom - gap;
+    var spaceAbove = caretTop - gap;
     var header = suggestEl.querySelector(".day__suggest-header");
-    var headerGap = 6;
-    var headerHeight = header ? header.offsetHeight + headerGap : 0;
+    var headerHeight = header ? header.offsetHeight + 8 : 0;
     var rowHeight = daySuggestRowHeight(suggestEl);
     var minPanelHeight = headerHeight + rowHeight;
+    var isTip = !!suggestEl.querySelector(".day__suggest-item--tip");
+    var list = suggestEl.querySelector(".day__suggest-list");
 
+    suggestEl.classList.toggle("day__suggest--tip", isTip);
     suggestEl.style.left = "0";
     suggestEl.style.right = "0";
+    suggestEl.style.overflow = "hidden";
+
+    // Prefer below the caret so the line being typed stays visible.
+    var placeAbove =
+      spaceBelow < minPanelHeight && spaceAbove > spaceBelow;
+    var available = Math.max(
+      minPanelHeight,
+      placeAbove ? spaceAbove : spaceBelow
+    );
+    // Cap so long food lists do not dominate the editor under the caret.
+    var foodListCap = headerHeight + rowHeight * 8 + 12;
+    var maxSpace = isTip
+      ? available
+      : Math.min(available, Math.max(minPanelHeight, foodListCap));
+
+    if (list) {
+      list.style.flex = isTip ? "0 0 auto" : "0 1 auto";
+      list.style.overflowY = isTip ? "visible" : "auto";
+    }
 
     if (placeAbove) {
-      // Pin to the top so the line being typed at the bottom stays visible.
-      var maxHeight = Math.max(minPanelHeight, caretTop - gap);
       suggestEl.classList.add("day__suggest--above");
-      suggestEl.style.top = "0";
+      suggestEl.style.top = "auto";
+      suggestEl.style.bottom = editorHeight - caretTop + gap + "px";
+    } else {
+      suggestEl.classList.remove("day__suggest--above");
+      suggestEl.style.top = caretBottom + gap + "px";
       suggestEl.style.bottom = "auto";
+    }
+
+    if (isTip) {
+      // Measure content without a max-height floor so scrollHeight is not inflated.
       suggestEl.style.height = "auto";
-      suggestEl.style.maxHeight = maxHeight + "px";
+      suggestEl.style.maxHeight = "none";
+      if (list) list.style.maxHeight = "";
+      var tipContentH = suggestEl.scrollHeight;
+      var tipH = Math.min(tipContentH, maxSpace);
+      suggestEl.style.height = tipH + "px";
+      suggestEl.style.maxHeight = tipH + "px";
       return;
     }
 
-    var top = caretBottom + gap;
-    var availableBelow = editorHeight - top;
-    if (availableBelow < minPanelHeight) {
-      top = Math.max(0, editorHeight - minPanelHeight);
+    suggestEl.style.height = "auto";
+    suggestEl.style.maxHeight = maxSpace + "px";
+    if (list) {
+      list.style.maxHeight =
+        Math.max(rowHeight, maxSpace - headerHeight) + "px";
     }
-    suggestEl.classList.remove("day__suggest--above");
-    suggestEl.style.top = top + "px";
-    suggestEl.style.bottom = "0";
-    suggestEl.style.height = "";
-    suggestEl.style.maxHeight = "";
   }
 
   function bindDaySuggestResize(editor) {
@@ -22660,6 +22848,12 @@
       if (!textarea) return;
       if (e.target.closest('[data-action="dismiss-suggest"]')) {
         dismissDaySuggest(textarea);
+        return;
+      }
+      if (e.target.closest('[data-action="insert-line-text"]')) {
+        var lineBtn = e.target.closest('[data-action="insert-line-text"]');
+        var lineText = lineBtn.getAttribute("data-line-text") || "";
+        if (lineText) applyDayFoodSuggest(textarea, lineText);
         return;
       }
       if (e.target.closest('[data-action="scroll-suggest-left"]')) {
@@ -22730,12 +22924,36 @@
 
     syncDaySuggestDismissedLine(textarea);
 
+    var fullVisible = visibleDayLineText(info.fullLine);
+    if (!fullVisible) {
+      if (isDaySuggestDismissed(textarea)) {
+        hideDaySuggest(textarea);
+        return;
+      }
+      hideAllDaySuggests();
+      var emptySuggestEl = ensureDaySuggestEl(editor);
+      emptySuggestEl.innerHTML = daySuggestCommentTipHtml();
+      emptySuggestEl.classList.add("day__suggest--tip");
+      emptySuggestEl._daySuggestHoverItem = null;
+      emptySuggestEl.hidden = false;
+      positionDaySuggest(textarea, emptySuggestEl);
+      requestAnimationFrame(function () {
+        if (emptySuggestEl.hidden) return;
+        positionDaySuggest(textarea, emptySuggestEl);
+      });
+      return;
+    }
+
+    if (isCommentDayMealLine(info.fullLine)) {
+      hideDaySuggest(textarea);
+      return;
+    }
+
     var queryTrimmed = query.trim();
     if (
       queryTrimmed.length < DAY_SUGGEST_MIN_CHARS ||
       lineMatchesFoodDefinition(info.fullLine)
     ) {
-      if (!queryTrimmed) clearDaySuggestDismissed(textarea);
       hideDaySuggest(textarea);
       return;
     }
@@ -22754,8 +22972,10 @@
     hideAllDaySuggests();
     var suggestEl = ensureDaySuggestEl(editor);
     suggestEl.innerHTML = daySuggestPanelHtml(matches);
+    suggestEl.classList.remove("day__suggest--tip");
     suggestEl._daySuggestHoverItem = null;
     suggestEl.hidden = false;
+    positionDaySuggest(textarea, suggestEl);
     requestAnimationFrame(function () {
       if (suggestEl.hidden) return;
       positionDaySuggest(textarea, suggestEl);
@@ -22823,6 +23043,7 @@
 
     textarea.addEventListener("focus", function () {
       setDayEditorMode(textarea, "editing");
+      updateDayHighlights(textarea);
     });
     textarea.addEventListener("blur", function () {
       textarea._daySelectAnchor = null;
@@ -22862,7 +23083,14 @@
       if (e.key === "Tab" && !e.shiftKey) {
         if (!suggestEl || suggestEl.hidden) return;
         var pick = daySuggestPickItem(suggestEl);
-        var foodName = pick && pick.getAttribute("data-food-name");
+        if (!pick) return;
+        if (pick.getAttribute("data-action") === "insert-line-text") {
+          e.preventDefault();
+          var tabLineText = pick.getAttribute("data-line-text") || "";
+          if (tabLineText) applyDayFoodSuggest(textarea, tabLineText);
+          return;
+        }
+        var foodName = pick.getAttribute("data-food-name");
         if (!foodName) return;
         e.preventDefault();
         applyDayFoodSuggest(textarea, foodName);

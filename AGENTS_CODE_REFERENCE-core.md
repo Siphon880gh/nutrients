@@ -14,7 +14,7 @@ Parent overview: [AGENTS_CODE_REFERENCE.md](./AGENTS_CODE_REFERENCE.md)
 | IDs | `makeId()`, `findIndex(id)` |
 | Table UI | `renderKeywords` (renders current filtered page only), `syncFieldFromDom`, `syncAllFieldsFromDom`, `moveKeyword`, `removeKeyword`, `addKeyword`, `sortKeywordsAlphabetically`, reorder toggle (`loadKeywordReorderOpen`), move-to-position modal |
 | Table search / pagination | `keywordMatchesFilter`, `keywordMatchesCategory`, `keywordsFilteredIndices`, `keywordsHasActiveFilter`, `setKeywordsFilterQuery`, `clearKeywordsFilter`, `setKeywordsCategoryFilter`, `clearKeywordsCategoryFilter`, `openKeywordsCategoryModal`, `keywordsCategoryCounts`, `foodCategoryIdForName`, `loadFoodCategoriesDefinitions`, `keywordsPageCount`, `clampKeywordsPageIndex`, `keywordsPageBounds`, `goKeywordsPage`, `changeKeywordsPageSize`, `updateKeywordsPaginationUi`, `updateKeywordsSearchUi`, `loadKeywordsPageSize`, `saveKeywordsPageSize` |
-| Matching | `countKeyword` (applies `keywordServingMultiplier`), `keywordNames`, `buildHighlightRegex`, `keywordMatchPattern`, `escapeRegex`, `keywordServingMultiplier`, `stripKeywordServingMultiplier`, `lineMatchesFoodDefinition` |
+| Matching | `countKeyword` (applies `keywordServingMultiplier`), `keywordNames`, `buildHighlightRegex`, `keywordMatchPattern`, `escapeRegex`, `keywordServingMultiplier`, `stripKeywordServingMultiplier`, `lineMatchesFoodDefinition`, `isCommentDayMealLine`, `dayMealsTextWithoutComments` |
 | Macro totals | `totalsFromText`, `addTotals`, `renderDashboard`, `dashboardCardHtml` (`.dashboard__card--today` via `activeTodayDayId`; `.dashboard__date`), `dashboardMacroPctView`, `macroPctFromTotals`, `renderWeekSummary`, `setWeekTotalOpen`, `openFoodSourcesModal` / `buildFoodSourcesRows` (grocery table from definition `foodSources`) |
 | Micro totals / target | `microTotalsFromText`, `weekMicroTotals`, `applyFiberTotalToMicroTotals`, `renderMicroRequirements`, `renderMicroWeeklyList`, `renderMicroDailyGrid`, `microDayCardHtml` (today card via `activeTodayDayId` + date label), `setMicroViewDaily`, `loadMicroViewDaily`, `saveMicroViewDaily`, `setShowMicroDailyDv`, `loadShowMicroDailyDv`, `saveShowMicroDailyDv`, `syncMicroViewToggleUi`, `syncMicroDailyDvToggleUi`, `microBaseDisplayFields`, `microConditionDisplayFields`, `dailyDv`, `microNutrientTargetPct` (FDA DV → IOM bw min → study min → study max → none), `microTargetReqAmountText`, `iomBwMinDaily`/`iomBwMinPct`, `studyMinMicroRef`, `studyMaxMicroRef`, `microHasNoStandaloneRef`, `microRequiresDailyIntake`, `setMicroConditionFocus` |
 | Sticky icon UX | `loadShowAcuteToxicityIcons` / `setShowAcuteToxicityIcons` / `syncAcuteToxicityToggleUi`, `loadShowDailyIntakeIcons` / `setShowDailyIntakeIcons` / `syncDailyIntakeIconsToggleUi`, `microStickyFilterActive` / `microStickyIconFilterActive` / `microKeyMatchesStickyFilter` / `setStickyIconFilter` / `clearStickyIconFilters` / `loadStickyIconFilters` / `saveStickyIconFilters`, `filterStickyNutrientKeys` / `normalizeFilterStickyNutrientKeys` / `applyNutrientFilterPreset` / `addStickyNutrientFilter` / `removeStickyNutrientFilter` / `syncNutrientFilterUi` / `nutrientFilterSuggestMatches`, `microStickyHighlightActive` / `setStickyIconHighlight` / `clearStickyIconHighlights` / `loadStickyIconHighlights`, `refreshStickyIconFilterViews`, `clearMicroConditionFocusForStickyFilter` |
@@ -93,6 +93,8 @@ new RegExp("\\b" + escapeRegex(name) + "\\b", "gi")
 - Returns `{ protein, carbs, fats, proteinCal, carbsCal, fatsCal, totalCal }`.
 
 **Serving multiplier** — a food line may end with `* N` (e.g. `oatmeal * 2`). `countKeyword` calls `keywordServingMultiplier(text, afterMatchIndex)` (regex `KEYWORD_SERVING_MULTIPLIER_RE`) so each match contributes `N` instead of `1`; `stripKeywordServingMultiplier` removes the suffix for exact line-match checks (`lineMatchesFoodDefinition`). The multiplier text is highlighted separately as `.hl.hl--multiplier` via `highlightServingMultipliersHtml` (wrapped by `highlightedDayHtml`).
+
+**Comments** — a day-meal line whose visible text starts with `//` or `#` is a comment (`isCommentDayMealLine`). Comments are skipped by `unmatchedDayLines`, stripped via `dayMealsTextWithoutComments` before `keywordHitCounts` / food-notes detection, and rendered muted italic (`.day__line-comment`) in the highlight backdrop (no food-name marks).
 
 **Highlight word list** — `keywordNames()` unique non-empty names (first wins per lowercase key).
 
@@ -358,7 +360,7 @@ UI mirror pattern: [AGENTS_CODE_REFERENCE-ui.md](./AGENTS_CODE_REFERENCE-ui.md)
 
 `#day-unmatched-lines` (`.week__unmatched-lines`, `role="status"`) sits below the highlight bar. It surfaces non-empty day-meal lines that don’t exactly match a food definition.
 
-- **Detect** — `unmatchedDayLines(text)` splits on `\n`, skips blank lines, keeps lines where `lineMatchesFoodDefinition(line)` is false (the check strips any `* N` multiplier first). `allUnmatchedDayLines` walks all seven days, tagging `dayId`, `dayLabel`, `lineNum`, `text`.
+- **Detect** — `unmatchedDayLines(text)` splits on `\n`, skips blank/separator lines and `//` / `#` comment lines (`isCommentDayMealLine`), keeps lines where `lineMatchesFoodDefinition(line)` is false (the check strips any `* N` multiplier first). `allUnmatchedDayLines` walks all seven days, tagging `dayId`, `dayLabel`, `lineNum`, `text`.
 - **Render** — `updateWeekUnmatchedLines` refreshes `unmatchedCarouselItems` then `renderWeekUnmatchedLines`. Collapsed: **Unmatched (N)** toggle button. Expanded: `weekUnmatchedCarouselHtml` with prev/next, `index / total`, and a **Go to line** card.
 - **Navigate** — `data-unmatched-action`: `toggle` / `prev` / `next` / `jump`. Jump calls `focusDayLine(dayId, lineNum)` (selects that line in the day textarea). When the mobile days carousel is active (`isDaysCarouselActive`), `focusDayLine` uses `setDaysCarouselDayId` instead of `scrollIntoView`. `focusUnmatchedCarouselItem` delegates to `focusDayLine`. State: `unmatchedCarouselOpen`, `unmatchedCarouselIndex` (session-only).
 - **Visibility** — shown whenever any unmatched lines exist (not gated on the pen/highlight mode). Hidden only when the list is empty.
@@ -395,7 +397,8 @@ While typing on the **current line** of a day textarea, a popover suggests match
 
 **Show/hide** — `updateDaySuggest(textarea)` (called from `bindDay` on `input` / `keyup` / `click`, plus a document `selectionchange` handler when a day textarea is focused):
 
-- Hidden when the line is empty, already matches a full food name, or has no fuzzy/prefix matches.
+- On an **empty** current line: shows tip rows **Add comment with //**, **Add comment with #**, and **Add divider ---** (`daySuggestCommentTipHtml`, `.day__suggest-item--tip`); click or Tab inserts that line text; Dismiss / Escape hides for that line.
+- Hidden when the line is already a `//` / `#` comment, already matches a full food name, or has no fuzzy/prefix matches (food suggestions need at least `DAY_SUGGEST_MIN_CHARS` = 2).
 - Hidden on `blur`; dismissed per line via **Dismiss** or **Escape** (`_daySuggestDismissedLine` tracks the line start offset).
 
 **Matching** — `foodSuggestMatches(query)` against `keywordNames()`:
@@ -410,7 +413,7 @@ While typing on the **current line** of a day textarea, a popover suggests match
 - Clicking a pill runs `applyDayFoodSuggest` (replaces text from line start to line end with the food name).
 - **Tab** (while the popover is open) accepts the hovered pill via `daySuggestPickItem`, or the first pill if none is hovered; Shift+Tab is unchanged.
 - **Long names** — each item carries a `title` tooltip; on hover, overflowing labels become scrollable and slowly scroll right (`slowScrollDaySuggestItemRight`), resetting on hover-off; left/right chevrons remain (`data-action="scroll-suggest-left|right"`, `daySuggestItemScrollTo` / `daySuggestItemUpdateChevrons`).
-- **Placement** — `positionDaySuggest` uses the caret rect from the backdrop mirror: when the caret is in the **lower half** of the editor, adds `.day__suggest--above` and pins the panel to the editor top (max-height down to the caret) so suggestions do not cover the line being typed; otherwise places the panel below the caret.
+- **Placement** — `positionDaySuggest` / `daySuggestCaretRect`: prefer below the caret (current line stays visible). Only flip above when there is not enough room below. Tips get an explicit content height (`.day__suggest--tip`); food lists get a max-height on `.day__suggest-list` and scroll. Never stretches with `bottom: 0` over the typing line. Editing backdrop uses `opacity: 0` (not `visibility: hidden`) so caret metrics work.
 - The popover is user-resizable (`bindDaySuggestResize`).
 - `mousedown` on the popover is `preventDefault` so the textarea keeps focus; wheel events on the list do not scroll the textarea behind it.
 

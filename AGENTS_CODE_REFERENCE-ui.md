@@ -80,9 +80,10 @@ Native `<textarea>` cannot color individual words, and overlaying a transparent 
 
 **Food-name popover** — `.day__suggest`:
 
-- `position: absolute; right/bottom` inside `.day__editor`, `z-index: 2`, `max-height: calc(100% - 0.9rem)`.
-- `positionDaySuggest` places the panel below the caret, or with `.day__suggest--above` pinned to the editor top when the caret is in the lower half (so typing near the bottom is not covered).
+- `position: absolute; left/right` inside `.day__editor`, `z-index: 2`, content-sized (`height: auto`); JS sets `top` or `bottom` from the caret and caps list height — does not stretch full editor height.
+- `positionDaySuggest` prefers below the caret; `.day__suggest--above` only when space below is too tight (anchored just above the caret, not pinned to the editor top).
 - `.day__suggest-list` — `overflow-y: auto`, `overscroll-behavior: contain`, `scrollbar-width: thin`; pill items `.day__suggest-item` with match highlight `.day__suggest-match`.
+- Empty-line tip uses `.day__suggest-item--tip` rows (**Add comment with //** / **Add comment with #** / **Add divider ---**); comment lines in the backdrop use `.day__line-comment` (muted italic).
 - Hidden in print / print-preview.
 
 **Shared resize** — drag the bottom-right grip on any `.day__editor`; on release JS sets the same pixel height on all seven editors and saves via `NutrientsPersist` settings (`dayEditorHeight`; see [AGENTS-data-persistence.md](./AGENTS-data-persistence.md)).
@@ -91,7 +92,7 @@ Native `<textarea>` cannot color individual words, and overlaying a transparent 
 
 ## Days toolbar, highlight bar & food notes
 
-**`.week__days-toolbar`** — `display: flex; justify-content: space-between`; the hint mentions the `* N` serving multiplier; right side holds Export all / Import all / **Import sample** (`#import-sample-meals`) / Clear all days (viewed week).
+**`.week__days-toolbar`** — `display: flex; justify-content: space-between`; the hint mentions the `* N` serving multiplier, `//` / `#` comments, and `---` dividers; right side holds Export all / Import all / **Import sample** (`#import-sample-meals`) / Clear all days (viewed week).
 
 **`.week__nav`** — sits directly above the days toolbar (not above the dashboard). Labeled **Previous week** / **Next week** buttons, clickable range `#week-nav-label` (opens `#week-jump-modal` calendar + typed date → jump to that week), **This week** (`#week-nav-this`), and **Favorites** (`#favorites-open` → right slide-in `#favorites-sidebar`). Prev disables at the earliest diary week (Mon–Sun containing `2026-05-01`). Hidden in print / print-preview.
 
