@@ -143,12 +143,17 @@ Button lives in `.week__days-actions` with Export all / Import all / Clear all d
 
 Triggered by **Ask AI to help fill gaps** (`#micro-gaps-ai-open`) inside the micro panel.
 
+Mode radios (`name="micro-gaps-mode"`): **Eat any food** (`any`) shows dietary preference controls; **Eat more of what I ate** (`reeat`) shows a weeks lookback + expandable unique-food checklist instead.
+
 | Function | Role |
 |----------|------|
-| `openMicroGapsModal` | Open modal, build preview |
-| `microGapsPreferenceText` | Reads `#micro-gaps-preference` select (vegan, gluten-free, …) |
+| `openMicroGapsModal` | Open modal, sync mode UI + preview |
+| `getMicroGapsMode` / `syncMicroGapsModeUi` | Toggle `#micro-gaps-any-panel` vs `#micro-gaps-reeat-panel` |
+| `microGapsPreferenceText` | Reads `#micro-gaps-preference` select (vegan, gluten-free, …) — any-food mode |
+| `getMicroGapsWeeksLookback` / `microGapsLookbackMondayKeys` / `microGapsLookbackMealsText` | Re-eat window ending at `viewedWeekStart` |
+| `uniqueFoodNamesFromMealsText` / `renderMicroGapsReeatFoods` / `microGapsSelectedReeatFoods` | Unique matched foods + checkbox selection (`#micro-gaps-foods-list`) |
 | `buildMicroGapsSnapshotLines` | Current week micro averages + % DV per nutrient |
-| `buildMicroGapsAiPrompt` | Full prompt incl. demographic, preferences, `#micro-gaps-additional` free text |
+| `buildMicroGapsAiPrompt` | Full prompt: any-food uses preferences; re-eat lists selected foods and instructs AI to prefer them, only suggesting outside foods when nutrients are missing or amounts would be unreasonable (and to note there is no choice then) |
 | `renderMicroGapsAiPreview` | Live `<pre>` preview |
 | `copyMicroGapsPromptToClipboard` / `openMicroGapsAiService` | Copy then open ChatGPT/Claude |
 | `closeMicroGapsModal` | — |
