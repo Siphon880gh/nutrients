@@ -11367,38 +11367,56 @@ button.longevity-form__label-link:focus-visible {
   }
 
   .dashboard__card {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: baseline;
-    column-gap: 0.65rem;
-    row-gap: 0.2rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    column-gap: 0.5rem;
+    row-gap: 0.35rem;
+    align-items: start;
     padding: 0.5rem 0.65rem;
   }
 
   .dashboard__card-head {
-    flex: 0 0 auto;
+    grid-column: 1 / -1;
     margin-bottom: 0;
-    min-width: 3.25rem;
+    min-width: 0;
   }
 
   .dashboard__row {
-    flex: 1 1 auto;
     flex-direction: column;
     align-items: flex-start;
     justify-content: flex-start;
     gap: 0.05rem;
     margin-bottom: 0;
-    min-width: 3.75rem;
+    min-width: 0;
   }
 
   .dashboard__row--total {
-    flex: 0 0 auto;
-    margin-top: 0;
-    margin-left: auto;
-    padding-top: 0;
+    grid-column: 1 / -1;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: baseline;
+    align-self: stretch;
+    margin-top: 0.05rem;
+    margin-left: 0;
+    padding: 0.3rem 0.45rem;
     border-top: none;
-    align-items: flex-end;
-    text-align: right;
+    border-radius: 4px;
+    background: #ecece8;
+    text-align: left;
+  }
+
+  .dashboard__card--today .dashboard__row--total {
+    background: #dce6f0;
+  }
+
+  .dashboard__row--total .dashboard__macro {
+    color: #2a2a2a;
+  }
+
+  .dashboard__row--total .dashboard__val {
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: #1a1a1a;
   }
 
   .dashboard__macro {
@@ -11409,7 +11427,8 @@ button.longevity-form__label-link:focus-visible {
   }
 
   .dashboard__val {
-    font-size: 0.78rem;
+    font-size: 0.68rem;
+    white-space: normal;
   }
 
   .week__days-carousel-nav {
