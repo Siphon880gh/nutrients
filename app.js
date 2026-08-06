@@ -3068,7 +3068,6 @@
       unit: "mg",
       code: "p",
       group: "compounds",
-      limiting: true,
     },
     {
       key: "choline",
@@ -3076,7 +3075,6 @@
       unit: "mg",
       code: "ch",
       group: "compounds",
-      limiting: true,
     },
     {
       key: "carnitine",
@@ -3084,7 +3082,6 @@
       unit: "mg",
       code: "carn",
       group: "compounds",
-      limiting: true,
     },
     {
       key: "betaine",
@@ -3092,7 +3089,6 @@
       unit: "mg",
       code: "bet",
       group: "compounds",
-      limiting: true,
     },
     {
       key: "taurine",
@@ -3107,7 +3103,6 @@
       unit: "g",
       code: "cre",
       group: "compounds",
-      limiting: true,
     },
     { key: "glycemicIndex", label: "Glycemic index", unit: "GI", code: "gi", group: "glycemic" },
     {
@@ -11607,10 +11602,11 @@
         return {
           pct: lvPct,
           text: formatTargetPctNumber(lvPct),
+          kind: "dv",
           kindLabel: "FDA DV",
           reqAmount: fmtNum(lvDv) + " " + field.unit + "/day",
           reqText: longevityTargetReqText(field),
-          limiting: false,
+          limiting: !!field.limiting,
           refKey: field.key,
         };
       }
@@ -11624,20 +11620,22 @@
         return {
           pct: bridged.pct,
           text: bridged.text,
+          kind: bridged.kind,
           kindLabel: bridged.kindLabel,
           reqAmount: microTargetReqAmountText(field.key),
           reqText: microTargetReqText(microField),
-          limiting: !!bridged.limiting,
+          limiting: !!field.limiting || !!bridged.limiting,
           refKey: bridged.refKey || field.key,
         };
       }
       return {
         pct: null,
         text: formatNoTargetAmountText(dailyAmount),
+        kind: "none",
         kindLabel: "",
         reqAmount: "",
         reqText: "—",
-        limiting: false,
+        limiting: !!field.limiting,
         refKey: field.key,
       };
     }
@@ -11645,10 +11643,12 @@
     return {
       pct: target.pct,
       text: target.text,
+      kind: target.kind,
       kindLabel: target.kindLabel,
       reqAmount: target.reqAmount,
       reqText: microTargetReqText(field),
-      limiting: !!target.limiting,
+      limiting:
+        !!target.limiting || !!LONGEVITY_MICRO_LIMITING_KEYS[field.key],
       refKey: target.refKey || field.key,
     };
   }
@@ -13882,9 +13882,7 @@
     var watch = [];
     var aim = [];
     fields.forEach(function (field) {
-      if (field.limiting || (LONGEVITY_KEYS_ALSO_IN_MICRO[field.key] && studyMaxMicroRef(field.key))) {
-        watch.push(field);
-      }
+      if (field.limiting) watch.push(field);
       else aim.push(field);
     });
     var html = "";
@@ -15414,6 +15412,16 @@
         LONGEVITY_CALCIFICATION_FIELD_KEYS.map(function (key) {
           var field = longevityFieldByKey(key);
           if (!field) return "";
+          if (!field.limiting) {
+            field = {
+              key: field.key,
+              label: field.label,
+              unit: field.unit,
+              code: field.code,
+              group: field.group,
+              limiting: true,
+            };
+          }
           return longevityRowFromLongevityField(field, weekLongevity, weekMicro);
         }).join("") +
         longevityListClose()
@@ -15429,6 +15437,16 @@
         LONGEVITY_TMAO_PRECURSOR_KEYS.map(function (key) {
           var field = longevityFieldByKey(key);
           if (!field) return "";
+          if (!field.limiting) {
+            field = {
+              key: field.key,
+              label: field.label,
+              unit: field.unit,
+              code: field.code,
+              group: field.group,
+              limiting: true,
+            };
+          }
           return longevityRowFromLongevityField(field, weekLongevity, weekMicro);
         }).join("") +
         longevitySubgroupHtml("↓ Protectors — higher % DV is better", "aim") +
@@ -16446,6 +16464,14 @@
       );
       var pct = snap.targetDisplay && snap.targetDisplay.pct;
       if (pct == null || isNaN(pct)) return;
+      // Study-max OSL/UL refs are safety ceilings, not "want less" dietary goals.
+      var entryKey = entry.field && entry.field.key;
+      if (
+        (snap.targetDisplay && snap.targetDisplay.kind === "studyMax") ||
+        (entryKey && studyMaxMicroRef(entryKey))
+      ) {
+        return;
+      }
       var sectionIds = microAnalysisSectionIdsForEntry(entry);
       var item = {
         label: (entry.field && entry.field.label) || "Untitled",
@@ -16453,11 +16479,12 @@
         key: entry.field && entry.field.key,
         source: entry.source || "micro",
       };
+      var isLimit = microAnalysisEntryIsLimit(entry, snap.targetDisplay);
       sectionIds.forEach(function (sectionId) {
         if (!byKey[sectionId]) {
           byKey[sectionId] = { aim: [], limit: [] };
         }
-        if (snap.targetDisplay.limiting) {
+        if (isLimit) {
           byKey[sectionId].limit.push(item);
         } else {
           byKey[sectionId].aim.push(item);
@@ -16465,6 +16492,18 @@
       });
     });
     return byKey;
+  }
+
+  function microAnalysisEntryIsLimit(entry, targetDisplay) {
+    var key = entry && entry.field && entry.field.key;
+    if (!key) return false;
+    if (studyMaxMicroRef(key)) return false;
+    if (entry.source === "longevity") {
+      return !!(entry.field && entry.field.limiting);
+    }
+    if (LONGEVITY_MICRO_LIMITING_KEYS[key]) return true;
+    if (targetDisplay && targetDisplay.kind === "studyMax") return false;
+    return !!(targetDisplay && targetDisplay.limiting);
   }
 
   function microAnalysisNutrientBandForPct(pct, limiting) {
