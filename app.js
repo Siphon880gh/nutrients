@@ -609,6 +609,7 @@
   var activeMicroSourcesFilter = "";
   var activeLongevitySourcesKey = null;
   var activeLongevitySourcesKind = null;
+  var activeLongevitySourcesScope = "week";
   var activeLongevitySourcesSort = { key: "amount", dir: "desc" };
   var activeLongevitySourcesFilter = "";
   var microSourcesModalEl = document.getElementById("micro-sources-modal");
@@ -5584,25 +5585,38 @@
     microDefTargetsEl.classList.toggle("micro-def__targets--limiting", !!info.limiting);
   }
 
+  function analysisSourcesScopeOrWeek() {
+    if (longevityAnalysisModalEl && !longevityAnalysisModalEl.hidden) {
+      return analysisActiveDayId || "week";
+    }
+    return "week";
+  }
+
   function defModalSourcesTarget() {
+    var analysisScope = analysisSourcesScopeOrWeek();
     if (activeMicroDefKey) {
       if (microDerivedDefByKey(activeMicroDefKey)) return null;
       if (!microDisplayFieldByKey(activeMicroDefKey)) return null;
-      return { modal: "micro", key: activeMicroDefKey, scope: "week" };
+      return { modal: "micro", key: activeMicroDefKey, scope: analysisScope };
     }
     if (activeLongevityDefKey) {
       var key = activeLongevityDefKey;
       if (key === "glycemicLoad") {
-        return { modal: "longevity", key: key, kind: "glycemicLoad" };
+        return { modal: "longevity", key: key, kind: "glycemicLoad", scope: "week" };
       }
       if (LONGEVITY_DERIVED_DEFS[key] || LONGEVITY_SECTION_DEFS[key]) {
         return null;
       }
       if (longevityFieldByKey(key)) {
-        return { modal: "longevity", key: key, kind: "longevity" };
+        return {
+          modal: "longevity",
+          key: key,
+          kind: "longevity",
+          scope: analysisScope,
+        };
       }
       if (microFieldByKey(key)) {
-        return { modal: "micro", key: key, scope: "week" };
+        return { modal: "micro", key: key, scope: analysisScope };
       }
       return null;
     }
@@ -5654,7 +5668,8 @@
       openLongevitySourcesModal(
         key,
         microDefModalSourcesBtn.getAttribute("data-def-sources-kind") || "longevity",
-        true
+        true,
+        microDefModalSourcesBtn.getAttribute("data-def-sources-scope") || "week"
       );
     }
   }
@@ -5699,7 +5714,12 @@
     if (returnTo.kind === "micro") {
       openMicroSourcesModal(returnTo.key, returnTo.scope);
     } else {
-      openLongevitySourcesModal(returnTo.key, returnTo.sourcesKind);
+      openLongevitySourcesModal(
+        returnTo.key,
+        returnTo.sourcesKind,
+        false,
+        returnTo.scope
+      );
     }
   }
 
@@ -6327,9 +6347,15 @@
     return html;
   }
 
-  function longevityContributionsFromWeek(nutrientKey, kind) {
+  function longevityContributionsForScope(nutrientKey, kind, scope) {
+    var daysToScan =
+      scope && scope !== "week"
+        ? DAYS.filter(function (day) {
+            return day.id === scope;
+          })
+        : DAYS;
     var merged = {};
-    DAYS.forEach(function (day) {
+    daysToScan.forEach(function (day) {
       var el = document.getElementById(day.id);
       var text = el ? el.value : "";
       var hitCounts = keywordHitCounts(text);
@@ -6374,6 +6400,24 @@
       .sort(function (a, b) {
         return b.amount - a.amount;
       });
+  }
+
+  function longevityContributionsFromWeek(nutrientKey, kind) {
+    return longevityContributionsForScope(nutrientKey, kind, "week");
+  }
+
+  function longevitySourcesScopeSubtitle(kind, scope) {
+    var periodLabel = "Full week (Mon–Sun)";
+    if (scope && scope !== "week") {
+      var dayMeta = dayMetaById(scope);
+      periodLabel = dayMeta
+        ? dayMeta.label + (dateLabelForDayId(scope) ? " · " + dateLabelForDayId(scope) : "")
+        : scope;
+    }
+    if (kind === "glycemicLoad") {
+      return periodLabel + " — ranked by GL per serving; color by GI tier";
+    }
+    return periodLabel + " — matched foods ranked by amount";
   }
 
   function longevitySourcesRequirementsHtml(nutrientKey, kind) {
@@ -6528,17 +6572,24 @@
     if (activeLongevitySourcesKind === "glycemicLoad") {
       list = glycemicLoadContributionsFromWeek();
     } else {
-      list = longevityContributionsFromWeek(
+      list = longevityContributionsForScope(
         activeLongevitySourcesKey,
-        activeLongevitySourcesKind
+        activeLongevitySourcesKind,
+        activeLongevitySourcesScope
       );
     }
 
+    var emptyPeriod =
+      activeLongevitySourcesScope && activeLongevitySourcesScope !== "week"
+        ? "this day"
+        : "this week";
     if (!list.length) {
       html +=
         '<p class="micro-sources-modal__empty">No matched foods with ' +
         escapeHtml(label) +
-        " data for this week.</p>";
+        " data for " +
+        emptyPeriod +
+        ".</p>";
       longevitySourcesBodyEl.innerHTML = html;
       return;
     }
@@ -6566,7 +6617,7 @@
     if (longevitySourcesFilterEl) longevitySourcesFilterEl.value = activeLongevitySourcesFilter;
   }
 
-  function openLongevitySourcesModal(nutrientKey, kind, stackOnDef) {
+  function openLongevitySourcesModal(nutrientKey, kind, stackOnDef, scope) {
     if (!longevitySourcesModalEl || !nutrientKey || !kind) return;
     var label;
     if (kind === "micro") {
@@ -6589,6 +6640,8 @@
     });
     activeLongevitySourcesKey = nutrientKey;
     activeLongevitySourcesKind = kind;
+    activeLongevitySourcesScope =
+      kind === "glycemicLoad" ? "week" : scope || "week";
     activeLongevitySourcesSort = defaultSourcesSortForKey("amount");
     activeLongevitySourcesFilter = "";
     syncLongevitySourcesControls();
@@ -6602,10 +6655,10 @@
       );
     }
     if (longevitySourcesModalSubtitleEl) {
-      longevitySourcesModalSubtitleEl.textContent =
-        kind === "glycemicLoad"
-          ? "Full week (Mon–Sun) — ranked by GL per serving; color by GI tier"
-          : "Full week (Mon–Sun) — matched foods ranked by amount";
+      longevitySourcesModalSubtitleEl.textContent = longevitySourcesScopeSubtitle(
+        kind,
+        activeLongevitySourcesScope
+      );
     }
     renderLongevitySourcesBody();
     setSourcesModalStackedOnDef(!!stackOnDef);
@@ -6619,6 +6672,7 @@
     var stackedOnDef = sourcesModalStackedOnDef;
     activeLongevitySourcesKey = null;
     activeLongevitySourcesKind = null;
+    activeLongevitySourcesScope = "week";
     activeLongevitySourcesSort = defaultSourcesSortForKey("amount");
     activeLongevitySourcesFilter = "";
     syncLongevitySourcesControls();
@@ -7661,13 +7715,18 @@
     updateBodyModalOpen();
   }
 
-  function longevitySourcesIconHtml(nutrientKey, kind) {
+  function longevitySourcesIconHtml(nutrientKey, kind, defaultDayId) {
+    var dayAttr = defaultDayId
+      ? ' data-longevity-sources-day="' + escapeAttr(defaultDayId) + '"'
+      : "";
     return (
       '<button type="button" class="dashboard__micro-sources-btn" data-longevity-sources="' +
       escapeAttr(nutrientKey) +
       '" data-longevity-sources-kind="' +
       escapeAttr(kind) +
-      '" aria-label="Show my food ranked by amount" title="My food">' +
+      '"' +
+      dayAttr +
+      ' aria-label="Show my food ranked by amount" title="My food">' +
       '<svg class="dashboard__micro-sources-icon" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" focusable="false">' +
       '<rect x="1" y="8" width="3" height="7" rx="0.5"></rect>' +
       '<rect x="6.5" y="4" width="3" height="11" rx="0.5"></rect>' +
@@ -16359,6 +16418,7 @@
         label: (entry.field && entry.field.label) || "Untitled",
         pct: pct,
         key: entry.field && entry.field.key,
+        source: entry.source || "micro",
       };
       sectionIds.forEach(function (sectionId) {
         if (!byKey[sectionId]) {
@@ -16390,6 +16450,45 @@
       };
     }
     return longevityAnalysisBandForAvg(pct);
+  }
+
+  function microAnalysisNutrientInfoIconHtml(entry) {
+    var key = entry && entry.key;
+    if (!key) return "";
+    var isLongevity = entry.source === "longevity";
+    if (isLongevity) {
+      if (!longevityFieldByKey(key) && !longevityDefLabel(key)) return "";
+    } else if (!microDisplayFieldByKey(key) && !microFieldByKey(key)) {
+      return "";
+    }
+    var attr = isLongevity ? "data-longevity-def" : "data-micro-def";
+    var label = entry.label || key;
+    return (
+      '<button type="button" class="longevity-analysis-report__info-btn" ' +
+      attr +
+      '="' +
+      escapeAttr(key) +
+      '" aria-label="About ' +
+      escapeAttr(label) +
+      '" title="About ' +
+      escapeAttr(label) +
+      '">' +
+      '<svg class="longevity-analysis-report__info-icon" viewBox="0 0 16 16" width="13" height="13" aria-hidden="true" focusable="false">' +
+      '<circle cx="8" cy="8" r="6.25" fill="none" stroke="currentColor" stroke-width="1.2"></circle>' +
+      '<path d="M8 7.1v4.4" fill="none" stroke="currentColor" stroke-width="1.35" stroke-linecap="round"></path>' +
+      '<circle cx="8" cy="4.75" r="0.7" fill="currentColor"></circle>' +
+      "</svg></button>"
+    );
+  }
+
+  function microAnalysisNutrientSourcesIconHtml(entry) {
+    if (!entry || !entry.key || entry.source === "derived") return "";
+    var dayId = analysisActiveDayId || null;
+    if (entry.source === "longevity") {
+      if (entry.key === "glycemicIndex") return "";
+      return longevitySourcesIconHtml(entry.key, "longevity", dayId);
+    }
+    return microSourcesIconHtml(entry.key, dayId);
   }
 
   function microAnalysisNutrientRowsHtml(entries, limiting) {
@@ -16434,10 +16533,20 @@
             if (!limiting && entry.pct > 100) {
               entryColor = "longevity-analysis-report__avg--yellow";
             }
+            var actions =
+              microAnalysisNutrientInfoIconHtml(entry) +
+              microAnalysisNutrientSourcesIconHtml(entry);
             return (
               '<div class="longevity-analysis-report__nutrient-row">' +
+              '<span class="longevity-analysis-report__nutrient-main">' +
               '<span class="longevity-analysis-report__nutrient-name">' +
               escapeHtml(entry.label || "Untitled") +
+              "</span>" +
+              (actions
+                ? '<span class="longevity-analysis-report__nutrient-actions">' +
+                  actions +
+                  "</span>"
+                : "") +
               "</span>" +
               '<span class="longevity-analysis-report__nutrient-pct longevity-analysis-report__avg ' +
               escapeAttr(entryColor) +
@@ -24188,6 +24297,59 @@
         closeLongevityAnalysisModal();
         return;
       }
+      var longevitySourcesBtn = e.target.closest("[data-longevity-sources]");
+      if (
+        longevitySourcesBtn &&
+        longevityAnalysisReportEl &&
+        longevityAnalysisReportEl.contains(longevitySourcesBtn)
+      ) {
+        e.preventDefault();
+        e.stopPropagation();
+        openLongevitySourcesModal(
+          longevitySourcesBtn.getAttribute("data-longevity-sources"),
+          longevitySourcesBtn.getAttribute("data-longevity-sources-kind") ||
+            "longevity",
+          false,
+          longevitySourcesBtn.getAttribute("data-longevity-sources-day") || "week"
+        );
+        return;
+      }
+      var microSourcesBtn = e.target.closest("[data-micro-sources]");
+      if (
+        microSourcesBtn &&
+        longevityAnalysisReportEl &&
+        longevityAnalysisReportEl.contains(microSourcesBtn)
+      ) {
+        e.preventDefault();
+        e.stopPropagation();
+        openMicroSourcesModal(
+          microSourcesBtn.getAttribute("data-micro-sources"),
+          microSourcesBtn.getAttribute("data-micro-sources-day") || "week"
+        );
+        return;
+      }
+      var microDefBtn = e.target.closest("[data-micro-def]");
+      if (
+        microDefBtn &&
+        longevityAnalysisReportEl &&
+        longevityAnalysisReportEl.contains(microDefBtn)
+      ) {
+        e.preventDefault();
+        e.stopPropagation();
+        openMicroDefModal(microDefBtn.getAttribute("data-micro-def"));
+        return;
+      }
+      var longevityDefBtn = e.target.closest("[data-longevity-def]");
+      if (
+        longevityDefBtn &&
+        longevityAnalysisReportEl &&
+        longevityAnalysisReportEl.contains(longevityDefBtn)
+      ) {
+        e.preventDefault();
+        e.stopPropagation();
+        openLongevityDefModal(longevityDefBtn.getAttribute("data-longevity-def"));
+        return;
+      }
       var bandBtn = e.target.closest("[data-longevity-analysis-band]");
       if (bandBtn && longevityAnalysisReportEl.contains(bandBtn)) {
         var bandId = bandBtn.getAttribute("data-longevity-analysis-band");
@@ -24378,30 +24540,6 @@
       closeAnalysisPickerModal();
       return;
     }
-    if (longevityAnalysisModalEl && !longevityAnalysisModalEl.hidden) {
-      closeLongevityAnalysisModal();
-      return;
-    }
-    if (microGapsModalEl && !microGapsModalEl.hidden) {
-      closeMicroGapsModal();
-      return;
-    }
-    if (tdeeCalculatorModalEl && !tdeeCalculatorModalEl.hidden) {
-      closeTdeeCalculatorModal();
-      return;
-    }
-    if (settingsModalEl && !settingsModalEl.hidden) {
-      closeSettingsModal();
-      return;
-    }
-    if (authSignupModalEl && !authSignupModalEl.hidden) {
-      closeAuthSignupModal();
-      return;
-    }
-    if (authLoginModalEl && !authLoginModalEl.hidden) {
-      closeAuthLoginModal();
-      return;
-    }
     if (macroRankModalEl && !macroRankModalEl.hidden) {
       closeMacroRankModal();
       return;
@@ -24436,6 +24574,30 @@
         return;
       }
       closeFoodSourcesModal();
+      return;
+    }
+    if (longevityAnalysisModalEl && !longevityAnalysisModalEl.hidden) {
+      closeLongevityAnalysisModal();
+      return;
+    }
+    if (microGapsModalEl && !microGapsModalEl.hidden) {
+      closeMicroGapsModal();
+      return;
+    }
+    if (tdeeCalculatorModalEl && !tdeeCalculatorModalEl.hidden) {
+      closeTdeeCalculatorModal();
+      return;
+    }
+    if (settingsModalEl && !settingsModalEl.hidden) {
+      closeSettingsModal();
+      return;
+    }
+    if (authSignupModalEl && !authSignupModalEl.hidden) {
+      closeAuthSignupModal();
+      return;
+    }
+    if (authLoginModalEl && !authLoginModalEl.hidden) {
+      closeAuthLoginModal();
       return;
     }
     if (longevityNavCanGoBack()) {
@@ -25647,7 +25809,9 @@
       e.stopPropagation();
       openLongevitySourcesModal(
         longevityBtn.getAttribute("data-longevity-sources"),
-        longevityBtn.getAttribute("data-longevity-sources-kind") || "longevity"
+        longevityBtn.getAttribute("data-longevity-sources-kind") || "longevity",
+        false,
+        longevityBtn.getAttribute("data-longevity-sources-day") || "week"
       );
       return;
     }
@@ -25749,7 +25913,9 @@
         e.stopPropagation();
         openLongevitySourcesModal(
           longevitySourcesBtn.getAttribute("data-longevity-sources"),
-          longevitySourcesBtn.getAttribute("data-longevity-sources-kind") || "longevity"
+          longevitySourcesBtn.getAttribute("data-longevity-sources-kind") || "longevity",
+          false,
+          longevitySourcesBtn.getAttribute("data-longevity-sources-day") || "week"
         );
         return;
       }
@@ -25802,6 +25968,7 @@
                 kind: "longevity",
                 key: activeLongevitySourcesKey,
                 sourcesKind: activeLongevitySourcesKind,
+                scope: activeLongevitySourcesScope,
               }
             : null;
         }

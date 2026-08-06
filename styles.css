@@ -4871,7 +4871,7 @@ button.dashboard__micro-day-name:focus-visible {
 
 .longevity-analysis-report__nutrient-row {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   justify-content: space-between;
   gap: 0.75rem;
   padding: 0.2rem 0.1rem;
@@ -4884,9 +4884,53 @@ button.dashboard__micro-day-name:focus-visible {
   border-bottom: none;
 }
 
+.longevity-analysis-report__nutrient-main {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
 .longevity-analysis-report__nutrient-name {
   min-width: 0;
   color: #333;
+}
+
+.longevity-analysis-report__nutrient-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.1rem;
+  flex: 0 0 auto;
+}
+
+.longevity-analysis-report__info-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.25rem;
+  height: 1.25rem;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: #b8b8b2;
+  cursor: pointer;
+}
+
+.longevity-analysis-report__info-btn:hover,
+.longevity-analysis-report__info-btn:focus-visible {
+  color: #7a7a74;
+  background: #f2f2ef;
+}
+
+.longevity-analysis-report__info-btn:focus-visible {
+  outline: 2px solid #3d6b9e;
+  outline-offset: 1px;
+}
+
+.longevity-analysis-report__info-icon {
+  display: block;
 }
 
 .longevity-analysis-report__nutrient-pct {
@@ -8861,8 +8905,18 @@ body.day-word-wrap-off .day__input {
   padding: 1rem;
 }
 
-#micro-def-modal.modal--stacked {
+#longevity-analysis-modal {
+  z-index: 100;
+}
+
+#micro-def-modal,
+#micro-sources-modal,
+#longevity-sources-modal {
   z-index: 110;
+}
+
+#micro-def-modal.modal--stacked {
+  z-index: 120;
 }
 
 #micro-def-modal.modal--stacked .modal__backdrop {
@@ -10932,6 +10986,8 @@ button.longevity-form__label-link:focus-visible {
   .dashboard__micro-sources-btn,
   .dashboard__micro-daily-intake-btn,
   .dashboard__micro-acute-btn,
+  .longevity-analysis-report__info-btn,
+  .longevity-analysis-report__nutrient-actions,
   .dashboard__micro-sticky,
   .dashboard__sticky-options,
   .dashboard__card-actions,
@@ -11118,6 +11174,8 @@ body.print-preview .dashboard__micro-hint-ai,
 body.print-preview .dashboard__micro-sources-btn,
 body.print-preview .dashboard__micro-daily-intake-btn,
 body.print-preview .dashboard__micro-acute-btn,
+body.print-preview .longevity-analysis-report__info-btn,
+body.print-preview .longevity-analysis-report__nutrient-actions,
 body.print-preview .dashboard__micro-sticky,
 body.print-preview .dashboard__sticky-options,
 body.print-preview .dashboard__card-actions,
