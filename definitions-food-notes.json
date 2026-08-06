@@ -79,6 +79,16 @@
       "label": "Tangerine",
       "pattern": "\\btangerines?\\b",
       "note": "Orange-colored and not red-tinted = tangerine. Most other mandarins tend to be reddish. All tangerines are mandarins. Mandarins have different species."
+    },
+    {
+      "label": "Seaweed",
+      "pattern": "\\bseaweed\\b",
+      "note": "<p>Seaweed packs can provide iodine, but they are not a reliable source because the amount can vary widely. Iodine levels depend on the type of seaweed, where and how it was grown, which part of the plant was used, and when it was harvested. Processing also matters because washing, soaking, blanching, boiling, drying, roasting, and storage can reduce iodine, with studies finding losses of about 11% to 89% depending on the product and preparation method. Iodine also usually does not have to be listed on the U.S. Nutrition Facts label, so you may not know how much is actually in each pack. Seaweed is still good to eat, but it is better to rely on other, more consistent foods for your iodine intake.</p>"
+    },
+    {
+      "label": "Salt*iodized",
+      "pattern": "\\bsalt\\b.*iodized",
+      "note": "<p>Iodized salt refers to salt used when preparing food at home that has been fortified with iodine. Most restaurants use regular, non-iodized salt because iodized salt can cost more and may slightly affect the flavor of food. So, only count salt toward your iodine intake when you know iodine has been added.</p>"
     }
   ]
 }

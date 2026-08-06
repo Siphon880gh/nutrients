@@ -4784,6 +4784,105 @@ button.dashboard__micro-day-name:focus-visible {
   line-height: 1.2;
 }
 
+.longevity-analysis-report__band-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  margin: 0.35rem 0 0.55rem;
+}
+
+.longevity-analysis-report__band-group {
+  border: 1px solid #e8e8e4;
+  border-radius: 5px;
+  background: #fafaf8;
+}
+
+.longevity-analysis-report__band-summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.4rem 0.55rem;
+  list-style: none;
+  cursor: pointer;
+  user-select: none;
+}
+
+.longevity-analysis-report__band-summary::-webkit-details-marker {
+  display: none;
+}
+
+.longevity-analysis-report__band-summary-main {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.35rem 0.55rem;
+  min-width: 0;
+}
+
+.longevity-analysis-report__band-label {
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.longevity-analysis-report__band-count {
+  font-size: 0.72rem;
+  color: #6a6a66;
+}
+
+.longevity-analysis-report__band-chevron {
+  flex: 0 0 auto;
+  width: 0.45rem;
+  height: 0.45rem;
+  border-right: 1.5px solid #8a8a86;
+  border-bottom: 1.5px solid #8a8a86;
+  transform: rotate(-45deg);
+  transition: transform 0.15s ease;
+}
+
+.longevity-analysis-report__band-group[open] .longevity-analysis-report__band-chevron {
+  transform: rotate(45deg);
+}
+
+.longevity-analysis-report__band-group .longevity-analysis-report__nutrient-list {
+  margin: 0;
+  padding: 0.15rem 0.55rem 0.45rem;
+  border-top: 1px solid #efefec;
+}
+
+.longevity-analysis-report__nutrient-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  margin: 0.35rem 0 0.55rem;
+}
+
+.longevity-analysis-report__nutrient-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.2rem 0.1rem;
+  border-bottom: 1px solid #f0f0ec;
+  font-size: 0.78rem;
+  line-height: 1.35;
+}
+
+.longevity-analysis-report__nutrient-row:last-child {
+  border-bottom: none;
+}
+
+.longevity-analysis-report__nutrient-name {
+  min-width: 0;
+  color: #333;
+}
+
+.longevity-analysis-report__nutrient-pct {
+  flex: 0 0 auto;
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+}
+
 .longevity-analysis-modal__panel {
   max-height: min(92vh, 56rem);
 }

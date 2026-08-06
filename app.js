@@ -4307,11 +4307,11 @@
       );
       parts.push("");
       parts.push(
-        "I want to eat more of foods I already ate in the last " +
+        "I want to close these gaps by eating more of foods I have available at home. The list below is drawn from foods I logged in the last " +
           weeks +
           " week" +
           (weeks === 1 ? "" : "s") +
-          " to make up nutrient deficiencies. These are the foods I am willing to re-eat more of:"
+          ". It is not necessarily the food that got me to this nutrition status — it is food I have on hand that I can eat more of:"
       );
       if (foods.length) {
         foods.forEach(function (name) {
@@ -16160,27 +16160,37 @@
     { id: "electrolytes", label: "Electrolytes" },
     { id: "minerals", label: "Minerals" },
     { id: "vitaminA", label: "Vitamin A" },
-    { id: "fatSoluble", label: "Vitamins D, E & K" },
+    { id: "vitaminDAndK", label: "Vitamins D & K" },
+    { id: "vitaminE", label: "Vitamin E" },
     { id: "bVitamins", label: "B vitamins" },
     { id: "vitaminC", label: "Vitamin C" },
-    { id: "otherMicros", label: "Other micronutrients" },
+    { id: "choline", label: "Choline & methyl donors" },
+    { id: "fats", label: "Fats & cholesterol" },
+    { id: "omegas", label: "Omega fatty acids" },
+    { id: "compounds", label: "Longevity compounds" },
+    { id: "carbQuality", label: "Carb quality" },
     { id: "amino", label: "Amino acids" },
-    { id: "compounds", label: "Other compounds" },
+    { id: "otherMicros", label: "Other" },
   ];
 
-  function microAnalysisSectionIdForEntry(entry) {
+  function microAnalysisSectionIdsForEntry(entry) {
     var key = entry && entry.field && entry.field.key;
-    if (!key) return "otherMicros";
+    if (!key) return ["otherMicros"];
+    var ids = [];
+    function add(id) {
+      if (ids.indexOf(id) === -1) ids.push(id);
+    }
+
     if (
       entry.source === "derived" ||
       key === "fiber" ||
       key === "solubleFiber" ||
       key === "insolubleFiber"
     ) {
-      return "fiber";
+      add("fiber");
     }
     if (key === "sodium" || key === "potassium" || key === "chloride") {
-      return "electrolytes";
+      add("electrolytes");
     }
     if (
       key === "calcium" ||
@@ -16195,26 +16205,26 @@
       key === "phosphorus" ||
       key === "molybdenum"
     ) {
-      return "minerals";
+      add("minerals");
     }
     if (
       key === "vitaminA" ||
       key === "vitaminARetinol" ||
       key === "vitaminABetaCarotene"
     ) {
-      return "vitaminA";
+      add("vitaminA");
     }
     if (
       key === "vitaminD" ||
-      key === "vitaminE" ||
       key === "vitaminK" ||
       key === "vitaminK1" ||
       key === "vitaminK2" ||
       key === "vitaminK2MK4" ||
       key === "vitaminK2MK7"
     ) {
-      return "fatSoluble";
+      add("vitaminDAndK");
     }
+    if (key === "vitaminE") add("vitaminE");
     if (
       key === "thiamin" ||
       key === "riboflavin" ||
@@ -16225,12 +16235,91 @@
       key === "folate" ||
       key === "vitaminB12"
     ) {
-      return "bVitamins";
+      add("bVitamins");
     }
-    if (key === "vitaminC") return "vitaminC";
-    if (entry.field.group === "amino") return "amino";
-    if (entry.field.group === "compound") return "compounds";
-    return "otherMicros";
+    if (key === "vitaminC") add("vitaminC");
+    if (
+      key === "choline" ||
+      key === "betaine" ||
+      key === "folate" ||
+      key === "vitaminB12"
+    ) {
+      add("choline");
+    }
+    if (
+      key === "saturatedFat" ||
+      key === "monounsaturatedFat" ||
+      key === "polyunsaturatedFat" ||
+      key === "transFat" ||
+      key === "cholesterol" ||
+      key === "plantSterols"
+    ) {
+      add("fats");
+    }
+    if (
+      key === "omega3" ||
+      key === "omega6" ||
+      key === "omega9" ||
+      key === "ala" ||
+      key === "epa" ||
+      key === "dha" ||
+      key === "linoleicAcid" ||
+      key === "arachidonicAcid" ||
+      key === "oleicAcid" ||
+      key === "palmitoleicAcid"
+    ) {
+      add("omegas");
+    }
+    if (
+      key === "polyphenols" ||
+      key === "nitrate" ||
+      key === "flavonoids" ||
+      key === "quercetin" ||
+      key === "carotenoids" ||
+      key === "lutein" ||
+      key === "curcumin" ||
+      key === "resveratrol" ||
+      key === "coq10" ||
+      key === "pqq" ||
+      key === "nr" ||
+      key === "nmn" ||
+      key === "sulforaphane" ||
+      key === "alphaLipoicAcid" ||
+      key === "glutathione" ||
+      (entry.field && entry.field.group === "compound")
+    ) {
+      add("compounds");
+    }
+    if (
+      key === "glycemicIndex" ||
+      key === "addedSugar" ||
+      key === "refinedCarbs"
+    ) {
+      add("carbQuality");
+    }
+    if (
+      (entry.field && entry.field.group === "amino") ||
+      key === "histidine" ||
+      key === "isoleucine" ||
+      key === "leucine" ||
+      key === "lysine" ||
+      key === "methionine" ||
+      key === "phenylalanine" ||
+      key === "threonine" ||
+      key === "tryptophan" ||
+      key === "valine" ||
+      key === "arginine" ||
+      key === "cysteine" ||
+      key === "glutamine" ||
+      key === "glycine" ||
+      key === "proline" ||
+      key === "tyrosine" ||
+      key === "taurine"
+    ) {
+      add("amino");
+    }
+    if (!ids.length) add("otherMicros");
+    return ids;
   }
 
   function collectMicroAnalysisEntriesBySection(perDay, dayId) {
@@ -16265,22 +16354,127 @@
       );
       var pct = snap.targetDisplay && snap.targetDisplay.pct;
       if (pct == null || isNaN(pct)) return;
-      var sectionId = microAnalysisSectionIdForEntry(entry);
-      if (!byKey[sectionId]) {
-        byKey[sectionId] = { aim: [], limit: [] };
-      }
+      var sectionIds = microAnalysisSectionIdsForEntry(entry);
       var item = {
         label: (entry.field && entry.field.label) || "Untitled",
         pct: pct,
         key: entry.field && entry.field.key,
       };
-      if (snap.targetDisplay.limiting) {
-        byKey[sectionId].limit.push(item);
-      } else {
-        byKey[sectionId].aim.push(item);
-      }
+      sectionIds.forEach(function (sectionId) {
+        if (!byKey[sectionId]) {
+          byKey[sectionId] = { aim: [], limit: [] };
+        }
+        if (snap.targetDisplay.limiting) {
+          byKey[sectionId].limit.push(item);
+        } else {
+          byKey[sectionId].aim.push(item);
+        }
+      });
     });
     return byKey;
+  }
+
+  function microAnalysisNutrientBandForPct(pct, limiting) {
+    if (pct == null || !isFinite(pct)) return null;
+    if (limiting) {
+      return longevityAnalysisBandForLimitAvg(pct);
+    }
+    if (pct > 100) {
+      return {
+        id: "over-100",
+        label: ">100%",
+        min: 100,
+        max: Infinity,
+        maxInclusive: false,
+        color: "yellow",
+      };
+    }
+    return longevityAnalysisBandForAvg(pct);
+  }
+
+  function microAnalysisNutrientRowsHtml(entries, limiting) {
+    if (!entries || !entries.length) return "";
+    var bandsOrder = limiting
+      ? LONGEVITY_ANALYSIS_LIMIT_BANDS.slice()
+      : LONGEVITY_ANALYSIS_AVG_BANDS.concat([
+          {
+            id: "over-100",
+            label: ">100%",
+            min: 100,
+            max: Infinity,
+            maxInclusive: false,
+            color: "yellow",
+          },
+        ]);
+    var byBand = {};
+    bandsOrder.forEach(function (band) {
+      byBand[band.id] = [];
+    });
+    entries.forEach(function (entry) {
+      var band = microAnalysisNutrientBandForPct(entry.pct, limiting);
+      if (!band) return;
+      if (!byBand[band.id]) byBand[band.id] = [];
+      byBand[band.id].push(entry);
+    });
+
+    var groupsHtml = bandsOrder
+      .map(function (band) {
+        var group = byBand[band.id] || [];
+        if (!group.length) return "";
+        group.sort(function (a, b) {
+          if (a.pct !== b.pct) return a.pct - b.pct;
+          return String(a.label || "").localeCompare(String(b.label || ""));
+        });
+        var colorClass = "longevity-analysis-report__avg--" + band.color;
+        var rows = group
+          .map(function (entry) {
+            var entryColor = limiting
+              ? longevityAnalysisLimitColorClass(entry.pct)
+              : longevityAnalysisAvgColorClass(entry.pct);
+            if (!limiting && entry.pct > 100) {
+              entryColor = "longevity-analysis-report__avg--yellow";
+            }
+            return (
+              '<div class="longevity-analysis-report__nutrient-row">' +
+              '<span class="longevity-analysis-report__nutrient-name">' +
+              escapeHtml(entry.label || "Untitled") +
+              "</span>" +
+              '<span class="longevity-analysis-report__nutrient-pct longevity-analysis-report__avg ' +
+              escapeAttr(entryColor) +
+              '">' +
+              escapeHtml(formatTargetPctNumber(entry.pct)) +
+              "</span></div>"
+            );
+          })
+          .join("");
+        return (
+          '<details class="longevity-analysis-report__band-group">' +
+          '<summary class="longevity-analysis-report__band-summary">' +
+          '<span class="longevity-analysis-report__band-summary-main">' +
+          '<span class="longevity-analysis-report__band-label longevity-analysis-report__avg ' +
+          escapeAttr(colorClass) +
+          '">' +
+          escapeHtml(band.label) +
+          "</span>" +
+          '<span class="longevity-analysis-report__band-count">' +
+          escapeHtml(String(group.length)) +
+          " nutrient" +
+          (group.length === 1 ? "" : "s") +
+          "</span></span>" +
+          '<span class="longevity-analysis-report__band-chevron" aria-hidden="true"></span>' +
+          "</summary>" +
+          '<div class="longevity-analysis-report__nutrient-list">' +
+          rows +
+          "</div></details>"
+        );
+      })
+      .filter(Boolean)
+      .join("");
+
+    if (!groupsHtml) return "";
+    return (
+      '<div class="longevity-analysis-report__band-list">' + groupsHtml + "</div>"
+    );
   }
 
   function microAnalysisReportHtml(bySection, options) {
@@ -16309,6 +16503,8 @@
       return {
         id: section.id,
         label: section.label,
+        aim: buckets.aim || [],
+        limit: buckets.limit || [],
         aimStats: aimStats,
         limitStats: limitStats,
         band: band,
@@ -16359,12 +16555,13 @@
         '<h4 class="longevity-analysis-report__section-title">' +
         escapeHtml(section.label) +
         "</h4>";
-      if (!section.aimStats.count && !section.limitStats.count) {
-        html +=
-          '<p class="longevity-analysis-report__empty">No scored % target nutrients in this section.</p>';
-      } else {
-        html += longevityAnalysisAimStatsHtml(section.aimStats);
-        html += longevityAnalysisLimitStatsHtml(section.limitStats);
+      html += longevityAnalysisAimStatsHtml(section.aimStats);
+      if (section.aim.length) {
+        html += microAnalysisNutrientRowsHtml(section.aim, false);
+      }
+      html += longevityAnalysisLimitStatsHtml(section.limitStats);
+      if (section.limit.length) {
+        html += microAnalysisNutrientRowsHtml(section.limit, true);
       }
       html += "</section>";
       return html;
@@ -16385,7 +16582,7 @@
       '<p class="longevity-analysis-report__note">' +
       escapeHtml(
         options.note ||
-          "Grouped like longevity analysis. “Want more” averages treat values over 100% as 100%. “Want less” shows % of the daily max with no cap (over 100% = over the ceiling)."
+          "Grouped like your micro requirements. “Want more” averages treat values over 100% as 100%. “Want less” shows % of the daily max with no cap (over 100% = over the ceiling)."
       ) +
       "</p>" +
       longevityAnalysisFilterBarHtml(aimBandCounts, limitBandCounts) +
@@ -16490,7 +16687,7 @@
                 (dayCount === 1 ? "" : "s") +
                 "). "
               : "Full week average uses 7 days. ") +
-            "Grouped like longevity analysis. “Want more” averages treat values over 100% as 100%. “Want less” shows % of the daily max with no cap (over 100% = over the ceiling).",
+            "Grouped like your micro requirements. “Want more” averages treat values over 100% as 100%. “Want less” shows % of the daily max with no cap (over 100% = over the ceiling).",
         }
       );
     } else {
@@ -16525,7 +16722,7 @@
             " · Sex profile: " +
             sexLabel,
           note:
-            "Day totals vs your demographic daily values (not week-averaged). Grouped like longevity analysis. “Want more” averages treat values over 100% as 100%. “Want less” shows % of the daily max with no cap (over 100% = over the ceiling).",
+            "Day totals vs your demographic daily values (not week-averaged). Grouped like your micro requirements. “Want more” averages treat values over 100% as 100%. “Want less” shows % of the daily max with no cap (over 100% = over the ceiling).",
         }
       );
     }
