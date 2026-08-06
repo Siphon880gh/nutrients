@@ -4136,12 +4136,6 @@ body.highlight-adverse-effects .dashboard__micro-acute-btn--adverse .dashboard__
   line-height: 1.4;
 }
 
-.dashboard__micro-day-card .dashboard__label {
-  margin-bottom: 0.5rem;
-  padding-bottom: 0.35rem;
-  border-bottom: 1px solid #e8e8e4;
-}
-
 .dashboard__micro-day-rows {
   display: flex;
   flex-direction: column;
@@ -4575,6 +4569,7 @@ button.dashboard__micro-day-name:focus-visible {
   margin: 0 0 0.75rem;
 }
 
+.dashboard__analysis-btn,
 .dashboard__longevity-analysis-btn {
   position: relative;
   display: inline-flex;
@@ -4592,15 +4587,201 @@ button.dashboard__micro-day-name:focus-visible {
   cursor: pointer;
 }
 
+.dashboard__analysis-btn:hover,
+.dashboard__analysis-btn:focus-visible,
 .dashboard__longevity-analysis-btn:hover,
 .dashboard__longevity-analysis-btn:focus-visible {
   background: #1f3a58;
   border-color: #1f3a58;
 }
 
+.dashboard__analysis-btn:focus-visible,
 .dashboard__longevity-analysis-btn:focus-visible {
   outline: 2px solid #3d6b9e;
   outline-offset: 2px;
+}
+
+.dashboard__micro-day-card-head {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem 0.65rem;
+  margin-bottom: 0.5rem;
+  padding-bottom: 0.35rem;
+  border-bottom: 1px solid #e8e8e4;
+}
+
+.dashboard__micro-day-card-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.08rem;
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+.dashboard__micro-day-card-head .dashboard__label {
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border-bottom: none;
+  line-height: 1.2;
+}
+
+.dashboard__micro-day-card-head .dashboard__date {
+  line-height: 1.2;
+}
+
+.dashboard__micro-day-analysis {
+  position: relative;
+  flex: 0 0 auto;
+  margin: 0;
+  margin-left: auto;
+  padding: 0.12rem 0.3rem;
+  border: 0;
+  border-radius: 3px;
+  background: transparent;
+  color: #9a9a96;
+  font: inherit;
+  font-size: 0.65rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  line-height: 1.2;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.dashboard__micro-day-analysis:hover,
+.dashboard__micro-day-analysis:focus-visible {
+  color: #5c5c5c;
+  background: #f4f4f2;
+}
+
+.dashboard__micro-day-analysis:focus-visible {
+  outline: 2px solid #c8c8c4;
+  outline-offset: 1px;
+}
+
+.dashboard__card--today .dashboard__micro-day-analysis {
+  color: #7a92ad;
+}
+
+.dashboard__card--today .dashboard__micro-day-analysis:hover,
+.dashboard__card--today .dashboard__micro-day-analysis:focus-visible {
+  color: #3d6b9e;
+  background: #eef3f8;
+}
+
+.analysis-picker-modal__panel {
+  max-width: 24rem;
+  max-height: min(85vh, 28rem);
+}
+
+.analysis-picker__options {
+  gap: 0.55rem;
+}
+
+.analysis-picker__btn {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.12rem;
+  width: 100%;
+  padding: 0.55rem 0.7rem;
+  border: 1px solid #d4d4d0;
+  border-radius: 6px;
+  background: #fafaf8;
+  color: #1a1a1a;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.analysis-picker__btn:hover,
+.analysis-picker__btn:focus-visible {
+  border-color: #3d6b9e;
+  background: #f0f4f8;
+}
+
+.analysis-picker__btn:focus-visible {
+  outline: 2px solid #3d6b9e;
+  outline-offset: 2px;
+}
+
+.analysis-picker__btn-title {
+  font-size: 0.88rem;
+  font-weight: 650;
+  color: #1f3a58;
+}
+
+.analysis-picker__btn-meta {
+  font-size: 0.72rem;
+  color: #5c5c5c;
+  line-height: 1.35;
+}
+
+.analysis-picker__day-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-top: 0.15rem;
+  padding-top: 0.55rem;
+  border-top: 1px solid #ecece8;
+}
+
+.analysis-picker__day-label {
+  margin: 0;
+  font-size: 0.72rem;
+  font-weight: 650;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: #5c5c5c;
+}
+
+.analysis-picker__day-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.35rem;
+}
+
+.analysis-picker__day-btn {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.1rem;
+  min-height: 2.75rem;
+  padding: 0.4rem 0.25rem;
+  border: 1px solid #d4d4d0;
+  border-radius: 6px;
+  background: #fafaf8;
+  color: #1a1a1a;
+  font: inherit;
+  cursor: pointer;
+}
+
+.analysis-picker__day-btn:hover,
+.analysis-picker__day-btn:focus-visible {
+  border-color: #3d6b9e;
+  background: #f0f4f8;
+}
+
+.analysis-picker__day-btn:focus-visible {
+  outline: 2px solid #3d6b9e;
+  outline-offset: 2px;
+}
+
+.analysis-picker__day-btn-name {
+  font-size: 0.82rem;
+  font-weight: 650;
+  color: #1f3a58;
+  line-height: 1.2;
+}
+
+.analysis-picker__day-btn-date {
+  font-size: 0.68rem;
+  color: #5c5c5c;
+  line-height: 1.2;
 }
 
 .longevity-analysis-modal__panel {
