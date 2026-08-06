@@ -230,11 +230,11 @@
     { id: "85-100", label: "85–100%", min: 85, max: 100, maxInclusive: true, color: "green" },
   ];
   var LONGEVITY_ANALYSIS_LIMIT_BANDS = [
-    { id: "limit-0-20", label: "0–20%", min: 0, max: 20, maxInclusive: false, color: "green" },
-    { id: "limit-20-50", label: "20–50%", min: 20, max: 50, maxInclusive: false, color: "green" },
-    { id: "limit-50-75", label: "50–75%", min: 50, max: 75, maxInclusive: false, color: "yellow" },
-    { id: "limit-75-85", label: "75–85%", min: 75, max: 85, maxInclusive: false, color: "yellow" },
     { id: "limit-85-plus", label: "85%+", min: 85, max: Infinity, maxInclusive: true, color: "red" },
+    { id: "limit-75-85", label: "75–85%", min: 75, max: 85, maxInclusive: false, color: "yellow" },
+    { id: "limit-50-75", label: "50–75%", min: 50, max: 75, maxInclusive: false, color: "yellow" },
+    { id: "limit-20-50", label: "20–50%", min: 20, max: 50, maxInclusive: false, color: "green" },
+    { id: "limit-0-20", label: "0–20%", min: 0, max: 20, maxInclusive: false, color: "green" },
   ];
   var microDefModalEl = document.getElementById("micro-def-modal");
   var microDefModalTitleEl = document.getElementById("micro-def-modal-title");
