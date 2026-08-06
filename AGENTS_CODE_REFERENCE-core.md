@@ -391,9 +391,21 @@ At `max-width: 900px`, micro / longevity sticky filter groups become a one-secti
 - **API** — `initStickyFiltersCarousel` (boot + when micro/longevity panels open), `scrollStickyFiltersCarouselToIndex`, `stepStickyFiltersCarousel`, `syncStickyFiltersCarouselNav` (label from slide’s `.dashboard__sticky-filter-group-label`), `syncStickyFiltersCarouselFromScroll` (debounced).
 - **Controls** — `.dashboard__sticky-filters-carousel-adj` with `data-sticky-filters-carousel="prev|next"`; current `#micro-sticky-filters-carousel-current` / `#longevity-sticky-filters-carousel-current`.
 
+## Guided day food entry (default)
+
+Default day UI is a **MyFitnessPal-style list** (not free-text). Body class `day-entry-guided` (default) vs `day-entry-advanced`.
+
+**Setting** — `dayEntryAdvanced` (default `false`) via `load/save/setDayEntryAdvanced*` + `#day-entry-advanced-toggle` (**Advanced**). When advanced is on, the existing textareas + food-name suggestions remain available; highlight/word-wrap toggles (`.week__advanced-only`) show only in advanced mode.
+
+**Guided DOM** — `ensureDayGuidedEl` injects `.day__guided` (list + **Add food** + **Add Others** + **Rearrange**). Rearrange shows a drag handle on each line; HTML5 drag/drop with before/after/end drop indicators (`reorderGuidedEntry`). Remove asks confirm. Still persists as newline text.
+
+**Add food modal** — `#add-food-modal`: search (`addFoodSearchMatches` / `foodSuggestMatches`, or A–Z browse when empty), paginated results (`ADD_FOOD_PAGE_SIZE` = 25; `#add-food-pagination` Prev/Next), select definition only, set servings, **Add to day** → `appendDayFoodLine`. Escape / backdrop closes (`closeAddFoodModal` in modal Escape stack + `updateBodyModalOpen`).
+
+**Hint** — `#week-days-hint` swaps guided vs advanced copy in `syncDayEntryModeUi`.
+
 ## Food-name suggestions (day autocomplete)
 
-While typing on the **current line** of a day textarea, a popover suggests matching food-definition names (all matches).
+Advanced mode only (textarea). While typing on the **current line** of a day textarea, a popover suggests matching food-definition names (all matches).
 
 **Show/hide** — `updateDaySuggest(textarea)` (called from `bindDay` on `input` / `keyup` / `click`, plus a document `selectionchange` handler when a day textarea is focused):
 
@@ -427,7 +439,7 @@ Two-step, session-only onboarding when the food list is empty on first load.
 
 **Step `import`** — anchored to `#import-sample-foods` or `#food-definitions-heading`; copy prompts sample import. Scrolls `.keywords` into view. Also reachable from `#keywords-empty` inline link (`data-action="import-sample-from-empty"` → `importSampleFoods()`).
 
-**Step `meals`** — after successful sample import (`advanceStarterGuideAfterImport()` from `importSampleFoods` replace path), anchored to `.week__grid`; copy prompts Mon–Wed meal entry and mentions food-name suggestions.
+**Step `meals`** — after successful sample import (`advanceStarterGuideAfterImport()` from `importSampleFoods` replace path), anchored to `.week__grid`; copy prompts **Add food** on each day (definitions-only) and mentions Advanced free-text.
 
 **Dismiss** — `#starter-guide-dismiss` (**Got it**): on **`meals`** step sets `starterGuideEligible = false` (won’t re-show); on **`import`** step only hides (eligible until meals dismissed or foods added).
 

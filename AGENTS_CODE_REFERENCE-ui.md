@@ -46,7 +46,8 @@ Parent: [AGENTS_CODE_REFERENCE.md](./AGENTS_CODE_REFERENCE.md)
 │   └── .week__grid         (7 columns; .day--today / .day--favorite-day when applicable)
 │       └── .day × 7
 │           ├── .day__head (.day__head-text: label + .day__date; .day__head-actions: Copy + Favorite + Clear)
-│           └── .day__editor (editing/viewing/plain; shared height)
+│           ├── .day__guided (default; list + Add food; injected by JS)
+│           └── .day__editor (Advanced mode; editing/viewing/plain; shared height)
 │           ├── .day__backdrop
 │           ├── textarea.day__input
 │           └── .day__suggest (optional; may use .day__suggest--above)

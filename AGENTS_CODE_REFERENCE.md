@@ -59,7 +59,8 @@ When context is tight: read **this file** first, then open the one feature file 
 │  Week nav (prev / pick week / next / this week /        │
 │  Favorites → right sidebar)                             │
 │  Favorite week (above day grid) + Mon–Sun editors       │
-│  (editing/viewing/plain; today + favorite-day styled;   │
+│  (guided Add food by default; Advanced free-text;       │
+│  editing/viewing/plain; today + favorite-day styled;   │
 │  mobile day carousel ≤520px; food-name suggest;         │
 │  shared resize; Import sample meals; unmatched carousel)│
 ├─────────────────────────────────────────────────────────┤

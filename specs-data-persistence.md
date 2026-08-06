@@ -156,6 +156,7 @@ One settings document per user:
   dayEditorHeight: number | null,
   dayHighlights: boolean,           // default true
   dayWordWrap: boolean,             // default true
+  dayEntryAdvanced: boolean,        // default false — free-text day editors; guided Add food when false
   microViewDaily: boolean,
   microShowDv: boolean,
   showAcuteSideEffects: boolean,

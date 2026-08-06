@@ -421,6 +421,7 @@
   var exportAllMealsBtn = document.getElementById("export-all-meals");
   var importAllMealsBtn = document.getElementById("import-all-meals");
   var importSampleMealsBtn = document.getElementById("import-sample-meals");
+  var findLostMealsBtn = document.getElementById("find-lost-meals");
   var copyWeekToThisBtn = document.getElementById("copy-week-to-this");
   var weekNavPrevBtn = document.getElementById("week-nav-prev");
   var weekNavNextBtn = document.getElementById("week-nav-next");
@@ -474,6 +475,29 @@
   var EARLIEST_DIARY_DATE = "2026-05-01";
   var dayHighlightsToggleBtn = document.getElementById("day-highlights-toggle");
   var dayWordWrapToggleBtn = document.getElementById("day-word-wrap-toggle");
+  var dayEntryAdvancedToggleBtn = document.getElementById(
+    "day-entry-advanced-toggle"
+  );
+  var weekDaysHintEl = document.getElementById("week-days-hint");
+  var addFoodModalEl = document.getElementById("add-food-modal");
+  var addFoodModalTitleEl = document.getElementById("add-food-modal-title");
+  var addFoodModalHintEl = document.getElementById("add-food-modal-hint");
+  var addFoodSearchEl = document.getElementById("add-food-search");
+  var addFoodResultsEl = document.getElementById("add-food-results");
+  var addFoodEmptyEl = document.getElementById("add-food-empty");
+  var addFoodPaginationEl = document.getElementById("add-food-pagination");
+  var addFoodPagePrevBtn = document.getElementById("add-food-page-prev");
+  var addFoodPageNextBtn = document.getElementById("add-food-page-next");
+  var addFoodPageStatusEl = document.getElementById("add-food-page-status");
+  var addFoodSelectedEl = document.getElementById("add-food-selected");
+  var addFoodSelectedNameEl = document.getElementById("add-food-selected-name");
+  var addFoodServingsEl = document.getElementById("add-food-servings");
+  var addFoodErrorEl = document.getElementById("add-food-error");
+  var addFoodCancelBtn = document.getElementById("add-food-cancel");
+  var addFoodSubmitBtn = document.getElementById("add-food-submit");
+  var addFoodPendingDayId = null;
+  var addFoodSelectedName = null;
+  var addFoodResultsPage = 0;
   var dayFoodNotesEl = document.getElementById("day-food-notes");
   var dayFoodNotesLabelsEl = document.getElementById("day-food-notes-labels");
   var dayFoodNotesPopoverEl = document.getElementById("day-food-notes-popover");
@@ -509,6 +533,14 @@
   var tdeeCalcLastResult = null;
   var dayHighlightsEnabled = true;
   var dayWordWrapEnabled = true;
+  var dayEntryAdvancedEnabled = false;
+  var guidedRearrangeByDay = {};
+  var WEEK_DAYS_HINT_GUIDED =
+    'Day meals are saved in this browser. Use <strong>Add food</strong> to pick from your food definitions, or <strong>Add Others</strong> for <code>//</code> comments and <code>---</code> dividers. Turn on <strong>Advanced</strong> for free-text entry.';
+  var WEEK_DAYS_HINT_ADVANCED =
+    'Day meals are saved in this browser. You can add a multiplier at the end of a food (Eg. <code>* 2</code>), start a line with <code>//</code> or <code>#</code> for a comment, or use <code>---</code> as a divider.';
+  var ADD_FOOD_PAGE_SIZE = 25;
+  var DAY_SERVING_STEP = 0.25;
   var dayMealsByDate = {};
   var viewedWeekStart = null;
   var diaryFavorites = [];
@@ -10170,6 +10202,7 @@
       (weekJumpModalEl && !weekJumpModalEl.hidden) ||
       (copyDateModalEl && !copyDateModalEl.hidden) ||
       (favoriteEditModalEl && !favoriteEditModalEl.hidden) ||
+      (addFoodModalEl && !addFoodModalEl.hidden) ||
       isFavoritesSidebarOpen() ||
       (microGapsModalEl && !microGapsModalEl.hidden) ||
       (healthTimelineModalEl && !healthTimelineModalEl.hidden) ||
@@ -18223,6 +18256,7 @@
     loadFavorites();
     loadDayHighlightsPreference();
     loadDayWordWrapPreference();
+    loadDayEntryAdvancedPreference();
     loadDayEditorHeight();
     loadMicroViewDaily();
     loadShowMicroDailyDv();
@@ -18249,6 +18283,7 @@
     renderDemographicUi();
     syncDayHighlightsToggleUi();
     syncDayWordWrapToggleUi();
+    syncDayEntryModeUi();
     syncSettingsTdeeInput();
     syncSettingsMacroSplitInput();
     setSettingsWeightUnit(settingsWeightUnit);
@@ -18257,6 +18292,9 @@
     renderKeywords();
     refreshAll();
     syncAuthUi();
+    window.setTimeout(function () {
+      maybeOfferLostMealsRecovery();
+    }, 0);
   }
 
   function afterAuthSessionChange() {
@@ -19600,6 +19638,10 @@
     renderDashboard();
     updateDayClearButtons();
     updateDayFoodNotesUi();
+    if (!dayEntryAdvancedEnabled) {
+      ensureAllDayGuidedEls();
+      renderAllDayGuidedLists();
+    }
   }
 
   function allDayMealsText() {
@@ -21772,6 +21814,7 @@
       if (!el) return;
       el.value = dayMealsByDate[keys[i]] || "";
     });
+    if (!dayEntryAdvancedEnabled) renderAllDayGuidedLists();
   }
 
   function setViewedWeekStart(mondayKey) {
@@ -21895,6 +21938,7 @@
       syncDaysCarouselNav();
       return;
     }
+    clearWeekDayColumnFocus({ snap: true });
     var startId = todayDayId();
     var startIndex = dayCarouselIndexById(startId);
     if (startIndex < 0) startIndex = 0;
@@ -22150,9 +22194,53 @@
     };
   }
 
-  function saveDayNotes() {
+  function saveDayMealsState() {
     if (!persist) return;
-    persist.saveDayMeals(dayNotesPayload());
+    persist.saveDayMeals({
+      version: 2,
+      days: Object.assign({}, dayMealsByDate),
+    });
+  }
+
+  function saveDayNotes() {
+    flushEditorsToDayMeals();
+    saveDayMealsState();
+  }
+
+  function dayIndexById(dayId) {
+    for (var i = 0; i < DAYS.length; i++) {
+      if (DAYS[i].id === dayId) return i;
+    }
+    return -1;
+  }
+
+  function syncDayMealFromEditor(dayId) {
+    if (!viewedWeekStart) return;
+    var dayIndex = dayIndexById(dayId);
+    if (dayIndex < 0) return;
+    var key = weekDateKeys(viewedWeekStart)[dayIndex];
+    var el = document.getElementById(dayId);
+    if (!key || !el) return;
+    if (el.value) dayMealsByDate[key] = el.value;
+    else delete dayMealsByDate[key];
+  }
+
+  function mealTextForDayId(dayId) {
+    var el = document.getElementById(dayId);
+    var stored = "";
+    if (viewedWeekStart) {
+      var dayIndex = dayIndexById(dayId);
+      if (dayIndex >= 0) {
+        var key = weekDateKeys(viewedWeekStart)[dayIndex];
+        if (key) stored = dayMealsByDate[key] || "";
+      }
+    }
+    if (el) {
+      // Rehydrate if the hidden textarea was emptied but memory still has meals.
+      if (!el.value && stored) el.value = stored;
+      return el.value;
+    }
+    return stored;
   }
 
   function saveDayHighlightsPreference() {
@@ -22234,6 +22322,60 @@
     syncDayWordWrapToggleUi();
   }
 
+  function saveDayEntryAdvancedPreference() {
+    if (!persist) return;
+    persist.setSetting("dayEntryAdvanced", !!dayEntryAdvancedEnabled);
+  }
+
+  function loadDayEntryAdvancedPreference() {
+    if (!persist) {
+      dayEntryAdvancedEnabled = false;
+      return;
+    }
+    dayEntryAdvancedEnabled = persist.getSetting("dayEntryAdvanced") === true;
+  }
+
+  function syncDayEntryModeUi() {
+    document.body.classList.toggle(
+      "day-entry-guided",
+      !dayEntryAdvancedEnabled
+    );
+    document.body.classList.toggle(
+      "day-entry-advanced",
+      !!dayEntryAdvancedEnabled
+    );
+    if (weekDaysHintEl) {
+      weekDaysHintEl.innerHTML = dayEntryAdvancedEnabled
+        ? WEEK_DAYS_HINT_ADVANCED
+        : WEEK_DAYS_HINT_GUIDED;
+    }
+    if (!dayEntryAdvancedToggleBtn) return;
+    dayEntryAdvancedToggleBtn.setAttribute(
+      "aria-pressed",
+      dayEntryAdvancedEnabled ? "true" : "false"
+    );
+    dayEntryAdvancedToggleBtn.setAttribute(
+      "aria-label",
+      dayEntryAdvancedEnabled
+        ? "Turn advanced text entry off"
+        : "Turn advanced text entry on"
+    );
+  }
+
+  function setDayEntryAdvancedEnabled(enabled) {
+    dayEntryAdvancedEnabled = !!enabled;
+    saveDayEntryAdvancedPreference();
+    syncDayEntryModeUi();
+    if (!dayEntryAdvancedEnabled) {
+      hideAllDaySuggests();
+      loadEditorsFromDayMeals();
+      ensureAllDayGuidedEls();
+      renderAllDayGuidedLists();
+    } else {
+      guidedRearrangeByDay = {};
+    }
+  }
+
   function clampDayEditorHeight(px) {
     var min = 96;
     var max = Math.max(min, Math.floor(window.innerHeight * 0.8));
@@ -22242,8 +22384,8 @@
 
   function applyDayEditorHeight(px) {
     var height = clampDayEditorHeight(px);
-    document.querySelectorAll(".day__editor").forEach(function (editor) {
-      editor.style.height = height + "px";
+    document.querySelectorAll(".day__editor, .day__guided").forEach(function (el) {
+      el.style.height = height + "px";
     });
     return height;
   }
@@ -22262,33 +22404,117 @@
     return 7;
   }
 
-  function syncWeekGridColumnsFromEditors() {
-    var grid = document.querySelector(".week__grid");
-    if (!grid) return;
-    if (isDaysCarouselActive()) {
-      grid.style.removeProperty("grid-template-columns");
-      return;
-    }
+  function weekDayFocusTrackIndex(grid, days, colCount) {
+    if (!grid || !days || !days.length || !colCount) return -1;
+    var expandedDay = grid.querySelector(".day--focus-wide");
+    if (!expandedDay) return -1;
+    var expandedIndex = Array.prototype.indexOf.call(days, expandedDay);
+    if (expandedIndex < 0) return -1;
+    return expandedIndex % colCount;
+  }
+
+  function buildWeekGridColumnTracks(grid, opts) {
+    opts = opts || {};
     var colCount = weekGridColumnCount();
     var days = grid.querySelectorAll(":scope > .day");
+    var expandedTrack =
+      typeof opts.expandedTrack === "number"
+        ? opts.expandedTrack
+        : weekDayFocusTrackIndex(grid, days, colCount);
     var tracks = [];
     var hasCustom = false;
     for (var c = 0; c < colCount; c++) {
-      var track = "minmax(0, 1fr)";
+      var track = c === expandedTrack ? "minmax(0, 2fr)" : "minmax(0, 1fr)";
       for (var i = c; i < days.length; i += colCount) {
-        var editor = days[i].querySelector(".day__editor");
-        if (editor && editor.style.width) {
-          track = editor.style.width;
+        var panel =
+          (!dayEntryAdvancedEnabled &&
+            days[i].querySelector(".day__guided")) ||
+          days[i].querySelector(".day__editor");
+        if (panel && panel.style.width) {
+          if (c === expandedTrack) {
+            var px = parseFloat(panel.style.width);
+            if (isFinite(px) && px > 0) {
+              track = px * 2 + "px";
+              hasCustom = true;
+              break;
+            }
+          }
+          track = panel.style.width;
           hasCustom = true;
           break;
         }
       }
       tracks.push(track);
     }
-    if (hasCustom) {
-      grid.style.gridTemplateColumns = tracks.join(" ");
+    return {
+      tracks: tracks,
+      hasCustom: hasCustom,
+      expandedTrack: expandedTrack,
+      colCount: colCount,
+    };
+  }
+
+  function syncWeekGridColumnsFromEditors(opts) {
+    opts = opts || {};
+    var grid = document.querySelector(".week__grid");
+    if (!grid) return;
+    if (isDaysCarouselActive()) {
+      grid.style.removeProperty("grid-template-columns");
+      grid.classList.remove("week__grid--day-focus", "week__grid--day-focus-instant");
+      grid.querySelectorAll(".day--focus-wide").forEach(function (el) {
+        el.classList.remove("day--focus-wide");
+      });
+      return;
+    }
+    var built = buildWeekGridColumnTracks(grid, opts);
+    var keepExplicit =
+      built.expandedTrack >= 0 || built.hasCustom || !!opts.forceExplicit;
+    if (keepExplicit) {
+      grid.style.gridTemplateColumns = built.tracks.join(" ");
     } else {
       grid.style.removeProperty("grid-template-columns");
+    }
+    grid.classList.toggle("week__grid--day-focus", built.expandedTrack >= 0);
+  }
+
+  function focusWeekDayColumn(dayEl) {
+    if (!dayEl || !dayEl.classList.contains("day")) return;
+    if (isDaysCarouselActive()) return;
+    if (dayEditorResizeTarget) return;
+    var grid = dayEl.closest(".week__grid");
+    if (!grid) return;
+    var current = grid.querySelector(".day--focus-wide");
+    if (current === dayEl) return;
+    if (!current) {
+      grid.classList.add("week__grid--day-focus-instant");
+      syncWeekGridColumnsFromEditors({
+        forceExplicit: true,
+        expandedTrack: -1,
+      });
+      void grid.offsetWidth;
+      grid.classList.remove("week__grid--day-focus-instant");
+    } else {
+      current.classList.remove("day--focus-wide");
+    }
+    dayEl.classList.add("day--focus-wide");
+    syncWeekGridColumnsFromEditors();
+  }
+
+  function clearWeekDayColumnFocus(opts) {
+    opts = opts || {};
+    var grid = document.querySelector(".week__grid");
+    if (!grid) return;
+    var current = grid.querySelector(".day--focus-wide");
+    if (!current && !grid.classList.contains("week__grid--day-focus")) return;
+    var snap = opts.snap !== false;
+    if (snap) grid.classList.add("week__grid--day-focus-instant");
+    if (current) current.classList.remove("day--focus-wide");
+    grid.classList.remove("week__grid--day-focus");
+    syncWeekGridColumnsFromEditors();
+    if (snap) {
+      window.requestAnimationFrame(function () {
+        grid.classList.remove("week__grid--day-focus-instant");
+      });
     }
   }
 
@@ -22322,7 +22548,7 @@
       "pointerdown",
       function (e) {
         if (e.button !== 0) return;
-        var editor = e.target.closest(".day__editor");
+        var editor = e.target.closest(".day__editor, .day__guided");
         if (!editor) return;
         if (!isDayEditorResizeIntent(e, editor)) return;
         dayEditorResizeTarget = editor;
@@ -22342,6 +22568,14 @@
         Math.abs(editor.offsetWidth - dayEditorResizeStartWidth) < 2
       ) {
         editor.style.removeProperty("width");
+      } else if (editor.style.width) {
+        var width = editor.style.width;
+        document
+          .querySelectorAll(".day__editor, .day__guided")
+          .forEach(function (el) {
+            if (el === editor) return;
+            el.style.width = width;
+          });
       }
       syncWeekGridColumnsFromEditors();
       dayEditorResizeTarget = null;
@@ -22433,6 +22667,270 @@
     updateDayDateLabels();
     if (migrated) saveDayNotes();
     saveViewedWeekStart();
+  }
+
+  function nonEmptyDayMealDateKeys() {
+    return Object.keys(dayMealsByDate).filter(function (key) {
+      return !!(dayMealsByDate[key] && String(dayMealsByDate[key]).trim());
+    }).sort();
+  }
+
+  function viewedWeekHasMealNotes() {
+    if (!viewedWeekStart) return false;
+    return weekDateKeys(viewedWeekStart).some(function (key) {
+      return !!(dayMealsByDate[key] && String(dayMealsByDate[key]).trim());
+    });
+  }
+
+  function latestMealMondayKey() {
+    var keys = nonEmptyDayMealDateKeys();
+    if (!keys.length) return null;
+    var last = parseDateKey(keys[keys.length - 1]);
+    if (!last) return null;
+    return toDateKey(mondayOf(last));
+  }
+
+  function safeParseLocalStorageJson(key) {
+    try {
+      var raw = localStorage.getItem(key);
+      if (raw == null || raw === "") return null;
+      return JSON.parse(raw);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  function dayMealsCandidateFromPayload(payload, sourceLabel) {
+    if (!payload || typeof payload !== "object") return null;
+    var days = null;
+    if (isV2DayMealsData(payload)) {
+      days = ingestDayMealsMap(payload.days);
+    } else if (isLegacyWeekMealsData(payload)) {
+      days = migrateLegacyDayNotesToDates(payload);
+    } else if (payload.days && typeof payload.days === "object") {
+      days = ingestDayMealsMap(payload.days);
+    } else if (payload._legacyWeek && isLegacyWeekMealsData(payload._legacyWeek)) {
+      days = migrateLegacyDayNotesToDates(payload._legacyWeek);
+    }
+    if (!days) return null;
+    var keys = Object.keys(days).filter(function (k) {
+      return !!(days[k] && String(days[k]).trim());
+    });
+    if (!keys.length) return null;
+    keys.sort();
+    return {
+      source: sourceLabel,
+      days: days,
+      dateCount: keys.length,
+      firstDate: keys[0],
+      lastDate: keys[keys.length - 1],
+    };
+  }
+
+  function scanRecoverableDayMeals() {
+    var currentUserId =
+      auth && typeof auth.getCurrentUserId === "function"
+        ? auth.getCurrentUserId()
+        : null;
+    var currentKeys = nonEmptyDayMealDateKeys();
+    var currentSet = {};
+    currentKeys.forEach(function (k) {
+      currentSet[k] = true;
+    });
+    var candidates = [];
+
+    function consider(candidate) {
+      if (!candidate) return;
+      var extra = 0;
+      Object.keys(candidate.days).forEach(function (k) {
+        if (!currentSet[k] && candidate.days[k] && String(candidate.days[k]).trim()) {
+          extra += 1;
+        }
+      });
+      // Prefer candidates that add dates we don't currently have, or any
+      // meals when the current diary is empty.
+      if (!currentKeys.length || extra > 0) {
+        candidate.extraDates = extra;
+        candidates.push(candidate);
+      }
+    }
+
+    consider(
+      dayMealsCandidateFromPayload(
+        { version: 2, days: dayMealsByDate },
+        "Current account diary (other weeks)"
+      )
+    );
+
+    var table = safeParseLocalStorageJson("nutrients_day_meals");
+    if (Array.isArray(table)) {
+      table.forEach(function (row, index) {
+        if (!row || typeof row !== "object") return;
+        var label =
+          "Saved account row " +
+          (index + 1) +
+          (row.userId ? " (" + String(row.userId).slice(0, 8) + "…)" : "");
+        if (currentUserId && row.userId === currentUserId) {
+          label = "Current account storage";
+        }
+        consider(dayMealsCandidateFromPayload(row, label));
+      });
+    }
+
+    var orphan = safeParseLocalStorageJson("nutrients_orphan_legacy");
+    if (orphan && orphan.dayMeals) {
+      consider(
+        dayMealsCandidateFromPayload(orphan.dayMeals, "Orphan / pre-account backup")
+      );
+    }
+
+    var legacy = safeParseLocalStorageJson("nutrients-day-notes");
+    if (legacy) {
+      consider(dayMealsCandidateFromPayload(legacy, "Legacy day-notes key"));
+    }
+
+    candidates.sort(function (a, b) {
+      if (b.dateCount !== a.dateCount) return b.dateCount - a.dateCount;
+      return String(b.lastDate).localeCompare(String(a.lastDate));
+    });
+
+    // Dedupe identical day maps (same date count + last date + first date).
+    var seen = {};
+    return candidates.filter(function (c) {
+      var sig =
+        c.dateCount +
+        "|" +
+        c.firstDate +
+        "|" +
+        c.lastDate +
+        "|" +
+        Object.keys(c.days)
+          .sort()
+          .slice(0, 3)
+          .join(",");
+      if (seen[sig]) return false;
+      seen[sig] = true;
+      return true;
+    });
+  }
+
+  function restoreDayMealsCandidate(candidate) {
+    if (!candidate || !candidate.days) return false;
+    dayMealsByDate = Object.assign({}, candidate.days);
+    var jumpTo = latestMealMondayKey() || currentWeekMondayKey();
+    viewedWeekStart = clampWeekMondayKey(jumpTo);
+    saveViewedWeekStart();
+    loadEditorsFromDayMeals();
+    saveDayMealsState();
+    updateWeekNavUi();
+    updateDayDateLabels();
+    markTodayDay();
+    refreshAll();
+    updateDayClearButtons();
+    return true;
+  }
+
+  function describeDayMealsCandidate(candidate) {
+    return (
+      candidate.source +
+      ": " +
+      candidate.dateCount +
+      " day(s) from " +
+      candidate.firstDate +
+      " to " +
+      candidate.lastDate
+    );
+  }
+
+  function runFindLostMeals(opts) {
+    var options = opts || {};
+    var silentIfNone = !!options.silentIfNone;
+    var preferJumpOnly = !!options.preferJumpOnly;
+
+    if (!viewedWeekHasMealNotes()) {
+      var jumpTo = latestMealMondayKey();
+      if (jumpTo && jumpTo !== viewedWeekStart) {
+        var range = formatWeekRangeLabel(jumpTo);
+        var jump = window.confirm(
+          "This week has no meals, but your diary still has meals on other weeks" +
+            (range ? " (latest: " + range + ")" : "") +
+            ".\n\nGo to that week now?"
+        );
+        if (jump) {
+          setViewedWeekStart(jumpTo);
+          return true;
+        }
+        if (preferJumpOnly) return false;
+      } else if (preferJumpOnly && !jumpTo) {
+        // fall through to full recovery scan
+      } else if (preferJumpOnly) {
+        return false;
+      }
+    } else if (preferJumpOnly) {
+      return false;
+    }
+
+    var candidates = scanRecoverableDayMeals().filter(function (c) {
+      // Skip the in-memory "other weeks" candidate when we already offered jump.
+      return c.source.indexOf("other weeks") === -1;
+    });
+
+    if (!candidates.length) {
+      if (!silentIfNone) {
+        window.alert(
+          "No recoverable meal backups were found in this browser.\n\n" +
+            "If you have nutrients-day-meals.json from Export all, use Import all.\n" +
+            "Also try Previous week — the app always opens on the current week."
+        );
+      }
+      return false;
+    }
+
+    var lines = candidates.slice(0, 5).map(function (c, i) {
+      return i + 1 + ") " + describeDayMealsCandidate(c);
+    });
+    var pick = window.prompt(
+      "Found possible meal data in this browser:\n\n" +
+        lines.join("\n") +
+        "\n\nType a number to restore that copy (replaces your current diary), or Cancel.",
+      "1"
+    );
+    if (pick == null) return false;
+    var index = parseInt(String(pick).trim(), 10) - 1;
+    if (isNaN(index) || index < 0 || index >= candidates.length) {
+      window.alert("Invalid choice.");
+      return false;
+    }
+    var chosen = candidates[index];
+    if (
+      !window.confirm(
+        "Restore this meal diary?\n\n" +
+          describeDayMealsCandidate(chosen) +
+          "\n\nThis replaces meals for the signed-in account."
+      )
+    ) {
+      return false;
+    }
+    restoreDayMealsCandidate(chosen);
+    window.alert("Meals restored. Jumped to the week with your latest entries.");
+    return true;
+  }
+
+  function maybeOfferLostMealsRecovery() {
+    if (viewedWeekHasMealNotes()) return;
+    // Prefer a quiet jump offer when meals exist on other weeks.
+    if (runFindLostMeals({ preferJumpOnly: true, silentIfNone: true })) return;
+    var candidates = scanRecoverableDayMeals().filter(function (c) {
+      return c.source.indexOf("other weeks") === -1;
+    });
+    if (!candidates.length) return;
+    var top = candidates[0];
+    var ok = window.confirm(
+      "This week has no meals, but a meal backup was found in this browser:\n\n" +
+        describeDayMealsCandidate(top) +
+        "\n\nOpen Find lost meals to restore it?"
+    );
+    if (ok) runFindLostMeals({ silentIfNone: false });
   }
 
   function exportAllDayMealsJson() {
@@ -23944,13 +24442,846 @@
     });
   }
 
+  function formatDayFoodLine(name, servings) {
+    var foodName = String(name || "").trim();
+    if (!foodName) return "";
+    var n = parseFloat(servings);
+    if (!isFinite(n) || n <= 0) n = 1;
+    n = Math.round(n * 1000) / 1000;
+    if (Math.abs(n - 1) < 1e-9) return foodName;
+    return foodName + " * " + String(n);
+  }
+
+  function dayMealLineServings(line) {
+    var visible = visibleDayLineText(line);
+    var m = visible.match(/\*\s*((?:\d+(?:\.\d+)?)|(?:\.\d+))\s*$/);
+    if (!m) return 1;
+    var n = parseFloat(m[1]);
+    return n > 0 && isFinite(n) ? n : 1;
+  }
+
+  function foodDefinitionNameForLine(line) {
+    var key = stripKeywordServingMultiplier(visibleDayLineText(line)).toLowerCase();
+    if (!key) return null;
+    for (var i = 0; i < keywords.length; i++) {
+      var name = keywords[i].name.trim();
+      if (name.toLowerCase() === key) return name;
+    }
+    return null;
+  }
+
+  function parseDayGuidedLine(line, index) {
+    var raw = String(line == null ? "" : line);
+    var visible = visibleDayLineText(raw);
+    if (!visible) {
+      return { kind: "blank", lineIndex: index, text: raw };
+    }
+    if (isCommentDayMealLine(raw)) {
+      return { kind: "comment", lineIndex: index, text: visible };
+    }
+    // Separator-only lines (---, •••, etc.) — keep as dividers in guided UI
+    // (isBlankDayMealLine also treats these as blank for nutrition matching).
+    if (!/[A-Za-z0-9]/.test(visible)) {
+      return { kind: "divider", lineIndex: index, text: visible };
+    }
+    var foodName = foodDefinitionNameForLine(raw);
+    if (foodName) {
+      return {
+        kind: "food",
+        lineIndex: index,
+        name: foodName,
+        servings: dayMealLineServings(raw),
+        text: visible,
+      };
+    }
+    return {
+      kind: "unmatched",
+      lineIndex: index,
+      text: visible,
+      servings: dayMealLineServings(raw),
+    };
+  }
+
+  function parseDayGuidedLines(text) {
+    return normalizeDayMealsText(text)
+      .split("\n")
+      .map(function (line, index) {
+        return parseDayGuidedLine(line, index);
+      })
+      .filter(function (entry) {
+        return entry.kind !== "blank";
+      });
+  }
+
+  function dayTextareaLines(textarea) {
+    return normalizeDayMealsText(textarea.value).split("\n");
+  }
+
+  function setDayTextareaLines(textarea, lines) {
+    var next = lines.join("\n");
+    if (next === "\n") next = "";
+    // Drop trailing blank-only content from join of empty array
+    if (!lines.length) next = "";
+    textarea.value = next;
+    applyDayNoteChange(textarea);
+  }
+
+  function rewriteDayGuidedLine(dayId, lineIndex, nextLineText) {
+    var textarea = document.getElementById(dayId);
+    if (!textarea) return;
+    var lines = dayTextareaLines(textarea);
+    if (lineIndex < 0 || lineIndex >= lines.length) return;
+    var next = String(nextLineText == null ? "" : nextLineText).trim();
+    if (!next) lines.splice(lineIndex, 1);
+    else lines[lineIndex] = next;
+    setDayTextareaLines(textarea, lines);
+  }
+
+  function removeDayGuidedLine(dayId, lineIndex) {
+    rewriteDayGuidedLine(dayId, lineIndex, "");
+  }
+
+  function appendDayFoodLine(dayId, foodName, servings) {
+    var textarea = document.getElementById(dayId);
+    if (!textarea) return;
+    var line = formatDayFoodLine(foodName, servings);
+    if (!line) return;
+    var current = normalizeDayMealsText(textarea.value).replace(/\n+$/, "");
+    textarea.value = current ? current + "\n" + line : line;
+    applyDayNoteChange(textarea);
+  }
+
+  function appendDayCustomLine(dayId, lineText) {
+    var textarea = document.getElementById(dayId);
+    if (!textarea) return;
+    var line = String(lineText == null ? "" : lineText).replace(/\r?\n/g, " ").trim();
+    if (!line) return;
+    var current = normalizeDayMealsText(textarea.value).replace(/\n+$/, "");
+    textarea.value = current ? current + "\n" + line : line;
+    applyDayNoteChange(textarea);
+  }
+
+  function addGuidedCommentLine(dayId, prefix) {
+    var marker = prefix === "#" ? "#" : "//";
+    var note = window.prompt(
+      "Comment (saved as a " + marker + " line; ignored for nutrition totals):",
+      ""
+    );
+    if (note == null) return;
+    var text = String(note).replace(/\r?\n/g, " ").trim();
+    if (
+      text.indexOf("//") === 0 ||
+      (marker === "#" && text.charAt(0) === "#")
+    ) {
+      appendDayCustomLine(dayId, text);
+      return;
+    }
+    appendDayCustomLine(dayId, marker + (text ? " " + text : ""));
+  }
+
+  function guidedCommentMarker(rawText) {
+    var text = String(rawText || "").trim();
+    if (text.indexOf("//") === 0) return "//";
+    if (text.charAt(0) === "#") return "#";
+    return "//";
+  }
+
+  function formatGuidedCommentLine(marker, noteText) {
+    var prefix = marker === "#" ? "#" : "//";
+    var text = String(noteText == null ? "" : noteText).replace(/\r?\n/g, " ").trim();
+    if (
+      text.indexOf("//") === 0 ||
+      (prefix === "#" && text.charAt(0) === "#")
+    ) {
+      return text;
+    }
+    return prefix + (text ? " " + text : "");
+  }
+
+  function editGuidedCommentLine(dayId, lineIndex) {
+    var textarea = document.getElementById(dayId);
+    if (!textarea) return;
+    var lines = dayTextareaLines(textarea);
+    if (lineIndex < 0 || lineIndex >= lines.length) return;
+    var entry = parseDayGuidedLine(lines[lineIndex], lineIndex);
+    if (entry.kind !== "comment") return;
+    var marker = guidedCommentMarker(entry.text);
+    var current = guidedCommentDisplayText(entry.text);
+    var note = window.prompt(
+      "Edit comment (saved as a " + marker + " line; ignored for nutrition totals):",
+      current
+    );
+    if (note == null) return;
+    rewriteDayGuidedLine(dayId, lineIndex, formatGuidedCommentLine(marker, note));
+  }
+
+  function addGuidedDividerLine(dayId) {
+    appendDayCustomLine(dayId, "---");
+  }
+
+  function closeAllGuidedOthersMenus() {
+    document.querySelectorAll(".day__guided-others-menu").forEach(function (menu) {
+      menu.hidden = true;
+    });
+    document.querySelectorAll(".day__add-others").forEach(function (btn) {
+      btn.setAttribute("aria-expanded", "false");
+    });
+  }
+
+  function toggleGuidedOthersMenu(dayId) {
+    var guided = ensureDayGuidedEl(dayId);
+    if (!guided) return;
+    var btn = guided.querySelector(".day__add-others");
+    var menu = guided.querySelector(".day__guided-others-menu");
+    if (!btn || !menu) return;
+    var open = menu.hidden;
+    closeAllGuidedOthersMenus();
+    if (open) {
+      menu.hidden = false;
+      btn.setAttribute("aria-expanded", "true");
+    }
+  }
+
+  function guidedCommentDisplayText(rawText) {
+    var text = String(rawText || "").trim();
+    if (text.indexOf("//") === 0) {
+      return text.slice(2).replace(/^\s+/, "");
+    }
+    if (text.charAt(0) === "#") {
+      return text.slice(1).replace(/^\s+/, "");
+    }
+    return text;
+  }
+
+  function confirmRemoveGuidedLine(dayId, lineIndex) {
+    var textarea = document.getElementById(dayId);
+    if (!textarea) return false;
+    var lines = dayTextareaLines(textarea);
+    if (lineIndex < 0 || lineIndex >= lines.length) return false;
+    var entry = parseDayGuidedLine(lines[lineIndex], lineIndex);
+    var label;
+    if (entry.kind === "food") {
+      label = entry.name;
+    } else if (entry.kind === "comment") {
+      var commentText = guidedCommentDisplayText(entry.text);
+      label = commentText
+        ? "comment “" + commentText + "”"
+        : "this comment";
+    } else if (entry.kind === "divider") {
+      label = "this divider";
+    } else {
+      label = entry.text || "this line";
+    }
+    return window.confirm("Remove " + label + " from this day?");
+  }
+
+  function isGuidedRearrangeEnabled(dayId) {
+    return !!guidedRearrangeByDay[dayId];
+  }
+
+  function setGuidedRearrangeEnabled(dayId, enabled) {
+    if (!dayId) return;
+    if (enabled) guidedRearrangeByDay[dayId] = true;
+    else {
+      delete guidedRearrangeByDay[dayId];
+      if (guidedDragState && guidedDragState.dayId === dayId) endGuidedDrag();
+    }
+    var guided = ensureDayGuidedEl(dayId);
+    if (guided) {
+      guided.classList.toggle("day__guided--rearrange", !!enabled);
+      var btn = guided.querySelector('[data-action="toggle-guided-rearrange"]');
+      if (btn) {
+        btn.setAttribute("aria-pressed", enabled ? "true" : "false");
+        btn.classList.toggle("day__guided-rearrange--on", !!enabled);
+      }
+    }
+    renderDayGuidedList(dayId);
+  }
+
+  function toggleGuidedRearrange(dayId) {
+    closeAllGuidedOthersMenus();
+    setGuidedRearrangeEnabled(dayId, !isGuidedRearrangeEnabled(dayId));
+  }
+
+  var guidedDragState = null;
+
+  function clearGuidedDropIndicators(listEl) {
+    if (!listEl) {
+      document.querySelectorAll(".day__food-item--drop-before, .day__food-item--drop-after, .day__food-list--drop-end").forEach(function (el) {
+        el.classList.remove(
+          "day__food-item--drop-before",
+          "day__food-item--drop-after",
+          "day__food-list--drop-end"
+        );
+      });
+      return;
+    }
+    listEl.querySelectorAll(".day__food-item--drop-before, .day__food-item--drop-after").forEach(function (el) {
+      el.classList.remove(
+        "day__food-item--drop-before",
+        "day__food-item--drop-after"
+      );
+    });
+    listEl.classList.remove("day__food-list--drop-end");
+  }
+
+  function endGuidedDrag() {
+    if (guidedDragState && guidedDragState.itemEl) {
+      guidedDragState.itemEl.classList.remove("day__food-item--dragging");
+    }
+    clearGuidedDropIndicators(null);
+    guidedDragState = null;
+  }
+
+  function reorderGuidedEntry(dayId, fromLineIndex, insertBeforeEntryPos) {
+    var textarea = document.getElementById(dayId);
+    if (!textarea) return;
+    var lines = dayTextareaLines(textarea);
+    var entries = parseDayGuidedLines(textarea.value);
+    var fromPos = -1;
+    for (var i = 0; i < entries.length; i++) {
+      if (entries[i].lineIndex === fromLineIndex) {
+        fromPos = i;
+        break;
+      }
+    }
+    if (fromPos < 0) return;
+    var texts = entries.map(function (entry) {
+      return lines[entry.lineIndex];
+    });
+    var moved = texts.splice(fromPos, 1)[0];
+    var insertAt = insertBeforeEntryPos;
+    if (fromPos < insertAt) insertAt -= 1;
+    if (insertAt < 0) insertAt = 0;
+    if (insertAt > texts.length) insertAt = texts.length;
+    if (insertAt === fromPos) return;
+    texts.splice(insertAt, 0, moved);
+    setDayTextareaLines(textarea, texts);
+  }
+
+  function dayGuidedDragHandleHtml(dayId, lineIndex, entryPos) {
+    if (!isGuidedRearrangeEnabled(dayId)) return "";
+    return (
+      '<button type="button" class="day__food-item-drag" data-action="guided-drag-handle" data-day-id="' +
+      escapeAttr(dayId) +
+      '" data-line-index="' +
+      lineIndex +
+      '" data-entry-pos="' +
+      entryPos +
+      '" draggable="true" aria-label="Drag to rearrange" title="Drag to rearrange">' +
+      '<svg class="day__food-item-drag-icon" viewBox="0 0 16 16" aria-hidden="true" focusable="false">' +
+      '<circle cx="5" cy="3.5" r="1.25"/><circle cx="11" cy="3.5" r="1.25"/>' +
+      '<circle cx="5" cy="8" r="1.25"/><circle cx="11" cy="8" r="1.25"/>' +
+      '<circle cx="5" cy="12.5" r="1.25"/><circle cx="11" cy="12.5" r="1.25"/>' +
+      "</svg>" +
+      "</button>"
+    );
+  }
+
+  function dayGuidedFooterHtml(dayId) {
+    var rearrangeOn = isGuidedRearrangeEnabled(dayId);
+    return (
+      '<div class="day__guided-footer">' +
+      '<button type="button" class="day__add-food" data-action="open-add-food" data-day-id="' +
+      escapeAttr(dayId) +
+      '">Add food</button>' +
+      '<div class="day__guided-others">' +
+      '<button type="button" class="day__add-others" data-action="toggle-guided-others" data-day-id="' +
+      escapeAttr(dayId) +
+      '" aria-haspopup="menu" aria-expanded="false">Add Others</button>' +
+      '<div class="day__guided-others-menu" hidden role="menu">' +
+      '<button type="button" role="menuitem" data-action="guided-add-comment" data-comment-prefix="//" data-day-id="' +
+      escapeAttr(dayId) +
+      '">// comment</button>' +
+      '<button type="button" role="menuitem" data-action="guided-add-divider" data-day-id="' +
+      escapeAttr(dayId) +
+      '">--- divider</button>' +
+      "</div>" +
+      "</div>" +
+      '<button type="button" class="day__guided-rearrange' +
+      (rearrangeOn ? " day__guided-rearrange--on" : "") +
+      '" data-action="toggle-guided-rearrange" data-day-id="' +
+      escapeAttr(dayId) +
+      '" aria-pressed="' +
+      (rearrangeOn ? "true" : "false") +
+      '">Rearrange</button>' +
+      "</div>"
+    );
+  }
+
+  function formatGuidedServingsValue(n) {
+    var v = Math.round(Number(n) * 1000) / 1000;
+    if (!isFinite(v) || v <= 0) v = 1;
+    return String(v);
+  }
+
+  function dayGuidedFoodItemHtml(entry, dayId, entryPos, entryCount) {
+    var servings = formatGuidedServingsValue(entry.servings);
+    var rearrange = isGuidedRearrangeEnabled(dayId);
+    return (
+      '<li class="day__food-item day__food-item--food" data-line-index="' +
+      entry.lineIndex +
+      '" data-entry-pos="' +
+      entryPos +
+      '" data-day-id="' +
+      escapeAttr(dayId) +
+      '">' +
+      dayGuidedDragHandleHtml(dayId, entry.lineIndex, entryPos) +
+      '<span class="day__food-item-name" title="' +
+      escapeAttr(entry.name) +
+      '">' +
+      escapeHtml(entry.name) +
+      "</span>" +
+      (rearrange
+        ? ""
+        : '<div class="day__food-item-servings">' +
+          '<input type="number" class="day__food-item-servings-input" min="0.25" step="0.25" value="' +
+          escapeAttr(servings) +
+          '" data-action="guided-serving-input" data-day-id="' +
+          escapeAttr(dayId) +
+          '" data-line-index="' +
+          entry.lineIndex +
+          '" aria-label="Servings for ' +
+          escapeAttr(entry.name) +
+          '">' +
+          "</div>" +
+          '<button type="button" class="day__food-item-remove" data-action="guided-remove-line" data-day-id="' +
+          escapeAttr(dayId) +
+          '" data-line-index="' +
+          entry.lineIndex +
+          '" aria-label="Remove ' +
+          escapeAttr(entry.name) +
+          '">×</button>') +
+      "</li>"
+    );
+  }
+
+  function dayGuidedOtherItemHtml(entry, dayId, entryPos, entryCount) {
+    var rearrange = isGuidedRearrangeEnabled(dayId);
+    if (entry.kind === "divider") {
+      return (
+        '<li class="day__food-item day__food-item--divider" data-line-index="' +
+        entry.lineIndex +
+        '" data-entry-pos="' +
+        entryPos +
+        '" data-day-id="' +
+        escapeAttr(dayId) +
+        '">' +
+        dayGuidedDragHandleHtml(dayId, entry.lineIndex, entryPos) +
+        '<span class="day__food-item-divider" aria-hidden="true">' +
+        '<span class="day__food-item-divider-line"></span>' +
+        "</span>" +
+        '<span class="visually-hidden">Divider</span>' +
+        (rearrange
+          ? ""
+          : '<button type="button" class="day__food-item-remove" data-action="guided-remove-line" data-day-id="' +
+            escapeAttr(dayId) +
+            '" data-line-index="' +
+            entry.lineIndex +
+            '" aria-label="Remove divider">×</button>') +
+        "</li>"
+      );
+    }
+    if (entry.kind === "comment") {
+      var commentLabel = guidedCommentDisplayText(entry.text);
+      return (
+        '<li class="day__food-item day__food-item--comment" data-line-index="' +
+        entry.lineIndex +
+        '" data-entry-pos="' +
+        entryPos +
+        '" data-day-id="' +
+        escapeAttr(dayId) +
+        '">' +
+        dayGuidedDragHandleHtml(dayId, entry.lineIndex, entryPos) +
+        '<span class="day__food-item-name" title="' +
+        escapeAttr(commentLabel || "Comment") +
+        '">' +
+        escapeHtml(commentLabel || "Comment") +
+        "</span>" +
+        (rearrange
+          ? ""
+          : '<button type="button" class="day__food-item-edit" data-action="guided-edit-comment" data-day-id="' +
+            escapeAttr(dayId) +
+            '" data-line-index="' +
+            entry.lineIndex +
+            '" aria-label="Edit comment" title="Edit comment">' +
+            '<svg class="day__food-item-edit-icon" viewBox="0 0 16 16" aria-hidden="true" focusable="false">' +
+            '<path d="M11.7 2.3a1 1 0 0 1 1.4 0l.6.6a1 1 0 0 1 0 1.4L6.4 11.6 3 12.5l.9-3.4 7.8-6.8z" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linejoin="round"/>' +
+            "</svg>" +
+            "</button>" +
+            '<button type="button" class="day__food-item-remove" data-action="guided-remove-line" data-day-id="' +
+            escapeAttr(dayId) +
+            '" data-line-index="' +
+            entry.lineIndex +
+            '" aria-label="Remove comment">×</button>') +
+        "</li>"
+      );
+    }
+    return (
+      '<li class="day__food-item day__food-item--unmatched" data-line-index="' +
+      entry.lineIndex +
+      '" data-entry-pos="' +
+      entryPos +
+      '" data-day-id="' +
+      escapeAttr(dayId) +
+      '">' +
+      dayGuidedDragHandleHtml(dayId, entry.lineIndex, entryPos) +
+      '<span class="day__food-item-name" title="' +
+      escapeAttr(entry.text) +
+      '">' +
+      escapeHtml(entry.text + " (not in definitions)") +
+      "</span>" +
+      (rearrange
+        ? ""
+        : '<button type="button" class="day__food-item-remove" data-action="guided-remove-line" data-day-id="' +
+          escapeAttr(dayId) +
+          '" data-line-index="' +
+          entry.lineIndex +
+          '" aria-label="Remove line">×</button>') +
+      "</li>"
+    );
+  }
+
+  function ensureDayGuidedEl(dayId) {
+    var textarea = document.getElementById(dayId);
+    if (!textarea) return null;
+    var dayEl = textarea.closest(".day");
+    if (!dayEl) return null;
+    var guided = dayEl.querySelector(".day__guided");
+    if (!guided) {
+      guided = document.createElement("div");
+      guided.className = "day__guided";
+      guided.setAttribute("data-day-id", dayId);
+      guided.innerHTML =
+        '<div class="day__guided-scroll">' +
+        '<ul class="day__food-list" role="list"></ul>' +
+        '<p class="day__guided-empty">No foods yet. Tap Add food.</p>' +
+        "</div>" +
+        dayGuidedFooterHtml(dayId);
+      var editor = dayEl.querySelector(".day__editor");
+      if (editor) dayEl.insertBefore(guided, editor);
+      else dayEl.appendChild(guided);
+      var height = document.querySelector(".day__editor");
+      if (height && height.style.height) {
+        guided.style.height = height.style.height;
+      }
+    } else if (
+      !guided.querySelector(".day__add-others") ||
+      !guided.querySelector('[data-action="toggle-guided-rearrange"]')
+    ) {
+      var oldFooter = guided.querySelector(".day__guided-footer");
+      var wrap = document.createElement("div");
+      wrap.innerHTML = dayGuidedFooterHtml(dayId);
+      var nextFooter = wrap.firstChild;
+      if (oldFooter && nextFooter && oldFooter.parentNode) {
+        oldFooter.parentNode.replaceChild(nextFooter, oldFooter);
+      } else if (nextFooter) {
+        guided.appendChild(nextFooter);
+      }
+    }
+    guided.classList.toggle(
+      "day__guided--rearrange",
+      isGuidedRearrangeEnabled(dayId)
+    );
+    return guided;
+  }
+
+  function ensureAllDayGuidedEls() {
+    DAYS.forEach(function (day) {
+      ensureDayGuidedEl(day.id);
+    });
+  }
+
+  function renderDayGuidedList(dayId) {
+    var guided = ensureDayGuidedEl(dayId);
+    if (!guided) return;
+    var listEl = guided.querySelector(".day__food-list");
+    var emptyEl = guided.querySelector(".day__guided-empty");
+    if (!listEl) return;
+    var entries = parseDayGuidedLines(mealTextForDayId(dayId));
+    if (!entries.length) {
+      listEl.innerHTML = "";
+      if (emptyEl) emptyEl.hidden = false;
+      return;
+    }
+    if (emptyEl) emptyEl.hidden = true;
+    var entryCount = entries.length;
+    listEl.innerHTML = entries
+      .map(function (entry, entryPos) {
+        if (entry.kind === "food") {
+          return dayGuidedFoodItemHtml(entry, dayId, entryPos, entryCount);
+        }
+        return dayGuidedOtherItemHtml(entry, dayId, entryPos, entryCount);
+      })
+      .join("");
+  }
+
+  function renderAllDayGuidedLists() {
+    DAYS.forEach(function (day) {
+      renderDayGuidedList(day.id);
+    });
+  }
+
+  function clearGuidedFoodItemActive(exceptEl) {
+    document.querySelectorAll(".day__food-item--active").forEach(function (el) {
+      if (exceptEl && el === exceptEl) return;
+      el.classList.remove("day__food-item--active");
+    });
+  }
+
+  function setGuidedFoodItemActive(itemEl, clickTarget) {
+    if (!itemEl || !itemEl.classList.contains("day__food-item")) return;
+    var dayId = itemEl.getAttribute("data-day-id");
+    if (dayId && isGuidedRearrangeEnabled(dayId)) {
+      clearGuidedFoodItemActive(null);
+      return;
+    }
+    if (itemEl.classList.contains("day__food-item--active")) {
+      if (
+        clickTarget &&
+        clickTarget.closest &&
+        clickTarget.closest(
+          ".day__food-item-servings-input, .day__food-item-edit, .day__food-item-remove, .day__food-item-drag"
+        )
+      ) {
+        return;
+      }
+      itemEl.classList.remove("day__food-item--active");
+      return;
+    }
+    clearGuidedFoodItemActive(itemEl);
+    itemEl.classList.add("day__food-item--active");
+  }
+
+  function showAddFoodError(message) {
+    if (!addFoodErrorEl) return;
+    if (!message) {
+      addFoodErrorEl.hidden = true;
+      addFoodErrorEl.textContent = "";
+      return;
+    }
+    addFoodErrorEl.hidden = false;
+    addFoodErrorEl.textContent = message;
+  }
+
+  function browseFoodDefinitionNames() {
+    return keywordNames()
+      .slice()
+      .sort(function (a, b) {
+        return a.localeCompare(b, undefined, { sensitivity: "base" });
+      })
+      .map(function (name) {
+        return { name: name, score: 0 };
+      });
+  }
+
+  function addFoodSearchMatches(query) {
+    var q = String(query || "").trim();
+    if (!q) return browseFoodDefinitionNames();
+    return foodSuggestMatches(q);
+  }
+
+  function syncAddFoodSelectedUi() {
+    var hasSelection = !!addFoodSelectedName;
+    if (addFoodSelectedEl) addFoodSelectedEl.hidden = !hasSelection;
+    if (addFoodSelectedNameEl) {
+      addFoodSelectedNameEl.textContent = addFoodSelectedName || "";
+    }
+    if (addFoodSubmitBtn) addFoodSubmitBtn.disabled = !hasSelection;
+    if (addFoodResultsEl) {
+      addFoodResultsEl.querySelectorAll(".add-food-modal__result").forEach(function (btn) {
+        btn.classList.toggle(
+          "add-food-modal__result--selected",
+          btn.getAttribute("data-food-name") === addFoodSelectedName
+        );
+      });
+    }
+  }
+
+  function selectAddFoodName(name) {
+    addFoodSelectedName = String(name || "").trim() || null;
+    if (addFoodServingsEl && !addFoodServingsEl.value) {
+      addFoodServingsEl.value = "1";
+    }
+    showAddFoodError("");
+    syncAddFoodSelectedUi();
+  }
+
+  function syncAddFoodPaginationUi(total, pageCount) {
+    if (!addFoodPaginationEl) return;
+    if (total <= ADD_FOOD_PAGE_SIZE) {
+      addFoodPaginationEl.hidden = true;
+      return;
+    }
+    addFoodPaginationEl.hidden = false;
+    var page = Math.max(0, Math.min(addFoodResultsPage, pageCount - 1));
+    addFoodResultsPage = page;
+    var start = page * ADD_FOOD_PAGE_SIZE + 1;
+    var end = Math.min(total, (page + 1) * ADD_FOOD_PAGE_SIZE);
+    if (addFoodPageStatusEl) {
+      addFoodPageStatusEl.textContent =
+        start + "–" + end + " of " + total + " · Page " + (page + 1) + " / " + pageCount;
+    }
+    if (addFoodPagePrevBtn) addFoodPagePrevBtn.disabled = page <= 0;
+    if (addFoodPageNextBtn) addFoodPageNextBtn.disabled = page >= pageCount - 1;
+  }
+
+  function stepAddFoodResultsPage(delta) {
+    addFoodResultsPage += delta;
+    renderAddFoodResults();
+    if (addFoodResultsEl) addFoodResultsEl.scrollTop = 0;
+  }
+
+  function renderAddFoodResults() {
+    if (!addFoodResultsEl) return;
+    var query = addFoodSearchEl ? addFoodSearchEl.value : "";
+    var matches = addFoodSearchMatches(query);
+    var total = matches.length;
+    if (!total) {
+      addFoodResultsEl.innerHTML = "";
+      if (addFoodEmptyEl) addFoodEmptyEl.hidden = false;
+      syncAddFoodPaginationUi(0, 0);
+      return;
+    }
+    if (addFoodEmptyEl) addFoodEmptyEl.hidden = true;
+    var pageCount = Math.max(1, Math.ceil(total / ADD_FOOD_PAGE_SIZE));
+    if (addFoodResultsPage >= pageCount) addFoodResultsPage = pageCount - 1;
+    if (addFoodResultsPage < 0) addFoodResultsPage = 0;
+    var start = addFoodResultsPage * ADD_FOOD_PAGE_SIZE;
+    var pageMatches = matches.slice(start, start + ADD_FOOD_PAGE_SIZE);
+    addFoodResultsEl.innerHTML = pageMatches
+      .map(function (match) {
+        var name = match.name;
+        var range = foodSuggestHighlightRange(name, query);
+        var labelHtml;
+        if (range && range.len > 0) {
+          labelHtml =
+            escapeHtml(name.slice(0, range.start)) +
+            '<span class="day__suggest-match">' +
+            escapeHtml(name.slice(range.start, range.start + range.len)) +
+            "</span>" +
+            escapeHtml(name.slice(range.start + range.len));
+        } else {
+          labelHtml = escapeHtml(name);
+        }
+        return (
+          '<li role="option">' +
+          '<button type="button" class="add-food-modal__result" data-action="select-add-food" data-food-name="' +
+          escapeAttr(name) +
+          '" title="' +
+          escapeAttr(name) +
+          '">' +
+          labelHtml +
+          "</button>" +
+          "</li>"
+        );
+      })
+      .join("");
+    syncAddFoodPaginationUi(total, pageCount);
+    syncAddFoodSelectedUi();
+  }
+
+  function closeAddFoodModal() {
+    if (!addFoodModalEl) return;
+    addFoodModalEl.hidden = true;
+    addFoodPendingDayId = null;
+    addFoodSelectedName = null;
+    addFoodResultsPage = 0;
+    showAddFoodError("");
+    if (addFoodSearchEl) addFoodSearchEl.value = "";
+    if (addFoodServingsEl) addFoodServingsEl.value = "1";
+    if (addFoodResultsEl) addFoodResultsEl.innerHTML = "";
+    if (addFoodEmptyEl) addFoodEmptyEl.hidden = true;
+    if (addFoodPaginationEl) addFoodPaginationEl.hidden = true;
+    if (addFoodSelectedEl) addFoodSelectedEl.hidden = true;
+    if (addFoodSubmitBtn) addFoodSubmitBtn.disabled = true;
+    updateBodyModalOpen();
+  }
+
+  function openAddFoodModal(dayId) {
+    if (!addFoodModalEl || !dayId) return;
+    if (!keywords.length) {
+      window.alert(
+        "No food definitions yet. Import sample foods or add definitions first."
+      );
+      return;
+    }
+    closeAllDayCopyMenus();
+    addFoodPendingDayId = dayId;
+    addFoodSelectedName = null;
+    addFoodResultsPage = 0;
+    showAddFoodError("");
+    if (addFoodSearchEl) addFoodSearchEl.value = "";
+    if (addFoodServingsEl) addFoodServingsEl.value = "1";
+    var day = dayById(dayId);
+    var dateLabel = dateLabelForDayId(dayId);
+    if (addFoodModalTitleEl) {
+      addFoodModalTitleEl.textContent =
+        "Add food" + (day ? " — " + day.label : "");
+    }
+    if (addFoodModalHintEl) {
+      addFoodModalHintEl.textContent = dateLabel
+        ? "Pick a food from your definitions for " + dateLabel
+        : "Pick a food from your definitions";
+    }
+    addFoodModalEl.hidden = false;
+    updateBodyModalOpen();
+    renderAddFoodResults();
+    syncAddFoodSelectedUi();
+    window.setTimeout(function () {
+      if (addFoodSearchEl) addFoodSearchEl.focus();
+    }, 0);
+  }
+
+  function readAddFoodServings() {
+    var n = addFoodServingsEl ? parseFloat(addFoodServingsEl.value) : 1;
+    if (!isFinite(n) || n <= 0) return 1;
+    return Math.round(n * 1000) / 1000;
+  }
+
+  function runAddFoodSubmit() {
+    if (!addFoodPendingDayId) return;
+    if (!addFoodSelectedName) {
+      showAddFoodError("Select a food from the list.");
+      return;
+    }
+    if (!lineMatchesFoodDefinition(addFoodSelectedName)) {
+      showAddFoodError("That food is not in your definitions.");
+      return;
+    }
+    appendDayFoodLine(
+      addFoodPendingDayId,
+      addFoodSelectedName,
+      readAddFoodServings()
+    );
+    closeAddFoodModal();
+  }
+
+  function setGuidedServingsFromInput(dayId, lineIndex, rawValue) {
+    var textarea = document.getElementById(dayId);
+    if (!textarea) return;
+    var lines = dayTextareaLines(textarea);
+    if (lineIndex < 0 || lineIndex >= lines.length) return;
+    var entry = parseDayGuidedLine(lines[lineIndex], lineIndex);
+    if (entry.kind !== "food") return;
+    var n = parseFloat(rawValue);
+    if (!isFinite(n) || n <= 0) n = 1;
+    rewriteDayGuidedLine(
+      dayId,
+      lineIndex,
+      formatDayFoodLine(entry.name, n)
+    );
+  }
+
   function applyDayNoteChange(textarea) {
+    if (textarea && textarea.id) syncDayMealFromEditor(textarea.id);
     updateDayHighlights(textarea);
     renderDashboard();
-    saveDayNotes();
+    saveDayMealsState();
     updateDayClearButtons();
     updateDayFoodNotesUi();
     updateWeekUnmatchedLines();
+    if (textarea && textarea.id) renderDayGuidedList(textarea.id);
   }
 
   function confirmClearDay(dayId) {
@@ -24520,6 +25851,10 @@
       closeFavoriteEditModal();
       return;
     }
+    if (addFoodModalEl && !addFoodModalEl.hidden) {
+      closeAddFoodModal();
+      return;
+    }
     if (isFavoritesSidebarOpen()) {
       closeFavoritesSidebar();
       return;
@@ -24809,7 +26144,112 @@
 
   if (weekGridEl) {
     bindDayEditorResize();
+    weekGridEl.addEventListener("pointerover", function (e) {
+      if (isDaysCarouselActive()) return;
+      var dayEl = e.target.closest(".day");
+      if (!dayEl || !weekGridEl.contains(dayEl)) return;
+      var related = e.relatedTarget;
+      if (related && dayEl.contains(related)) return;
+      focusWeekDayColumn(dayEl);
+    });
     weekGridEl.addEventListener("click", function (e) {
+      var guidedFoodItem = e.target.closest(".day__food-item");
+      if (guidedFoodItem && weekGridEl.contains(guidedFoodItem)) {
+        setGuidedFoodItemActive(guidedFoodItem, e.target);
+      } else {
+        clearGuidedFoodItemActive(null);
+      }
+      var dayEl = e.target.closest(".day");
+      if (dayEl && weekGridEl.contains(dayEl) && !isDaysCarouselActive()) {
+        focusWeekDayColumn(dayEl);
+      }
+      var openAddFoodBtn = e.target.closest('[data-action="open-add-food"]');
+      if (openAddFoodBtn) {
+        e.preventDefault();
+        closeAllDayCopyMenus();
+        closeAllGuidedOthersMenus();
+        var openDayId = openAddFoodBtn.getAttribute("data-day-id");
+        if (openDayId) openAddFoodModal(openDayId);
+        return;
+      }
+      var toggleOthersBtn = e.target.closest(
+        '[data-action="toggle-guided-others"]'
+      );
+      if (toggleOthersBtn) {
+        e.preventDefault();
+        e.stopPropagation();
+        closeAllDayCopyMenus();
+        var othersDayId = toggleOthersBtn.getAttribute("data-day-id");
+        if (othersDayId) toggleGuidedOthersMenu(othersDayId);
+        return;
+      }
+      var toggleRearrangeBtn = e.target.closest(
+        '[data-action="toggle-guided-rearrange"]'
+      );
+      if (toggleRearrangeBtn) {
+        e.preventDefault();
+        closeAllDayCopyMenus();
+        closeAllGuidedOthersMenus();
+        var rearrangeDayId = toggleRearrangeBtn.getAttribute("data-day-id");
+        if (rearrangeDayId) toggleGuidedRearrange(rearrangeDayId);
+        return;
+      }
+      var guidedCommentBtn = e.target.closest(
+        '[data-action="guided-add-comment"]'
+      );
+      if (guidedCommentBtn) {
+        e.preventDefault();
+        closeAllDayCopyMenus();
+        closeAllGuidedOthersMenus();
+        var commentDayId = guidedCommentBtn.getAttribute("data-day-id");
+        var commentPrefix =
+          guidedCommentBtn.getAttribute("data-comment-prefix") || "//";
+        if (commentDayId) addGuidedCommentLine(commentDayId, commentPrefix);
+        return;
+      }
+      var guidedDividerBtn = e.target.closest(
+        '[data-action="guided-add-divider"]'
+      );
+      if (guidedDividerBtn) {
+        e.preventDefault();
+        closeAllDayCopyMenus();
+        closeAllGuidedOthersMenus();
+        var dividerDayId = guidedDividerBtn.getAttribute("data-day-id");
+        if (dividerDayId) addGuidedDividerLine(dividerDayId);
+        return;
+      }
+      var guidedEditCommentBtn = e.target.closest(
+        '[data-action="guided-edit-comment"]'
+      );
+      if (guidedEditCommentBtn) {
+        e.preventDefault();
+        var editDayId = guidedEditCommentBtn.getAttribute("data-day-id");
+        var editLineIndex = parseInt(
+          guidedEditCommentBtn.getAttribute("data-line-index"),
+          10
+        );
+        if (editDayId && !isNaN(editLineIndex)) {
+          editGuidedCommentLine(editDayId, editLineIndex);
+        }
+        return;
+      }
+      var guidedRemoveBtn = e.target.closest('[data-action="guided-remove-line"]');
+      if (guidedRemoveBtn) {
+        e.preventDefault();
+        var removeDayId = guidedRemoveBtn.getAttribute("data-day-id");
+        var removeLineIndex = parseInt(
+          guidedRemoveBtn.getAttribute("data-line-index"),
+          10
+        );
+        if (
+          removeDayId &&
+          !isNaN(removeLineIndex) &&
+          confirmRemoveGuidedLine(removeDayId, removeLineIndex)
+        ) {
+          removeDayGuidedLine(removeDayId, removeLineIndex);
+        }
+        return;
+      }
       var favoriteBtn = e.target.closest('[data-action="favorite-day"]');
       if (favoriteBtn) {
         if (favoriteBtn.disabled) return;
@@ -24842,6 +26282,133 @@
           handleDayCopyAction(action, copyDayId);
         }
       }
+    });
+    weekGridEl.addEventListener("dragstart", function (e) {
+      var handle = e.target.closest('[data-action="guided-drag-handle"]');
+      if (!handle) return;
+      var item = handle.closest(".day__food-item");
+      var dayId = handle.getAttribute("data-day-id");
+      var lineIndex = parseInt(handle.getAttribute("data-line-index"), 10);
+      var entryPos = parseInt(handle.getAttribute("data-entry-pos"), 10);
+      if (!item || !dayId || isNaN(lineIndex) || isNaN(entryPos)) {
+        e.preventDefault();
+        return;
+      }
+      if (!isGuidedRearrangeEnabled(dayId)) {
+        e.preventDefault();
+        return;
+      }
+      guidedDragState = {
+        dayId: dayId,
+        fromLineIndex: lineIndex,
+        fromPos: entryPos,
+        itemEl: item,
+        listEl: item.closest(".day__food-list"),
+      };
+      item.classList.add("day__food-item--dragging");
+      if (e.dataTransfer) {
+        e.dataTransfer.effectAllowed = "move";
+        e.dataTransfer.setData(
+          "text/plain",
+          dayId + ":" + lineIndex + ":" + entryPos
+        );
+        try {
+          e.dataTransfer.setDragImage(item, 12, 12);
+        } catch (err) {
+          /* ignore */
+        }
+      }
+    });
+    weekGridEl.addEventListener("dragend", function () {
+      endGuidedDrag();
+    });
+    weekGridEl.addEventListener("dragover", function (e) {
+      if (!guidedDragState) return;
+      var listEl = e.target.closest(".day__food-list");
+      var item = e.target.closest(".day__food-item");
+      var guided = e.target.closest(".day__guided");
+      if (!guided || guided.getAttribute("data-day-id") !== guidedDragState.dayId) {
+        return;
+      }
+      e.preventDefault();
+      if (e.dataTransfer) e.dataTransfer.dropEffect = "move";
+      var activeList =
+        listEl ||
+        (guided && guided.querySelector(".day__food-list")) ||
+        guidedDragState.listEl;
+      if (!activeList) return;
+      clearGuidedDropIndicators(activeList);
+      if (item && activeList.contains(item) && item !== guidedDragState.itemEl) {
+        var rect = item.getBoundingClientRect();
+        var before = e.clientY < rect.top + rect.height / 2;
+        item.classList.add(
+          before ? "day__food-item--drop-before" : "day__food-item--drop-after"
+        );
+        guidedDragState.dropBeforePos = before
+          ? parseInt(item.getAttribute("data-entry-pos"), 10)
+          : parseInt(item.getAttribute("data-entry-pos"), 10) + 1;
+      } else if (!item || item === guidedDragState.itemEl) {
+        // Empty area / over self / end of list
+        var items = activeList.querySelectorAll(".day__food-item");
+        if (!items.length) {
+          activeList.classList.add("day__food-list--drop-end");
+          guidedDragState.dropBeforePos = 0;
+          return;
+        }
+        var last = items[items.length - 1];
+        var lastRect = last.getBoundingClientRect();
+        if (e.clientY >= lastRect.bottom - 4 || item === guidedDragState.itemEl) {
+          if (e.clientY >= lastRect.top + lastRect.height / 2) {
+            activeList.classList.add("day__food-list--drop-end");
+            guidedDragState.dropBeforePos = items.length;
+          } else if (item === guidedDragState.itemEl) {
+            var selfPos = guidedDragState.fromPos;
+            var selfRect = guidedDragState.itemEl.getBoundingClientRect();
+            guidedDragState.dropBeforePos =
+              e.clientY < selfRect.top + selfRect.height / 2
+                ? selfPos
+                : selfPos + 1;
+          }
+        }
+      }
+    });
+    weekGridEl.addEventListener("dragleave", function (e) {
+      if (!guidedDragState) return;
+      var listEl = e.target.closest(".day__food-list");
+      if (!listEl) return;
+      var related = e.relatedTarget;
+      if (related && listEl.contains(related)) return;
+      clearGuidedDropIndicators(listEl);
+    });
+    weekGridEl.addEventListener("drop", function (e) {
+      if (!guidedDragState) return;
+      e.preventDefault();
+      var dayId = guidedDragState.dayId;
+      var fromLineIndex = guidedDragState.fromLineIndex;
+      var insertBefore =
+        typeof guidedDragState.dropBeforePos === "number"
+          ? guidedDragState.dropBeforePos
+          : guidedDragState.fromPos;
+      endGuidedDrag();
+      reorderGuidedEntry(dayId, fromLineIndex, insertBefore);
+    });
+    weekGridEl.addEventListener("change", function (e) {
+      var servingsInput = e.target.closest(
+        '[data-action="guided-serving-input"]'
+      );
+      if (!servingsInput) return;
+      var dayId = servingsInput.getAttribute("data-day-id");
+      var lineIndex = parseInt(servingsInput.getAttribute("data-line-index"), 10);
+      if (!dayId || isNaN(lineIndex)) return;
+      setGuidedServingsFromInput(dayId, lineIndex, servingsInput.value);
+    });
+    weekGridEl.addEventListener("keydown", function (e) {
+      var servingsInput = e.target.closest(
+        '[data-action="guided-serving-input"]'
+      );
+      if (!servingsInput || e.key !== "Enter") return;
+      e.preventDefault();
+      servingsInput.blur();
     });
     weekGridEl.addEventListener(
       "scroll",
@@ -24955,6 +26522,9 @@
 
   document.addEventListener("click", function (e) {
     if (!e.target.closest(".day__copy")) closeAllDayCopyMenus();
+    if (!e.target.closest(".day__guided-others")) closeAllGuidedOthersMenus();
+    if (!e.target.closest(".day__food-item")) clearGuidedFoodItemActive(null);
+    if (!e.target.closest(".week__grid .day")) clearWeekDayColumnFocus({ snap: true });
   });
 
   if (copyDateApplyBtn) {
@@ -25112,6 +26682,11 @@
 
   if (importSampleMealsBtn) {
     importSampleMealsBtn.addEventListener("click", importSampleMeals);
+  }
+  if (findLostMealsBtn) {
+    findLostMealsBtn.addEventListener("click", function () {
+      runFindLostMeals({ silentIfNone: false });
+    });
   }
 
   if (importAllMealsApplyBtn) {
@@ -26765,6 +28340,67 @@
     });
   }
 
+  if (dayEntryAdvancedToggleBtn) {
+    dayEntryAdvancedToggleBtn.addEventListener("click", function () {
+      setDayEntryAdvancedEnabled(!dayEntryAdvancedEnabled);
+    });
+  }
+
+  if (addFoodSubmitBtn) {
+    addFoodSubmitBtn.addEventListener("click", runAddFoodSubmit);
+  }
+  if (addFoodCancelBtn) {
+    addFoodCancelBtn.addEventListener("click", closeAddFoodModal);
+  }
+  if (addFoodModalEl) {
+    addFoodModalEl.addEventListener("click", function (e) {
+      if (e.target.closest('[data-action="close-add-food-modal"]')) {
+        closeAddFoodModal();
+        return;
+      }
+      var pickBtn = e.target.closest('[data-action="select-add-food"]');
+      if (pickBtn) {
+        selectAddFoodName(pickBtn.getAttribute("data-food-name"));
+      }
+    });
+  }
+  if (addFoodSearchEl) {
+    addFoodSearchEl.addEventListener("input", function () {
+      addFoodSelectedName = null;
+      addFoodResultsPage = 0;
+      syncAddFoodSelectedUi();
+      renderAddFoodResults();
+      showAddFoodError("");
+    });
+    addFoodSearchEl.addEventListener("keydown", function (e) {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        var first = addFoodResultsEl
+          ? addFoodResultsEl.querySelector(".add-food-modal__result")
+          : null;
+        if (first) selectAddFoodName(first.getAttribute("data-food-name"));
+      }
+    });
+  }
+  if (addFoodPagePrevBtn) {
+    addFoodPagePrevBtn.addEventListener("click", function () {
+      stepAddFoodResultsPage(-1);
+    });
+  }
+  if (addFoodPageNextBtn) {
+    addFoodPageNextBtn.addEventListener("click", function () {
+      stepAddFoodResultsPage(1);
+    });
+  }
+  if (addFoodServingsEl) {
+    addFoodServingsEl.addEventListener("keydown", function (e) {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        runAddFoodSubmit();
+      }
+    });
+  }
+
   if (dayUnmatchedLinesEl) {
     dayUnmatchedLinesEl.addEventListener("mousedown", function (e) {
       var btn = e.target.closest("[data-unmatched-action]");
@@ -26990,7 +28626,7 @@
     var weekGrid = document.querySelector(".week__grid");
     showStarterGuideStep(
       "meals",
-      "Enter what you ate on Mon\u2013Wed (and the rest of the week). Type names that match your food definitions \u2014 suggestions appear as you type.",
+      "Log meals with Add food on each day — search your food definitions and pick servings. Turn on Advanced if you prefer free-text entry.",
       weekGrid
     );
   }
