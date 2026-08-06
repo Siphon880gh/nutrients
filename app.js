@@ -264,6 +264,7 @@
   );
   var microTipFatSolubleEl = document.getElementById("micro-tip-fat-soluble");
   var microTipBVitaminsEl = document.getElementById("micro-tip-b-vitamins");
+  var microTipOmegaEl = document.getElementById("micro-tip-omega");
   var caffeineTipModalEl = document.getElementById("caffeine-tip-modal");
   var caffeineTipModalDoneBtn = document.getElementById("caffeine-tip-modal-done");
   var fatsCholesterolTipModalEl = document.getElementById("fats-cholesterol-tip-modal");
@@ -837,6 +838,14 @@
       text: "Preform vitamin A (retinol): Institute of Medicine (2001) Dietary Reference Intakes set the Tolerable Upper Intake Level (UL) for adults at 3,000 mcg/day of preformed vitamin A (retinol and retinyl esters) from food plus supplements. The UL does not apply to provitamin A carotenoids such as beta-carotene. NIH ODS Vitamin A fact sheet summarizes the same adult UL.",
       url: "https://ods.od.nih.gov/factsheets/VitaminA-HealthProfessional/",
     },
+    omega3: {
+      text: "Omega-3 (total): Institute of Medicine Adequate Intake for alpha-linolenic acid (ALA) is about 1.6 g/day for adult men and 1.1 g/day for adult women. This app uses those sex-specific AIs as the % target denominator for total omega-3. EPA and DHA are logged as forms when known and are not scored separately.",
+      url: "https://ods.od.nih.gov/factsheets/Omega3FattyAcids-HealthProfessional/",
+    },
+    omega6: {
+      text: "Omega-6 (total): Institute of Medicine Adequate Intake for linoleic acid is about 17 g/day for adult men and 12 g/day for adult women (ages 19–50). This app scores omega-6 as a limiting nutrient—lower % of that AI is preferable once essential needs are met, because refined seed oils often push intake well above the AI.",
+      url: "https://ods.od.nih.gov/factsheets/Omega3FattyAcids-HealthProfessional/",
+    },
   };
 
   var LONGEVITY_DERIVED_DEFS = {
@@ -1121,6 +1130,10 @@
     },
     { key: "vitaminD", label: "Vitamin D", unit: "mcg", code: "d" },
     { key: "vitaminE", label: "Vitamin E", unit: "mg", code: "e" },
+    { key: "omega3", label: "Omega-3 (total)", unit: "g", code: "o3" },
+    { key: "epa", label: "Omega-3 (EPA)", unit: "g", code: "epa" },
+    { key: "dha", label: "Omega-3 (DHA)", unit: "g", code: "dha" },
+    { key: "omega6", label: "Omega-6 (total)", unit: "g", code: "o6" },
     { key: "vitaminK", label: "Vitamin K", unit: "mcg", code: "vk" },
     { key: "vitaminK1", label: "Vitamin K1", unit: "mcg", code: "k1" },
     { key: "vitaminK2", label: "Vitamin K2", unit: "mcg", code: "k2" },
@@ -2868,9 +2881,10 @@
     );
   }
 
-  /** Micro keys where high % DV is undesirable on the longevity panel */
+  /** Micro keys where high % DV is undesirable on the longevity / micro panels */
   var LONGEVITY_MICRO_LIMITING_KEYS = {
     sodium: true,
+    omega6: true,
   };
 
   /**
@@ -2952,8 +2966,8 @@
     },
     { key: "omega9", label: "Omega-9", unit: "g", code: "o9", group: "omega" },
     { key: "ala", label: "ALA", unit: "g", code: "ala", group: "omega" },
-    { key: "epa", label: "EPA", unit: "g", code: "epa", group: "omega" },
-    { key: "dha", label: "DHA", unit: "g", code: "dha", group: "omega" },
+    { key: "epa", label: "Omega-3 (EPA)", unit: "g", code: "epa", group: "omega" },
+    { key: "dha", label: "Omega-3 (DHA)", unit: "g", code: "dha", group: "omega" },
     {
       key: "linoleicAcid",
       label: "Linoleic acid",
@@ -3212,7 +3226,7 @@
     return escapeHtml(text).replace(/"/g, "&quot;");
   }
 
-  /** Vitamin A / K breakdown forms — shown less dominant than parent totals. */
+  /** Vitamin A / K / Omega-3 breakdown forms — shown less dominant than parent totals. */
   var MICRO_FORM_SUBTYPE_KEYS = {
     vitaminARetinol: true,
     vitaminABetaCarotene: true,
@@ -3220,6 +3234,8 @@
     vitaminK2: true,
     vitaminK2MK4: true,
     vitaminK2MK7: true,
+    epa: true,
+    dha: true,
   };
 
   function isMicroFormSubtypeKey(key) {
@@ -3956,6 +3972,18 @@
     );
     lines.push(
       "  - micros.vitaminE: sunflower seeds, almonds, spinach, avocado, olive oil (mg)"
+    );
+    lines.push(
+      "  - micros.omega3: total omega-3 fats including ALA+EPA+DHA when labeled (g)"
+    );
+    lines.push(
+      "  - micros.epa: fatty fish, fish oil, algae oil (g EPA — omit if unknown; form of omega-3)"
+    );
+    lines.push(
+      "  - micros.dha: fatty fish, fish oil, algae oil (g DHA — omit if unknown; form of omega-3)"
+    );
+    lines.push(
+      "  - micros.omega6: seed oils, nuts, poultry fat when known (g; limiting — prefer not to oversupply refined oils)"
     );
     lines.push(
       "  - micros.vitaminA: total vitamin A as mcg RAE (retinol + carotenoid contribution — keep alongside retinol/β-carotene when breakdown is known)"
@@ -5169,6 +5197,10 @@
       html += vitaminAKeyDifferencesHtml();
     }
 
+    if (key === "epa" || key === "dha" || key === "omega3") {
+      html += omega3KeyDifferencesHtml();
+    }
+
     if (def.tooHigh.length) {
       html +=
         '<section class="micro-def__section">' +
@@ -5219,6 +5251,17 @@
       '<p class="micro-def__p"><strong>Preform vitamin A (retinol):</strong> Active vitamin A from animal foods and fortified products (liver, eggs, dairy, some fish). Directly supports vision (rhodopsin), gene expression, immune barriers, reproduction, and epithelial repair. Excess preformed A is stored and can be toxic—IOM adult UL is 3,000 mcg/day from food plus supplements.</p>' +
       '<p class="micro-def__p"><strong>Proform vitamin A (β-carotene):</strong> Plant carotenoid that acts as an antioxidant (quenches singlet oxygen) and converts to retinol only as needed. Stored as carotenoid pigment, not as free retinol, so food β-carotene does not share the retinol UL. Smokers should avoid high-dose β-carotene supplements (ATBC / CARET trials).</p>' +
       '<p class="micro-def__p"><strong>How totals relate (IOM RAE):</strong> There is no recommended retinol∶β-carotene ratio and no separate FDA Daily Value for either form. Total vitamin A uses retinol activity equivalents: 1 mcg RAE = 1 mcg retinol = 12 mcg dietary β-carotene (or 2 mcg supplemental β-carotene). Keep total <code>vitaminA</code> in mcg RAE; log forms when you know the breakdown.</p>' +
+      "</section>"
+    );
+  }
+
+  function omega3KeyDifferencesHtml() {
+    return (
+      '<section class="micro-def__section">' +
+      '<h4 class="micro-def__heading">The Key Differences</h4>' +
+      '<p class="micro-def__p"><strong>Omega-3 (EPA):</strong> Eicosapentaenoic acid from fatty fish and algae. Feeds resolvins and other specialized pro-resolving mediators that calm inflammation; often emphasized for heart health, triglycerides, and mood.</p>' +
+      '<p class="micro-def__p"><strong>Omega-3 (DHA):</strong> Docosahexaenoic acid concentrated in brain and retina membranes. Supports cognitive structure, eye health, and membrane fluidity; often emphasized when brain and vision are the priority.</p>' +
+      '<p class="micro-def__p"><strong>EPA∶DHA ratio:</strong> A 2:1 or 3:1 ratio (higher EPA) is best for heart health, inflammation, and mood, while a 1:2 or 1:1 ratio (higher DHA) supports brain and eye health. Total <code>omega3</code> also includes plant ALA; log EPA and DHA when you know the marine/algae breakdown. Neither form has a separate FDA Daily Value.</p>' +
       "</section>"
     );
   }
@@ -5420,6 +5463,10 @@
 
     if (key === "vitaminARetinol" || key === "vitaminABetaCarotene") {
       html += vitaminAKeyDifferencesHtml();
+    }
+
+    if (key === "epa" || key === "dha" || key === "omega3") {
+      html += omega3KeyDifferencesHtml();
     }
 
     if (!limiting && def.tooHigh.length) {
@@ -11462,6 +11509,8 @@
     vitaminK2MK4: true,
     vitaminK2MK7: true,
     cysteine: true,
+    epa: true,
+    dha: true,
   };
 
   function studyMinMicroRef(key) {
@@ -13294,6 +13343,9 @@
     if (microTipBVitaminsEl) {
       microTipBVitaminsEl.hidden =
         active && microConditionFocus !== "bVitamins";
+    }
+    if (microTipOmegaEl) {
+      microTipOmegaEl.hidden = active;
     }
     if (microTipCommonDeficienciesEl) {
       microTipCommonDeficienciesEl.hidden =

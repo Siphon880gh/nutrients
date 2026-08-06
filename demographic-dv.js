@@ -62,6 +62,8 @@
       choline: 550,
       molybdenum: 45,
       chloride: 2300,
+      omega3: 1.6,
+      omega6: 17,
     },
     female: {
       fiber: 25,
@@ -93,6 +95,8 @@
       choline: 425,
       molybdenum: 45,
       chloride: 2300,
+      omega3: 1.1,
+      omega6: 12,
     },
   };
 

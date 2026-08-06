@@ -53,7 +53,7 @@ Pick a realistic, easy-to-measure portion and state its unit (oz, g, cup, tbsp, 
 
 | Key (`mg`)                                                                                                                                                 | Key (`mcg`)                                                                                     | Key (`g`)                                     |
 | ---------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- | --------------------------------------------- |
-| `sodium`, `potassium`, `calcium`, `iron`, `magnesium`, `zinc`, `manganese`, `vitaminE`, `thiamin`, `riboflavin`, `niacin`, `pantothenicAcid`, `vitaminB6`, `vitaminC`, `phosphorus`, `choline`, `chloride`, `quercetin` | `copper`, `selenium`, `chromium`, `iodine`, `vitaminA`, `vitaminD`, `vitaminK`, `vitaminK1`, `vitaminK2`, `vitaminK2MK4`, `vitaminK2MK7`, `biotin`, `folate`, `vitaminB12`, `molybdenum` | `fiber`, `solubleFiber`, `insolubleFiber`     |
+| `sodium`, `potassium`, `calcium`, `iron`, `magnesium`, `zinc`, `manganese`, `vitaminE`, `thiamin`, `riboflavin`, `niacin`, `pantothenicAcid`, `vitaminB6`, `vitaminC`, `phosphorus`, `choline`, `chloride`, `quercetin`, `omega3`, `epa`, `dha`, `omega6` | `copper`, `selenium`, `chromium`, `iodine`, `vitaminA`, `vitaminD`, `vitaminK`, `vitaminK1`, `vitaminK2`, `vitaminK2MK4`, `vitaminK2MK7`, `biotin`, `folate`, `vitaminB12`, `molybdenum` | `fiber`, `solubleFiber`, `insolubleFiber`     |
 
 Amino acids (all in **mg**): `histidine`, `isoleucine`, `leucine`, `lysine`, `methionine`, `phenylalanine`, `threonine`, `tryptophan`, `valine`, `arginine`, `cysteine`, `glutamine`, `glycine`, `proline`, `tyrosine`, `taurine`.
 
@@ -61,7 +61,7 @@ Amino acids (all in **mg**): `histidine`, `isoleucine`, `leucine`, `lysine`, `me
 
 ### `longevity` — units per key
 
-- Grams (`g`): `saturatedFat`, `monounsaturatedFat`, `polyunsaturatedFat`, `transFat`, `plantSterols`, `omega3`, `omega6`, `omega9`, `ala`, `epa`, `dha`, `linoleicAcid`, `arachidonicAcid`, `oleicAcid`, `palmitoleicAcid`, `methionine`
+- Grams (`g`): `saturatedFat`, `monounsaturatedFat`, `polyunsaturatedFat`, `transFat`, `plantSterols`, `omega9`, `ala`, `linoleicAcid`, `arachidonicAcid`, `oleicAcid`, `palmitoleicAcid`, `methionine` (prefer `omega3` / `omega6` / `epa` / `dha` numeric amounts in `micros` with `true` here)
 - Milligrams (`mg`): `cholesterol`, `polyphenols`, `nitrate`, `flavonoids`, `carotenoids`, `lutein`, `curcumin`, `resveratrol`, `coq10`, `nr`, `nmn`, `sulforaphane`, `phosphorus`, `choline`, `carnitine`, `betaine`, `taurine`, `quercetin` (prefer numeric amount in `micros` with `quercetin: true` here)
 - Micrograms (`mcg`): `selenium`, `copper`
 
@@ -76,9 +76,11 @@ Amino acids (all in **mg**): `histidine`, `isoleucine`, `leucine`, `lysine`, `me
 
 ## 4. Shared keys: number in `micros`, `true` in `longevity`
 
-A few nutrients appear in **both** panels: `vitaminE`, `vitaminK`, `vitaminK1`, `vitaminK2`, `vitaminK2MK4`, `vitaminK2MK7`, `selenium`, `copper`, `methionine`, `phosphorus`, `choline`, `taurine`, `quercetin`.
+A few nutrients appear in **both** panels: `vitaminE`, `vitaminK`, `vitaminK1`, `vitaminK2`, `vitaminK2MK4`, `vitaminK2MK7`, `selenium`, `copper`, `methionine`, `phosphorus`, `choline`, `taurine`, `quercetin`, `omega3`, `omega6`, `epa`, `dha`.
 
 Rule: put the **numeric amount in `micros`**, and set the same key in `longevity` to `true`. The app reads the number from `micros` and uses `true` as a "look it up over there" flag.
+
+**Omega-3 breakdown:** keep total `omega3` in `micros` (and `omega3: true` in `longevity`) for the essential fatty acid AI. When you know the marine/algae split, also add `epa` and/or `dha` in `micros` (g) with matching `true` flags in `longevity`. Labels show as Omega-3 (EPA) and Omega-3 (DHA). `omega6` is limiting (prefer not to oversupply refined seed oils). Omit EPA/DHA when the breakdown is unknown.
 
 **Vitamin K breakdown:** keep total `vitaminK` in `micros` (and `vitaminK: true` in `longevity`) for the standard DV lens. When you know the form split, also add `vitaminK1` and/or `vitaminK2` in `micros` (mcg) with `vitaminK1: true` and/or `vitaminK2: true` in `longevity`. When you know the K2 menaquinone type, also add `vitaminK2MK4` (animal foods — egg yolks, meat, liver, dairy) and/or `vitaminK2MK7` (fermented foods — natto, aged cheese) with matching `true` flags in `longevity`. K1+K2 and MK-4+MK-7 do not need to equal total K — they are tracked under different lenses. Omit sub-forms when the breakdown is unknown.
 

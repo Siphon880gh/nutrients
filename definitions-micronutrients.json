@@ -1240,6 +1240,121 @@
       "Works with vitamin C (which regenerates spent vitamin E) to maintain antioxidant defense in eye tissues; nuts, seeds, and avocado are practical food sources."
     ]
   },
+  "omega3": {
+    "dashboardTracking": [
+      "Track total omega-3 (ALA + EPA + DHA) in grams when labels or databases give a combined figure.",
+      "When you know the marine/algae split, also log Omega-3 (EPA) and Omega-3 (DHA); those rows are shown unscored because there is no separate FDA DV for each form."
+    ],
+    "tooLow": [
+      "Low omega-3 intake is linked with higher inflammation markers and weaker cardiovascular and brain support.",
+      "Plant ALA converts poorly to EPA/DHA; fatty fish or algae sources matter for direct EPA/DHA."
+    ],
+    "enough": [
+      "Omega-3 fats support heart rhythm, triglycerides, brain structure, and resolution of inflammation.",
+      "Combine fatty fish, walnuts, flax, or algae oil based on diet preference. Aim for enough total omega-3 while watching the EPA∶DHA balance for your goals."
+    ],
+    "tooHigh": [
+      "Very high supplemental fish oil can thin blood and upset the stomach; food-level intake is generally safe.",
+      "Discuss high-dose EPA/DHA with a clinician if you take anticoagulants or before surgery."
+    ],
+    "foodSources": [
+      "Salmon & sardines",
+      "Mackerel & herring",
+      "Walnuts",
+      "Flax & chia",
+      "Algae oil (supplement)",
+      "Fortified eggs",
+      "Hemp seeds"
+    ],
+    "male": [
+      "Supports triglycerides, vascular tone, and recovery from inflammatory load after hard training.",
+      "Fatty fish twice a week is a practical pattern for marine omega-3."
+    ],
+    "female": [
+      "Important for pregnancy and lactation (especially DHA for fetal brain and retina)—food or algae sources are preferred over megadoses without clinical guidance.",
+      "Supports mood and inflammatory balance across the cycle when intake is steady."
+    ]
+  },
+  "epa": {
+    "dashboardTracking": [
+      "Log Omega-3 (EPA) when you know the EPA content of fish, fish oil, or algae oil. Omit when only total omega-3 is listed.",
+      "Shown unscored: there is no separate FDA Daily Value for EPA. Use total Omega-3 (total) for % DV toward the essential fatty acid AI."
+    ],
+    "tooLow": [
+      "Low EPA limits anti-inflammatory marine omega-3 effects and may leave triglycerides and mood support under-addressed.",
+      "Fish-oil and fatty-fish intake are the main food sources."
+    ],
+    "enough": [
+      "EPA supports cardiovascular health, inflammation balance, and is often paired with DHA in fish.",
+      "A 2:1 or 3:1 EPA∶DHA ratio (higher EPA) is often chosen for heart health, inflammation, and mood."
+    ],
+    "foodSources": [
+      "Salmon",
+      "Sardines",
+      "Mackerel",
+      "Anchovies",
+      "Fish oil",
+      "Krill oil",
+      "Algae EPA (supplement)"
+    ]
+  },
+  "dha": {
+    "dashboardTracking": [
+      "Log Omega-3 (DHA) when you know the DHA content of fish, fish oil, or algae oil. Omit when only total omega-3 is listed.",
+      "Shown unscored: there is no separate FDA Daily Value for DHA. Use total Omega-3 (total) for % DV toward the essential fatty acid AI."
+    ],
+    "tooLow": [
+      "Low DHA may affect brain and retina structure over time; important in pregnancy and aging.",
+      "Plant ALA alone often does not restore DHA without marine or algae sources."
+    ],
+    "enough": [
+      "DHA is a major structural fat in the brain and eyes and supports cognitive and visual health.",
+      "A 1:2 or 1:1 EPA∶DHA ratio (higher or equal DHA) is often chosen when brain and eye health are the priority."
+    ],
+    "foodSources": [
+      "Salmon & trout",
+      "Sardines",
+      "Herring",
+      "Caviar & roe",
+      "Fish oil",
+      "Algae DHA",
+      "Fortified foods"
+    ]
+  },
+  "omega6": {
+    "dashboardTracking": [
+      "Omega-6 is scored as a limiting nutrient: lower % of the daily AI is better once essential needs are met—modern diets usually oversupply linoleic acid from refined seed oils."
+    ],
+    "tooHigh": [
+      "Modern diets often oversupply omega-6 from refined seed oils, skewing the omega-6∶omega-3 ratio.",
+      "High omega-6 relative to omega-3 may favor pro-inflammatory eicosanoids when not balanced."
+    ],
+    "enough": [
+      "Linoleic acid is essential; the issue is usually excess processed oils, not whole nuts and seeds.",
+      "Lowering omega-6-heavy oils while raising omega-3 improves the ratio without eliminating omega-6."
+    ],
+    "tooLow": [
+      "True omega-6 deficiency is rare on mixed diets; very low-fat medical diets can theoretically under-supply linoleic acid.",
+      "Whole nuts, seeds, and modest plant oils usually cover essential needs."
+    ],
+    "foodSources": [
+      "Soybean & corn oil",
+      "Sunflower oil (high-linoleic)",
+      "Mayonnaise",
+      "Processed snacks",
+      "Chicken fat (variable)",
+      "Peanuts & pine nuts",
+      "Whole grains"
+    ],
+    "male": [
+      "Watch fried and packaged foods that quietly pile on seed-oil omega-6 while omega-3 stays low.",
+      "Swap some high-linoleic oils for olive oil and fatty fish to improve the ratio."
+    ],
+    "female": [
+      "Essential amounts from nuts and seeds are fine; the goal is limiting refined seed-oil excess, not cutting all omega-6.",
+      "Balance with marine or algae omega-3 for inflammatory and mood support."
+    ]
+  },
   "vitaminK": {
     "dashboardTracking": [
       "Track total vitamin K when food labels or databases do not specify K1 vs K2—this row is scored against the FDA daily value.",
