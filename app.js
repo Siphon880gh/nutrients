@@ -16747,6 +16747,7 @@
 
   function analysisPickerOptionsHtml() {
     var weekLabel = formatWeekRangeLabel(viewedWeekStart) || "this week";
+    var todayId = activeTodayDayId();
     var html =
       '<button type="button" class="analysis-picker__btn" data-analysis-pick="longevity">' +
       '<span class="analysis-picker__btn-title">Longevity</span>' +
@@ -16763,12 +16764,18 @@
       '<div class="analysis-picker__day-grid">';
     DAYS.forEach(function (day) {
       var dateLabel = dateLabelForDayId(day.id);
+      var isToday = !!(todayId && day.id === todayId);
       html +=
-        '<button type="button" class="analysis-picker__day-btn" data-analysis-pick="micro-day" data-analysis-day="' +
+        '<button type="button" class="analysis-picker__day-btn' +
+        (isToday ? " analysis-picker__day-btn--today" : "") +
+        '" data-analysis-pick="micro-day" data-analysis-day="' +
         escapeAttr(day.id) +
-        '" aria-label="Requirements — ' +
+        '"' +
+        (isToday ? ' aria-current="date"' : "") +
+        ' aria-label="Requirements — ' +
         escapeAttr(day.label) +
         (dateLabel ? " · " + dateLabel : "") +
+        (isToday ? " (today)" : "") +
         '">' +
         '<span class="analysis-picker__day-btn-name">' +
         escapeHtml(day.label) +

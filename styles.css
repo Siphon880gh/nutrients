@@ -4771,6 +4771,18 @@ button.dashboard__micro-day-name:focus-visible {
   outline-offset: 2px;
 }
 
+.analysis-picker__day-btn--today {
+  border-color: #3d6b9e;
+  background: #f5f8fc;
+}
+
+.analysis-picker__day-btn--today .analysis-picker__day-btn-name {
+  color: #3d6b9e;
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.15em;
+}
+
 .analysis-picker__day-btn-name {
   font-size: 0.82rem;
   font-weight: 650;
