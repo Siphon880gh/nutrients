@@ -127,6 +127,277 @@
         <button type="button" class="dashboard__days-carousel-adj" data-dashboard-carousel="next" aria-label="Next day">›</button>
       </div>
       <div id="dashboard-grid" class="dashboard__grid"></div>
+      <div id="week-summary" class="week-summary" hidden aria-label="Week summary"></div>
+
+      <div id="dashboard-macros-condensed" class="dashboard__macros-condensed" hidden aria-label="Condensed macros">
+        <div class="dashboard__macros-condensed-head">
+          <h3 class="dashboard__macros-condensed-title">Macros</h3>
+        </div>
+        <div id="dashboard-macros-condensed-grid" class="dashboard__macros-condensed-grid"></div>
+      </div>
+      <div id="food-entry" class="week__nav" role="navigation" aria-label="Week">
+        <button type="button" id="week-nav-prev" class="week__nav-adj" data-app-shortcut="←" aria-label="Previous week" aria-keyshortcuts="ArrowLeft">
+          <span aria-hidden="true">‹</span> Previous week
+          <span class="app-nav__shortcut" aria-hidden="true">←</span>
+        </button>
+        <button type="button" id="week-nav-label" class="week__nav-label" aria-haspopup="dialog" aria-label="Choose week">
+          <span id="week-nav-label-text" aria-live="polite"></span>
+          <span class="week__nav-label-hint">Pick week</span>
+        </button>
+        <button type="button" id="week-nav-next" class="week__nav-adj" data-app-shortcut="→" aria-label="Next week" aria-keyshortcuts="ArrowRight">
+          Next week <span aria-hidden="true">›</span>
+          <span class="app-nav__shortcut" aria-hidden="true">→</span>
+        </button>
+        <button type="button" id="week-nav-this" class="week__nav-this">This week</button>
+        <button type="button" id="favorites-open" class="week__favorites-toggle" aria-haspopup="dialog" aria-expanded="false" aria-controls="favorites-sidebar">
+          Favorites
+        </button>
+      </div>
+      <div class="week__days-toolbar">
+        <p id="week-days-hint" class="week__days-hint">
+          Day meals are saved in this browser. Use <strong>Add food</strong> to pick from your food definitions, or <strong>Add Others</strong> for inserting headings and dividers. Turn on <strong>Advanced</strong> for free-text entry.
+        </p>
+        <div class="week__days-actions">
+          <button type="button" id="export-all-meals" class="week__meals-bulk">Export all</button>
+          <button type="button" id="import-all-meals" class="week__meals-bulk">Import all</button>
+          <button type="button" id="import-sample-meals" class="week__meals-bulk">Import sample</button>
+          <button type="button" id="find-lost-meals" class="week__meals-bulk">Find lost meals</button>
+          <button type="button" id="clear-all-days" class="week__clear-all">Clear all days</button>
+        </div>
+      </div>
+      <div class="week__highlight-bar">
+        <div class="week__visibility-controls">
+          <button type="button" id="day-entry-advanced-toggle" class="week__highlight-toggle week__entry-mode-toggle" aria-pressed="false" aria-label="Turn advanced text entry on">
+            Advanced
+          </button>
+          <span class="week__advanced-only visually-hidden-off" onclick="this.nextElementSibling.click();">Food visibility:&nbsp;</span>
+          <button type="button" id="day-highlights-toggle" class="week__highlight-toggle week__advanced-only" aria-pressed="true" aria-label="Turn food highlighting off">
+            <svg class="week__highlight-toggle-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <path d="M15.7 3.3a1.8 1.8 0 0 1 2.5 0l2.5 2.5a1.8 1.8 0 0 1 0 2.5l-8.3 8.3-5.1 1.2 1.2-5.1 8.2-8.4ZM5.2 19.3h13.6a1 1 0 1 1 0 2H5.2a1 1 0 1 1 0-2Z"></path>
+            </svg>
+          </button>
+          <button type="button" id="day-word-wrap-toggle" class="week__highlight-toggle week__advanced-only" aria-pressed="true" aria-label="Turn word wrap off">
+            <svg class="week__highlight-toggle-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <path d="M4 19h6v-2H4v2Zm16-14H4v2h16V5Zm-3 6H4v2h13.25c1.1 0 2 .9 2 2s-.9 2-2 2H15v2l-3-3 3-3v2h2c2.21 0 4-1.79 4-4s-1.79-4-4-4Z"></path>
+            </svg>
+          </button>
+        </div>
+        <span id="day-food-notes" class="week__food-notes" hidden>
+          <span class="week__food-notes-lead">Notes available for:</span>
+          <span id="day-food-notes-labels" class="week__food-notes-labels"></span>
+          <div id="day-food-notes-popover" class="week__food-notes-popover" role="tooltip" hidden></div>
+        </span>
+      </div>
+      <div id="day-unmatched-lines" class="week__unmatched-lines" hidden role="status"></div>
+
+      <div class="week__days">
+        <div class="week__days-favorite-week">
+          <button type="button" id="week-nav-favorite" class="week__days-favorite-week-btn">Favorite week</button>
+        </div>
+        <div class="week__days-carousel-nav" aria-label="Day of week">
+          <button type="button" class="week__days-carousel-adj" data-days-carousel="prev" aria-label="Previous day">‹</button>
+          <span id="days-carousel-current" class="week__days-carousel-current" aria-live="polite">Mon</span>
+          <button type="button" class="week__days-carousel-adj" data-days-carousel="next" aria-label="Next day">›</button>
+        </div>
+        <div class="week__grid" role="group" aria-label="Monday through Sunday meals">
+          <div class="day">
+            <div class="day__head">
+              <div class="day__head-text">
+                <label class="day__label" for="mon">Mon</label>
+                <span class="day__date" data-day-date="mon"></span>
+              </div>
+              <div class="day__head-actions">
+                <div class="day__copy">
+                  <button type="button" class="day__copy-toggle" data-action="toggle-day-copy" data-day-id="mon" aria-haspopup="menu" aria-expanded="false">Copy</button>
+                  <div class="day__copy-menu" hidden role="menu">
+                    <button type="button" role="menuitem" data-action="copy-week-to-this-week" data-day-id="mon">Copy this week to this week</button>
+                    <button type="button" role="menuitem" data-action="copy-week-to-custom" data-day-id="mon">Copy to custom week…</button>
+                    <button type="button" role="menuitem" data-action="copy-day-to-custom" data-day-id="mon">Copy this date to custom day…</button>
+                    <button type="button" role="menuitem" class="day__copy-menu-item--today" data-action="copy-day-to-today" data-day-id="mon">Copy this date to today</button>
+                    <button type="button" role="menuitem" data-action="copy-day-to-yesterday" data-day-id="mon">Copy this date to yesterday</button>
+                    <button type="button" role="menuitem" data-action="copy-day-to-tomorrow" data-day-id="mon">Copy this date to tomorrow</button>
+                  </div>
+                </div>
+                <button type="button" class="day__favorite" data-action="favorite-day" data-day-id="mon">Favorite</button>
+                <button type="button" class="day__clear" data-action="clear-day" data-day-id="mon">Clear</button>
+              </div>
+            </div>
+            <div class="day__editor">
+              <div class="day__backdrop" aria-hidden="true"></div>
+              <textarea id="mon" name="mon" class="day__input" rows="8" placeholder="Monday…" spellcheck="true"></textarea>
+            </div>
+          </div>
+
+          <div class="day">
+            <div class="day__head">
+              <div class="day__head-text">
+                <label class="day__label" for="tue">Tue</label>
+                <span class="day__date" data-day-date="tue"></span>
+              </div>
+              <div class="day__head-actions">
+                <div class="day__copy">
+                  <button type="button" class="day__copy-toggle" data-action="toggle-day-copy" data-day-id="tue" aria-haspopup="menu" aria-expanded="false">Copy</button>
+                  <div class="day__copy-menu" hidden role="menu">
+                    <button type="button" role="menuitem" data-action="copy-week-to-this-week" data-day-id="tue">Copy this week to this week</button>
+                    <button type="button" role="menuitem" data-action="copy-week-to-custom" data-day-id="tue">Copy to custom week…</button>
+                    <button type="button" role="menuitem" data-action="copy-day-to-custom" data-day-id="tue">Copy this date to custom day…</button>
+                    <button type="button" role="menuitem" class="day__copy-menu-item--today" data-action="copy-day-to-today" data-day-id="tue">Copy this date to today</button>
+                    <button type="button" role="menuitem" data-action="copy-day-to-yesterday" data-day-id="tue">Copy this date to yesterday</button>
+                    <button type="button" role="menuitem" data-action="copy-day-to-tomorrow" data-day-id="tue">Copy this date to tomorrow</button>
+                  </div>
+                </div>
+                <button type="button" class="day__favorite" data-action="favorite-day" data-day-id="tue">Favorite</button>
+                <button type="button" class="day__clear" data-action="clear-day" data-day-id="tue">Clear</button>
+              </div>
+            </div>
+            <div class="day__editor">
+              <div class="day__backdrop" aria-hidden="true"></div>
+              <textarea id="tue" name="tue" class="day__input" rows="8" placeholder="Tuesday…" spellcheck="true"></textarea>
+            </div>
+          </div>
+
+          <div class="day">
+            <div class="day__head">
+              <div class="day__head-text">
+                <label class="day__label" for="wed">Wed</label>
+                <span class="day__date" data-day-date="wed"></span>
+              </div>
+              <div class="day__head-actions">
+                <div class="day__copy">
+                  <button type="button" class="day__copy-toggle" data-action="toggle-day-copy" data-day-id="wed" aria-haspopup="menu" aria-expanded="false">Copy</button>
+                  <div class="day__copy-menu" hidden role="menu">
+                    <button type="button" role="menuitem" data-action="copy-week-to-this-week" data-day-id="wed">Copy this week to this week</button>
+                    <button type="button" role="menuitem" data-action="copy-week-to-custom" data-day-id="wed">Copy to custom week…</button>
+                    <button type="button" role="menuitem" data-action="copy-day-to-custom" data-day-id="wed">Copy this date to custom day…</button>
+                    <button type="button" role="menuitem" class="day__copy-menu-item--today" data-action="copy-day-to-today" data-day-id="wed">Copy this date to today</button>
+                    <button type="button" role="menuitem" data-action="copy-day-to-yesterday" data-day-id="wed">Copy this date to yesterday</button>
+                    <button type="button" role="menuitem" data-action="copy-day-to-tomorrow" data-day-id="wed">Copy this date to tomorrow</button>
+                  </div>
+                </div>
+                <button type="button" class="day__favorite" data-action="favorite-day" data-day-id="wed">Favorite</button>
+                <button type="button" class="day__clear" data-action="clear-day" data-day-id="wed">Clear</button>
+              </div>
+            </div>
+            <div class="day__editor">
+              <div class="day__backdrop" aria-hidden="true"></div>
+              <textarea id="wed" name="wed" class="day__input" rows="8" placeholder="Wednesday…" spellcheck="true"></textarea>
+            </div>
+          </div>
+
+          <div class="day">
+            <div class="day__head">
+              <div class="day__head-text">
+                <label class="day__label" for="thu">Thu</label>
+                <span class="day__date" data-day-date="thu"></span>
+              </div>
+              <div class="day__head-actions">
+                <div class="day__copy">
+                  <button type="button" class="day__copy-toggle" data-action="toggle-day-copy" data-day-id="thu" aria-haspopup="menu" aria-expanded="false">Copy</button>
+                  <div class="day__copy-menu" hidden role="menu">
+                    <button type="button" role="menuitem" data-action="copy-week-to-this-week" data-day-id="thu">Copy this week to this week</button>
+                    <button type="button" role="menuitem" data-action="copy-week-to-custom" data-day-id="thu">Copy to custom week…</button>
+                    <button type="button" role="menuitem" data-action="copy-day-to-custom" data-day-id="thu">Copy this date to custom day…</button>
+                    <button type="button" role="menuitem" class="day__copy-menu-item--today" data-action="copy-day-to-today" data-day-id="thu">Copy this date to today</button>
+                    <button type="button" role="menuitem" data-action="copy-day-to-yesterday" data-day-id="thu">Copy this date to yesterday</button>
+                    <button type="button" role="menuitem" data-action="copy-day-to-tomorrow" data-day-id="thu">Copy this date to tomorrow</button>
+                  </div>
+                </div>
+                <button type="button" class="day__favorite" data-action="favorite-day" data-day-id="thu">Favorite</button>
+                <button type="button" class="day__clear" data-action="clear-day" data-day-id="thu">Clear</button>
+              </div>
+            </div>
+            <div class="day__editor">
+              <div class="day__backdrop" aria-hidden="true"></div>
+              <textarea id="thu" name="thu" class="day__input" rows="8" placeholder="Thursday…" spellcheck="true"></textarea>
+            </div>
+          </div>
+
+          <div class="day">
+            <div class="day__head">
+              <div class="day__head-text">
+                <label class="day__label" for="fri">Fri</label>
+                <span class="day__date" data-day-date="fri"></span>
+              </div>
+              <div class="day__head-actions">
+                <div class="day__copy">
+                  <button type="button" class="day__copy-toggle" data-action="toggle-day-copy" data-day-id="fri" aria-haspopup="menu" aria-expanded="false">Copy</button>
+                  <div class="day__copy-menu" hidden role="menu">
+                    <button type="button" role="menuitem" data-action="copy-week-to-this-week" data-day-id="fri">Copy this week to this week</button>
+                    <button type="button" role="menuitem" data-action="copy-week-to-custom" data-day-id="fri">Copy to custom week…</button>
+                    <button type="button" role="menuitem" data-action="copy-day-to-custom" data-day-id="fri">Copy this date to custom day…</button>
+                    <button type="button" role="menuitem" class="day__copy-menu-item--today" data-action="copy-day-to-today" data-day-id="fri">Copy this date to today</button>
+                    <button type="button" role="menuitem" data-action="copy-day-to-yesterday" data-day-id="fri">Copy this date to yesterday</button>
+                    <button type="button" role="menuitem" data-action="copy-day-to-tomorrow" data-day-id="fri">Copy this date to tomorrow</button>
+                  </div>
+                </div>
+                <button type="button" class="day__favorite" data-action="favorite-day" data-day-id="fri">Favorite</button>
+                <button type="button" class="day__clear" data-action="clear-day" data-day-id="fri">Clear</button>
+              </div>
+            </div>
+            <div class="day__editor">
+              <div class="day__backdrop" aria-hidden="true"></div>
+              <textarea id="fri" name="fri" class="day__input" rows="8" placeholder="Friday…" spellcheck="true"></textarea>
+            </div>
+          </div>
+
+          <div class="day">
+            <div class="day__head">
+              <div class="day__head-text">
+                <label class="day__label" for="sat">Sat</label>
+                <span class="day__date" data-day-date="sat"></span>
+              </div>
+              <div class="day__head-actions">
+                <div class="day__copy">
+                  <button type="button" class="day__copy-toggle" data-action="toggle-day-copy" data-day-id="sat" aria-haspopup="menu" aria-expanded="false">Copy</button>
+                  <div class="day__copy-menu" hidden role="menu">
+                    <button type="button" role="menuitem" data-action="copy-week-to-this-week" data-day-id="sat">Copy this week to this week</button>
+                    <button type="button" role="menuitem" data-action="copy-week-to-custom" data-day-id="sat">Copy to custom week…</button>
+                    <button type="button" role="menuitem" data-action="copy-day-to-custom" data-day-id="sat">Copy this date to custom day…</button>
+                    <button type="button" role="menuitem" class="day__copy-menu-item--today" data-action="copy-day-to-today" data-day-id="sat">Copy this date to today</button>
+                    <button type="button" role="menuitem" data-action="copy-day-to-yesterday" data-day-id="sat">Copy this date to yesterday</button>
+                    <button type="button" role="menuitem" data-action="copy-day-to-tomorrow" data-day-id="sat">Copy this date to tomorrow</button>
+                  </div>
+                </div>
+                <button type="button" class="day__favorite" data-action="favorite-day" data-day-id="sat">Favorite</button>
+                <button type="button" class="day__clear" data-action="clear-day" data-day-id="sat">Clear</button>
+              </div>
+            </div>
+            <div class="day__editor">
+              <div class="day__backdrop" aria-hidden="true"></div>
+              <textarea id="sat" name="sat" class="day__input" rows="8" placeholder="Saturday…" spellcheck="true"></textarea>
+            </div>
+          </div>
+
+          <div class="day">
+            <div class="day__head">
+              <div class="day__head-text">
+                <label class="day__label" for="sun">Sun</label>
+                <span class="day__date" data-day-date="sun"></span>
+              </div>
+              <div class="day__head-actions">
+                <div class="day__copy">
+                  <button type="button" class="day__copy-toggle" data-action="toggle-day-copy" data-day-id="sun" aria-haspopup="menu" aria-expanded="false">Copy</button>
+                  <div class="day__copy-menu" hidden role="menu">
+                    <button type="button" role="menuitem" data-action="copy-week-to-this-week" data-day-id="sun">Copy this week to this week</button>
+                    <button type="button" role="menuitem" data-action="copy-week-to-custom" data-day-id="sun">Copy to custom week…</button>
+                    <button type="button" role="menuitem" data-action="copy-day-to-custom" data-day-id="sun">Copy this date to custom day…</button>
+                    <button type="button" role="menuitem" class="day__copy-menu-item--today" data-action="copy-day-to-today" data-day-id="sun">Copy this date to today</button>
+                    <button type="button" role="menuitem" data-action="copy-day-to-yesterday" data-day-id="sun">Copy this date to yesterday</button>
+                    <button type="button" role="menuitem" data-action="copy-day-to-tomorrow" data-day-id="sun">Copy this date to tomorrow</button>
+                  </div>
+                </div>
+                <button type="button" class="day__favorite" data-action="favorite-day" data-day-id="sun">Favorite</button>
+                <button type="button" class="day__clear" data-action="clear-day" data-day-id="sun">Clear</button>
+              </div>
+            </div>
+            <div class="day__editor">
+              <div class="day__backdrop" aria-hidden="true"></div>
+              <textarea id="sun" name="sun" class="day__input" rows="8" placeholder="Sunday…" spellcheck="true"></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div id="dashboard-micro-panel" class="dashboard__micro-panel" hidden>
         <nav id="dashboard-micro-sticky" class="dashboard__micro-sticky" aria-label="Micro requirements">
           <div class="dashboard__micro-sticky-top">
@@ -564,271 +835,7 @@
         </aside>
         <div id="dashboard-longevity-content"></div>
       </div>
-      <div id="week-summary" class="week-summary" hidden aria-label="Week summary"></div>
     </section>
-
-    <div id="food-entry" class="week__nav" role="navigation" aria-label="Week">
-      <button type="button" id="week-nav-prev" class="week__nav-adj" data-app-shortcut="←" aria-label="Previous week" aria-keyshortcuts="ArrowLeft">
-        <span aria-hidden="true">‹</span> Previous week
-        <span class="app-nav__shortcut" aria-hidden="true">←</span>
-      </button>
-      <button type="button" id="week-nav-label" class="week__nav-label" aria-haspopup="dialog" aria-label="Choose week">
-        <span id="week-nav-label-text" aria-live="polite"></span>
-        <span class="week__nav-label-hint">Pick week</span>
-      </button>
-      <button type="button" id="week-nav-next" class="week__nav-adj" data-app-shortcut="→" aria-label="Next week" aria-keyshortcuts="ArrowRight">
-        Next week <span aria-hidden="true">›</span>
-        <span class="app-nav__shortcut" aria-hidden="true">→</span>
-      </button>
-      <button type="button" id="week-nav-this" class="week__nav-this">This week</button>
-      <button type="button" id="favorites-open" class="week__favorites-toggle" aria-haspopup="dialog" aria-expanded="false" aria-controls="favorites-sidebar">
-        Favorites
-      </button>
-    </div>
-    <div class="week__days-toolbar">
-      <p id="week-days-hint" class="week__days-hint">
-        Day meals are saved in this browser. Use <strong>Add food</strong> to pick from your food definitions, or <strong>Add Others</strong> for inserting headings and dividers. Turn on <strong>Advanced</strong> for free-text entry.
-      </p>
-      <div class="week__days-actions">
-        <button type="button" id="export-all-meals" class="week__meals-bulk">Export all</button>
-        <button type="button" id="import-all-meals" class="week__meals-bulk">Import all</button>
-        <button type="button" id="import-sample-meals" class="week__meals-bulk">Import sample</button>
-        <button type="button" id="find-lost-meals" class="week__meals-bulk">Find lost meals</button>
-        <button type="button" id="clear-all-days" class="week__clear-all">Clear all days</button>
-      </div>
-    </div>
-    <div class="week__highlight-bar">
-      <div class="week__visibility-controls">
-        <button type="button" id="day-entry-advanced-toggle" class="week__highlight-toggle week__entry-mode-toggle" aria-pressed="false" aria-label="Turn advanced text entry on">
-          Advanced
-        </button>
-        <span class="week__advanced-only visually-hidden-off" onclick="this.nextElementSibling.click();">Food visibility:&nbsp;</span>
-        <button type="button" id="day-highlights-toggle" class="week__highlight-toggle week__advanced-only" aria-pressed="true" aria-label="Turn food highlighting off">
-          <svg class="week__highlight-toggle-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-            <path d="M15.7 3.3a1.8 1.8 0 0 1 2.5 0l2.5 2.5a1.8 1.8 0 0 1 0 2.5l-8.3 8.3-5.1 1.2 1.2-5.1 8.2-8.4ZM5.2 19.3h13.6a1 1 0 1 1 0 2H5.2a1 1 0 1 1 0-2Z"></path>
-          </svg>
-        </button>
-        <button type="button" id="day-word-wrap-toggle" class="week__highlight-toggle week__advanced-only" aria-pressed="true" aria-label="Turn word wrap off">
-          <svg class="week__highlight-toggle-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-            <path d="M4 19h6v-2H4v2Zm16-14H4v2h16V5Zm-3 6H4v2h13.25c1.1 0 2 .9 2 2s-.9 2-2 2H15v2l-3-3 3-3v2h2c2.21 0 4-1.79 4-4s-1.79-4-4-4Z"></path>
-          </svg>
-        </button>
-      </div>
-      <span id="day-food-notes" class="week__food-notes" hidden>
-        <span class="week__food-notes-lead">Notes available for:</span>
-        <span id="day-food-notes-labels" class="week__food-notes-labels"></span>
-        <div id="day-food-notes-popover" class="week__food-notes-popover" role="tooltip" hidden></div>
-      </span>
-    </div>
-    <div id="day-unmatched-lines" class="week__unmatched-lines" hidden role="status"></div>
-
-    <div class="week__days">
-      <div class="week__days-favorite-week">
-        <button type="button" id="week-nav-favorite" class="week__days-favorite-week-btn">Favorite week</button>
-      </div>
-      <div class="week__days-carousel-nav" aria-label="Day of week">
-        <button type="button" class="week__days-carousel-adj" data-days-carousel="prev" aria-label="Previous day">‹</button>
-        <span id="days-carousel-current" class="week__days-carousel-current" aria-live="polite">Mon</span>
-        <button type="button" class="week__days-carousel-adj" data-days-carousel="next" aria-label="Next day">›</button>
-      </div>
-      <div class="week__grid" role="group" aria-label="Monday through Sunday meals">
-        <div class="day">
-          <div class="day__head">
-            <div class="day__head-text">
-              <label class="day__label" for="mon">Mon</label>
-              <span class="day__date" data-day-date="mon"></span>
-            </div>
-            <div class="day__head-actions">
-              <div class="day__copy">
-                <button type="button" class="day__copy-toggle" data-action="toggle-day-copy" data-day-id="mon" aria-haspopup="menu" aria-expanded="false">Copy</button>
-                <div class="day__copy-menu" hidden role="menu">
-                  <button type="button" role="menuitem" data-action="copy-week-to-this-week" data-day-id="mon">Copy this week to this week</button>
-                  <button type="button" role="menuitem" data-action="copy-week-to-custom" data-day-id="mon">Copy to custom week…</button>
-                  <button type="button" role="menuitem" data-action="copy-day-to-custom" data-day-id="mon">Copy this date to custom day…</button>
-                  <button type="button" role="menuitem" class="day__copy-menu-item--today" data-action="copy-day-to-today" data-day-id="mon">Copy this date to today</button>
-                  <button type="button" role="menuitem" data-action="copy-day-to-yesterday" data-day-id="mon">Copy this date to yesterday</button>
-                  <button type="button" role="menuitem" data-action="copy-day-to-tomorrow" data-day-id="mon">Copy this date to tomorrow</button>
-                </div>
-              </div>
-              <button type="button" class="day__favorite" data-action="favorite-day" data-day-id="mon">Favorite</button>
-              <button type="button" class="day__clear" data-action="clear-day" data-day-id="mon">Clear</button>
-            </div>
-          </div>
-          <div class="day__editor">
-            <div class="day__backdrop" aria-hidden="true"></div>
-            <textarea id="mon" name="mon" class="day__input" rows="8" placeholder="Monday…" spellcheck="true"></textarea>
-          </div>
-        </div>
-
-        <div class="day">
-          <div class="day__head">
-            <div class="day__head-text">
-              <label class="day__label" for="tue">Tue</label>
-              <span class="day__date" data-day-date="tue"></span>
-            </div>
-            <div class="day__head-actions">
-              <div class="day__copy">
-                <button type="button" class="day__copy-toggle" data-action="toggle-day-copy" data-day-id="tue" aria-haspopup="menu" aria-expanded="false">Copy</button>
-                <div class="day__copy-menu" hidden role="menu">
-                  <button type="button" role="menuitem" data-action="copy-week-to-this-week" data-day-id="tue">Copy this week to this week</button>
-                  <button type="button" role="menuitem" data-action="copy-week-to-custom" data-day-id="tue">Copy to custom week…</button>
-                  <button type="button" role="menuitem" data-action="copy-day-to-custom" data-day-id="tue">Copy this date to custom day…</button>
-                  <button type="button" role="menuitem" class="day__copy-menu-item--today" data-action="copy-day-to-today" data-day-id="tue">Copy this date to today</button>
-                  <button type="button" role="menuitem" data-action="copy-day-to-yesterday" data-day-id="tue">Copy this date to yesterday</button>
-                  <button type="button" role="menuitem" data-action="copy-day-to-tomorrow" data-day-id="tue">Copy this date to tomorrow</button>
-                </div>
-              </div>
-              <button type="button" class="day__favorite" data-action="favorite-day" data-day-id="tue">Favorite</button>
-              <button type="button" class="day__clear" data-action="clear-day" data-day-id="tue">Clear</button>
-            </div>
-          </div>
-          <div class="day__editor">
-            <div class="day__backdrop" aria-hidden="true"></div>
-            <textarea id="tue" name="tue" class="day__input" rows="8" placeholder="Tuesday…" spellcheck="true"></textarea>
-          </div>
-        </div>
-
-        <div class="day">
-          <div class="day__head">
-            <div class="day__head-text">
-              <label class="day__label" for="wed">Wed</label>
-              <span class="day__date" data-day-date="wed"></span>
-            </div>
-            <div class="day__head-actions">
-              <div class="day__copy">
-                <button type="button" class="day__copy-toggle" data-action="toggle-day-copy" data-day-id="wed" aria-haspopup="menu" aria-expanded="false">Copy</button>
-                <div class="day__copy-menu" hidden role="menu">
-                  <button type="button" role="menuitem" data-action="copy-week-to-this-week" data-day-id="wed">Copy this week to this week</button>
-                  <button type="button" role="menuitem" data-action="copy-week-to-custom" data-day-id="wed">Copy to custom week…</button>
-                  <button type="button" role="menuitem" data-action="copy-day-to-custom" data-day-id="wed">Copy this date to custom day…</button>
-                  <button type="button" role="menuitem" class="day__copy-menu-item--today" data-action="copy-day-to-today" data-day-id="wed">Copy this date to today</button>
-                  <button type="button" role="menuitem" data-action="copy-day-to-yesterday" data-day-id="wed">Copy this date to yesterday</button>
-                  <button type="button" role="menuitem" data-action="copy-day-to-tomorrow" data-day-id="wed">Copy this date to tomorrow</button>
-                </div>
-              </div>
-              <button type="button" class="day__favorite" data-action="favorite-day" data-day-id="wed">Favorite</button>
-              <button type="button" class="day__clear" data-action="clear-day" data-day-id="wed">Clear</button>
-            </div>
-          </div>
-          <div class="day__editor">
-            <div class="day__backdrop" aria-hidden="true"></div>
-            <textarea id="wed" name="wed" class="day__input" rows="8" placeholder="Wednesday…" spellcheck="true"></textarea>
-          </div>
-        </div>
-
-        <div class="day">
-          <div class="day__head">
-            <div class="day__head-text">
-              <label class="day__label" for="thu">Thu</label>
-              <span class="day__date" data-day-date="thu"></span>
-            </div>
-            <div class="day__head-actions">
-              <div class="day__copy">
-                <button type="button" class="day__copy-toggle" data-action="toggle-day-copy" data-day-id="thu" aria-haspopup="menu" aria-expanded="false">Copy</button>
-                <div class="day__copy-menu" hidden role="menu">
-                  <button type="button" role="menuitem" data-action="copy-week-to-this-week" data-day-id="thu">Copy this week to this week</button>
-                  <button type="button" role="menuitem" data-action="copy-week-to-custom" data-day-id="thu">Copy to custom week…</button>
-                  <button type="button" role="menuitem" data-action="copy-day-to-custom" data-day-id="thu">Copy this date to custom day…</button>
-                  <button type="button" role="menuitem" class="day__copy-menu-item--today" data-action="copy-day-to-today" data-day-id="thu">Copy this date to today</button>
-                  <button type="button" role="menuitem" data-action="copy-day-to-yesterday" data-day-id="thu">Copy this date to yesterday</button>
-                  <button type="button" role="menuitem" data-action="copy-day-to-tomorrow" data-day-id="thu">Copy this date to tomorrow</button>
-                </div>
-              </div>
-              <button type="button" class="day__favorite" data-action="favorite-day" data-day-id="thu">Favorite</button>
-              <button type="button" class="day__clear" data-action="clear-day" data-day-id="thu">Clear</button>
-            </div>
-          </div>
-          <div class="day__editor">
-            <div class="day__backdrop" aria-hidden="true"></div>
-            <textarea id="thu" name="thu" class="day__input" rows="8" placeholder="Thursday…" spellcheck="true"></textarea>
-          </div>
-        </div>
-
-        <div class="day">
-          <div class="day__head">
-            <div class="day__head-text">
-              <label class="day__label" for="fri">Fri</label>
-              <span class="day__date" data-day-date="fri"></span>
-            </div>
-            <div class="day__head-actions">
-              <div class="day__copy">
-                <button type="button" class="day__copy-toggle" data-action="toggle-day-copy" data-day-id="fri" aria-haspopup="menu" aria-expanded="false">Copy</button>
-                <div class="day__copy-menu" hidden role="menu">
-                  <button type="button" role="menuitem" data-action="copy-week-to-this-week" data-day-id="fri">Copy this week to this week</button>
-                  <button type="button" role="menuitem" data-action="copy-week-to-custom" data-day-id="fri">Copy to custom week…</button>
-                  <button type="button" role="menuitem" data-action="copy-day-to-custom" data-day-id="fri">Copy this date to custom day…</button>
-                  <button type="button" role="menuitem" class="day__copy-menu-item--today" data-action="copy-day-to-today" data-day-id="fri">Copy this date to today</button>
-                  <button type="button" role="menuitem" data-action="copy-day-to-yesterday" data-day-id="fri">Copy this date to yesterday</button>
-                  <button type="button" role="menuitem" data-action="copy-day-to-tomorrow" data-day-id="fri">Copy this date to tomorrow</button>
-                </div>
-              </div>
-              <button type="button" class="day__favorite" data-action="favorite-day" data-day-id="fri">Favorite</button>
-              <button type="button" class="day__clear" data-action="clear-day" data-day-id="fri">Clear</button>
-            </div>
-          </div>
-          <div class="day__editor">
-            <div class="day__backdrop" aria-hidden="true"></div>
-            <textarea id="fri" name="fri" class="day__input" rows="8" placeholder="Friday…" spellcheck="true"></textarea>
-          </div>
-        </div>
-
-        <div class="day">
-          <div class="day__head">
-            <div class="day__head-text">
-              <label class="day__label" for="sat">Sat</label>
-              <span class="day__date" data-day-date="sat"></span>
-            </div>
-            <div class="day__head-actions">
-              <div class="day__copy">
-                <button type="button" class="day__copy-toggle" data-action="toggle-day-copy" data-day-id="sat" aria-haspopup="menu" aria-expanded="false">Copy</button>
-                <div class="day__copy-menu" hidden role="menu">
-                  <button type="button" role="menuitem" data-action="copy-week-to-this-week" data-day-id="sat">Copy this week to this week</button>
-                  <button type="button" role="menuitem" data-action="copy-week-to-custom" data-day-id="sat">Copy to custom week…</button>
-                  <button type="button" role="menuitem" data-action="copy-day-to-custom" data-day-id="sat">Copy this date to custom day…</button>
-                  <button type="button" role="menuitem" class="day__copy-menu-item--today" data-action="copy-day-to-today" data-day-id="sat">Copy this date to today</button>
-                  <button type="button" role="menuitem" data-action="copy-day-to-yesterday" data-day-id="sat">Copy this date to yesterday</button>
-                  <button type="button" role="menuitem" data-action="copy-day-to-tomorrow" data-day-id="sat">Copy this date to tomorrow</button>
-                </div>
-              </div>
-              <button type="button" class="day__favorite" data-action="favorite-day" data-day-id="sat">Favorite</button>
-              <button type="button" class="day__clear" data-action="clear-day" data-day-id="sat">Clear</button>
-            </div>
-          </div>
-          <div class="day__editor">
-            <div class="day__backdrop" aria-hidden="true"></div>
-            <textarea id="sat" name="sat" class="day__input" rows="8" placeholder="Saturday…" spellcheck="true"></textarea>
-          </div>
-        </div>
-
-        <div class="day">
-          <div class="day__head">
-            <div class="day__head-text">
-              <label class="day__label" for="sun">Sun</label>
-              <span class="day__date" data-day-date="sun"></span>
-            </div>
-            <div class="day__head-actions">
-              <div class="day__copy">
-                <button type="button" class="day__copy-toggle" data-action="toggle-day-copy" data-day-id="sun" aria-haspopup="menu" aria-expanded="false">Copy</button>
-                <div class="day__copy-menu" hidden role="menu">
-                  <button type="button" role="menuitem" data-action="copy-week-to-this-week" data-day-id="sun">Copy this week to this week</button>
-                  <button type="button" role="menuitem" data-action="copy-week-to-custom" data-day-id="sun">Copy to custom week…</button>
-                  <button type="button" role="menuitem" data-action="copy-day-to-custom" data-day-id="sun">Copy this date to custom day…</button>
-                  <button type="button" role="menuitem" class="day__copy-menu-item--today" data-action="copy-day-to-today" data-day-id="sun">Copy this date to today</button>
-                  <button type="button" role="menuitem" data-action="copy-day-to-yesterday" data-day-id="sun">Copy this date to yesterday</button>
-                  <button type="button" role="menuitem" data-action="copy-day-to-tomorrow" data-day-id="sun">Copy this date to tomorrow</button>
-                </div>
-              </div>
-              <button type="button" class="day__favorite" data-action="favorite-day" data-day-id="sun">Favorite</button>
-              <button type="button" class="day__clear" data-action="clear-day" data-day-id="sun">Clear</button>
-            </div>
-          </div>
-          <div class="day__editor">
-            <div class="day__backdrop" aria-hidden="true"></div>
-            <textarea id="sun" name="sun" class="day__input" rows="8" placeholder="Sunday…" spellcheck="true"></textarea>
-          </div>
-        </div>
-      </div>
-    </div>
 
     <section class="keywords" aria-labelledby="food-definitions-heading">
       <form id="keywords-form">

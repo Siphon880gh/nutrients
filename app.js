@@ -82,6 +82,12 @@
   var keywordsTotalCalHeaderEl = document.querySelector(".keywords__th-total--cal");
   var addKeywordBtn = document.getElementById("add-keyword");
   var dashboardGridEl = document.getElementById("dashboard-grid");
+  var dashboardMacrosCondensedEl = document.getElementById(
+    "dashboard-macros-condensed"
+  );
+  var dashboardMacrosCondensedGridEl = document.getElementById(
+    "dashboard-macros-condensed-grid"
+  );
   var weekSummaryEl = document.getElementById("week-summary");
   var dashboardPrintBtn = document.getElementById("dashboard-print");
   var dashboardWeekToggleEl = document.getElementById("dashboard-week-toggle");
@@ -19209,6 +19215,136 @@
     );
   }
 
+  function dashboardCondensedCardHtml(label, totals, dayId) {
+    var isToday = dayId === activeTodayDayId();
+    var isPct = dashboardMacroPctView;
+    var pct = macroPctFromTotals(totals);
+    var macrosLine;
+    var calText = String(Math.round(totals.totalCal || 0));
+
+    if (isPct) {
+      macrosLine =
+        (pct.p == null ? "—" : Math.round(pct.p) + "%") +
+        " · " +
+        (pct.c == null ? "—" : Math.round(pct.c) + "%") +
+        " · " +
+        (pct.f == null ? "—" : Math.round(pct.f) + "%");
+    } else {
+      macrosLine =
+        Math.round(totals.protein || 0) +
+        " · " +
+        Math.round(totals.carbs || 0) +
+        " · " +
+        Math.round(totals.fats || 0);
+    }
+
+    return (
+      '<div class="dashboard__macros-condensed-day' +
+      (isToday ? " dashboard__macros-condensed-day--today" : "") +
+      '">' +
+      '<span class="dashboard__macros-condensed-label"' +
+      (isToday ? ' aria-current="date"' : "") +
+      ">" +
+      escapeHtml(label) +
+      "</span>" +
+      '<span class="dashboard__macros-condensed-cal">' +
+      escapeHtml(calText) +
+      "</span>" +
+      '<span class="dashboard__macros-condensed-macros">' +
+      escapeHtml(macrosLine) +
+      "</span>" +
+      "</div>"
+    );
+  }
+
+  function renderMacrosCondensed(dayTotals) {
+    if (!dashboardMacrosCondensedGridEl) return;
+    var html = "";
+    DAYS.forEach(function (day, i) {
+      html += dashboardCondensedCardHtml(
+        day.label,
+        dayTotals[i] || emptyTotals(),
+        day.id
+      );
+    });
+    dashboardMacrosCondensedGridEl.innerHTML = html;
+  }
+
+  var macrosCondensedVisibilityRaf = 0;
+
+  function appNavBottomY() {
+    var appNav = document.getElementById("app-nav");
+    if (!appNav) return 0;
+    return Math.max(0, Math.ceil(appNav.getBoundingClientRect().bottom));
+  }
+
+  function elementVisibleHeightBelow(el, topY) {
+    if (!el || el.hidden) return 0;
+    var rect = el.getBoundingClientRect();
+    var visibleTop = Math.max(rect.top, topY);
+    var visibleBottom = Math.min(rect.bottom, window.innerHeight || 0);
+    return Math.max(0, visibleBottom - visibleTop);
+  }
+
+  function isMacrosGridMeaningfullyInViewport() {
+    // Ignore a thin strip tucked under the sticky app nav — that still
+    // counts as intersecting for IntersectionObserver and blocked condensed.
+    return elementVisibleHeightBelow(dashboardGridEl, appNavBottomY()) > 64;
+  }
+
+  function isFoodEntryRegionInViewport() {
+    var foodEntryEl = document.getElementById("food-entry");
+    var weekDaysEl = document.querySelector(".week__days");
+    var topY = appNavBottomY();
+    return (
+      elementVisibleHeightBelow(foodEntryEl, topY) > 0 ||
+      elementVisibleHeightBelow(weekDaysEl, topY) > 0
+    );
+  }
+
+  function setMacrosCondensedVisible(visible) {
+    if (!dashboardMacrosCondensedEl) return;
+    var hide = !visible;
+    if (dashboardMacrosCondensedEl.hidden === hide) return;
+    dashboardMacrosCondensedEl.hidden = hide;
+  }
+
+  function syncMacrosCondensedVisibility() {
+    if (!dashboardMacrosCondensedEl || !dashboardGridEl) return;
+    setMacrosCondensedVisible(
+      !isMacrosGridMeaningfullyInViewport() && isFoodEntryRegionInViewport()
+    );
+  }
+
+  function scheduleMacrosCondensedVisibilitySync() {
+    if (macrosCondensedVisibilityRaf) return;
+    macrosCondensedVisibilityRaf = window.requestAnimationFrame(function () {
+      macrosCondensedVisibilityRaf = 0;
+      syncMacrosCondensedVisibility();
+    });
+  }
+
+  function initMacrosCondensedVisibility() {
+    if (!dashboardMacrosCondensedEl || !dashboardGridEl) return;
+    setMacrosCondensedVisible(false);
+    syncMacrosCondensedVisibility();
+    window.addEventListener("scroll", scheduleMacrosCondensedVisibilitySync, {
+      passive: true,
+    });
+    window.addEventListener("resize", scheduleMacrosCondensedVisibilitySync);
+    if (typeof IntersectionObserver !== "undefined") {
+      var io = new IntersectionObserver(scheduleMacrosCondensedVisibilitySync, {
+        root: null,
+        threshold: [0, 0.01, 0.1, 0.25, 0.5, 1],
+      });
+      io.observe(dashboardGridEl);
+      var foodEntryEl = document.getElementById("food-entry");
+      var weekDaysEl = document.querySelector(".week__days");
+      if (foodEntryEl) io.observe(foodEntryEl);
+      if (weekDaysEl) io.observe(weekDaysEl);
+    }
+  }
+
   function weekSummaryIconHtml(kind) {
     if (kind === "week") {
       return (
@@ -19355,11 +19491,13 @@
 
     var week = emptyTotals();
     var html = "";
+    var dayTotals = [];
 
     DAYS.forEach(function (day) {
       var el = document.getElementById(day.id);
       var text = el ? el.value : "";
       var totals = totalsFromText(text);
+      dayTotals.push(totals);
       week = addTotals(week, totals);
       html += dashboardCardHtml(day.label, totals, day.id, dateLabelForDayId(day.id));
     });
@@ -19367,6 +19505,8 @@
     dashboardGridEl.innerHTML = html;
     lastWeekTotals = week;
     syncDashboardCarouselAfterRender();
+    renderMacrosCondensed(dayTotals);
+    scheduleMacrosCondensedVisibilitySync();
     if (weekTotalOpen) {
       renderWeekSummary(week);
     }
@@ -27052,7 +27192,9 @@
     setOpen(nextOpen);
     if (nextOpen) {
       window.requestAnimationFrame(function () {
-        scrollDashboardJumpTarget(panelEl);
+        window.requestAnimationFrame(function () {
+          scrollDashboardJumpTarget(panelEl);
+        });
       });
     }
   }
@@ -27280,6 +27422,7 @@
   if (dashboardFoodEntryJumpEl) {
     dashboardFoodEntryJumpEl.addEventListener("click", function () {
       scrollDashboardJumpTarget(document.getElementById("food-entry"));
+      window.setTimeout(scheduleMacrosCondensedVisibilitySync, 350);
     });
   }
 
@@ -28934,6 +29077,7 @@
     initDaysCarousel();
     initDashboardCarousel();
     initStickyFiltersCarousel();
+    initMacrosCondensedVisibility();
     initLongevityNav();
     initTargetRefPopoverEvents();
     applyLoadedAppStateToUi();

@@ -915,9 +915,109 @@ body.app-nav-shortcuts-visible [data-app-shortcut] > .app-nav__shortcut {
 #food-entry,
 #food-definitions-heading,
 #week-summary,
+#dashboard-macros-condensed,
 #dashboard-micro-panel,
 #dashboard-longevity-panel {
   scroll-margin-top: 3.5rem;
+}
+
+.dashboard > #dashboard-macros-condensed {
+  margin-top: 0.85rem;
+}
+
+.dashboard > #food-entry {
+  margin-top: 0.45rem;
+}
+
+.dashboard > .week__days {
+  margin-bottom: 1.1rem;
+}
+
+.dashboard__macros-condensed {
+  margin: 0 0 0.35rem;
+  padding: 0.2rem 0 0.35rem;
+  border: none;
+  border-bottom: 1px solid #e6e6e2;
+  border-radius: 0;
+  background: transparent;
+}
+
+.dashboard__macros-condensed[hidden] {
+  display: none;
+}
+
+.dashboard__macros-condensed-head {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.15rem;
+}
+
+.dashboard__macros-condensed-title {
+  margin: 0;
+  font-size: 0.58rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #a3a39e;
+}
+
+.dashboard__macros-condensed-grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 0.15rem 0.35rem;
+}
+
+.dashboard__macros-condensed-day {
+  min-width: 0;
+  padding: 0.05rem 0.1rem;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  text-align: left;
+}
+
+.dashboard__macros-condensed-day--today {
+  border: none;
+  background: transparent;
+}
+
+.dashboard__macros-condensed-label {
+  display: block;
+  margin: 0;
+  font-size: 0.58rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: #9a9a96;
+  line-height: 1.2;
+}
+
+.dashboard__macros-condensed-day--today .dashboard__macros-condensed-label {
+  color: #6a86a4;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.12em;
+}
+
+.dashboard__macros-condensed-cal {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  color: #7a7a76;
+  line-height: 1.25;
+}
+
+.dashboard__macros-condensed-macros {
+  display: block;
+  margin-top: 0;
+  font-size: 0.55rem;
+  font-variant-numeric: tabular-nums;
+  color: #b0b0aa;
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .dashboard__micro-panel {
@@ -11234,7 +11334,8 @@ button.longevity-form__label-link:focus-visible {
 
 @media (max-width: 1100px) {
   .dashboard__grid,
-  .dashboard__micro-daily-grid {
+  .dashboard__micro-daily-grid,
+  .dashboard__macros-condensed-grid {
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 
@@ -11245,7 +11346,8 @@ button.longevity-form__label-link:focus-visible {
 
 @media (max-width: 900px) {
   .dashboard__grid,
-  .dashboard__micro-daily-grid {
+  .dashboard__micro-daily-grid,
+  .dashboard__macros-condensed-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
@@ -11360,6 +11462,19 @@ button.longevity-form__label-link:focus-visible {
     letter-spacing: 0.04em;
     text-transform: uppercase;
     color: #444;
+  }
+
+  .dashboard__macros-condensed-grid {
+    display: flex;
+    gap: 0.55rem;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+  }
+
+  .dashboard__macros-condensed-day {
+    flex: 0 0 auto;
+    min-width: 3.2rem;
   }
 
   .dashboard__grid {
@@ -11637,6 +11752,7 @@ button.longevity-form__label-link:focus-visible {
   #dashboard-grid,
   #food-entry,
   #week-summary,
+  #dashboard-macros-condensed,
   #dashboard-micro-panel,
   #dashboard-longevity-panel {
     scroll-margin-top: 0.75rem;
@@ -11659,6 +11775,7 @@ button.longevity-form__label-link:focus-visible {
   .app-nav,
   .dashboard__print,
   .dashboard__days-carousel-nav,
+  .dashboard__macros-condensed,
   .week__days-actions,
   .week__days-carousel-nav,
   .week__nav,
@@ -11858,6 +11975,7 @@ body.print-preview .week {
 body.print-preview .app-nav,
 body.print-preview .dashboard__print,
 body.print-preview .dashboard__days-carousel-nav,
+body.print-preview .dashboard__macros-condensed,
 body.print-preview .week__days-actions,
 body.print-preview .week__days-carousel-nav,
 body.print-preview .week__nav,
