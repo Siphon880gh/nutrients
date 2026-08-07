@@ -15,6 +15,7 @@
       "label": "Bread & crackers",
       "patterns": [
         "^Bread,",
+        "^Bagel,",
         "^Wonder Classic White Bread",
         "^Saltines",
         "^Kroger Saltines",

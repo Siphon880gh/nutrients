@@ -32177,5 +32177,259 @@
       "refinedCarbs": 0,
       "netCarbs": 2.4
     }
+  },
+  {
+    "name": "Bagel, Plain - 1 bagel (105 g)",
+    "protein": 11.1,
+    "carbs": 55,
+    "fats": 1.4,
+    "micros": {
+      "sodium": 443,
+      "potassium": 112,
+      "calcium": 230,
+      "iron": 3.7,
+      "magnesium": 30.5,
+      "zinc": 0.87,
+      "copper": 134,
+      "manganese": 0.57,
+      "selenium": 22.6,
+      "phosphorus": 104,
+      "thiamin": 0.6,
+      "riboflavin": 0.36,
+      "niacin": 4.7,
+      "pantothenicAcid": 0.43,
+      "vitaminB6": 0.07,
+      "folate": 171,
+      "choline": 15.3,
+      "vitaminC": 0,
+      "vitaminA": 0,
+      "vitaminD": 0,
+      "vitaminB12": 0,
+      "vitaminK": 0.21,
+      "vitaminK1": 0.21,
+      "vitaminK2": 0,
+      "vitaminK2MK4": 0,
+      "vitaminK2MK7": 0,
+      "fiber": 1.7,
+      "solubleFiber": 0.4,
+      "insolubleFiber": 1.3,
+      "omega3": 0.025,
+      "omega6": 0.53
+    },
+    "longevity": {
+      "saturatedFat": 0.38,
+      "monounsaturatedFat": 0.41,
+      "polyunsaturatedFat": 0.55,
+      "transFat": 0.02,
+      "cholesterol": 0,
+      "ala": 0.025,
+      "linoleicAcid": 0.53,
+      "oleicAcid": 0.2,
+      "omega3": true,
+      "omega6": true,
+      "copper": true,
+      "selenium": true,
+      "phosphorus": true,
+      "choline": true,
+      "vitaminK": true,
+      "vitaminK1": true,
+      "vitaminK2": true,
+      "vitaminK2MK4": true,
+      "vitaminK2MK7": true
+    },
+    "carbQuality": {
+      "glycemicIndex": 72,
+      "addedSugar": 0,
+      "refinedCarbs": 53.3,
+      "netCarbs": 53.3
+    }
+  },
+  {
+    "name": "Bagel, Plain - 1/2 bagel (53 g)",
+    "protein": 5.6,
+    "carbs": 27.5,
+    "fats": 0.7,
+    "micros": {
+      "sodium": 222,
+      "potassium": 56,
+      "calcium": 115,
+      "iron": 1.9,
+      "magnesium": 15.3,
+      "zinc": 0.44,
+      "copper": 67,
+      "manganese": 0.29,
+      "selenium": 11.3,
+      "phosphorus": 52,
+      "thiamin": 0.3,
+      "riboflavin": 0.18,
+      "niacin": 2.4,
+      "pantothenicAcid": 0.22,
+      "vitaminB6": 0.04,
+      "folate": 86,
+      "choline": 7.7,
+      "vitaminC": 0,
+      "vitaminA": 0,
+      "vitaminD": 0,
+      "vitaminB12": 0,
+      "vitaminK": 0.11,
+      "vitaminK1": 0.11,
+      "vitaminK2": 0,
+      "vitaminK2MK4": 0,
+      "vitaminK2MK7": 0,
+      "fiber": 0.9,
+      "solubleFiber": 0.2,
+      "insolubleFiber": 0.7,
+      "omega3": 0.013,
+      "omega6": 0.26
+    },
+    "longevity": {
+      "saturatedFat": 0.19,
+      "monounsaturatedFat": 0.21,
+      "polyunsaturatedFat": 0.28,
+      "transFat": 0.01,
+      "cholesterol": 0,
+      "ala": 0.013,
+      "linoleicAcid": 0.26,
+      "oleicAcid": 0.1,
+      "omega3": true,
+      "omega6": true,
+      "copper": true,
+      "selenium": true,
+      "phosphorus": true,
+      "choline": true,
+      "vitaminK": true,
+      "vitaminK1": true,
+      "vitaminK2": true,
+      "vitaminK2MK4": true,
+      "vitaminK2MK7": true
+    },
+    "carbQuality": {
+      "glycemicIndex": 72,
+      "addedSugar": 0,
+      "refinedCarbs": 26.6,
+      "netCarbs": 26.6
+    }
+  },
+  {
+    "name": "Bagel, Cheese - 1 bagel (85 g)",
+    "protein": 9,
+    "carbs": 38,
+    "fats": 4.5,
+    "micros": {
+      "sodium": 430,
+      "potassium": 60,
+      "calcium": 150,
+      "iron": 2.7,
+      "thiamin": 0.85,
+      "riboflavin": 0.26,
+      "niacin": 4,
+      "vitaminA": 30,
+      "vitaminC": 0,
+      "fiber": 1,
+      "solubleFiber": 0.25,
+      "insolubleFiber": 0.75
+    },
+    "longevity": {
+      "saturatedFat": 2,
+      "monounsaturatedFat": 0.5,
+      "polyunsaturatedFat": 0.5,
+      "transFat": 0,
+      "cholesterol": 10
+    },
+    "carbQuality": {
+      "glycemicIndex": 70,
+      "addedSugar": 3,
+      "refinedCarbs": 37,
+      "netCarbs": 37
+    }
+  },
+  {
+    "name": "Bagel, Cheese - 1/2 bagel (43 g)",
+    "protein": 4.5,
+    "carbs": 19,
+    "fats": 2.3,
+    "micros": {
+      "sodium": 215,
+      "potassium": 30,
+      "calcium": 75,
+      "iron": 1.4,
+      "thiamin": 0.43,
+      "riboflavin": 0.13,
+      "niacin": 2,
+      "vitaminA": 15,
+      "vitaminC": 0,
+      "fiber": 0.5,
+      "solubleFiber": 0.13,
+      "insolubleFiber": 0.37
+    },
+    "longevity": {
+      "saturatedFat": 1,
+      "monounsaturatedFat": 0.25,
+      "polyunsaturatedFat": 0.25,
+      "transFat": 0,
+      "cholesterol": 5
+    },
+    "carbQuality": {
+      "glycemicIndex": 70,
+      "addedSugar": 1.5,
+      "refinedCarbs": 18.5,
+      "netCarbs": 18.5
+    }
+  },
+  {
+    "name": "Bagel, Everything - 1 bagel (95 g)",
+    "protein": 9,
+    "carbs": 53,
+    "fats": 4,
+    "micros": {
+      "sodium": 420,
+      "potassium": 120,
+      "calcium": 100,
+      "iron": 2,
+      "fiber": 2,
+      "solubleFiber": 0.5,
+      "insolubleFiber": 1.5
+    },
+    "longevity": {
+      "saturatedFat": 0.5,
+      "monounsaturatedFat": 1,
+      "polyunsaturatedFat": 1.5,
+      "transFat": 0,
+      "cholesterol": 0
+    },
+    "carbQuality": {
+      "glycemicIndex": 64,
+      "addedSugar": 5,
+      "refinedCarbs": 51,
+      "netCarbs": 51
+    }
+  },
+  {
+    "name": "Bagel, Everything - 1/2 bagel (48 g)",
+    "protein": 4.5,
+    "carbs": 26.5,
+    "fats": 2,
+    "micros": {
+      "sodium": 210,
+      "potassium": 60,
+      "calcium": 50,
+      "iron": 1,
+      "fiber": 1,
+      "solubleFiber": 0.25,
+      "insolubleFiber": 0.75
+    },
+    "longevity": {
+      "saturatedFat": 0.25,
+      "monounsaturatedFat": 0.5,
+      "polyunsaturatedFat": 0.75,
+      "transFat": 0,
+      "cholesterol": 0
+    },
+    "carbQuality": {
+      "glycemicIndex": 64,
+      "addedSugar": 2.5,
+      "refinedCarbs": 25.5,
+      "netCarbs": 25.5
+    }
   }
 ]
