@@ -25205,6 +25205,7 @@
       '<button type="button" class="day__add-food" data-action="open-add-food" data-day-id="' +
       escapeAttr(dayId) +
       '">Add food</button>' +
+      '<div class="day__guided-footer-secondary">' +
       '<div class="day__guided-others">' +
       '<button type="button" class="day__add-others" data-action="toggle-guided-others" data-day-id="' +
       escapeAttr(dayId) +
@@ -25225,6 +25226,7 @@
       '" aria-pressed="' +
       (rearrangeOn ? "true" : "false") +
       '">Rearrange</button>' +
+      "</div>" +
       "</div>"
     );
   }
@@ -25347,9 +25349,10 @@
       '">' +
       dayGuidedDragHandleHtml(dayId, entry.lineIndex, entryPos) +
       '<span class="day__food-item-name" title="' +
-      escapeAttr(entry.text) +
+      escapeAttr(entry.text + " (not in definitions)") +
       '">' +
-      escapeHtml(entry.text + " (not in definitions)") +
+      escapeHtml(entry.text) +
+      '<span class="day__food-item-unmatched-hint"> not in definitions</span>' +
       "</span>" +
       (rearrange
         ? ""

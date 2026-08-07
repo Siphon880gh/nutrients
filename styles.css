@@ -15,7 +15,7 @@ body {
 }
 
 .week {
-  max-width: 1400px;
+  max-width: 1480px;
   margin: 0 auto;
   padding: 0 1rem 2rem;
 }
@@ -318,21 +318,25 @@ body {
 .week__days-favorite-week {
   display: flex;
   justify-content: flex-start;
+  align-items: center;
+  padding: 0.55rem 0.65rem 0.5rem;
+  border-bottom: 1px solid #ddd9d2;
+  background: #f3f2ee;
 }
 
 .week__days-favorite-week-btn {
   display: inline-flex;
   align-items: center;
-  min-height: 1.5rem;
-  padding: 0.15rem 0.45rem;
+  min-height: 1.65rem;
+  padding: 0.2rem 0.55rem;
   font: inherit;
-  font-size: 0.72rem;
+  font-size: 0.75rem;
   font-weight: 600;
   line-height: 1.2;
   cursor: pointer;
   border: 1px solid #c8c8c4;
   border-radius: 4px;
-  background: #fafaf8;
+  background: #fff;
   color: #555;
 }
 
@@ -6832,13 +6836,26 @@ button.dashboard__longevity-name:focus-visible {
   }
 }
 
+.week__entry-tools {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  margin: 0 0 0.85rem;
+  padding: 0.7rem 0.8rem 0.65rem;
+  border: 1px solid #c8c8c4;
+  border-radius: 8px;
+  background: #fff;
+  position: relative;
+  z-index: 10;
+}
+
 .week__days-toolbar {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
-  gap: 0.75rem;
+  gap: 0.75rem 1rem;
   flex-wrap: wrap;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0;
   position: relative;
   z-index: 10;
 }
@@ -7027,8 +7044,14 @@ button.dashboard__longevity-name:focus-visible {
 }
 
 .week__highlight-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.45rem 0.65rem;
   font-size: 80%;
-  margin-bottom: 0.35rem;
+  margin: 0;
+  padding-top: 0.55rem;
+  border-top: 1px solid #e6e6e2;
 }
 
 .week__unmatched-lines {
@@ -7194,10 +7217,7 @@ button.dashboard__longevity-name:focus-visible {
   background: rgba(0, 0, 0, 0.04);
 }
 
-.week__clear-all,
-.day__clear,
-.day__copy-toggle,
-.day__favorite {
+.week__clear-all {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -7214,22 +7234,48 @@ button.dashboard__longevity-name:focus-visible {
   color: #9a9a96;
 }
 
-.week__clear-all:hover:not(:disabled),
-.day__clear:hover:not(:disabled) {
+.day__clear,
+.day__copy-toggle,
+.day__favorite {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 1.45rem;
+  padding: 0.15rem 0.4rem;
+  font: inherit;
+  font-size: 0.68rem;
+  font-weight: 600;
+  line-height: 1.1;
+  cursor: pointer;
+  border: 1px solid #d4d4d0;
+  border-radius: 4px;
+  background: #fff;
+  color: #5c5c5c;
+}
+
+.week__clear-all:hover:not(:disabled) {
   color: #7a4a4a;
   background: rgba(0, 0, 0, 0.04);
+}
+
+.day__clear:hover:not(:disabled) {
+  color: #7a4a4a;
+  border-color: #d0b0b0;
+  background: #faf4f4;
 }
 
 .day__favorite:hover:not(:disabled),
 .day__favorite[aria-pressed="true"] {
   color: #1f5c53;
-  background: rgba(42, 122, 110, 0.08);
+  border-color: #7aafa6;
+  background: #eef7f5;
 }
 
 .day__copy-toggle:hover:not(:disabled),
 .day__copy-toggle[aria-expanded="true"] {
   color: #3d6b9e;
-  background: rgba(0, 0, 0, 0.04);
+  border-color: #9bb6d4;
+  background: #eef4fa;
 }
 
 .week__clear-all:disabled,
@@ -7312,8 +7358,12 @@ button.dashboard__longevity-name:focus-visible {
 .week__days {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0;
   min-width: 0;
+  border: 1px solid #b8b7b0;
+  border-radius: 8px;
+  background: #e4e3dd;
+  overflow: visible;
 }
 
 .week__days-carousel-nav {
@@ -7323,9 +7373,10 @@ button.dashboard__longevity-name:focus-visible {
 .week__grid {
   display: grid;
   grid-template-columns: repeat(7, minmax(0, 1fr));
-  gap: 0.75rem;
+  gap: 0.55rem;
   min-height: 8rem;
   overflow-x: auto;
+  padding: 0.55rem;
 }
 
 .week__grid.week__grid--day-focus {
@@ -7349,52 +7400,72 @@ button.dashboard__longevity-name:focus-visible {
 .day {
   display: flex;
   flex-direction: column;
-  gap: 0.35rem;
+  gap: 0;
   min-height: 0;
   min-width: 0;
+  border: 1px solid #c8c8c4;
+  border-radius: 7px;
+  background: #fff;
+  box-shadow: 0 1px 0 rgba(26, 26, 26, 0.04);
 }
 
 .day__head {
   display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 0.35rem;
-  min-height: 2.1rem;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+  gap: 0.4rem;
+  min-height: 0;
+  padding: 0.5rem 0.5rem 0.45rem;
+  border-bottom: 1px solid #e2e2de;
+  background: #f6f5f1;
+  border-radius: 7px 7px 0 0;
 }
 
 .day__head-text {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 0.05rem;
+  gap: 0.1rem;
   min-width: 0;
-  min-height: 2.1rem;
+  min-height: 0;
 }
 
 .day__head-actions {
   display: inline-flex;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
   align-items: center;
-  justify-content: flex-end;
-  gap: 0.05rem;
+  justify-content: flex-start;
+  gap: 0.25rem;
   flex-shrink: 0;
-  min-height: 2.1rem;
+  min-height: 0;
 }
 
 .day__label {
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.04em;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
   text-transform: uppercase;
-  color: #444;
+  color: #2a2a28;
+  line-height: 1.15;
 }
 
 .day__date {
-  font-size: 0.65rem;
-  font-weight: 400;
+  font-size: 0.72rem;
+  font-weight: 500;
   letter-spacing: 0.01em;
-  color: #8a8a86;
+  color: #6e6e6a;
   line-height: 1.2;
+}
+
+.day--today {
+  border-color: #7a9ab8;
+  box-shadow: 0 0 0 1px rgba(61, 107, 158, 0.18);
+}
+
+.day--today .day__head {
+  background: #e8eef6;
+  border-bottom-color: #c5d4e6;
 }
 
 .day--today .day__label {
@@ -7409,8 +7480,18 @@ button.dashboard__longevity-name:focus-visible {
 }
 
 .day--today .day__editor {
-  border-color: #3d6b9e;
+  border-color: transparent;
   background: #f5f8fc;
+}
+
+.day--favorite-day {
+  border-color: #7aafa6;
+  box-shadow: 0 0 0 1px rgba(42, 122, 110, 0.16);
+}
+
+.day--favorite-day .day__head {
+  background: #e8f4f1;
+  border-bottom-color: #c5ddd8;
 }
 
 .day--favorite-day .day__label {
@@ -7425,8 +7506,18 @@ button.dashboard__longevity-name:focus-visible {
 }
 
 .day--favorite-day .day__editor {
-  border-color: #2a7a6e;
+  border-color: transparent;
   background: #eef7f5;
+}
+
+.day--today.day--favorite-day {
+  border-color: #7aafa6;
+  box-shadow: 0 0 0 1px rgba(42, 122, 110, 0.16);
+}
+
+.day--today.day--favorite-day .day__head {
+  background: linear-gradient(180deg, #e8eef6 0%, #e8f4f1 100%);
+  border-bottom-color: #c5d4e6;
 }
 
 .day--today.day--favorite-day .day__label {
@@ -7438,8 +7529,8 @@ button.dashboard__longevity-name:focus-visible {
 }
 
 .day--today.day--favorite-day .day__editor {
-  border-color: #2a7a6e;
-  background: #eef7f5;
+  border-color: transparent;
+  background: linear-gradient(180deg, #f5f8fc 0%, #eef7f5 100%);
 }
 
 .day__editor {
@@ -7451,8 +7542,8 @@ button.dashboard__longevity-name:focus-visible {
   min-height: 6rem;
   max-height: 80vh;
   resize: both;
-  border: 1px solid #c8c8c4;
-  border-radius: 6px;
+  border: none;
+  border-radius: 0 0 7px 7px;
   background: #fff;
   overflow: hidden;
 }
@@ -7466,17 +7557,29 @@ body.day-entry-guided .week__advanced-only {
 }
 
 .week__entry-mode-toggle {
+  width: auto;
+  height: auto;
   min-width: 4.75rem;
+  min-height: 1.5rem;
   padding: 0.2rem 0.55rem;
   font-size: 0.6875rem;
   font-weight: 600;
   letter-spacing: 0.02em;
   text-transform: uppercase;
+  border-color: #c8c8c4;
+  background: #fff;
+  color: #5c5c5c;
+}
+
+.week__entry-mode-toggle:hover {
+  border-color: #9bb6d4;
+  background: #eef4fa;
+  color: #3d6b9e;
 }
 
 .week__entry-mode-toggle[aria-pressed="true"] {
-  color: #3d6b9e;
-  background: rgba(61, 107, 158, 0.12);
+  color: #2a4a6e;
+  background: #e8eef4;
   border-color: #3d6b9e;
 }
 
@@ -7490,8 +7593,8 @@ body.day-entry-guided .week__advanced-only {
   min-height: 6rem;
   max-height: 80vh;
   resize: both;
-  border: 1px solid #c8c8c4;
-  border-radius: 6px;
+  border: none;
+  border-radius: 0 0 7px 7px;
   background: #fff;
   overflow: hidden;
 }
@@ -7501,17 +7604,17 @@ body.day-entry-guided .day__guided {
 }
 
 .day--today .day__guided {
-  border-color: #9bb6d4;
+  border-color: transparent;
   background: #f7fafc;
 }
 
 .day--favorite-day .day__guided {
-  border-color: #7aafa6;
+  border-color: transparent;
   background: #f4faf8;
 }
 
 .day--today.day--favorite-day .day__guided {
-  border-color: #7a9fbc;
+  border-color: transparent;
   background: linear-gradient(180deg, #f7fafc 0%, #f4faf8 100%);
 }
 
@@ -7526,68 +7629,84 @@ body.day-entry-guided .day__guided {
 .day__food-list {
   list-style: none;
   margin: 0;
-  padding: 0.35rem 0.4rem;
+  padding: 0.2rem 0;
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
+  gap: 0;
   position: relative;
 }
 
 .day__food-item {
   display: flex;
-  align-items: center;
-  gap: 0.3rem;
-  padding: 0.35rem 0.4rem;
-  border-radius: 5px;
-  background: #f7f7f5;
-  border: 1px solid #ececea;
+  align-items: flex-start;
+  gap: 0.35rem;
+  padding: 0.4rem 0.55rem;
+  border-radius: 0;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid #ececea;
   min-width: 0;
   position: relative;
 }
 
-.day__food-item--food {
-  background: #fff;
+.day__food-item--food:hover,
+.day__food-item--food:focus-within,
+.day__food-item--food.day__food-item--active {
+  background: #f7f7f4;
+}
+
+.day__food-item:last-child {
+  border-bottom: none;
 }
 
 .day__food-item--comment {
-  background: transparent;
-  border-color: transparent;
+  background: #f0efeb;
+  border-bottom-color: #ddd9d2;
   border-radius: 0;
-  padding: 0.55rem 0.25rem 0.2rem;
-  margin-top: 0.45rem;
+  padding: 0.5rem 0.55rem 0.4rem;
+  margin-top: 0.35rem;
+}
+
+.day__food-item--comment:first-child {
+  margin-top: 0;
 }
 
 .day__food-item--divider {
   background: transparent;
-  border-color: transparent;
+  border-bottom: none;
   min-height: 0;
-  padding: 0.12rem 0.4rem;
+  padding: 0.55rem 0.55rem 0.45rem;
+  margin: 0.15rem 0 0.05rem;
 }
 
 .day__food-item--unmatched {
   background: #fbf6f0;
-  border-color: #e8d9c4;
+  border-bottom-color: #e8d9c4;
 }
 
 .day__food-item-name {
   flex: 1 1 auto;
   min-width: 0;
-  font-size: 0.75rem;
-  line-height: 1.3;
+  font-size: 0.78rem;
+  line-height: 1.35;
   color: #1a1a1a;
-  text-align: center;
+  text-align: left;
   overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  word-break: break-word;
 }
 
 .day__food-item--comment .day__food-item-name {
-  color: #1c1c1a;
-  font-size: 0.9rem;
+  color: #2a2a28;
+  font-size: 0.72rem;
   font-weight: 700;
   font-style: normal;
-  letter-spacing: 0.01em;
-  line-height: 1.2;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  line-height: 1.25;
+  -webkit-line-clamp: 3;
 }
 
 .day__food-item-divider {
@@ -7605,16 +7724,17 @@ body.day-entry-guided .day__guided {
   height: 0;
   margin: 0;
   border: none;
-  border-top: 1px solid #6e6e6a;
+  border-top: 2px solid #b8b8b2;
 }
 
 .day__guided--rearrange .day__food-item--comment,
 .day__guided--rearrange .day__food-item--divider {
-  background: #f7f7f5;
-  border: 1px solid #ececea;
-  border-radius: 5px;
-  padding-left: 0.4rem;
-  padding-right: 0.4rem;
+  background: #f0efeb;
+  border: none;
+  border-bottom: 1px solid #ddd9d2;
+  border-radius: 0;
+  padding-left: 0.55rem;
+  padding-right: 0.55rem;
 }
 
 .day__guided--rearrange .day__food-item-divider-line {
@@ -7622,7 +7742,17 @@ body.day-entry-guided .day__guided {
 }
 
 .day__food-item--unmatched .day__food-item-name {
-  color: #7a5a2e;
+  color: #5c4a2e;
+}
+
+.day__food-item-unmatched-hint {
+  display: inline;
+  font-size: 0.68em;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  text-transform: none;
+  color: #9a7a4a;
+  opacity: 0.9;
 }
 
 .day__food-item-servings {
@@ -7630,12 +7760,13 @@ body.day-entry-guided .day__guided {
   align-items: center;
   gap: 0.15rem;
   flex: 0 0 auto;
+  margin-top: 0.05rem;
 }
 
 .day__food-item-servings-input,
 .add-food-modal__servings-input {
   width: 2.6rem;
-  height: 1.35rem;
+  height: 1.4rem;
   padding: 0 0.2rem;
   border: 1px solid #c8c8c4;
   border-radius: 4px;
@@ -7643,15 +7774,19 @@ body.day-entry-guided .day__guided {
   color: #1a1a1a;
   font: inherit;
   font-size: 0.75rem;
+  font-variant-numeric: tabular-nums;
   text-align: center;
 }
 
 /* Idle: show servings as plain text; hide × until hover / focus / click */
 .day__food-item-servings-input {
   border-color: transparent;
-  background: transparent;
+  background: #f3f3f0;
+  border-radius: 4px;
   pointer-events: none;
   cursor: default;
+  font-weight: 600;
+  color: #444;
 }
 
 .day__food-item-edit,
@@ -7722,10 +7857,11 @@ body.day-entry-guided .day__guided {
 
 .day__guided-empty {
   margin: 0;
-  padding: 1.25rem 0.75rem;
+  padding: 1.5rem 0.85rem;
   text-align: center;
-  font-size: 0.75rem;
-  color: #9a9a96;
+  font-size: 0.78rem;
+  line-height: 1.4;
+  color: #8a8a86;
 }
 
 .day__guided-empty[hidden] {
@@ -7734,9 +7870,9 @@ body.day-entry-guided .day__guided {
 
 .day__guided-footer {
   flex: 0 0 auto;
-  padding: 0.4rem 0.45rem;
-  border-top: 1px solid #ececea;
-  background: #fafaf8;
+  padding: 0.45rem 0.5rem 0.5rem;
+  border-top: 1px solid #ddd9d2;
+  background: #f3f2ee;
 }
 
 .day__add-food {
@@ -7744,27 +7880,35 @@ body.day-entry-guided .day__guided {
   align-items: center;
   justify-content: center;
   width: 100%;
-  min-height: 2rem;
+  min-height: 2.05rem;
   padding: 0.35rem 0.5rem;
-  border: 1px dashed #b0b0aa;
+  border: 1px solid #3d6b9e;
   border-radius: 5px;
-  background: #fff;
-  color: #3d6b9e;
+  background: #eef4fa;
+  color: #2a4a6e;
   font: inherit;
-  font-size: 0.75rem;
-  font-weight: 600;
+  font-size: 0.78rem;
+  font-weight: 700;
   cursor: pointer;
 }
 
 .day__add-food:hover {
-  background: #eef4fa;
-  border-color: #3d6b9e;
+  background: #dde8f4;
+  border-color: #2a4a6e;
   border-style: solid;
+}
+
+.day__guided-footer-secondary {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.3rem;
+  margin-top: 0.35rem;
 }
 
 .day__guided-others {
   position: relative;
-  margin-top: 0.3rem;
+  margin-top: 0;
+  min-width: 0;
 }
 
 .day__add-others {
@@ -7772,9 +7916,9 @@ body.day-entry-guided .day__guided {
   align-items: center;
   justify-content: center;
   width: 100%;
-  min-height: 1.7rem;
-  padding: 0.25rem 0.5rem;
-  border: 1px solid #d0d0ca;
+  min-height: 1.75rem;
+  padding: 0.25rem 0.35rem;
+  border: 1px solid #c8c8c4;
   border-radius: 5px;
   background: #fff;
   color: #5c5c5c;
@@ -7796,10 +7940,10 @@ body.day-entry-guided .day__guided {
   align-items: center;
   justify-content: center;
   width: 100%;
-  min-height: 1.7rem;
-  margin-top: 0.3rem;
-  padding: 0.25rem 0.5rem;
-  border: 1px solid #d0d0ca;
+  min-height: 1.75rem;
+  margin-top: 0;
+  padding: 0.25rem 0.35rem;
+  border: 1px solid #c8c8c4;
   border-radius: 5px;
   background: #fff;
   color: #5c5c5c;
@@ -11577,6 +11721,9 @@ button.longevity-form__label-link:focus-visible {
     grid-template-columns: auto minmax(0, 1fr) auto;
     gap: 0.5rem;
     align-items: center;
+    padding: 0.45rem 0.55rem;
+    border-bottom: 1px solid #ddd9d2;
+    background: #f3f2ee;
   }
 
   .week__days-carousel-adj {
@@ -11621,7 +11768,7 @@ button.longevity-form__label-link:focus-visible {
 
   .week__grid {
     display: flex;
-    gap: 0;
+    gap: 0.55rem;
     height: auto;
     overflow-x: auto;
     overflow-y: hidden;
@@ -11630,6 +11777,7 @@ button.longevity-form__label-link:focus-visible {
     -webkit-overflow-scrolling: touch;
     overscroll-behavior-x: contain;
     scrollbar-width: none;
+    padding: 0.55rem;
   }
 
   .week__grid::-webkit-scrollbar {
@@ -11637,16 +11785,17 @@ button.longevity-form__label-link:focus-visible {
   }
 
   .week__grid .day {
-    flex: 0 0 100%;
+    flex: 0 0 calc(100% - 0.05rem);
     box-sizing: border-box;
-    width: 100%;
-    min-width: 100%;
-    max-width: 100%;
+    width: calc(100% - 0.05rem);
+    min-width: calc(100% - 0.05rem);
+    max-width: calc(100% - 0.05rem);
     scroll-snap-align: start;
     scroll-snap-stop: always;
   }
 
-  .day__editor {
+  .day__editor,
+  .day__guided {
     flex: none;
     width: auto;
     min-width: 0;
@@ -11779,6 +11928,7 @@ button.longevity-form__label-link:focus-visible {
   .week__days-actions,
   .week__days-carousel-nav,
   .week__nav,
+  .week__entry-tools,
   .week__days-favorite-week,
   .favorites-sidebar,
   .day__clear,
@@ -11979,6 +12129,7 @@ body.print-preview .dashboard__macros-condensed,
 body.print-preview .week__days-actions,
 body.print-preview .week__days-carousel-nav,
 body.print-preview .week__nav,
+body.print-preview .week__entry-tools,
 body.print-preview .week__days-favorite-week,
 body.print-preview .favorites-sidebar,
 body.print-preview .day__clear,

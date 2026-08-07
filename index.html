@@ -153,40 +153,42 @@
           Favorites
         </button>
       </div>
-      <div class="week__days-toolbar">
-        <p id="week-days-hint" class="week__days-hint">
-          Day meals are saved in this browser. Use <strong>Add food</strong> to pick from your food definitions, or <strong>Add Others</strong> for inserting headings and dividers. Turn on <strong>Advanced</strong> for free-text entry.
-        </p>
-        <div class="week__days-actions">
-          <button type="button" id="export-all-meals" class="week__meals-bulk">Export all</button>
-          <button type="button" id="import-all-meals" class="week__meals-bulk">Import all</button>
-          <button type="button" id="import-sample-meals" class="week__meals-bulk">Import sample</button>
-          <button type="button" id="find-lost-meals" class="week__meals-bulk">Find lost meals</button>
-          <button type="button" id="clear-all-days" class="week__clear-all">Clear all days</button>
+      <div class="week__entry-tools">
+        <div class="week__days-toolbar">
+          <p id="week-days-hint" class="week__days-hint">
+            Day meals are saved in this browser. Use <strong>Add food</strong> to pick from your food definitions, or <strong>Add Others</strong> for inserting headings and dividers. Turn on <strong>Advanced</strong> for free-text entry.
+          </p>
+          <div class="week__days-actions">
+            <button type="button" id="export-all-meals" class="week__meals-bulk">Export all</button>
+            <button type="button" id="import-all-meals" class="week__meals-bulk">Import all</button>
+            <button type="button" id="import-sample-meals" class="week__meals-bulk">Import sample</button>
+            <button type="button" id="find-lost-meals" class="week__meals-bulk">Find lost meals</button>
+            <button type="button" id="clear-all-days" class="week__clear-all">Clear all days</button>
+          </div>
         </div>
-      </div>
-      <div class="week__highlight-bar">
-        <div class="week__visibility-controls">
-          <button type="button" id="day-entry-advanced-toggle" class="week__highlight-toggle week__entry-mode-toggle" aria-pressed="false" aria-label="Turn advanced text entry on">
-            Advanced
-          </button>
-          <span class="week__advanced-only visually-hidden-off" onclick="this.nextElementSibling.click();">Food visibility:&nbsp;</span>
-          <button type="button" id="day-highlights-toggle" class="week__highlight-toggle week__advanced-only" aria-pressed="true" aria-label="Turn food highlighting off">
-            <svg class="week__highlight-toggle-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-              <path d="M15.7 3.3a1.8 1.8 0 0 1 2.5 0l2.5 2.5a1.8 1.8 0 0 1 0 2.5l-8.3 8.3-5.1 1.2 1.2-5.1 8.2-8.4ZM5.2 19.3h13.6a1 1 0 1 1 0 2H5.2a1 1 0 1 1 0-2Z"></path>
-            </svg>
-          </button>
-          <button type="button" id="day-word-wrap-toggle" class="week__highlight-toggle week__advanced-only" aria-pressed="true" aria-label="Turn word wrap off">
-            <svg class="week__highlight-toggle-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-              <path d="M4 19h6v-2H4v2Zm16-14H4v2h16V5Zm-3 6H4v2h13.25c1.1 0 2 .9 2 2s-.9 2-2 2H15v2l-3-3 3-3v2h2c2.21 0 4-1.79 4-4s-1.79-4-4-4Z"></path>
-            </svg>
-          </button>
+        <div class="week__highlight-bar">
+          <div class="week__visibility-controls">
+            <button type="button" id="day-entry-advanced-toggle" class="week__highlight-toggle week__entry-mode-toggle" aria-pressed="false" aria-label="Turn advanced text entry on">
+              Advanced
+            </button>
+            <span class="week__advanced-only visually-hidden-off" onclick="this.nextElementSibling.click();">Food visibility:&nbsp;</span>
+            <button type="button" id="day-highlights-toggle" class="week__highlight-toggle week__advanced-only" aria-pressed="true" aria-label="Turn food highlighting off">
+              <svg class="week__highlight-toggle-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M15.7 3.3a1.8 1.8 0 0 1 2.5 0l2.5 2.5a1.8 1.8 0 0 1 0 2.5l-8.3 8.3-5.1 1.2 1.2-5.1 8.2-8.4ZM5.2 19.3h13.6a1 1 0 1 1 0 2H5.2a1 1 0 1 1 0-2Z"></path>
+              </svg>
+            </button>
+            <button type="button" id="day-word-wrap-toggle" class="week__highlight-toggle week__advanced-only" aria-pressed="true" aria-label="Turn word wrap off">
+              <svg class="week__highlight-toggle-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M4 19h6v-2H4v2Zm16-14H4v2h16V5Zm-3 6H4v2h13.25c1.1 0 2 .9 2 2s-.9 2-2 2H15v2l-3-3 3-3v2h2c2.21 0 4-1.79 4-4s-1.79-4-4-4Z"></path>
+              </svg>
+            </button>
+          </div>
+          <span id="day-food-notes" class="week__food-notes" hidden>
+            <span class="week__food-notes-lead">Notes available for:</span>
+            <span id="day-food-notes-labels" class="week__food-notes-labels"></span>
+            <div id="day-food-notes-popover" class="week__food-notes-popover" role="tooltip" hidden></div>
+          </span>
         </div>
-        <span id="day-food-notes" class="week__food-notes" hidden>
-          <span class="week__food-notes-lead">Notes available for:</span>
-          <span id="day-food-notes-labels" class="week__food-notes-labels"></span>
-          <div id="day-food-notes-popover" class="week__food-notes-popover" role="tooltip" hidden></div>
-        </span>
       </div>
       <div id="day-unmatched-lines" class="week__unmatched-lines" hidden role="status"></div>
 
