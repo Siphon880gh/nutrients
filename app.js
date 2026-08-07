@@ -473,6 +473,16 @@
   var copyDateApplyBtn = document.getElementById("copy-date-apply");
   var copyDateCancelBtn = document.getElementById("copy-date-cancel");
   var copyDatePending = null;
+  var copyConflictModalEl = document.getElementById("copy-conflict-modal");
+  var copyConflictModalTitleEl = document.getElementById(
+    "copy-conflict-modal-title"
+  );
+  var copyConflictModalHintEl = document.getElementById(
+    "copy-conflict-modal-hint"
+  );
+  var copyConflictApplyBtn = document.getElementById("copy-conflict-apply");
+  var copyConflictCancelBtn = document.getElementById("copy-conflict-cancel");
+  var copyConflictPending = null;
   var EARLIEST_DIARY_DATE = "2026-05-01";
   var dayHighlightsToggleBtn = document.getElementById("day-highlights-toggle");
   var dayWordWrapToggleBtn = document.getElementById("day-word-wrap-toggle");
@@ -537,7 +547,7 @@
   var dayEntryAdvancedEnabled = false;
   var guidedRearrangeByDay = {};
   var WEEK_DAYS_HINT_GUIDED =
-    'Day meals are saved in this browser. Use <strong>Add food</strong> to pick from your food definitions, or <strong>Add Others</strong> for <code>//</code> comments and <code>---</code> dividers. Turn on <strong>Advanced</strong> for free-text entry.';
+    'Day meals are saved in this browser. Use <strong>Add food</strong> to pick from your food definitions, or <strong>Add Others</strong> for inserting headings and dividers. Turn on <strong>Advanced</strong> for free-text entry.';
   var WEEK_DAYS_HINT_ADVANCED =
     'Day meals are saved in this browser. You can add a multiplier at the end of a food (Eg. <code>* 2</code>), start a line with <code>//</code> or <code>#</code> for a comment, or use <code>---</code> as a divider.';
   var ADD_FOOD_PAGE_SIZE = 25;
@@ -10243,6 +10253,7 @@
       (importAllModalEl && !importAllModalEl.hidden) ||
       (weekJumpModalEl && !weekJumpModalEl.hidden) ||
       (copyDateModalEl && !copyDateModalEl.hidden) ||
+      (copyConflictModalEl && !copyConflictModalEl.hidden) ||
       (favoriteEditModalEl && !favoriteEditModalEl.hidden) ||
       (addFoodModalEl && !addFoodModalEl.hidden) ||
       isFavoritesSidebarOpen() ||
@@ -23392,6 +23403,28 @@
     else delete dayMealsByDate[dateKey];
   }
 
+  function appendMealTexts(existing, incoming) {
+    var a = String(existing || "").replace(/\s+$/, "");
+    var b = String(incoming || "").replace(/^\s+/, "").replace(/\s+$/, "");
+    if (!b) return a;
+    if (!a) return b;
+    return a + "\n" + b;
+  }
+
+  function getCopyDateConflictMode() {
+    var checked = document.querySelector(
+      '#copy-date-modal input[name="copy-date-conflict"]:checked'
+    );
+    return checked && checked.value === "replace" ? "replace" : "append";
+  }
+
+  function resetCopyDateConflictMode() {
+    var appendRadio = document.querySelector(
+      '#copy-date-modal input[name="copy-date-conflict"][value="append"]'
+    );
+    if (appendRadio) appendRadio.checked = true;
+  }
+
   function applyCopiedDayToEditorsIfNeeded(destKey, text) {
     if (!viewedWeekStart) return;
     var keys = weekDateKeys(viewedWeekStart);
@@ -23407,7 +23440,10 @@
     setViewedWeekStart(toDateKey(mondayOf(d)));
   }
 
-  function copyDayToDateKey(dayId, destKey, confirmLabel) {
+  function copyDayToDateKey(dayId, destKey, confirmLabel, options) {
+    options = options || {};
+    var mode = options.mode === "append" ? "append" : "replace";
+    var skipConfirm = !!options.skipConfirm;
     flushEditorsToDayMeals();
     var srcKey = dateKeyForDayId(dayId);
     if (!srcKey || !destKey || srcKey === destKey) return false;
@@ -23419,9 +23455,15 @@
       );
       return false;
     }
-    var text = dayMealsByDate[srcKey] || "";
+    var srcText = dayMealsByDate[srcKey] || "";
+    var text =
+      mode === "append"
+        ? appendMealTexts(dayMealsByDate[destKey] || "", srcText)
+        : srcText;
     if (
+      mode === "replace" &&
       destinationHasNotes(destKey) &&
+      !skipConfirm &&
       !confirmReplaceMeals(
         "Replace meals on " +
           (confirmLabel || destKey) +
@@ -23444,7 +23486,10 @@
     return true;
   }
 
-  function copyWeekToMondayKey(destMon, confirmLabel) {
+  function copyWeekToMondayKey(destMon, confirmLabel, options) {
+    options = options || {};
+    var mode = options.mode === "append" ? "append" : "replace";
+    var skipConfirm = !!options.skipConfirm;
     if (!viewedWeekStart) return false;
     destMon = clampWeekMondayKey(destMon);
     if (viewedWeekStart === destMon) return false;
@@ -23452,7 +23497,9 @@
     var srcKeys = weekDateKeys(viewedWeekStart);
     var destKeys = weekDateKeys(destMon);
     if (
+      mode === "replace" &&
       weekDestinationHasNotes(destMon) &&
+      !skipConfirm &&
       !confirmReplaceMeals(
         "Replace meals for " +
           (confirmLabel || formatWeekRangeLabel(destMon)) +
@@ -23462,36 +23509,144 @@
       return false;
     }
     for (var j = 0; j < srcKeys.length; j++) {
-      writeDateMeal(destKeys[j], dayMealsByDate[srcKeys[j]] || "");
+      var srcText = dayMealsByDate[srcKeys[j]] || "";
+      if (mode === "append") {
+        if (!String(srcText).trim()) continue;
+        writeDateMeal(
+          destKeys[j],
+          appendMealTexts(dayMealsByDate[destKeys[j]] || "", srcText)
+        );
+      } else {
+        writeDateMeal(destKeys[j], srcText);
+      }
     }
     saveDayNotes();
     setViewedWeekStart(destMon);
     return true;
   }
 
-  function copyDayToToday(dayId) {
+  function copyDayToToday(dayId, options) {
     copyDayToDateKey(
       dayId,
       todayDateKey(),
-      "today (" + formatDayDateLabel(new Date()) + ")"
+      "today (" + formatDayDateLabel(new Date()) + ")",
+      options
     );
   }
 
-  function copyDayToYesterday(dayId) {
+  function copyDayToYesterday(dayId, options) {
     var d = addDays(new Date(), -1);
-    copyDayToDateKey(dayId, toDateKey(d), "yesterday (" + formatDayDateLabel(d) + ")");
+    copyDayToDateKey(
+      dayId,
+      toDateKey(d),
+      "yesterday (" + formatDayDateLabel(d) + ")",
+      options
+    );
   }
 
-  function copyDayToTomorrow(dayId) {
+  function copyDayToTomorrow(dayId, options) {
     var d = addDays(new Date(), 1);
-    copyDayToDateKey(dayId, toDateKey(d), "tomorrow (" + formatDayDateLabel(d) + ")");
+    copyDayToDateKey(
+      dayId,
+      toDateKey(d),
+      "tomorrow (" + formatDayDateLabel(d) + ")",
+      options
+    );
   }
 
-  function copyViewedWeekToThisWeek() {
+  function copyViewedWeekToThisWeek(options) {
     copyWeekToMondayKey(
       currentWeekMondayKey(),
-      "this week (" + formatWeekRangeLabel(currentWeekMondayKey()) + ")"
+      "this week (" + formatWeekRangeLabel(currentWeekMondayKey()) + ")",
+      options
     );
+  }
+
+  function getCopyConflictMode() {
+    var checked = document.querySelector(
+      '#copy-conflict-modal input[name="copy-conflict-mode"]:checked'
+    );
+    return checked && checked.value === "replace" ? "replace" : "append";
+  }
+
+  function resetCopyConflictMode() {
+    var appendRadio = document.querySelector(
+      '#copy-conflict-modal input[name="copy-conflict-mode"][value="append"]'
+    );
+    if (appendRadio) appendRadio.checked = true;
+  }
+
+  function closeCopyConflictModal() {
+    if (!copyConflictModalEl) return;
+    copyConflictModalEl.hidden = true;
+    copyConflictPending = null;
+    updateBodyModalOpen();
+  }
+
+  function openCopyConflictModal(pending) {
+    if (!copyConflictModalEl || !pending) return;
+    closeAllDayCopyMenus();
+    closeCopyDateModal();
+    copyConflictPending = pending;
+    resetCopyConflictMode();
+    if (copyConflictModalTitleEl) {
+      copyConflictModalTitleEl.textContent = pending.title || "Copy meals";
+    }
+    if (copyConflictModalHintEl) {
+      copyConflictModalHintEl.textContent =
+        pending.hint ||
+        "Choose append or replace for " + (pending.label || "the destination") + ".";
+    }
+    copyConflictModalEl.hidden = false;
+    updateBodyModalOpen();
+    if (copyConflictApplyBtn) copyConflictApplyBtn.focus();
+  }
+
+  function runCopyConflictModalApply() {
+    if (!copyConflictPending) return;
+    var pending = copyConflictPending;
+    var copyOpts = { mode: getCopyConflictMode(), skipConfirm: true };
+    var ok = false;
+    if (pending.kind === "week") {
+      ok = copyWeekToMondayKey(pending.destMon, pending.label, copyOpts);
+    } else {
+      ok = copyDayToDateKey(
+        pending.dayId,
+        pending.destKey,
+        pending.label,
+        copyOpts
+      );
+    }
+    if (ok) closeCopyConflictModal();
+  }
+
+  function openCopyDayConflictModal(dayId, destKey, label, title) {
+    openCopyConflictModal({
+      kind: "day",
+      dayId: dayId,
+      destKey: destKey,
+      label: label,
+      title: title || "Copy this date",
+      hint:
+        "Copy to " +
+        label +
+        ". Append adds below existing food; Replace overwrites it.",
+    });
+  }
+
+  function openCopyWeekToThisWeekConflictModal() {
+    var mon = currentWeekMondayKey();
+    var label = "this week (" + formatWeekRangeLabel(mon) + ")";
+    openCopyConflictModal({
+      kind: "week",
+      destMon: mon,
+      label: label,
+      title: "Copy this week to this week",
+      hint:
+        "Copy the viewed week to " +
+        label +
+        ". Append adds below each day’s existing food; Replace overwrites those days.",
+    });
   }
 
   function parseTypedDate(raw) {
@@ -23622,6 +23777,17 @@
     closeWeekJumpModal();
   }
 
+  function showCopyDateError(message) {
+    if (!copyDateErrorEl) return;
+    if (!message) {
+      copyDateErrorEl.hidden = true;
+      copyDateErrorEl.textContent = "";
+      return;
+    }
+    copyDateErrorEl.hidden = false;
+    copyDateErrorEl.textContent = message;
+  }
+
   function closeCopyDateModal() {
     if (!copyDateModalEl) return;
     copyDateModalEl.hidden = true;
@@ -23633,10 +23799,12 @@
   function openCopyDateModal(mode, dayId) {
     if (!copyDateModalEl || !copyDateInputEl) return;
     closeAllDayCopyMenus();
+    closeCopyConflictModal();
     copyDatePending = { mode: mode, dayId: dayId };
     var earliest = earliestWeekMondayKey();
     copyDateInputEl.min = earliest;
     copyDateInputEl.value = todayDateKey();
+    resetCopyDateConflictMode();
     if (copyDateModalTitleEl) {
       copyDateModalTitleEl.textContent =
         mode === "week" ? "Copy to custom week" : "Copy to custom day";
@@ -23644,8 +23812,8 @@
     if (copyDateModalHintEl) {
       copyDateModalHintEl.textContent =
         mode === "week"
-          ? "Pick any date in the destination week (Mon–Sun). Meals copy Mon→Mon … Sun→Sun."
-          : "Pick the destination calendar day for this date’s meals.";
+          ? "Pick any date in the destination week (Mon–Sun). Meals copy Mon→Mon … Sun→Sun. Choose append or replace when the destination already has food."
+          : "Pick the destination calendar day for this date’s meals. Choose append or replace when that day already has food.";
     }
     showCopyDateError("");
     copyDateModalEl.hidden = false;
@@ -23671,17 +23839,21 @@
       return;
     }
     var pending = copyDatePending;
+    var conflictMode = getCopyDateConflictMode();
+    var copyOpts = { mode: conflictMode, skipConfirm: true };
     var ok = false;
     if (pending.mode === "week") {
       ok = copyWeekToMondayKey(
         toDateKey(mondayOf(d)),
-        formatWeekRangeLabel(toDateKey(mondayOf(d)))
+        formatWeekRangeLabel(toDateKey(mondayOf(d))),
+        copyOpts
       );
     } else {
       ok = copyDayToDateKey(
         pending.dayId,
         key,
-        formatDayDateLabel(d)
+        formatDayDateLabel(d),
+        copyOpts
       );
     }
     if (ok) closeCopyDateModal();
@@ -23690,7 +23862,7 @@
   function handleDayCopyAction(action, dayId) {
     closeAllDayCopyMenus();
     if (action === "copy-week-to-this-week") {
-      copyViewedWeekToThisWeek();
+      openCopyWeekToThisWeekConflictModal();
       return;
     }
     if (action === "copy-week-to-custom") {
@@ -23702,15 +23874,32 @@
       return;
     }
     if (action === "copy-day-to-today") {
-      copyDayToToday(dayId);
+      openCopyDayConflictModal(
+        dayId,
+        todayDateKey(),
+        "today (" + formatDayDateLabel(new Date()) + ")",
+        "Copy this date to today"
+      );
       return;
     }
     if (action === "copy-day-to-yesterday") {
-      copyDayToYesterday(dayId);
+      var yest = addDays(new Date(), -1);
+      openCopyDayConflictModal(
+        dayId,
+        toDateKey(yest),
+        "yesterday (" + formatDayDateLabel(yest) + ")",
+        "Copy this date to yesterday"
+      );
       return;
     }
     if (action === "copy-day-to-tomorrow") {
-      copyDayToTomorrow(dayId);
+      var tom = addDays(new Date(), 1);
+      openCopyDayConflictModal(
+        dayId,
+        toDateKey(tom),
+        "tomorrow (" + formatDayDateLabel(tom) + ")",
+        "Copy this date to tomorrow"
+      );
     }
   }
 
@@ -25938,6 +26127,10 @@
       closeCopyDateModal();
       return;
     }
+    if (copyConflictModalEl && !copyConflictModalEl.hidden) {
+      closeCopyConflictModal();
+      return;
+    }
     if (favoriteEditModalEl && !favoriteEditModalEl.hidden) {
       closeFavoriteEditModal();
       return;
@@ -26636,6 +26829,20 @@
       if (e.key === "Enter") {
         e.preventDefault();
         runCopyDateModalApply();
+      }
+    });
+  }
+
+  if (copyConflictApplyBtn) {
+    copyConflictApplyBtn.addEventListener("click", runCopyConflictModalApply);
+  }
+  if (copyConflictCancelBtn) {
+    copyConflictCancelBtn.addEventListener("click", closeCopyConflictModal);
+  }
+  if (copyConflictModalEl) {
+    copyConflictModalEl.addEventListener("click", function (e) {
+      if (e.target.closest('[data-action="close-copy-conflict-modal"]')) {
+        closeCopyConflictModal();
       }
     });
   }

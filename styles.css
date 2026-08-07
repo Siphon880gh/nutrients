@@ -7183,6 +7183,24 @@ button.dashboard__longevity-name:focus-visible {
   cursor: default;
 }
 
+/* Soft cue matching .day--today / current-week label (blue + underline). */
+.day__copy-menu button.day__copy-menu-item--today {
+  color: #5a7fa8;
+  text-decoration: underline;
+  text-decoration-color: #7a9cc0;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.15em;
+}
+
+.day__copy-menu button.day__copy-menu-item--today:hover:not(:disabled) {
+  color: #3d6b9e;
+  text-decoration-color: #3d6b9e;
+}
+
+.day__copy-menu button.day__copy-menu-item--today:disabled {
+  text-decoration-color: #a8b8c8;
+}
+
 .week__days {
   display: flex;
   flex-direction: column;

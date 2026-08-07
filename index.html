@@ -585,7 +585,7 @@
     </div>
     <div class="week__days-toolbar">
       <p id="week-days-hint" class="week__days-hint">
-        Day meals are saved in this browser. Use <strong>Add food</strong> to pick from your food definitions, or <strong>Add Others</strong> for <code>//</code> comments and <code>---</code> dividers. Turn on <strong>Advanced</strong> for free-text entry.
+        Day meals are saved in this browser. Use <strong>Add food</strong> to pick from your food definitions, or <strong>Add Others</strong> for inserting headings and dividers. Turn on <strong>Advanced</strong> for free-text entry.
       </p>
       <div class="week__days-actions">
         <button type="button" id="export-all-meals" class="week__meals-bulk">Export all</button>
@@ -643,7 +643,7 @@
                   <button type="button" role="menuitem" data-action="copy-week-to-this-week" data-day-id="mon">Copy this week to this week</button>
                   <button type="button" role="menuitem" data-action="copy-week-to-custom" data-day-id="mon">Copy to custom week…</button>
                   <button type="button" role="menuitem" data-action="copy-day-to-custom" data-day-id="mon">Copy this date to custom day…</button>
-                  <button type="button" role="menuitem" data-action="copy-day-to-today" data-day-id="mon">Copy this date to today</button>
+                  <button type="button" role="menuitem" class="day__copy-menu-item--today" data-action="copy-day-to-today" data-day-id="mon">Copy this date to today</button>
                   <button type="button" role="menuitem" data-action="copy-day-to-yesterday" data-day-id="mon">Copy this date to yesterday</button>
                   <button type="button" role="menuitem" data-action="copy-day-to-tomorrow" data-day-id="mon">Copy this date to tomorrow</button>
                 </div>
@@ -671,7 +671,7 @@
                   <button type="button" role="menuitem" data-action="copy-week-to-this-week" data-day-id="tue">Copy this week to this week</button>
                   <button type="button" role="menuitem" data-action="copy-week-to-custom" data-day-id="tue">Copy to custom week…</button>
                   <button type="button" role="menuitem" data-action="copy-day-to-custom" data-day-id="tue">Copy this date to custom day…</button>
-                  <button type="button" role="menuitem" data-action="copy-day-to-today" data-day-id="tue">Copy this date to today</button>
+                  <button type="button" role="menuitem" class="day__copy-menu-item--today" data-action="copy-day-to-today" data-day-id="tue">Copy this date to today</button>
                   <button type="button" role="menuitem" data-action="copy-day-to-yesterday" data-day-id="tue">Copy this date to yesterday</button>
                   <button type="button" role="menuitem" data-action="copy-day-to-tomorrow" data-day-id="tue">Copy this date to tomorrow</button>
                 </div>
@@ -699,7 +699,7 @@
                   <button type="button" role="menuitem" data-action="copy-week-to-this-week" data-day-id="wed">Copy this week to this week</button>
                   <button type="button" role="menuitem" data-action="copy-week-to-custom" data-day-id="wed">Copy to custom week…</button>
                   <button type="button" role="menuitem" data-action="copy-day-to-custom" data-day-id="wed">Copy this date to custom day…</button>
-                  <button type="button" role="menuitem" data-action="copy-day-to-today" data-day-id="wed">Copy this date to today</button>
+                  <button type="button" role="menuitem" class="day__copy-menu-item--today" data-action="copy-day-to-today" data-day-id="wed">Copy this date to today</button>
                   <button type="button" role="menuitem" data-action="copy-day-to-yesterday" data-day-id="wed">Copy this date to yesterday</button>
                   <button type="button" role="menuitem" data-action="copy-day-to-tomorrow" data-day-id="wed">Copy this date to tomorrow</button>
                 </div>
@@ -727,7 +727,7 @@
                   <button type="button" role="menuitem" data-action="copy-week-to-this-week" data-day-id="thu">Copy this week to this week</button>
                   <button type="button" role="menuitem" data-action="copy-week-to-custom" data-day-id="thu">Copy to custom week…</button>
                   <button type="button" role="menuitem" data-action="copy-day-to-custom" data-day-id="thu">Copy this date to custom day…</button>
-                  <button type="button" role="menuitem" data-action="copy-day-to-today" data-day-id="thu">Copy this date to today</button>
+                  <button type="button" role="menuitem" class="day__copy-menu-item--today" data-action="copy-day-to-today" data-day-id="thu">Copy this date to today</button>
                   <button type="button" role="menuitem" data-action="copy-day-to-yesterday" data-day-id="thu">Copy this date to yesterday</button>
                   <button type="button" role="menuitem" data-action="copy-day-to-tomorrow" data-day-id="thu">Copy this date to tomorrow</button>
                 </div>
@@ -755,7 +755,7 @@
                   <button type="button" role="menuitem" data-action="copy-week-to-this-week" data-day-id="fri">Copy this week to this week</button>
                   <button type="button" role="menuitem" data-action="copy-week-to-custom" data-day-id="fri">Copy to custom week…</button>
                   <button type="button" role="menuitem" data-action="copy-day-to-custom" data-day-id="fri">Copy this date to custom day…</button>
-                  <button type="button" role="menuitem" data-action="copy-day-to-today" data-day-id="fri">Copy this date to today</button>
+                  <button type="button" role="menuitem" class="day__copy-menu-item--today" data-action="copy-day-to-today" data-day-id="fri">Copy this date to today</button>
                   <button type="button" role="menuitem" data-action="copy-day-to-yesterday" data-day-id="fri">Copy this date to yesterday</button>
                   <button type="button" role="menuitem" data-action="copy-day-to-tomorrow" data-day-id="fri">Copy this date to tomorrow</button>
                 </div>
@@ -783,7 +783,7 @@
                   <button type="button" role="menuitem" data-action="copy-week-to-this-week" data-day-id="sat">Copy this week to this week</button>
                   <button type="button" role="menuitem" data-action="copy-week-to-custom" data-day-id="sat">Copy to custom week…</button>
                   <button type="button" role="menuitem" data-action="copy-day-to-custom" data-day-id="sat">Copy this date to custom day…</button>
-                  <button type="button" role="menuitem" data-action="copy-day-to-today" data-day-id="sat">Copy this date to today</button>
+                  <button type="button" role="menuitem" class="day__copy-menu-item--today" data-action="copy-day-to-today" data-day-id="sat">Copy this date to today</button>
                   <button type="button" role="menuitem" data-action="copy-day-to-yesterday" data-day-id="sat">Copy this date to yesterday</button>
                   <button type="button" role="menuitem" data-action="copy-day-to-tomorrow" data-day-id="sat">Copy this date to tomorrow</button>
                 </div>
@@ -811,7 +811,7 @@
                   <button type="button" role="menuitem" data-action="copy-week-to-this-week" data-day-id="sun">Copy this week to this week</button>
                   <button type="button" role="menuitem" data-action="copy-week-to-custom" data-day-id="sun">Copy to custom week…</button>
                   <button type="button" role="menuitem" data-action="copy-day-to-custom" data-day-id="sun">Copy this date to custom day…</button>
-                  <button type="button" role="menuitem" data-action="copy-day-to-today" data-day-id="sun">Copy this date to today</button>
+                  <button type="button" role="menuitem" class="day__copy-menu-item--today" data-action="copy-day-to-today" data-day-id="sun">Copy this date to today</button>
                   <button type="button" role="menuitem" data-action="copy-day-to-yesterday" data-day-id="sun">Copy this date to yesterday</button>
                   <button type="button" role="menuitem" data-action="copy-day-to-tomorrow" data-day-id="sun">Copy this date to tomorrow</button>
                 </div>
@@ -1172,11 +1172,49 @@
           <label class="import-json-wrap__label" for="copy-date-input">Date</label>
           <input type="date" id="copy-date-input" class="import-modal__json" style="min-height:2.4rem;padding:0.4rem 0.55rem;">
         </div>
+        <fieldset id="copy-date-conflict" class="import-all-mode">
+          <legend class="import-all-mode__legend">If destination already has food</legend>
+          <label class="import-all-mode__option">
+            <input type="radio" name="copy-date-conflict" value="append" checked>
+            <span class="import-all-mode__text"><strong>Append</strong> — add copied meals below existing food (each day for a week copy).</span>
+          </label>
+          <label class="import-all-mode__option">
+            <input type="radio" name="copy-date-conflict" value="replace">
+            <span class="import-all-mode__text"><strong>Replace</strong> — overwrite existing meals on the destination day(s).</span>
+          </label>
+        </fieldset>
         <p id="copy-date-modal-error" class="import-modal__error" hidden></p>
       </div>
       <footer class="modal__footer modal__footer--split">
         <button type="button" id="copy-date-cancel" class="modal__secondary">Cancel</button>
         <button type="button" id="copy-date-apply" class="modal__done">Copy</button>
+      </footer>
+    </div>
+  </div>
+
+  <div id="copy-conflict-modal" class="modal" hidden>
+    <div class="modal__backdrop" data-action="close-copy-conflict-modal"></div>
+    <div class="modal__panel" role="dialog" aria-modal="true" aria-labelledby="copy-conflict-modal-title">
+      <header class="modal__header">
+        <h3 id="copy-conflict-modal-title" class="modal__title">Copy meals</h3>
+      </header>
+      <div class="import-modal__body">
+        <p id="copy-conflict-modal-hint" class="import-modal__hint">Choose how to apply copied meals.</p>
+        <fieldset class="import-all-mode">
+          <legend class="import-all-mode__legend">How to apply</legend>
+          <label class="import-all-mode__option">
+            <input type="radio" name="copy-conflict-mode" value="append" checked>
+            <span class="import-all-mode__text"><strong>Append</strong> — add copied meals below existing food (each day for a week copy).</span>
+          </label>
+          <label class="import-all-mode__option">
+            <input type="radio" name="copy-conflict-mode" value="replace">
+            <span class="import-all-mode__text"><strong>Replace</strong> — overwrite existing meals on the destination day(s).</span>
+          </label>
+        </fieldset>
+      </div>
+      <footer class="modal__footer modal__footer--split">
+        <button type="button" id="copy-conflict-cancel" class="modal__secondary">Cancel</button>
+        <button type="button" id="copy-conflict-apply" class="modal__done">Copy</button>
       </footer>
     </div>
   </div>
