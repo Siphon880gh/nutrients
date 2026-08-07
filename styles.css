@@ -903,6 +903,14 @@ body.app-nav-shortcuts-visible [data-app-shortcut] > .app-nav__shortcut {
   display: none;
 }
 
+.app-nav__divider {
+  flex: 0 0 auto;
+  align-self: stretch;
+  width: 1px;
+  margin: 0.15rem 0.15rem;
+  background: #c8c8c4;
+}
+
 #dashboard-grid,
 #food-entry,
 #food-definitions-heading,
@@ -11590,6 +11598,7 @@ button.longevity-form__label-link:focus-visible {
     max-width: 1400px;
     margin: 0 auto;
     padding-bottom: 0.1rem;
+    justify-content: center;
   }
 
   .app-nav__btn {
@@ -11612,6 +11621,12 @@ button.longevity-form__label-link:focus-visible {
 
   .app-nav__label--short {
     display: inline;
+  }
+
+  .app-nav__divider {
+    align-self: center;
+    height: 1.6rem;
+    margin: 0 0.1rem;
   }
 
   .dashboard__micro-sticky,
