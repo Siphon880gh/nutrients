@@ -5080,6 +5080,49 @@ button.dashboard__micro-day-name:focus-visible {
   margin: 0 0 1rem;
 }
 
+.longevity-analysis-report__filters-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.45rem 0.65rem;
+}
+
+.longevity-analysis-report__emoji-toggle {
+  padding: 0.28rem 0.55rem;
+  border: 1px solid #cfd5dd;
+  border-radius: 5px;
+  background: #fff;
+  color: #333;
+  font: inherit;
+  font-size: 0.72rem;
+  font-weight: 650;
+  line-height: 1.2;
+  cursor: pointer;
+}
+
+.longevity-analysis-report__emoji-toggle:hover,
+.longevity-analysis-report__emoji-toggle:focus-visible {
+  border-color: #9aa6b5;
+  background: #f8fafc;
+}
+
+.longevity-analysis-report__emoji-toggle:focus-visible {
+  outline: 2px solid #3d6b9e;
+  outline-offset: 1px;
+}
+
+.longevity-analysis-report__emoji-toggle[aria-pressed="true"] {
+  border-color: #3d6b9e;
+  background: #eef4fb;
+  color: #1f4e79;
+}
+
+.longevity-analysis-report__emoji-hint {
+  font-size: 0.68rem;
+  line-height: 1.3;
+  color: #6a7380;
+}
+
 .longevity-analysis-report__filters {
   display: flex;
   flex-wrap: wrap;
@@ -5120,6 +5163,16 @@ button.dashboard__micro-day-name:focus-visible {
   font-weight: 600;
   line-height: 1.2;
   cursor: pointer;
+}
+
+.longevity-analysis-report__filter-emoji {
+  display: none;
+  font-size: 0.95rem;
+  line-height: 1;
+}
+
+.longevity-analysis-report__filters-wrap--emojis .longevity-analysis-report__filter-emoji {
+  display: inline;
 }
 
 .longevity-analysis-report__filter-btn:hover,

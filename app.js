@@ -225,22 +225,24 @@
   var longevityAnalysisBypassFilter = false;
   var longevityAnalysisActiveAimBand = null;
   var longevityAnalysisActiveLimitBand = null;
+  var longevityAnalysisShowFilterEmojis = false;
   var longevityAnalysisReturnPending = false;
   var analysisActiveKind = null;
   var analysisActiveDayId = null;
+  // Want more: low % = sad → high % = happy. Want less: high % = sad → low % = happy.
   var LONGEVITY_ANALYSIS_AVG_BANDS = [
-    { id: "0-20", label: "0–20%", min: 0, max: 20, maxInclusive: false, color: "red" },
-    { id: "20-50", label: "20–50%", min: 20, max: 50, maxInclusive: false, color: "red" },
-    { id: "50-75", label: "50–75%", min: 50, max: 75, maxInclusive: false, color: "yellow" },
-    { id: "75-85", label: "75–85%", min: 75, max: 85, maxInclusive: false, color: "yellow" },
-    { id: "85-100", label: "85–100%", min: 85, max: 100, maxInclusive: true, color: "green" },
+    { id: "0-20", label: "0–20%", min: 0, max: 20, maxInclusive: false, color: "red", emoji: "😢" },
+    { id: "20-50", label: "20–50%", min: 20, max: 50, maxInclusive: false, color: "red", emoji: "😕" },
+    { id: "50-75", label: "50–75%", min: 50, max: 75, maxInclusive: false, color: "yellow", emoji: "😐" },
+    { id: "75-85", label: "75–85%", min: 75, max: 85, maxInclusive: false, color: "yellow", emoji: "🙂" },
+    { id: "85-100", label: "85–100%", min: 85, max: 100, maxInclusive: true, color: "green", emoji: "😄" },
   ];
   var LONGEVITY_ANALYSIS_LIMIT_BANDS = [
-    { id: "limit-85-plus", label: "85%+", min: 85, max: Infinity, maxInclusive: true, color: "red" },
-    { id: "limit-75-85", label: "75–85%", min: 75, max: 85, maxInclusive: false, color: "yellow" },
-    { id: "limit-50-75", label: "50–75%", min: 50, max: 75, maxInclusive: false, color: "yellow" },
-    { id: "limit-20-50", label: "20–50%", min: 20, max: 50, maxInclusive: false, color: "green" },
-    { id: "limit-0-20", label: "0–20%", min: 0, max: 20, maxInclusive: false, color: "green" },
+    { id: "limit-85-plus", label: "85%+", min: 85, max: Infinity, maxInclusive: true, color: "red", emoji: "😢" },
+    { id: "limit-75-85", label: "75–85%", min: 75, max: 85, maxInclusive: false, color: "yellow", emoji: "😕" },
+    { id: "limit-50-75", label: "50–75%", min: 50, max: 75, maxInclusive: false, color: "yellow", emoji: "😐" },
+    { id: "limit-20-50", label: "20–50%", min: 20, max: 50, maxInclusive: false, color: "green", emoji: "🙂" },
+    { id: "limit-0-20", label: "0–20%", min: 0, max: 20, maxInclusive: false, color: "green", emoji: "😄" },
   ];
   var microDefModalEl = document.getElementById("micro-def-modal");
   var microDefModalTitleEl = document.getElementById("micro-def-modal-title");
@@ -15984,6 +15986,31 @@
     longevityAnalysisActiveLimitBand = null;
   }
 
+  function syncLongevityAnalysisFilterEmojis() {
+    if (!longevityAnalysisReportEl) return;
+    var wrap = longevityAnalysisReportEl.querySelector(
+      ".longevity-analysis-report__filters-wrap"
+    );
+    if (wrap) {
+      wrap.classList.toggle(
+        "longevity-analysis-report__filters-wrap--emojis",
+        longevityAnalysisShowFilterEmojis
+      );
+    }
+    var toggleBtn = longevityAnalysisReportEl.querySelector(
+      "[data-longevity-analysis-emoji-toggle]"
+    );
+    if (toggleBtn) {
+      toggleBtn.setAttribute(
+        "aria-pressed",
+        longevityAnalysisShowFilterEmojis ? "true" : "false"
+      );
+      toggleBtn.textContent = longevityAnalysisShowFilterEmojis
+        ? "Hide faces"
+        : "Show faces";
+    }
+  }
+
   function longevityAnalysisParseSectionPct(sectionEl, attrName) {
     var raw = sectionEl.getAttribute(attrName);
     if (raw == null || raw === "") return null;
@@ -16072,6 +16099,7 @@
         (!!limitBandId && limitBandId === longevityAnalysisActiveLimitBand);
       sectionEl.hidden = !(matchesAim && matchesLimit);
     });
+    syncLongevityAnalysisFilterEmojis();
   }
 
   function longevityAnalysisFilterRowHtml(kind, label, bands, bandCounts) {
@@ -16087,6 +16115,9 @@
         '" data-longevity-analysis-band-kind="' +
         escapeAttr(kind) +
         '" aria-pressed="false">' +
+        '<span class="longevity-analysis-report__filter-emoji" aria-hidden="true">' +
+        escapeHtml(band.emoji || "") +
+        "</span>" +
         '<span class="longevity-analysis-report__filter-label">' +
         escapeHtml(band.label) +
         "</span>" +
@@ -16125,7 +16156,19 @@
     );
     if (!aimRow && !limitRow) return "";
     return (
-      '<div class="longevity-analysis-report__filters-wrap">' +
+      '<div class="longevity-analysis-report__filters-wrap' +
+      (longevityAnalysisShowFilterEmojis
+        ? " longevity-analysis-report__filters-wrap--emojis"
+        : "") +
+      '">' +
+      '<div class="longevity-analysis-report__filters-toolbar">' +
+      '<button type="button" class="longevity-analysis-report__emoji-toggle" data-longevity-analysis-emoji-toggle aria-pressed="' +
+      (longevityAnalysisShowFilterEmojis ? "true" : "false") +
+      '" title="Show sad-to-happy faces on percent ranges">' +
+      (longevityAnalysisShowFilterEmojis ? "Hide faces" : "Show faces") +
+      "</button>" +
+      '<span class="longevity-analysis-report__emoji-hint">Want more: low = sad · Want less: low = happy</span>' +
+      "</div>" +
       aimRow +
       limitRow +
       "</div>"
@@ -26123,6 +26166,12 @@
           longevityAnalysisActiveAimBand = bandId;
         }
         syncLongevityAnalysisBandFilter();
+        return;
+      }
+      var emojiToggleBtn = e.target.closest("[data-longevity-analysis-emoji-toggle]");
+      if (emojiToggleBtn && longevityAnalysisReportEl.contains(emojiToggleBtn)) {
+        longevityAnalysisShowFilterEmojis = !longevityAnalysisShowFilterEmojis;
+        syncLongevityAnalysisFilterEmojis();
         return;
       }
       var gotoSection = e.target.closest("[data-longevity-analysis-goto]");
