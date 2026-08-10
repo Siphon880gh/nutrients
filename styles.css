@@ -7349,7 +7349,10 @@ button.dashboard__longevity-name:focus-visible {
 .day__copy-menu {
   position: absolute;
   top: calc(100% + 0.15rem);
-  right: 0;
+  /* Open rightward so Mon (and carousel days at the scrollport start) are not
+     clipped by .week__grid { overflow-x: auto }. */
+  left: 0;
+  right: auto;
   z-index: 20;
   display: flex;
   flex-direction: column;
@@ -7359,6 +7362,12 @@ button.dashboard__longevity-name:focus-visible {
   border-radius: 6px;
   background: #fff;
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+}
+
+/* Last column: open leftward so the menu stays inside the grid. */
+.week__grid > .day:last-child .day__copy-menu {
+  left: auto;
+  right: 0;
 }
 
 .day__copy-menu[hidden] {
