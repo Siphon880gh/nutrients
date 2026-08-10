@@ -1024,6 +1024,17 @@ body.app-nav-shortcuts-visible [data-app-shortcut] > .app-nav__shortcut {
   text-overflow: ellipsis;
 }
 
+.dashboard__macros-condensed-unit {
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  color: #b8b8b2;
+}
+
+.dashboard__macros-condensed-cal .dashboard__macros-condensed-unit {
+  font-size: 0.58rem;
+  margin-left: 0.1em;
+}
+
 .dashboard__micro-panel {
   margin-top: 0.6rem;
   padding: 0.75rem 0.85rem;

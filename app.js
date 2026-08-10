@@ -19262,23 +19262,40 @@
     var isToday = dayId === activeTodayDayId();
     var isPct = dashboardMacroPctView;
     var pct = macroPctFromTotals(totals);
+    var unit = function (text) {
+      return (
+        '<span class="dashboard__macros-condensed-unit">' +
+        escapeHtml(text) +
+        "</span>"
+      );
+    };
     var macrosLine;
-    var calText = String(Math.round(totals.totalCal || 0));
+    var calHtml =
+      escapeHtml(String(Math.round(totals.totalCal || 0))) + unit(" cals");
 
     if (isPct) {
       macrosLine =
-        (pct.p == null ? "—" : Math.round(pct.p) + "%") +
+        (pct.p == null
+          ? "—"
+          : escapeHtml(String(Math.round(pct.p))) + unit("%") + unit("p")) +
         " · " +
-        (pct.c == null ? "—" : Math.round(pct.c) + "%") +
+        (pct.c == null
+          ? "—"
+          : escapeHtml(String(Math.round(pct.c))) + unit("%") + unit("c")) +
         " · " +
-        (pct.f == null ? "—" : Math.round(pct.f) + "%");
+        (pct.f == null
+          ? "—"
+          : escapeHtml(String(Math.round(pct.f))) + unit("%") + unit("f"));
     } else {
       macrosLine =
-        Math.round(totals.protein || 0) +
+        escapeHtml(String(Math.round(totals.protein || 0))) +
+        unit("p") +
         " · " +
-        Math.round(totals.carbs || 0) +
+        escapeHtml(String(Math.round(totals.carbs || 0))) +
+        unit("c") +
         " · " +
-        Math.round(totals.fats || 0);
+        escapeHtml(String(Math.round(totals.fats || 0))) +
+        unit("f");
     }
 
     return (
@@ -19291,10 +19308,10 @@
       escapeHtml(label) +
       "</span>" +
       '<span class="dashboard__macros-condensed-cal">' +
-      escapeHtml(calText) +
+      calHtml +
       "</span>" +
       '<span class="dashboard__macros-condensed-macros">' +
-      escapeHtml(macrosLine) +
+      macrosLine +
       "</span>" +
       "</div>"
     );
