@@ -367,6 +367,15 @@
   var tdeeCalcCardioAddBtn = document.getElementById("tdee-calc-cardio-add");
   var tdeeCalcActivityFactorEl = document.getElementById("tdee-calc-activity-factor");
   var tdeeCalcResultEl = document.getElementById("tdee-calc-result");
+  var tdeeHrZonesModalEl = document.getElementById("tdee-hr-zones-modal");
+  var tdeeHrZonesModalDoneBtn = document.getElementById("tdee-hr-zones-modal-done");
+  var tdeeHrZonesAgeEl = document.getElementById("tdee-hr-zones-age");
+  var tdeeHrZonesRestingEl = document.getElementById("tdee-hr-zones-resting");
+  var tdeeHrZonesWorkingEl = document.getElementById("tdee-hr-zones-working");
+  var tdeeHrZonesStatusEl = document.getElementById("tdee-hr-zones-status");
+  var tdeeHrZonesTbodyEl = document.getElementById("tdee-hr-zones-tbody");
+  var tdeeRpeModalEl = document.getElementById("tdee-rpe-modal");
+  var tdeeRpeModalDoneBtn = document.getElementById("tdee-rpe-modal-done");
   var tdeeHintModalEl = document.getElementById("tdee-hint-modal");
   var tdeeHintModalDoneBtn = document.getElementById("tdee-hint-modal-done");
   var macroSplitHintModalEl = document.getElementById("macro-split-hint-modal");
@@ -10290,6 +10299,8 @@
       (authSignupModalEl && !authSignupModalEl.hidden) ||
       (authLoginModalEl && !authLoginModalEl.hidden) ||
       (tdeeCalculatorModalEl && !tdeeCalculatorModalEl.hidden) ||
+      (tdeeHrZonesModalEl && !tdeeHrZonesModalEl.hidden) ||
+      (tdeeRpeModalEl && !tdeeRpeModalEl.hidden) ||
       (tdeeHintModalEl && !tdeeHintModalEl.hidden) ||
       (macroSplitHintModalEl && !macroSplitHintModalEl.hidden) ||
       (keywordPositionModalEl && !keywordPositionModalEl.hidden) ||
@@ -18761,7 +18772,7 @@
       if (tdeeCalcHeavySetsEl) tdeeCalcHeavySetsEl.value = s.heavySets != null ? String(s.heavySets) : "";
       if (tdeeCalcLightSetsEl) tdeeCalcLightSetsEl.value = s.lightSets != null ? String(s.lightSets) : "";
       if (tdeeCalcCardioEnabledEl) tdeeCalcCardioEnabledEl.checked = !!s.cardioEnabled;
-      if (tdeeCalcCardioWrapEl) tdeeCalcCardioWrapEl.hidden = !s.cardioEnabled;
+      setTdeeCalcCardioDetailsEnabled(!!s.cardioEnabled);
       renderTdeeCalcCardioRows(s.cardioSessions || [defaultTdeeCalcCardioSession()]);
     } finally {
       tdeeCalcHydrating = false;
@@ -19060,9 +19071,24 @@
     updateTdeeCalculatorResult();
   }
 
+  function setTdeeCalcCardioDetailsEnabled(enabled) {
+    if (!tdeeCalcCardioWrapEl) return;
+    tdeeCalcCardioWrapEl.hidden = false;
+    tdeeCalcCardioWrapEl.classList.toggle(
+      "tdee-calc__cardio-details--disabled",
+      !enabled
+    );
+    tdeeCalcCardioWrapEl.setAttribute("aria-disabled", enabled ? "false" : "true");
+    if (enabled) {
+      tdeeCalcCardioWrapEl.removeAttribute("inert");
+    } else {
+      tdeeCalcCardioWrapEl.setAttribute("inert", "");
+    }
+  }
+
   function syncTdeeCalcCardioUi() {
-    var enabled = tdeeCalcCardioEnabledEl && tdeeCalcCardioEnabledEl.checked;
-    if (tdeeCalcCardioWrapEl) tdeeCalcCardioWrapEl.hidden = !enabled;
+    var enabled = !!(tdeeCalcCardioEnabledEl && tdeeCalcCardioEnabledEl.checked);
+    setTdeeCalcCardioDetailsEnabled(enabled);
     updateTdeeCalculatorResult();
   }
 
@@ -19107,6 +19133,8 @@
 
   function closeTdeeCalculatorModal() {
     if (!tdeeCalculatorModalEl) return;
+    if (tdeeHrZonesModalEl && !tdeeHrZonesModalEl.hidden) closeTdeeHrZonesModal();
+    if (tdeeRpeModalEl && !tdeeRpeModalEl.hidden) closeTdeeRpeModal();
     if (tdeeCalcCleared) {
       if (persist) persist.setSetting("tdeeCalc", null);
     } else {
@@ -19143,6 +19171,174 @@
   function closeTdeeHintModal() {
     if (!tdeeHintModalEl) return;
     tdeeHintModalEl.hidden = true;
+    updateBodyModalOpen();
+  }
+
+  function openTdeeHrZonesModal() {
+    if (!tdeeHrZonesModalEl) return;
+    if (tdeeRpeModalEl && !tdeeRpeModalEl.hidden) closeTdeeRpeModal();
+    if (tdeeHrZonesAgeEl && tdeeCalcAgeEl) {
+      var calcAge = parseFloat(tdeeCalcAgeEl.value);
+      if (!isNaN(calcAge) && calcAge > 0) {
+        tdeeHrZonesAgeEl.value = String(Math.round(calcAge));
+      }
+    }
+    updateTdeeHrZonesHighlight();
+    tdeeHrZonesModalEl.hidden = false;
+    updateBodyModalOpen();
+    var focusEl =
+      tdeeHrZonesWorkingEl && tdeeHrZonesRestingEl && tdeeHrZonesRestingEl.value
+        ? tdeeHrZonesWorkingEl
+        : tdeeHrZonesRestingEl || tdeeHrZonesAgeEl || tdeeHrZonesModalDoneBtn;
+    if (focusEl) focusEl.focus();
+  }
+
+  function closeTdeeHrZonesModal() {
+    if (!tdeeHrZonesModalEl) return;
+    tdeeHrZonesModalEl.hidden = true;
+    updateBodyModalOpen();
+  }
+
+  var TDEE_HR_ZONE_LABELS = {
+    1: "Light",
+    2: "Brisk / incline",
+    3: "Moderate",
+    4: "Hard",
+    5: "Vigorous",
+  };
+
+  function updateTdeeHrZonesHighlight() {
+    if (!tdeeHrZonesTbodyEl) return;
+    var rows = tdeeHrZonesTbodyEl.querySelectorAll("tr[data-hr-zone]");
+    var age = tdeeHrZonesAgeEl ? parseFloat(tdeeHrZonesAgeEl.value) : NaN;
+    var resting = tdeeHrZonesRestingEl
+      ? parseFloat(tdeeHrZonesRestingEl.value)
+      : NaN;
+    var working = tdeeHrZonesWorkingEl
+      ? parseFloat(tdeeHrZonesWorkingEl.value)
+      : NaN;
+    var hasAge = !isNaN(age) && age >= 1 && age <= 120;
+    var hasResting = !isNaN(resting) && resting >= 30 && resting <= 120;
+    var hasWorking = !isNaN(working) && working >= 40 && working <= 220;
+    var hrMax = hasAge ? 220 - age : NaN;
+    var hrr = hasAge && hasResting ? hrMax - resting : NaN;
+    var rangesReady = !isNaN(hrr) && hrr > 0;
+
+    rows.forEach(function (row) {
+      row.classList.remove("tdee-hr-zones__row--match");
+      var bpmEl = row.querySelector("[data-hr-bpm]");
+      if (!bpmEl) return;
+      if (!rangesReady) {
+        bpmEl.textContent = "—";
+        return;
+      }
+      var lo = parseFloat(row.getAttribute("data-hr-lo"));
+      var hi = parseFloat(row.getAttribute("data-hr-hi"));
+      var loBpm = Math.round(resting + hrr * lo);
+      var hiBpm = Math.round(resting + hrr * hi);
+      var zone = row.getAttribute("data-hr-zone");
+      if (zone === "5") {
+        bpmEl.textContent = loBpm + "–" + Math.round(hrMax) + " bpm";
+      } else {
+        bpmEl.textContent = loBpm + "–" + (hiBpm - 1) + " bpm";
+      }
+    });
+
+    if (!tdeeHrZonesStatusEl) return;
+
+    if (!hasAge || !hasResting) {
+      tdeeHrZonesStatusEl.textContent =
+        "Enter age and resting HR to see your bpm ranges. Add working HR to highlight a zone.";
+      return;
+    }
+    if (!rangesReady) {
+      tdeeHrZonesStatusEl.textContent =
+        "Resting HR must be below estimated max (" +
+        Math.round(hrMax) +
+        " bpm) to build zones.";
+      return;
+    }
+
+    var baseStatus =
+      "Estimated max " +
+      Math.round(hrMax) +
+      " bpm · HR reserve " +
+      Math.round(hrr) +
+      " bpm.";
+
+    if (!hasWorking) {
+      tdeeHrZonesStatusEl.textContent =
+        baseStatus + " Enter working HR to highlight a zone.";
+      return;
+    }
+
+    var pct = (working - resting) / hrr;
+    if (working < resting) {
+      tdeeHrZonesStatusEl.textContent =
+        baseStatus +
+        " Working HR is below resting—check the readings.";
+      return;
+    }
+
+    var matchRow = null;
+    var i;
+    for (i = 0; i < rows.length; i++) {
+      var row = rows[i];
+      var lo = parseFloat(row.getAttribute("data-hr-lo"));
+      var hi = parseFloat(row.getAttribute("data-hr-hi"));
+      var zone = row.getAttribute("data-hr-zone");
+      var inZone =
+        zone === "5" ? pct >= lo : pct >= lo && pct < hi;
+      if (inZone) {
+        matchRow = row;
+        break;
+      }
+    }
+
+    if (!matchRow) {
+      if (pct < 0.5) {
+        tdeeHrZonesStatusEl.textContent =
+          baseStatus +
+          " Working HR is about " +
+          Math.round(pct * 100) +
+          "% of reserve—below Zone 1 (Light).";
+      } else {
+        tdeeHrZonesStatusEl.textContent =
+          baseStatus +
+          " Working HR is about " +
+          Math.round(pct * 100) +
+          "% of reserve—above typical Zone 5; use Vigorous.";
+        var zone5 = tdeeHrZonesTbodyEl.querySelector('[data-hr-zone="5"]');
+        if (zone5) zone5.classList.add("tdee-hr-zones__row--match");
+      }
+      return;
+    }
+
+    matchRow.classList.add("tdee-hr-zones__row--match");
+    var zoneNum = matchRow.getAttribute("data-hr-zone");
+    var intensity = TDEE_HR_ZONE_LABELS[zoneNum] || "—";
+    tdeeHrZonesStatusEl.textContent =
+      baseStatus +
+      " Working HR is about " +
+      Math.round(pct * 100) +
+      "% of reserve → Zone " +
+      zoneNum +
+      " → " +
+      intensity +
+      ".";
+  }
+
+  function openTdeeRpeModal() {
+    if (!tdeeRpeModalEl) return;
+    if (tdeeHrZonesModalEl && !tdeeHrZonesModalEl.hidden) closeTdeeHrZonesModal();
+    tdeeRpeModalEl.hidden = false;
+    updateBodyModalOpen();
+    if (tdeeRpeModalDoneBtn) tdeeRpeModalDoneBtn.focus();
+  }
+
+  function closeTdeeRpeModal() {
+    if (!tdeeRpeModalEl) return;
+    tdeeRpeModalEl.hidden = true;
     updateBodyModalOpen();
   }
 
@@ -26861,6 +27057,14 @@
       closeMicroGapsModal();
       return;
     }
+    if (tdeeHrZonesModalEl && !tdeeHrZonesModalEl.hidden) {
+      closeTdeeHrZonesModal();
+      return;
+    }
+    if (tdeeRpeModalEl && !tdeeRpeModalEl.hidden) {
+      closeTdeeRpeModal();
+      return;
+    }
     if (tdeeCalculatorModalEl && !tdeeCalculatorModalEl.hidden) {
       closeTdeeCalculatorModal();
       return;
@@ -28987,6 +29191,14 @@
     tdeeCalculatorModalEl.addEventListener("click", function (e) {
       if (e.target.closest('[data-action="close-tdee-calculator-modal"]')) {
         closeTdeeCalculatorModal();
+        return;
+      }
+      if (e.target.closest('[data-action="open-tdee-hr-zones-modal"]')) {
+        openTdeeHrZonesModal();
+        return;
+      }
+      if (e.target.closest('[data-action="open-tdee-rpe-modal"]')) {
+        openTdeeRpeModal();
       }
     });
   }
@@ -29078,6 +29290,14 @@
     tdeeHintModalDoneBtn.addEventListener("click", closeTdeeHintModal);
   }
 
+  if (tdeeHrZonesModalDoneBtn) {
+    tdeeHrZonesModalDoneBtn.addEventListener("click", closeTdeeHrZonesModal);
+  }
+
+  if (tdeeRpeModalDoneBtn) {
+    tdeeRpeModalDoneBtn.addEventListener("click", closeTdeeRpeModal);
+  }
+
   if (macroSplitHintModalDoneBtn) {
     macroSplitHintModalDoneBtn.addEventListener("click", closeMacroSplitHintModal);
   }
@@ -29086,6 +29306,31 @@
     tdeeHintModalEl.addEventListener("click", function (e) {
       if (e.target.closest('[data-action="close-tdee-hint-modal"]')) {
         closeTdeeHintModal();
+      }
+    });
+  }
+
+  if (tdeeHrZonesModalEl) {
+    tdeeHrZonesModalEl.addEventListener("click", function (e) {
+      if (e.target.closest('[data-action="close-tdee-hr-zones-modal"]')) {
+        closeTdeeHrZonesModal();
+      }
+    });
+    tdeeHrZonesModalEl.addEventListener("input", function (e) {
+      if (
+        e.target === tdeeHrZonesAgeEl ||
+        e.target === tdeeHrZonesRestingEl ||
+        e.target === tdeeHrZonesWorkingEl
+      ) {
+        updateTdeeHrZonesHighlight();
+      }
+    });
+  }
+
+  if (tdeeRpeModalEl) {
+    tdeeRpeModalEl.addEventListener("click", function (e) {
+      if (e.target.closest('[data-action="close-tdee-rpe-modal"]')) {
+        closeTdeeRpeModal();
       }
     });
   }

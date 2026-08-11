@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Week meals</title>
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles.css?t=1786446731">
 </head>
 <body class="show-daily-intake-icons day-entry-guided">
   <svg class="app-icon-symbols" width="0" height="0" aria-hidden="true" focusable="false">
@@ -2469,10 +2469,16 @@
             <input type="checkbox" id="tdee-calc-cardio-enabled">
             <span>Include cardio</span>
           </label>
-          <div id="tdee-calc-cardio-wrap" class="tdee-calc__cardio-details" hidden>
+          <div id="tdee-calc-cardio-wrap" class="tdee-calc__cardio-details tdee-calc__cardio-details--disabled" aria-disabled="true">
             <div id="tdee-calc-cardio-rows" class="tdee-calc__cardio-rows" aria-label="Cardio sessions"></div>
             <button type="button" id="tdee-calc-cardio-add" class="tdee-calc__cardio-add">Add another cardio</button>
             <p class="tdee-calc__hint">Each group is one cardio type. Bonus scales with session length (30 min = baseline).</p>
+            <p class="tdee-calc__hint tdee-calc__intensity-helpers">
+              Figure intensity:
+              <button type="button" class="tdee-calc__helper-link" data-action="open-tdee-hr-zones-modal" aria-haspopup="dialog">Heart rate zones</button>
+              <span class="tdee-calc__helper-sep" aria-hidden="true">·</span>
+              <button type="button" class="tdee-calc__helper-link" data-action="open-tdee-rpe-modal" aria-haspopup="dialog">Talk test / RPE</button>
+            </p>
           </div>
         </fieldset>
         <p id="tdee-calc-activity-factor" class="tdee-calc__activity-factor" aria-live="polite">Activity factor: —</p>
@@ -2487,6 +2493,144 @@
           <button type="button" id="tdee-calculator-cancel" class="modal__secondary">Cancel</button>
           <button type="button" id="tdee-calculator-apply" class="modal__done" disabled>Use this value</button>
         </div>
+      </footer>
+    </div>
+  </div>
+
+  <div id="tdee-hr-zones-modal" class="modal" hidden>
+    <div class="modal__backdrop" data-action="close-tdee-hr-zones-modal"></div>
+    <div class="modal__panel modal__panel--wide" role="dialog" aria-modal="true" aria-labelledby="tdee-hr-zones-modal-title">
+      <header class="modal__header">
+        <h3 id="tdee-hr-zones-modal-title" class="modal__title">Heart rate zones → intensity</h3>
+        <p class="modal__subtitle">Match your working heart rate to a cardio intensity</p>
+      </header>
+      <div class="import-modal__body micro-tip-modal__body">
+        <p>Use age and resting heart rate to build personal zone ranges (Karvonen / heart-rate reserve), then enter your heart rate during cardio to highlight the matching intensity.</p>
+        <ol class="tdee-hr-zones__steps">
+          <li>Confirm your <strong>age</strong> (pulled from the TDEE calculator when available).</li>
+          <li>Enter your <strong>resting heart rate</strong>: sit quietly for a few minutes (morning before getting up is ideal), then count your pulse for 60 seconds—or 30 seconds × 2.</li>
+          <li>Enter your <strong>heart rate during cardio</strong> (average for the session, or a typical reading mid-effort).</li>
+        </ol>
+        <div class="tdee-hr-zones__inputs">
+          <label class="settings-modal__field" for="tdee-hr-zones-age">
+            <span class="settings-modal__field-label">Age (years)</span>
+            <input type="number" id="tdee-hr-zones-age" class="settings-modal__input" min="1" max="120" step="1" inputmode="numeric" placeholder="e.g. 40">
+          </label>
+          <label class="settings-modal__field" for="tdee-hr-zones-resting">
+            <span class="settings-modal__field-label">Resting HR (bpm)</span>
+            <input type="number" id="tdee-hr-zones-resting" class="settings-modal__input" min="30" max="120" step="1" inputmode="numeric" placeholder="e.g. 60">
+          </label>
+          <label class="settings-modal__field" for="tdee-hr-zones-working">
+            <span class="settings-modal__field-label">HR during cardio (bpm)</span>
+            <input type="number" id="tdee-hr-zones-working" class="settings-modal__input" min="40" max="220" step="1" inputmode="numeric" placeholder="e.g. 140">
+          </label>
+        </div>
+        <p id="tdee-hr-zones-status" class="tdee-hr-zones__status" aria-live="polite">Enter age and resting HR to see your bpm ranges. Add working HR to highlight a zone.</p>
+        <table class="micro-tip-modal__table tdee-hr-zones__table">
+          <thead>
+            <tr>
+              <th scope="col">Zone</th>
+              <th scope="col">% of HR reserve</th>
+              <th scope="col">Your bpm range</th>
+              <th scope="col">How it feels</th>
+              <th scope="col">Use intensity</th>
+            </tr>
+          </thead>
+          <tbody id="tdee-hr-zones-tbody">
+            <tr data-hr-zone="1" data-hr-lo="0.5" data-hr-hi="0.6">
+              <td>Zone 1</td>
+              <td>50–60%</td>
+              <td class="tdee-hr-zones__bpm" data-hr-bpm>—</td>
+              <td>Very easy; recovery pace</td>
+              <td><strong>Light</strong></td>
+            </tr>
+            <tr data-hr-zone="2" data-hr-lo="0.6" data-hr-hi="0.7">
+              <td>Zone 2</td>
+              <td>60–70%</td>
+              <td class="tdee-hr-zones__bpm" data-hr-bpm>—</td>
+              <td>Easy aerobic; can hold a conversation</td>
+              <td><strong>Brisk / incline</strong></td>
+            </tr>
+            <tr data-hr-zone="3" data-hr-lo="0.7" data-hr-hi="0.8">
+              <td>Zone 3</td>
+              <td>70–80%</td>
+              <td class="tdee-hr-zones__bpm" data-hr-bpm>—</td>
+              <td>Steady effort; talking takes more focus</td>
+              <td><strong>Moderate</strong></td>
+            </tr>
+            <tr data-hr-zone="4" data-hr-lo="0.8" data-hr-hi="0.9">
+              <td>Zone 4</td>
+              <td>80–90%</td>
+              <td class="tdee-hr-zones__bpm" data-hr-bpm>—</td>
+              <td>Hard / threshold; short phrases only</td>
+              <td><strong>Hard</strong></td>
+            </tr>
+            <tr data-hr-zone="5" data-hr-lo="0.9" data-hr-hi="1">
+              <td>Zone 5</td>
+              <td>90–100%</td>
+              <td class="tdee-hr-zones__bpm" data-hr-bpm>—</td>
+              <td>Near max; intervals, all-out efforts</td>
+              <td><strong>Vigorous</strong></td>
+            </tr>
+          </tbody>
+        </table>
+        <p class="tdee-hr-zones__note">Estimated max HR = <strong>220 − age</strong>. Working % = (working HR − resting) ÷ (max − resting). Individual response varies—guide only, not medical advice.</p>
+      </div>
+      <footer class="modal__footer">
+        <button type="button" id="tdee-hr-zones-modal-done" class="modal__done">Done</button>
+      </footer>
+    </div>
+  </div>
+
+  <div id="tdee-rpe-modal" class="modal" hidden>
+    <div class="modal__backdrop" data-action="close-tdee-rpe-modal"></div>
+    <div class="modal__panel modal__panel--wide" role="dialog" aria-modal="true" aria-labelledby="tdee-rpe-modal-title">
+      <header class="modal__header">
+        <h3 id="tdee-rpe-modal-title" class="modal__title">Talk test / RPE → intensity</h3>
+        <p class="modal__subtitle">Rate of Perceived Exertion from how you talk and breathe</p>
+      </header>
+      <div class="import-modal__body micro-tip-modal__body">
+        <p>If you do not track heart rate, use how comfortably you can talk and breathe during the session. That talk/breath check is a practical way to land on a <strong>Rate of Perceived Exertion (RPE)</strong> on a 1–10 scale, then map RPE to the calculator intensity.</p>
+        <table class="micro-tip-modal__table">
+          <thead>
+            <tr>
+              <th scope="col">Talk &amp; breathing</th>
+              <th scope="col">RPE (1–10)</th>
+              <th scope="col">Use intensity</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Easy conversation; breathing feels relaxed</td>
+              <td>1–2</td>
+              <td><strong>Light</strong></td>
+            </tr>
+            <tr>
+              <td>Can talk in full sentences; breathing deeper but steady</td>
+              <td>3–4</td>
+              <td><strong>Brisk / incline</strong></td>
+            </tr>
+            <tr>
+              <td>Can talk, but prefer shorter sentences; noticeably working</td>
+              <td>5–6</td>
+              <td><strong>Moderate</strong></td>
+            </tr>
+            <tr>
+              <td>Short phrases only; breathing hard</td>
+              <td>7–8</td>
+              <td><strong>Hard</strong></td>
+            </tr>
+            <tr>
+              <td>Can barely speak; gasping or near all-out</td>
+              <td>9–10</td>
+              <td><strong>Vigorous</strong></td>
+            </tr>
+          </tbody>
+        </table>
+        <p>Pick the row that matches most of the session (not just the hardest 30 seconds). Mixed intervals that spike and recover often sit at <strong>Vigorous</strong> overall.</p>
+      </div>
+      <footer class="modal__footer">
+        <button type="button" id="tdee-rpe-modal-done" class="modal__done">Done</button>
       </footer>
     </div>
   </div>
@@ -2559,9 +2703,9 @@
     <div class="starter-guide__arrow" aria-hidden="true"></div>
   </div>
 
-  <script src="demographic-dv.js"></script>
-  <script src="longevity-dv.js"></script>
-  <script src="persist.js"></script>
-  <script src="app.js"></script>
+  <script src="demographic-dv.js?t=1786025201"></script>
+  <script src="longevity-dv.js?t=1784087915"></script>
+  <script src="persist.js?t=1786431230"></script>
+  <script src="app.js?t=1786446478"></script>
 </body>
 </html>
