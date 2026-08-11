@@ -18181,7 +18181,7 @@
   function weekSummaryMacroNeedHtml(week) {
     var split = getMacroSplitPreset();
     if (!split) return "";
-    var dayCount = DAYS.length;
+    var dayCount = weekAverageDayCount();
     var dayAvgTotals = {
       protein: week.protein / dayCount,
       carbs: week.carbs / dayCount,
@@ -19679,25 +19679,30 @@
   function renderWeekSummary(week) {
     if (!weekSummaryEl) return;
 
-    var dayAvgCal = week.totalCal / DAYS.length;
+    var dayCount = weekAverageDayCount();
+    var dayAvgCal = week.totalCal / dayCount;
     var tdee = getTdee();
     var thirdStatHtml;
+    var partialWeek = dayCount < DAYS.length;
 
     if (tdee) {
-      var weeklyTdee = tdee * DAYS.length;
-      var weeklyDelta = week.totalCal - weeklyTdee;
-      var lbsPerWeek = weeklyDelta / 3500;
+      // Current week before Sunday: compare intake to TDEE × days elapsed (Mon–today), not × 7.
+      var periodTdee = tdee * dayCount;
+      var periodDelta = week.totalCal - periodTdee;
+      var dailyDelta = periodDelta / dayCount;
+      var lbsPerWeek = (dailyDelta * DAYS.length) / 3500;
       var statClass = "week-summary__stat week-summary__stat--balance";
       var label = "Maintenance";
-      if (weeklyDelta < -25 * DAYS.length) {
+      if (periodDelta < -25 * dayCount) {
         statClass += " week-summary__stat--deficit";
         label = "Deficit";
-      } else if (weeklyDelta > 25 * DAYS.length) {
+      } else if (periodDelta > 25 * dayCount) {
         statClass += " week-summary__stat--surplus";
         label = "Surplus";
       }
-      var deltaPrefix = weeklyDelta >= 0 ? "+" : "";
+      var deltaPrefix = periodDelta >= 0 ? "+" : "";
       var lbsPrefix = lbsPerWeek >= 0 ? "+" : "";
+      var deltaUnit = partialWeek ? " cal so far" : " cal/week";
       thirdStatHtml =
         '<div class="' +
         statClass +
@@ -19708,8 +19713,9 @@
         "</span>" +
         '<span class="week-summary__calories">' +
         deltaPrefix +
-        fmtNumGrouped(weeklyDelta) +
-        " cal/week</span>" +
+        fmtNumGrouped(periodDelta) +
+        deltaUnit +
+        "</span>" +
         '<span class="week-summary__projection">' +
         "~" +
         lbsPrefix +
@@ -19749,6 +19755,10 @@
     }
     var macroNeedHtml = weekSummaryMacroNeedHtml(week);
 
+    var dayAvgLabel = partialWeek
+      ? "Day average (" + dayCount + " day" + (dayCount === 1 ? "" : "s") + ")"
+      : "Day average";
+
     weekSummaryEl.innerHTML =
       '<div class="week-summary__stats">' +
       '<div class="week-summary__stat">' +
@@ -19762,7 +19772,8 @@
       '<div class="week-summary__stat">' +
       '<span class="week-summary__label">' +
       weekSummaryIconHtml("day") +
-      "Day average</span>" +
+      dayAvgLabel +
+      "</span>" +
       '<span class="week-summary__calories">' +
       fmtNumGrouped(dayAvgCal) +
       " cal</span>" +

@@ -107,7 +107,7 @@ new RegExp("\\b" + escapeRegex(name) + "\\b", "gi")
 - Loops `DAYS`, reads `document.getElementById(day.id).value`.
 - Accumulates `week` via `addTotals`; caches `lastWeekTotals`.
 - Sets `#dashboard-grid` HTML from `dashboardCardHtml` (per-macro g + cal, total cal).
-- **`#week-summary`** hidden by default; **Week total** toggle (`#dashboard-week-toggle`, `setWeekTotalOpen`) shows `renderWeekSummary(week)` when open — **week total**, **day average**, **TDEE deficit/surplus** (or “Set TDEE in Settings”), **macro split (week avg)** with explain links to `#tdee-hint-modal` / `#macro-split-hint-modal`.
+- **`#week-summary`** hidden by default; **Week total** toggle (`#dashboard-week-toggle`, `setWeekTotalOpen`) shows `renderWeekSummary(week)` when open — **week total**, **day average** (÷ `weekAverageDayCount()`), **TDEE deficit/surplus** (or “Set TDEE in Settings”), **macro split (week avg)** with explain links to `#tdee-hint-modal` / `#macro-split-hint-modal`.
 - **Food Sources** (`#dashboard-food-sources-open` → `#food-sources-modal`) — sortable grocery table from precomputed `definitions-food-sources.json` (`scripts/build-food-sources.js`); live match against sample foods is the fallback only. Subtitle frames shopping for broad nutrient coverage.
 - Per-day cards: `dashboardCardHtml` — default shows g·cal rows; `#dashboard-grid` toggle (`dashboardMacroPctView`, `data-action="toggle-dashboard-macro-view"`) switches all cards to macro **percentages**.
 - If **Micro requirements** is open (`#dashboard-micro-toggle`), `renderMicroRequirements` (or `renderMicroDailyGrid` in daily view) fills the micro panel.
