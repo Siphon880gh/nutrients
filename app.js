@@ -25947,6 +25947,9 @@
         ? "Pick a food from your definitions for " + dateLabel
         : "Pick a food from your definitions";
     }
+    var dayPanel = document.getElementById(dayId);
+    var dayEl = dayPanel && dayPanel.closest ? dayPanel.closest(".day") : null;
+    if (dayEl) focusWeekDayColumn(dayEl);
     addFoodModalEl.hidden = false;
     updateBodyModalOpen();
     renderAddFoodResults();
@@ -27257,7 +27260,14 @@
     if (!e.target.closest(".day__copy")) closeAllDayCopyMenus();
     if (!e.target.closest(".day__guided-others")) closeAllGuidedOthersMenus();
     if (!e.target.closest(".day__food-item")) clearGuidedFoodItemActive(null);
-    if (!e.target.closest(".week__grid .day")) clearWeekDayColumnFocus({ snap: true });
+    // Keep the widened day column while a modal is open (e.g. picking a food in
+    // Add food). Collapsing on that click looks like the food was already added.
+    if (
+      !document.body.classList.contains("modal-open") &&
+      !e.target.closest(".week__grid .day")
+    ) {
+      clearWeekDayColumnFocus({ snap: true });
+    }
   });
 
   if (copyDateApplyBtn) {
