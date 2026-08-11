@@ -32431,5 +32431,57 @@
       "refinedCarbs": 25.5,
       "netCarbs": 25.5
     }
+  },
+  {
+    "name": "Ralphs' Kroger Mustard Potato Salad 2/3 cup (140g)",
+    "protein": 2,
+    "carbs": 26,
+    "fats": 10,
+    "micros": {
+      "sodium": 830,
+      "potassium": 370,
+      "calcium": 20,
+      "iron": 0.7,
+      "vitaminC": 36,
+      "vitaminD": 0,
+      "fiber": 2,
+      "solubleFiber": 0.6,
+      "insolubleFiber": 1.4
+    },
+    "longevity": {
+      "saturatedFat": 1.5,
+      "monounsaturatedFat": 2,
+      "polyunsaturatedFat": 5,
+      "transFat": 0,
+      "cholesterol": 5
+    },
+    "carbQuality": {
+      "glycemicIndex": 37,
+      "addedSugar": 3,
+      "refinedCarbs": 0,
+      "netCarbs": 24
+    }
+  },
+  {
+    "name": "Ralphs' Deli Kitchen Spicy Italian Style Pinwheel 1 container (188g)",
+    "protein": 28,
+    "carbs": 30,
+    "fats": 34,
+    "micros": {
+      "sodium": 1740,
+      "fiber": 2,
+      "solubleFiber": 0.5,
+      "insolubleFiber": 1.5
+    },
+    "longevity": {
+      "saturatedFat": 14,
+      "transFat": 0.5,
+      "cholesterol": 76
+    },
+    "carbQuality": {
+      "addedSugar": 2,
+      "refinedCarbs": 28,
+      "netCarbs": 28
+    }
   }
 ]
