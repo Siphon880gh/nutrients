@@ -9121,6 +9121,73 @@ body.day-word-wrap-off .day__input {
   gap: 0.65rem;
 }
 
+.tdee-calc__cardio-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.tdee-calc__cardio-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  padding: 0.7rem 0.75rem;
+  border: 1px solid #c5d3e0;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.55);
+}
+
+.tdee-calc__cardio-row-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.tdee-calc__cardio-row-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #2a4a6e;
+}
+
+.tdee-calc__cardio-remove {
+  margin: 0;
+  padding: 0.15rem 0.45rem;
+  border: 1px solid #c5a8a0;
+  border-radius: 4px;
+  background: #f7ece9;
+  color: #8a3b2a;
+  font: inherit;
+  font-size: 0.72rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.tdee-calc__cardio-remove:hover {
+  background: #f0ddd7;
+}
+
+.tdee-calc__cardio-add {
+  align-self: flex-start;
+  margin: 0;
+  padding: 0.35rem 0.65rem;
+  border: 1px dashed #9eb4cc;
+  border-radius: 4px;
+  background: transparent;
+  color: #2a4a6e;
+  font: inherit;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.tdee-calc__cardio-add:hover {
+  background: rgba(255, 255, 255, 0.55);
+  border-style: solid;
+}
+
 .tdee-calc__footer-actions {
   display: flex;
   gap: 0.5rem;

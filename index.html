@@ -2470,35 +2470,9 @@
             <span>Include cardio</span>
           </label>
           <div id="tdee-calc-cardio-wrap" class="tdee-calc__cardio-details" hidden>
-            <div class="tdee-calc__sets-row">
-              <label class="settings-modal__field" for="tdee-calc-cardio-days">
-                <span class="settings-modal__field-label">Cardio days</span>
-                <select id="tdee-calc-cardio-days" class="settings-modal__select">
-                  <option value="1">1 day / week</option>
-                  <option value="2">2 days / week</option>
-                  <option value="3" selected>3 days / week</option>
-                  <option value="4">4 days / week</option>
-                  <option value="5">5 days / week</option>
-                  <option value="6">6 days / week</option>
-                  <option value="7">7 days / week</option>
-                </select>
-              </label>
-              <label class="settings-modal__field" for="tdee-calc-cardio-minutes">
-                <span class="settings-modal__field-label">Minutes per session</span>
-                <input type="number" id="tdee-calc-cardio-minutes" class="settings-modal__input" min="1" max="300" step="1" inputmode="numeric" value="30" placeholder="e.g. 30">
-              </label>
-            </div>
-            <label class="settings-modal__field" for="tdee-calc-cardio-intensity">
-              <span class="settings-modal__field-label">Intensity</span>
-              <select id="tdee-calc-cardio-intensity" class="settings-modal__select">
-                <option value="light">Light — flat walking, easy cycling</option>
-                <option value="brisk">Brisk / incline — treadmill incline, brisk walk, easy hike</option>
-                <option value="moderate" selected>Moderate — jogging, steady effort</option>
-                <option value="hard">Hard — tempo run, steep hills, fast swim</option>
-                <option value="vigorous">Vigorous — intervals, HIIT, hard runs</option>
-              </select>
-            </label>
-            <p class="tdee-calc__hint">Bonus scales with session length (30 min = baseline).</p>
+            <div id="tdee-calc-cardio-rows" class="tdee-calc__cardio-rows" aria-label="Cardio sessions"></div>
+            <button type="button" id="tdee-calc-cardio-add" class="tdee-calc__cardio-add">Add another cardio</button>
+            <p class="tdee-calc__hint">Each group is one cardio type. Bonus scales with session length (30 min = baseline).</p>
           </div>
         </fieldset>
         <p id="tdee-calc-activity-factor" class="tdee-calc__activity-factor" aria-live="polite">Activity factor: —</p>

@@ -164,6 +164,12 @@ One settings document per user:
     heavySets: number | null,
     lightSets: number | null,
     cardioEnabled: boolean,
+    cardioSessions: Array<{       // at least one; first cannot be deleted in UI
+      days: number,              // 1–7
+      minutes: number | null,
+      intensity: "light" | "brisk" | "moderate" | "hard" | "vigorous"
+    }>,
+    // Legacy single-session mirrors of cardioSessions[0] (still written for older readers):
     cardioDays: number,             // 1–7
     cardioMinutes: number | null,
     cardioIntensity: "light" | "brisk" | "moderate" | "hard" | "vigorous"
