@@ -19682,12 +19682,24 @@
     var dayCount = weekAverageDayCount();
     var dayAvgCal = week.totalCal / dayCount;
     var tdee = getTdee();
+    // Current week before Sunday: TDEE × days elapsed (Mon–today); otherwise × 7.
+    var periodTdee = tdee ? tdee * dayCount : 0;
     var thirdStatHtml;
     var partialWeek = dayCount < DAYS.length;
+    var weekCalHtml;
+    var dayAvgCalHtml;
 
     if (tdee) {
-      // Current week before Sunday: compare intake to TDEE × days elapsed (Mon–today), not × 7.
-      var periodTdee = tdee * dayCount;
+      weekCalHtml =
+        fmtNumGrouped(week.totalCal) +
+        ' <span class="week-summary__tdee-denom">/ ' +
+        fmtNumGrouped(periodTdee) +
+        "</span>";
+      dayAvgCalHtml =
+        fmtNumGrouped(dayAvgCal) +
+        ' <span class="week-summary__tdee-denom">/ ' +
+        fmtNumGrouped(tdee) +
+        "</span>";
       var periodDelta = week.totalCal - periodTdee;
       var dailyDelta = periodDelta / dayCount;
       var lbsPerWeek = (dailyDelta * DAYS.length) / 3500;
@@ -19724,6 +19736,8 @@
         weekSummaryExplainLinkHtml() +
         "</div>";
     } else {
+      weekCalHtml = fmtNumGrouped(week.totalCal) + " cal";
+      dayAvgCalHtml = fmtNumGrouped(dayAvgCal) + " cal";
       thirdStatHtml =
         '<div class="week-summary__stat week-summary__stat--balance week-summary__stat--unset">' +
         '<span class="week-summary__label">' +
@@ -19766,8 +19780,8 @@
       weekSummaryIconHtml("week") +
       "Week total</span>" +
       '<span class="week-summary__calories">' +
-      fmtNumGrouped(week.totalCal) +
-      " cal</span>" +
+      weekCalHtml +
+      "</span>" +
       "</div>" +
       '<div class="week-summary__stat">' +
       '<span class="week-summary__label">' +
@@ -19775,8 +19789,8 @@
       dayAvgLabel +
       "</span>" +
       '<span class="week-summary__calories">' +
-      fmtNumGrouped(dayAvgCal) +
-      " cal</span>" +
+      dayAvgCalHtml +
+      "</span>" +
       "</div>" +
       "</div>" +
       '<div class="week-summary__detail">' +
