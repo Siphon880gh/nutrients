@@ -150,6 +150,24 @@ One settings document per user:
   version: 2,
   demographic: "male" | "female",
   tdee: number | null,
+  tdeeCalc: null | {
+    sex: "male" | "female",
+    age: number | null,
+    weightUnit: "kg" | "lb",
+    weight: number | null,          // value in weightUnit
+    heightUnit: "cm" | "ft",
+    heightCm: number | null,
+    heightFt: number | null,
+    heightIn: number | null,
+    resistanceMode: "days" | "sets",
+    resistanceDays: number,         // 0–7
+    heavySets: number | null,
+    lightSets: number | null,
+    cardioEnabled: boolean,
+    cardioDays: number,             // 1–7
+    cardioMinutes: number | null,
+    cardioIntensity: "light" | "brisk" | "moderate" | "hard" | "vigorous"
+  },
   macroSplit: null | { bodyType: "ectomorph" | "ecto-mesomorph" | "mesomorph" | "meso-endomorph" | "endomorph" | "ecto-endomorph", goal: "weight-loss" | "bodybuilding" | "maintenance" },
   bodyWeightKg: number | null,
   viewedWeekStart: string | null,   // Monday YYYY-MM-DD

@@ -338,6 +338,7 @@
   var settingsTdeeCalcOpenBtn = document.getElementById("settings-tdee-calc-open");
   var tdeeCalculatorModalEl = document.getElementById("tdee-calculator-modal");
   var tdeeCalculatorCancelBtn = document.getElementById("tdee-calculator-cancel");
+  var tdeeCalculatorResetBtn = document.getElementById("tdee-calculator-reset");
   var tdeeCalculatorApplyBtn = document.getElementById("tdee-calculator-apply");
   var tdeeCalcSexEl = document.getElementById("tdee-calc-sex");
   var tdeeCalcAgeEl = document.getElementById("tdee-calc-age");
@@ -363,6 +364,7 @@
   var tdeeCalcCardioEnabledEl = document.getElementById("tdee-calc-cardio-enabled");
   var tdeeCalcCardioWrapEl = document.getElementById("tdee-calc-cardio-wrap");
   var tdeeCalcCardioDaysEl = document.getElementById("tdee-calc-cardio-days");
+  var tdeeCalcCardioMinutesEl = document.getElementById("tdee-calc-cardio-minutes");
   var tdeeCalcCardioIntensityEl = document.getElementById("tdee-calc-cardio-intensity");
   var tdeeCalcActivityFactorEl = document.getElementById("tdee-calc-activity-factor");
   var tdeeCalcResultEl = document.getElementById("tdee-calc-result");
@@ -550,6 +552,8 @@
   var tdeeCalcHeightUnit = "ft";
   var tdeeCalcResistanceMode = "days";
   var tdeeCalcLastResult = null;
+  var tdeeCalcHydrating = false;
+  var tdeeCalcCleared = false;
   var dayHighlightsEnabled = true;
   var dayWordWrapEnabled = true;
   var dayEntryAdvancedEnabled = false;
@@ -18529,6 +18533,201 @@
     });
   }
 
+  function parseOptionalPositiveNumber(raw) {
+    if (raw == null || raw === "") return null;
+    var n = typeof raw === "number" ? raw : parseFloat(raw);
+    return !isNaN(n) && n > 0 ? n : null;
+  }
+
+  function parseOptionalNonNegInt(raw) {
+    if (raw == null || raw === "") return null;
+    var n = typeof raw === "number" ? raw : parseInt(raw, 10);
+    return !isNaN(n) && n >= 0 ? n : null;
+  }
+
+  function blankTdeeCalcState() {
+    return {
+      sex: normalizeDemographic(demographic),
+      age: null,
+      weightUnit: "lb",
+      weight: null,
+      heightUnit: "ft",
+      heightCm: null,
+      heightFt: null,
+      heightIn: null,
+      resistanceMode: "days",
+      resistanceDays: 0,
+      heavySets: null,
+      lightSets: null,
+      cardioEnabled: false,
+      cardioDays: 3,
+      cardioMinutes: 30,
+      cardioIntensity: "moderate",
+    };
+  }
+
+  function normalizeTdeeCalcState(raw) {
+    if (!raw || typeof raw !== "object") return null;
+    var blank = blankTdeeCalcState();
+    var sex = normalizeDemographic(raw.sex || blank.sex);
+    var weightUnit = raw.weightUnit === "kg" ? "kg" : "lb";
+    var heightUnit = raw.heightUnit === "cm" ? "cm" : "ft";
+    var resistanceMode = raw.resistanceMode === "sets" ? "sets" : "days";
+    var resistanceDays = parseInt(raw.resistanceDays, 10);
+    if (isNaN(resistanceDays) || resistanceDays < 0) resistanceDays = 0;
+    if (resistanceDays > 7) resistanceDays = 7;
+    var cardioDays = parseInt(raw.cardioDays, 10);
+    if (isNaN(cardioDays) || cardioDays < 1) cardioDays = 3;
+    if (cardioDays > 7) cardioDays = 7;
+    var intensity = normalizeTdeeCalcCardioIntensity(raw.cardioIntensity);
+    var cardioMinutes = parseOptionalPositiveNumber(raw.cardioMinutes);
+    if (cardioMinutes != null && cardioMinutes > 300) cardioMinutes = 300;
+    return {
+      sex: sex,
+      age: parseOptionalPositiveNumber(raw.age),
+      weightUnit: weightUnit,
+      weight: parseOptionalPositiveNumber(raw.weight),
+      heightUnit: heightUnit,
+      heightCm: parseOptionalPositiveNumber(raw.heightCm),
+      heightFt: parseOptionalNonNegInt(raw.heightFt),
+      heightIn: parseOptionalPositiveNumber(raw.heightIn),
+      resistanceMode: resistanceMode,
+      resistanceDays: resistanceDays,
+      heavySets: parseOptionalNonNegInt(raw.heavySets),
+      lightSets: parseOptionalNonNegInt(raw.lightSets),
+      cardioEnabled: !!raw.cardioEnabled,
+      cardioDays: cardioDays,
+      cardioMinutes: cardioMinutes,
+      cardioIntensity: intensity,
+    };
+  }
+
+  function readTdeeCalcStateFromUi() {
+    var weightRaw = tdeeCalcWeightEl ? parseFloat(tdeeCalcWeightEl.value) : NaN;
+    var ageRaw = tdeeCalcAgeEl ? parseFloat(tdeeCalcAgeEl.value) : NaN;
+    var heightCmRaw = tdeeCalcHeightCmEl ? parseFloat(tdeeCalcHeightCmEl.value) : NaN;
+    var heightFtRaw = tdeeCalcHeightFtEl ? parseInt(tdeeCalcHeightFtEl.value, 10) : NaN;
+    var heightInRaw = tdeeCalcHeightInEl ? parseFloat(tdeeCalcHeightInEl.value) : NaN;
+    var heavyRaw = tdeeCalcHeavySetsEl ? parseInt(tdeeCalcHeavySetsEl.value, 10) : NaN;
+    var lightRaw = tdeeCalcLightSetsEl ? parseInt(tdeeCalcLightSetsEl.value, 10) : NaN;
+    var minutesRaw = tdeeCalcCardioMinutesEl ? parseFloat(tdeeCalcCardioMinutesEl.value) : NaN;
+    var resistanceDays = tdeeCalcResistanceDaysEl ? parseInt(tdeeCalcResistanceDaysEl.value, 10) : 0;
+    if (isNaN(resistanceDays) || resistanceDays < 0) resistanceDays = 0;
+    if (resistanceDays > 7) resistanceDays = 7;
+    var cardioDays = tdeeCalcCardioDaysEl ? parseInt(tdeeCalcCardioDaysEl.value, 10) : 3;
+    if (isNaN(cardioDays) || cardioDays < 1) cardioDays = 3;
+    if (cardioDays > 7) cardioDays = 7;
+    var intensity = normalizeTdeeCalcCardioIntensity(
+      tdeeCalcCardioIntensityEl ? tdeeCalcCardioIntensityEl.value : "moderate"
+    );
+    return {
+      sex: normalizeDemographic(tdeeCalcSex),
+      age: !isNaN(ageRaw) && ageRaw > 0 ? ageRaw : null,
+      weightUnit: tdeeCalcWeightUnit === "kg" ? "kg" : "lb",
+      weight: !isNaN(weightRaw) && weightRaw > 0 ? weightRaw : null,
+      heightUnit: tdeeCalcHeightUnit === "cm" ? "cm" : "ft",
+      heightCm: !isNaN(heightCmRaw) && heightCmRaw > 0 ? heightCmRaw : null,
+      heightFt: !isNaN(heightFtRaw) && heightFtRaw >= 0 ? heightFtRaw : null,
+      heightIn: !isNaN(heightInRaw) && heightInRaw >= 0 ? heightInRaw : null,
+      resistanceMode: tdeeCalcResistanceMode === "sets" ? "sets" : "days",
+      resistanceDays: resistanceDays,
+      heavySets: !isNaN(heavyRaw) && heavyRaw >= 0 ? heavyRaw : null,
+      lightSets: !isNaN(lightRaw) && lightRaw >= 0 ? lightRaw : null,
+      cardioEnabled: !!(tdeeCalcCardioEnabledEl && tdeeCalcCardioEnabledEl.checked),
+      cardioDays: cardioDays,
+      cardioMinutes: !isNaN(minutesRaw) && minutesRaw > 0 ? Math.min(300, minutesRaw) : null,
+      cardioIntensity: intensity,
+    };
+  }
+
+  function saveTdeeCalcInputs() {
+    if (!persist || tdeeCalcHydrating) return;
+    tdeeCalcCleared = false;
+    persist.setSetting("tdeeCalc", readTdeeCalcStateFromUi());
+  }
+
+  function loadSavedTdeeCalcState() {
+    if (!persist) return null;
+    return normalizeTdeeCalcState(persist.getSetting("tdeeCalc"));
+  }
+
+  function applyTdeeCalcStateToUi(state) {
+    var s = state || blankTdeeCalcState();
+    tdeeCalcHydrating = true;
+    try {
+      tdeeCalcSex = normalizeDemographic(s.sex);
+      renderTdeeCalcSexUi();
+      if (tdeeCalcAgeEl) tdeeCalcAgeEl.value = s.age != null ? String(s.age) : "";
+      tdeeCalcWeightUnit = s.weightUnit === "kg" ? "kg" : "lb";
+      if (tdeeCalcWeightKgBtn) {
+        tdeeCalcWeightKgBtn.classList.toggle("tdee-calc__unit-btn--active", tdeeCalcWeightUnit === "kg");
+        tdeeCalcWeightKgBtn.setAttribute("aria-pressed", tdeeCalcWeightUnit === "kg" ? "true" : "false");
+      }
+      if (tdeeCalcWeightLbBtn) {
+        tdeeCalcWeightLbBtn.classList.toggle("tdee-calc__unit-btn--active", tdeeCalcWeightUnit === "lb");
+        tdeeCalcWeightLbBtn.setAttribute("aria-pressed", tdeeCalcWeightUnit === "lb" ? "true" : "false");
+      }
+      if (tdeeCalcWeightEl) tdeeCalcWeightEl.value = s.weight != null ? String(s.weight) : "";
+      tdeeCalcHeightUnit = s.heightUnit === "cm" ? "cm" : "ft";
+      var isCm = tdeeCalcHeightUnit === "cm";
+      if (tdeeCalcHeightCmWrapEl) tdeeCalcHeightCmWrapEl.hidden = !isCm;
+      if (tdeeCalcHeightFtWrapEl) tdeeCalcHeightFtWrapEl.hidden = isCm;
+      [tdeeCalcHeightCmBtn, tdeeCalcHeightCmBtn2].forEach(function (btn) {
+        if (!btn) return;
+        btn.classList.toggle("tdee-calc__unit-btn--active", isCm);
+        btn.setAttribute("aria-pressed", isCm ? "true" : "false");
+      });
+      [tdeeCalcHeightFtBtn, tdeeCalcHeightFtBtn2].forEach(function (btn) {
+        if (!btn) return;
+        btn.classList.toggle("tdee-calc__unit-btn--active", !isCm);
+        btn.setAttribute("aria-pressed", !isCm ? "true" : "false");
+      });
+      if (tdeeCalcHeightCmEl) tdeeCalcHeightCmEl.value = s.heightCm != null ? String(s.heightCm) : "";
+      if (tdeeCalcHeightFtEl) tdeeCalcHeightFtEl.value = s.heightFt != null ? String(s.heightFt) : "";
+      if (tdeeCalcHeightInEl) tdeeCalcHeightInEl.value = s.heightIn != null ? String(s.heightIn) : "";
+      tdeeCalcResistanceMode = s.resistanceMode === "sets" ? "sets" : "days";
+      var isDays = tdeeCalcResistanceMode === "days";
+      if (tdeeCalcResistanceDaysWrapEl) tdeeCalcResistanceDaysWrapEl.hidden = !isDays;
+      if (tdeeCalcResistanceSetsWrapEl) tdeeCalcResistanceSetsWrapEl.hidden = isDays;
+      if (tdeeCalcResistanceModeDaysBtn) {
+        tdeeCalcResistanceModeDaysBtn.classList.toggle("tdee-calc__unit-btn--active", isDays);
+        tdeeCalcResistanceModeDaysBtn.setAttribute("aria-pressed", isDays ? "true" : "false");
+      }
+      if (tdeeCalcResistanceModeSetsBtn) {
+        tdeeCalcResistanceModeSetsBtn.classList.toggle("tdee-calc__unit-btn--active", !isDays);
+        tdeeCalcResistanceModeSetsBtn.setAttribute("aria-pressed", !isDays ? "true" : "false");
+      }
+      if (tdeeCalcResistanceDaysEl) tdeeCalcResistanceDaysEl.value = String(s.resistanceDays);
+      if (tdeeCalcHeavySetsEl) tdeeCalcHeavySetsEl.value = s.heavySets != null ? String(s.heavySets) : "";
+      if (tdeeCalcLightSetsEl) tdeeCalcLightSetsEl.value = s.lightSets != null ? String(s.lightSets) : "";
+      if (tdeeCalcCardioEnabledEl) tdeeCalcCardioEnabledEl.checked = !!s.cardioEnabled;
+      if (tdeeCalcCardioWrapEl) tdeeCalcCardioWrapEl.hidden = !s.cardioEnabled;
+      if (tdeeCalcCardioDaysEl) tdeeCalcCardioDaysEl.value = String(s.cardioDays);
+      if (tdeeCalcCardioMinutesEl) {
+        tdeeCalcCardioMinutesEl.value = s.cardioMinutes != null ? String(s.cardioMinutes) : "";
+      }
+      if (tdeeCalcCardioIntensityEl) tdeeCalcCardioIntensityEl.value = s.cardioIntensity;
+    } finally {
+      tdeeCalcHydrating = false;
+    }
+  }
+
+  function prefillTdeeCalcWeightFromBody() {
+    if (!userBodyWeightKg || !tdeeCalcWeightEl) return;
+    var display =
+      tdeeCalcWeightUnit === "lb" ? userBodyWeightKg / 0.453592 : userBodyWeightKg;
+    tdeeCalcWeightEl.value = String(Math.round(display * 10) / 10);
+  }
+
+  function resetTdeeCalcInputs() {
+    applyTdeeCalcStateToUi(blankTdeeCalcState());
+    tdeeCalcHydrating = true;
+    updateTdeeCalculatorResult();
+    tdeeCalcHydrating = false;
+    tdeeCalcCleared = true;
+    if (persist) persist.setSetting("tdeeCalc", null);
+  }
+
   function setTdeeCalcSex(id) {
     tdeeCalcSex = normalizeDemographic(id);
     renderTdeeCalcSexUi();
@@ -18611,15 +18810,41 @@
     return days * 0.04;
   }
 
+  function normalizeTdeeCalcCardioIntensity(value) {
+    if (
+      value === "light" ||
+      value === "brisk" ||
+      value === "moderate" ||
+      value === "hard" ||
+      value === "vigorous"
+    ) {
+      return value;
+    }
+    return "moderate";
+  }
+
+  function tdeeCalcCardioIntensityRates(intensity) {
+    var key = normalizeTdeeCalcCardioIntensity(intensity);
+    if (key === "light") return { perDay: 0.025, cap: 0.12 };
+    if (key === "brisk") return { perDay: 0.032, cap: 0.16 };
+    if (key === "hard") return { perDay: 0.048, cap: 0.25 };
+    if (key === "vigorous") return { perDay: 0.055, cap: 0.3 };
+    return { perDay: 0.04, cap: 0.2 };
+  }
+
   function tdeeCalcCardioBonus() {
     if (!tdeeCalcCardioEnabledEl || !tdeeCalcCardioEnabledEl.checked) return 0;
     var days = tdeeCalcCardioDaysEl ? parseInt(tdeeCalcCardioDaysEl.value, 10) : 0;
     if (isNaN(days) || days < 0) days = 0;
     if (days > 7) days = 7;
+    var minutes = tdeeCalcCardioMinutesEl ? parseFloat(tdeeCalcCardioMinutesEl.value) : 30;
+    if (isNaN(minutes) || minutes < 0) minutes = 0;
+    if (minutes > 300) minutes = 300;
+    // 30 min session = previous fixed per-day bonus; longer/shorter scales linearly.
+    var durationScale = minutes / 30;
     var intensity = tdeeCalcCardioIntensityEl ? tdeeCalcCardioIntensityEl.value : "moderate";
-    var perDay = intensity === "vigorous" ? 0.055 : intensity === "light" ? 0.025 : 0.04;
-    var cap = intensity === "vigorous" ? 0.3 : intensity === "light" ? 0.12 : 0.2;
-    return Math.min(cap, days * perDay);
+    var rates = tdeeCalcCardioIntensityRates(intensity);
+    return Math.min(rates.cap, days * rates.perDay * durationScale);
   }
 
   function tdeeCalcActivityMultiplier() {
@@ -18663,26 +18888,24 @@
     if (tdee == null) {
       tdeeCalcResultEl.textContent = "—";
       if (tdeeCalculatorApplyBtn) tdeeCalculatorApplyBtn.disabled = true;
-      return;
+    } else {
+      tdeeCalcResultEl.textContent = fmtNumGrouped(tdee) + " cal/day";
+      if (tdeeCalculatorApplyBtn) tdeeCalculatorApplyBtn.disabled = false;
     }
-    tdeeCalcResultEl.textContent = fmtNumGrouped(tdee) + " cal/day";
-    if (tdeeCalculatorApplyBtn) tdeeCalculatorApplyBtn.disabled = false;
+    if (tdeeCalculatorModalEl && !tdeeCalculatorModalEl.hidden) {
+      saveTdeeCalcInputs();
+    }
   }
 
   function openTdeeCalculatorModal() {
     if (!tdeeCalculatorModalEl) return;
-    tdeeCalcSex = demographic;
-    renderTdeeCalcSexUi();
-    setTdeeCalcWeightUnit(tdeeCalcWeightUnit);
-    setTdeeCalcHeightUnit(tdeeCalcHeightUnit);
-    setTdeeCalcResistanceMode(tdeeCalcResistanceMode);
-    syncTdeeCalcCardioUi();
-    if (userBodyWeightKg && tdeeCalcWeightEl) {
-      var display =
-        tdeeCalcWeightUnit === "lb"
-          ? userBodyWeightKg / 0.453592
-          : userBodyWeightKg;
-      tdeeCalcWeightEl.value = String(Math.round(display * 10) / 10);
+    var saved = loadSavedTdeeCalcState();
+    tdeeCalcCleared = false;
+    if (saved) {
+      applyTdeeCalcStateToUi(saved);
+    } else {
+      applyTdeeCalcStateToUi(blankTdeeCalcState());
+      prefillTdeeCalcWeightFromBody();
     }
     updateTdeeCalculatorResult();
     tdeeCalculatorModalEl.hidden = false;
@@ -18692,6 +18915,11 @@
 
   function closeTdeeCalculatorModal() {
     if (!tdeeCalculatorModalEl) return;
+    if (tdeeCalcCleared) {
+      if (persist) persist.setSetting("tdeeCalc", null);
+    } else {
+      saveTdeeCalcInputs();
+    }
     tdeeCalculatorModalEl.hidden = true;
     updateBodyModalOpen();
   }
@@ -18706,6 +18934,7 @@
       saveBodyWeight();
       syncSettingsWeightInput();
     }
+    saveTdeeCalcInputs();
     syncSettingsTdeeInput();
     closeTdeeCalculatorModal();
     if (weekTotalOpen && lastWeekTotals) {
@@ -28519,6 +28748,10 @@
     tdeeCalculatorCancelBtn.addEventListener("click", closeTdeeCalculatorModal);
   }
 
+  if (tdeeCalculatorResetBtn) {
+    tdeeCalculatorResetBtn.addEventListener("click", resetTdeeCalcInputs);
+  }
+
   if (tdeeCalculatorApplyBtn) {
     tdeeCalculatorApplyBtn.addEventListener("click", applyTdeeFromCalculator);
   }
@@ -28539,7 +28772,7 @@
     });
   }
 
-  [tdeeCalcAgeEl, tdeeCalcWeightEl, tdeeCalcHeightCmEl, tdeeCalcHeightFtEl, tdeeCalcHeightInEl, tdeeCalcHeavySetsEl, tdeeCalcLightSetsEl].forEach(
+  [tdeeCalcAgeEl, tdeeCalcWeightEl, tdeeCalcHeightCmEl, tdeeCalcHeightFtEl, tdeeCalcHeightInEl, tdeeCalcHeavySetsEl, tdeeCalcLightSetsEl, tdeeCalcCardioMinutesEl].forEach(
     function (el) {
       if (!el) return;
       el.addEventListener("input", updateTdeeCalculatorResult);

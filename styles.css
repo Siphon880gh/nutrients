@@ -9115,6 +9115,12 @@ body.day-word-wrap-off .day__input {
   gap: 0.65rem;
 }
 
+.tdee-calc__footer-actions {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
 .tdee-calc__activity-factor {
   margin: 0;
   font-size: 0.78rem;
