@@ -765,6 +765,7 @@ var NutrientsPersist = (function () {
           {
             version: 2,
             days: Object.assign({}, orphan.dayMeals.days),
+            ignoredDays: normalizeIgnoredDays(orphan.dayMeals.ignoredDays),
           },
           userId
         );
@@ -831,6 +832,22 @@ var NutrientsPersist = (function () {
     );
   }
 
+  function normalizeIgnoredDays(raw) {
+    var out = {};
+    if (!raw) return out;
+    if (Array.isArray(raw)) {
+      raw.forEach(function (key) {
+        if (typeof key === "string" && key) out[key] = true;
+      });
+      return out;
+    }
+    if (typeof raw !== "object") return out;
+    Object.keys(raw).forEach(function (key) {
+      if (raw[key]) out[key] = true;
+    });
+    return out;
+  }
+
   function loadDayMeals() {
     migrateIfNeeded();
     var userId = currentUserId();
@@ -844,6 +861,7 @@ var NutrientsPersist = (function () {
     return {
       version: row.version || 2,
       days: row.days && typeof row.days === "object" ? row.days : {},
+      ignoredDays: normalizeIgnoredDays(row.ignoredDays),
     };
   }
 
@@ -856,6 +874,7 @@ var NutrientsPersist = (function () {
         version: payload.version || 2,
         days:
           payload.days && typeof payload.days === "object" ? payload.days : {},
+        ignoredDays: normalizeIgnoredDays(payload.ignoredDays),
       },
       userId
     );

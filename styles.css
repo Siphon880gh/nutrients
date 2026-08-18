@@ -1003,6 +1003,14 @@ body.app-nav-shortcuts-visible [data-app-shortcut] > .app-nav__shortcut {
   text-underline-offset: 0.12em;
 }
 
+.dashboard__macros-condensed-day--ignored {
+  opacity: 0.62;
+}
+
+.dashboard__macros-condensed-day--ignored .dashboard__macros-condensed-label {
+  color: #8a7a5c;
+}
+
 .dashboard__macros-condensed-cal {
   display: block;
   font-size: 0.72rem;
@@ -2249,6 +2257,7 @@ body.highlight-daily-intake-icons .dashboard__micro-daily-intake-btn[aria-expand
   grid-area: title;
   display: flex;
   align-items: center;
+  gap: 0.45rem;
   min-width: 0;
 }
 
@@ -4421,6 +4430,7 @@ button.dashboard__micro-day-name:focus-visible {
   grid-area: title;
   display: flex;
   align-items: center;
+  gap: 0.45rem;
   min-width: 0;
 }
 
@@ -6696,6 +6706,98 @@ button.dashboard__longevity-name:focus-visible {
   text-underline-offset: 0.2em;
 }
 
+.dashboard__card--ignored {
+  border-color: #c4b496;
+  background: #f6f1e8;
+}
+
+.dashboard__card--ignored .dashboard__label {
+  color: #6b5a3d;
+}
+
+.dashboard__ignored-badge {
+  display: block;
+  margin: 0;
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: #8a7a5c;
+  line-height: 1.2;
+}
+
+.dashboard__card:not(.dashboard__card--ignored) .dashboard__ignored-badge {
+  visibility: hidden;
+}
+
+.dashboard__ignored-days-badge {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  margin: 0;
+  padding: 0.14rem 0.42rem;
+  border: 1px solid #c4b496;
+  border-radius: 999px;
+  background: #f6f1e8;
+  color: #6b5a3d;
+  font: inherit;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  line-height: 1.2;
+  cursor: pointer;
+}
+
+.dashboard__ignored-days-badge[hidden] {
+  display: none;
+}
+
+.dashboard__ignored-days-badge:hover,
+.dashboard__ignored-days-badge:focus-visible,
+.dashboard__ignored-days-badge[aria-expanded="true"] {
+  border-color: #b39a72;
+  background: #efe6d4;
+  color: #5a4a32;
+}
+
+.dashboard__ignored-days-badge:focus-visible {
+  outline: 2px solid #3d6b9e;
+  outline-offset: 2px;
+}
+
+.week-summary__label .dashboard__ignored-days-badge {
+  text-transform: uppercase;
+}
+
+.dashboard__ignored-days-popover {
+  position: fixed;
+  z-index: 120;
+  min-width: 12rem;
+  max-width: min(22rem, calc(100vw - 2rem));
+  padding: 0.6rem 0.7rem;
+  font-size: 0.76rem;
+  line-height: 1.45;
+  color: #444;
+  background: #fff;
+  border: 1px solid #d8dce2;
+  border-radius: 6px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+  pointer-events: auto;
+}
+
+.dashboard__ignored-days-popover[hidden] {
+  display: none;
+}
+
+.dashboard__ignored-days-popover-text {
+  margin: 0;
+}
+
+.dashboard__ignored-days-popover-copy {
+  margin: 0;
+}
+
 .dashboard__label {
   display: block;
   margin-bottom: 0.35rem;
@@ -7306,12 +7408,16 @@ button.dashboard__longevity-name:focus-visible {
 
 .day__clear,
 .day__copy-toggle,
-.day__favorite {
+.day__favorite,
+.day__ignore {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  gap: 0;
+  box-sizing: border-box;
+  min-width: 1.45rem;
   min-height: 1.45rem;
-  padding: 0.15rem 0.4rem;
+  padding: 0.15rem;
   font: inherit;
   font-size: 0.68rem;
   font-weight: 600;
@@ -7321,6 +7427,84 @@ button.dashboard__longevity-name:focus-visible {
   border-radius: 4px;
   background: #fff;
   color: #5c5c5c;
+  position: relative;
+  z-index: 1;
+}
+
+.day__action-icon {
+  display: block;
+  flex: 0 0 auto;
+}
+
+.day__action-label {
+  display: inline-block;
+  max-width: 0;
+  margin: 0;
+  overflow: hidden;
+  opacity: 0;
+  white-space: nowrap;
+  pointer-events: none;
+  transition: max-width 0.16s ease, opacity 0.12s ease, margin 0.16s ease;
+}
+
+.day__clear:hover:not(:disabled),
+.day__clear:focus:not(:disabled),
+.day__clear:focus-visible:not(:disabled),
+.day__copy-toggle:hover:not(:disabled),
+.day__copy-toggle:focus:not(:disabled),
+.day__copy-toggle:focus-visible:not(:disabled),
+.day__copy-toggle[aria-expanded="true"],
+.day__copy:focus-within .day__copy-toggle,
+.day__favorite:hover:not(:disabled),
+.day__favorite:focus:not(:disabled),
+.day__favorite:focus-visible:not(:disabled),
+.day__ignore:hover:not(:disabled),
+.day__ignore:focus:not(:disabled),
+.day__ignore:focus-visible:not(:disabled),
+.day__ignore[aria-pressed="true"] {
+  padding: 0.15rem 0.4rem 0.15rem 0.28rem;
+  z-index: 3;
+}
+
+.day__clear:hover:not(:disabled) .day__action-label,
+.day__clear:focus:not(:disabled) .day__action-label,
+.day__clear:focus-visible:not(:disabled) .day__action-label,
+.day__copy-toggle:hover:not(:disabled) .day__action-label,
+.day__copy-toggle:focus:not(:disabled) .day__action-label,
+.day__copy-toggle:focus-visible:not(:disabled) .day__action-label,
+.day__copy-toggle[aria-expanded="true"] .day__action-label,
+.day__copy:focus-within .day__copy-toggle .day__action-label,
+.day__favorite:hover:not(:disabled) .day__action-label,
+.day__favorite:focus:not(:disabled) .day__action-label,
+.day__favorite:focus-visible:not(:disabled) .day__action-label,
+.day__ignore:hover:not(:disabled) .day__action-label,
+.day__ignore:focus:not(:disabled) .day__action-label,
+.day__ignore:focus-visible:not(:disabled) .day__action-label,
+.day__ignore[aria-pressed="true"] .day__action-label {
+  max-width: 5.5rem;
+  margin-left: 0.28rem;
+  opacity: 1;
+}
+
+.day__ignore:hover:not(:disabled),
+.day__ignore:focus:not(:disabled),
+.day__ignore:focus-visible:not(:disabled),
+.day__ignore[aria-pressed="true"] {
+  padding: 0.15rem 0.28rem 0.15rem 0.4rem;
+}
+
+.day__ignore:hover:not(:disabled) .day__action-label,
+.day__ignore:focus:not(:disabled) .day__action-label,
+.day__ignore:focus-visible:not(:disabled) .day__action-label,
+.day__ignore[aria-pressed="true"] .day__action-label {
+  margin-left: 0;
+  margin-right: 0.28rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .day__action-label {
+    transition: none;
+  }
 }
 
 .week__clear-all:hover:not(:disabled) {
@@ -7348,10 +7532,18 @@ button.dashboard__longevity-name:focus-visible {
   background: #eef4fa;
 }
 
+.day__ignore:hover:not(:disabled),
+.day__ignore[aria-pressed="true"] {
+  color: #6b5a3d;
+  border-color: #c4b496;
+  background: #f6f1e8;
+}
+
 .week__clear-all:disabled,
 .day__clear:disabled,
 .day__copy-toggle:disabled,
-.day__favorite:disabled {
+.day__favorite:disabled,
+.day__ignore:disabled {
   opacity: 0.4;
   cursor: default;
 }
@@ -7495,10 +7687,19 @@ button.dashboard__longevity-name:focus-visible {
   justify-content: flex-start;
   gap: 0.4rem;
   min-height: 0;
+  overflow: visible;
   padding: 0.5rem 0.5rem 0.45rem;
   border-bottom: 1px solid #e2e2de;
   background: #f6f5f1;
   border-radius: 7px 7px 0 0;
+}
+
+.day__head-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.35rem;
+  min-width: 0;
 }
 
 .day__head-text {
@@ -7508,6 +7709,13 @@ button.dashboard__longevity-name:focus-visible {
   gap: 0.1rem;
   min-width: 0;
   min-height: 0;
+  flex: 1 1 auto;
+}
+
+.day__ignore {
+  flex: 0 0 auto;
+  flex-direction: row-reverse;
+  align-self: flex-start;
 }
 
 .day__head-actions {
@@ -7695,6 +7903,29 @@ body.day-entry-guided .day__guided {
 .day--today.day--favorite-day .day__guided {
   border-color: transparent;
   background: linear-gradient(180deg, #f7fafc 0%, #f4faf8 100%);
+}
+
+.day--ignored {
+  border-color: #c4b496;
+  box-shadow: 0 0 0 1px rgba(107, 90, 61, 0.12);
+}
+
+.day--ignored .day__head {
+  background: #f6f1e8;
+  border-bottom-color: #e2d8c4;
+}
+
+.day--ignored .day__label {
+  color: #6b5a3d;
+}
+
+.day--ignored .day__date {
+  color: #8a7a5c;
+}
+
+.day--ignored .day__editor,
+.day--ignored .day__guided {
+  opacity: 0.72;
 }
 
 .day__guided-scroll {
@@ -12175,6 +12406,7 @@ button.longevity-form__label-link:focus-visible {
   .day__clear,
   .day__copy,
   .day__favorite,
+  .day__ignore,
   .day__guided-footer,
   .day__food-item-servings,
   .day__food-item-edit,
@@ -12376,6 +12608,7 @@ body.print-preview .favorites-sidebar,
 body.print-preview .day__clear,
 body.print-preview .day__copy,
 body.print-preview .day__favorite,
+body.print-preview .day__ignore,
 body.print-preview .day__guided-footer,
 body.print-preview .day__food-item-servings,
 body.print-preview .day__food-item-edit,

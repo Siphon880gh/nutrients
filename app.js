@@ -573,6 +573,7 @@
   var ADD_FOOD_PAGE_SIZE = 25;
   var DAY_SERVING_STEP = 0.25;
   var dayMealsByDate = {};
+  var ignoredDaysByDate = {};
   var viewedWeekStart = null;
   var diaryFavorites = [];
   var activeFavoriteDayKey = null;
@@ -729,6 +730,13 @@
   var macroNeedPopoverAnchor = null;
   var macroNeedPopoverPinned = false;
   var macroNeedPopoverHideTimer = null;
+  var ignoredDaysPopoverEl = document.getElementById("ignored-days-popover");
+  var ignoredDaysPopoverTextEl = document.getElementById(
+    "ignored-days-popover-text"
+  );
+  var ignoredDaysPopoverAnchor = null;
+  var ignoredDaysPopoverPinned = false;
+  var ignoredDaysPopoverHideTimer = null;
 
   /**
    * Nutrients that can cause harm from a single-day excess (often supplements).
@@ -6137,6 +6145,7 @@
   function glycemicLoadContributionsFromWeek() {
     var merged = {};
     DAYS.forEach(function (day) {
+      if (isDayIgnoredForWeekTotals(day.id)) return;
       var el = document.getElementById(day.id);
       var text = el ? el.value : "";
       var hitCounts = keywordHitCounts(text);
@@ -6457,7 +6466,9 @@
         ? DAYS.filter(function (day) {
             return day.id === scope;
           })
-        : DAYS;
+        : DAYS.filter(function (day) {
+            return !isDayIgnoredForWeekTotals(day.id);
+          });
     var merged = {};
     daysToScan.forEach(function (day) {
       var el = document.getElementById(day.id);
@@ -6511,7 +6522,7 @@
   }
 
   function longevitySourcesScopeSubtitle(kind, scope) {
-    var periodLabel = "Full week (Mon–Sun)";
+    var periodLabel = weekTotalsScopeLabel();
     if (scope && scope !== "week") {
       var dayMeta = dayMetaById(scope);
       periodLabel = dayMeta
@@ -7844,7 +7855,9 @@
     var html =
       '<option value="week"' +
       (selectedScope === "week" ? " selected" : "") +
-      ">Full week (Mon–Sun)</option>";
+      ">" +
+      escapeHtml(weekTotalsScopeLabel()) +
+      "</option>";
     DAYS.forEach(function (day) {
       html +=
         '<option value="' +
@@ -10840,6 +10853,7 @@
     if (scope === "weekly") {
       var merged = {};
       DAYS.forEach(function (day) {
+        if (isDayIgnoredForWeekTotals(day.id)) return;
         var el = document.getElementById(day.id);
         var text = el ? el.value : "";
         macroContributionsFromText(text, macroKey).forEach(function (item) {
@@ -11069,6 +11083,7 @@
     if (scope === "week") {
       var merged = {};
       DAYS.forEach(function (day) {
+        if (isDayIgnoredForWeekTotals(day.id)) return;
         var el = document.getElementById(day.id);
         var text = el ? el.value : "";
         microContributionsFromText(text, microKey).forEach(function (item) {
@@ -11116,6 +11131,7 @@
   function weekMicroTotals() {
     var week = emptyMicroTotals();
     DAYS.forEach(function (day) {
+      if (isDayIgnoredForWeekTotals(day.id)) return;
       var el = document.getElementById(day.id);
       var text = el ? el.value : "";
       week = addMicroTotals(week, microTotalsFromText(text));
@@ -11168,6 +11184,7 @@
   function weekLongevityTotals() {
     var week = emptyLongevityTotals();
     DAYS.forEach(function (day) {
+      if (isDayIgnoredForWeekTotals(day.id)) return;
       var el = document.getElementById(day.id);
       var text = el ? el.value : "";
       week = addLongevityTotals(week, longevityTotalsFromText(text));
@@ -11178,6 +11195,7 @@
   function weekMacroTotals() {
     var week = { protein: 0, carbs: 0, fats: 0 };
     DAYS.forEach(function (day) {
+      if (isDayIgnoredForWeekTotals(day.id)) return;
       var el = document.getElementById(day.id);
       var text = el ? el.value : "";
       var dayTotals = totalsFromText(text);
@@ -11216,6 +11234,7 @@
     var highGl = 0;
 
     DAYS.forEach(function (day) {
+      if (isDayIgnoredForWeekTotals(day.id)) return;
       var el = document.getElementById(day.id);
       var text = el ? el.value : "";
       var hitCounts = keywordHitCounts(text);
@@ -11288,6 +11307,7 @@
     var total = 0;
 
     DAYS.forEach(function (day) {
+      if (isDayIgnoredForWeekTotals(day.id)) return;
       var el = document.getElementById(day.id);
       var text = el ? el.value : "";
       var hitCounts = keywordHitCounts(text);
@@ -11326,11 +11346,219 @@
    * Divisor for weekly → daily averages used by % DV panels.
    * Past and future viewed weeks: full Mon–Sun (7).
    * Current calendar week: Mon through today’s blue column (inclusive).
+   * Days marked Ignore on the food entry are omitted from the count.
    */
   function weekAverageDayCount() {
-    if (!isCurrentWeek()) return DAYS.length;
-    var idx = dayIndexById(todayDayId());
-    return idx >= 0 ? idx + 1 : DAYS.length;
+    var lastIdx = DAYS.length - 1;
+    if (isCurrentWeek()) {
+      var idx = dayIndexById(todayDayId());
+      if (idx >= 0) lastIdx = idx;
+    }
+    var counted = 0;
+    for (var i = 0; i <= lastIdx; i++) {
+      if (!isDayIgnoredForWeekTotals(DAYS[i].id)) counted++;
+    }
+    return counted > 0 ? counted : lastIdx + 1;
+  }
+
+  function isDayIgnoredForWeekTotals(dayId) {
+    var key = dateKeyForDayId(dayId);
+    return !!(key && ignoredDaysByDate[key]);
+  }
+
+  function ignoredWeekDayLabels() {
+    var labels = [];
+    DAYS.forEach(function (day) {
+      if (isDayIgnoredForWeekTotals(day.id)) labels.push(day.label);
+    });
+    return labels;
+  }
+
+  function formatIgnoredDayList(labels) {
+    if (!labels.length) return "";
+    if (labels.length === 1) return labels[0];
+    if (labels.length === 2) return labels[0] + " and " + labels[1];
+    return labels.slice(0, -1).join(", ") + ", and " + labels[labels.length - 1];
+  }
+
+  function ignoredDaysPopoverCopyHtml() {
+    var labels = ignoredWeekDayLabels();
+    if (!labels.length) return "";
+    var dayWord = labels.length === 1 ? "day" : "days";
+    return (
+      '<p class="dashboard__ignored-days-popover-copy">' +
+      escapeHtml(formatIgnoredDayList(labels)) +
+      (labels.length === 1 ? " is" : " are") +
+      " ignored this week. Ignored " +
+      dayWord +
+      " still show on the food entry and daily cards, but they are left out of week total, weekly nutrients, and weekly longevity.</p>"
+    );
+  }
+
+  function ignoredDaysBadgeHtml() {
+    return (
+      '<button type="button" class="dashboard__ignored-days-badge" data-action="toggle-ignored-days-popover" aria-expanded="false" aria-controls="ignored-days-popover">Ignored days</button>'
+    );
+  }
+
+  function clearIgnoredDaysPopoverHideTimer() {
+    if (ignoredDaysPopoverHideTimer) {
+      clearTimeout(ignoredDaysPopoverHideTimer);
+      ignoredDaysPopoverHideTimer = null;
+    }
+  }
+
+  function hideIgnoredDaysPopover() {
+    clearIgnoredDaysPopoverHideTimer();
+    if (!ignoredDaysPopoverEl) return;
+    ignoredDaysPopoverEl.hidden = true;
+    ignoredDaysPopoverPinned = false;
+    if (ignoredDaysPopoverAnchor) {
+      ignoredDaysPopoverAnchor.setAttribute("aria-expanded", "false");
+      ignoredDaysPopoverAnchor = null;
+    }
+  }
+
+  function showIgnoredDaysPopover(anchor, pinned) {
+    if (!ignoredDaysPopoverEl || !ignoredDaysPopoverTextEl || !anchor) return;
+    var html = ignoredDaysPopoverCopyHtml();
+    if (!html) {
+      hideIgnoredDaysPopover();
+      return;
+    }
+    clearIgnoredDaysPopoverHideTimer();
+    if (ignoredDaysPopoverAnchor && ignoredDaysPopoverAnchor !== anchor) {
+      ignoredDaysPopoverAnchor.setAttribute("aria-expanded", "false");
+    }
+    ignoredDaysPopoverTextEl.innerHTML = html;
+    ignoredDaysPopoverAnchor = anchor;
+    ignoredDaysPopoverPinned = !!pinned;
+    ignoredDaysPopoverEl.hidden = false;
+    positionFixedPopoverBelow(ignoredDaysPopoverEl, anchor);
+    anchor.setAttribute("aria-expanded", "true");
+  }
+
+  function scheduleHideIgnoredDaysPopover() {
+    if (ignoredDaysPopoverPinned) return;
+    clearIgnoredDaysPopoverHideTimer();
+    ignoredDaysPopoverHideTimer = setTimeout(function () {
+      ignoredDaysPopoverHideTimer = null;
+      if (!ignoredDaysPopoverPinned) hideIgnoredDaysPopover();
+    }, 160);
+  }
+
+  function toggleIgnoredDaysPopover(anchor) {
+    if (!anchor) return;
+    if (
+      ignoredDaysPopoverAnchor === anchor &&
+      ignoredDaysPopoverEl &&
+      !ignoredDaysPopoverEl.hidden &&
+      ignoredDaysPopoverPinned
+    ) {
+      hideIgnoredDaysPopover();
+      return;
+    }
+    showIgnoredDaysPopover(anchor, true);
+  }
+
+  function syncIgnoredWeekBadges() {
+    var any = ignoredWeekDayLabels().length > 0;
+    var microBadge = document.getElementById("dashboard-micro-ignored-badge");
+    if (microBadge) microBadge.hidden = !(any && !microViewDaily);
+    var longevityBadge = document.getElementById(
+      "dashboard-longevity-ignored-badge"
+    );
+    if (longevityBadge) longevityBadge.hidden = !any;
+    if (!any) hideIgnoredDaysPopover();
+    else if (
+      ignoredDaysPopoverAnchor &&
+      ignoredDaysPopoverEl &&
+      !ignoredDaysPopoverEl.hidden
+    ) {
+      if (ignoredDaysPopoverAnchor.hidden) hideIgnoredDaysPopover();
+      else showIgnoredDaysPopover(ignoredDaysPopoverAnchor, ignoredDaysPopoverPinned);
+    }
+  }
+
+  function initIgnoredDaysPopoverEvents() {
+    document.addEventListener("click", function (e) {
+      var btn = e.target.closest('[data-action="toggle-ignored-days-popover"]');
+      if (btn) {
+        e.preventDefault();
+        e.stopPropagation();
+        toggleIgnoredDaysPopover(btn);
+        return;
+      }
+      if (!ignoredDaysPopoverEl || ignoredDaysPopoverEl.hidden) return;
+      if (e.target.closest("#ignored-days-popover")) return;
+      hideIgnoredDaysPopover();
+    });
+
+    document.addEventListener("mouseover", function (e) {
+      var btn = e.target.closest('[data-action="toggle-ignored-days-popover"]');
+      if (!btn) return;
+      showIgnoredDaysPopover(
+        btn,
+        ignoredDaysPopoverPinned && ignoredDaysPopoverAnchor === btn
+      );
+    });
+
+    document.addEventListener("mouseout", function (e) {
+      var btn = e.target.closest('[data-action="toggle-ignored-days-popover"]');
+      if (!btn) return;
+      var related = e.relatedTarget;
+      if (
+        related &&
+        (btn.contains(related) ||
+          (ignoredDaysPopoverEl && ignoredDaysPopoverEl.contains(related)))
+      ) {
+        return;
+      }
+      scheduleHideIgnoredDaysPopover();
+    });
+
+    if (ignoredDaysPopoverEl) {
+      ignoredDaysPopoverEl.addEventListener("mouseenter", function () {
+        clearIgnoredDaysPopoverHideTimer();
+      });
+      ignoredDaysPopoverEl.addEventListener("mouseleave", function () {
+        scheduleHideIgnoredDaysPopover();
+      });
+    }
+
+    window.addEventListener(
+      "scroll",
+      function () {
+        hideIgnoredDaysPopover();
+      },
+      true
+    );
+
+    window.addEventListener("resize", function () {
+      if (
+        ignoredDaysPopoverAnchor &&
+        ignoredDaysPopoverEl &&
+        !ignoredDaysPopoverEl.hidden
+      ) {
+        positionFixedPopoverBelow(ignoredDaysPopoverEl, ignoredDaysPopoverAnchor);
+      }
+    });
+  }
+
+  function hideIgnoredDaysPopoverFor(container) {
+    if (
+      ignoredDaysPopoverAnchor &&
+      container &&
+      container.contains(ignoredDaysPopoverAnchor)
+    ) {
+      hideIgnoredDaysPopover();
+    }
+  }
+
+  function weekTotalsScopeLabel() {
+    var labels = ignoredWeekDayLabels();
+    if (!labels.length) return "Full week (Mon–Sun)";
+    return "Week excl. " + labels.join(", ");
   }
 
   function avgDailyLongevity(key, weekTotal) {
@@ -13415,6 +13643,7 @@
 
   function microDayCardHtml(dayLabel, dayId, microTotals, longevityTotals, dateLabel) {
     var isToday = dayId === activeTodayDayId();
+    var isIgnored = isDayIgnoredForWeekTotals(dayId);
     var rows = "";
     microConditionDisplayFields().forEach(function (entry) {
       if (!microEntryMatchesStatusFilter(entry, microTotals, longevityTotals, true)) {
@@ -13473,6 +13702,7 @@
     return (
       '<article class="dashboard__card dashboard__micro-day-card' +
       (isToday ? " dashboard__card--today" : "") +
+      (isIgnored ? " dashboard__card--ignored" : "") +
       '" data-micro-day-card="' +
       escapeAttr(dayId) +
       '">' +
@@ -13486,6 +13716,7 @@
       (dateLabel
         ? '<span class="dashboard__date">' + escapeHtml(dateLabel) + "</span>"
         : "") +
+      dashboardIgnoredStatusHtml(isIgnored) +
       "</div>" +
       '<button type="button" class="dashboard__micro-day-analysis" data-micro-analysis-day="' +
       escapeAttr(dayId) +
@@ -13553,6 +13784,7 @@
     } else {
       renderMicroWeeklyList();
     }
+    syncIgnoredWeekBadges();
 
     if (microGapsModalEl && !microGapsModalEl.hidden) {
       renderMicroGapsAiPreview();
@@ -14053,6 +14285,7 @@
 
     hideMicroDailyIntakePopover();
     hideMicroAcuteToxicityPopover();
+    syncIgnoredWeekBadges();
     var weekLongevity = weekLongevityTotals();
     var weekMicro = weekMicroTotals();
     var weekMacro = weekMacroTotals();
@@ -17548,6 +17781,7 @@
       renderLongevityPanel();
       initStickyFiltersCarousel();
     } else {
+      hideIgnoredDaysPopoverFor(dashboardLongevityPanelEl);
       setLongevityNavExpanded(false);
       clearLongevityNavHash();
       longevityNavPushDepth = 0;
@@ -17575,6 +17809,8 @@
     }
     if (weekTotalOpen && lastWeekTotals) {
       renderWeekSummary(lastWeekTotals);
+    } else {
+      hideIgnoredDaysPopoverFor(weekSummaryEl);
     }
   }
 
@@ -17591,6 +17827,7 @@
       renderMicroRequirements();
       initStickyFiltersCarousel();
     } else {
+      hideIgnoredDaysPopoverFor(dashboardMicroPanelEl);
       setMicroConditionExpanded(false);
       if (
         (analysisActiveKind === "micro-week" || analysisActiveKind === "micro-day") &&
@@ -18439,6 +18676,7 @@
     markTodayDay();
     syncWeekFavoriteButton();
     syncDayFavoriteButtons();
+    markIgnoredDays();
     syncMicroDailyDvToggleUi();
     syncMicroViewToggleUi();
     syncAcuteToxicityToggleUi();
@@ -19781,8 +20019,17 @@
     );
   }
 
+  function dashboardIgnoredStatusHtml(isIgnored) {
+    return (
+      '<span class="dashboard__ignored-badge"' +
+      (isIgnored ? "" : ' aria-hidden="true"') +
+      ">Ignored</span>"
+    );
+  }
+
   function dashboardCardHtml(label, totals, dayId, dateLabel) {
     var isToday = dayId === activeTodayDayId();
+    var isIgnored = isDayIgnoredForWeekTotals(dayId);
     var isPct = dashboardMacroPctView;
     var pct = macroPctFromTotals(totals);
     var toggleLabel = isPct ? "Show grams and calories" : "Show macro percentages";
@@ -19838,6 +20085,7 @@
       '<div class="dashboard__day">' +
       '<article class="dashboard__card' +
       (isToday ? " dashboard__card--today" : "") +
+      (isIgnored ? " dashboard__card--ignored" : "") +
       '">' +
       '<div class="dashboard__card-head">' +
       '<div class="dashboard__card-head-text">' +
@@ -19849,6 +20097,7 @@
       (dateLabel
         ? '<span class="dashboard__date">' + escapeHtml(dateLabel) + "</span>"
         : "") +
+      dashboardIgnoredStatusHtml(isIgnored) +
       "</div>" +
       '<div class="dashboard__card-actions">' +
       dashboardCardRankIconHtml(dayId) +
@@ -19877,6 +20126,7 @@
 
   function dashboardCondensedCardHtml(label, totals, dayId) {
     var isToday = dayId === activeTodayDayId();
+    var isIgnored = isDayIgnoredForWeekTotals(dayId);
     var isPct = dashboardMacroPctView;
     var pct = macroPctFromTotals(totals);
     var unit = function (text) {
@@ -19918,6 +20168,7 @@
     return (
       '<div class="dashboard__macros-condensed-day' +
       (isToday ? " dashboard__macros-condensed-day--today" : "") +
+      (isIgnored ? " dashboard__macros-condensed-day--ignored" : "") +
       '">' +
       '<span class="dashboard__macros-condensed-label"' +
       (isToday ? ' aria-current="date"' : "") +
@@ -20160,13 +20411,19 @@
     var dayAvgLabel = partialWeek
       ? "Day average (" + dayCount + " day" + (dayCount === 1 ? "" : "s") + ")"
       : "Day average";
+    hideIgnoredDaysPopoverFor(weekSummaryEl);
+    var ignoredBadgeHtml = ignoredWeekDayLabels().length
+      ? ignoredDaysBadgeHtml()
+      : "";
 
     weekSummaryEl.innerHTML =
       '<div class="week-summary__stats">' +
       '<div class="week-summary__stat">' +
       '<span class="week-summary__label">' +
       weekSummaryIconHtml("week") +
-      "Week total</span>" +
+      "Week total" +
+      ignoredBadgeHtml +
+      "</span>" +
       '<span class="week-summary__calories">' +
       weekCalHtml +
       "</span>" +
@@ -20200,7 +20457,9 @@
       var text = el ? el.value : "";
       var totals = totalsFromText(text);
       dayTotals.push(totals);
-      week = addTotals(week, totals);
+      if (!isDayIgnoredForWeekTotals(day.id)) {
+        week = addTotals(week, totals);
+      }
       html += dashboardCardHtml(day.label, totals, day.id, dateLabelForDayId(day.id));
     });
 
@@ -22132,6 +22391,7 @@
       else label.removeAttribute("aria-current");
     });
     markFavoriteDay();
+    markIgnoredDays();
     syncDaysCarouselNav();
   }
 
@@ -22251,6 +22511,12 @@
     markFavoriteDay();
   }
 
+  function setDayActionLabel(btn, text) {
+    if (!btn) return;
+    var label = btn.querySelector(".day__action-label");
+    if (label) label.textContent = text;
+  }
+
   function syncDayFavoriteButtons() {
     DAYS.forEach(function (day) {
       var btn = document.querySelector(
@@ -22261,7 +22527,7 @@
       var existing = key ? findFavoriteByTypeAndKey("day", key) : null;
       btn.disabled = !dayHasNotes(day.id);
       btn.setAttribute("aria-pressed", existing ? "true" : "false");
-      btn.textContent = existing ? "Favorited" : "Favorite";
+      setDayActionLabel(btn, existing ? "Favorited" : "Favorite");
       btn.setAttribute(
         "aria-label",
         existing
@@ -22269,6 +22535,61 @@
           : "Favorite " + day.label
       );
     });
+  }
+
+  function markIgnoredDays() {
+    document.querySelectorAll(".week__grid .day").forEach(function (dayEl) {
+      var input = dayEl.querySelector(".day__input");
+      var ignored = !!(input && isDayIgnoredForWeekTotals(input.id));
+      dayEl.classList.toggle("day--ignored", ignored);
+    });
+    syncDayIgnoreButtons();
+    syncIgnoredWeekBadges();
+  }
+
+  function syncDayIgnoreButtons() {
+    DAYS.forEach(function (day) {
+      var btn = document.querySelector(
+        '.day__ignore[data-day-id="' + day.id + '"]'
+      );
+      if (!btn) return;
+      var ignored = isDayIgnoredForWeekTotals(day.id);
+      btn.setAttribute("aria-pressed", ignored ? "true" : "false");
+      setDayActionLabel(btn, ignored ? "Ignored" : "Ignore");
+      btn.setAttribute(
+        "aria-label",
+        ignored
+          ? "Include " + day.label + " in week total, weekly nutrients, and weekly longevity"
+          : "Exclude " + day.label + " from week total, weekly nutrients, and weekly longevity"
+      );
+    });
+  }
+
+  function toggleDayIgnoredForWeek(dayId) {
+    var key = dateKeyForDayId(dayId);
+    if (!key) return;
+    if (ignoredDaysByDate[key]) delete ignoredDaysByDate[key];
+    else ignoredDaysByDate[key] = true;
+    saveDayMealsState();
+    markIgnoredDays();
+    renderDashboard();
+  }
+
+  function ingestIgnoredDaysMap(raw) {
+    var out = {};
+    if (!raw) return out;
+    if (Array.isArray(raw)) {
+      raw.forEach(function (k) {
+        if (parseDateKey(k)) out[k] = true;
+      });
+      return out;
+    }
+    if (typeof raw !== "object") return out;
+    Object.keys(raw).forEach(function (k) {
+      if (!parseDateKey(k)) return;
+      if (raw[k]) out[k] = true;
+    });
+    return out;
   }
 
   function syncWeekFavoriteButton() {
@@ -22759,6 +23080,7 @@
       el.value = dayMealsByDate[keys[i]] || "";
     });
     if (!dayEntryAdvancedEnabled) renderAllDayGuidedLists();
+    markIgnoredDays();
   }
 
   function setViewedWeekStart(mondayKey) {
@@ -23135,6 +23457,7 @@
     return {
       version: 2,
       days: Object.assign({}, dayMealsByDate),
+      ignoredDays: Object.assign({}, ignoredDaysByDate),
     };
   }
 
@@ -23143,6 +23466,7 @@
     persist.saveDayMeals({
       version: 2,
       days: Object.assign({}, dayMealsByDate),
+      ignoredDays: Object.assign({}, ignoredDaysByDate),
     });
   }
 
@@ -23591,12 +23915,14 @@
 
   function loadDayNotes() {
     dayMealsByDate = {};
+    ignoredDaysByDate = {};
     var migrated = false;
     if (persist) {
       var data = persist.loadDayMeals();
       if (data) {
         if (isV2DayMealsData(data)) {
           dayMealsByDate = ingestDayMealsMap(data.days);
+          ignoredDaysByDate = ingestIgnoredDaysMap(data.ignoredDays);
         } else if (isLegacyWeekMealsData(data)) {
           dayMealsByDate = migrateLegacyDayNotesToDates(data);
           migrated = true;
@@ -23982,6 +24308,14 @@
       else delete next[k];
     });
     dayMealsByDate = next;
+    var incomingIgnored = ingestIgnoredDaysMap(data.ignoredDays);
+    if (clearMissing) {
+      ignoredDaysByDate = incomingIgnored;
+    } else {
+      Object.keys(incomingIgnored).forEach(function (k) {
+        ignoredDaysByDate[k] = true;
+      });
+    }
     loadEditorsFromDayMeals();
     saveDayNotes();
   }
@@ -27405,6 +27739,13 @@
         if (favoriteDayId) openFavoriteDayEditor(favoriteDayId);
         return;
       }
+      var ignoreBtn = e.target.closest('[data-action="ignore-day"]');
+      if (ignoreBtn) {
+        closeAllDayCopyMenus();
+        var ignoreDayId = ignoreBtn.getAttribute("data-day-id");
+        if (ignoreDayId) toggleDayIgnoredForWeek(ignoreDayId);
+        return;
+      }
       var clearBtn = e.target.closest('[data-action="clear-day"]');
       if (clearBtn) {
         closeAllDayCopyMenus();
@@ -29875,6 +30216,7 @@
     initMacrosCondensedVisibility();
     initLongevityNav();
     initTargetRefPopoverEvents();
+    initIgnoredDaysPopoverEvents();
     applyLoadedAppStateToUi();
     applyInitialLongevityHash();
     maybeAutoImportSampleFoodsAndShowStarterGuide();

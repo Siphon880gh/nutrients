@@ -114,6 +114,9 @@ All users’ foods live in one array. Each row is owned by a `userId`.
     version: 2,
     days: {
       "YYYY-MM-DD": string  // meal lines for that calendar day
+    },
+    ignoredDays: {
+      "YYYY-MM-DD": true  // excluded from week total / weekly nutrients / weekly longevity
     }
   }
 ]
@@ -121,7 +124,7 @@ All users’ foods live in one array. Each row is owned by a `userId`.
 
 **One row per user.** Saves replace that user’s row; other users’ rows stay in the table.
 
-Empty day strings are omitted when saving. Legacy single-week `{ mon…sun }` payloads may appear via orphan claim as `_legacyWeek` and are migrated in `app.js` on load.
+Empty day strings are omitted when saving. `ignoredDays` is optional on load (missing → `{}`); keys mark calendar days that still show on the food entry and daily cards but are left out of week aggregates. Legacy single-week `{ mon…sun }` payloads may appear via orphan claim as `_legacyWeek` and are migrated in `app.js` on load.
 
 ### Favorites Table (`nutrients_favorites`)
 

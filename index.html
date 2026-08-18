@@ -48,6 +48,20 @@
       <circle cx="8" cy="8" r="6.25" fill="currentColor"></circle>
       <path fill="#fff" d="M8 3.6 11.4 9.1H4.6L8 3.6zm0 1.85L6.15 8.2h3.7L8 5.45zM7.25 10.1h1.5v1.5h-1.5z"></path>
     </symbol>
+    <symbol id="icon-day-copy" viewBox="0 0 16 16">
+      <rect x="5.5" y="5.5" width="7.5" height="7.5" rx="1.2" fill="none" stroke="currentColor" stroke-width="1.4"></rect>
+      <path d="M10.5 5.5V4.2A1.2 1.2 0 0 0 9.3 3H4.2A1.2 1.2 0 0 0 3 4.2v5.1A1.2 1.2 0 0 0 4.2 10.5H5.5" fill="none" stroke="currentColor" stroke-width="1.4"></path>
+    </symbol>
+    <symbol id="icon-day-favorite" viewBox="0 0 16 16">
+      <path fill="currentColor" d="M8 2.35 9.7 6.05l4.05.35-3.08 2.66.9 3.97L8 10.95l-3.57 2.08.9-3.97L2.25 6.4l4.05-.35L8 2.35z"></path>
+    </symbol>
+    <symbol id="icon-day-ignore" viewBox="0 0 16 16">
+      <circle cx="8" cy="8" r="5.15" fill="none" stroke="currentColor" stroke-width="1.4"></circle>
+      <path d="M4.2 11.8 11.8 4.2" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"></path>
+    </symbol>
+    <symbol id="icon-day-clear" viewBox="0 0 16 16">
+      <path d="M4.4 4.4 11.6 11.6M11.6 4.4 4.4 11.6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path>
+    </symbol>
   </svg>
   <main class="week">
     <header class="week__header">
@@ -204,13 +218,16 @@
         <div class="week__grid" role="group" aria-label="Monday through Sunday meals">
           <div class="day">
             <div class="day__head">
-              <div class="day__head-text">
+              <div class="day__head-top">
+                <div class="day__head-text">
                 <label class="day__label" for="mon">Mon</label>
                 <span class="day__date" data-day-date="mon"></span>
               </div>
+                <button type="button" class="day__ignore" data-action="ignore-day" data-day-id="mon" aria-pressed="false" aria-label="Exclude Mon from week total, weekly nutrients, and weekly longevity" title="Exclude this day from week total, weekly nutrients, and weekly longevity"><svg class="day__action-icon" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" focusable="false"><use href="#icon-day-ignore"></use></svg><span class="day__action-label">Ignore</span></button>
+              </div>
               <div class="day__head-actions">
                 <div class="day__copy">
-                  <button type="button" class="day__copy-toggle" data-action="toggle-day-copy" data-day-id="mon" aria-haspopup="menu" aria-expanded="false">Copy</button>
+                  <button type="button" class="day__copy-toggle" data-action="toggle-day-copy" data-day-id="mon" aria-haspopup="menu" aria-expanded="false" aria-label="Copy"><svg class="day__action-icon" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" focusable="false"><use href="#icon-day-copy"></use></svg><span class="day__action-label">Copy</span></button>
                   <div class="day__copy-menu" hidden role="menu">
                     <button type="button" role="menuitem" data-action="copy-week-to-this-week" data-day-id="mon">Copy this week to this week</button>
                     <button type="button" role="menuitem" data-action="copy-week-to-custom" data-day-id="mon">Copy to custom week…</button>
@@ -220,8 +237,8 @@
                     <button type="button" role="menuitem" data-action="copy-day-to-tomorrow" data-day-id="mon">Copy this date to tomorrow</button>
                   </div>
                 </div>
-                <button type="button" class="day__favorite" data-action="favorite-day" data-day-id="mon">Favorite</button>
-                <button type="button" class="day__clear" data-action="clear-day" data-day-id="mon">Clear</button>
+                <button type="button" class="day__favorite" data-action="favorite-day" data-day-id="mon" aria-label="Favorite Mon"><svg class="day__action-icon" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" focusable="false"><use href="#icon-day-favorite"></use></svg><span class="day__action-label">Favorite</span></button>
+                <button type="button" class="day__clear" data-action="clear-day" data-day-id="mon" aria-label="Clear Mon"><svg class="day__action-icon" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" focusable="false"><use href="#icon-day-clear"></use></svg><span class="day__action-label">Clear</span></button>
               </div>
             </div>
             <div class="day__editor">
@@ -232,13 +249,16 @@
 
           <div class="day">
             <div class="day__head">
-              <div class="day__head-text">
+              <div class="day__head-top">
+                <div class="day__head-text">
                 <label class="day__label" for="tue">Tue</label>
                 <span class="day__date" data-day-date="tue"></span>
               </div>
+                <button type="button" class="day__ignore" data-action="ignore-day" data-day-id="tue" aria-pressed="false" aria-label="Exclude Tue from week total, weekly nutrients, and weekly longevity" title="Exclude this day from week total, weekly nutrients, and weekly longevity"><svg class="day__action-icon" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" focusable="false"><use href="#icon-day-ignore"></use></svg><span class="day__action-label">Ignore</span></button>
+              </div>
               <div class="day__head-actions">
                 <div class="day__copy">
-                  <button type="button" class="day__copy-toggle" data-action="toggle-day-copy" data-day-id="tue" aria-haspopup="menu" aria-expanded="false">Copy</button>
+                  <button type="button" class="day__copy-toggle" data-action="toggle-day-copy" data-day-id="tue" aria-haspopup="menu" aria-expanded="false" aria-label="Copy"><svg class="day__action-icon" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" focusable="false"><use href="#icon-day-copy"></use></svg><span class="day__action-label">Copy</span></button>
                   <div class="day__copy-menu" hidden role="menu">
                     <button type="button" role="menuitem" data-action="copy-week-to-this-week" data-day-id="tue">Copy this week to this week</button>
                     <button type="button" role="menuitem" data-action="copy-week-to-custom" data-day-id="tue">Copy to custom week…</button>
@@ -248,8 +268,8 @@
                     <button type="button" role="menuitem" data-action="copy-day-to-tomorrow" data-day-id="tue">Copy this date to tomorrow</button>
                   </div>
                 </div>
-                <button type="button" class="day__favorite" data-action="favorite-day" data-day-id="tue">Favorite</button>
-                <button type="button" class="day__clear" data-action="clear-day" data-day-id="tue">Clear</button>
+                <button type="button" class="day__favorite" data-action="favorite-day" data-day-id="tue" aria-label="Favorite Tue"><svg class="day__action-icon" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" focusable="false"><use href="#icon-day-favorite"></use></svg><span class="day__action-label">Favorite</span></button>
+                <button type="button" class="day__clear" data-action="clear-day" data-day-id="tue" aria-label="Clear Tue"><svg class="day__action-icon" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" focusable="false"><use href="#icon-day-clear"></use></svg><span class="day__action-label">Clear</span></button>
               </div>
             </div>
             <div class="day__editor">
@@ -260,13 +280,16 @@
 
           <div class="day">
             <div class="day__head">
-              <div class="day__head-text">
+              <div class="day__head-top">
+                <div class="day__head-text">
                 <label class="day__label" for="wed">Wed</label>
                 <span class="day__date" data-day-date="wed"></span>
               </div>
+                <button type="button" class="day__ignore" data-action="ignore-day" data-day-id="wed" aria-pressed="false" aria-label="Exclude Wed from week total, weekly nutrients, and weekly longevity" title="Exclude this day from week total, weekly nutrients, and weekly longevity"><svg class="day__action-icon" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" focusable="false"><use href="#icon-day-ignore"></use></svg><span class="day__action-label">Ignore</span></button>
+              </div>
               <div class="day__head-actions">
                 <div class="day__copy">
-                  <button type="button" class="day__copy-toggle" data-action="toggle-day-copy" data-day-id="wed" aria-haspopup="menu" aria-expanded="false">Copy</button>
+                  <button type="button" class="day__copy-toggle" data-action="toggle-day-copy" data-day-id="wed" aria-haspopup="menu" aria-expanded="false" aria-label="Copy"><svg class="day__action-icon" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" focusable="false"><use href="#icon-day-copy"></use></svg><span class="day__action-label">Copy</span></button>
                   <div class="day__copy-menu" hidden role="menu">
                     <button type="button" role="menuitem" data-action="copy-week-to-this-week" data-day-id="wed">Copy this week to this week</button>
                     <button type="button" role="menuitem" data-action="copy-week-to-custom" data-day-id="wed">Copy to custom week…</button>
@@ -276,8 +299,8 @@
                     <button type="button" role="menuitem" data-action="copy-day-to-tomorrow" data-day-id="wed">Copy this date to tomorrow</button>
                   </div>
                 </div>
-                <button type="button" class="day__favorite" data-action="favorite-day" data-day-id="wed">Favorite</button>
-                <button type="button" class="day__clear" data-action="clear-day" data-day-id="wed">Clear</button>
+                <button type="button" class="day__favorite" data-action="favorite-day" data-day-id="wed" aria-label="Favorite Wed"><svg class="day__action-icon" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" focusable="false"><use href="#icon-day-favorite"></use></svg><span class="day__action-label">Favorite</span></button>
+                <button type="button" class="day__clear" data-action="clear-day" data-day-id="wed" aria-label="Clear Wed"><svg class="day__action-icon" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" focusable="false"><use href="#icon-day-clear"></use></svg><span class="day__action-label">Clear</span></button>
               </div>
             </div>
             <div class="day__editor">
@@ -288,13 +311,16 @@
 
           <div class="day">
             <div class="day__head">
-              <div class="day__head-text">
+              <div class="day__head-top">
+                <div class="day__head-text">
                 <label class="day__label" for="thu">Thu</label>
                 <span class="day__date" data-day-date="thu"></span>
               </div>
+                <button type="button" class="day__ignore" data-action="ignore-day" data-day-id="thu" aria-pressed="false" aria-label="Exclude Thu from week total, weekly nutrients, and weekly longevity" title="Exclude this day from week total, weekly nutrients, and weekly longevity"><svg class="day__action-icon" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" focusable="false"><use href="#icon-day-ignore"></use></svg><span class="day__action-label">Ignore</span></button>
+              </div>
               <div class="day__head-actions">
                 <div class="day__copy">
-                  <button type="button" class="day__copy-toggle" data-action="toggle-day-copy" data-day-id="thu" aria-haspopup="menu" aria-expanded="false">Copy</button>
+                  <button type="button" class="day__copy-toggle" data-action="toggle-day-copy" data-day-id="thu" aria-haspopup="menu" aria-expanded="false" aria-label="Copy"><svg class="day__action-icon" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" focusable="false"><use href="#icon-day-copy"></use></svg><span class="day__action-label">Copy</span></button>
                   <div class="day__copy-menu" hidden role="menu">
                     <button type="button" role="menuitem" data-action="copy-week-to-this-week" data-day-id="thu">Copy this week to this week</button>
                     <button type="button" role="menuitem" data-action="copy-week-to-custom" data-day-id="thu">Copy to custom week…</button>
@@ -304,8 +330,8 @@
                     <button type="button" role="menuitem" data-action="copy-day-to-tomorrow" data-day-id="thu">Copy this date to tomorrow</button>
                   </div>
                 </div>
-                <button type="button" class="day__favorite" data-action="favorite-day" data-day-id="thu">Favorite</button>
-                <button type="button" class="day__clear" data-action="clear-day" data-day-id="thu">Clear</button>
+                <button type="button" class="day__favorite" data-action="favorite-day" data-day-id="thu" aria-label="Favorite Thu"><svg class="day__action-icon" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" focusable="false"><use href="#icon-day-favorite"></use></svg><span class="day__action-label">Favorite</span></button>
+                <button type="button" class="day__clear" data-action="clear-day" data-day-id="thu" aria-label="Clear Thu"><svg class="day__action-icon" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" focusable="false"><use href="#icon-day-clear"></use></svg><span class="day__action-label">Clear</span></button>
               </div>
             </div>
             <div class="day__editor">
@@ -316,13 +342,16 @@
 
           <div class="day">
             <div class="day__head">
-              <div class="day__head-text">
+              <div class="day__head-top">
+                <div class="day__head-text">
                 <label class="day__label" for="fri">Fri</label>
                 <span class="day__date" data-day-date="fri"></span>
               </div>
+                <button type="button" class="day__ignore" data-action="ignore-day" data-day-id="fri" aria-pressed="false" aria-label="Exclude Fri from week total, weekly nutrients, and weekly longevity" title="Exclude this day from week total, weekly nutrients, and weekly longevity"><svg class="day__action-icon" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" focusable="false"><use href="#icon-day-ignore"></use></svg><span class="day__action-label">Ignore</span></button>
+              </div>
               <div class="day__head-actions">
                 <div class="day__copy">
-                  <button type="button" class="day__copy-toggle" data-action="toggle-day-copy" data-day-id="fri" aria-haspopup="menu" aria-expanded="false">Copy</button>
+                  <button type="button" class="day__copy-toggle" data-action="toggle-day-copy" data-day-id="fri" aria-haspopup="menu" aria-expanded="false" aria-label="Copy"><svg class="day__action-icon" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" focusable="false"><use href="#icon-day-copy"></use></svg><span class="day__action-label">Copy</span></button>
                   <div class="day__copy-menu" hidden role="menu">
                     <button type="button" role="menuitem" data-action="copy-week-to-this-week" data-day-id="fri">Copy this week to this week</button>
                     <button type="button" role="menuitem" data-action="copy-week-to-custom" data-day-id="fri">Copy to custom week…</button>
@@ -332,8 +361,8 @@
                     <button type="button" role="menuitem" data-action="copy-day-to-tomorrow" data-day-id="fri">Copy this date to tomorrow</button>
                   </div>
                 </div>
-                <button type="button" class="day__favorite" data-action="favorite-day" data-day-id="fri">Favorite</button>
-                <button type="button" class="day__clear" data-action="clear-day" data-day-id="fri">Clear</button>
+                <button type="button" class="day__favorite" data-action="favorite-day" data-day-id="fri" aria-label="Favorite Fri"><svg class="day__action-icon" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" focusable="false"><use href="#icon-day-favorite"></use></svg><span class="day__action-label">Favorite</span></button>
+                <button type="button" class="day__clear" data-action="clear-day" data-day-id="fri" aria-label="Clear Fri"><svg class="day__action-icon" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" focusable="false"><use href="#icon-day-clear"></use></svg><span class="day__action-label">Clear</span></button>
               </div>
             </div>
             <div class="day__editor">
@@ -344,13 +373,16 @@
 
           <div class="day">
             <div class="day__head">
-              <div class="day__head-text">
+              <div class="day__head-top">
+                <div class="day__head-text">
                 <label class="day__label" for="sat">Sat</label>
                 <span class="day__date" data-day-date="sat"></span>
               </div>
+                <button type="button" class="day__ignore" data-action="ignore-day" data-day-id="sat" aria-pressed="false" aria-label="Exclude Sat from week total, weekly nutrients, and weekly longevity" title="Exclude this day from week total, weekly nutrients, and weekly longevity"><svg class="day__action-icon" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" focusable="false"><use href="#icon-day-ignore"></use></svg><span class="day__action-label">Ignore</span></button>
+              </div>
               <div class="day__head-actions">
                 <div class="day__copy">
-                  <button type="button" class="day__copy-toggle" data-action="toggle-day-copy" data-day-id="sat" aria-haspopup="menu" aria-expanded="false">Copy</button>
+                  <button type="button" class="day__copy-toggle" data-action="toggle-day-copy" data-day-id="sat" aria-haspopup="menu" aria-expanded="false" aria-label="Copy"><svg class="day__action-icon" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" focusable="false"><use href="#icon-day-copy"></use></svg><span class="day__action-label">Copy</span></button>
                   <div class="day__copy-menu" hidden role="menu">
                     <button type="button" role="menuitem" data-action="copy-week-to-this-week" data-day-id="sat">Copy this week to this week</button>
                     <button type="button" role="menuitem" data-action="copy-week-to-custom" data-day-id="sat">Copy to custom week…</button>
@@ -360,8 +392,8 @@
                     <button type="button" role="menuitem" data-action="copy-day-to-tomorrow" data-day-id="sat">Copy this date to tomorrow</button>
                   </div>
                 </div>
-                <button type="button" class="day__favorite" data-action="favorite-day" data-day-id="sat">Favorite</button>
-                <button type="button" class="day__clear" data-action="clear-day" data-day-id="sat">Clear</button>
+                <button type="button" class="day__favorite" data-action="favorite-day" data-day-id="sat" aria-label="Favorite Sat"><svg class="day__action-icon" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" focusable="false"><use href="#icon-day-favorite"></use></svg><span class="day__action-label">Favorite</span></button>
+                <button type="button" class="day__clear" data-action="clear-day" data-day-id="sat" aria-label="Clear Sat"><svg class="day__action-icon" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" focusable="false"><use href="#icon-day-clear"></use></svg><span class="day__action-label">Clear</span></button>
               </div>
             </div>
             <div class="day__editor">
@@ -372,13 +404,16 @@
 
           <div class="day">
             <div class="day__head">
-              <div class="day__head-text">
+              <div class="day__head-top">
+                <div class="day__head-text">
                 <label class="day__label" for="sun">Sun</label>
                 <span class="day__date" data-day-date="sun"></span>
               </div>
+                <button type="button" class="day__ignore" data-action="ignore-day" data-day-id="sun" aria-pressed="false" aria-label="Exclude Sun from week total, weekly nutrients, and weekly longevity" title="Exclude this day from week total, weekly nutrients, and weekly longevity"><svg class="day__action-icon" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" focusable="false"><use href="#icon-day-ignore"></use></svg><span class="day__action-label">Ignore</span></button>
+              </div>
               <div class="day__head-actions">
                 <div class="day__copy">
-                  <button type="button" class="day__copy-toggle" data-action="toggle-day-copy" data-day-id="sun" aria-haspopup="menu" aria-expanded="false">Copy</button>
+                  <button type="button" class="day__copy-toggle" data-action="toggle-day-copy" data-day-id="sun" aria-haspopup="menu" aria-expanded="false" aria-label="Copy"><svg class="day__action-icon" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" focusable="false"><use href="#icon-day-copy"></use></svg><span class="day__action-label">Copy</span></button>
                   <div class="day__copy-menu" hidden role="menu">
                     <button type="button" role="menuitem" data-action="copy-week-to-this-week" data-day-id="sun">Copy this week to this week</button>
                     <button type="button" role="menuitem" data-action="copy-week-to-custom" data-day-id="sun">Copy to custom week…</button>
@@ -388,8 +423,8 @@
                     <button type="button" role="menuitem" data-action="copy-day-to-tomorrow" data-day-id="sun">Copy this date to tomorrow</button>
                   </div>
                 </div>
-                <button type="button" class="day__favorite" data-action="favorite-day" data-day-id="sun">Favorite</button>
-                <button type="button" class="day__clear" data-action="clear-day" data-day-id="sun">Clear</button>
+                <button type="button" class="day__favorite" data-action="favorite-day" data-day-id="sun" aria-label="Favorite Sun"><svg class="day__action-icon" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" focusable="false"><use href="#icon-day-favorite"></use></svg><span class="day__action-label">Favorite</span></button>
+                <button type="button" class="day__clear" data-action="clear-day" data-day-id="sun" aria-label="Clear Sun"><svg class="day__action-icon" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" focusable="false"><use href="#icon-day-clear"></use></svg><span class="day__action-label">Clear</span></button>
               </div>
             </div>
             <div class="day__editor">
@@ -404,6 +439,7 @@
         <nav id="dashboard-micro-sticky" class="dashboard__micro-sticky" aria-label="Micro requirements">
           <div class="dashboard__micro-sticky-top">
             <h3 class="dashboard__micro-sticky-title">Micro Requirements</h3>
+            <button type="button" id="dashboard-micro-ignored-badge" class="dashboard__ignored-days-badge" data-action="toggle-ignored-days-popover" hidden aria-expanded="false" aria-controls="ignored-days-popover">Ignored days</button>
           </div>
           <div class="dashboard__micro-intro-actions">
             <div class="dashboard__micro-toggle-group" role="group" aria-label="Micro view">
@@ -705,6 +741,9 @@
       <div id="target-ref-popover" class="dashboard__target-ref-popover" role="tooltip" hidden>
         <div id="target-ref-popover-text" class="dashboard__target-ref-popover-text"></div>
       </div>
+      <div id="ignored-days-popover" class="dashboard__ignored-days-popover" role="tooltip" hidden>
+        <div id="ignored-days-popover-text" class="dashboard__ignored-days-popover-text"></div>
+      </div>
       <div id="macro-need-popover" class="dashboard__macro-need-popover" role="tooltip" hidden>
         <p class="dashboard__macro-need-popover-copy">Recommended P/C/F grams from your Settings macro split (body type + goal) applied to your calorie budget (TDEE when set, otherwise that day’s calories).</p>
         <p class="dashboard__macro-need-popover-copy">First number: grams still needed (+) or over (−). After the slash: target total, or click the card to flip to consumed (shown as a negative, e.g. +193g/−57g).</p>
@@ -718,6 +757,7 @@
         <nav id="dashboard-longevity-nav" class="dashboard__longevity-nav" hidden aria-label="Longevity topics">
           <div class="dashboard__longevity-nav-top">
             <h3 class="dashboard__longevity-nav-title">Longevity</h3>
+            <button type="button" id="dashboard-longevity-ignored-badge" class="dashboard__ignored-days-badge" data-action="toggle-ignored-days-popover" hidden aria-expanded="false" aria-controls="ignored-days-popover">Ignored days</button>
           </div>
           <div class="dashboard__sticky-options">
             <div class="dashboard__sticky-options-disclosures">
