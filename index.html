@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Week meals</title>
-  <link rel="stylesheet" href="styles.css?t=1786446731">
+  <link rel="stylesheet" href="styles.css?t=1787022800">
 </head>
 <body class="show-daily-intake-icons day-entry-guided">
   <svg class="app-icon-symbols" width="0" height="0" aria-hidden="true" focusable="false">
@@ -60,7 +60,10 @@
       <path d="M4.2 11.8 11.8 4.2" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"></path>
     </symbol>
     <symbol id="icon-day-clear" viewBox="0 0 16 16">
-      <path d="M4.4 4.4 11.6 11.6M11.6 4.4 4.4 11.6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path>
+      <path d="M3.2 4.35h9.6" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"></path>
+      <path d="M6.2 4.35V3.2A1.05 1.05 0 0 1 7.25 2.15h1.5A1.05 1.05 0 0 1 9.8 3.2v1.15" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"></path>
+      <path d="M5.15 4.35h5.7v8.1A1.35 1.35 0 0 1 9.5 13.8H6.5A1.35 1.35 0 0 1 5.15 12.45V4.35z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"></path>
+      <path d="M7 6.55v4.6M9 6.55v4.6" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"></path>
     </symbol>
   </svg>
   <main class="week">
@@ -1154,14 +1157,14 @@
     <div class="modal__panel modal__panel--wide" role="dialog" aria-modal="true" aria-labelledby="add-food-modal-title">
       <header class="modal__header">
         <h3 id="add-food-modal-title" class="modal__title">Add food</h3>
-        <p id="add-food-modal-hint" class="modal__subtitle">Search your food definitions</p>
+        <p id="add-food-modal-hint" class="modal__subtitle">Search and pick one or more foods</p>
       </header>
       <div class="import-modal__body add-food-modal__body">
         <div class="import-json-wrap">
           <label class="import-json-wrap__label" for="add-food-search">Search</label>
           <input type="search" id="add-food-search" class="week-jump-input" placeholder="Type a food name…" autocomplete="off" spellcheck="false">
         </div>
-        <ul id="add-food-results" class="add-food-modal__results" role="listbox" aria-label="Matching foods"></ul>
+        <ul id="add-food-results" class="add-food-modal__results" role="listbox" aria-multiselectable="true" aria-label="Matching foods"></ul>
         <nav id="add-food-pagination" class="add-food-modal__pagination" aria-label="Food results pages" hidden>
           <button type="button" id="add-food-page-prev" class="add-food-modal__page-btn" aria-label="Previous page">‹ Prev</button>
           <span id="add-food-page-status" class="add-food-modal__page-status" aria-live="polite"></span>
@@ -1170,13 +1173,7 @@
         <p id="add-food-empty" class="add-food-modal__empty" hidden>No matching foods. Add a definition under Food definitions, or turn on Advanced to type freely.</p>
         <div id="add-food-selected" class="add-food-modal__selected" hidden>
           <p class="add-food-modal__selected-label">Selected</p>
-          <p id="add-food-selected-name" class="add-food-modal__selected-name"></p>
-          <div class="add-food-modal__servings">
-            <label class="import-json-wrap__label" for="add-food-servings">Servings</label>
-            <div class="add-food-modal__servings-controls">
-              <input type="number" id="add-food-servings" class="add-food-modal__servings-input" min="0.25" step="0.25" value="1" inputmode="decimal">
-            </div>
-          </div>
+          <ul id="add-food-selected-list" class="add-food-modal__selected-list"></ul>
         </div>
         <p id="add-food-error" class="import-modal__error" hidden></p>
       </div>
@@ -2746,6 +2743,6 @@
   <script src="demographic-dv.js?t=1786025201"></script>
   <script src="longevity-dv.js?t=1784087915"></script>
   <script src="persist.js?t=1786431230"></script>
-  <script src="app.js?t=1786446478"></script>
+  <script src="app.js?t=1787022800"></script>
 </body>
 </html>

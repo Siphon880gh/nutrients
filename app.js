@@ -519,13 +519,13 @@
   var addFoodPageNextBtn = document.getElementById("add-food-page-next");
   var addFoodPageStatusEl = document.getElementById("add-food-page-status");
   var addFoodSelectedEl = document.getElementById("add-food-selected");
-  var addFoodSelectedNameEl = document.getElementById("add-food-selected-name");
-  var addFoodServingsEl = document.getElementById("add-food-servings");
+  var addFoodSelectedListEl = document.getElementById("add-food-selected-list");
   var addFoodErrorEl = document.getElementById("add-food-error");
   var addFoodCancelBtn = document.getElementById("add-food-cancel");
   var addFoodSubmitBtn = document.getElementById("add-food-submit");
   var addFoodPendingDayId = null;
-  var addFoodSelectedName = null;
+  var addFoodSelectedItems = [];
+  var addFoodSelectedListKey = "";
   var addFoodResultsPage = 0;
   var dayFoodNotesEl = document.getElementById("day-food-notes");
   var dayFoodNotesLabelsEl = document.getElementById("day-food-notes-labels");
@@ -23722,13 +23722,65 @@
     };
   }
 
+  var weekGridColumnAnimTimer = 0;
+
+  function weekGridPrefersReducedMotion() {
+    return (
+      typeof window.matchMedia === "function" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    );
+  }
+
+  function onWeekGridColumnAnimEnd(e) {
+    var grid = e.currentTarget;
+    if (e.target !== grid) return;
+    if (e.propertyName && e.propertyName !== "grid-template-columns") return;
+    finishWeekGridColumnAnim(grid);
+  }
+
+  function stopWeekGridColumnAnim(grid) {
+    if (weekGridColumnAnimTimer) {
+      window.clearTimeout(weekGridColumnAnimTimer);
+      weekGridColumnAnimTimer = 0;
+    }
+    if (!grid) return;
+    grid.removeEventListener("transitionend", onWeekGridColumnAnimEnd);
+    grid.classList.remove("week__grid--columns-animating");
+  }
+
+  function finishWeekGridColumnAnim(grid) {
+    if (!grid) return;
+    stopWeekGridColumnAnim(grid);
+    if (!grid.querySelector(".day--focus-wide")) {
+      grid.classList.remove("week__grid--day-focus");
+      syncWeekGridColumnsFromEditors();
+    }
+  }
+
+  function startWeekGridColumnAnim(grid) {
+    if (!grid) return;
+    stopWeekGridColumnAnim(grid);
+    if (weekGridPrefersReducedMotion()) return;
+    grid.classList.add("week__grid--columns-animating");
+    grid.addEventListener("transitionend", onWeekGridColumnAnimEnd);
+    weekGridColumnAnimTimer = window.setTimeout(function () {
+      weekGridColumnAnimTimer = 0;
+      finishWeekGridColumnAnim(grid);
+    }, 420);
+  }
+
   function syncWeekGridColumnsFromEditors(opts) {
     opts = opts || {};
     var grid = document.querySelector(".week__grid");
     if (!grid) return;
     if (isDaysCarouselActive()) {
+      stopWeekGridColumnAnim(grid);
       grid.style.removeProperty("grid-template-columns");
-      grid.classList.remove("week__grid--day-focus", "week__grid--day-focus-instant");
+      grid.classList.remove(
+        "week__grid--day-focus",
+        "week__grid--day-focus-instant",
+        "week__grid--columns-animating"
+      );
       grid.querySelectorAll(".day--focus-wide").forEach(function (el) {
         el.classList.remove("day--focus-wide");
       });
@@ -23753,6 +23805,7 @@
     if (!grid) return;
     var current = grid.querySelector(".day--focus-wide");
     if (current === dayEl) return;
+    stopWeekGridColumnAnim(grid);
     if (!current) {
       grid.classList.add("week__grid--day-focus-instant");
       syncWeekGridColumnsFromEditors({
@@ -23765,6 +23818,7 @@
       current.classList.remove("day--focus-wide");
     }
     dayEl.classList.add("day--focus-wide");
+    startWeekGridColumnAnim(grid);
     syncWeekGridColumnsFromEditors();
   }
 
@@ -23774,16 +23828,23 @@
     if (!grid) return;
     var current = grid.querySelector(".day--focus-wide");
     if (!current && !grid.classList.contains("week__grid--day-focus")) return;
-    var snap = opts.snap !== false;
-    if (snap) grid.classList.add("week__grid--day-focus-instant");
+    var snap = !!opts.snap || weekGridPrefersReducedMotion();
     if (current) current.classList.remove("day--focus-wide");
-    grid.classList.remove("week__grid--day-focus");
-    syncWeekGridColumnsFromEditors();
     if (snap) {
+      stopWeekGridColumnAnim(grid);
+      grid.classList.add("week__grid--day-focus-instant");
+      grid.classList.remove("week__grid--day-focus");
+      syncWeekGridColumnsFromEditors();
       window.requestAnimationFrame(function () {
         grid.classList.remove("week__grid--day-focus-instant");
       });
+      return;
     }
+    startWeekGridColumnAnim(grid);
+    syncWeekGridColumnsFromEditors({
+      forceExplicit: true,
+      expandedTrack: -1,
+    });
   }
 
   function saveDayEditorHeight(px) {
@@ -23858,6 +23919,10 @@
 
     if (typeof ResizeObserver === "function") {
       var editorResizeObserver = new ResizeObserver(function () {
+        var grid = document.querySelector(".week__grid");
+        if (grid && grid.classList.contains("week__grid--columns-animating")) {
+          return;
+        }
         syncWeekGridColumnsFromEditors();
       });
       document.querySelectorAll(".day__editor").forEach(function (editor) {
@@ -26540,28 +26605,155 @@
     return foodSuggestMatches(q);
   }
 
-  function syncAddFoodSelectedUi() {
-    var hasSelection = !!addFoodSelectedName;
-    if (addFoodSelectedEl) addFoodSelectedEl.hidden = !hasSelection;
-    if (addFoodSelectedNameEl) {
-      addFoodSelectedNameEl.textContent = addFoodSelectedName || "";
+  function addFoodItemIndexByName(name) {
+    var key = String(name || "").trim();
+    for (var i = 0; i < addFoodSelectedItems.length; i++) {
+      if (addFoodSelectedItems[i].name === key) return i;
     }
+    return -1;
+  }
+
+  function addFoodItemByName(name) {
+    var idx = addFoodItemIndexByName(name);
+    return idx >= 0 ? addFoodSelectedItems[idx] : null;
+  }
+
+  function clampAddFoodServings(n) {
+    if (!isFinite(n) || n <= 0) return 1;
+    n = Math.round(n * 1000) / 1000;
+    if (n < 0.01) n = 0.01;
+    return n;
+  }
+
+  function addFoodServingsInputForName(name) {
+    if (!addFoodSelectedEl) return null;
+    var inputs = addFoodSelectedEl.querySelectorAll(
+      ".add-food-modal__servings-input"
+    );
+    for (var i = 0; i < inputs.length; i++) {
+      if (inputs[i].getAttribute("data-food-name") === name) return inputs[i];
+    }
+    return null;
+  }
+
+  function setAddFoodItemServings(name, n) {
+    var item = addFoodItemByName(name);
+    if (!item) return;
+    item.servings = clampAddFoodServings(n);
+    var input = addFoodServingsInputForName(name);
+    if (input) input.value = String(item.servings);
+  }
+
+  function nudgeAddFoodItemServings(name, delta) {
+    var item = addFoodItemByName(name);
+    if (!item) return;
+    setAddFoodItemServings(name, item.servings + delta);
+  }
+
+  function flushAddFoodServingsFromInputs() {
+    if (!addFoodSelectedEl) return;
+    addFoodSelectedEl
+      .querySelectorAll(".add-food-modal__servings-input")
+      .forEach(function (input) {
+        var item = addFoodItemByName(input.getAttribute("data-food-name"));
+        if (item) item.servings = clampAddFoodServings(parseFloat(input.value));
+      });
+  }
+
+  function addFoodSelectedNamesKey() {
+    return addFoodSelectedItems
+      .map(function (item) {
+        return item.name;
+      })
+      .join("\n");
+  }
+
+  function renderAddFoodSelectedList() {
+    if (!addFoodSelectedListEl) return;
+    addFoodSelectedListEl.innerHTML = addFoodSelectedItems
+      .map(function (item) {
+        var name = item.name;
+        var servings = String(clampAddFoodServings(item.servings));
+        return (
+          '<li class="add-food-modal__selected-item">' +
+          '<div class="add-food-modal__selected-item-main">' +
+          '<p class="add-food-modal__selected-name">' +
+          escapeHtml(name) +
+          "</p>" +
+          '<button type="button" class="add-food-modal__selected-remove" data-action="remove-add-food" data-food-name="' +
+          escapeAttr(name) +
+          '" aria-label="Remove ' +
+          escapeAttr(name) +
+          '">×</button>' +
+          "</div>" +
+          '<div class="add-food-modal__servings">' +
+          '<label class="import-json-wrap__label">Servings</label>' +
+          '<div class="add-food-modal__servings-controls">' +
+          '<input type="number" class="add-food-modal__servings-input" min="0" step="any" inputmode="decimal" value="' +
+          escapeAttr(servings) +
+          '" data-food-name="' +
+          escapeAttr(name) +
+          '" aria-label="Servings for ' +
+          escapeAttr(name) +
+          '">' +
+          '<button type="button" class="add-food-modal__servings-nudge" data-action="nudge-add-food-servings" data-food-name="' +
+          escapeAttr(name) +
+          '" data-delta="0.5" aria-label="Add 0.5 servings to ' +
+          escapeAttr(name) +
+          '">+.5</button>' +
+          '<button type="button" class="add-food-modal__servings-nudge" data-action="nudge-add-food-servings" data-food-name="' +
+          escapeAttr(name) +
+          '" data-delta="0.33" aria-label="Add 0.33 servings to ' +
+          escapeAttr(name) +
+          '">+.33</button>' +
+          '<button type="button" class="add-food-modal__servings-nudge" data-action="nudge-add-food-servings" data-food-name="' +
+          escapeAttr(name) +
+          '" data-delta="0.25" aria-label="Add 0.25 servings to ' +
+          escapeAttr(name) +
+          '">+.25</button>' +
+          "</div></div></li>"
+        );
+      })
+      .join("");
+  }
+
+  function syncAddFoodSelectedUi() {
+    var hasSelection = addFoodSelectedItems.length > 0;
+    if (addFoodSelectedEl) addFoodSelectedEl.hidden = !hasSelection;
     if (addFoodSubmitBtn) addFoodSubmitBtn.disabled = !hasSelection;
+    var key = addFoodSelectedNamesKey();
+    if (key !== addFoodSelectedListKey) {
+      addFoodSelectedListKey = key;
+      renderAddFoodSelectedList();
+    }
     if (addFoodResultsEl) {
       addFoodResultsEl.querySelectorAll(".add-food-modal__result").forEach(function (btn) {
-        btn.classList.toggle(
-          "add-food-modal__result--selected",
-          btn.getAttribute("data-food-name") === addFoodSelectedName
-        );
+        var selected = addFoodItemIndexByName(btn.getAttribute("data-food-name")) >= 0;
+        btn.classList.toggle("add-food-modal__result--selected", selected);
+        btn.setAttribute("aria-selected", selected ? "true" : "false");
       });
     }
   }
 
-  function selectAddFoodName(name) {
-    addFoodSelectedName = String(name || "").trim() || null;
-    if (addFoodServingsEl && !addFoodServingsEl.value) {
-      addFoodServingsEl.value = "1";
+  function selectAddFoodName(name, opts) {
+    opts = opts || {};
+    var foodName = String(name || "").trim();
+    if (!foodName) return;
+    var idx = addFoodItemIndexByName(foodName);
+    if (idx >= 0) {
+      if (opts.addOnly) return;
+      addFoodSelectedItems.splice(idx, 1);
+    } else {
+      addFoodSelectedItems.push({ name: foodName, servings: 1 });
     }
+    showAddFoodError("");
+    syncAddFoodSelectedUi();
+  }
+
+  function removeAddFoodName(name) {
+    var idx = addFoodItemIndexByName(name);
+    if (idx < 0) return;
+    addFoodSelectedItems.splice(idx, 1);
     showAddFoodError("");
     syncAddFoodSelectedUi();
   }
@@ -26644,14 +26836,15 @@
     if (!addFoodModalEl) return;
     addFoodModalEl.hidden = true;
     addFoodPendingDayId = null;
-    addFoodSelectedName = null;
+    addFoodSelectedItems = [];
+    addFoodSelectedListKey = "";
     addFoodResultsPage = 0;
     showAddFoodError("");
     if (addFoodSearchEl) addFoodSearchEl.value = "";
-    if (addFoodServingsEl) addFoodServingsEl.value = "1";
     if (addFoodResultsEl) addFoodResultsEl.innerHTML = "";
     if (addFoodEmptyEl) addFoodEmptyEl.hidden = true;
     if (addFoodPaginationEl) addFoodPaginationEl.hidden = true;
+    if (addFoodSelectedListEl) addFoodSelectedListEl.innerHTML = "";
     if (addFoodSelectedEl) addFoodSelectedEl.hidden = true;
     if (addFoodSubmitBtn) addFoodSubmitBtn.disabled = true;
     updateBodyModalOpen();
@@ -26667,11 +26860,11 @@
     }
     closeAllDayCopyMenus();
     addFoodPendingDayId = dayId;
-    addFoodSelectedName = null;
+    addFoodSelectedItems = [];
+    addFoodSelectedListKey = "";
     addFoodResultsPage = 0;
     showAddFoodError("");
     if (addFoodSearchEl) addFoodSearchEl.value = "";
-    if (addFoodServingsEl) addFoodServingsEl.value = "1";
     var day = dayById(dayId);
     var dateLabel = dateLabelForDayId(dayId);
     if (addFoodModalTitleEl) {
@@ -26680,8 +26873,8 @@
     }
     if (addFoodModalHintEl) {
       addFoodModalHintEl.textContent = dateLabel
-        ? "Pick a food from your definitions for " + dateLabel
-        : "Pick a food from your definitions";
+        ? "Pick one or more foods from your definitions for " + dateLabel
+        : "Pick one or more foods from your definitions";
     }
     var dayPanel = document.getElementById(dayId);
     var dayEl = dayPanel && dayPanel.closest ? dayPanel.closest(".day") : null;
@@ -26695,27 +26888,22 @@
     }, 0);
   }
 
-  function readAddFoodServings() {
-    var n = addFoodServingsEl ? parseFloat(addFoodServingsEl.value) : 1;
-    if (!isFinite(n) || n <= 0) return 1;
-    return Math.round(n * 1000) / 1000;
-  }
-
   function runAddFoodSubmit() {
     if (!addFoodPendingDayId) return;
-    if (!addFoodSelectedName) {
+    flushAddFoodServingsFromInputs();
+    if (!addFoodSelectedItems.length) {
       showAddFoodError("Select a food from the list.");
       return;
     }
-    if (!lineMatchesFoodDefinition(addFoodSelectedName)) {
-      showAddFoodError("That food is not in your definitions.");
-      return;
+    for (var i = 0; i < addFoodSelectedItems.length; i++) {
+      if (!lineMatchesFoodDefinition(addFoodSelectedItems[i].name)) {
+        showAddFoodError("That food is not in your definitions.");
+        return;
+      }
     }
-    appendDayFoodLine(
-      addFoodPendingDayId,
-      addFoodSelectedName,
-      readAddFoodServings()
-    );
+    addFoodSelectedItems.forEach(function (item) {
+      appendDayFoodLine(addFoodPendingDayId, item.name, item.servings);
+    });
     closeAddFoodModal();
   }
 
@@ -28017,7 +28205,7 @@
       !document.body.classList.contains("modal-open") &&
       !e.target.closest(".week__grid .day")
     ) {
-      clearWeekDayColumnFocus({ snap: true });
+      clearWeekDayColumnFocus();
     }
   });
 
@@ -29938,14 +30126,28 @@
       var pickBtn = e.target.closest('[data-action="select-add-food"]');
       if (pickBtn) {
         selectAddFoodName(pickBtn.getAttribute("data-food-name"));
+        return;
+      }
+      var removeBtn = e.target.closest('[data-action="remove-add-food"]');
+      if (removeBtn) {
+        removeAddFoodName(removeBtn.getAttribute("data-food-name"));
+        return;
+      }
+      var nudgeBtn = e.target.closest('[data-action="nudge-add-food-servings"]');
+      if (nudgeBtn) {
+        var delta = parseFloat(nudgeBtn.getAttribute("data-delta"));
+        if (isFinite(delta) && delta > 0) {
+          nudgeAddFoodItemServings(
+            nudgeBtn.getAttribute("data-food-name"),
+            delta
+          );
+        }
       }
     });
   }
   if (addFoodSearchEl) {
     addFoodSearchEl.addEventListener("input", function () {
-      addFoodSelectedName = null;
       addFoodResultsPage = 0;
-      syncAddFoodSelectedUi();
       renderAddFoodResults();
       showAddFoodError("");
     });
@@ -29955,7 +30157,11 @@
         var first = addFoodResultsEl
           ? addFoodResultsEl.querySelector(".add-food-modal__result")
           : null;
-        if (first) selectAddFoodName(first.getAttribute("data-food-name"));
+        if (first) {
+          selectAddFoodName(first.getAttribute("data-food-name"), {
+            addOnly: true,
+          });
+        }
       }
     });
   }
@@ -29969,8 +30175,40 @@
       stepAddFoodResultsPage(1);
     });
   }
-  if (addFoodServingsEl) {
-    addFoodServingsEl.addEventListener("keydown", function (e) {
+  if (addFoodSelectedEl) {
+    addFoodSelectedEl.addEventListener("input", function (e) {
+      var input = e.target.closest(".add-food-modal__servings-input");
+      if (!input) return;
+      var item = addFoodItemByName(input.getAttribute("data-food-name"));
+      if (!item) return;
+      var n = parseFloat(input.value);
+      if (isFinite(n) && n > 0) {
+        item.servings = Math.round(n * 1000) / 1000;
+      }
+    });
+    addFoodSelectedEl.addEventListener("focusout", function (e) {
+      var input = e.target.closest(".add-food-modal__servings-input");
+      if (!input) return;
+      var name = input.getAttribute("data-food-name");
+      var item = addFoodItemByName(name);
+      if (!item) return;
+      item.servings = clampAddFoodServings(parseFloat(input.value));
+      input.value = String(item.servings);
+    });
+    addFoodSelectedEl.addEventListener("keydown", function (e) {
+      var input = e.target.closest(".add-food-modal__servings-input");
+      if (!input) return;
+      var name = input.getAttribute("data-food-name");
+      if (e.key === "ArrowUp") {
+        e.preventDefault();
+        nudgeAddFoodItemServings(name, 1);
+        return;
+      }
+      if (e.key === "ArrowDown") {
+        e.preventDefault();
+        nudgeAddFoodItemServings(name, -1);
+        return;
+      }
       if (e.key === "Enter") {
         e.preventDefault();
         runAddFoodSubmit();
