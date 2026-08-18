@@ -20086,6 +20086,8 @@
       '<article class="dashboard__card' +
       (isToday ? " dashboard__card--today" : "") +
       (isIgnored ? " dashboard__card--ignored" : "") +
+      '" data-day-id="' +
+      escapeAttr(dayId) +
       '">' +
       '<div class="dashboard__card-head">' +
       '<div class="dashboard__card-head-text">' +
@@ -20169,6 +20171,8 @@
       '<div class="dashboard__macros-condensed-day' +
       (isToday ? " dashboard__macros-condensed-day--today" : "") +
       (isIgnored ? " dashboard__macros-condensed-day--ignored" : "") +
+      '" data-day-id="' +
+      escapeAttr(dayId) +
       '">' +
       '<span class="dashboard__macros-condensed-label"' +
       (isToday ? ' aria-current="date"' : "") +
@@ -20467,6 +20471,7 @@
     lastWeekTotals = week;
     syncDashboardCarouselAfterRender();
     renderMacrosCondensed(dayTotals);
+    syncDashboardDayFocusHighlight();
     scheduleMacrosCondensedVisibilitySync();
     if (weekTotalOpen) {
       renderWeekSummary(week);
@@ -23784,6 +23789,7 @@
       grid.querySelectorAll(".day--focus-wide").forEach(function (el) {
         el.classList.remove("day--focus-wide");
       });
+      syncDashboardDayFocusHighlight();
       return;
     }
     var built = buildWeekGridColumnTracks(grid, opts);
@@ -23795,6 +23801,31 @@
       grid.style.removeProperty("grid-template-columns");
     }
     grid.classList.toggle("week__grid--day-focus", built.expandedTrack >= 0);
+  }
+
+  function focusedWeekDayId() {
+    var dayEl = document.querySelector(".week__grid .day--focus-wide");
+    if (!dayEl) return null;
+    var input = dayEl.querySelector(".day__input");
+    return input && input.id ? input.id : null;
+  }
+
+  function syncDashboardDayFocusHighlight() {
+    var dayId = focusedWeekDayId();
+    document.querySelectorAll(".dashboard__card[data-day-id]").forEach(function (el) {
+      el.classList.toggle(
+        "dashboard__card--focus",
+        !!dayId && el.getAttribute("data-day-id") === dayId
+      );
+    });
+    document
+      .querySelectorAll(".dashboard__macros-condensed-day[data-day-id]")
+      .forEach(function (el) {
+        el.classList.toggle(
+          "dashboard__macros-condensed-day--focus",
+          !!dayId && el.getAttribute("data-day-id") === dayId
+        );
+      });
   }
 
   function focusWeekDayColumn(dayEl) {
@@ -23820,6 +23851,7 @@
     dayEl.classList.add("day--focus-wide");
     startWeekGridColumnAnim(grid);
     syncWeekGridColumnsFromEditors();
+    syncDashboardDayFocusHighlight();
   }
 
   function clearWeekDayColumnFocus(opts) {
@@ -23838,6 +23870,7 @@
       window.requestAnimationFrame(function () {
         grid.classList.remove("week__grid--day-focus-instant");
       });
+      syncDashboardDayFocusHighlight();
       return;
     }
     startWeekGridColumnAnim(grid);
@@ -23845,6 +23878,7 @@
       forceExplicit: true,
       expandedTrack: -1,
     });
+    syncDashboardDayFocusHighlight();
   }
 
   function saveDayEditorHeight(px) {

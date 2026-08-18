@@ -973,9 +973,10 @@ body.app-nav-shortcuts-visible [data-app-shortcut] > .app-nav__shortcut {
 
 .dashboard__macros-condensed-day {
   min-width: 0;
-  padding: 0.05rem 0.1rem;
+  box-sizing: border-box;
+  padding: 0.28rem 0.4rem 0.32rem;
   border: none;
-  border-radius: 0;
+  border-radius: 4px;
   background: transparent;
   text-align: left;
 }
@@ -1009,6 +1010,17 @@ body.app-nav-shortcuts-visible [data-app-shortcut] > .app-nav__shortcut {
 
 .dashboard__macros-condensed-day--ignored .dashboard__macros-condensed-label {
   color: #8a7a5c;
+}
+
+.dashboard__macros-condensed-day--focus {
+  background: #eef4fa;
+  box-shadow: 0 0 0 1px #3d6b9e;
+}
+
+.dashboard__macros-condensed-day--ignored.dashboard__macros-condensed-day--focus {
+  background: #f6f1e8;
+  box-shadow: 0 0 0 1px #8a7a5c;
+  opacity: 1;
 }
 
 .dashboard__macros-condensed-cal {
@@ -6692,6 +6704,9 @@ button.dashboard__longevity-name:focus-visible {
   background: #fff;
   font-size: 0.78rem;
   line-height: 1.35;
+  transition: box-shadow 0.34s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.34s cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 0.34s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .dashboard__card--today {
@@ -6713,6 +6728,30 @@ button.dashboard__longevity-name:focus-visible {
 
 .dashboard__card--ignored .dashboard__label {
   color: #6b5a3d;
+}
+
+.dashboard__card--focus {
+  position: relative;
+  z-index: 1;
+  border-color: #3d6b9e;
+  background: #eef4fa;
+  box-shadow: 0 0 0 2px rgba(61, 107, 158, 0.4);
+}
+
+.dashboard__card--today.dashboard__card--focus {
+  background: #e8eef6;
+}
+
+.dashboard__card--ignored.dashboard__card--focus {
+  border-color: #8a7a5c;
+  background: #f3ebe0;
+  box-shadow: 0 0 0 2px rgba(107, 90, 61, 0.35);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dashboard__card {
+    transition: none;
+  }
 }
 
 .dashboard__ignored-badge {
