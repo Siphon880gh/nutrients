@@ -512,6 +512,7 @@
   var addFoodModalTitleEl = document.getElementById("add-food-modal-title");
   var addFoodModalHintEl = document.getElementById("add-food-modal-hint");
   var addFoodSearchEl = document.getElementById("add-food-search");
+  var addFoodSearchClearBtn = document.getElementById("add-food-search-clear");
   var addFoodResultsEl = document.getElementById("add-food-results");
   var addFoodEmptyEl = document.getElementById("add-food-empty");
   var addFoodPaginationEl = document.getElementById("add-food-pagination");
@@ -26862,9 +26863,23 @@
     if (addFoodResultsEl) addFoodResultsEl.scrollTop = 0;
   }
 
+  function syncAddFoodSearchClear() {
+    if (!addFoodSearchClearBtn) return;
+    addFoodSearchClearBtn.hidden = !(addFoodSearchEl && addFoodSearchEl.value);
+  }
+
+  function clearAddFoodSearch() {
+    if (addFoodSearchEl) addFoodSearchEl.value = "";
+    addFoodResultsPage = 0;
+    showAddFoodError("");
+    renderAddFoodResults();
+    if (addFoodSearchEl) addFoodSearchEl.focus();
+  }
+
   function renderAddFoodResults() {
     if (!addFoodResultsEl) return;
     var query = addFoodSearchEl ? addFoodSearchEl.value : "";
+    syncAddFoodSearchClear();
     var matches = addFoodSearchMatches(query);
     var total = matches.length;
     if (!total) {
@@ -26920,6 +26935,7 @@
     addFoodResultsPage = 0;
     showAddFoodError("");
     if (addFoodSearchEl) addFoodSearchEl.value = "";
+    syncAddFoodSearchClear();
     if (addFoodResultsEl) addFoodResultsEl.innerHTML = "";
     if (addFoodEmptyEl) addFoodEmptyEl.hidden = true;
     if (addFoodPaginationEl) addFoodPaginationEl.hidden = true;
@@ -30243,6 +30259,9 @@
         }
       }
     });
+  }
+  if (addFoodSearchClearBtn) {
+    addFoodSearchClearBtn.addEventListener("click", clearAddFoodSearch);
   }
   if (addFoodPagePrevBtn) {
     addFoodPagePrevBtn.addEventListener("click", function () {

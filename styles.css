@@ -8434,11 +8434,71 @@ body.day-entry-guided .day__guided {
   min-height: 0;
 }
 
+#add-food-modal .modal__panel {
+  height: min(90vh, 42rem);
+}
+
+#add-food-modal .add-food-modal__body {
+  overflow: hidden;
+}
+
+#add-food-modal .import-json-wrap,
+#add-food-modal .add-food-modal__pagination,
+#add-food-modal .add-food-modal__empty,
+#add-food-modal .add-food-modal__selected,
+#add-food-modal .import-modal__error {
+  flex: 0 0 auto;
+}
+
+.add-food-modal__search {
+  position: relative;
+}
+
+.add-food-modal__search-input {
+  padding-right: 2rem;
+}
+
+.add-food-modal__search-clear {
+  position: absolute;
+  top: 50%;
+  right: 0.25rem;
+  transform: translateY(-50%);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.35rem;
+  height: 1.35rem;
+  padding: 0;
+  border: none;
+  border-radius: 4px;
+  background: transparent;
+  color: #888;
+  font-size: 1rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.add-food-modal__search-clear[hidden] {
+  display: none;
+}
+
+.add-food-modal__search-clear:hover,
+.add-food-modal__search-clear:focus-visible {
+  background: #fce8e8;
+  color: #b42318;
+}
+
+.add-food-modal__search-clear:focus-visible {
+  outline: 2px solid #4a7fd4;
+  outline-offset: 1px;
+}
+
 .add-food-modal__results {
   list-style: none;
   margin: 0;
   padding: 0;
-  max-height: min(40vh, 16rem);
+  flex: 1 1 auto;
+  min-height: 0;
   overflow-y: auto;
   overscroll-behavior: contain;
   border: 1px solid #ececea;
@@ -8448,7 +8508,7 @@ body.day-entry-guided .day__guided {
 }
 
 .add-food-modal__results:empty {
-  display: none;
+  display: block;
 }
 
 .add-food-modal__pagination {
@@ -11039,6 +11099,10 @@ button.longevity-form__label-link:focus-visible {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+}
+
+#add-food-modal .import-modal__body {
+  overflow: hidden;
 }
 
 .import-modal__hint {

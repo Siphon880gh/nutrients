@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Week meals</title>
-  <link rel="stylesheet" href="styles.css?t=1787025800">
+  <link rel="stylesheet" href="styles.css?t=1787026300">
 </head>
 <body class="show-daily-intake-icons day-entry-guided">
   <svg class="app-icon-symbols" width="0" height="0" aria-hidden="true" focusable="false">
@@ -1162,7 +1162,10 @@
       <div class="import-modal__body add-food-modal__body">
         <div class="import-json-wrap">
           <label class="import-json-wrap__label" for="add-food-search">Search</label>
-          <input type="search" id="add-food-search" class="week-jump-input" placeholder="Type a food name…" autocomplete="off" spellcheck="false">
+          <div class="add-food-modal__search">
+            <input type="text" id="add-food-search" class="week-jump-input add-food-modal__search-input" name="nutrients-add-food-q" placeholder="Type a food name…" autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false" aria-autocomplete="list" aria-controls="add-food-results">
+            <button type="button" id="add-food-search-clear" class="add-food-modal__search-clear" hidden aria-label="Clear search">×</button>
+          </div>
         </div>
         <ul id="add-food-results" class="add-food-modal__results" role="listbox" aria-multiselectable="true" aria-label="Matching foods"></ul>
         <nav id="add-food-pagination" class="add-food-modal__pagination" aria-label="Food results pages" hidden>
@@ -2743,6 +2746,6 @@
   <script src="demographic-dv.js?t=1786025201"></script>
   <script src="longevity-dv.js?t=1784087915"></script>
   <script src="persist.js?t=1786431230"></script>
-  <script src="app.js?t=1787025800"></script>
+  <script src="app.js?t=1787026300"></script>
 </body>
 </html>
