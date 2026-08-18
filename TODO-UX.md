@@ -61,13 +61,13 @@ Checkboxes are work remaining. Do not treat this list as a commitment to ship ev
 
 ### P0 — Blocking
 
-- [ ] **Logged-out work is discarded with no warning**
+- [x] **Logged-out work is discarded with no warning**
   - Where: `NutrientsPersist` no-op saves; header only shows Log in / Sign up.
   - Why: User can fill Mon–Sun, refresh, and lose the week. Feels broken, not “please sign up.”
   - Fix: Persistent banner while logged out (“Edits won’t be saved”). Block or confirm before Add food / Clear / Import. Optional guest diary later.
   - Skill: `/harden` + `/clarify`
 
-- [ ] **Empty library: Add food is a native alert dead-end**
+- [x] **Empty library: Add food is a native alert dead-end**
   - Where: `openAddFoodModal` → `window.alert("No food definitions yet…")`.
   - Why: Primary logging control refuses the job and dumps the user out of the day column. Definitions live at the bottom of the page.
   - Fix: In-modal empty state with **Import sample** and **Add food definition**. Do not use `window.alert`.
@@ -75,43 +75,43 @@ Checkboxes are work remaining. Do not treat this list as a commitment to ship ev
 
 ### P1 — Major
 
-- [ ] **Dashboard sits above Food Entry on the same page**
+- [x] **Dashboard sits above Food Entry on the same page**
   - Where: `index.html` order: header → `#app-nav` → `.dashboard` → week nav → `.week__grid` → `.keywords`.
   - Why: Job #1 is log meals. First paint is seven macro cards (often empty). Entry is a scroll or shortcut **E**.
   - Fix: Default viewport/anchor on Food Entry after login; keep Macros as a jump (**M**). Or collapse dashboard to a one-line strip until meals exist.
   - Skill: `/arrange` + `/distill`
 
-- [ ] **No undo after Clear / Clear all / replace import**
+- [x] **No undo after Clear / Clear all / replace import**
   - Where: `confirmClearDay`, `clearAllDayNotes`, import-replace confirms (`This cannot be undone.`).
   - Why: Confirm dialogs are easy to accept. Find lost meals does not cover “I cleared today.”
   - Fix: Keep one snapshot (per day / viewed week) and an **Undo** toast for ~15s. Keep the confirm for Clear all / replace.
   - Skill: `/harden`
 
-- [ ] **Day actions are icon-only until hover/focus (weak on touch)**
+- [x] **Day actions are icon-only until hover/focus (weak on touch)**
   - Where: `.day__ignore`, `.day__copy-toggle`, `.day__favorite`, `.day__clear` — 1.45rem (~23px) hit targets; labels `max-width: 0` until hover.
   - Why: Ignore vs Clear vs Copy are easy to mix up. Touch has no hover; 23px is under 24px AA / 44px recommended.
   - Fix: 44×44px tap area (padding ok). On coarse pointer, show labels or a compact overflow menu. Keep Ignore top-right but always show **Ignored** when pressed (already does).
   - Skill: `/adapt` + `/clarify`
 
-- [ ] **Copy menu copy is unreadable**
+- [x] **Copy menu copy is unreadable**
   - Where: “Copy this week to this week” plus custom / today / yesterday / tomorrow.
   - Why: Six similar sentences. The first item sounds like a no-op.
   - Fix: Group **This day** vs **This week**. Rename first item to what it actually does (e.g. “Replace this week with another week’s meals…” / conflict modal title as the label).
   - Skill: `/clarify`
 
-- [ ] **Cannot add a missing food from Add food**
+- [x] **Cannot add a missing food from Add food**
   - Where: `#add-food-modal` search; empty = “No matching foods. Add a definition under Food definitions…”
   - Why: Logging stops. Curator job is a long-scroll context switch. Multi-select makes this more common (one unknown name among known ones).
   - Fix: Row action **Create “{query}”** that opens the definition form and returns to the same day/modal with it pre-selected.
   - Skill: `/onboard`
 
-- [ ] **Micro / Longevity chrome vs the diary**
+- [x] **Micro / Longevity chrome vs the diary**
   - Where: `#dashboard-micro-sticky`, `#dashboard-longevity-nav` (View, Daily Targets, Filter, Highlight, S/E, A/E, By nutrient, Run Analysis, condition/status).
   - Why: Correct for a longevity ICP **after** meals exist. Overwhelming on first open; status color is easy to treat as the only signal.
   - Fix: First-open preset (“Show gaps only”). Keep advanced filters behind one control. Don’t rely on red/green alone (text % + icon already exist — make the text the primary).
   - Skill: `/distill` + `/onboard`
 
-- [ ] **Hover-to-widen day columns while scanning the week**
+- [x] **Hover-to-widen day columns while scanning the week**
   - Where: `.week__grid` `pointerover` → `focusWeekDayColumn`.
   - Why: Moving the pointer across Mon–Sun constantly reflows seven columns. Smooth easing still feels like the page is fighting the mouse. Accidental widen when aiming at Ignore / Copy.
   - Fix: Widen on **focus inside the day** or a short hover-intent delay (~250ms). Don’t widen from crossing the header icons.
@@ -119,61 +119,61 @@ Checkboxes are work remaining. Do not treat this list as a commitment to ship ev
 
 ### P2 — Minor
 
-- [ ] **Add food: servings stepper vs +.5 / +.33 / +.25**
+- [x] **Add food: servings stepper vs +.5 / +.33 / +.25**
   - Where: per-selected-item number input + nudge buttons.
   - Why: Native spinner + ArrowUp/Down now move by 1 (good). Fraction buttons only increment. Repeating the whole servings block on every selected food is noisy.
   - Fix: Add −.5 / −.33 / −.25 (or a shared stepper that applies to the focused chip). Collapse servings UI when only one food is selected if the extra chrome feels heavy.
   - Skill: `/clarify`
 
-- [ ] **Add food: click selected result toggles it off**
+- [x] **Add food: click selected result toggles it off**
   - Where: `selectAddFoodName` toggle.
   - Why: Multi-select lists that uncheck on second click conflict with “I was scanning the list.” × already removes.
   - Fix: Click on a selected result = no-op (or scroll to that chip). Only × removes.
   - Skill: `/harden`
 
-- [ ] **Destructive / empty-library dialogs are `window.alert` / `window.confirm`**
+- [x] **Destructive / empty-library dialogs are `window.alert` / `window.confirm`**
   - Where: import sample, delete definition, remove line, Add food empty library, etc.
   - Why: Browser chrome, no styling, easy to miss which day they refer to.
   - Fix: Same modal pattern as copy-conflict / favorite-edit.
   - Skill: `/normalize`
 
-- [ ] **Autosave is invisible**
+- [x] **Autosave is invisible**
   - Where: `saveDayMealsState` on input; hint “Day meals are saved in this browser.”
   - Why: No last-saved time. Users double-export “just in case.” Logged-in vs logged-out is the same UI.
   - Fix: Quiet “Saved” / “Not saved — log in” next to week range.
   - Skill: `/clarify`
 
-- [ ] **Meals toolbar packs five bulk actions**
+- [x] **Meals toolbar packs five bulk actions**
   - Where: Export all / Import all / Import sample / Find lost meals / Clear all days.
   - Why: Clear all sits beside Import sample. Find lost meals is recovery, not a peer of Export.
   - Fix: Primary: Import sample (empty week) or none. Overflow **More** for export/import/find/clear.
   - Skill: `/distill`
 
-- [ ] **Food definitions table is below the fold of a long page**
+- [x] **Food definitions table is below the fold of a long page**
   - Where: `.keywords` after `.week__days`.
   - Why: Starter guide must scroll the table into view. Adding a food while logging is a round trip.
   - Fix: Keep jump **D**. Consider a compact “library” drawer from Add food rather than another full-page section.
   - Skill: `/arrange`
 
-- [ ] **Settings sex control is ♂/M in the header**
+- [x] **Settings sex control is ♂/M in the header**
   - Where: `#settings-open`.
   - Why: Easy to miss that iron DV and Female/Male Hormones depend on this. Icon+abbr without “sex” in the visible label.
   - Fix: Keep Settings; show “Female · 62 kg” (or similar) as status, not only an icon.
   - Skill: `/clarify`
 
-- [ ] **Shortcut glyphs on nav (S D E M W R L) compete with labels**
+- [x] **Shortcut glyphs on nav (S D E M W R L) compete with labels**
   - Where: `.app-nav__shortcut`; full hints on modifier hold (`app-nav-shortcuts-visible`).
   - Why: Power-user gold; first-timer noise. Bottom nav on ≤720px is already cramped.
   - Fix: Show letter badges only while a modifier is held (already the expanded mode) — hide idle letters on the main nav.
   - Skill: `/quieter`
 
-- [ ] **Servings on the day list appear only on hover / `--active`**
+- [x] **Servings on the day list appear only on hover / `--active`**
   - Where: `.day__food-item-servings-input` `pointer-events: none` until hover.
   - Why: Scan of `* 2` vs `* 1` is hidden. Touch users must tap the row first.
   - Fix: Always show the number; reveal Edit / Remove on hover or tap as now.
   - Skill: `/adapt`
 
-- [ ] **Starter guide is one-shot and not in Help**
+- [x] **Starter guide is one-shot and not in Help**
   - Where: `#starter-guide`; dismiss on meals step never returns.
   - Why: After “Got it”, Import sample / Add food relationship is gone.
   - Fix: Settings or header **Help** that re-runs the two steps.
@@ -181,14 +181,14 @@ Checkboxes are work remaining. Do not treat this list as a commitment to ship ev
 
 ### P3 — Polish
 
-- [ ] Document title is **Week meals** — does not mention nutrients / longevity (`<title>`).
-- [ ] Week hint still says “multiple lines per day” while Basic is a list — Advanced-centric leftover (`h1` + `.week__hint`).
-- [ ] Favorite **week** (above grid) vs Favorite **day** (icon) vs Favorites **sidebar** — three entry points, same word.
-- [ ] Add food submit stays “Add to day” for N foods — optional “(3)”.
-- [ ] Ignore’s slashed-circle vs Clear’s trash is better than before; still no legend for first use.
-- [ ] Print hides Copy/Favorite/Clear/Ignore (good) but also unmatched/notes — confirm print still shows ignored-day state.
-- [ ] `aria-hidden="true"` on visible nav labels relies on `aria-label` — fine if labels stay in sync when copy changes.
-- [ ] Long food names in Add food selected chips wrap under × — check 320px width.
+- [x] Document title is **Week meals** — does not mention nutrients / longevity (`<title>`).
+- [x] Week hint still says “multiple lines per day” while Basic is a list — Advanced-centric leftover (`h1` + `.week__hint`).
+- [x] Favorite **week** (above grid) vs Favorite **day** (icon) vs Favorites **sidebar** — three entry points, same word.
+- [x] Add food submit stays “Add to day” for N foods — optional “(3)”.
+- [x] Ignore’s slashed-circle vs Clear’s trash is better than before; still no legend for first use.
+- [x] Print hides Copy/Favorite/Clear/Ignore (good) but also unmatched/notes — confirm print still shows ignored-day state.
+- [x] `aria-hidden="true"` on visible nav labels relies on `aria-label` — fine if labels stay in sync when copy changes.
+- [x] Long food names in Add food selected chips wrap under × — check 320px width.
 
 ---
 

@@ -703,6 +703,236 @@ body {
   letter-spacing: 0.02em;
 }
 
+.week__settings-status {
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: #5c5c5c;
+  white-space: nowrap;
+}
+
+.week__help {
+  flex-shrink: 0;
+  padding: 0.35rem 0.65rem;
+  font: inherit;
+  font-size: 0.8rem;
+  font-weight: 600;
+  line-height: 1.2;
+  border: 1px solid #c8c8c4;
+  border-radius: 6px;
+  background: #fff;
+  color: #1a1a1a;
+  cursor: pointer;
+}
+
+.week__help:hover {
+  border-color: #9eb4cc;
+  background: #e8eef4;
+}
+
+.logged-out-banner {
+  margin: 0 0 0.75rem;
+  padding: 0.55rem 0.75rem;
+  border: 1px solid #d4c4a0;
+  border-radius: 6px;
+  background: #faf6ed;
+  color: #5c4a28;
+}
+
+.logged-out-banner[hidden] {
+  display: none !important;
+}
+
+.logged-out-banner__text {
+  margin: 0;
+  font-size: 0.85rem;
+  line-height: 1.45;
+}
+
+.logged-out-banner__link {
+  padding: 0;
+  border: none;
+  background: none;
+  font: inherit;
+  font-weight: 600;
+  color: #3d6b9e;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.week__save-status {
+  flex: 0 1 auto;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #6a6a66;
+  white-space: nowrap;
+}
+
+.week__save-status--warn {
+  color: #8a5a20;
+}
+
+.week__save-status--ok {
+  color: #3a6a4a;
+}
+
+.week__meals-more {
+  position: relative;
+}
+
+.week__meals-more-toggle {
+  padding: 0.35rem 0.65rem;
+  font: inherit;
+  font-size: 0.8rem;
+  font-weight: 600;
+  border: 1px solid #c8c8c4;
+  border-radius: 6px;
+  background: #fff;
+  cursor: pointer;
+}
+
+.week__meals-more-menu {
+  position: absolute;
+  top: calc(100% + 0.25rem);
+  right: 0;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  min-width: 10rem;
+  padding: 0.25rem;
+  border: 1px solid #d4d4d0;
+  border-radius: 6px;
+  background: #fff;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+}
+
+.week__meals-more-menu[hidden] {
+  display: none !important;
+}
+
+.week__meals-more-menu .week__meals-bulk,
+.week__meals-more-menu .week__clear-all {
+  width: 100%;
+  text-align: left;
+  border: none;
+  border-radius: 4px;
+}
+
+.week__meals-bulk--primary {
+  font-weight: 600;
+}
+
+.undo-toast {
+  position: fixed;
+  left: 50%;
+  bottom: 1.25rem;
+  z-index: 1200;
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  max-width: min(92vw, 28rem);
+  padding: 0.55rem 0.65rem 0.55rem 0.85rem;
+  border: 1px solid #c8c8c4;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.12);
+  transform: translateX(-50%);
+}
+
+.undo-toast[hidden] {
+  display: none !important;
+}
+
+.undo-toast__message {
+  flex: 1 1 auto;
+  font-size: 0.85rem;
+  color: #1a1a1a;
+}
+
+.undo-toast__action {
+  flex: 0 0 auto;
+  padding: 0.25rem 0.55rem;
+  font: inherit;
+  font-size: 0.8rem;
+  font-weight: 600;
+  border: 1px solid #9eb4cc;
+  border-radius: 4px;
+  background: #e8eef4;
+  color: #2a4a6e;
+  cursor: pointer;
+}
+
+.undo-toast__dismiss {
+  flex: 0 0 auto;
+  width: 1.5rem;
+  height: 1.5rem;
+  padding: 0;
+  border: none;
+  border-radius: 4px;
+  background: transparent;
+  color: #8a8a86;
+  font-size: 1.1rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.add-food-modal__empty-library {
+  padding: 0.75rem 0;
+}
+
+.add-food-modal__empty-library-lead {
+  margin: 0 0 0.75rem;
+  font-size: 0.9rem;
+  color: #444;
+}
+
+.add-food-modal__empty-library-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.add-food-modal__create-row {
+  margin: 0.35rem 0 0;
+}
+
+.add-food-modal__create-btn {
+  width: 100%;
+  padding: 0.55rem 0.75rem;
+  font: inherit;
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-align: left;
+  border: 1px dashed #9eb4cc;
+  border-radius: 6px;
+  background: #f5f8fb;
+  color: #2a4a6e;
+  cursor: pointer;
+}
+
+.day__copy-menu-group {
+  margin: 0.35rem 0 0.15rem;
+  padding: 0 0.45rem;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #8a8a86;
+}
+
+.day__copy-menu-group:first-child {
+  margin-top: 0;
+}
+
+.dashboard__longevity-empty {
+  margin: 0.5rem 0 1rem;
+  padding: 0.75rem;
+  border: 1px solid #d4d4d0;
+  border-radius: 6px;
+  background: #f7f7f4;
+  color: #444;
+  font-size: 0.9rem;
+}
+
 .week__hint {
   margin: 0;
   color: #5c5c5c;
@@ -7454,8 +7684,8 @@ button.dashboard__longevity-name:focus-visible {
   justify-content: center;
   gap: 0;
   box-sizing: border-box;
-  min-width: 1.45rem;
-  min-height: 1.45rem;
+  min-width: 2.75rem;
+  min-height: 2.75rem;
   padding: 0.15rem;
   font: inherit;
   font-size: 0.68rem;
@@ -7538,6 +7768,22 @@ button.dashboard__longevity-name:focus-visible {
 .day__ignore[aria-pressed="true"] .day__action-label {
   margin-left: 0;
   margin-right: 0.28rem;
+}
+
+@media (pointer: coarse) {
+  .day__action-label {
+    max-width: 5.5rem;
+    margin-left: 0.28rem;
+    opacity: 1;
+  }
+
+  .day__ignore[aria-pressed="true"] .day__action-label,
+  .day__ignore:hover:not(:disabled) .day__action-label,
+  .day__ignore:focus:not(:disabled) .day__action-label,
+  .day__ignore:focus-visible:not(:disabled) .day__action-label {
+    margin-left: 0;
+    margin-right: 0.28rem;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -8127,7 +8373,7 @@ body.day-entry-guided .day__guided {
   text-align: center;
 }
 
-/* Idle: show servings as plain text; hide × until hover / focus / click */
+/* Always show servings count; edit chrome on hover/focus/active */
 .day__food-item-servings-input {
   border-color: transparent;
   background: #f3f3f0;
@@ -8136,6 +8382,11 @@ body.day-entry-guided .day__guided {
   cursor: default;
   font-weight: 600;
   color: #444;
+}
+
+.day__food-item-servings-input--visible,
+.day__food-item .day__food-item-servings-input {
+  opacity: 1;
 }
 
 .day__food-item-edit,
@@ -8653,6 +8904,7 @@ body.day-entry-guided .day__guided {
   font-weight: 600;
   color: #1a1a1a;
   word-break: break-word;
+  overflow-wrap: anywhere;
 }
 
 .add-food-modal__selected-remove {

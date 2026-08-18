@@ -320,6 +320,40 @@
   var authLoginErrorEl = document.getElementById("auth-login-error");
   var authLoginCancelBtn = document.getElementById("auth-login-cancel");
   var authLoginSubmitBtn = document.getElementById("auth-login-submit");
+  var loggedOutBannerEl = document.getElementById("logged-out-banner");
+  var loggedOutBannerLoginBtn = document.getElementById("logged-out-banner-login");
+  var loggedOutBannerSignupBtn = document.getElementById("logged-out-banner-signup");
+  var weekSaveStatusEl = document.getElementById("week-save-status");
+  var helpOpenBtn = document.getElementById("help-open");
+  var weekMealsMoreToggleBtn = document.getElementById("week-meals-more-toggle");
+  var weekMealsMoreMenuEl = document.getElementById("week-meals-more-menu");
+  var appConfirmModalEl = document.getElementById("app-confirm-modal");
+  var appConfirmTitleEl = document.getElementById("app-confirm-modal-title");
+  var appConfirmHintEl = document.getElementById("app-confirm-modal-hint");
+  var appConfirmCancelBtn = document.getElementById("app-confirm-cancel");
+  var appConfirmApplyBtn = document.getElementById("app-confirm-apply");
+  var appAlertModalEl = document.getElementById("app-alert-modal");
+  var appAlertTitleEl = document.getElementById("app-alert-modal-title");
+  var appAlertHintEl = document.getElementById("app-alert-modal-hint");
+  var appAlertDoneBtn = document.getElementById("app-alert-done");
+  var undoToastEl = document.getElementById("undo-toast");
+  var undoToastMessageEl = document.getElementById("undo-toast-message");
+  var undoToastActionBtn = document.getElementById("undo-toast-action");
+  var undoToastDismissBtn = document.getElementById("undo-toast-dismiss");
+  var addFoodEmptyLibraryEl = document.getElementById("add-food-empty-library");
+  var addFoodImportSampleBtn = document.getElementById("add-food-import-sample");
+  var addFoodAddDefinitionBtn = document.getElementById("add-food-add-definition");
+  var addFoodCreateRowEl = document.getElementById("add-food-create-row");
+  var settingsDemographicStatusEl = document.getElementById("settings-demographic-status");
+  var lastSavedAt = 0;
+  var undoSnapshot = null;
+  var undoTimer = 0;
+  var appConfirmResolve = null;
+  var appAlertResolve = null;
+  var addFoodCreateReturn = null;
+  var weekGridHoverTimer = 0;
+  var weekGridHoverDayEl = null;
+  var bootScrolledToEntry = false;
   var settingsDemographicIconEl = document.getElementById("settings-demographic-icon");
   var settingsDemographicAbbrEl = document.getElementById("settings-demographic-abbr");
   var settingsTdeeEl = document.getElementById("settings-tdee");
@@ -14287,6 +14321,11 @@
     hideMicroDailyIntakePopover();
     hideMicroAcuteToxicityPopover();
     syncIgnoredWeekBadges();
+    if (longevityEmptyWeekHint()) {
+      dashboardLongevityContentEl.innerHTML =
+        '<p class="dashboard__longevity-empty">Log meals for this week first — longevity bars need food matches before they mean anything.</p>';
+      return;
+    }
     var weekLongevity = weekLongevityTotals();
     var weekMicro = weekMicroTotals();
     var weekMacro = weekMacroTotals();
@@ -17825,6 +17864,7 @@
       dashboardMicroPanelEl.hidden = !microRequirementsOpen;
     }
     if (microRequirementsOpen) {
+      maybeApplyMicroFirstOpenPreset();
       renderMicroRequirements();
       initStickyFiltersCarousel();
     } else {
@@ -18527,6 +18567,7 @@
     userBodyWeightKg = isNaN(kg) ? null : kg;
     saveBodyWeight();
     syncSettingsMacroSplitPreview();
+    renderDemographicUi();
   }
 
   function focusSettingsWeightField() {
@@ -18584,6 +18625,239 @@
     authLoginErrorEl.textContent = message;
   }
 
+  function isLoggedIn() {
+    return !!(auth && auth.isLoggedIn && auth.isLoggedIn());
+  }
+
+  function syncLoggedOutBanner() {
+    if (!loggedOutBannerEl) return;
+    var show = !isLoggedIn();
+    loggedOutBannerEl.hidden = !show;
+    loggedOutBannerEl.setAttribute("aria-hidden", show ? "false" : "true");
+  }
+
+  function formatSaveStatusTime(ts) {
+    if (!ts) return "";
+    var d = new Date(ts);
+    return d.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
+  }
+
+  function syncWeekSaveStatus() {
+    if (!weekSaveStatusEl) return;
+    if (!isLoggedIn()) {
+      weekSaveStatusEl.textContent = "Not saved — log in";
+      weekSaveStatusEl.className = "week__save-status week__save-status--warn";
+      return;
+    }
+    weekSaveStatusEl.textContent = lastSavedAt
+      ? "Saved " + formatSaveStatusTime(lastSavedAt)
+      : "Saved";
+    weekSaveStatusEl.className = "week__save-status week__save-status--ok";
+  }
+
+  function closeAppConfirmModal(result) {
+    if (appConfirmModalEl) appConfirmModalEl.hidden = true;
+    updateBodyModalOpen();
+    if (appConfirmResolve) {
+      var resolve = appConfirmResolve;
+      appConfirmResolve = null;
+      resolve(!!result);
+    }
+  }
+
+  function showAppConfirm(opts) {
+    opts = opts || {};
+    if (!appConfirmModalEl) {
+      return Promise.resolve(window.confirm(String(opts.message || "Continue?")));
+    }
+    return new Promise(function (resolve) {
+      appConfirmResolve = resolve;
+      if (appConfirmTitleEl) {
+        appConfirmTitleEl.textContent = opts.title || "Confirm";
+      }
+      if (appConfirmHintEl) {
+        appConfirmHintEl.textContent = opts.message || "";
+      }
+      if (appConfirmApplyBtn) {
+        appConfirmApplyBtn.textContent = opts.confirmLabel || "Continue";
+      }
+      if (appConfirmCancelBtn) {
+        appConfirmCancelBtn.textContent = opts.cancelLabel || "Cancel";
+      }
+      appConfirmModalEl.hidden = false;
+      updateBodyModalOpen();
+      if (appConfirmApplyBtn) appConfirmApplyBtn.focus();
+    });
+  }
+
+  function closeAppAlertModal() {
+    if (appAlertModalEl) appAlertModalEl.hidden = true;
+    updateBodyModalOpen();
+    if (appAlertResolve) {
+      var resolve = appAlertResolve;
+      appAlertResolve = null;
+      resolve();
+    }
+  }
+
+  function showAppAlert(opts) {
+    opts = opts || {};
+    if (!appAlertModalEl) {
+      window.alert(String(opts.message || ""));
+      return Promise.resolve();
+    }
+    return new Promise(function (resolve) {
+      appAlertResolve = resolve;
+      if (appAlertTitleEl) appAlertTitleEl.textContent = opts.title || "Notice";
+      if (appAlertHintEl) appAlertHintEl.textContent = opts.message || "";
+      appAlertModalEl.hidden = false;
+      updateBodyModalOpen();
+      if (appAlertDoneBtn) appAlertDoneBtn.focus();
+    });
+  }
+
+  function requireLoggedInForPersist(actionLabel) {
+    if (isLoggedIn()) return Promise.resolve(true);
+    return showAppConfirm({
+      title: "Edits won't be saved",
+      message:
+        "You're logged out — " +
+        actionLabel +
+        " won't persist after refresh. Continue anyway, or log in first.",
+      confirmLabel: "Continue without saving",
+      cancelLabel: "Log in",
+    }).then(function (ok) {
+      if (!ok) openAuthLoginModal();
+      return ok;
+    });
+  }
+
+  function captureUndoSnapshot() {
+    flushEditorsToDayMeals();
+    undoSnapshot = {
+      days: Object.assign({}, dayMealsByDate),
+      ignoredDays: Object.assign({}, ignoredDaysByDate),
+      viewedWeekStart: viewedWeekStart,
+    };
+  }
+
+  function hideUndoToast() {
+    if (undoTimer) {
+      window.clearTimeout(undoTimer);
+      undoTimer = 0;
+    }
+    if (undoToastEl) undoToastEl.hidden = true;
+  }
+
+  function showUndoToast(message) {
+    if (!undoToastEl || !undoSnapshot) return;
+    if (undoToastMessageEl) undoToastMessageEl.textContent = message;
+    undoToastEl.hidden = false;
+    if (undoTimer) window.clearTimeout(undoTimer);
+    undoTimer = window.setTimeout(hideUndoToast, 15000);
+  }
+
+  function performUndo() {
+    if (!undoSnapshot) return;
+    dayMealsByDate = Object.assign({}, undoSnapshot.days);
+    ignoredDaysByDate = Object.assign({}, undoSnapshot.ignoredDays);
+    if (
+      undoSnapshot.viewedWeekStart &&
+      undoSnapshot.viewedWeekStart !== viewedWeekStart
+    ) {
+      setViewedWeekStart(undoSnapshot.viewedWeekStart);
+    } else {
+      DAYS.forEach(function (day) {
+        var el = document.getElementById(day.id);
+        var key = dateKeyForDayId(day.id);
+        if (el && key) el.value = dayMealsByDate[key] || "";
+      });
+      saveDayNotes();
+      refreshAll();
+    }
+    undoSnapshot = null;
+    hideUndoToast();
+  }
+
+  function copyMenuHtml(dayId) {
+    return (
+      '<p class="day__copy-menu-group" role="presentation">This day</p>' +
+      '<button type="button" role="menuitem" class="day__copy-menu-item--today" data-action="copy-day-to-today" data-day-id="' +
+      escapeAttr(dayId) +
+      '">To today</button>' +
+      '<button type="button" role="menuitem" data-action="copy-day-to-yesterday" data-day-id="' +
+      escapeAttr(dayId) +
+      '">To yesterday</button>' +
+      '<button type="button" role="menuitem" data-action="copy-day-to-tomorrow" data-day-id="' +
+      escapeAttr(dayId) +
+      '">To tomorrow</button>' +
+      '<button type="button" role="menuitem" data-action="copy-day-to-custom" data-day-id="' +
+      escapeAttr(dayId) +
+      '">To another date…</button>' +
+      '<p class="day__copy-menu-group" role="presentation">This week</p>' +
+      '<button type="button" role="menuitem" data-action="copy-week-to-this-week" data-day-id="' +
+      escapeAttr(dayId) +
+      '">Replace with another week\u2019s meals…</button>' +
+      '<button type="button" role="menuitem" data-action="copy-week-to-custom" data-day-id="' +
+      escapeAttr(dayId) +
+      '">From another week…</button>'
+    );
+  }
+
+  function initCopyMenuLabels() {
+    DAYS.forEach(function (day) {
+      var wrap = document.querySelector(
+        '.day__copy .day__copy-toggle[data-day-id="' + day.id + '"]'
+      );
+      if (!wrap || !wrap.parentElement) return;
+      var menu = wrap.parentElement.querySelector(".day__copy-menu");
+      if (!menu) return;
+      menu.innerHTML = copyMenuHtml(day.id);
+    });
+  }
+
+  function closeWeekMealsMoreMenu() {
+    if (weekMealsMoreToggleBtn) {
+      weekMealsMoreToggleBtn.setAttribute("aria-expanded", "false");
+    }
+    if (weekMealsMoreMenuEl) weekMealsMoreMenuEl.hidden = true;
+  }
+
+  function syncWeekMealsToolbarPrimary() {
+    var importSampleBtn = document.getElementById("import-sample-meals");
+    if (!importSampleBtn) return;
+    var emptyWeek = !anyDayHasNotes();
+    importSampleBtn.hidden = !emptyWeek;
+  }
+
+  function maybeScrollToFoodEntryOnBoot() {
+    if (bootScrolledToEntry) return;
+    bootScrolledToEntry = true;
+    if (window.location.hash) return;
+    window.requestAnimationFrame(function () {
+      scrollDashboardJumpTarget(document.getElementById("food-entry"));
+      window.setTimeout(scheduleMacrosCondensedVisibilitySync, 350);
+    });
+  }
+
+  function maybeApplyMicroFirstOpenPreset() {
+    if (!persist) return;
+    if (persist.getSetting("microFirstOpenDone")) return;
+    persist.setSetting("microFirstOpenDone", true);
+    setMicroStatusFilter("redOrZero");
+  }
+
+  function longevityEmptyWeekHint() {
+    return !anyDayHasNotes();
+  }
+
+  function syncAddFoodSubmitLabel() {
+    if (!addFoodSubmitBtn) return;
+    var n = addFoodSelectedItems.length;
+    addFoodSubmitBtn.textContent =
+      n > 1 ? "Add to day (" + n + ")" : "Add to day";
+  }
+
   function syncAuthUi() {
     var user = auth && auth.getCurrentUser ? auth.getCurrentUser() : null;
     var loggedIn = !!user;
@@ -18603,6 +18877,8 @@
       closeAuthSignupModal();
       closeAuthLoginModal();
     }
+    syncLoggedOutBanner();
+    syncWeekSaveStatus();
   }
 
   function closeAuthSignupModal() {
@@ -18696,6 +18972,7 @@
     renderKeywords();
     refreshAll();
     syncAuthUi();
+    syncWeekMealsToolbarPrimary();
     window.setTimeout(function () {
       maybeOfferLostMealsRecovery();
     }, 0);
@@ -19919,6 +20196,18 @@
     }
     if (settingsDemographicAbbrEl) {
       settingsDemographicAbbrEl.textContent = (meta.label || "M").charAt(0).toUpperCase();
+    }
+    if (settingsDemographicStatusEl) {
+      var statusParts = [meta.label || "Male"];
+      var kg = persist ? persist.getSetting("bodyWeightKg") : null;
+      if (typeof kg === "number" && kg > 0) {
+        var display =
+          settingsWeightUnit === "lb"
+            ? Math.round(kg / 0.453592 * 10) / 10
+            : Math.round(kg * 10) / 10;
+        statusParts.push(display + (settingsWeightUnit === "lb" ? " lb" : " kg"));
+      }
+      settingsDemographicStatusEl.textContent = statusParts.join(" · ");
     }
     if (!demographicOptionsEl) return;
     var buttons = demographicOptionsEl.querySelectorAll("[data-demographic]");
@@ -23468,12 +23757,17 @@
   }
 
   function saveDayMealsState() {
-    if (!persist) return;
-    persist.saveDayMeals({
+    if (!persist) {
+      syncWeekSaveStatus();
+      return;
+    }
+    var ok = persist.saveDayMeals({
       version: 2,
       days: Object.assign({}, dayMealsByDate),
       ignoredDays: Object.assign({}, ignoredDaysByDate),
     });
+    if (ok) lastSavedAt = Date.now();
+    syncWeekSaveStatus();
   }
 
   function saveDayNotes() {
@@ -24489,14 +24783,18 @@
       })
       .then(function (raw) {
         var data = parseImportAllDayMealsObject(raw);
-        // Always apply onto the currently viewed week (v2 dates are remapped).
+        captureUndoSnapshot();
         applySampleDayMealsData(legacyWeekFromSampleDayMeals(data), true);
         refreshAll();
         updateDayClearButtons();
+        showUndoToast("Sample meals imported.");
       })
       .catch(function (e) {
         if (e.message === "cancelled") return;
-        window.alert(e.message || "Import sample failed");
+        showAppAlert({
+          title: "Import failed",
+          message: e.message || "Import sample failed",
+        });
       });
   }
 
@@ -24631,6 +24929,7 @@
     if (clearAllBtn) clearAllBtn.disabled = !anyDayHasNotes();
     updateCopyActionButtons();
     syncDayFavoriteButtons();
+    syncWeekMealsToolbarPrimary();
   }
 
   function closeAllDayCopyMenus() {
@@ -26801,6 +27100,7 @@
     var hasSelection = addFoodSelectedItems.length > 0;
     if (addFoodSelectedEl) addFoodSelectedEl.hidden = !hasSelection;
     if (addFoodSubmitBtn) addFoodSubmitBtn.disabled = !hasSelection;
+    syncAddFoodSubmitLabel();
     var key = addFoodSelectedNamesKey();
     if (key !== addFoodSelectedListKey) {
       addFoodSelectedListKey = key;
@@ -26821,11 +27121,11 @@
     if (!foodName) return;
     var idx = addFoodItemIndexByName(foodName);
     if (idx >= 0) {
+      // Only remove via × — clicking a selected result is a no-op.
       if (opts.addOnly) return;
-      addFoodSelectedItems.splice(idx, 1);
-    } else {
-      addFoodSelectedItems.push({ name: foodName, servings: 1 });
+      return;
     }
+    addFoodSelectedItems.push({ name: foodName, servings: 1 });
     showAddFoodError("");
     syncAddFoodSelectedUi();
   }
@@ -26880,11 +27180,23 @@
     if (!addFoodResultsEl) return;
     var query = addFoodSearchEl ? addFoodSearchEl.value : "";
     syncAddFoodSearchClear();
+    if (addFoodEmptyLibraryEl) addFoodEmptyLibraryEl.hidden = true;
+    if (addFoodCreateRowEl) addFoodCreateRowEl.hidden = true;
     var matches = addFoodSearchMatches(query);
     var total = matches.length;
+    var trimmedQuery = String(query || "").trim();
     if (!total) {
       addFoodResultsEl.innerHTML = "";
-      if (addFoodEmptyEl) addFoodEmptyEl.hidden = false;
+      if (addFoodEmptyEl) addFoodEmptyEl.hidden = !trimmedQuery;
+      if (trimmedQuery && addFoodCreateRowEl) {
+        addFoodCreateRowEl.hidden = false;
+        addFoodCreateRowEl.innerHTML =
+          '<button type="button" class="add-food-modal__create-btn" data-action="create-food-from-search" data-query="' +
+          escapeAttr(trimmedQuery) +
+          '">Create “' +
+          escapeHtml(trimmedQuery) +
+          "”</button>";
+      }
       syncAddFoodPaginationUi(0, 0);
       return;
     }
@@ -26938,6 +27250,11 @@
     syncAddFoodSearchClear();
     if (addFoodResultsEl) addFoodResultsEl.innerHTML = "";
     if (addFoodEmptyEl) addFoodEmptyEl.hidden = true;
+    if (addFoodEmptyLibraryEl) addFoodEmptyLibraryEl.hidden = true;
+    if (addFoodCreateRowEl) {
+      addFoodCreateRowEl.hidden = true;
+      addFoodCreateRowEl.innerHTML = "";
+    }
     if (addFoodPaginationEl) addFoodPaginationEl.hidden = true;
     if (addFoodSelectedListEl) addFoodSelectedListEl.innerHTML = "";
     if (addFoodSelectedEl) addFoodSelectedEl.hidden = true;
@@ -26947,12 +27264,6 @@
 
   function openAddFoodModal(dayId) {
     if (!addFoodModalEl || !dayId) return;
-    if (!keywords.length) {
-      window.alert(
-        "No food definitions yet. Import sample foods or add definitions first."
-      );
-      return;
-    }
     closeAllDayCopyMenus();
     addFoodPendingDayId = dayId;
     addFoodSelectedItems = [];
@@ -26976,11 +27287,61 @@
     if (dayEl) focusWeekDayColumn(dayEl);
     addFoodModalEl.hidden = false;
     updateBodyModalOpen();
-    renderAddFoodResults();
+    var emptyLibrary = !keywords.length;
+    if (addFoodEmptyLibraryEl) addFoodEmptyLibraryEl.hidden = !emptyLibrary;
+    if (addFoodSearchEl) addFoodSearchEl.disabled = emptyLibrary;
+    if (addFoodResultsEl) addFoodResultsEl.hidden = emptyLibrary;
+    if (addFoodEmptyEl) addFoodEmptyEl.hidden = true;
+    if (addFoodCreateRowEl) addFoodCreateRowEl.hidden = true;
+    if (!emptyLibrary) renderAddFoodResults();
     syncAddFoodSelectedUi();
     window.setTimeout(function () {
-      if (addFoodSearchEl) addFoodSearchEl.focus();
+      if (emptyLibrary && addFoodImportSampleBtn) addFoodImportSampleBtn.focus();
+      else if (addFoodSearchEl) addFoodSearchEl.focus();
     }, 0);
+  }
+
+  function beginCreateFoodFromAddFood(query) {
+    var name = String(query || "").trim();
+    if (!name) return;
+    addFoodCreateReturn = {
+      dayId: addFoodPendingDayId,
+      name: name,
+    };
+    closeAddFoodModal();
+    addKeyword();
+    var lastRow = keywordsListEl && keywordsListEl.lastElementChild;
+    if (lastRow) {
+      var nameInput = lastRow.querySelector('[data-field="name"]');
+      if (nameInput) {
+        nameInput.value = name;
+        syncFieldFromDom(lastRow);
+        saveFoodDefinitions();
+        renderKeywords();
+        refreshAll();
+        nameInput.focus();
+      }
+    }
+    scrollDashboardJumpTarget(
+      document.getElementById("food-definitions-heading")
+    );
+  }
+
+  function maybeReturnToAddFoodAfterDefinitionSave() {
+    if (!addFoodCreateReturn || !addFoodCreateReturn.dayId) return;
+    var pending = addFoodCreateReturn;
+    addFoodCreateReturn = null;
+    var item = keywords.find(function (k) {
+      return (
+        k &&
+        k.name &&
+        String(k.name).trim().toLowerCase() ===
+          String(pending.name).trim().toLowerCase()
+      );
+    });
+    if (!item || !lineMatchesFoodDefinition(item.name)) return;
+    openAddFoodModal(pending.dayId);
+    selectAddFoodName(item.name, { addOnly: true });
   }
 
   function runAddFoodSubmit() {
@@ -27033,44 +27394,60 @@
     var day = dayById(dayId);
     var label = day ? day.label : dayId;
     var dateLabel = dateLabelForDayId(dayId);
-    return window.confirm(
-      "Clear all meals for " +
+    return showAppConfirm({
+      title: "Clear day",
+      message:
+        "Clear all meals for " +
         label +
         (dateLabel ? " (" + dateLabel + ")" : "") +
-        "? This cannot be undone."
-    );
+        "?",
+      confirmLabel: "Clear",
+      cancelLabel: "Cancel",
+    });
   }
 
   function confirmClearAllDays() {
     var range = formatWeekRangeLabel(viewedWeekStart);
-    return window.confirm(
-      "Clear meals for all " +
+    return showAppConfirm({
+      title: "Clear all days",
+      message:
+        "Clear meals for all " +
         DAYS.length +
         " days in the viewed week" +
         (range ? " (" + range + ")" : "") +
-        "? This cannot be undone."
-    );
+        "? This cannot be undone.",
+      confirmLabel: "Clear all",
+      cancelLabel: "Cancel",
+    });
   }
 
   function clearDayNotes(dayId) {
     if (!dayHasNotes(dayId)) return;
-    if (!confirmClearDay(dayId)) return;
-    var el = document.getElementById(dayId);
-    if (!el) return;
-    el.value = "";
-    saveDayNotes();
-    applyDayNoteChange(el);
+    confirmClearDay(dayId).then(function (ok) {
+      if (!ok) return;
+      captureUndoSnapshot();
+      var el = document.getElementById(dayId);
+      if (!el) return;
+      el.value = "";
+      saveDayNotes();
+      applyDayNoteChange(el);
+      showUndoToast("Day cleared.");
+    });
   }
 
   function clearAllDayNotes() {
     if (!anyDayHasNotes()) return;
-    if (!confirmClearAllDays()) return;
-    DAYS.forEach(function (day) {
-      var el = document.getElementById(day.id);
-      if (el) el.value = "";
+    confirmClearAllDays().then(function (ok) {
+      if (!ok) return;
+      captureUndoSnapshot();
+      DAYS.forEach(function (day) {
+        var el = document.getElementById(day.id);
+        if (el) el.value = "";
+      });
+      saveDayNotes();
+      refreshAll();
+      showUndoToast("All days cleared.");
     });
-    saveDayNotes();
-    refreshAll();
   }
 
   function bindDay(textarea) {
@@ -27161,6 +27538,9 @@
     syncFieldFromDom(row);
     saveFoodDefinitions();
     refreshAll();
+    if (e.target.matches('[data-field="name"]')) {
+      window.setTimeout(maybeReturnToAddFoodAfterDefinitionSave, 0);
+    }
   }
 
   if (keywordsReorderToggleEl) {
@@ -27909,10 +28289,40 @@
     bindDayEditorResize();
     weekGridEl.addEventListener("pointerover", function (e) {
       if (isDaysCarouselActive()) return;
+      if (e.target.closest(".day__head-actions") && !e.target.closest(".day__guided, .day__editor")) {
+        return;
+      }
       var dayEl = e.target.closest(".day");
       if (!dayEl || !weekGridEl.contains(dayEl)) return;
       var related = e.relatedTarget;
       if (related && dayEl.contains(related)) return;
+      if (weekGridHoverDayEl === dayEl && weekGridHoverTimer) return;
+      if (weekGridHoverTimer) window.clearTimeout(weekGridHoverTimer);
+      weekGridHoverDayEl = dayEl;
+      weekGridHoverTimer = window.setTimeout(function () {
+        weekGridHoverTimer = 0;
+        focusWeekDayColumn(dayEl);
+      }, 250);
+    });
+    weekGridEl.addEventListener("pointerout", function (e) {
+      var dayEl = e.target.closest(".day");
+      if (!dayEl) return;
+      var related = e.relatedTarget;
+      if (related && dayEl.contains(related)) return;
+      if (weekGridHoverTimer) {
+        window.clearTimeout(weekGridHoverTimer);
+        weekGridHoverTimer = 0;
+      }
+      weekGridHoverDayEl = null;
+    });
+    weekGridEl.addEventListener("focusin", function (e) {
+      if (isDaysCarouselActive()) return;
+      var dayEl = e.target.closest(".day");
+      if (!dayEl || !weekGridEl.contains(dayEl)) return;
+      if (weekGridHoverTimer) {
+        window.clearTimeout(weekGridHoverTimer);
+        weekGridHoverTimer = 0;
+      }
       focusWeekDayColumn(dayEl);
     });
     weekGridEl.addEventListener("click", function (e) {
@@ -27932,7 +28342,11 @@
         closeAllDayCopyMenus();
         closeAllGuidedOthersMenus();
         var openDayId = openAddFoodBtn.getAttribute("data-day-id");
-        if (openDayId) openAddFoodModal(openDayId);
+        if (openDayId) {
+          requireLoggedInForPersist("adding food").then(function (ok) {
+            if (ok) openAddFoodModal(openDayId);
+          });
+        }
         return;
       }
       var toggleOthersBtn = e.target.closest(
@@ -28340,6 +28754,90 @@
     });
   }
 
+  if (loggedOutBannerLoginBtn) {
+    loggedOutBannerLoginBtn.addEventListener("click", openAuthLoginModal);
+  }
+  if (loggedOutBannerSignupBtn) {
+    loggedOutBannerSignupBtn.addEventListener("click", openAuthSignupModal);
+  }
+  if (helpOpenBtn) {
+    helpOpenBtn.addEventListener("click", function () {
+      starterGuideEligible = true;
+      starterGuideFinished = false;
+      if (keywords.length > 0) {
+        advanceStarterGuideAfterImport();
+      } else {
+        showStarterGuideImportStepFallback();
+      }
+    });
+  }
+  if (weekMealsMoreToggleBtn && weekMealsMoreMenuEl) {
+    weekMealsMoreToggleBtn.addEventListener("click", function () {
+      var open = weekMealsMoreMenuEl.hidden;
+      weekMealsMoreMenuEl.hidden = !open;
+      weekMealsMoreToggleBtn.setAttribute("aria-expanded", open ? "true" : "false");
+    });
+    document.addEventListener("click", function (e) {
+      if (
+        weekMealsMoreMenuEl.hidden ||
+        e.target.closest(".week__meals-more")
+      ) {
+        return;
+      }
+      closeWeekMealsMoreMenu();
+    });
+  }
+  if (appConfirmApplyBtn) {
+    appConfirmApplyBtn.addEventListener("click", function () {
+      closeAppConfirmModal(true);
+    });
+  }
+  if (appConfirmCancelBtn) {
+    appConfirmCancelBtn.addEventListener("click", function () {
+      closeAppConfirmModal(false);
+    });
+  }
+  if (appConfirmModalEl) {
+    appConfirmModalEl.addEventListener("click", function (e) {
+      if (e.target.closest('[data-action="close-app-confirm-modal"]')) {
+        closeAppConfirmModal(false);
+      }
+    });
+  }
+  if (appAlertDoneBtn) {
+    appAlertDoneBtn.addEventListener("click", closeAppAlertModal);
+  }
+  if (appAlertModalEl) {
+    appAlertModalEl.addEventListener("click", function (e) {
+      if (e.target.closest('[data-action="close-app-alert-modal"]')) {
+        closeAppAlertModal();
+      }
+    });
+  }
+  if (undoToastActionBtn) {
+    undoToastActionBtn.addEventListener("click", performUndo);
+  }
+  if (undoToastDismissBtn) {
+    undoToastDismissBtn.addEventListener("click", hideUndoToast);
+  }
+  if (addFoodImportSampleBtn) {
+    addFoodImportSampleBtn.addEventListener("click", function () {
+      closeAddFoodModal();
+      var importSampleBtn = document.getElementById("import-sample-meals");
+      if (importSampleBtn) importSampleBtn.click();
+    });
+  }
+  if (addFoodAddDefinitionBtn) {
+    addFoodAddDefinitionBtn.addEventListener("click", function () {
+      addFoodCreateReturn = { dayId: addFoodPendingDayId, name: "" };
+      closeAddFoodModal();
+      addKeyword();
+      scrollDashboardJumpTarget(
+        document.getElementById("food-definitions-heading")
+      );
+    });
+  }
+
   if (weekNavPrevBtn) {
     weekNavPrevBtn.addEventListener("click", function () {
       stepViewedWeek(-1);
@@ -28468,11 +28966,19 @@
   }
 
   if (importAllMealsBtn) {
-    importAllMealsBtn.addEventListener("click", openImportAllMealsModal);
+    importAllMealsBtn.addEventListener("click", function () {
+      requireLoggedInForPersist("importing meals").then(function (ok) {
+        if (ok) openImportAllMealsModal();
+      });
+    });
   }
 
   if (importSampleMealsBtn) {
-    importSampleMealsBtn.addEventListener("click", importSampleMeals);
+    importSampleMealsBtn.addEventListener("click", function () {
+      requireLoggedInForPersist("importing sample meals").then(function (ok) {
+        if (ok) importSampleMeals();
+      });
+    });
   }
   if (findLostMealsBtn) {
     findLostMealsBtn.addEventListener("click", function () {
@@ -30223,6 +30729,11 @@
         selectAddFoodName(pickBtn.getAttribute("data-food-name"));
         return;
       }
+      var createBtn = e.target.closest('[data-action="create-food-from-search"]');
+      if (createBtn) {
+        beginCreateFoodFromAddFood(createBtn.getAttribute("data-query"));
+        return;
+      }
       var removeBtn = e.target.closest('[data-action="remove-add-food"]');
       if (removeBtn) {
         removeAddFoodName(removeBtn.getAttribute("data-food-name"));
@@ -30548,6 +31059,7 @@
 
   function boot() {
     loadPersistedAppState();
+    initCopyMenuLabels();
     initDaysCarousel();
     initDashboardCarousel();
     initStickyFiltersCarousel();
@@ -30558,6 +31070,8 @@
     applyLoadedAppStateToUi();
     applyInitialLongevityHash();
     maybeAutoImportSampleFoodsAndShowStarterGuide();
+    maybeScrollToFoodEntryOnBoot();
+    syncWeekSaveStatus();
   }
 
   loadAppConfig(function () {
@@ -30574,4 +31088,5 @@
   });
 
   syncAuthUi();
+  syncLoggedOutBanner();
 })();

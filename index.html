@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Week meals</title>
+  <title>Nutrients — Week meals</title>
   <link rel="stylesheet" href="styles.css?t=1787026300">
 </head>
 <body class="show-daily-intake-icons day-entry-guided">
@@ -70,7 +70,7 @@
     <header class="week__header">
       <div class="week__header-text">
         <h1>Week meals</h1>
-        <p class="week__hint">Mon–Sun by calendar week · multiple lines per day</p>
+        <p class="week__hint">Mon–Sun by calendar week · log foods with <strong>Add food</strong>, or use <strong>Advanced</strong> for free-text lines</p>
       </div>
       <div class="week__header-actions">
         <div id="auth-logged-out" class="week__auth" hidden>
@@ -81,13 +81,19 @@
           <span id="auth-user-email" class="week__auth-email"></span>
           <button type="button" id="auth-logout" class="week__auth-btn">Log out</button>
         </div>
+        <button type="button" id="help-open" class="week__help" aria-label="Help">Help</button>
         <button type="button" id="settings-open" class="week__settings" aria-haspopup="dialog" aria-label="Settings">
           <span id="settings-demographic-icon" class="week__settings-icon" aria-hidden="true">♂</span>
           <span id="settings-demographic-abbr" class="week__settings-abbr" aria-hidden="true">M</span>
+          <span id="settings-demographic-status" class="week__settings-status">Male</span>
           <span class="week__settings-label">Settings</span>
         </button>
       </div>
     </header>
+
+    <div id="logged-out-banner" class="logged-out-banner" role="status" hidden>
+      <p class="logged-out-banner__text">Edits won&rsquo;t be saved while logged out. <button type="button" id="logged-out-banner-login" class="logged-out-banner__link">Log in</button> or <button type="button" id="logged-out-banner-signup" class="logged-out-banner__link">Sign up</button> to keep your week.</p>
+    </div>
 
     <nav id="app-nav" class="app-nav" aria-label="App sections">
       <div class="app-nav__inner">
@@ -166,6 +172,7 @@
           <span class="app-nav__shortcut" aria-hidden="true">→</span>
         </button>
         <button type="button" id="week-nav-this" class="week__nav-this">This week</button>
+        <span id="week-save-status" class="week__save-status" aria-live="polite"></span>
         <button type="button" id="favorites-open" class="week__favorites-toggle" aria-haspopup="dialog" aria-expanded="false" aria-controls="favorites-sidebar">
           Favorites
         </button>
@@ -176,11 +183,16 @@
             Day meals are saved in this browser. Use <strong>Add food</strong> to pick from your food definitions, or <strong>Add Others</strong> for inserting headings and dividers. Turn on <strong>Advanced</strong> for free-text entry.
           </p>
           <div class="week__days-actions">
-            <button type="button" id="export-all-meals" class="week__meals-bulk">Export all</button>
-            <button type="button" id="import-all-meals" class="week__meals-bulk">Import all</button>
-            <button type="button" id="import-sample-meals" class="week__meals-bulk">Import sample</button>
-            <button type="button" id="find-lost-meals" class="week__meals-bulk">Find lost meals</button>
-            <button type="button" id="clear-all-days" class="week__clear-all">Clear all days</button>
+            <button type="button" id="import-sample-meals" class="week__meals-bulk week__meals-bulk--primary">Import sample</button>
+            <div class="week__meals-more">
+              <button type="button" id="week-meals-more-toggle" class="week__meals-more-toggle" aria-haspopup="menu" aria-expanded="false" aria-controls="week-meals-more-menu">More</button>
+              <div id="week-meals-more-menu" class="week__meals-more-menu" hidden role="menu">
+                <button type="button" id="export-all-meals" class="week__meals-bulk" role="menuitem">Export all</button>
+                <button type="button" id="import-all-meals" class="week__meals-bulk" role="menuitem">Import all</button>
+                <button type="button" id="find-lost-meals" class="week__meals-bulk" role="menuitem">Find lost meals</button>
+                <button type="button" id="clear-all-days" class="week__clear-all" role="menuitem">Clear all days</button>
+              </div>
+            </div>
           </div>
         </div>
         <div class="week__highlight-bar">
@@ -211,7 +223,7 @@
 
       <div class="week__days">
         <div class="week__days-favorite-week">
-          <button type="button" id="week-nav-favorite" class="week__days-favorite-week-btn">Favorite week</button>
+          <button type="button" id="week-nav-favorite" class="week__days-favorite-week-btn">Save week as favorite</button>
         </div>
         <div class="week__days-carousel-nav" aria-label="Day of week">
           <button type="button" class="week__days-carousel-adj" data-days-carousel="prev" aria-label="Previous day">‹</button>
@@ -1173,7 +1185,15 @@
           <span id="add-food-page-status" class="add-food-modal__page-status" aria-live="polite"></span>
           <button type="button" id="add-food-page-next" class="add-food-modal__page-btn" aria-label="Next page">Next ›</button>
         </nav>
-        <p id="add-food-empty" class="add-food-modal__empty" hidden>No matching foods. Add a definition under Food definitions, or turn on Advanced to type freely.</p>
+        <p id="add-food-empty" class="add-food-modal__empty" hidden>No matching foods.</p>
+        <div id="add-food-empty-library" class="add-food-modal__empty-library" hidden>
+          <p class="add-food-modal__empty-library-lead">No food definitions yet. Import sample foods or add your first definition to start logging.</p>
+          <div class="add-food-modal__empty-library-actions">
+            <button type="button" id="add-food-import-sample" class="modal__done">Import sample foods</button>
+            <button type="button" id="add-food-add-definition" class="modal__secondary">Add food definition</button>
+          </div>
+        </div>
+        <p id="add-food-create-row" class="add-food-modal__create-row" hidden></p>
         <div id="add-food-selected" class="add-food-modal__selected" hidden>
           <p class="add-food-modal__selected-label">Selected</p>
           <ul id="add-food-selected-list" class="add-food-modal__selected-list"></ul>
@@ -1268,6 +1288,39 @@
         <button type="button" id="copy-conflict-apply" class="modal__done">Copy</button>
       </footer>
     </div>
+  </div>
+
+  <div id="app-confirm-modal" class="modal" hidden>
+    <div class="modal__backdrop" data-action="close-app-confirm-modal"></div>
+    <div class="modal__panel" role="alertdialog" aria-modal="true" aria-labelledby="app-confirm-modal-title">
+      <header class="modal__header">
+        <h3 id="app-confirm-modal-title" class="modal__title">Confirm</h3>
+        <p id="app-confirm-modal-hint" class="modal__subtitle"></p>
+      </header>
+      <footer class="modal__footer modal__footer--split">
+        <button type="button" id="app-confirm-cancel" class="modal__secondary">Cancel</button>
+        <button type="button" id="app-confirm-apply" class="modal__done">Continue</button>
+      </footer>
+    </div>
+  </div>
+
+  <div id="app-alert-modal" class="modal" hidden>
+    <div class="modal__backdrop" data-action="close-app-alert-modal"></div>
+    <div class="modal__panel" role="alertdialog" aria-modal="true" aria-labelledby="app-alert-modal-title">
+      <header class="modal__header">
+        <h3 id="app-alert-modal-title" class="modal__title">Notice</h3>
+        <p id="app-alert-modal-hint" class="modal__subtitle"></p>
+      </header>
+      <footer class="modal__footer">
+        <button type="button" id="app-alert-done" class="modal__done">OK</button>
+      </footer>
+    </div>
+  </div>
+
+  <div id="undo-toast" class="undo-toast" role="status" aria-live="polite" hidden>
+    <span id="undo-toast-message" class="undo-toast__message"></span>
+    <button type="button" id="undo-toast-action" class="undo-toast__action">Undo</button>
+    <button type="button" id="undo-toast-dismiss" class="undo-toast__dismiss" aria-label="Dismiss">×</button>
   </div>
 
   <div id="import-all-meals-modal" class="modal" hidden>
