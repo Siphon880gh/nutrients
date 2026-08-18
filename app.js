@@ -26659,6 +26659,12 @@
     return n;
   }
 
+  function addFoodServingsFloor(n) {
+    n = Math.round(n * 1000) / 1000;
+    if (!isFinite(n) || n < 0.01) return 0.01;
+    return n;
+  }
+
   function addFoodServingsInputForName(name) {
     if (!addFoodSelectedEl) return null;
     var inputs = addFoodSelectedEl.querySelectorAll(
@@ -26673,15 +26679,62 @@
   function setAddFoodItemServings(name, n) {
     var item = addFoodItemByName(name);
     if (!item) return;
-    item.servings = clampAddFoodServings(n);
+    item.servings = addFoodServingsFloor(n);
     var input = addFoodServingsInputForName(name);
     if (input) input.value = String(item.servings);
+    syncAddFoodServingsStepButtons(name);
   }
 
   function nudgeAddFoodItemServings(name, delta) {
     var item = addFoodItemByName(name);
     if (!item) return;
     setAddFoodItemServings(name, item.servings + delta);
+  }
+
+  function syncAddFoodServingsStepButtons(name) {
+    var item = addFoodItemByName(name);
+    if (!item || !addFoodSelectedEl) return;
+    var atFloor = item.servings <= 0.01;
+    addFoodSelectedEl
+      .querySelectorAll('[data-action="nudge-add-food-servings"]')
+      .forEach(function (btn) {
+        if (btn.getAttribute("data-food-name") !== name) return;
+        var delta = parseFloat(btn.getAttribute("data-delta"));
+        btn.disabled = atFloor && delta < 0;
+      });
+  }
+
+  function addFoodServingsStepHtml(name, amount, label) {
+    var minusDisabled = "";
+    var item = addFoodItemByName(name);
+    if (item && item.servings <= 0.01) minusDisabled = " disabled";
+    return (
+      '<div class="add-food-modal__servings-step">' +
+      '<button type="button" class="add-food-modal__servings-nudge" data-action="nudge-add-food-servings" data-food-name="' +
+      escapeAttr(name) +
+      '" data-delta="' +
+      -amount +
+      '" aria-label="Subtract ' +
+      amount +
+      " servings from " +
+      escapeAttr(name) +
+      '"' +
+      minusDisabled +
+      ">−</button>" +
+      '<span class="add-food-modal__servings-step-label">' +
+      escapeHtml(label) +
+      "</span>" +
+      '<button type="button" class="add-food-modal__servings-nudge" data-action="nudge-add-food-servings" data-food-name="' +
+      escapeAttr(name) +
+      '" data-delta="' +
+      amount +
+      '" aria-label="Add ' +
+      amount +
+      " servings to " +
+      escapeAttr(name) +
+      '">+</button>' +
+      "</div>"
+    );
   }
 
   function flushAddFoodServingsFromInputs() {
@@ -26730,21 +26783,13 @@
           '" aria-label="Servings for ' +
           escapeAttr(name) +
           '">' +
-          '<button type="button" class="add-food-modal__servings-nudge" data-action="nudge-add-food-servings" data-food-name="' +
+          '<div class="add-food-modal__servings-steps" role="group" aria-label="Adjust servings for ' +
           escapeAttr(name) +
-          '" data-delta="0.5" aria-label="Add 0.5 servings to ' +
-          escapeAttr(name) +
-          '">+.5</button>' +
-          '<button type="button" class="add-food-modal__servings-nudge" data-action="nudge-add-food-servings" data-food-name="' +
-          escapeAttr(name) +
-          '" data-delta="0.33" aria-label="Add 0.33 servings to ' +
-          escapeAttr(name) +
-          '">+.33</button>' +
-          '<button type="button" class="add-food-modal__servings-nudge" data-action="nudge-add-food-servings" data-food-name="' +
-          escapeAttr(name) +
-          '" data-delta="0.25" aria-label="Add 0.25 servings to ' +
-          escapeAttr(name) +
-          '">+.25</button>' +
+          ' by 0.5, 0.33, or 0.25">' +
+          addFoodServingsStepHtml(name, 0.5, ".5") +
+          addFoodServingsStepHtml(name, 0.33, ".33") +
+          addFoodServingsStepHtml(name, 0.25, ".25") +
+          "</div>" +
           "</div></div></li>"
         );
       })
@@ -30170,7 +30215,7 @@
       var nudgeBtn = e.target.closest('[data-action="nudge-add-food-servings"]');
       if (nudgeBtn) {
         var delta = parseFloat(nudgeBtn.getAttribute("data-delta"));
-        if (isFinite(delta) && delta > 0) {
+        if (isFinite(delta) && delta !== 0) {
           nudgeAddFoodItemServings(
             nudgeBtn.getAttribute("data-food-name"),
             delta
@@ -30218,6 +30263,7 @@
       var n = parseFloat(input.value);
       if (isFinite(n) && n > 0) {
         item.servings = Math.round(n * 1000) / 1000;
+        syncAddFoodServingsStepButtons(item.name);
       }
     });
     addFoodSelectedEl.addEventListener("focusout", function (e) {
@@ -30228,6 +30274,7 @@
       if (!item) return;
       item.servings = clampAddFoodServings(parseFloat(input.value));
       input.value = String(item.servings);
+      syncAddFoodServingsStepButtons(name);
     });
     addFoodSelectedEl.addEventListener("keydown", function (e) {
       var input = e.target.closest(".add-food-modal__servings-input");
