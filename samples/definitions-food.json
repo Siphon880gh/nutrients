@@ -6397,7 +6397,7 @@
       "refinedCarbs": 38
     }
   },
-    {
+  {
     "name": "Starbucks Grande Iced Matcha Latte (16 fl oz)",
     "protein": 9,
     "carbs": 27,
@@ -6503,7 +6503,7 @@
       "netCarbs": 26
     }
   },
-    {
+  {
     "name": "Starbucks Venti Iced Matcha Latte (24 fl oz)",
     "protein": 11,
     "carbs": 34,
@@ -6609,7 +6609,7 @@
       "netCarbs": 33
     }
   },
-    {
+  {
     "name": "Starbucks Grande Iced Double Berry Matcha (16 fl oz)",
     "protein": 8,
     "carbs": 39,
@@ -6715,7 +6715,7 @@
       "netCarbs": 38
     }
   },
-    {
+  {
     "name": "Starbucks Venti Iced Double Berry Matcha (24 fl oz)",
     "protein": 12,
     "carbs": 53,
@@ -14232,6 +14232,29 @@
       "addedSugar": 0,
       "refinedCarbs": 14,
       "netCarbs": 14
+    }
+  },
+  {
+    "name": "Junk Food - Cracker Jack (1 Handful)",
+    "protein": 2,
+    "carbs": 23,
+    "fats": 2,
+    "micros": {
+      "fiber": 1,
+      "sodium": 70,
+      "potassium": 50,
+      "calcium": 20,
+      "iron": 0.4,
+      "vitaminD": 0,
+      "vitaminC": 0
+    },
+    "longevity": {
+      "saturatedFat": 0,
+      "transFat": 0,
+      "cholesterol": 0
+    },
+    "carbQuality": {
+      "addedSugar": 13
     }
   },
   {
