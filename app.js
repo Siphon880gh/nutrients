@@ -89,12 +89,16 @@
     "dashboard-macros-condensed-grid"
   );
   var weekSummaryEl = document.getElementById("week-summary");
+  var weekSummaryPanelEl = document.getElementById("week-summary-panel");
+  var weekSummaryPreviewEl = document.getElementById("week-summary-preview");
   var dashboardPrintBtn = document.getElementById("dashboard-print");
   var dashboardWeekToggleEl = document.getElementById("dashboard-week-toggle");
   var dashboardMacrosJumpEl = document.getElementById("dashboard-macros-jump");
   var dashboardFoodDefinitionsJumpEl = document.getElementById(
     "dashboard-food-definitions-jump"
   );
+  var foodDefinitionsPanelEl = document.getElementById("food-definitions-panel");
+  var foodDefinitionsCloseEl = document.getElementById("food-definitions-close");
   var dashboardFoodEntryJumpEl = document.getElementById(
     "dashboard-food-entry-jump"
   );
@@ -149,6 +153,7 @@
   var dashboardMicroViewDailyEl = document.getElementById("dashboard-micro-view-daily");
   var dashboardMicroDvToggleEl = document.getElementById("dashboard-micro-dv-toggle");
   var dashboardLongevityToggleEl = document.getElementById("dashboard-longevity-toggle");
+  var dashboardAnalysisToggleEl = document.getElementById("dashboard-analysis-toggle");
   var dashboardLongevityPanelEl = document.getElementById("dashboard-longevity-panel");
   var dashboardLongevityNavEl = document.getElementById("dashboard-longevity-nav");
   var dashboardLongevityNavPrevEl = document.getElementById("dashboard-longevity-nav-prev");
@@ -632,6 +637,7 @@
   var macroRankBodyEl = document.getElementById("macro-rank-body");
   var macroRankModalDoneBtn = document.getElementById("macro-rank-modal-done");
   var weekTotalOpen = false;
+  var foodDefinitionsOpen = false;
   var panelDisclaimerDismissed = false;
   var collapsedTipIds = Object.create(null);
   var DISMISSIBLE_TIP_SELECTOR =
@@ -10352,13 +10358,59 @@
       (tdeeHintModalEl && !tdeeHintModalEl.hidden) ||
       (macroSplitHintModalEl && !macroSplitHintModalEl.hidden) ||
       (keywordPositionModalEl && !keywordPositionModalEl.hidden) ||
+      foodDefinitionsOpen ||
+      microRequirementsOpen ||
+      longevityPanelOpen ||
       !!activeImportId ||
       !!activeMicroId ||
       !!activeLongevityId ||
       !!activeMicroDefKey ||
       !!activeLongevityDefKey;
     document.body.classList.toggle("modal-open", open);
+    syncAnalysisNavBtn();
   }
+
+  function syncAppSheetOffset() {
+    var nav = document.getElementById("app-nav");
+    var root = document.documentElement.style;
+    if (!nav || !(microRequirementsOpen || longevityPanelOpen)) {
+      root.removeProperty("--app-sheet-top");
+      root.removeProperty("--app-sheet-bottom");
+      return;
+    }
+    var rect = nav.getBoundingClientRect();
+    var navAtBottom = rect.top > window.innerHeight * 0.5;
+    if (navAtBottom) {
+      root.setProperty("--app-sheet-top", "0px");
+      root.setProperty(
+        "--app-sheet-bottom",
+        Math.max(0, Math.round(window.innerHeight - rect.top)) + "px"
+      );
+    } else {
+      root.setProperty(
+        "--app-sheet-top",
+        Math.max(0, Math.round(rect.bottom)) + "px"
+      );
+      root.setProperty("--app-sheet-bottom", "0px");
+    }
+  }
+
+  function resetAppSheetScroll(sheetEl) {
+    if (!sheetEl) return;
+    var body = sheetEl.querySelector(".app-sheet__body");
+    if (body) body.scrollTop = 0;
+  }
+
+  function syncExclusiveOverlayUi() {
+    document.body.classList.toggle(
+      "exclusive-overlay-open",
+      !!(foodDefinitionsOpen || microRequirementsOpen || longevityPanelOpen)
+    );
+    updateBodyModalOpen();
+    syncAppSheetOffset();
+  }
+
+  window.addEventListener("resize", syncAppSheetOffset);
 
   function showImportAllError(message) {
     if (!importAllErrorEl) return;
@@ -17404,6 +17456,18 @@
     openAnalysisModal(kind, dayId);
   }
 
+  function syncAnalysisNavBtn() {
+    if (!dashboardAnalysisToggleEl) return;
+    var analysisOpen =
+      (analysisPickerModalEl && !analysisPickerModalEl.hidden) ||
+      (longevityAnalysisModalEl && !longevityAnalysisModalEl.hidden);
+    dashboardAnalysisToggleEl.setAttribute(
+      "aria-expanded",
+      analysisOpen ? "true" : "false"
+    );
+    dashboardAnalysisToggleEl.classList.toggle("app-nav__btn--open", analysisOpen);
+  }
+
   function toggleAnalysisShortcut() {
     if (analysisPickerModalEl && !analysisPickerModalEl.hidden) {
       closeAnalysisPickerModal();
@@ -17428,7 +17492,17 @@
     return document.getElementById("longevity-section-" + sectionDefKey);
   }
 
+  function longevitySheetScrollEl() {
+    return dashboardLongevityPanelEl
+      ? dashboardLongevityPanelEl.querySelector(".app-sheet__body")
+      : null;
+  }
+
   function longevityNavScrollOffset() {
+    var sheetBody = longevitySheetScrollEl();
+    if (sheetBody && longevityPanelOpen) {
+      return sheetBody.getBoundingClientRect().top;
+    }
     if (!dashboardLongevityNavEl || dashboardLongevityNavEl.hidden) return 12;
     return dashboardLongevityNavEl.offsetHeight + 12;
   }
@@ -17580,18 +17654,31 @@
         ));
     if (!sectionEl) return;
     syncLongevityNavHeightVar();
-    var top =
-      sectionEl.getBoundingClientRect().top +
-      window.scrollY -
-      longevityNavScrollOffset();
     longevityNavSuppressSpy = true;
     if (typeof index === "number") {
       longevityNavActiveIndex = index;
       updateLongevityNavUi(index);
     }
+    var behavior = scrollBehavior || "smooth";
+    var sheetBody = longevitySheetScrollEl();
+    if (sheetBody) {
+      var sheetTop =
+        sectionEl.getBoundingClientRect().top -
+        sheetBody.getBoundingClientRect().top +
+        sheetBody.scrollTop;
+      sheetBody.scrollTo({
+        top: Math.max(0, sheetTop),
+        behavior: behavior,
+      });
+      return;
+    }
+    var top =
+      sectionEl.getBoundingClientRect().top +
+      window.scrollY -
+      longevityNavScrollOffset();
     window.scrollTo({
       top: Math.max(0, top),
-      behavior: scrollBehavior || "smooth",
+      behavior: behavior,
     });
   }
 
@@ -17754,6 +17841,12 @@
       handleLongevityNavFromUrl();
     });
     window.addEventListener("scroll", scheduleLongevityNavSync, { passive: true });
+    var sheetBody = longevitySheetScrollEl();
+    if (sheetBody) {
+      sheetBody.addEventListener("scroll", scheduleLongevityNavSync, {
+        passive: true,
+      });
+    }
     window.addEventListener("resize", function () {
       syncLongevityNavHeightVar();
       scheduleLongevityNavSync();
@@ -17818,8 +17911,11 @@
       dashboardLongevityPanelEl.hidden = !longevityPanelOpen;
     }
     if (longevityPanelOpen) {
+      setMicroRequirementsOpen(false);
+      setFoodDefinitionsOpen(false);
       renderLongevityPanel();
       initStickyFiltersCarousel();
+      resetAppSheetScroll(dashboardLongevityPanelEl);
     } else {
       hideIgnoredDaysPopoverFor(dashboardLongevityPanelEl);
       setLongevityNavExpanded(false);
@@ -17836,13 +17932,20 @@
         dismissLongevityAnalysisReturnWidget();
       }
     }
+    syncExclusiveOverlayUi();
   }
 
   function setWeekTotalOpen(open) {
     weekTotalOpen = !!open;
     if (dashboardWeekToggleEl) {
       dashboardWeekToggleEl.setAttribute("aria-expanded", weekTotalOpen ? "true" : "false");
-      dashboardWeekToggleEl.classList.toggle("app-nav__btn--open", weekTotalOpen);
+      dashboardWeekToggleEl.classList.toggle(
+        "week-summary__toggle--open",
+        weekTotalOpen
+      );
+    }
+    if (weekSummaryPanelEl) {
+      weekSummaryPanelEl.classList.toggle("week-summary--open", weekTotalOpen);
     }
     if (weekSummaryEl) {
       weekSummaryEl.hidden = !weekTotalOpen;
@@ -17852,6 +17955,28 @@
     } else {
       hideIgnoredDaysPopoverFor(weekSummaryEl);
     }
+  }
+
+  function setFoodDefinitionsOpen(open) {
+    foodDefinitionsOpen = !!open;
+    if (dashboardFoodDefinitionsJumpEl) {
+      dashboardFoodDefinitionsJumpEl.setAttribute(
+        "aria-expanded",
+        foodDefinitionsOpen ? "true" : "false"
+      );
+      dashboardFoodDefinitionsJumpEl.classList.toggle(
+        "app-nav__btn--open",
+        foodDefinitionsOpen
+      );
+    }
+    if (foodDefinitionsPanelEl) {
+      foodDefinitionsPanelEl.hidden = !foodDefinitionsOpen;
+    }
+    if (foodDefinitionsOpen) {
+      setMicroRequirementsOpen(false);
+      setLongevityPanelOpen(false);
+    }
+    syncExclusiveOverlayUi();
   }
 
   function setMicroRequirementsOpen(open) {
@@ -17864,9 +17989,12 @@
       dashboardMicroPanelEl.hidden = !microRequirementsOpen;
     }
     if (microRequirementsOpen) {
+      setLongevityPanelOpen(false);
+      setFoodDefinitionsOpen(false);
       maybeApplyMicroFirstOpenPreset();
       renderMicroRequirements();
       initStickyFiltersCarousel();
+      resetAppSheetScroll(dashboardMicroPanelEl);
     } else {
       hideIgnoredDaysPopoverFor(dashboardMicroPanelEl);
       setMicroConditionExpanded(false);
@@ -17883,6 +18011,7 @@
         dismissLongevityAnalysisReturnWidget();
       }
     }
+    syncExclusiveOverlayUi();
   }
 
   function normalizeDemographic(value) {
@@ -18480,21 +18609,23 @@
     if (budget == null) return "";
     var deltas = macroNeedDeltas(dayAvgTotals, budget, split);
     return (
-      '<div class="week-summary__macros-block">' +
-      '<div class="week-summary__macro-need">' +
-      '<span class="week-summary__macro-need-label">Need vs ' +
+      '<div class="week-summary__card">' +
+      '<span class="week-summary__label">Need vs ' +
       escapeHtml(split.label) +
-      " (day avg)</span>" +
+      "</span>" +
+      '<span class="week-summary__calories week-summary__macro-need">' +
       '<span class="week-summary__macro-need-vals">' +
       macroNeedValsHtml(deltas) +
       "</span>" +
-      " · target " +
+      "</span>" +
+      '<span class="week-summary__projection">target ' +
       split.proteinPct +
       "/" +
       split.carbsPct +
       "/" +
       split.fatsPct +
-      "</div></div>"
+      "</span>" +
+      "</div>"
     );
   }
 
@@ -20636,13 +20767,13 @@
       var periodDelta = week.totalCal - periodTdee;
       var dailyDelta = periodDelta / dayCount;
       var lbsPerWeek = (dailyDelta * DAYS.length) / 3500;
-      var statClass = "week-summary__stat week-summary__stat--balance";
+      var statClass = "week-summary__card";
       var label = "Maintenance";
       if (periodDelta < -25 * dayCount) {
-        statClass += " week-summary__stat--deficit";
+        statClass += " week-summary__card--deficit";
         label = "Deficit";
       } else if (periodDelta > 25 * dayCount) {
-        statClass += " week-summary__stat--surplus";
+        statClass += " week-summary__card--surplus";
         label = "Surplus";
       }
       var deltaPrefix = periodDelta >= 0 ? "+" : "";
@@ -20672,7 +20803,7 @@
       weekCalHtml = fmtNumGrouped(week.totalCal) + " cal";
       dayAvgCalHtml = fmtNumGrouped(dayAvgCal) + " cal";
       thirdStatHtml =
-        '<div class="week-summary__stat week-summary__stat--balance week-summary__stat--unset">' +
+        '<div class="week-summary__card">' +
         '<span class="week-summary__label">' +
         weekSummaryIconHtml("tdee") +
         "vs TDEE" +
@@ -20686,24 +20817,23 @@
     var macrosHtml = "";
     if (week.totalCal > 0 && macroPct.p != null) {
       macrosHtml =
-        '<div class="week-summary__macros-block">' +
-        '<div class="week-summary__macros">' +
-        '<span class="week-summary__macros-label">Macro split (week avg)</span><div style="margin-top:5px;"></div> ' +
-        "Protein " +
+        '<div class="week-summary__card">' +
+        '<span class="week-summary__label">Macro split</span>' +
+        '<span class="week-summary__calories">' +
+        "P " +
         Math.round(macroPct.p) +
-        "% · Carbs " +
+        "% · C " +
         Math.round(macroPct.c) +
-        "% · Fats " +
+        "% · F " +
         Math.round(macroPct.f) +
-        "%" +
-        "</div>" +
+        "%</span>" +
         weekSummaryMacroExplainLinkHtml() +
         "</div>";
     }
     var macroNeedHtml = weekSummaryMacroNeedHtml(week);
 
     var dayAvgLabel = partialWeek
-      ? "Day average (" + dayCount + " day" + (dayCount === 1 ? "" : "s") + ")"
+      ? "Day avg (" + dayCount + "d)"
       : "Day average";
     hideIgnoredDaysPopoverFor(weekSummaryEl);
     var ignoredBadgeHtml = ignoredWeekDayLabels().length
@@ -20711,8 +20841,8 @@
       : "";
 
     weekSummaryEl.innerHTML =
-      '<div class="week-summary__stats">' +
-      '<div class="week-summary__stat">' +
+      '<div class="week-summary__cards">' +
+      '<div class="week-summary__card">' +
       '<span class="week-summary__label">' +
       weekSummaryIconHtml("week") +
       "Week total" +
@@ -20722,7 +20852,7 @@
       weekCalHtml +
       "</span>" +
       "</div>" +
-      '<div class="week-summary__stat">' +
+      '<div class="week-summary__card">' +
       '<span class="week-summary__label">' +
       weekSummaryIconHtml("day") +
       dayAvgLabel +
@@ -20731,12 +20861,15 @@
       dayAvgCalHtml +
       "</span>" +
       "</div>" +
-      "</div>" +
-      '<div class="week-summary__detail">' +
       thirdStatHtml +
       macrosHtml +
       macroNeedHtml +
       "</div>";
+  }
+
+  function renderWeekSummaryPreview(week) {
+    if (!weekSummaryPreviewEl || !week) return;
+    weekSummaryPreviewEl.textContent = fmtNumGrouped(week.totalCal) + " cal";
   }
 
   function renderDashboard() {
@@ -20763,6 +20896,7 @@
     renderMacrosCondensed(dayTotals);
     syncDashboardDayFocusHighlight();
     scheduleMacrosCondensedVisibilitySync();
+    renderWeekSummaryPreview(week);
     if (weekTotalOpen) {
       renderWeekSummary(week);
     }
@@ -27333,9 +27467,7 @@
         nameInput.focus();
       }
     }
-    scrollDashboardJumpTarget(
-      document.getElementById("food-definitions-heading")
-    );
+    openFoodDefinitionsPanelAndScroll();
   }
 
   function maybeReturnToAddFoodAfterDefinitionSave() {
@@ -28089,9 +28221,21 @@
       closeAuthLoginModal();
       return;
     }
+    if (foodDefinitionsOpen) {
+      setFoodDefinitionsOpen(false);
+      return;
+    }
     if (longevityNavCanGoBack()) {
       e.preventDefault();
       history.back();
+      return;
+    }
+    if (microRequirementsOpen) {
+      setMicroRequirementsOpen(false);
+      return;
+    }
+    if (longevityPanelOpen) {
+      setLongevityPanelOpen(false);
       return;
     }
     if (activeImportId) {
@@ -28782,7 +28926,16 @@
       if (keywords.length > 0) {
         advanceStarterGuideAfterImport();
       } else {
-        showStarterGuideImportStepFallback();
+        setFoodDefinitionsOpen(true);
+        window.requestAnimationFrame(function () {
+          showStarterGuideStep(
+            "import",
+            "Start here — import our sample food definitions so the app knows each food\u2019s nutrition.",
+            importSampleFoodsTopBtn ||
+              importSampleFoodsBtn ||
+              dashboardFoodDefinitionsJumpEl
+          );
+        });
       }
     });
   }
@@ -28847,9 +29000,7 @@
       addFoodCreateReturn = { dayId: addFoodPendingDayId, name: "" };
       closeAddFoodModal();
       addKeyword();
-      scrollDashboardJumpTarget(
-        document.getElementById("food-definitions-heading")
-      );
+      openFoodDefinitionsPanelAndScroll();
     });
   }
 
@@ -29073,6 +29224,10 @@
     }
   }
 
+  function openFoodDefinitionsPanelAndScroll() {
+    setFoodDefinitionsOpen(true);
+  }
+
   var appNavModifiersHeld = false;
 
   function isAppNavShortcutBlockedTarget(el) {
@@ -29181,7 +29336,8 @@
     }
     if (e.key === "a" || e.key === "A") {
       e.preventDefault();
-      toggleAnalysisShortcut();
+      if (dashboardAnalysisToggleEl) dashboardAnalysisToggleEl.click();
+      else toggleAnalysisShortcut();
       return;
     }
     if (e.key === "v" || e.key === "V") {
@@ -29287,9 +29443,20 @@
 
   if (dashboardFoodDefinitionsJumpEl) {
     dashboardFoodDefinitionsJumpEl.addEventListener("click", function () {
-      scrollDashboardJumpTarget(
-        document.getElementById("food-definitions-heading")
-      );
+      setFoodDefinitionsOpen(!foodDefinitionsOpen);
+    });
+  }
+
+  if (foodDefinitionsCloseEl) {
+    foodDefinitionsCloseEl.addEventListener("click", function () {
+      setFoodDefinitionsOpen(false);
+    });
+  }
+  if (foodDefinitionsPanelEl) {
+    foodDefinitionsPanelEl.addEventListener("click", function (e) {
+      if (e.target.closest('[data-action="close-food-definitions-modal"]')) {
+        setFoodDefinitionsOpen(false);
+      }
     });
   }
 
@@ -29306,17 +29473,25 @@
 
   if (dashboardWeekToggleEl) {
     dashboardWeekToggleEl.addEventListener("click", function () {
-      openAndScrollPanel(weekTotalOpen, setWeekTotalOpen, weekSummaryEl);
+      var nextOpen = !weekTotalOpen;
+      setWeekTotalOpen(nextOpen);
+      if (nextOpen) {
+        window.requestAnimationFrame(function () {
+          scrollDashboardJumpTarget(dashboardGridEl);
+        });
+      }
+    });
+  }
+
+  if (dashboardAnalysisToggleEl) {
+    dashboardAnalysisToggleEl.addEventListener("click", function () {
+      toggleAnalysisShortcut();
     });
   }
 
   if (dashboardMicroToggleEl) {
     dashboardMicroToggleEl.addEventListener("click", function () {
-      openAndScrollPanel(
-        microRequirementsOpen,
-        setMicroRequirementsOpen,
-        dashboardMicroPanelEl
-      );
+      setMicroRequirementsOpen(!microRequirementsOpen);
     });
   }
 
@@ -29324,6 +29499,13 @@
   if (dashboardMicroCloseEl) {
     dashboardMicroCloseEl.addEventListener("click", function () {
       setMicroRequirementsOpen(false);
+    });
+  }
+  if (dashboardMicroPanelEl) {
+    dashboardMicroPanelEl.addEventListener("click", function (e) {
+      if (e.target.closest('[data-action="close-micro-sheet"]')) {
+        setMicroRequirementsOpen(false);
+      }
     });
   }
 
@@ -29628,11 +29810,7 @@
 
   if (dashboardLongevityToggleEl) {
     dashboardLongevityToggleEl.addEventListener("click", function () {
-      openAndScrollPanel(
-        longevityPanelOpen,
-        setLongevityPanelOpen,
-        dashboardLongevityPanelEl
-      );
+      setLongevityPanelOpen(!longevityPanelOpen);
     });
   }
 
@@ -29640,6 +29818,13 @@
   if (dashboardLongevityCloseEl) {
     dashboardLongevityCloseEl.addEventListener("click", function () {
       setLongevityPanelOpen(false);
+    });
+  }
+  if (dashboardLongevityPanelEl) {
+    dashboardLongevityPanelEl.addEventListener("click", function (e) {
+      if (e.target.closest('[data-action="close-longevity-sheet"]')) {
+        setLongevityPanelOpen(false);
+      }
     });
   }
 
@@ -31008,18 +31193,7 @@
 
   function showStarterGuideFoodsStep() {
     if (!starterGuideEligible || keywords.length === 0) return;
-    window.requestAnimationFrame(function () {
-      window.requestAnimationFrame(function () {
-        if (!starterGuideEligible || keywords.length === 0) return;
-        var firstRow =
-          keywordsListEl && keywordsListEl.querySelector(".keywords__row");
-        showStarterGuideStep(
-          "foods",
-          "Sample food definitions were loaded for you. This is the first one. You can still add your own food definitions.",
-          firstRow || document.querySelector(".keywords")
-        );
-      });
-    });
+    advanceStarterGuideAfterImport();
   }
 
   function showStarterGuideImportStepFallback() {
@@ -31027,11 +31201,10 @@
     window.requestAnimationFrame(function () {
       window.requestAnimationFrame(function () {
         if (keywords.length > 0 || !starterGuideEligible) return;
-        var section = document.querySelector(".keywords");
         showStarterGuideStep(
           "import",
           "Start here — import our sample food definitions so the app knows each food\u2019s nutrition.",
-          section
+          dashboardFoodDefinitionsJumpEl
         );
       });
     });
@@ -31045,14 +31218,14 @@
         if (keywords.length > 0) {
           if (!starterGuideFinished) {
             starterGuideEligible = true;
-            showStarterGuideFoodsStep();
+            advanceStarterGuideAfterImport();
           }
           return;
         }
         applySampleFoodItems(items);
         if (starterGuideFinished) return;
         starterGuideEligible = true;
-        showStarterGuideFoodsStep();
+        advanceStarterGuideAfterImport();
       })
       .catch(function () {
         if (starterGuideFinished) return;
@@ -31064,6 +31237,7 @@
   function advanceStarterGuideAfterImport() {
     if (!starterGuideEligible || keywords.length === 0) return;
 
+    setFoodDefinitionsOpen(false);
     var weekGrid = document.querySelector(".week__grid");
     showStarterGuideStep(
       "meals",

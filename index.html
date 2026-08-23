@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Nutrients — Week meals</title>
-  <link rel="stylesheet" href="styles.css?t=1787026300">
+  <link rel="stylesheet" href="styles.css?t=1787026502">
 </head>
 <body class="show-daily-intake-icons day-entry-guided">
   <svg class="app-icon-symbols" width="0" height="0" aria-hidden="true" focusable="false">
@@ -97,17 +97,6 @@
 
     <nav id="app-nav" class="app-nav" aria-label="App sections">
       <div class="app-nav__inner">
-        <button type="button" id="dashboard-food-sources-open" class="app-nav__btn" data-app-shortcut="S" aria-label="Food Sources" aria-keyshortcuts="S" aria-haspopup="dialog" aria-controls="food-sources-modal">
-          <span class="app-nav__label app-nav__label--full" aria-hidden="true">Food Sources</span>
-          <span class="app-nav__label app-nav__label--short" aria-hidden="true">Sources</span>
-          <span class="app-nav__shortcut" aria-hidden="true">S</span>
-        </button>
-        <button type="button" id="dashboard-food-definitions-jump" class="app-nav__btn" data-app-shortcut="D" aria-label="Food Definitions" aria-keyshortcuts="D">
-          <span class="app-nav__label app-nav__label--full" aria-hidden="true">Food Definitions</span>
-          <span class="app-nav__label app-nav__label--short" aria-hidden="true">Defs</span>
-          <span class="app-nav__shortcut" aria-hidden="true">D</span>
-        </button>
-        <span class="app-nav__divider" aria-hidden="true"></span>
         <button type="button" id="dashboard-food-entry-jump" class="app-nav__btn" data-app-shortcut="E" aria-label="Food Entry" aria-keyshortcuts="E">
           <span class="app-nav__label app-nav__label--full" aria-hidden="true">Food Entry</span>
           <span class="app-nav__label app-nav__label--short" aria-hidden="true">Entry</span>
@@ -117,21 +106,32 @@
           <span class="app-nav__label" aria-hidden="true">Macros</span>
           <span class="app-nav__shortcut" aria-hidden="true">M</span>
         </button>
-        <button type="button" id="dashboard-week-toggle" class="app-nav__btn" data-app-shortcut="W" aria-label="Week total" aria-expanded="false" aria-controls="week-summary" aria-keyshortcuts="W">
-          <span class="app-nav__label app-nav__label--full" aria-hidden="true">Week total</span>
-          <span class="app-nav__label app-nav__label--short" aria-hidden="true">Week</span>
-          <span class="app-nav__shortcut" aria-hidden="true">W</span>
-        </button>
         <span class="app-nav__divider" aria-hidden="true"></span>
-        <button type="button" id="dashboard-micro-toggle" class="app-nav__btn" data-app-shortcut="R" aria-label="Micro requirements" aria-expanded="false" aria-controls="dashboard-micro-panel" aria-keyshortcuts="R">
+        <button type="button" id="dashboard-micro-toggle" class="app-nav__btn" data-app-shortcut="R" aria-label="Micro requirements" aria-expanded="false" aria-haspopup="dialog" aria-controls="dashboard-micro-panel" aria-keyshortcuts="R">
           <span class="app-nav__label app-nav__label--full" aria-hidden="true">Micro requirements</span>
           <span class="app-nav__label app-nav__label--short" aria-hidden="true">Micros</span>
           <span class="app-nav__shortcut" aria-hidden="true">R</span>
         </button>
-        <button type="button" id="dashboard-longevity-toggle" class="app-nav__btn" data-app-shortcut="L" aria-label="Longevity and wellness" aria-expanded="false" aria-controls="dashboard-longevity-panel" aria-keyshortcuts="L">
+        <button type="button" id="dashboard-longevity-toggle" class="app-nav__btn" data-app-shortcut="L" aria-label="Longevity and wellness" aria-expanded="false" aria-haspopup="dialog" aria-controls="dashboard-longevity-panel" aria-keyshortcuts="L">
           <span class="app-nav__label app-nav__label--full" aria-hidden="true">Longevity and wellness</span>
           <span class="app-nav__label app-nav__label--short" aria-hidden="true">Longevity</span>
           <span class="app-nav__shortcut" aria-hidden="true">L</span>
+        </button>
+        <button type="button" id="dashboard-analysis-toggle" class="app-nav__btn" data-app-shortcut="A" aria-label="Run Analysis" aria-expanded="false" aria-haspopup="dialog" aria-controls="analysis-picker-modal" aria-keyshortcuts="A">
+          <span class="app-nav__label app-nav__label--full" aria-hidden="true">Run Analysis</span>
+          <span class="app-nav__label app-nav__label--short" aria-hidden="true">Analysis</span>
+          <span class="app-nav__shortcut" aria-hidden="true">A</span>
+        </button>
+        <span class="app-nav__divider" aria-hidden="true"></span>
+        <button type="button" id="dashboard-food-sources-open" class="app-nav__btn" data-app-shortcut="S" aria-label="Food Sources" aria-keyshortcuts="S" aria-haspopup="dialog" aria-controls="food-sources-modal">
+          <span class="app-nav__label app-nav__label--full" aria-hidden="true">Food Sources</span>
+          <span class="app-nav__label app-nav__label--short" aria-hidden="true">Sources</span>
+          <span class="app-nav__shortcut" aria-hidden="true">S</span>
+        </button>
+        <button type="button" id="dashboard-food-definitions-jump" class="app-nav__btn" data-app-shortcut="D" aria-label="Food Definitions" aria-expanded="false" aria-haspopup="dialog" aria-controls="food-definitions-panel" aria-keyshortcuts="D">
+          <span class="app-nav__label app-nav__label--full" aria-hidden="true">Food Definitions</span>
+          <span class="app-nav__label app-nav__label--short" aria-hidden="true">Defs</span>
+          <span class="app-nav__shortcut" aria-hidden="true">D</span>
         </button>
       </div>
     </nav>
@@ -150,7 +150,15 @@
         <button type="button" class="dashboard__days-carousel-adj" data-dashboard-carousel="next" aria-label="Next day">›</button>
       </div>
       <div id="dashboard-grid" class="dashboard__grid"></div>
-      <div id="week-summary" class="week-summary" hidden aria-label="Week summary"></div>
+      <div id="week-summary-panel" class="week-summary">
+        <button type="button" id="dashboard-week-toggle" class="week-summary__toggle" data-app-shortcut="W" aria-expanded="false" aria-controls="week-summary" aria-keyshortcuts="W">
+          <span class="week-summary__toggle-label">Week total</span>
+          <span id="week-summary-preview" class="week-summary__toggle-preview"></span>
+          <span class="week-summary__toggle-chevron" aria-hidden="true"></span>
+          <span class="app-nav__shortcut" aria-hidden="true">W</span>
+        </button>
+        <div id="week-summary" class="week-summary__body" hidden aria-label="Week summary"></div>
+      </div>
 
       <div id="dashboard-macros-condensed" class="dashboard__macros-condensed" hidden aria-label="Condensed macros">
         <div class="dashboard__macros-condensed-head">
@@ -450,10 +458,12 @@
         </div>
       </div>
 
-      <div id="dashboard-micro-panel" class="dashboard__micro-panel" hidden>
+      <div id="dashboard-micro-panel" class="app-sheet" hidden>
+        <div class="app-sheet__backdrop" data-action="close-micro-sheet"></div>
+        <div class="app-sheet__panel dashboard__micro-panel" role="dialog" aria-modal="true" aria-labelledby="dashboard-micro-sheet-title">
         <nav id="dashboard-micro-sticky" class="dashboard__micro-sticky" aria-label="Micro requirements">
           <div class="dashboard__micro-sticky-top">
-            <h3 class="dashboard__micro-sticky-title">Micro Requirements</h3>
+            <h3 id="dashboard-micro-sheet-title" class="dashboard__micro-sticky-title">Micro Requirements</h3>
             <button type="button" id="dashboard-micro-ignored-badge" class="dashboard__ignored-days-badge" data-action="toggle-ignored-days-popover" hidden aria-expanded="false" aria-controls="ignored-days-popover">Ignored days</button>
           </div>
           <div class="dashboard__micro-intro-actions">
@@ -673,6 +683,7 @@
           </div>
           <button type="button" id="dashboard-micro-close" class="dashboard__panel-close" aria-label="Close micro requirements">×</button>
         </nav>
+        <div class="app-sheet__body">
         <div class="dashboard__micro-intro">
           <div class="dashboard__micro-hint-block">
             <p id="dashboard-micro-hint" class="dashboard__micro-hint"><span id="dashboard-micro-hint-text">Average daily intake vs your demographic daily values (Mon–Sun). On the current week, averages use Mon through today.</span></p>
@@ -746,6 +757,8 @@
             <span class="app-nav__shortcut" aria-hidden="true">+</span>
           </button>
         </div>
+        </div>
+        </div>
       </div>
       <div id="micro-daily-intake-popover" class="dashboard__micro-daily-intake-popover" role="tooltip" hidden>
         <p class="dashboard__micro-daily-intake-popover-text">This requires daily intake because storage is poor. You cannot simply average it over a week.</p>
@@ -768,10 +781,12 @@
         <p class="settings-modal__max-hr-popover-copy"><strong>More accurately:</strong> Tanaka formula — max HR ≈ 208 − (0.7 × age). Better still: the highest heart rate you reach in a hard all-out effort with a chest-strap monitor, or a graded exercise test.</p>
         <p class="settings-modal__max-hr-popover-copy">Zone 2 is then about 60–70% of that max. A practical check: conversational pace — you can speak in full sentences but not sing.</p>
       </div>
-      <div id="dashboard-longevity-panel" class="dashboard__longevity-panel" hidden>
+      <div id="dashboard-longevity-panel" class="app-sheet" hidden>
+        <div class="app-sheet__backdrop" data-action="close-longevity-sheet"></div>
+        <div class="app-sheet__panel dashboard__longevity-panel" role="dialog" aria-modal="true" aria-labelledby="dashboard-longevity-sheet-title">
         <nav id="dashboard-longevity-nav" class="dashboard__longevity-nav" hidden aria-label="Longevity topics">
           <div class="dashboard__longevity-nav-top">
-            <h3 class="dashboard__longevity-nav-title">Longevity</h3>
+            <h3 id="dashboard-longevity-sheet-title" class="dashboard__longevity-nav-title">Longevity</h3>
             <button type="button" id="dashboard-longevity-ignored-badge" class="dashboard__ignored-days-badge" data-action="toggle-ignored-days-popover" hidden aria-expanded="false" aria-controls="ignored-days-popover">Ignored days</button>
           </div>
           <div class="dashboard__sticky-options">
@@ -865,6 +880,7 @@
             <ul id="dashboard-longevity-nav-all-list" class="dashboard__longevity-nav-all-list" hidden></ul>
           </div>
         </nav>
+        <div class="app-sheet__body">
         <p class="dashboard__longevity-hint">Weekly average per day (Mon–Sun; current week uses Mon–today). Micronutrients repeat from your micro entries so you can reason in one place. Green bars = good for “aim” nutrients; red bars on limit nutrients mean you are high. Click <em>explain</em> on a heading or nutrient for detail.</p>
         <div class="dashboard__longevity-analysis-actions">
           <button type="button" id="dashboard-longevity-analysis" class="dashboard__analysis-btn dashboard__longevity-analysis-btn" data-app-shortcut="A" aria-keyshortcuts="A" aria-haspopup="dialog" aria-controls="longevity-analysis-modal">Run Analysis<span class="app-nav__shortcut" aria-hidden="true">A</span></button>
@@ -891,13 +907,19 @@
           </p>
         </aside>
         <div id="dashboard-longevity-content"></div>
+        </div>
+        </div>
       </div>
     </section>
 
-    <section class="keywords" aria-labelledby="food-definitions-heading">
+    <div id="food-definitions-panel" class="modal" hidden>
+      <div class="modal__backdrop" data-action="close-food-definitions-modal"></div>
+      <div class="modal__panel modal__panel--wide keywords-modal__panel" role="dialog" aria-modal="true" aria-labelledby="food-definitions-heading">
+      <section class="keywords keywords--modal">
       <form id="keywords-form">
         <div class="keywords__header">
         <h2 id="food-definitions-heading" class="keywords__title">Food definitions</h2>
+        <button type="button" id="food-definitions-close" class="dashboard__panel-close" aria-label="Close food definitions">×</button>
         </div>
       </form>
 
@@ -1051,7 +1073,9 @@
           </div>
         </div>
       </div>
-    </section>
+      </section>
+      </div>
+    </div>
 
   </main>
 
@@ -2799,6 +2823,6 @@
   <script src="demographic-dv.js?t=1786025201"></script>
   <script src="longevity-dv.js?t=1784087915"></script>
   <script src="persist.js?t=1786431230"></script>
-  <script src="app.js?t=1787026300"></script>
+  <script src="app.js?t=1787026603"></script>
 </body>
 </html>

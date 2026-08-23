@@ -1148,7 +1148,9 @@ body.app-nav-shortcuts-visible [data-app-shortcut] > .app-nav__shortcut {
 #dashboard-grid,
 #food-entry,
 #food-definitions-heading,
+#food-definitions-panel,
 #week-summary,
+#week-summary-panel,
 #dashboard-macros-condensed,
 #dashboard-micro-panel,
 #dashboard-longevity-panel {
@@ -1285,11 +1287,71 @@ body.app-nav-shortcuts-visible [data-app-shortcut] > .app-nav__shortcut {
   margin-left: 0.1em;
 }
 
+.app-sheet {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+}
+
+.app-sheet[hidden] {
+  display: none;
+}
+
+.app-sheet__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(20, 24, 28, 0.35);
+}
+
+.app-sheet__panel {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: var(--app-sheet-top, 3.75rem);
+  bottom: var(--app-sheet-bottom, 0px);
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: #fff;
+  border-radius: 0;
+  box-shadow: 0 -8px 28px rgba(0, 0, 0, 0.14);
+  animation: app-sheet-in 0.22s ease;
+}
+
+.app-sheet__body {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+  padding: 0.75rem 0.85rem 1.25rem;
+}
+
+.app-sheet__panel.dashboard__micro-panel,
+.app-sheet__panel.dashboard__longevity-panel {
+  padding: 0;
+}
+
+@keyframes app-sheet-in {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+body.exclusive-overlay-open .app-nav {
+  z-index: 105;
+  background: #f4f4f2;
+  backdrop-filter: none;
+}
+
 .dashboard__micro-panel {
-  margin-top: 0.6rem;
+  margin: 0;
   padding: 0.75rem 0.85rem;
-  border: 1px solid #c8c8c4;
-  border-radius: 6px;
+  border: none;
+  border-radius: 12px 12px 0 0;
   background: #fff;
 }
 
@@ -2435,6 +2497,18 @@ body.highlight-daily-intake-icons .dashboard__micro-daily-intake-btn[aria-expand
 
 .dashboard__micro-daily-intake-popover-text {
   margin: 0;
+}
+
+.app-sheet .dashboard__micro-sticky,
+.app-sheet .dashboard__longevity-nav {
+  position: relative;
+  top: auto;
+  flex: 0 0 auto;
+  z-index: 2;
+  margin: 0;
+  border-radius: 0;
+  background: #f6f6f3;
+  backdrop-filter: none;
 }
 
 .dashboard__micro-sticky {
@@ -4632,10 +4706,10 @@ button.dashboard__micro-day-name:focus-visible {
 }
 
 .dashboard__longevity-panel {
-  margin-top: 0.6rem;
+  margin: 0;
   padding: 0.75rem 0.85rem;
-  border: 1px solid #c8c8c4;
-  border-radius: 6px;
+  border: none;
+  border-radius: 12px 12px 0 0;
   background: #fff;
 }
 
@@ -5902,6 +5976,10 @@ button.dashboard__micro-day-name:focus-visible {
   scroll-margin-top: calc(var(--longevity-nav-height, 5.5rem) + 0.65rem);
 }
 
+.app-sheet .dashboard__longevity-section {
+  scroll-margin-top: 0.65rem;
+}
+
 .dashboard__longevity-section:last-child {
   margin-bottom: 0;
 }
@@ -6540,85 +6618,102 @@ button.dashboard__longevity-name:focus-visible {
 
 .dashboard__grid {
   display: grid;
-  grid-template-columns: repeat(7, minmax(0, 1fr));
+  /* Full labels + values like "Protein 118.3g · 473.2 cal" need ~17.5rem.
+     auto-fit wraps before 7 equal columns clip (week max-width is 1480px). */
+  grid-template-columns: repeat(auto-fit, minmax(17.5rem, 1fr));
   gap: 0.6rem;
 }
 
-.week-summary[hidden] {
-  display: none;
+.week-summary {
+  margin-top: 0.45rem;
 }
 
-.week-summary:not([hidden]) {
-  margin-top: 0.6rem;
-  padding: 0.85rem;
+.week-summary__toggle {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  min-height: 2.4rem;
+  padding: 0.35rem 0.65rem;
   border: 1px solid #9eb4cc;
   border-radius: 6px;
   background: #e8eef4;
-  display: flex;
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #2a4a6e;
+  cursor: pointer;
+  text-align: left;
+}
+
+.week-summary__toggle:hover,
+.week-summary__toggle:focus-visible {
+  background: #dde6f0;
+}
+
+.week-summary__toggle:focus-visible {
+  outline: 2px solid #3d6b9e;
+  outline-offset: 1px;
+}
+
+.week-summary__toggle-label {
+  letter-spacing: 0.03em;
+}
+
+.week-summary__toggle-preview {
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: #1a1a1a;
+  font-size: 0.9rem;
+}
+
+.week-summary__toggle-chevron {
+  margin-left: auto;
+  display: inline-flex;
   align-items: center;
-  justify-content: center;
-  flex-wrap: wrap;
 }
 
-.week-summary__stats {
+.week-summary__toggle-chevron::before {
+  content: "▸";
+  font-size: 0.75rem;
+  color: #5c5c5c;
+  transition: transform 0.15s ease;
+}
+
+.week-summary--open .week-summary__toggle-chevron::before {
+  transform: rotate(90deg);
+}
+
+.week-summary__body[hidden] {
+  display: none;
+}
+
+.week-summary__cards {
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
-  gap: 1rem 2.5rem;
-  width: 100%;
+  gap: 0.4rem;
+  margin-top: 0.4rem;
 }
 
-.week-summary__stat--balance {
-  margin-top: 0;
-  padding-top: 0;
-}
-
-.week-summary__detail {
-  width: 100%;
-  margin-top: 0.75rem;
-  padding: 0.9rem 1.1rem;
+.week-summary__card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.12rem;
+  flex: 1 1 8.5rem;
+  min-width: 8rem;
+  padding: 0.4rem 0.55rem;
   border: 1px solid #c5d3e0;
   border-radius: 6px;
-  background: rgba(255, 255, 255, 0.42);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.85rem;
-}
-
-.week-summary__stat {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  gap: 0.25rem;
-  min-width: 7rem;
-}
-
-.week-summary__stats .week-summary__stat {
-  gap: 0.3rem;
-  min-width: 8rem;
-}
-
-.week-summary__stats .week-summary__label {
-  font-size: 0.85rem;
-}
-
-.week-summary__stats .week-summary__icon {
-  width: 16px;
-  height: 16px;
-}
-
-.week-summary__stats .week-summary__calories {
-  font-size: 1.35rem;
+  background: #fff;
 }
 
 .week-summary__label {
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
-  font-size: 0.75rem;
+  font-size: 0.68rem;
   font-weight: 700;
   letter-spacing: 0.05em;
   text-transform: uppercase;
@@ -6628,14 +6723,17 @@ button.dashboard__longevity-name:focus-visible {
 .week-summary__icon {
   display: block;
   flex-shrink: 0;
+  width: 12px;
+  height: 12px;
   fill: currentColor;
 }
 
 .week-summary__calories {
-  font-size: 1.15rem;
+  font-size: 0.98rem;
   font-weight: 600;
   font-variant-numeric: tabular-nums;
   color: #1a1a1a;
+  line-height: 1.25;
 }
 
 .week-summary__tdee-denom {
@@ -6645,60 +6743,32 @@ button.dashboard__longevity-name:focus-visible {
 }
 
 .week-summary__calories--muted {
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   font-weight: 500;
   color: #5c5c5c;
 }
 
 .week-summary__projection {
-  font-size: 0.8rem;
+  font-size: 0.72rem;
   font-weight: 500;
   color: #5c5c5c;
   font-variant-numeric: tabular-nums;
 }
 
-.week-summary__stat--deficit .week-summary__calories {
+.week-summary__card--deficit .week-summary__calories,
+.week-summary__card--deficit .week-summary__projection {
   color: #1f6b45;
 }
 
-.week-summary__stat--surplus .week-summary__calories {
-  color: #9a4a12;
-}
-
-.week-summary__stat--deficit .week-summary__projection {
-  color: #1f6b45;
-}
-
-.week-summary__stat--surplus .week-summary__projection {
+.week-summary__card--surplus .week-summary__calories,
+.week-summary__card--surplus .week-summary__projection {
   color: #9a4a12;
 }
 
 .week-summary__explain-link {
-  margin-top: 0.1rem;
+  margin-top: 0.05rem;
   letter-spacing: normal;
   text-transform: lowercase;
-}
-
-.week-summary__macros {
-  width: 100%;
-  text-align: center;
-  font-size: 0.82rem;
-  color: #444;
-}
-
-.week-summary__macros-block {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.2rem;
-  padding-top: 0.75rem;
-  border-top: 1px solid #d4deea;
-}
-
-.week-summary__detail > .week-summary__macros-block:first-child {
-  padding-top: 0;
-  border-top: 0;
 }
 
 .week-summary__macros-label {
@@ -6707,22 +6777,9 @@ button.dashboard__longevity-name:focus-visible {
 }
 
 .week-summary__macro-need {
-  width: 100%;
-  text-align: center;
-  font-size: 0.82rem;
+  font-size: 0.8rem;
   color: #444;
-  line-height: 1.4;
-}
-
-.week-summary__macro-need-label {
-  display: block;
-  font-weight: 700;
-  color: #2a4a6e;
-  margin-bottom: 0.15rem;
-}
-
-.week-summary__detail .week-summary__explain-link {
-  margin-top: 0;
+  line-height: 1.35;
 }
 
 .dashboard__card-head {
@@ -6928,6 +6985,8 @@ button.dashboard__longevity-name:focus-visible {
 }
 
 .dashboard__card {
+  min-width: 0;
+  overflow: visible;
   padding: 0.55rem 0.6rem;
   border: 1px solid #c8c8c4;
   border-radius: 6px;
@@ -7082,6 +7141,7 @@ button.dashboard__longevity-name:focus-visible {
   justify-content: space-between;
   gap: 0.35rem;
   margin-bottom: 0.15rem;
+  min-width: 0;
 }
 
 .dashboard__row--total {
@@ -7095,10 +7155,13 @@ button.dashboard__longevity-name:focus-visible {
   display: flex;
   flex-direction: column;
   min-width: 0;
+  container-type: inline-size;
+  container-name: dash-day;
 }
 
 .dashboard__macro-need {
   margin-top: 0.35rem;
+  min-width: 0;
   padding: 0.35rem 0.5rem 0.4rem;
   border: 1px solid #c8c8c4;
   border-radius: 6px;
@@ -7249,6 +7312,7 @@ button.dashboard__longevity-name:focus-visible {
 }
 
 .dashboard__macro {
+  flex-shrink: 0;
   color: #5c5c5c;
 }
 
@@ -7261,19 +7325,32 @@ button.dashboard__longevity-name:focus-visible {
 }
 
 .dashboard__val {
+  min-width: 0;
   text-align: right;
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
 }
 
-/* Abbreviate only on tight mid widths; wide screens keep full labels */
-@media (max-width: 720px) and (min-width: 521px) {
+/* Card-width breakpoints: abbreviate, then wrap, when a column is still tight */
+@container dash-day (max-width: 12.75rem) {
   .dashboard__macro-long {
     display: none;
   }
 
   .dashboard__macro-short {
     display: inline;
+  }
+
+  .dashboard__macro-need {
+    padding-left: 0.35rem;
+    padding-right: 0.35rem;
+  }
+}
+
+@container dash-day (max-width: 11.25rem) {
+  .dashboard__val,
+  .dashboard__macro-need-amt {
+    white-space: normal;
   }
 }
 
@@ -9367,6 +9444,26 @@ body.day-word-wrap-off .day__input {
   margin-top: 1.5rem;
 }
 
+.keywords[hidden] {
+  display: none;
+}
+
+.keywords--modal {
+  margin: 0;
+  min-height: 0;
+  overflow: auto;
+  padding: 0.75rem 1rem 1rem;
+}
+
+.modal__panel.keywords-modal__panel {
+  max-width: min(72rem, 96vw);
+  max-height: min(90vh, 56rem);
+}
+
+.keywords-modal__panel .keywords__header {
+  margin-bottom: 0.55rem;
+}
+
 .demographic {
   margin-top: 1rem;
 }
@@ -10034,6 +10131,10 @@ body.day-word-wrap-off .day__input {
 }
 
 .keywords__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
   margin-bottom: 0.35rem;
 }
 
@@ -12440,6 +12541,12 @@ button.longevity-form__label-link:focus-visible {
   }
 }
 
+@media (max-width: 1400px) {
+  .dashboard__grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
 @media (max-width: 1100px) {
   .dashboard__grid,
   .dashboard__micro-daily-grid,
@@ -12804,6 +12911,17 @@ button.longevity-form__label-link:focus-visible {
     max-width: min(12rem, 46vw);
   }
 
+  .app-sheet__panel {
+    top: var(--app-sheet-top, 0px);
+    bottom: var(--app-sheet-bottom, calc(3.15rem + env(safe-area-inset-bottom, 0px)));
+    height: auto;
+    border-radius: 12px 12px 0 0;
+  }
+
+  body.exclusive-overlay-open .app-nav {
+    background: #fff;
+  }
+
   .app-nav {
     position: fixed;
     top: auto;
@@ -12865,6 +12983,8 @@ button.longevity-form__label-link:focus-visible {
   #dashboard-grid,
   #food-entry,
   #week-summary,
+  #week-summary-panel,
+  #food-definitions-panel,
   #dashboard-macros-condensed,
   #dashboard-micro-panel,
   #dashboard-longevity-panel {
@@ -12885,6 +13005,7 @@ button.longevity-form__label-link:focus-visible {
     padding: 0;
   }
 
+  .app-sheet__backdrop,
   .app-nav,
   .dashboard__print,
   .dashboard__days-carousel-nav,
