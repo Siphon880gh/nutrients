@@ -4111,6 +4111,16 @@ body.highlight-adverse-effects .dashboard__micro-acute-btn--adverse .dashboard__
   background: #f6f6f3;
 }
 
+.food-sources-modal__row[data-food-sources-def] {
+  cursor: pointer;
+}
+
+.food-sources-modal__row[data-food-sources-def]:hover .food-sources-modal__info-btn,
+.food-sources-modal__row[data-food-sources-def]:focus-within .food-sources-modal__info-btn {
+  color: #7a7a74;
+  background: #f2f2ef;
+}
+
 .food-sources-modal__empty,
 .food-sources-modal__count {
   margin: 0.75rem 0 0;

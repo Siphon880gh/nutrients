@@ -7736,10 +7736,15 @@
       foodSourcesSortHeaderHtml(activeFoodSourcesSort) +
       "<tbody>";
     rows.forEach(function (row) {
+      var hasDef = foodSourcesNutrientHasDef(row.nutrientKey);
       html +=
         '<tr class="food-sources-modal__row' +
         (row.matched ? "" : " food-sources-modal__row--unmatched") +
-        '">' +
+        '"' +
+        (hasDef
+          ? ' data-food-sources-def="' + escapeAttr(row.nutrientKey) + '"'
+          : "") +
+        ">" +
         '<td class="food-sources-modal__food">' +
         escapeHtml(row.food) +
         "</td>" +
