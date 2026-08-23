@@ -123,7 +123,7 @@ Pen + notes markup is **static** in `index.html`; only labels and popover **cont
 
 ## Dashboard, micro & longevity panels
 
-**`.dashboard__grid`** — `.dashboard__card` columns with rows for P/C/F g·cal (or **%** when toggled) and total cal; each card head has `.dashboard__card-toggle` (`data-action="toggle-dashboard-macro-view"`); today’s card gets `.dashboard__card--today`. Default `auto-fit` + `minmax(17.5rem, 1fr)` so a card wide enough for full macro text wraps instead of clipping; viewport steps at 1400/1100 (4 cols), 900 (3), 520 (carousel). `@container dash-day` abbreviates P/C/F then wraps values when a column is still tight.
+**`.dashboard__grid`** — seven equal `.dashboard__card` columns with rows for P/C/F g·cal (or **%** when toggled) and total cal; each card head has `.dashboard__card-toggle` (`data-action="toggle-dashboard-macro-view"`); today’s card gets `.dashboard__card--today`. Viewport steps at 1100 (4 cols), 900 (3), 520 (carousel). `@container dash-day` abbreviates to P/C/F (and wraps values if tighter) so 7-col cards do not clip `g · cal`.
 
 **`.dashboard__header-row`** — `Dashboard` title + `Print` (`#dashboard-print`) on one line.
 
@@ -154,7 +154,7 @@ Pen + notes markup is **static** in `index.html`; only labels and popover **cont
 - Intro / disclaimer / processed-food note (Yuka / Bobby links) live in content area as applicable.
 - `#dashboard-longevity-content` — grouped sections with % DV **Level** bars inside `.dashboard__longevity-bar-wrap` (fill + optional `.dashboard__longevity-bar-notch` at 100%). Notable section keys: `sectionUpperGiMotility`, `sectionThyroid`, `sectionLiver`, `sectionKidney`, `sectionGrayHair`, `sectionAches` (includes omega-6:3 row), `sectionBrainLongevity` (brain + astrocytes), `sectionVascularBloodPressure` (FDA/WHO/AHA sodium limit rows), visceral fat, fats & cholesterol, TMAO, etc. Headings carry `data-longevity-def` / `data-micro-def`; rows may include sources / daily-intake / acute icons.
 
-**Responsive / print** (lower `styles.css`): dashboard/table column counts shrink at breakpoints (dashboard macros also wrap via `auto-fit` / 1400px so 7 tight columns cannot clip `g · cal` text). At `max-width: 520px`, the Mon–Sun **day editors** use a horizontal scroll-snap carousel (not a stacked single-column grid) — see **Mobile days carousel** above. Day editors keep `resize: vertical` unless print/print-preview (`resize: none`). Icon buttons, week nav, Favorite week, Favorites sidebar, unmatched UI, and day Copy/Favorite/Clear are hidden in print / print-preview.
+**Responsive / print** (lower `styles.css`): dashboard/table column counts shrink at breakpoints. Seven dashboard columns stay on one row above 1100px; card-width `@container` rules keep macro text from clipping. At `max-width: 520px`, the Mon–Sun **day editors** use a horizontal scroll-snap carousel (not a stacked single-column grid) — see **Mobile days carousel** above. Day editors keep `resize: vertical` unless print/print-preview (`resize: none`). Icon buttons, week nav, Favorite week, Favorites sidebar, unmatched UI, and day Copy/Favorite/Clear are hidden in print / print-preview.
 
 **Horizontal pill/tab carousels** (nowrap + `overflow-x: auto`, scrollbar hidden): `#app-nav .app-nav__inner` (bottom tabs at `max-width: 720px`; never wraps Longevity onto a second row), `.dashboard__sticky-options-disclosures` (Highlight / Poor storage / One-day excess).
 

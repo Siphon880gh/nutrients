@@ -1299,7 +1299,10 @@ body.app-nav-shortcuts-visible [data-app-shortcut] > .app-nav__shortcut {
 
 .app-sheet__backdrop {
   position: absolute;
-  inset: 0;
+  top: var(--app-sheet-top, 3.75rem);
+  right: 0;
+  bottom: var(--app-sheet-bottom, 0px);
+  left: 0;
   background: rgba(20, 24, 28, 0.35);
 }
 
@@ -1345,6 +1348,18 @@ body.exclusive-overlay-open .app-nav {
   z-index: 105;
   background: #f4f4f2;
   backdrop-filter: none;
+}
+
+body.app-sheet-open::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--app-sheet-top, 3.75rem);
+  background: #f4f4f2;
+  z-index: 71;
+  pointer-events: none;
 }
 
 .dashboard__micro-panel {
@@ -6628,9 +6643,7 @@ button.dashboard__longevity-name:focus-visible {
 
 .dashboard__grid {
   display: grid;
-  /* Full labels + values like "Protein 118.3g · 473.2 cal" need ~17.5rem.
-     auto-fit wraps before 7 equal columns clip (week max-width is 1480px). */
-  grid-template-columns: repeat(auto-fit, minmax(17.5rem, 1fr));
+  grid-template-columns: repeat(7, minmax(0, 1fr));
   gap: 0.6rem;
 }
 
@@ -7341,14 +7354,19 @@ button.dashboard__longevity-name:focus-visible {
   white-space: nowrap;
 }
 
-/* Card-width breakpoints: abbreviate, then wrap, when a column is still tight */
-@container dash-day (max-width: 12.75rem) {
+/* 7 equal columns are ~11–12.5rem at the 1480px page cap — shorten labels there */
+@container dash-day (max-width: 13.5rem) {
   .dashboard__macro-long {
     display: none;
   }
 
   .dashboard__macro-short {
     display: inline;
+  }
+
+  .dashboard__card {
+    padding-left: 0.45rem;
+    padding-right: 0.45rem;
   }
 
   .dashboard__macro-need {
@@ -12548,12 +12566,6 @@ button.longevity-form__label-link:focus-visible {
 
   .dashboard__longevity-nav .dashboard__nutrient-filter-chips {
     justify-content: flex-start;
-  }
-}
-
-@media (max-width: 1400px) {
-  .dashboard__grid {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 }
 

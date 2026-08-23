@@ -10411,6 +10411,10 @@
       "exclusive-overlay-open",
       !!(foodDefinitionsOpen || microRequirementsOpen || longevityPanelOpen)
     );
+    document.body.classList.toggle(
+      "app-sheet-open",
+      !!(microRequirementsOpen || longevityPanelOpen)
+    );
     updateBodyModalOpen();
     syncAppSheetOffset();
   }
