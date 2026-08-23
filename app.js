@@ -26558,6 +26558,17 @@
     setGuidedRearrangeEnabled(dayId, !isGuidedRearrangeEnabled(dayId));
   }
 
+  function exitAllGuidedRearrange() {
+    var dayIds = Object.keys(guidedRearrangeByDay);
+    var exited = false;
+    for (var i = 0; i < dayIds.length; i++) {
+      if (!guidedRearrangeByDay[dayIds[i]]) continue;
+      setGuidedRearrangeEnabled(dayIds[i], false);
+      exited = true;
+    }
+    return exited;
+  }
+
   var guidedDragState = null;
 
   function clearGuidedDropIndicators(listEl) {
@@ -28095,6 +28106,10 @@
     if (activeMicroId) {
       saveMicrosFromForm();
       closeMicroModal();
+      return;
+    }
+    if (exitAllGuidedRearrange()) {
+      e.preventDefault();
       return;
     }
     // Escape twice within 1s clears sticky Filter (when any filter is active).

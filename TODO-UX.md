@@ -1,3 +1,5 @@
+Status: Done
+
 # TODO-UX
 
 UX critique of the Nutrients week-meals app (17 Aug 2026). Audience: adults 35–65+ who log real meals to audit macros, micros, and longevity — not casual calorie logging. Tone target: intentional, clinical-calm, lab-notebook.
