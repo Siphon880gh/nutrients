@@ -328,7 +328,6 @@
   var loggedOutBannerEl = document.getElementById("logged-out-banner");
   var loggedOutBannerLoginBtn = document.getElementById("logged-out-banner-login");
   var loggedOutBannerSignupBtn = document.getElementById("logged-out-banner-signup");
-  var weekSaveStatusEl = document.getElementById("week-save-status");
   var helpOpenBtn = document.getElementById("help-open");
   var weekMealsMoreToggleBtn = document.getElementById("week-meals-more-toggle");
   var weekMealsMoreMenuEl = document.getElementById("week-meals-more-menu");
@@ -345,12 +344,13 @@
   var undoToastMessageEl = document.getElementById("undo-toast-message");
   var undoToastActionBtn = document.getElementById("undo-toast-action");
   var undoToastDismissBtn = document.getElementById("undo-toast-dismiss");
+  var saveToastEl = document.getElementById("save-toast");
   var addFoodEmptyLibraryEl = document.getElementById("add-food-empty-library");
   var addFoodImportSampleBtn = document.getElementById("add-food-import-sample");
   var addFoodAddDefinitionBtn = document.getElementById("add-food-add-definition");
   var addFoodCreateRowEl = document.getElementById("add-food-create-row");
   var settingsDemographicStatusEl = document.getElementById("settings-demographic-status");
-  var lastSavedAt = 0;
+  var saveToastTimer = 0;
   var undoSnapshot = null;
   var undoTimer = 0;
   var appConfirmResolve = null;
@@ -522,6 +522,13 @@
   var weekJumpErrorEl = document.getElementById("week-jump-error");
   var weekJumpApplyBtn = document.getElementById("week-jump-apply");
   var weekJumpCancelBtn = document.getElementById("week-jump-cancel");
+  var diarySearchOpenBtn = document.getElementById("diary-search-open");
+  var diarySearchModalEl = document.getElementById("diary-search-modal");
+  var diarySearchInputEl = document.getElementById("diary-search-input");
+  var diarySearchSuggestionsEl = document.getElementById("diary-search-suggestions");
+  var diarySearchStatusEl = document.getElementById("diary-search-status");
+  var diarySearchResultsEl = document.getElementById("diary-search-results");
+  var diarySearchDoneBtn = document.getElementById("diary-search-done");
   var copyDateModalEl = document.getElementById("copy-date-modal");
   var copyDateModalTitleEl = document.getElementById("copy-date-modal-title");
   var copyDateModalHintEl = document.getElementById("copy-date-modal-hint");
@@ -559,6 +566,7 @@
   var addFoodPageNextBtn = document.getElementById("add-food-page-next");
   var addFoodPageStatusEl = document.getElementById("add-food-page-status");
   var addFoodSelectedEl = document.getElementById("add-food-selected");
+  var addFoodSelectedLabelEl = document.getElementById("add-food-selected-label");
   var addFoodSelectedListEl = document.getElementById("add-food-selected-list");
   var addFoodErrorEl = document.getElementById("add-food-error");
   var addFoodCancelBtn = document.getElementById("add-food-cancel");
@@ -617,6 +625,7 @@
   var viewedWeekStart = null;
   var diaryFavorites = [];
   var activeFavoriteDayKey = null;
+  var activeDiarySearchDayKey = null;
   var favoriteEditPending = null;
   var favoritesManaging = false;
   var dashboardMacroPctView = false;
@@ -10331,6 +10340,7 @@
       (importAllMealsModalEl && !importAllMealsModalEl.hidden) ||
       (importAllModalEl && !importAllModalEl.hidden) ||
       (weekJumpModalEl && !weekJumpModalEl.hidden) ||
+      (diarySearchModalEl && !diarySearchModalEl.hidden) ||
       (copyDateModalEl && !copyDateModalEl.hidden) ||
       (copyConflictModalEl && !copyConflictModalEl.hidden) ||
       (favoriteEditModalEl && !favoriteEditModalEl.hidden) ||
@@ -18776,23 +18786,19 @@
     loggedOutBannerEl.setAttribute("aria-hidden", show ? "false" : "true");
   }
 
-  function formatSaveStatusTime(ts) {
-    if (!ts) return "";
-    var d = new Date(ts);
-    return d.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
+  function hideSaveToast() {
+    if (saveToastTimer) {
+      window.clearTimeout(saveToastTimer);
+      saveToastTimer = 0;
+    }
+    if (saveToastEl) saveToastEl.hidden = true;
   }
 
-  function syncWeekSaveStatus() {
-    if (!weekSaveStatusEl) return;
-    if (!isLoggedIn()) {
-      weekSaveStatusEl.textContent = "Not saved — log in";
-      weekSaveStatusEl.className = "week__save-status week__save-status--warn";
-      return;
-    }
-    weekSaveStatusEl.textContent = lastSavedAt
-      ? "Saved " + formatSaveStatusTime(lastSavedAt)
-      : "Saved";
-    weekSaveStatusEl.className = "week__save-status week__save-status--ok";
+  function showSaveToast() {
+    if (!saveToastEl) return;
+    saveToastEl.hidden = false;
+    if (saveToastTimer) window.clearTimeout(saveToastTimer);
+    saveToastTimer = window.setTimeout(hideSaveToast, 1800);
   }
 
   function closeAppConfirmModal(result) {
@@ -19018,7 +19024,6 @@
       closeAuthLoginModal();
     }
     syncLoggedOutBanner();
-    syncWeekSaveStatus();
   }
 
   function closeAuthSignupModal() {
@@ -21492,7 +21497,7 @@
 
   function saveFoodDefinitions() {
     if (!persist) return;
-    persist.saveFoodDefinitions(keywords);
+    if (persist.saveFoodDefinitions(keywords)) showSaveToast();
     invalidateFoodSourcesRowsCache();
   }
 
@@ -22829,6 +22834,7 @@
       else label.removeAttribute("aria-current");
     });
     markFavoriteDay();
+    markDiarySearchDay();
     markIgnoredDays();
     syncDaysCarouselNav();
   }
@@ -22864,7 +22870,7 @@
 
   function saveFavorites() {
     if (!persist) return;
-    persist.saveFavorites(diaryFavorites);
+    if (persist.saveFavorites(diaryFavorites)) showSaveToast();
   }
 
   function loadFavorites() {
@@ -22933,6 +22939,22 @@
     });
     syncDayFavoriteButtons();
     syncWeekFavoriteButton();
+  }
+
+  function markDiarySearchDay() {
+    var activeDayId = null;
+    if (activeDiarySearchDayKey && viewedWeekStart) {
+      var keys = weekDateKeys(viewedWeekStart);
+      var index = keys.indexOf(activeDiarySearchDayKey);
+      if (index >= 0 && DAYS[index]) activeDayId = DAYS[index].id;
+    }
+    document.querySelectorAll(".week__grid .day").forEach(function (dayEl) {
+      var input = dayEl.querySelector(".day__input");
+      dayEl.classList.toggle(
+        "day--search-result",
+        !!(activeDayId && input && input.id === activeDayId)
+      );
+    });
   }
 
   function clearActiveFavoriteDayHighlight() {
@@ -23524,6 +23546,7 @@
   function setViewedWeekStart(mondayKey) {
     var next = clampWeekMondayKey(mondayKey);
     flushEditorsToDayMeals();
+    activeDiarySearchDayKey = null;
     viewedWeekStart = next;
     saveViewedWeekStart();
     loadEditorsFromDayMeals();
@@ -23543,6 +23566,104 @@
 
   function goToThisWeek() {
     setViewedWeekStart(currentWeekMondayKey());
+  }
+
+  function diarySearchDayFoods(text) {
+    return String(text || "").split(/\r?\n/).map(function (line) {
+      return line.trim();
+    }).filter(function (line) {
+      return line && !isCommentDayMealLine(line);
+    });
+  }
+
+  function diaryTextMatchesFood(text, query) {
+    var q = String(query || "").trim();
+    if (!q) return false;
+    var definitionName = "";
+    for (var i = 0; i < keywords.length; i++) {
+      if (String(keywords[i].name || "").toLowerCase() === q.toLowerCase()) {
+        definitionName = keywords[i].name;
+        break;
+      }
+    }
+    if (definitionName) {
+      return !!keywordHitCounts(text)[definitionName.toLowerCase()];
+    }
+    return String(text || "").toLowerCase().indexOf(q.toLowerCase()) >= 0;
+  }
+
+  function renderDiarySearchResults() {
+    if (!diarySearchResultsEl || !diarySearchStatusEl) return;
+    var query = diarySearchInputEl ? diarySearchInputEl.value.trim() : "";
+    if (!query) {
+      diarySearchResultsEl.innerHTML = "";
+      diarySearchStatusEl.textContent = "Type a food name to search your diary.";
+      return;
+    }
+    var matches = Object.keys(dayMealsByDate).filter(function (dateKey) {
+      return diaryTextMatchesFood(dayMealsByDate[dateKey], query);
+    }).sort().reverse();
+    diarySearchStatusEl.textContent = matches.length
+      ? matches.length + (matches.length === 1 ? " day found" : " days found")
+      : 'No diary days found for “' + query + '”.';
+    diarySearchResultsEl.innerHTML = matches.map(function (dateKey) {
+      var d = parseDateKey(dateKey);
+      var dayId = dayIdForDateKey(dateKey);
+      var day = dayId ? dayById(dayId) : null;
+      var date = d ? formatDayDateLabel(d) : dateKey;
+      var foods = diarySearchDayFoods(dayMealsByDate[dateKey]);
+      var moreCount = Math.max(0, foods.length - 3);
+      return '<article class="diary-search-modal__result">' +
+        '<p class="diary-search-modal__date">' + escapeHtml((day ? day.label + " · " : "") + date) + '</p>' +
+        '<div class="diary-search-modal__brief">' +
+        '<span class="diary-search-modal__summary">' + escapeHtml(foods.slice(0, 3).join(" · ")) + '</span>' +
+        (moreCount ? ' <button type="button" class="diary-search-modal__expand" data-diary-search-expand aria-expanded="false">+' + moreCount + ' more</button>' : '') +
+        (moreCount ? '<ul class="diary-search-modal__all-foods" hidden>' + foods.map(function (food) {
+          return '<li>' + escapeHtml(food) + '</li>';
+        }).join("") + '</ul>' : '') +
+        '</div>' +
+        '<button type="button" class="diary-search-modal__jump" data-diary-search-date="' + escapeAttr(dateKey) + '">Jump to day</button>' +
+        '</article>';
+    }).join("");
+  }
+
+  function openDiarySearchModal() {
+    if (!diarySearchModalEl) return;
+    flushEditorsToDayMeals();
+    if (diarySearchSuggestionsEl) {
+      diarySearchSuggestionsEl.innerHTML = browseFoodDefinitionNames().map(function (name) {
+        return '<option value="' + escapeAttr(name.name) + '"></option>';
+      }).join("");
+    }
+    diarySearchModalEl.hidden = false;
+    renderDiarySearchResults();
+    updateBodyModalOpen();
+    window.requestAnimationFrame(function () {
+      if (diarySearchInputEl) diarySearchInputEl.focus();
+    });
+  }
+
+  function closeDiarySearchModal() {
+    if (!diarySearchModalEl) return;
+    diarySearchModalEl.hidden = true;
+    updateBodyModalOpen();
+  }
+
+  function jumpToDiarySearchDate(dateKey) {
+    var d = parseDateKey(dateKey);
+    if (!d) return;
+    var dayId = dayIdForDateKey(dateKey);
+    closeDiarySearchModal();
+    clearActiveFavoriteDayHighlight();
+    setViewedWeekStart(toDateKey(mondayOf(d)));
+    activeDiarySearchDayKey = dateKey;
+    markDiarySearchDay();
+    window.requestAnimationFrame(function () {
+      if (!dayId) return;
+      setDaysCarouselDayId(dayId);
+      var input = document.getElementById(dayId);
+      if (input) input.focus();
+    });
   }
 
   var daysCarouselIndex = 0;
@@ -23900,17 +24021,13 @@
   }
 
   function saveDayMealsState() {
-    if (!persist) {
-      syncWeekSaveStatus();
-      return;
-    }
+    if (!persist) return;
     var ok = persist.saveDayMeals({
       version: 2,
       days: Object.assign({}, dayMealsByDate),
       ignoredDays: Object.assign({}, ignoredDaysByDate),
     });
-    if (ok) lastSavedAt = Date.now();
-    syncWeekSaveStatus();
+    if (ok) showSaveToast();
   }
 
   function saveDayNotes() {
@@ -27209,18 +27326,61 @@
       .join("\n");
   }
 
+  var addFoodDragIndex = -1;
+
+  function moveAddFoodSelectedItem(fromIndex, toIndex) {
+    flushAddFoodServingsFromInputs();
+    if (
+      fromIndex < 0 ||
+      fromIndex >= addFoodSelectedItems.length ||
+      toIndex < 0 ||
+      toIndex >= addFoodSelectedItems.length ||
+      fromIndex === toIndex
+    ) {
+      return;
+    }
+    var moved = addFoodSelectedItems.splice(fromIndex, 1)[0];
+    addFoodSelectedItems.splice(toIndex, 0, moved);
+    addFoodSelectedListKey = "";
+    syncAddFoodSelectedUi();
+    var handle = addFoodSelectedListEl && addFoodSelectedListEl.querySelector(
+      '[data-add-food-index="' + toIndex + '"] .add-food-modal__selected-drag'
+    );
+    if (handle) handle.focus();
+  }
+
   function renderAddFoodSelectedList() {
     if (!addFoodSelectedListEl) return;
     addFoodSelectedListEl.innerHTML = addFoodSelectedItems
-      .map(function (item) {
+      .map(function (item, index) {
         var name = item.name;
         var servings = String(clampAddFoodServings(item.servings));
         return (
-          '<li class="add-food-modal__selected-item">' +
+          '<li class="add-food-modal__selected-item" data-add-food-index="' +
+          index +
+          '">' +
           '<div class="add-food-modal__selected-item-main">' +
+          '<button type="button" class="add-food-modal__selected-drag" draggable="true" data-action="drag-add-food" data-add-food-index="' +
+          index +
+          '" aria-label="Rearrange ' +
+          escapeAttr(name) +
+          '. Use arrow keys or drag." title="Drag to rearrange">⋮⋮</button>' +
           '<p class="add-food-modal__selected-name">' +
           escapeHtml(name) +
           "</p>" +
+          '<span class="add-food-modal__selected-order" role="group" aria-label="Move ' +
+          escapeAttr(name) +
+          '">' +
+          '<button type="button" data-action="move-add-food-up" data-add-food-index="' +
+          index +
+          '" aria-label="Move ' + escapeAttr(name) + ' up"' +
+          (index === 0 ? " disabled" : "") +
+          '>↑</button>' +
+          '<button type="button" data-action="move-add-food-down" data-add-food-index="' +
+          index +
+          '" aria-label="Move ' + escapeAttr(name) + ' down"' +
+          (index === addFoodSelectedItems.length - 1 ? " disabled" : "") +
+          '>↓</button></span>' +
           '<button type="button" class="add-food-modal__selected-remove" data-action="remove-add-food" data-food-name="' +
           escapeAttr(name) +
           '" aria-label="Remove ' +
@@ -27253,6 +27413,11 @@
   function syncAddFoodSelectedUi() {
     var hasSelection = addFoodSelectedItems.length > 0;
     if (addFoodSelectedEl) addFoodSelectedEl.hidden = !hasSelection;
+    if (addFoodSelectedLabelEl) {
+      addFoodSelectedLabelEl.textContent = addFoodSelectedItems.length > 1
+        ? "Selected · rearrange as needed"
+        : "Selected";
+    }
     if (addFoodSubmitBtn) addFoodSubmitBtn.disabled = !hasSelection;
     syncAddFoodSubmitLabel();
     var key = addFoodSelectedNamesKey();
@@ -27397,6 +27562,7 @@
     addFoodModalEl.hidden = true;
     addFoodPendingDayId = null;
     addFoodSelectedItems = [];
+    addFoodDragIndex = -1;
     addFoodSelectedListKey = "";
     addFoodResultsPage = 0;
     showAddFoodError("");
@@ -29031,6 +29197,46 @@
 
   if (weekNavFavoriteBtn) {
     weekNavFavoriteBtn.addEventListener("click", openFavoriteWeekEditor);
+  }
+
+  if (diarySearchOpenBtn) {
+    diarySearchOpenBtn.addEventListener("click", openDiarySearchModal);
+  }
+  if (diarySearchInputEl) {
+    diarySearchInputEl.addEventListener("input", renderDiarySearchResults);
+  }
+  if (diarySearchDoneBtn) {
+    diarySearchDoneBtn.addEventListener("click", closeDiarySearchModal);
+  }
+  if (diarySearchModalEl) {
+    diarySearchModalEl.addEventListener("click", function (e) {
+      if (e.target.closest('[data-action="close-diary-search-modal"]')) {
+        closeDiarySearchModal();
+        return;
+      }
+      var jumpBtn = e.target.closest("[data-diary-search-date]");
+      if (jumpBtn) {
+        jumpToDiarySearchDate(jumpBtn.getAttribute("data-diary-search-date"));
+        return;
+      }
+      var expandBtn = e.target.closest("[data-diary-search-expand]");
+      if (expandBtn) {
+        var result = expandBtn.closest(".diary-search-modal__result");
+        var allFoods = result && result.querySelector(".diary-search-modal__all-foods");
+        if (!result || !allFoods) return;
+        var expanded = expandBtn.getAttribute("aria-expanded") !== "true";
+        result.classList.toggle("diary-search-modal__result--expanded", expanded);
+        expandBtn.setAttribute("aria-expanded", expanded ? "true" : "false");
+        expandBtn.textContent = expanded ? "Show less" : "+" + Math.max(0, allFoods.children.length - 3) + " more";
+        allFoods.hidden = !expanded;
+      }
+    });
+    diarySearchModalEl.addEventListener("keydown", function (e) {
+      if (e.key === "Escape") {
+        e.preventDefault();
+        closeDiarySearchModal();
+      }
+    });
   }
 
   if (favoritesOpenBtn) {
@@ -30957,6 +31163,18 @@
             delta
           );
         }
+        return;
+      }
+      var moveUpBtn = e.target.closest('[data-action="move-add-food-up"]');
+      if (moveUpBtn) {
+        var upIndex = parseInt(moveUpBtn.getAttribute("data-add-food-index"), 10);
+        moveAddFoodSelectedItem(upIndex, upIndex - 1);
+        return;
+      }
+      var moveDownBtn = e.target.closest('[data-action="move-add-food-down"]');
+      if (moveDownBtn) {
+        var downIndex = parseInt(moveDownBtn.getAttribute("data-add-food-index"), 10);
+        moveAddFoodSelectedItem(downIndex, downIndex + 1);
       }
     });
   }
@@ -31016,6 +31234,13 @@
       syncAddFoodServingsStepButtons(name);
     });
     addFoodSelectedEl.addEventListener("keydown", function (e) {
+      var dragHandle = e.target.closest(".add-food-modal__selected-drag");
+      if (dragHandle && (e.key === "ArrowUp" || e.key === "ArrowDown")) {
+        e.preventDefault();
+        var dragIndex = parseInt(dragHandle.getAttribute("data-add-food-index"), 10);
+        moveAddFoodSelectedItem(dragIndex, dragIndex + (e.key === "ArrowUp" ? -1 : 1));
+        return;
+      }
       var input = e.target.closest(".add-food-modal__servings-input");
       if (!input) return;
       var name = input.getAttribute("data-food-name");
@@ -31033,6 +31258,50 @@
         e.preventDefault();
         runAddFoodSubmit();
       }
+    });
+    addFoodSelectedEl.addEventListener("dragstart", function (e) {
+      var handle = e.target.closest(".add-food-modal__selected-drag");
+      if (!handle) return;
+      flushAddFoodServingsFromInputs();
+      addFoodDragIndex = parseInt(handle.getAttribute("data-add-food-index"), 10);
+      var item = handle.closest(".add-food-modal__selected-item");
+      if (item) item.classList.add("add-food-modal__selected-item--dragging");
+      if (e.dataTransfer) {
+        e.dataTransfer.effectAllowed = "move";
+        e.dataTransfer.setData("text/plain", String(addFoodDragIndex));
+      }
+    });
+    addFoodSelectedEl.addEventListener("dragover", function (e) {
+      if (addFoodDragIndex < 0) return;
+      var item = e.target.closest(".add-food-modal__selected-item");
+      if (!item) return;
+      e.preventDefault();
+      addFoodSelectedListEl.querySelectorAll(".add-food-modal__selected-item--drop-before, .add-food-modal__selected-item--drop-after").forEach(function (row) {
+        row.classList.remove("add-food-modal__selected-item--drop-before", "add-food-modal__selected-item--drop-after");
+      });
+      var rect = item.getBoundingClientRect();
+      item.classList.add(e.clientY < rect.top + rect.height / 2
+        ? "add-food-modal__selected-item--drop-before"
+        : "add-food-modal__selected-item--drop-after");
+    });
+    addFoodSelectedEl.addEventListener("drop", function (e) {
+      if (addFoodDragIndex < 0) return;
+      var item = e.target.closest(".add-food-modal__selected-item");
+      if (!item) return;
+      e.preventDefault();
+      var targetIndex = parseInt(item.getAttribute("data-add-food-index"), 10);
+      var rect = item.getBoundingClientRect();
+      if (e.clientY >= rect.top + rect.height / 2 && targetIndex < addFoodDragIndex) targetIndex += 1;
+      if (e.clientY < rect.top + rect.height / 2 && targetIndex > addFoodDragIndex) targetIndex -= 1;
+      var fromIndex = addFoodDragIndex;
+      addFoodDragIndex = -1;
+      moveAddFoodSelectedItem(fromIndex, targetIndex);
+    });
+    addFoodSelectedEl.addEventListener("dragend", function () {
+      addFoodDragIndex = -1;
+      addFoodSelectedListEl.querySelectorAll(".add-food-modal__selected-item--dragging, .add-food-modal__selected-item--drop-before, .add-food-modal__selected-item--drop-after").forEach(function (row) {
+        row.classList.remove("add-food-modal__selected-item--dragging", "add-food-modal__selected-item--drop-before", "add-food-modal__selected-item--drop-after");
+      });
     });
   }
 
@@ -31269,7 +31538,6 @@
     applyInitialLongevityHash();
     maybeAutoImportSampleFoodsAndShowStarterGuide();
     maybeScrollToFoodEntryOnBoot();
-    syncWeekSaveStatus();
   }
 
   loadAppConfig(function () {
