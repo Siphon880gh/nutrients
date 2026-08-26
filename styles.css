@@ -1495,7 +1495,7 @@ body.exclusive-overlay-open .app-nav {
   backdrop-filter: none;
 }
 
-body.app-sheet-open::before {
+body.exclusive-overlay-open::before {
   content: "";
   position: fixed;
   top: 0;
@@ -1503,7 +1503,7 @@ body.app-sheet-open::before {
   right: 0;
   height: var(--app-sheet-top, 3.75rem);
   background: #f4f4f2;
-  z-index: 71;
+  z-index: 101;
   pointer-events: none;
 }
 
@@ -11157,6 +11157,11 @@ body.day-word-wrap-off .day__input {
   align-items: center;
   justify-content: center;
   padding: 1rem;
+}
+
+#food-definitions-panel {
+  top: var(--app-sheet-top, 0px);
+  bottom: var(--app-sheet-bottom, 0px);
 }
 
 #longevity-analysis-modal {

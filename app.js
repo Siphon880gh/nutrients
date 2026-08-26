@@ -10388,7 +10388,10 @@
   function syncAppSheetOffset() {
     var nav = document.getElementById("app-nav");
     var root = document.documentElement.style;
-    if (!nav || !(microRequirementsOpen || longevityPanelOpen)) {
+    if (
+      !nav ||
+      !(foodDefinitionsOpen || microRequirementsOpen || longevityPanelOpen)
+    ) {
       root.removeProperty("--app-sheet-top");
       root.removeProperty("--app-sheet-bottom");
       return;
@@ -10420,10 +10423,6 @@
     document.body.classList.toggle(
       "exclusive-overlay-open",
       !!(foodDefinitionsOpen || microRequirementsOpen || longevityPanelOpen)
-    );
-    document.body.classList.toggle(
-      "app-sheet-open",
-      !!(microRequirementsOpen || longevityPanelOpen)
     );
     updateBodyModalOpen();
     syncAppSheetOffset();
