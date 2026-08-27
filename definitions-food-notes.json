@@ -56,6 +56,11 @@
       "note": "<p><code>*</code> means into a bowl that fills one cup (8oz) to the rim</p><p>⅜ Cup milk is the likely count when you pour milk over cereals in a bowl (that normally fills water 8oz to the rim) so that about 1cm height breathing room is at the top so you don't have to worry about spilling when consuming</p>"
     },
     {
+      "label": "Gravy Boat",
+      "pattern": "\\bgravy.*boat\\b",
+      "note": "<p>If you used all of it, you ate close to ¾ cup. If you poured only enough to coat the steak or spaghetti, you have eaten close to ⅓ cup.  If you poured only enough to coat the steak AND spaghetti, you have eaten close to ½ cup.</p>"
+    },
+    {
       "label": "Milk**",
       "pattern": "\\bmilk\\b.*¾",
       "note": "<p><code>**</code> means into a bowl that fills one cup (8oz) to the rim</p><p>¾ Cup Cereals is the likely count when you pour milk over cereals in a bowl (that normally fills water 16oz to the rim) so that about 1cm height breathing room is at the top so you don't have to worry about spilling when consuming</p>"
