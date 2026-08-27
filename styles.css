@@ -4491,6 +4491,17 @@ body.highlight-adverse-effects .dashboard__micro-acute-btn--adverse .dashboard__
   box-shadow: 0 1px 3px rgba(42, 74, 110, 0.08);
 }
 
+.micro-def__section--cooking {
+  padding: 0.75rem 0.85rem;
+  border: 1px solid #ead7a5;
+  border-radius: 6px;
+  background: #fffaf0;
+}
+
+.micro-def__section--cooking .micro-def__heading {
+  color: #72520d;
+}
+
 .micro-def__heading--condition {
   display: flex;
   align-items: center;

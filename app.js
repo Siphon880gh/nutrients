@@ -680,6 +680,7 @@
   var filterStickyDailyIntake = false;
   var filterStickySideEffects = false;
   var filterStickyAdverseEffects = false;
+  var filterStickyCookingVulnerable = false;
   var filterStickyNutrientKeys = [];
   var stickyFilterEscapeArmedAt = 0;
   var nutrientFilterFArmedAt = 0;
@@ -1155,6 +1156,37 @@
       label: "Poorly absorbed / take daily",
     },
   };
+
+  // Representative USDA true-retention examples. Loss varies substantially by
+  // food, preparation time, cut size, cooking liquid, and whether drippings are eaten.
+  var COOKING_VULNERABLE_VITAMINS = {
+    vitaminC: {
+      note:
+        "Heat and cooking-water losses vary by food. USDA's worked example for greens boiled at about 100°C (212°F) uses 85% retention, or about a 15% loss. Longer heating can be much harsher: milk heated for about 10, 30, and 60 minutes retained 85%, 65%, and 45%, respectively (about 15%, 35%, and 55% loss).",
+    },
+    thiamin: {
+      note:
+        "Thiamin (B1) is heat-sensitive. USDA examples show about 30% loss in roasted chicken and about 45% loss when chicken is simmered and the drippings are discarded. Milk heated for about 10, 30, and 60 minutes retained 90%, 75%, and 60% (about 10%, 25%, and 40% loss). Exact temperatures were not reported in those entries.",
+    },
+    riboflavin: {
+      note:
+        "Riboflavin (B2) is usually more heat-stable than B1, B6, folate, or vitamin C, but some cooking losses occur. USDA examples range from about 5% loss in cooked eggs to about 10–15% in roasted or simmered chicken. Exact cooking temperatures were not reported.",
+    },
+    vitaminB6: {
+      note:
+        "Vitamin B6 can decline with prolonged cooking and loss of cooking liquid. USDA examples show about 20% loss in roasted chicken and about 50% loss when chicken is simmered and the drippings are discarded; cooked eggs show about 5% loss. Exact temperatures were not reported.",
+    },
+    folate: {
+      note:
+        "Food folate is vulnerable to heat and leaching. USDA examples show about 25% loss in cooked eggs and about 40% loss in roasted or simmered chicken. Milk heated for about 10, 30, and 60 minutes retained 85%, 80%, and 70% (about 15%, 20%, and 30% loss). Exact temperatures were not reported.",
+    },
+    vitaminB12: {
+      note:
+        "Vitamin B12 can fall during prolonged heating. USDA examples show about 25% loss in roasted or simmered chicken and about 45% loss in baked cheese. Milk heated for about 10, 30, and 60 minutes retained 80%, 55%, and 30% (about 20%, 45%, and 70% loss). Exact temperatures were not reported.",
+    },
+  };
+  var USDA_NUTRIENT_RETENTION_URL =
+    "https://www.ars.usda.gov/ARSUserFiles/80400530/pdf/retn06.pdf";
 
   var COMMON_DEFICIENCY_NUTRIENT_KEYS = [
     "vitaminA",
@@ -5224,6 +5256,23 @@
     );
   }
 
+  function microDefCookingSectionHtml(key) {
+    if (!filterStickyCookingVulnerable) return "";
+    var entry = COOKING_VULNERABLE_VITAMINS[key];
+    if (!entry) return "";
+    return (
+      '<section class="micro-def__section micro-def__section--cooking" role="note">' +
+      '<h4 class="micro-def__heading">Cooking loss</h4>' +
+      '<p class="micro-def__p">' +
+      escapeHtml(entry.note) +
+      "</p>" +
+      '<p class="micro-def__p"><a href="' +
+      escapeAttr(USDA_NUTRIENT_RETENTION_URL) +
+      '" target="_blank" rel="noopener noreferrer">USDA Table of Nutrient Retention Factors, Release 6</a>. These are representative retention factors, not a correction automatically applied to your logged amount.</p>' +
+      "</section>"
+    );
+  }
+
   function renderMicroDefBody(key) {
     if (!microDefBodyEl) return;
     var field = microDisplayFieldByKey(key);
@@ -5237,7 +5286,10 @@
       return;
     }
 
-    var html = microDefWarningSectionHtml(def) + microDefConditionSectionHtml(key, def);
+    var html =
+      microDefWarningSectionHtml(def) +
+      microDefConditionSectionHtml(key, def) +
+      microDefCookingSectionHtml(key);
 
     if (key === "solubleFiber" || key === "insolubleFiber") {
       html += fiberBulkingTypeHtml(key);
@@ -11780,6 +11832,10 @@
       : false;
   }
 
+  function microIsCookingVulnerable(key) {
+    return !!COOKING_VULNERABLE_VITAMINS[key];
+  }
+
   function dailyMicroPct(key, amount) {
     var dv = dailyDv(key);
     if (!dv) return null;
@@ -12485,6 +12541,7 @@
       filterStickyDailyIntake ||
       filterStickySideEffects ||
       filterStickyAdverseEffects ||
+      filterStickyCookingVulnerable ||
       filterStickyNutrientKeys.length > 0
     );
   }
@@ -12493,7 +12550,8 @@
     return (
       filterStickyDailyIntake ||
       filterStickySideEffects ||
-      filterStickyAdverseEffects
+      filterStickyAdverseEffects ||
+      filterStickyCookingVulnerable
     );
   }
 
@@ -12523,6 +12581,9 @@
     ) {
       match = true;
     }
+    if (filterStickyCookingVulnerable && microIsCookingVulnerable(key)) {
+      match = true;
+    }
     return match;
   }
 
@@ -12547,6 +12608,7 @@
       filterStickyDailyIntake = false;
       filterStickySideEffects = false;
       filterStickyAdverseEffects = false;
+      filterStickyCookingVulnerable = false;
       filterStickyNutrientKeys = [];
       return;
     }
@@ -12554,6 +12616,7 @@
     filterStickyDailyIntake = !!s.filterDailyIntake;
     filterStickySideEffects = !!s.filterSideEffects;
     filterStickyAdverseEffects = !!s.filterAdverseEffects;
+    filterStickyCookingVulnerable = !!s.filterCookingVulnerable;
     filterStickyNutrientKeys = normalizeFilterStickyNutrientKeys(
       s.filterNutrients || []
     );
@@ -12565,6 +12628,7 @@
       filterDailyIntake: !!filterStickyDailyIntake,
       filterSideEffects: !!filterStickySideEffects,
       filterAdverseEffects: !!filterStickyAdverseEffects,
+      filterCookingVulnerable: !!filterStickyCookingVulnerable,
       filterNutrients: filterStickyNutrientKeys.slice(),
     });
   }
@@ -12932,6 +12996,8 @@
       var on =
         kind === "daily"
           ? filterStickyDailyIntake
+          : kind === "cooking"
+            ? filterStickyCookingVulnerable
           : kind === "adverse"
             ? filterStickyAdverseEffects
             : filterStickySideEffects;
@@ -12945,6 +13011,7 @@
     filterStickyDailyIntake = false;
     filterStickySideEffects = false;
     filterStickyAdverseEffects = false;
+    filterStickyCookingVulnerable = false;
     filterStickyNutrientKeys = [];
     saveStickyIconFilters();
     syncStickyIconFilterUi();
@@ -12980,6 +13047,7 @@
     if (kind === "daily") filterStickyDailyIntake = !!open;
     else if (kind === "side") filterStickySideEffects = !!open;
     else if (kind === "adverse") filterStickyAdverseEffects = !!open;
+    else if (kind === "cooking") filterStickyCookingVulnerable = !!open;
     else return;
     if (open) clearMicroConditionFocusForStickyFilter();
     saveStickyIconFilters();
@@ -13200,8 +13268,8 @@
     if (!microConditionFocus) {
       fields = microBaseDisplayFields();
     } else if (MICRO_INTAKE_FILTER[microConditionFocus]) {
-      var wantsDaily = microConditionFocus === "poorlyAbsorbed";
       fields = microBaseDisplayFields().filter(function (entry) {
+        var wantsDaily = microConditionFocus === "poorlyAbsorbed";
         return microRequiresDailyIntake(entry.field.key) === wantsDaily;
       });
     } else {
@@ -29927,6 +29995,10 @@
     }
     if (filterKind === "adverse") {
       setStickyIconFilter("adverse", checked);
+      return;
+    }
+    if (filterKind === "cooking") {
+      setStickyIconFilter("cooking", checked);
     }
   });
 
