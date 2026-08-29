@@ -5777,7 +5777,7 @@
     }
   },
   {
-    "name": "Cereal - Cheerios 1\u00bd cups**",
+    "name": "Cereal - Cheerios 1½ cups**",
     "protein": 5.3,
     "carbs": 30.8,
     "fats": 2.7,
@@ -5861,7 +5861,7 @@
     }
   },
   {
-    "name": "Cereal - Cheerios \u00be cup*",
+    "name": "Cereal - Cheerios ¾ cup*",
     "protein": 2.6,
     "carbs": 15.4,
     "fats": 1.4,
@@ -5944,175 +5944,204 @@
       "netCarbs": 13.3
     }
   },
+
   {
-    "name": "Cereal -  Raisin Bran",
-    "protein": 5,
-    "carbs": 48,
-    "fats": 1,
+    "name": "Cereal - Kellogg's Corn Flakes ¾ cup*",
+    "protein": 1.5,
+    "carbs": 18,
+    "fats": 0,
     "micros": {
-      "sodium": 240,
-      "potassium": 340,
-      "calcium": 30,
-      "iron": 10.8,
-      "magnesium": 105,
-      "zinc": 3.3,
-      "vitaminA": 155,
-      "vitaminD": 2,
-      "vitaminB12": 2.16,
-      "vitaminB6": 2,
-      "folate": 360,
-      "biotin": 25,
-      "thiamin": 1.2,
-      "riboflavin": 1,
-      "niacin": 12,
-      "pantothenicAcid": 2,
-      "chromium": 15,
-      "vitaminC": 0,
-      "copper": 350,
-      "choline": 18,
-      "manganese": 2,
-      "selenium": 15,
-      "iodine": 40,
-      "vitaminE": 2,
-      "vitaminK": 1,
-      "phosphorus": 180,
-      "molybdenum": 20,
-      "fluoride": 0.02,
-      "chloride": 25,
-      "histidine": 110,
-      "isoleucine": 210,
-      "leucine": 360,
-      "lysine": 240,
-      "methionine": 90,
-      "phenylalanine": 200,
-      "threonine": 175,
-      "tryptophan": 50,
-      "valine": 240,
-      "arginine": 275,
-      "cysteine": 60,
-      "glutamine": 650,
-      "glycine": 200,
-      "proline": 275,
-      "tyrosine": 150,
-      "taurine": 0,
-      "solubleFiber": 2,
-      "insolubleFiber": 7,
-      "fiber": 9,
-      "vitaminK1": 1,
-      "vitaminK2": 0,
-      "vitaminK2MK4": 0,
-      "vitaminK2MK7": 0
+      "fiber": 0.5,
+      "sodium": 150,
+      "potassium": 30,
+      "calcium": 0,
+      "iron": 6,
+      "vitaminD": 1.5,
+      "thiamin": 0.18,
+      "riboflavin": 0.195,
+      "niacin": 2.4,
+      "vitaminB6": 0.255,
+      "folate": 100,
+      "vitaminB12": 0.36
     },
     "longevity": {
       "saturatedFat": 0,
       "monounsaturatedFat": 0,
       "polyunsaturatedFat": 0,
       "transFat": 0,
-      "cholesterol": 0,
-      "choline": true,
-      "copper": true,
-      "lutein": 0,
-      "selenium": true,
-      "vitaminE": true,
-      "vitaminK": true,
-      "phosphorus": true,
-      "methionine": true,
-      "vitaminK1": true,
-      "vitaminK2": true,
-      "vitaminK2MK4": true,
-      "vitaminK2MK7": true,
-      "plantSterols": 0.05,
-      "pqq": 0
+      "cholesterol": 0
     },
     "carbQuality": {
-      "addedSugar": 9,
-      "refinedCarbs": 0,
-      "netCarbs": 39
+      "glycemicIndex": 77,
+      "addedSugar": 2,
+      "refinedCarbs": 17.5
     }
   },
   {
-    "name": "Cereal -  Grape-Nuts",
-    "protein": 6,
-    "carbs": 47,
-    "fats": 1,
+    "name": "Cereal - Kellogg's Corn Flakes 1½ cups**",
+    "protein": 3,
+    "carbs": 36,
+    "fats": 0,
     "micros": {
-      "sodium": 280,
-      "potassium": 260,
-      "calcium": 20,
-      "iron": 16.2,
-      "magnesium": 72,
-      "zinc": 1.2,
+      "fiber": 1,
+      "sodium": 300,
+      "potassium": 60,
+      "calcium": 0,
+      "iron": 12,
+      "vitaminD": 3,
+      "thiamin": 0.36,
+      "riboflavin": 0.39,
+      "niacin": 4.8,
+      "vitaminB6": 0.51,
       "folate": 200,
-      "biotin": 15,
-      "vitaminB6": 0.4,
-      "thiamin": 0.4,
-      "riboflavin": 0.15,
-      "niacin": 4,
-      "pantothenicAcid": 0.5,
-      "chromium": 8,
-      "vitaminA": 0,
-      "vitaminD": 0,
-      "vitaminC": 0,
-      "copper": 280,
-      "choline": 22,
-      "manganese": 2.8,
-      "selenium": 25,
-      "iodine": 0,
-      "vitaminE": 0,
-      "vitaminK": 1,
-      "vitaminB12": 0,
-      "phosphorus": 220,
-      "molybdenum": 20,
-      "fluoride": 0.02,
-      "chloride": 25,
-      "histidine": 132,
-      "isoleucine": 252,
-      "leucine": 432,
-      "lysine": 288,
-      "methionine": 108,
-      "phenylalanine": 240,
-      "threonine": 210,
-      "tryptophan": 60,
-      "valine": 288,
-      "arginine": 330,
-      "cysteine": 72,
-      "glutamine": 780,
-      "glycine": 240,
-      "proline": 330,
-      "tyrosine": 180,
-      "taurine": 0,
-      "solubleFiber": 1.5,
-      "insolubleFiber": 5.5,
-      "fiber": 7,
-      "vitaminK1": 1,
-      "vitaminK2": 0,
-      "vitaminK2MK4": 0,
-      "vitaminK2MK7": 0
+      "vitaminB12": 0.72
     },
     "longevity": {
       "saturatedFat": 0,
+      "monounsaturatedFat": 0,
+      "polyunsaturatedFat": 0,
       "transFat": 0,
-      "cholesterol": 0,
-      "choline": true,
-      "copper": true,
-      "lutein": 0,
-      "selenium": true,
-      "vitaminK": true,
-      "phosphorus": true,
-      "methionine": true,
-      "vitaminK1": true,
-      "vitaminK2": true,
-      "vitaminK2MK4": true,
-      "vitaminK2MK7": true,
-      "plantSterols": 0.08,
-      "pqq": 0
+      "cholesterol": 0
     },
     "carbQuality": {
-      "addedSugar": 0,
-      "refinedCarbs": 0,
-      "netCarbs": 40
+      "glycemicIndex": 77,
+      "addedSugar": 4,
+      "refinedCarbs": 35
     }
   },
+
+  {
+    "name": "Cereal - Kellogg's Raisin Bran ¾ cup*",
+    "protein": 3.75,
+    "carbs": 35.25,
+    "fats": 0.75,
+    "micros": {
+      "fiber": 5.25,
+      "solubleFiber": 0.75,
+      "insolubleFiber": 4.5,
+      "sodium": 157.5,
+      "potassium": 210,
+      "calcium": 15,
+      "iron": 12.375,
+      "vitaminD": 0
+    },
+    "longevity": {
+      "saturatedFat": 0,
+      "monounsaturatedFat": 0,
+      "polyunsaturatedFat": 0.375,
+      "transFat": 0,
+      "cholesterol": 0
+    },
+    "carbQuality": {
+      "glycemicIndex": 61,
+      "addedSugar": 6.75,
+      "refinedCarbs": 6.75
+    }
+  },
+  {
+    "name": "Cereal - Kellogg's Raisin Bran 1½ cups**",
+    "protein": 7.5,
+    "carbs": 70.5,
+    "fats": 1.5,
+    "micros": {
+      "fiber": 10.5,
+      "solubleFiber": 1.5,
+      "insolubleFiber": 9,
+      "sodium": 315,
+      "potassium": 420,
+      "calcium": 30,
+      "iron": 24.75,
+      "vitaminD": 0
+    },
+    "longevity": {
+      "saturatedFat": 0,
+      "monounsaturatedFat": 0,
+      "polyunsaturatedFat": 0.75,
+      "transFat": 0,
+      "cholesterol": 0
+    },
+    "carbQuality": {
+      "glycemicIndex": 61,
+      "addedSugar": 13.5,
+      "refinedCarbs": 13.5
+    }
+  },
+
+  {
+    "name": "Cereal - Grape-Nuts ¾ cup*",
+    "protein": 9,
+    "carbs": 70.5,
+    "fats": 1.5,
+    "micros": {
+      "fiber": 10.5,
+      "solubleFiber": 1.5,
+      "insolubleFiber": 9,
+      "sodium": 420,
+      "potassium": 390,
+      "calcium": 30,
+      "iron": 24.3,
+      "magnesium": 63,
+      "zinc": 4.95,
+      "vitaminD": 0,
+      "thiamin": 0.72,
+      "riboflavin": 0.117,
+      "niacin": 10.8,
+      "vitaminB6": 2.04,
+      "folate": 540,
+      "phosphorus": 375
+    },
+    "longevity": {
+      "saturatedFat": 0,
+      "monounsaturatedFat": 0,
+      "polyunsaturatedFat": 0.75,
+      "transFat": 0,
+      "cholesterol": 0,
+      "phosphorus": true
+    },
+    "carbQuality": {
+      "glycemicIndex": 75,
+      "addedSugar": 0,
+      "refinedCarbs": 0
+    }
+  },
+  {
+    "name": "Cereal - Grape-Nuts 1½ cups**",
+    "protein": 18,
+    "carbs": 141,
+    "fats": 3,
+    "micros": {
+      "fiber": 21,
+      "solubleFiber": 3,
+      "insolubleFiber": 18,
+      "sodium": 840,
+      "potassium": 780,
+      "calcium": 60,
+      "iron": 48.6,
+      "magnesium": 126,
+      "zinc": 9.9,
+      "vitaminD": 0,
+      "thiamin": 1.44,
+      "riboflavin": 0.234,
+      "niacin": 21.6,
+      "vitaminB6": 4.08,
+      "folate": 1080,
+      "phosphorus": 750
+    },
+    "longevity": {
+      "saturatedFat": 0,
+      "monounsaturatedFat": 0,
+      "polyunsaturatedFat": 1.5,
+      "transFat": 0,
+      "cholesterol": 0,
+      "phosphorus": true
+    },
+    "carbQuality": {
+      "glycemicIndex": 75,
+      "addedSugar": 0,
+      "refinedCarbs": 0
+    }
+  },
+
   {
     "name": "Shredded Wheat",
     "protein": 7,
@@ -6302,7 +6331,7 @@
     }
   },
   {
-    "name": "Starbucks Bacon & Gruy\u00e8re Egg Bites - 2 bites",
+    "name": "Starbucks Bacon & Gruyère Egg Bites - 2 bites",
     "protein": 19,
     "carbs": 9,
     "fats": 20,
@@ -7110,7 +7139,7 @@
     }
   },
   {
-    "name": "Milk reduced \u00be cup**",
+    "name": "Milk reduced ¾ cup**",
     "protein": 6.1,
     "carbs": 9.1,
     "fats": 3.6,
@@ -7216,7 +7245,7 @@
     }
   },
   {
-    "name": "Milk reduced \u00bd cup",
+    "name": "Milk reduced ½ cup",
     "protein": 4.1,
     "carbs": 6.1,
     "fats": 2.4,
@@ -7322,7 +7351,7 @@
     }
   },
   {
-    "name": "Milk reduced \u215c cup*",
+    "name": "Milk reduced ⅜ cup*",
     "protein": 3,
     "carbs": 4.6,
     "fats": 1.8,
@@ -16723,7 +16752,7 @@
     }
   },
   {
-    "name": "Milk whole \u00be cup**",
+    "name": "Milk whole ¾ cup**",
     "protein": 5.8,
     "carbs": 8.8,
     "fats": 5.9,
@@ -16829,7 +16858,7 @@
     }
   },
   {
-    "name": "Milk whole \u00bd cup",
+    "name": "Milk whole ½ cup",
     "protein": 3.9,
     "carbs": 5.9,
     "fats": 4,
@@ -16935,7 +16964,7 @@
     }
   },
   {
-    "name": "Milk whole \u215c cup*",
+    "name": "Milk whole ⅜ cup*",
     "protein": 2.9,
     "carbs": 4.4,
     "fats": 3,
@@ -23631,7 +23660,7 @@
     }
   },
   {
-    "name": "Lactaid whole milk \u00be cup**",
+    "name": "Lactaid whole milk ¾ cup**",
     "protein": 6,
     "carbs": 9.8,
     "fats": 6,
@@ -23737,7 +23766,7 @@
     }
   },
   {
-    "name": "Lactaid whole milk \u00bd cup",
+    "name": "Lactaid whole milk ½ cup",
     "protein": 4,
     "carbs": 6.5,
     "fats": 4,
@@ -23843,7 +23872,7 @@
     }
   },
   {
-    "name": "Lactaid whole milk \u215c cup*",
+    "name": "Lactaid whole milk ⅜ cup*",
     "protein": 3,
     "carbs": 4.9,
     "fats": 3,
@@ -24161,7 +24190,7 @@
     }
   },
   {
-    "name": "Lactaid calcium enriched milk \u00be cup**",
+    "name": "Lactaid calcium enriched milk ¾ cup**",
     "protein": 6,
     "carbs": 9.8,
     "fats": 6,
@@ -24267,7 +24296,7 @@
     }
   },
   {
-    "name": "Lactaid calcium enriched milk \u00bd cup",
+    "name": "Lactaid calcium enriched milk ½ cup",
     "protein": 4,
     "carbs": 6.5,
     "fats": 4,
@@ -24373,7 +24402,7 @@
     }
   },
   {
-    "name": "Lactaid calcium enriched milk \u215c cup*",
+    "name": "Lactaid calcium enriched milk ⅜ cup*",
     "protein": 3,
     "carbs": 4.9,
     "fats": 3,
@@ -24683,7 +24712,7 @@
     }
   },
   {
-    "name": "Cereal - Crispix 1\u00bd cups**",
+    "name": "Cereal - Crispix 1½ cups**",
     "protein": 3.5,
     "carbs": 38.3,
     "fats": 0,
@@ -24785,7 +24814,7 @@
     }
   },
   {
-    "name": "Cereal - Crispix \u00be cup*",
+    "name": "Cereal - Crispix ¾ cup*",
     "protein": 1.7,
     "carbs": 19.1,
     "fats": 0,
@@ -25091,7 +25120,7 @@
     }
   },
   {
-    "name": "Cereal - Signature Select's Crispy Rice 1\u00bd cups**",
+    "name": "Cereal - Signature Select's Crispy Rice 1½ cups**",
     "protein": 3,
     "carbs": 36,
     "fats": 0.5,
@@ -25193,7 +25222,7 @@
     }
   },
   {
-    "name": "Cereal - Signature Select's Crispy Rice \u00be cup*",
+    "name": "Cereal - Signature Select's Crispy Rice ¾ cup*",
     "protein": 1.5,
     "carbs": 18,
     "fats": 0.2,
@@ -25499,7 +25528,7 @@
     }
   },
   {
-    "name": "Cereal - Kellogg's Rice Krispies 1\u00bd cups**",
+    "name": "Cereal - Kellogg's Rice Krispies 1½ cups**",
     "protein": 3,
     "carbs": 36,
     "fats": 0,
@@ -25601,7 +25630,7 @@
     }
   },
   {
-    "name": "Cereal - Kellogg's Rice Krispies \u00be cup*",
+    "name": "Cereal - Kellogg's Rice Krispies ¾ cup*",
     "protein": 1.5,
     "carbs": 18,
     "fats": 0,
@@ -25911,7 +25940,7 @@
     }
   },
   {
-    "name": "Cereal - Instant oats 1\u00bd cups**",
+    "name": "Cereal - Instant oats 1½ cups**",
     "protein": 14.6,
     "carbs": 84.4,
     "fats": 8.4,
@@ -26015,7 +26044,7 @@
     }
   },
   {
-    "name": "Cereal - Instant oats \u00be cup*",
+    "name": "Cereal - Instant oats ¾ cup*",
     "protein": 7.3,
     "carbs": 42.2,
     "fats": 4.2,
@@ -26327,7 +26356,7 @@
     }
   },
   {
-    "name": "Cereal - Rolled oats 1\u00bd cups**",
+    "name": "Cereal - Rolled oats 1½ cups**",
     "protein": 16,
     "carbs": 82.2,
     "fats": 8,
@@ -26431,7 +26460,7 @@
     }
   },
   {
-    "name": "Cereal - Rolled oats \u00be cup*",
+    "name": "Cereal - Rolled oats ¾ cup*",
     "protein": 8,
     "carbs": 41.1,
     "fats": 4,
@@ -26641,7 +26670,7 @@
     }
   },
   {
-    "name": "Edamame \u00bd cup (78g, shelled)",
+    "name": "Edamame ½ cup (78g, shelled)",
     "protein": 9.3,
     "carbs": 6.9,
     "fats": 4.1,
@@ -31125,7 +31154,7 @@
     }
   },
   {
-    "name": "Mushrooms (UV-exposed) \u00bd cup",
+    "name": "Mushrooms (UV-exposed) ½ cup",
     "protein": 1.6,
     "carbs": 2.2,
     "fats": 0.2,
@@ -31263,7 +31292,7 @@
     }
   },
   {
-    "name": "Sprouts Alfalfa, Broccoli & Kale Nutritional Blend \u00bd cup",
+    "name": "Sprouts Alfalfa, Broccoli & Kale Nutritional Blend ½ cup",
     "protein": 0.7,
     "carbs": 0.3,
     "fats": 0.1,
