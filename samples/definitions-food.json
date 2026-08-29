@@ -13594,6 +13594,29 @@
     }
   },
   {
+    "name": "Junk Food - Tim's Potato Chips Jalapeno 1 bag (2 oz)",
+    "protein": 4,
+    "carbs": 31,
+    "fats": 16,
+    "micros": {
+      "fiber": 3,
+      "sodium": 440,
+      "potassium": 690,
+      "calcium": 10,
+      "iron": 1.1,
+      "vitaminD": 0
+    },
+    "longevity": {
+      "saturatedFat": 2,
+      "transFat": 0,
+      "cholesterol": 0
+    },
+    "carbQuality": {
+      "glycemicIndex": 56,
+      "addedSugar": 1
+    }
+  },
+  {
     "name": "Junk Food - Nongshim Shin Ramyun Ramen",
     "protein": 11,
     "carbs": 83,
