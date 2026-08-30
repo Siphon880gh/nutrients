@@ -35,7 +35,7 @@ Parent: [AGENTS_CODE_REFERENCE.md](./AGENTS_CODE_REFERENCE.md)
 ├── .week__nav              (Previous/Next week, range, This week, Favorites)
 ├── .week__days-toolbar     (* N hint + Export / Import / Import sample / Clear)
 │   └── .week__days-actions
-├── .week__highlight-bar    (Food visibility: pen + wrap + food notes)
+├── .week__highlight-bar    (Advanced + Quiz mode; food visibility + notes)
 │   ├── #day-highlights-toggle
 │   ├── #day-word-wrap-toggle
 │   └── #day-food-notes
@@ -100,6 +100,8 @@ Native `<textarea>` cannot color individual words, and overlaying a transparent 
 **Diary favorites + search** — **Favorite week** (`#week-nav-favorite`) and **Search** (`#diary-search-open`) sit above the Mon–Sun day grid (`.week__days-favorite-week`). Search opens `#diary-search-modal`; its native autocomplete lists food definitions, results scan every saved date in `dayMealsByDate`, show a short meal-line brief, and **Jump to day** loads the containing week and focuses that weekday (including the mobile carousel). Per-day Favorite uses `data-action="favorite-day"`; disabled when that day has no notes (same as Clear/Copy). Add/edit uses `#favorite-edit-modal` (`#favorite-edit-name`, `#favorite-edit-description`, `#favorite-edit-modal-hint`, `#favorite-edit-error`). `#favorites-sidebar` is a fixed right slide-in (not a `.modal`): backdrop + `.favorites-sidebar__panel`, class `favorites-sidebar--open`, `inert` when closed. Browse list `#favorites-list`; **Manage** (`#favorites-manage-toggle`) swaps to `#favorites-manage-list` (↑↓ / Edit / Delete). Empty copy `#favorites-empty`; hint `#favorites-sidebar-hint`. Persisted in `nutrients_favorites` (per `userId`). Jumping to a favorite **day** sets session `activeFavoriteDayKey` and applies `.day--favorite-day` (teal `#1f5c53` / `#2a7a6e` / `#eef7f5`, distinct from `.day--today` blue); choosing another favorite day clears the previous highlight first; jumping to a favorite **week** clears the day highlight. When both today and favorite apply, `.day--today.day--favorite-day` keeps the teal favorite styling.
 
 **`.week__highlight-bar`** — separate row below the toolbar (`position: relative; z-index: 10` so popovers stack above `.week__grid`): **Food visibility** controls — `#day-highlights-toggle` pen and `#day-word-wrap-toggle` wrap icon (both `.week__highlight-toggle`, persisted on/off; wrap off sets body `day-word-wrap-off`) — plus `#day-food-notes`.
+
+**Quiz mode** — `#week-quiz-open`, beside **Advanced**, opens `#week-quiz-modal`. The responsive modal uses a compact top-to-bottom flow: purpose preface, collapsible **Favorited** first (persistent portions, automatically selected), then **Current week** (matched food + serving-quantity combinations, unselected on every open), followed by the generated quiz. Current-week Select all/Clear actions live inside that panel. A star adds/removes a current portion from favorites; the Favorited list has **Remove**, which also deselects that portion. The readonly CSV stays hidden until a portion is selected, with Copy CSV and Open Quiz App actions in the footer. Food names wrap on their own line; calories/protein/carbs/fats sit on a separate scan row. Food lists cap their height and scroll only when needed; narrow-width controls and footer actions reflow without reserving blank panel height.
 
 **`#day-unmatched-lines`** (`.week__unmatched-lines`, `role="status"`) — sibling below the highlight bar; `[hidden]` only when there are zero unmatched lines. JS injects:
 

@@ -184,6 +184,15 @@ One settings document per user:
   dayHighlights: boolean,           // default true
   dayWordWrap: boolean,             // default true
   dayEntryAdvanced: boolean,        // default false — free-text day editors; guided Add food when false
+  quizFavoriteFoods: Array<{        // Quiz mode: persistent food + serving portions, auto-selected
+    id: string,
+    keywordId: string,
+    name: string,
+    servings: number,
+    protein: number,                // base listed-serving snapshot (g)
+    carbs: number,                  // base listed-serving snapshot (g)
+    fats: number                    // base listed-serving snapshot (g)
+  }>,
   microViewDaily: boolean,
   microShowDv: boolean,
   showAcuteSideEffects: boolean,

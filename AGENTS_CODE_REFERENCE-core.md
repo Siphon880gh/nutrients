@@ -405,6 +405,10 @@ Default day UI is a **MyFitnessPal-style list** (not free-text). Body class `day
 
 **Hint** — `#week-days-hint` swaps guided vs advanced copy in `syncDayEntryModeUi`.
 
+### Quiz mode
+
+`#week-quiz-open` sits beside **Advanced** and opens `#week-quiz-modal`. `weekQuizEntriesFromViewedWeek()` scans the seven visible day editors with the same longest-name match boundaries and `keywordServingMultiplier()` rule as dashboard totals. It deduplicates identical food + multiplier pairs, but keeps different multipliers as separate selectable portions. The picker puts collapsible **Favorited** above **Current week**. Current-week portions reset to unselected on every open; favorites load from settings `quizFavoriteFoods`, resolve against the latest food definition (with stored macro fallback), and are automatically selected. Starring a current portion persists a food+serving snapshot; removing it from either group unfavorites and deselects it. Each selected portion previews calories plus protein/carbs/fats and generates five Quiz App flash-card CSV rows: serving, total calories, protein, carbs, and fats. `weekQuizCsvCell()` applies standard CSV quote escaping; the modal hides its empty CSV field until at least one portion is selected, copies raw CSV, and opens the user-provided intake page in a new tab.
+
 ## Food-name suggestions (day autocomplete)
 
 Advanced mode only (textarea). While typing on the **current line** of a day textarea, a popover suggests matching food-definition names (all matches).

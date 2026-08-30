@@ -266,6 +266,7 @@ var NutrientsPersist = (function () {
       dayHighlights: true,
       dayWordWrap: true,
       dayEntryAdvanced: false,
+      quizFavoriteFoods: [],
       microViewDaily: false,
       microShowDv: false,
       showAcuteSideEffects: false,

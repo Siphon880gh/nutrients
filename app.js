@@ -553,6 +553,24 @@
   var dayEntryAdvancedToggleBtn = document.getElementById(
     "day-entry-advanced-toggle"
   );
+  var weekQuizOpenBtn = document.getElementById("week-quiz-open");
+  var weekQuizModalEl = document.getElementById("week-quiz-modal");
+  var weekQuizWeekLabelEl = document.getElementById("week-quiz-week-label");
+  var weekQuizFoodSummaryEl = document.getElementById("week-quiz-food-summary");
+  var weekQuizFoodListEl = document.getElementById("week-quiz-food-list");
+  var weekQuizEmptyEl = document.getElementById("week-quiz-empty");
+  var weekQuizCurrentCountEl = document.getElementById("week-quiz-current-count");
+  var weekQuizFavoritesCountEl = document.getElementById("week-quiz-favorites-count");
+  var weekQuizFavoritesListEl = document.getElementById("week-quiz-favorites-list");
+  var weekQuizFavoritesEmptyEl = document.getElementById("week-quiz-favorites-empty");
+  var weekQuizSelectAllBtn = document.getElementById("week-quiz-select-all");
+  var weekQuizClearBtn = document.getElementById("week-quiz-clear");
+  var weekQuizOutputSummaryEl = document.getElementById("week-quiz-output-summary");
+  var weekQuizCsvEl = document.getElementById("week-quiz-csv");
+  var weekQuizCopyStatusEl = document.getElementById("week-quiz-copy-status");
+  var weekQuizCopyBtn = document.getElementById("week-quiz-copy");
+  var weekQuizOpenAppBtn = document.getElementById("week-quiz-open-app");
+  var weekQuizDoneBtn = document.getElementById("week-quiz-done");
   var weekDaysHintEl = document.getElementById("week-days-hint");
   var addFoodModalEl = document.getElementById("add-food-modal");
   var addFoodModalTitleEl = document.getElementById("add-food-modal-title");
@@ -628,6 +646,12 @@
   var activeDiarySearchDayKey = null;
   var favoriteEditPending = null;
   var favoritesManaging = false;
+  var weekQuizEntries = [];
+  var weekQuizFavoriteFoods = [];
+  var weekQuizResolvedFavorites = [];
+  var weekQuizSelectedKeys = {};
+  var QUIZ_APP_URL =
+    "https://wengindustries.com/app/quiz-gsheet/gsheets/_Special%20-%20User%20Provides/Intake.php";
   var dashboardMacroPctView = false;
   var macroNeedDenomMode = "target";
   var activeMacroRankDayId = null;
@@ -10397,6 +10421,7 @@
       (copyConflictModalEl && !copyConflictModalEl.hidden) ||
       (favoriteEditModalEl && !favoriteEditModalEl.hidden) ||
       (addFoodModalEl && !addFoodModalEl.hidden) ||
+      (weekQuizModalEl && !weekQuizModalEl.hidden) ||
       isFavoritesSidebarOpen() ||
       (microGapsModalEl && !microGapsModalEl.hidden) ||
       (healthTimelineModalEl && !healthTimelineModalEl.hidden) ||
@@ -19148,6 +19173,7 @@
     loadDayHighlightsPreference();
     loadDayWordWrapPreference();
     loadDayEntryAdvancedPreference();
+    loadWeekQuizFavorites();
     loadDayEditorHeight();
     loadMicroViewDaily();
     loadShowMicroDailyDv();
@@ -23633,6 +23659,573 @@
 
   function goToThisWeek() {
     setViewedWeekStart(currentWeekMondayKey());
+  }
+
+  function weekQuizServingValue(value) {
+    var n = Number(value);
+    if (!isFinite(n) || n <= 0) return 1;
+    return Math.round(n * 1000) / 1000;
+  }
+
+  function weekQuizServingLabel(servings) {
+    return fmtNum(weekQuizServingValue(servings)) + " × listed serving";
+  }
+
+  function weekQuizEntryKey(keywordId, name, servings) {
+    var foodKey = keywordId
+      ? String(keywordId)
+      : "name:" + String(name || "").trim().toLowerCase();
+    return foodKey + "::" + String(weekQuizServingValue(servings));
+  }
+
+  function weekQuizEntriesFromViewedWeek() {
+    var entries = [];
+    var byKey = {};
+    var keywordByName = {};
+
+    keywords.forEach(function (kw) {
+      var name = String(kw.name || "").trim();
+      var normalized = name.toLowerCase();
+      if (name && !keywordByName[normalized]) keywordByName[normalized] = kw;
+    });
+
+    var regex = buildHighlightRegex(Object.keys(keywordByName));
+    if (!regex) return entries;
+
+    DAYS.forEach(function (day) {
+      var input = document.getElementById(day.id);
+      var text = dayMealsTextWithoutComments(input ? input.value : "");
+      if (!text) return;
+      var match;
+      regex.lastIndex = 0;
+      while ((match = regex.exec(text)) !== null) {
+        var matchedName = String(match[1] || match[0]).toLowerCase();
+        var kw = keywordByName[matchedName];
+        if (!kw) continue;
+        var servings = weekQuizServingValue(
+          keywordServingMultiplier(text, match.index + match[0].length)
+        );
+        var key = weekQuizEntryKey(kw.id, kw.name, servings);
+        var entry = byKey[key];
+        if (!entry) {
+          var protein = servings * parseMacro(kw.protein);
+          var carbs = servings * parseMacro(kw.carbs);
+          var fats = servings * parseMacro(kw.fats);
+          entry = {
+            key: key,
+            keywordId: kw.id,
+            name: String(kw.name || "").trim(),
+            servings: servings,
+            protein: protein,
+            carbs: carbs,
+            fats: fats,
+            calories:
+              protein * CAL_PROTEIN + carbs * CAL_CARBS + fats * CAL_FATS,
+            days: [],
+          };
+          byKey[key] = entry;
+          entries.push(entry);
+        }
+        if (!entry.days.some(function (item) { return item.id === day.id; })) {
+          entry.days.push({
+            id: day.id,
+            label: day.label,
+            date: dateLabelForDayId(day.id),
+          });
+        }
+        if (match[0].length === 0) regex.lastIndex += 1;
+      }
+    });
+
+    return entries;
+  }
+
+  function weekQuizDaysLabel(entry) {
+    return entry.days
+      .map(function (day) {
+        return day.label.slice(0, 3) + (day.date ? " " + day.date : "");
+      })
+      .join(", ");
+  }
+
+  function weekQuizCsvCell(value) {
+    return '"' + String(value == null ? "" : value).replace(/"/g, '""') + '"';
+  }
+
+  function weekQuizCsvRow(cells) {
+    return cells.map(weekQuizCsvCell).join(",");
+  }
+
+  function weekQuizFlashCardRow(entry, topic, prompt, answer) {
+    return weekQuizCsvRow([
+      "",
+      entry.name + " · " + topic,
+      entry.name + "\n\n" + prompt + "\n===\n" + answer,
+      "Recall the answer, flip the card, then mark whether you remembered it.",
+      "Flash card",
+      "1",
+      "Got it correct",
+      "Got it wrong",
+    ]);
+  }
+
+  function weekQuizCsvForEntries(entries) {
+    if (!entries.length) return "";
+    var rows = [
+      weekQuizCsvRow([
+        "",
+        "Title",
+        "Question",
+        "Instruction",
+        "Question Type",
+        "Correct Choice",
+        "Choice 1",
+        "Choice 2",
+      ]),
+    ];
+    entries.forEach(function (entry) {
+      var serving = weekQuizServingLabel(entry.servings);
+      rows.push(
+        weekQuizFlashCardRow(
+          entry,
+          "Serving",
+          "What serving quantity did I use?",
+          "Serving: " + serving
+        )
+      );
+      rows.push(
+        weekQuizFlashCardRow(
+          entry,
+          "Calories",
+          "For " + serving + ", how many total calories?",
+          "Total calories: " + fmtNum(entry.calories) + " cal"
+        )
+      );
+      rows.push(
+        weekQuizFlashCardRow(
+          entry,
+          "Protein",
+          "For " + serving + ", how much protein?",
+          "Protein: " + fmtNum(entry.protein) + " g"
+        )
+      );
+      rows.push(
+        weekQuizFlashCardRow(
+          entry,
+          "Carbs",
+          "For " + serving + ", how many carbs?",
+          "Carbs: " + fmtNum(entry.carbs) + " g"
+        )
+      );
+      rows.push(
+        weekQuizFlashCardRow(
+          entry,
+          "Fats",
+          "For " + serving + ", how much fat?",
+          "Fats: " + fmtNum(entry.fats) + " g"
+        )
+      );
+    });
+    return rows.join("\n");
+  }
+
+  function normalizeWeekQuizFavorite(raw) {
+    if (!raw || typeof raw !== "object") return null;
+    var name = String(raw.name || "").trim();
+    if (!name) return null;
+    var servings = weekQuizServingValue(raw.servings);
+    var keywordId = raw.keywordId ? String(raw.keywordId) : "";
+    var protein = parseMacro(raw.protein);
+    var carbs = parseMacro(raw.carbs);
+    var fats = parseMacro(raw.fats);
+    return {
+      id:
+        String(raw.id || "") ||
+        "quizfav-" + weekQuizEntryKey(keywordId, name, servings),
+      keywordId: keywordId,
+      name: name,
+      servings: servings,
+      protein: protein,
+      carbs: carbs,
+      fats: fats,
+      calories: protein * CAL_PROTEIN + carbs * CAL_CARBS + fats * CAL_FATS,
+    };
+  }
+
+  function loadWeekQuizFavorites() {
+    weekQuizFavoriteFoods = [];
+    if (!persist) return;
+    var raw = persist.getSetting("quizFavoriteFoods");
+    if (!Array.isArray(raw)) return;
+    raw.forEach(function (item) {
+      var favorite = normalizeWeekQuizFavorite(item);
+      if (!favorite) return;
+      var duplicate = weekQuizFavoriteFoods.some(function (existing) {
+        return existing.id === favorite.id;
+      });
+      if (!duplicate) weekQuizFavoriteFoods.push(favorite);
+    });
+  }
+
+  function saveWeekQuizFavorites() {
+    if (!persist) return;
+    persist.setSetting("quizFavoriteFoods", weekQuizFavoriteFoods.slice());
+  }
+
+  function weekQuizKeywordForFavorite(favorite) {
+    var byId = null;
+    var byName = null;
+    keywords.forEach(function (kw) {
+      if (!byId && favorite.keywordId && kw.id === favorite.keywordId) byId = kw;
+      if (
+        !byName &&
+        String(kw.name || "").trim().toLowerCase() === favorite.name.toLowerCase()
+      ) {
+        byName = kw;
+      }
+    });
+    return byId || byName;
+  }
+
+  function weekQuizEntryFromFavorite(favorite) {
+    var kw = weekQuizKeywordForFavorite(favorite);
+    var servings = weekQuizServingValue(favorite.servings);
+    var name = kw ? String(kw.name || "").trim() : favorite.name;
+    var keywordId = kw ? kw.id : favorite.keywordId;
+    var protein = servings * (kw ? parseMacro(kw.protein) : favorite.protein);
+    var carbs = servings * (kw ? parseMacro(kw.carbs) : favorite.carbs);
+    var fats = servings * (kw ? parseMacro(kw.fats) : favorite.fats);
+    return {
+      key: weekQuizEntryKey(keywordId, name, servings),
+      favoriteId: favorite.id,
+      keywordId: keywordId,
+      name: name,
+      servings: servings,
+      protein: protein,
+      carbs: carbs,
+      fats: fats,
+      calories: protein * CAL_PROTEIN + carbs * CAL_CARBS + fats * CAL_FATS,
+      days: [],
+    };
+  }
+
+  function refreshWeekQuizResolvedFavorites() {
+    weekQuizResolvedFavorites = weekQuizFavoriteFoods.map(
+      weekQuizEntryFromFavorite
+    );
+  }
+
+  function weekQuizFavoriteForEntry(entry) {
+    var servings = weekQuizServingValue(entry.servings);
+    var name = String(entry.name || "").trim().toLowerCase();
+    for (var i = 0; i < weekQuizFavoriteFoods.length; i++) {
+      var favorite = weekQuizFavoriteFoods[i];
+      if (weekQuizServingValue(favorite.servings) !== servings) continue;
+      if (
+        (entry.keywordId && favorite.keywordId === entry.keywordId) ||
+        favorite.name.toLowerCase() === name
+      ) {
+        return favorite;
+      }
+    }
+    return null;
+  }
+
+  function selectedWeekQuizEntries() {
+    var selected = [];
+    var seen = {};
+    weekQuizResolvedFavorites.concat(weekQuizEntries).forEach(function (entry) {
+      if (!weekQuizSelectedKeys[entry.key] || seen[entry.key]) return;
+      seen[entry.key] = true;
+      selected.push(entry);
+    });
+    return selected;
+  }
+
+  function weekQuizStatsHtml(entry) {
+    return (
+      '<span class="week-quiz-modal__food-stats" aria-label="' +
+      escapeAttr(
+        fmtNum(entry.calories) +
+          " calories, " +
+          fmtNum(entry.protein) +
+          " grams protein, " +
+          fmtNum(entry.carbs) +
+          " grams carbs, " +
+          fmtNum(entry.fats) +
+          " grams fat"
+      ) +
+      '">' +
+      '<span>' + escapeHtml(fmtNum(entry.calories)) + " cal</span>" +
+      '<span>' + escapeHtml(fmtNum(entry.protein)) + "g P</span>" +
+      '<span>' + escapeHtml(fmtNum(entry.carbs)) + "g C</span>" +
+      '<span>' + escapeHtml(fmtNum(entry.fats)) + "g F</span>" +
+      "</span>"
+    );
+  }
+
+  function weekQuizFoodMainHtml(entry, showDays) {
+    return (
+      '<span class="week-quiz-modal__food-main">' +
+      '<span class="week-quiz-modal__food-name">' +
+      escapeHtml(entry.name) +
+      "</span>" +
+      '<span class="week-quiz-modal__food-meta">' +
+      escapeHtml(weekQuizServingLabel(entry.servings)) +
+      (showDays && entry.days.length
+        ? " · " + escapeHtml(weekQuizDaysLabel(entry))
+        : "") +
+      "</span>" +
+      "</span>"
+    );
+  }
+
+  function weekQuizCurrentRowHtml(entry, index) {
+    var favorite = weekQuizFavoriteForEntry(entry);
+    var checked = !!weekQuizSelectedKeys[entry.key] || !!favorite;
+    var inputId = "week-quiz-current-" + index;
+    return (
+      '<div class="week-quiz-modal__food-row">' +
+      '<input id="' +
+      inputId +
+      '" type="checkbox" class="week-quiz-modal__checkbox" data-week-quiz-key="' +
+      escapeAttr(entry.key) +
+      '"' +
+      (checked ? " checked" : "") +
+      (favorite ? " disabled" : "") +
+      ">" +
+      '<label class="week-quiz-modal__food-label" for="' + inputId + '">' +
+      weekQuizFoodMainHtml(entry, true) +
+      weekQuizStatsHtml(entry) +
+      "</label>" +
+      '<button type="button" class="week-quiz-modal__favorite-btn' +
+      (favorite ? " week-quiz-modal__favorite-btn--active" : "") +
+      '" data-week-quiz-favorite-action="' +
+      (favorite ? "remove" : "add") +
+      '" data-week-quiz-key="' +
+      escapeAttr(entry.key) +
+      '" aria-pressed="' +
+      (favorite ? "true" : "false") +
+      '" aria-label="' +
+      escapeAttr((favorite ? "Remove " : "Favorite ") + entry.name) +
+      '"><span aria-hidden="true">' +
+      (favorite ? "★" : "☆") +
+      "</span></button>" +
+      "</div>"
+    );
+  }
+
+  function weekQuizFavoriteRowHtml(entry) {
+    return (
+      '<div class="week-quiz-modal__food-row week-quiz-modal__food-row--favorite">' +
+      '<span class="week-quiz-modal__included-mark" aria-label="Automatically included">✓</span>' +
+      '<div class="week-quiz-modal__food-label">' +
+      weekQuizFoodMainHtml(entry, false) +
+      weekQuizStatsHtml(entry) +
+      "</div>" +
+      '<button type="button" class="week-quiz-modal__remove-btn" data-week-quiz-remove-favorite="' +
+      escapeAttr(entry.favoriteId) +
+      '" aria-label="Remove ' +
+      escapeAttr(entry.name) +
+      ' from favorites">Remove</button>' +
+      "</div>"
+    );
+  }
+
+  function renderWeekQuizOutput() {
+    var selected = selectedWeekQuizEntries();
+    var csv = weekQuizCsvForEntries(selected);
+    if (weekQuizCsvEl) {
+      weekQuizCsvEl.value = csv;
+      weekQuizCsvEl.hidden = !csv;
+    }
+    if (weekQuizOutputSummaryEl) {
+      weekQuizOutputSummaryEl.textContent = selected.length
+        ? selected.length +
+          (selected.length === 1 ? " food portion · " : " food portions · ") +
+          selected.length * 5 +
+          " recall cards"
+        : "Select at least one food portion to generate quiz cards.";
+    }
+    if (weekQuizCopyStatusEl) weekQuizCopyStatusEl.textContent = "";
+    if (weekQuizCopyBtn) weekQuizCopyBtn.disabled = !csv;
+    if (weekQuizOpenAppBtn) weekQuizOpenAppBtn.disabled = !csv;
+  }
+
+  function renderWeekQuizFoodList() {
+    var selectedCount = selectedWeekQuizEntries().length;
+    var favoriteCount = weekQuizResolvedFavorites.length;
+    var hasEntries = weekQuizEntries.length > 0;
+    var selectedCurrentCount = weekQuizEntries.filter(function (entry) {
+      return !weekQuizFavoriteForEntry(entry) && !!weekQuizSelectedKeys[entry.key];
+    }).length;
+    var selectableCurrentCount = weekQuizEntries.filter(function (entry) {
+      return !weekQuizFavoriteForEntry(entry);
+    }).length;
+    if (weekQuizFoodSummaryEl) {
+      weekQuizFoodSummaryEl.textContent =
+        selectedCount +
+        (selectedCount === 1 ? " food portion selected" : " food portions selected") +
+        (favoriteCount
+          ? " · " + favoriteCount + " automatically included from favorites."
+          : ".");
+    }
+    if (weekQuizCurrentCountEl) {
+      weekQuizCurrentCountEl.textContent = String(weekQuizEntries.length);
+    }
+    if (weekQuizFavoritesCountEl) {
+      weekQuizFavoritesCountEl.textContent = String(favoriteCount);
+    }
+    if (weekQuizEmptyEl) weekQuizEmptyEl.hidden = hasEntries;
+    if (weekQuizFoodListEl) {
+      weekQuizFoodListEl.hidden = !hasEntries;
+      weekQuizFoodListEl.innerHTML = weekQuizEntries
+        .map(function (entry, index) {
+          return weekQuizCurrentRowHtml(entry, index);
+        })
+        .join("");
+    }
+    if (weekQuizFavoritesEmptyEl) {
+      weekQuizFavoritesEmptyEl.hidden = favoriteCount > 0;
+    }
+    if (weekQuizFavoritesListEl) {
+      weekQuizFavoritesListEl.hidden = favoriteCount === 0;
+      weekQuizFavoritesListEl.innerHTML = weekQuizResolvedFavorites
+        .map(weekQuizFavoriteRowHtml)
+        .join("");
+    }
+    if (weekQuizSelectAllBtn) {
+      weekQuizSelectAllBtn.disabled =
+        !selectableCurrentCount || selectedCurrentCount === selectableCurrentCount;
+    }
+    if (weekQuizClearBtn) weekQuizClearBtn.disabled = !selectedCurrentCount;
+    renderWeekQuizOutput();
+  }
+
+  function setAllWeekQuizEntriesSelected(selected) {
+    weekQuizEntries.forEach(function (entry) {
+      if (weekQuizFavoriteForEntry(entry)) {
+        weekQuizSelectedKeys[entry.key] = true;
+      } else {
+        weekQuizSelectedKeys[entry.key] = !!selected;
+      }
+    });
+    renderWeekQuizFoodList();
+  }
+
+  function weekQuizEntryByKey(key) {
+    var all = weekQuizEntries.concat(weekQuizResolvedFavorites);
+    for (var i = 0; i < all.length; i++) {
+      if (all[i].key === key) return all[i];
+    }
+    return null;
+  }
+
+  function addWeekQuizFavorite(entry) {
+    if (!entry || weekQuizFavoriteForEntry(entry)) return;
+    weekQuizFavoriteFoods.push({
+      id: "quizfav-" + Date.now() + "-" + Math.floor(Math.random() * 100000),
+      keywordId: entry.keywordId || "",
+      name: entry.name,
+      servings: entry.servings,
+      protein: parseMacro(entry.protein) / weekQuizServingValue(entry.servings),
+      carbs: parseMacro(entry.carbs) / weekQuizServingValue(entry.servings),
+      fats: parseMacro(entry.fats) / weekQuizServingValue(entry.servings),
+    });
+    saveWeekQuizFavorites();
+    refreshWeekQuizResolvedFavorites();
+    weekQuizSelectedKeys[entry.key] = true;
+    renderWeekQuizFoodList();
+  }
+
+  function removeWeekQuizFavoriteById(id) {
+    var index = -1;
+    var removedEntry = null;
+    for (var i = 0; i < weekQuizFavoriteFoods.length; i++) {
+      if (weekQuizFavoriteFoods[i].id === id) {
+        index = i;
+        removedEntry = weekQuizEntryFromFavorite(weekQuizFavoriteFoods[i]);
+        break;
+      }
+    }
+    if (index < 0) return;
+    weekQuizFavoriteFoods.splice(index, 1);
+    saveWeekQuizFavorites();
+    refreshWeekQuizResolvedFavorites();
+    if (removedEntry) weekQuizSelectedKeys[removedEntry.key] = false;
+    weekQuizResolvedFavorites.forEach(function (entry) {
+      weekQuizSelectedKeys[entry.key] = true;
+    });
+    renderWeekQuizFoodList();
+  }
+
+  function prepareWeekQuizEntries() {
+    flushEditorsToDayMeals();
+    weekQuizEntries = weekQuizEntriesFromViewedWeek();
+    refreshWeekQuizResolvedFavorites();
+    weekQuizSelectedKeys = {};
+    weekQuizResolvedFavorites.forEach(function (entry) {
+      weekQuizSelectedKeys[entry.key] = true;
+    });
+  }
+
+  function openWeekQuizModal() {
+    if (!weekQuizModalEl) return;
+    closeAllDayCopyMenus();
+    prepareWeekQuizEntries();
+    if (weekQuizWeekLabelEl) {
+      weekQuizWeekLabelEl.textContent = formatWeekRangeLabel(viewedWeekStart);
+    }
+    renderWeekQuizFoodList();
+    weekQuizModalEl.hidden = false;
+    updateBodyModalOpen();
+    window.requestAnimationFrame(function () {
+      var closeBtn = weekQuizModalEl.querySelector(".modal__close");
+      if (closeBtn) closeBtn.focus();
+    });
+  }
+
+  function closeWeekQuizModal() {
+    if (!weekQuizModalEl) return;
+    weekQuizModalEl.hidden = true;
+    if (weekQuizCopyStatusEl) weekQuizCopyStatusEl.textContent = "";
+    updateBodyModalOpen();
+    if (weekQuizOpenBtn) weekQuizOpenBtn.focus();
+  }
+
+  function copyWeekQuizCsv() {
+    if (!weekQuizCsvEl || !weekQuizCsvEl.value) return;
+    var text = weekQuizCsvEl.value;
+    function finish(copied) {
+      if (!weekQuizCopyStatusEl) return;
+      weekQuizCopyStatusEl.textContent = copied
+        ? "Quiz CSV copied. Open the Quiz App and paste it into the intake form."
+        : "Could not copy automatically. Select the CSV text and copy it manually.";
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function () {
+        finish(true);
+      }).catch(function () {
+        weekQuizCsvEl.focus();
+        weekQuizCsvEl.select();
+        finish(false);
+      });
+      return;
+    }
+    weekQuizCsvEl.focus();
+    weekQuizCsvEl.select();
+    var copied = false;
+    try {
+      copied = document.execCommand("copy");
+    } catch (e) {
+      copied = false;
+    }
+    finish(copied);
+  }
+
+  function openWeekQuizApp() {
+    if (!weekQuizCsvEl || !weekQuizCsvEl.value) return;
+    window.open(QUIZ_APP_URL, "_blank", "noopener,noreferrer");
   }
 
   function diarySearchDayFoods(text) {
@@ -28375,6 +28968,10 @@
       closeAddFoodModal();
       return;
     }
+    if (weekQuizModalEl && !weekQuizModalEl.hidden) {
+      closeWeekQuizModal();
+      return;
+    }
     if (isFavoritesSidebarOpen()) {
       closeFavoritesSidebar();
       return;
@@ -31195,6 +31792,67 @@
   if (dayEntryAdvancedToggleBtn) {
     dayEntryAdvancedToggleBtn.addEventListener("click", function () {
       setDayEntryAdvancedEnabled(!dayEntryAdvancedEnabled);
+    });
+  }
+
+  if (weekQuizOpenBtn) {
+    weekQuizOpenBtn.addEventListener("click", openWeekQuizModal);
+  }
+  if (weekQuizDoneBtn) {
+    weekQuizDoneBtn.addEventListener("click", closeWeekQuizModal);
+  }
+  if (weekQuizSelectAllBtn) {
+    weekQuizSelectAllBtn.addEventListener("click", function () {
+      setAllWeekQuizEntriesSelected(true);
+    });
+  }
+  if (weekQuizClearBtn) {
+    weekQuizClearBtn.addEventListener("click", function () {
+      setAllWeekQuizEntriesSelected(false);
+    });
+  }
+  if (weekQuizCopyBtn) {
+    weekQuizCopyBtn.addEventListener("click", copyWeekQuizCsv);
+  }
+  if (weekQuizOpenAppBtn) {
+    weekQuizOpenAppBtn.addEventListener("click", openWeekQuizApp);
+  }
+  if (weekQuizFoodListEl) {
+    weekQuizFoodListEl.addEventListener("change", function (e) {
+      var checkbox = e.target.closest("[data-week-quiz-key]");
+      if (!checkbox) return;
+      var key = checkbox.getAttribute("data-week-quiz-key");
+      if (!key) return;
+      weekQuizSelectedKeys[key] = !!checkbox.checked;
+      renderWeekQuizFoodList();
+    });
+  }
+  if (weekQuizModalEl) {
+    weekQuizModalEl.addEventListener("click", function (e) {
+      if (e.target.closest('[data-action="close-week-quiz-modal"]')) {
+        closeWeekQuizModal();
+        return;
+      }
+      var favoriteBtn = e.target.closest("[data-week-quiz-favorite-action]");
+      if (favoriteBtn) {
+        var entry = weekQuizEntryByKey(
+          favoriteBtn.getAttribute("data-week-quiz-key")
+        );
+        if (!entry) return;
+        if (favoriteBtn.getAttribute("data-week-quiz-favorite-action") === "add") {
+          addWeekQuizFavorite(entry);
+        } else {
+          var favorite = weekQuizFavoriteForEntry(entry);
+          if (favorite) removeWeekQuizFavoriteById(favorite.id);
+        }
+        return;
+      }
+      var removeFavoriteBtn = e.target.closest("[data-week-quiz-remove-favorite]");
+      if (removeFavoriteBtn) {
+        removeWeekQuizFavoriteById(
+          removeFavoriteBtn.getAttribute("data-week-quiz-remove-favorite")
+        );
+      }
     });
   }
 
