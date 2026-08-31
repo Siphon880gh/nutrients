@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Nutrients — Week meals</title>
-  <link rel="stylesheet" href="styles.css?t=1787032100">
+  <link rel="stylesheet" href="styles.css?t=1787032502">
 </head>
 <body class="show-daily-intake-icons day-entry-guided">
   <svg class="app-icon-symbols" width="0" height="0" aria-hidden="true" focusable="false">
@@ -919,10 +919,11 @@
       </div>
     </section>
 
-    <div id="food-definitions-panel" class="modal" hidden>
-      <div class="modal__backdrop" data-action="close-food-definitions-modal"></div>
-      <div class="modal__panel modal__panel--wide keywords-modal__panel" role="dialog" aria-modal="true" aria-labelledby="food-definitions-heading">
-      <section class="keywords keywords--modal">
+    <div id="food-definitions-panel" class="app-sheet" hidden>
+      <div class="app-sheet__backdrop" data-action="close-food-definitions-modal"></div>
+      <div class="app-sheet__panel keywords-sheet__panel" role="dialog" aria-modal="true" aria-labelledby="food-definitions-heading">
+      <div class="app-sheet__body">
+      <section class="keywords keywords--sheet">
       <form id="keywords-form">
         <div class="keywords__header">
         <h2 id="food-definitions-heading" class="keywords__title">Food definitions</h2>
@@ -1081,6 +1082,7 @@
         </div>
       </div>
       </section>
+      </div>
       </div>
     </div>
 
@@ -2934,6 +2936,6 @@
   <script src="demographic-dv.js?t=1786025201"></script>
   <script src="longevity-dv.js?t=1784087915"></script>
   <script src="persist.js?t=1786431230"></script>
-  <script src="app.js?t=1787032100"></script>
+  <script src="app.js?t=1787032501"></script>
 </body>
 </html>

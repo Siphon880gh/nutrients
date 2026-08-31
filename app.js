@@ -18086,6 +18086,7 @@
     if (foodDefinitionsOpen) {
       setMicroRequirementsOpen(false);
       setLongevityPanelOpen(false);
+      resetAppSheetScroll(foodDefinitionsPanelEl);
     }
     syncExclusiveOverlayUi();
   }

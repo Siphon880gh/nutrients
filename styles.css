@@ -1495,6 +1495,10 @@ body.exclusive-overlay-open .app-nav {
   backdrop-filter: none;
 }
 
+body.exclusive-overlay-open .starter-guide {
+  display: none;
+}
+
 body.exclusive-overlay-open::before {
   content: "";
   position: fixed;
@@ -10254,19 +10258,20 @@ body.day-word-wrap-off .day__input {
   display: none;
 }
 
-.keywords--modal {
+.keywords--sheet {
   margin: 0;
   min-height: 0;
-  overflow: auto;
+}
+
+.app-sheet__panel.keywords-sheet__panel {
+  padding: 0;
+}
+
+.app-sheet__panel.keywords-sheet__panel .app-sheet__body {
   padding: 0.75rem 1rem 1rem;
 }
 
-.modal__panel.keywords-modal__panel {
-  max-width: min(72rem, 96vw);
-  max-height: min(90vh, 56rem);
-}
-
-.keywords-modal__panel .keywords__header {
+.keywords-sheet__panel .keywords__header {
   margin-bottom: 0.55rem;
 }
 
@@ -11677,11 +11682,6 @@ body.day-word-wrap-off .day__input {
   align-items: center;
   justify-content: center;
   padding: 1rem;
-}
-
-#food-definitions-panel {
-  top: var(--app-sheet-top, 0px);
-  bottom: var(--app-sheet-bottom, 0px);
 }
 
 #longevity-analysis-modal {
@@ -13834,6 +13834,7 @@ button.longevity-form__label-link:focus-visible {
   .keywords,
   .demographic,
   .modal,
+  #food-definitions-panel,
   .dashboard__micro-intro-actions,
   .dashboard__micro-hint-actions,
   .dashboard__micro-hint-ai,
@@ -14039,6 +14040,7 @@ body.print-preview .starter-guide,
 body.print-preview .keywords,
 body.print-preview .demographic,
 body.print-preview .modal,
+body.print-preview #food-definitions-panel,
 body.print-preview .dashboard__micro-intro-actions,
 body.print-preview .dashboard__micro-hint-actions,
 body.print-preview .dashboard__micro-hint-ai,
