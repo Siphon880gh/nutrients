@@ -66,7 +66,7 @@ When context is tight: read **this file** first, then open the one feature file 
 │  shared resize; Import sample meals; unmatched carousel)│
 ├─────────────────────────────────────────────────────────┤
 │  Food definitions table (CRUD, search/category filter, pagination,│
-│  sort A–Z, optional cal column, micros + longevity       │
+│  sort A–Z, Calories column + optional g↔cal on P/C/F, micros + longevity│
 │  modals, single/bulk/sample import, reorder,             │
 │  move-to-position; empty-state sample link)              │
 │  ← persisted: `nutrients_food_definitions` (+ userId)   │
@@ -227,7 +227,7 @@ Outside main (modal / overlay siblings): `#auth-signup-modal`, `#auth-login-moda
 - **Day editor height:** `loadDayEditorHeight` / `saveDayEditorHeight` / `applyDayEditorHeight` / `bindDayEditorResize`; CSS default `calc(45vh - 2.5rem)` until user resizes ([ui doc](./AGENTS_CODE_REFERENCE-ui.md)).
 - **Food-name suggestions:** `updateDaySuggest` / `positionDaySuggest` / `foodSuggestMatches`; places `.day__suggest` below the caret filling the rest of the editor, or `.day__suggest--above` (pinned from editor top down to the caret) when space below is too tight so the popover does not cover typing ([core doc](./AGENTS_CODE_REFERENCE-core.md)).
 - **Starter guide (empty state):** `maybeShowStarterGuideImportStep` / `advanceStarterGuideAfterImport` / `showStarterGuideStep` / `dismissStarterGuide`; `#keywords-empty` inline sample link (`data-action="import-sample-from-empty"`); session-only `starterGuideEligible` ([core doc](./AGENTS_CODE_REFERENCE-core.md)).
-- **Food table calories column:** `keywordCaloriesOpen` / `toggleKeywordCaloriesOpen` / settings `keywordsCaloriesOpen`; header `.keywords__macro-toggle` switches g ↔ cal ([core doc](./AGENTS_CODE_REFERENCE-core.md)).
+- **Food table calories column:** always-visible **Calories** plus `keywordCaloriesOpen` / `toggleKeywordCaloriesOpen` / settings `keywordsCaloriesOpen` for Prot/Carbs/Fats g ↔ cal ([core doc](./AGENTS_CODE_REFERENCE-core.md)).
 - **Def modal ↔ sources modal:** `defModalReturnSources` + `#micro-def-modal-back` (`data-action="return-to-sources-modal"`); title links in sources modals open explain modal with return stack ([core doc](./AGENTS_CODE_REFERENCE-core.md)).
 - **% DV / longevity colors:** edit tiers in `config.json` (`microDvStatus`, `longevityStatus`); All-topics button colors in `longevityNavTopicColors`. Read by `tierForMicroPct` / `tierForLongevityPct`.
 - **Highlighting** requires mirror DOM; do not style matches only in textarea ([ui doc](./AGENTS_CODE_REFERENCE-ui.md)).

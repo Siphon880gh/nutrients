@@ -63,7 +63,7 @@ refreshAll()           → highlights + dashboard (macros, micros, longevity)
 
 - Renders **only the current filtered page** (`keywordsPageBounds().indices`), not all rows.
 - Builds one `<tr data-id="…">` per visible item.
-- Columns: reorder (↑↓, shown when reorder toggle open), name, protein/carbs/fats inputs, micros button (`microsButtonHtml`), longevity button (`longevityButtonHtml`), actions (Import, Delete).
+- Columns: reorder (↑↓, shown when reorder toggle open), name, protein/carbs/fats inputs, **Calories** (always shown), micros button (`microsButtonHtml`), longevity button (`longevityButtonHtml`), actions (Import, Delete).
 - Row actions use `data-action`: `up` | `down` | `delete` | `micros` | `longevity` | `import` | `position` (move-to-position modal).
 - After building rows: toggles `#keywords-empty` (no foods at all), `#keywords-filter-empty` + hides `#keywords-table` (filtered to zero), then `updateKeywordReorderUi` / `updateKeywordCaloriesUi` / `updateKeywordsPaginationUi`.
 
@@ -228,7 +228,7 @@ Demographic + TDEE + body weight live in **`#settings-modal`** (header `#setting
 ## Food table calories column
 
 - **`keywordCaloriesOpen`** — persisted settings `keywordsCaloriesOpen`.
-- Header `.keywords__macro-toggle` (`data-action="toggle-calories"`) switches Prot/Carbs/Fats columns between **(g)** and **(cal)**; reveals **Total (cal)** column.
+- **Macros** — Prot/Carbs/Fats stay editable in **(g)**; header `.keywords__macro-toggle` (`data-action="toggle-calories"`) still switches those three between **(g)** and **(cal)**. **Calories** (`.keywords__th-total--cal`) is always visible (protein×4 + carbs×4 + fats×9).
 - `renderKeywords` writes cal or g values per row when open.
 
 ## localStorage

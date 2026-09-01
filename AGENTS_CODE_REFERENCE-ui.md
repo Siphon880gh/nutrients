@@ -177,7 +177,7 @@ Pen + notes markup is **static** in `index.html`; only labels and popover **cont
 Notable columns:
 
 - **Order** — `.keywords__th-order`; reorder controls revealed by `#keywords-reorder-toggle` (persisted open state).
-- **Macros** — `.keywords__macro-toggle` on Prot/Carbs/Fats headers toggles **(g)** ↔ **(cal)** for all three + shows **Total (cal)** (`.keywords__th-total--cal`, persisted via settings `keywordsCaloriesOpen`).
+- **Macros** — `.keywords__macro-toggle` on Prot/Carbs/Fats headers toggles **(g)** ↔ **(cal)** for those three. **Calories** (`.keywords__th-total--cal`) is always shown.
 - **Micros** — `.keywords__micros` button; filled state class; scrollable text + `data-tooltip` hover.
 - **Longevity** — `.keywords__longevity` button (mirrors micros button pattern).
 - **Actions** — Import, Delete (+ **Move** to position via `#keyword-position-modal`).

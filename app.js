@@ -22237,6 +22237,14 @@
     if (fatsEl) keywords[i].fats = parseMacro(fatsEl.value);
   }
 
+  function updateKeywordRowCalories(row) {
+    var i = keywordIndexFromRow(row);
+    if (i < 0 || i >= keywords.length) return;
+    var calEl = row.querySelector(".keywords__macro--total .keywords__cal");
+    if (!calEl) return;
+    calEl.textContent = keywordMacroCalories(keywords[i]).totalCal;
+  }
+
   function loadKeywordReorderOpen() {
     if (!persist) {
       keywordReorderOpen = false;
@@ -22303,7 +22311,7 @@
       );
     }
     if (keywordsTotalCalHeaderEl) {
-      keywordsTotalCalHeaderEl.hidden = !keywordCaloriesOpen;
+      keywordsTotalCalHeaderEl.hidden = false;
     }
     keywordsCaloriesToggleEls.forEach(function (btn) {
       var label = btn.textContent.trim();
@@ -22680,10 +22688,15 @@
       var proteinVal = kw.protein === "" ? "" : kw.protein;
       var carbsVal = kw.carbs === "" ? "" : kw.carbs;
       var fatsVal = kw.fats === "" ? "" : kw.fats;
+      var cals = keywordMacroCalories(kw);
+      var caloriesCellHtml =
+        '<td class="keywords__macro keywords__macro--total">' +
+        '<span class="keywords__cal">' +
+        escapeHtml(cals.totalCal) +
+        "</span></td>";
       var macroCellsHtml;
 
       if (keywordCaloriesOpen) {
-        var cals = keywordMacroCalories(kw);
         macroCellsHtml =
           '<td class="keywords__macro">' +
           '<span class="keywords__cal">' +
@@ -22697,10 +22710,7 @@
           '<span class="keywords__cal">' +
           escapeHtml(cals.fatsCal) +
           "</span></td>" +
-          '<td class="keywords__macro keywords__macro--total">' +
-          '<span class="keywords__cal">' +
-          escapeHtml(cals.totalCal) +
-          "</span></td>";
+          caloriesCellHtml;
       } else {
         macroCellsHtml =
           '<td class="keywords__macro">' +
@@ -22717,7 +22727,8 @@
           '<input type="number" class="keywords__input keywords__input--num" data-field="fats" min="0" step="0.1" inputmode="decimal" placeholder="0" value="' +
           escapeAttr(fatsVal) +
           '">' +
-          "</td>";
+          "</td>" +
+          caloriesCellHtml;
       }
 
       tr.innerHTML =
@@ -28515,6 +28526,7 @@
     var row = e.target.closest(".keywords__row");
     if (!row) return;
     syncFieldFromDom(row);
+    updateKeywordRowCalories(row);
     saveFoodDefinitions();
     refreshAll();
     if (e.target.matches('[data-field="name"]')) {
