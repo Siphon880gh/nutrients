@@ -230,6 +230,7 @@ Demographic + TDEE + body weight live in **`#settings-modal`** (header `#setting
 - **`keywordCaloriesOpen`** — persisted settings `keywordsCaloriesOpen`.
 - **Macros** — Prot/Carbs/Fats stay editable in **(g)**; header `.keywords__macro-toggle` (`data-action="toggle-calories"`) still switches those three between **(g)** and **(cal)**. **Calories** (`.keywords__th-total--cal`) is always visible (protein×4 + carbs×4 + fats×9).
 - `renderKeywords` writes cal or g values per row when open.
+- **Exclusive overlay tabs** — Food Entry, Macros, Food Sources, Run Analysis, and week prev/next close Food Definitions / Micro requirements / Longevity via `closeExclusiveOverlays()` so those sheets do not stay covering the jump target.
 
 ## localStorage
 

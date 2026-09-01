@@ -10505,6 +10505,12 @@
     syncAppSheetOffset();
   }
 
+  function closeExclusiveOverlays() {
+    if (foodDefinitionsOpen) setFoodDefinitionsOpen(false);
+    if (microRequirementsOpen) setMicroRequirementsOpen(false);
+    if (longevityPanelOpen) setLongevityPanelOpen(false);
+  }
+
   window.addEventListener("resize", syncAppSheetOffset);
 
   function showImportAllError(message) {
@@ -30180,6 +30186,7 @@
       var ae = document.activeElement;
       if (ae && ae.tagName === "SELECT") return;
       e.preventDefault();
+      closeExclusiveOverlays();
       scrollDashboardJumpTarget(document.getElementById("food-entry"));
       stepViewedWeek(e.key === "ArrowLeft" ? -1 : 1);
       return;
@@ -30329,6 +30336,7 @@
 
   if (dashboardMacrosJumpEl) {
     dashboardMacrosJumpEl.addEventListener("click", function () {
+      closeExclusiveOverlays();
       scrollDashboardJumpTarget(dashboardGridEl);
     });
   }
@@ -30354,13 +30362,17 @@
 
   if (dashboardFoodEntryJumpEl) {
     dashboardFoodEntryJumpEl.addEventListener("click", function () {
+      closeExclusiveOverlays();
       scrollDashboardJumpTarget(document.getElementById("food-entry"));
       window.setTimeout(scheduleMacrosCondensedVisibilitySync, 350);
     });
   }
 
   if (dashboardFoodSourcesOpenBtn) {
-    dashboardFoodSourcesOpenBtn.addEventListener("click", openFoodSourcesModal);
+    dashboardFoodSourcesOpenBtn.addEventListener("click", function () {
+      closeExclusiveOverlays();
+      openFoodSourcesModal();
+    });
   }
 
   if (dashboardWeekToggleEl) {
@@ -30377,6 +30389,7 @@
 
   if (dashboardAnalysisToggleEl) {
     dashboardAnalysisToggleEl.addEventListener("click", function () {
+      closeExclusiveOverlays();
       toggleAnalysisShortcut();
     });
   }
