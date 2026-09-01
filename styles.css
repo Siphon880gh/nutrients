@@ -2559,6 +2559,22 @@ button.dashboard__micro-name:focus-visible {
   background: #f3f3f0;
 }
 
+@keyframes food-popover-jump-flash {
+  0%,
+  100% {
+    background: transparent;
+  }
+  12%,
+  55% {
+    background: #fff3c4;
+  }
+}
+
+.dashboard__micro-row--jump-target,
+.dashboard__longevity-row--jump-target {
+  animation: food-popover-jump-flash 1.6s ease;
+}
+
 .dashboard__micro-sources-btn {
   flex-shrink: 0;
   display: inline-flex;
@@ -9067,6 +9083,180 @@ body.day-entry-guided .day__guided {
   background: #f7f7f4;
 }
 
+.day__food-popover {
+  position: fixed;
+  z-index: 120;
+  min-width: 14.5rem;
+  max-width: min(22rem, calc(100vw - 1.5rem));
+  max-height: min(24rem, calc(100vh - 2rem));
+  overflow: auto;
+  padding: 0.65rem 0.75rem 0.7rem;
+  font-size: 0.78rem;
+  line-height: 1.35;
+  color: #333;
+  background: #fff;
+  border: 1px solid #d8dce2;
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+.day__food-popover[hidden] {
+  display: none;
+}
+
+.day__food-popover-title {
+  margin: 0 0 0.45rem;
+  font-size: 0.82rem;
+  font-weight: 650;
+}
+
+.day__food-popover-macros {
+  display: grid;
+  gap: 0.12rem 0;
+  margin: 0 0 0.55rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #ecece8;
+}
+
+.day__food-popover-macros > div {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.35rem 0.75rem;
+}
+
+.day__food-popover-macros dt {
+  margin: 0;
+  color: #6a6a66;
+}
+
+.day__food-popover-macros dd {
+  margin: 0;
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  text-align: right;
+}
+
+.day__food-popover-nutrients-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.4rem;
+  margin: 0 0 0.3rem;
+}
+
+.day__food-popover-nutrients-label {
+  margin: 0;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: #7a7a7a;
+}
+
+.day__food-popover-nutrients-nav {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  flex-shrink: 0;
+}
+
+.day__food-popover-nutrients-page {
+  min-width: 2.4rem;
+  font-size: 0.68rem;
+  font-variant-numeric: tabular-nums;
+  color: #6a6a66;
+  text-align: center;
+}
+
+.day__food-popover-adj {
+  min-width: 1.45rem;
+  height: 1.45rem;
+  padding: 0;
+  border: 1px solid #d0d0cc;
+  border-radius: 4px;
+  background: #fff;
+  color: #3d4a5c;
+  font: inherit;
+  font-size: 0.95rem;
+  font-weight: 600;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.day__food-popover-adj:hover:not(:disabled) {
+  background: #eef3f8;
+  border-color: #b8c8d8;
+}
+
+.day__food-popover-adj:focus-visible {
+  outline: 2px solid #3d6b9e;
+  outline-offset: 1px;
+}
+
+.day__food-popover-adj:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.day__food-popover-nutrients {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.day__food-popover-nutrient {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  gap: 0.2rem 0.55rem;
+  width: 100%;
+  margin: 0;
+  padding: 0.18rem 0.2rem;
+  border: 0;
+  border-radius: 4px;
+  background: transparent;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+button.day__food-popover-nutrient:hover,
+button.day__food-popover-nutrient:focus-visible {
+  background: #f3f3f0;
+}
+
+button.day__food-popover-nutrient:focus-visible {
+  outline: 2px solid #3d6b9e;
+  outline-offset: 1px;
+}
+
+.day__food-popover-nutrient-name {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #444;
+}
+
+.day__food-popover-nutrient-amt {
+  font-variant-numeric: tabular-nums;
+  color: #333;
+  white-space: nowrap;
+}
+
+.day__food-popover-nutrient-pct {
+  min-width: 3.2rem;
+  font-variant-numeric: tabular-nums;
+  color: #6a6a66;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.day__food-popover-empty {
+  margin: 0;
+  color: #7a7a7a;
+}
+
 .day__food-item:last-child {
   border-bottom: none;
 }
@@ -14035,6 +14225,7 @@ body.print-preview .day__food-item-remove,
 body.print-preview .week__entry-mode-toggle,
 body.print-preview .week__unmatched-lines,
 body.print-preview .day__suggest,
+body.print-preview .day__food-popover,
 body.print-preview .week__food-notes,
 body.print-preview .starter-guide,
 body.print-preview .keywords,

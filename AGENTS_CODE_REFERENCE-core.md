@@ -230,6 +230,7 @@ Demographic + TDEE + body weight live in **`#settings-modal`** (header `#setting
 - **`keywordCaloriesOpen`** — persisted settings `keywordsCaloriesOpen`.
 - **Macros** — Prot/Carbs/Fats stay editable in **(g)**; header `.keywords__macro-toggle` (`data-action="toggle-calories"`) still switches those three between **(g)** and **(cal)**. **Calories** (`.keywords__th-total--cal`) is always visible (protein×4 + carbs×4 + fats×9).
 - `renderKeywords` writes cal or g values per row when open.
+- **Food-item nutrient popover** — in guided Food Entry (not Advanced), right-click or two-finger tap on a matched `.day__food-item--food` opens `#day-food-item-popover` with calories/protein/carbs/fats (scaled by servings) plus micronutrients (and longevity amounts) ranked by % target, **10 per page** with ‹ › (`data-action="food-popover-prev|next"`). Clicking a nutrient (`data-action="food-popover-jump"`) closes the popover and scrolls to that row in **Micro requirements** when `microFieldByKey` matches (expanding More for extended fields), else **Longevity**. `hideDayFoodItemPopover` on Escape, outside click, scroll, overlay open, or guided re-render.
 - **Exclusive overlay tabs** — Food Entry, Macros, Food Sources, Run Analysis, and week prev/next close Food Definitions / Micro requirements / Longevity via `closeExclusiveOverlays()` so those sheets do not stay covering the jump target.
 
 ## localStorage

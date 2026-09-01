@@ -553,6 +553,12 @@
   var dayEntryAdvancedToggleBtn = document.getElementById(
     "day-entry-advanced-toggle"
   );
+  var dayFoodItemPopoverEl = document.getElementById("day-food-item-popover");
+  var dayFoodItemPopoverBodyEl = document.getElementById(
+    "day-food-item-popover-body"
+  );
+  var dayFoodItemPopoverOpenedAt = 0;
+  var dayFoodItemPopoverState = null;
   var weekQuizOpenBtn = document.getElementById("week-quiz-open");
   var weekQuizModalEl = document.getElementById("week-quiz-modal");
   var weekQuizWeekLabelEl = document.getElementById("week-quiz-week-label");
@@ -1329,6 +1335,12 @@
   ];
 
   var MICRO_ALL_FIELDS = MICRO_FIELDS.concat(MICRO_EXTENDED_FIELDS);
+
+  var FOOD_ITEM_POPOVER_PAGE_SIZE = 10;
+  var FOOD_ITEM_POPOVER_SKIP_MICRO_KEYS = {
+    solubleFiber: true,
+    insolubleFiber: true,
+  };
 
   var MICRO_DERIVED_DEFS = {
     insolubleToSolubleFiber2To1: {
@@ -8425,6 +8437,16 @@
       true
     );
 
+    window.addEventListener(
+      "scroll",
+      function (e) {
+        var t = e.target;
+        if (t && t.closest && t.closest("#day-food-item-popover")) return;
+        hideDayFoodItemPopover();
+      },
+      true
+    );
+
     window.addEventListener("resize", function () {
       if (targetRefPopoverAnchor && !targetRefPopoverEl.hidden) {
         positionTargetRefPopover(targetRefPopoverAnchor);
@@ -10497,10 +10519,13 @@
   }
 
   function syncExclusiveOverlayUi() {
-    document.body.classList.toggle(
-      "exclusive-overlay-open",
-      !!(foodDefinitionsOpen || microRequirementsOpen || longevityPanelOpen)
+    var overlayOpen = !!(
+      foodDefinitionsOpen ||
+      microRequirementsOpen ||
+      longevityPanelOpen
     );
+    document.body.classList.toggle("exclusive-overlay-open", overlayOpen);
+    if (overlayOpen) hideDayFoodItemPopover();
     updateBodyModalOpen();
     syncAppSheetOffset();
   }
@@ -17612,6 +17637,12 @@
   function longevitySheetScrollEl() {
     return dashboardLongevityPanelEl
       ? dashboardLongevityPanelEl.querySelector(".app-sheet__body")
+      : null;
+  }
+
+  function microSheetScrollEl() {
+    return dashboardMicroPanelEl
+      ? dashboardMicroPanelEl.querySelector(".app-sheet__body")
       : null;
   }
 
@@ -24872,6 +24903,7 @@
     dayEntryAdvancedEnabled = !!enabled;
     saveDayEntryAdvancedPreference();
     syncDayEntryModeUi();
+    hideDayFoodItemPopover();
     if (!dayEntryAdvancedEnabled) {
       hideAllDaySuggests();
       loadEditorsFromDayMeals();
@@ -27621,6 +27653,403 @@
     return String(v);
   }
 
+  function hideDayFoodItemPopover() {
+    if (!dayFoodItemPopoverEl) return;
+    dayFoodItemPopoverEl.hidden = true;
+    if (dayFoodItemPopoverBodyEl) dayFoodItemPopoverBodyEl.innerHTML = "";
+    dayFoodItemPopoverState = null;
+  }
+
+  function positionDayFoodItemPopover(x, y) {
+    if (!dayFoodItemPopoverEl) return;
+    var margin = 8;
+    dayFoodItemPopoverEl.style.left = "0px";
+    dayFoodItemPopoverEl.style.top = "0px";
+    var width = dayFoodItemPopoverEl.offsetWidth;
+    var height = dayFoodItemPopoverEl.offsetHeight;
+    var left = x;
+    var top = y + 6;
+    if (left + width > window.innerWidth - margin) {
+      left = window.innerWidth - width - margin;
+    }
+    if (top + height > window.innerHeight - margin) {
+      top = y - height - 6;
+    }
+    left = Math.max(margin, left);
+    top = Math.max(margin, top);
+    dayFoodItemPopoverEl.style.left = left + "px";
+    dayFoodItemPopoverEl.style.top = top + "px";
+  }
+
+  function foodItemPopoverPushRow(rows, seen, field, amount, source) {
+    if (!field || !field.key || seen[field.key]) return;
+    var n = Number(amount);
+    if (!isFinite(n) || n <= 0) return;
+    seen[field.key] = true;
+    var target = microNutrientTargetPct(field.key, n);
+    var pct =
+      target && target.pct != null && isFinite(target.pct) ? target.pct : null;
+    rows.push({
+      key: field.key,
+      label: field.label,
+      unit: field.unit || "",
+      amount: n,
+      pct: pct,
+      pctText: pct == null ? "" : formatTargetPctNumber(pct),
+      source: source,
+    });
+  }
+
+  function foodItemPopoverNutrientRows(kw, servings) {
+    var rows = [];
+    var seen = {};
+    MICRO_ALL_FIELDS.forEach(function (field) {
+      if (FOOD_ITEM_POPOVER_SKIP_MICRO_KEYS[field.key]) return;
+      var raw;
+      if (field.key === "fiber") raw = fiberTotalFromParts(kw.micros);
+      else raw = kw.micros ? kw.micros[field.key] : "";
+      var n = parseFloat(raw);
+      if (!isFinite(n) || n <= 0) return;
+      foodItemPopoverPushRow(rows, seen, field, n * servings, "micro");
+    });
+    LONGEVITY_FIELDS.forEach(function (field) {
+      if (FOOD_ITEM_POPOVER_SKIP_MICRO_KEYS[field.key]) return;
+      var raw = resolveLongevityValue(kw, field.key);
+      var n = parseFloat(raw);
+      if (!isFinite(n) || n <= 0) return;
+      foodItemPopoverPushRow(rows, seen, field, n * servings, "longevity");
+    });
+    rows.sort(function (a, b) {
+      if (a.pct == null && b.pct == null) return b.amount - a.amount;
+      if (a.pct == null) return 1;
+      if (b.pct == null) return -1;
+      return b.pct - a.pct;
+    });
+    return rows;
+  }
+
+  function foodItemPopoverJumpDest(key) {
+    if (microFieldByKey(key)) return "micro";
+    if (longevityFieldByKey(key)) return "longevity";
+    return "";
+  }
+
+  function foodItemPopoverPageCount(rows) {
+    if (!rows || !rows.length) return 1;
+    return Math.max(1, Math.ceil(rows.length / FOOD_ITEM_POPOVER_PAGE_SIZE));
+  }
+
+  function dayFoodItemPopoverHtml(state) {
+    var entry = state.entry;
+    var kw = state.kw;
+    var servings = Number(entry.servings);
+    if (!isFinite(servings) || servings <= 0) servings = 1;
+    var protein = parseMacro(kw.protein) * servings;
+    var carbs = parseMacro(kw.carbs) * servings;
+    var fats = parseMacro(kw.fats) * servings;
+    var calories = protein * CAL_PROTEIN + carbs * CAL_CARBS + fats * CAL_FATS;
+    var title = entry.name;
+    if (servings !== 1) {
+      title += " · " + formatGuidedServingsValue(servings) + " servings";
+    }
+    var html =
+      '<p class="day__food-popover-title">' +
+      escapeHtml(title) +
+      "</p>" +
+      '<dl class="day__food-popover-macros">' +
+      "<div><dt>Calories</dt><dd>" +
+      escapeHtml(fmtNum(calories)) +
+      "</dd></div>" +
+      "<div><dt>Protein</dt><dd>" +
+      escapeHtml(fmtNum(protein)) +
+      " g</dd></div>" +
+      "<div><dt>Carbs</dt><dd>" +
+      escapeHtml(fmtNum(carbs)) +
+      " g</dd></div>" +
+      "<div><dt>Fats</dt><dd>" +
+      escapeHtml(fmtNum(fats)) +
+      " g</dd></div>" +
+      "</dl>";
+    var nutrients = state.rows || [];
+    if (!nutrients.length) {
+      html +=
+        '<p class="day__food-popover-empty">No micronutrient amounts for this food.</p>';
+      return html;
+    }
+    var pages = foodItemPopoverPageCount(nutrients);
+    var page = state.page || 0;
+    if (page < 0) page = 0;
+    if (page > pages - 1) page = pages - 1;
+    var start = page * FOOD_ITEM_POPOVER_PAGE_SIZE;
+    var pageRows = nutrients.slice(start, start + FOOD_ITEM_POPOVER_PAGE_SIZE);
+    html += '<div class="day__food-popover-nutrients-head">';
+    html += '<p class="day__food-popover-nutrients-label">Nutrients</p>';
+    if (pages > 1) {
+      html +=
+        '<div class="day__food-popover-nutrients-nav">' +
+        '<button type="button" class="day__food-popover-adj" data-action="food-popover-prev" aria-label="Previous nutrients"' +
+        (page <= 0 ? " disabled" : "") +
+        ">‹</button>" +
+        '<span class="day__food-popover-nutrients-page">' +
+        (page + 1) +
+        " / " +
+        pages +
+        "</span>" +
+        '<button type="button" class="day__food-popover-adj" data-action="food-popover-next" aria-label="More nutrients"' +
+        (page >= pages - 1 ? " disabled" : "") +
+        ">›</button>" +
+        "</div>";
+    }
+    html += "</div>";
+    html += '<ul class="day__food-popover-nutrients">';
+    pageRows.forEach(function (row) {
+      var dest = foodItemPopoverJumpDest(row.key);
+      var destLabel =
+        dest === "micro"
+          ? "Show in Micro requirements"
+          : dest === "longevity"
+            ? "Show in Longevity and wellness"
+            : "";
+      var inner =
+        '<span class="day__food-popover-nutrient-name">' +
+        escapeHtml(row.label) +
+        "</span>" +
+        '<span class="day__food-popover-nutrient-amt">' +
+        escapeHtml(fmtFoodSourcesAmount(row.amount)) +
+        (row.unit ? " " + escapeHtml(row.unit) : "") +
+        "</span>" +
+        '<span class="day__food-popover-nutrient-pct">' +
+        escapeHtml(row.pctText) +
+        "</span>";
+      if (dest) {
+        html +=
+          '<li><button type="button" class="day__food-popover-nutrient" data-action="food-popover-jump" data-nutrient-key="' +
+          escapeAttr(row.key) +
+          '" title="' +
+          escapeAttr(destLabel) +
+          '" aria-label="' +
+          escapeAttr(row.label + ". " + destLabel) +
+          '">' +
+          inner +
+          "</button></li>";
+      } else {
+        html += '<li class="day__food-popover-nutrient">' + inner + "</li>";
+      }
+    });
+    html += "</ul>";
+    return html;
+  }
+
+  function renderDayFoodItemPopoverBody() {
+    if (!dayFoodItemPopoverEl || !dayFoodItemPopoverBodyEl || !dayFoodItemPopoverState) {
+      return;
+    }
+    var pages = foodItemPopoverPageCount(dayFoodItemPopoverState.rows);
+    if (dayFoodItemPopoverState.page > pages - 1) {
+      dayFoodItemPopoverState.page = Math.max(0, pages - 1);
+    }
+    dayFoodItemPopoverBodyEl.innerHTML = dayFoodItemPopoverHtml(
+      dayFoodItemPopoverState
+    );
+    positionDayFoodItemPopover(
+      dayFoodItemPopoverState.x,
+      dayFoodItemPopoverState.y
+    );
+  }
+
+  function stepDayFoodItemPopoverPage(delta) {
+    if (!dayFoodItemPopoverState) return;
+    var pages = foodItemPopoverPageCount(dayFoodItemPopoverState.rows);
+    var next = (dayFoodItemPopoverState.page || 0) + delta;
+    if (next < 0 || next > pages - 1) return;
+    dayFoodItemPopoverState.page = next;
+    renderDayFoodItemPopoverBody();
+  }
+
+  function isMicroExtendedFieldKey(key) {
+    for (var i = 0; i < MICRO_EXTENDED_FIELDS.length; i++) {
+      if (MICRO_EXTENDED_FIELDS[i].key === key) return true;
+    }
+    return false;
+  }
+
+  function prepareMicroPanelForNutrient(key) {
+    if (microViewDaily) setMicroViewDaily(false);
+    if (microConditionFocus) setMicroConditionFocus(null);
+    if (microStatusFilter) setMicroStatusFilter(null);
+    if (microStickyFilterActive()) clearStickyIconFilters();
+    if (isMicroExtendedFieldKey(key) && !microMoreExpanded) {
+      microMoreExpanded = true;
+      syncMicroMoreToggleUi();
+    }
+  }
+
+  function clearJumpTargetHighlights() {
+    document
+      .querySelectorAll(
+        ".dashboard__micro-row--jump-target, .dashboard__longevity-row--jump-target"
+      )
+      .forEach(function (el) {
+        el.classList.remove(
+          "dashboard__micro-row--jump-target",
+          "dashboard__longevity-row--jump-target"
+        );
+      });
+  }
+
+  function scrollSheetToNutrient(sheetEl, key) {
+    if (!sheetEl || !key) return false;
+    var scope = sheetEl;
+    if (sheetEl === dashboardMicroPanelEl) {
+      scope =
+        (microViewDaily ? dashboardMicroDailyGridEl : dashboardMicroListEl) ||
+        sheetEl;
+    } else if (sheetEl === dashboardLongevityPanelEl) {
+      scope = dashboardLongevityContentEl || sheetEl;
+    }
+    var btn = scope.querySelector(
+      '[data-micro-def="' +
+        key +
+        '"], [data-longevity-def="' +
+        key +
+        '"]'
+    );
+    if (!btn) return false;
+    var row = btn.closest(
+      ".dashboard__micro-row, .dashboard__longevity-row"
+    );
+    var target = row || btn;
+    clearJumpTargetHighlights();
+    if (row) {
+      row.classList.add(
+        row.classList.contains("dashboard__longevity-row")
+          ? "dashboard__longevity-row--jump-target"
+          : "dashboard__micro-row--jump-target"
+      );
+    }
+    var body = sheetEl.querySelector(".app-sheet__body");
+    if (!body || body.clientHeight < 1) return false;
+    var top = Math.max(
+      0,
+      target.getBoundingClientRect().top -
+        body.getBoundingClientRect().top +
+        body.scrollTop -
+        12
+    );
+    body.scrollTop = top;
+    if (top > 8 && body.scrollTop < 2) return false;
+    return true;
+  }
+
+  function scheduleNutrientScroll(sheetEl, key, delayMs) {
+    var tries = 0;
+    function attempt() {
+      tries += 1;
+      if (scrollSheetToNutrient(sheetEl, key) || tries >= 10) return;
+      window.setTimeout(attempt, 80);
+    }
+    window.setTimeout(attempt, delayMs || 40);
+  }
+
+  function jumpFromFoodItemPopover(key) {
+    var dest = foodItemPopoverJumpDest(key);
+    hideDayFoodItemPopover();
+    if (!dest) return;
+    var alreadyOpen;
+    if (dest === "micro") {
+      alreadyOpen = microRequirementsOpen;
+      prepareMicroPanelForNutrient(key);
+      if (!alreadyOpen) setMicroRequirementsOpen(true);
+      else renderMicroRequirements();
+      scheduleNutrientScroll(
+        dashboardMicroPanelEl,
+        key,
+        alreadyOpen ? 40 : 280
+      );
+      return;
+    }
+    alreadyOpen = longevityPanelOpen;
+    if (microStickyFilterActive()) clearStickyIconFilters();
+    if (!alreadyOpen) setLongevityPanelOpen(true);
+    else renderLongevityPanel();
+    scheduleNutrientScroll(
+      dashboardLongevityPanelEl,
+      key,
+      alreadyOpen ? 40 : 280
+    );
+  }
+
+  function guidedFoodItemFromEventTarget(target) {
+    if (!target || !target.closest) return null;
+    var item = target.closest(".day__food-item--food");
+    if (!item) return null;
+    if (dayEntryAdvancedEnabled) return null;
+    return item;
+  }
+
+  function showDayFoodItemPopover(itemEl, x, y) {
+    if (!dayFoodItemPopoverEl || !dayFoodItemPopoverBodyEl || !itemEl) return;
+    if (dayEntryAdvancedEnabled) return;
+    var dayId = itemEl.getAttribute("data-day-id");
+    var lineIndex = parseInt(itemEl.getAttribute("data-line-index"), 10);
+    var textarea = dayId ? document.getElementById(dayId) : null;
+    if (!textarea || !isFinite(lineIndex)) return;
+    var lines = dayTextareaLines(textarea);
+    if (lineIndex < 0 || lineIndex >= lines.length) return;
+    var entry = parseDayGuidedLine(lines[lineIndex], lineIndex);
+    if (!entry || entry.kind !== "food") return;
+    var ki = findKeywordIndexByName(entry.name);
+    if (ki < 0) return;
+    dayFoodItemPopoverState = {
+      entry: entry,
+      kw: keywords[ki],
+      rows: foodItemPopoverNutrientRows(keywords[ki], entry.servings),
+      page: 0,
+      x: x,
+      y: y,
+    };
+    dayFoodItemPopoverEl.hidden = false;
+    renderDayFoodItemPopoverBody();
+    dayFoodItemPopoverOpenedAt = Date.now();
+  }
+
+  function handleDayFoodItemPopoverEvent(e) {
+    if (dayEntryAdvancedEnabled) return false;
+    if (e.target.closest("input, textarea, button, a, select, label")) {
+      return false;
+    }
+    var item = guidedFoodItemFromEventTarget(e.target);
+    if (!item) return false;
+    e.preventDefault();
+    showDayFoodItemPopover(item, e.clientX, e.clientY);
+    return true;
+  }
+
+  if (dayFoodItemPopoverEl) {
+    dayFoodItemPopoverEl.addEventListener("click", function (e) {
+      var prev = e.target.closest('[data-action="food-popover-prev"]');
+      var next = e.target.closest('[data-action="food-popover-next"]');
+      var jump = e.target.closest('[data-action="food-popover-jump"]');
+      if (prev) {
+        e.preventDefault();
+        e.stopPropagation();
+        stepDayFoodItemPopoverPage(-1);
+        return;
+      }
+      if (next) {
+        e.preventDefault();
+        e.stopPropagation();
+        stepDayFoodItemPopoverPage(1);
+        return;
+      }
+      if (jump) {
+        e.preventDefault();
+        e.stopPropagation();
+        jumpFromFoodItemPopover(jump.getAttribute("data-nutrient-key"));
+      }
+    });
+  }
+
   function dayGuidedFoodItemHtml(entry, dayId, entryPos, entryCount) {
     var servings = formatGuidedServingsValue(entry.servings);
     var rearrange = isGuidedRearrangeEnabled(dayId);
@@ -27800,6 +28229,7 @@
   }
 
   function renderDayGuidedList(dayId) {
+    hideDayFoodItemPopover();
     var guided = ensureDayGuidedEl(dayId);
     if (!guided) return;
     var listEl = guided.querySelector(".day__food-list");
@@ -28963,6 +29393,10 @@
 
   document.addEventListener("keydown", function (e) {
     if (e.key !== "Escape") return;
+    if (dayFoodItemPopoverEl && !dayFoodItemPopoverEl.hidden) {
+      hideDayFoodItemPopover();
+      return;
+    }
     if (keywordsCategoryModalEl && !keywordsCategoryModalEl.hidden) {
       closeKeywordsCategoryModal();
       return;
@@ -29341,6 +29775,68 @@
         weekGridHoverTimer = 0;
       }
       focusWeekDayColumn(dayEl);
+    });
+    weekGridEl.addEventListener("contextmenu", function (e) {
+      handleDayFoodItemPopoverEvent(e);
+    });
+    var foodItemTwoFinger = null;
+    weekGridEl.addEventListener(
+      "touchstart",
+      function (e) {
+        if (dayEntryAdvancedEnabled) return;
+        if (e.touches.length !== 2) {
+          foodItemTwoFinger = null;
+          return;
+        }
+        var t0 = e.touches[0];
+        var t1 = e.touches[1];
+        var midX = (t0.clientX + t1.clientX) / 2;
+        var midY = (t0.clientY + t1.clientY) / 2;
+        var el = document.elementFromPoint(midX, midY);
+        var item = guidedFoodItemFromEventTarget(el);
+        if (
+          !item ||
+          (el && el.closest && el.closest("input, textarea, button, a, select, label"))
+        ) {
+          foodItemTwoFinger = null;
+          return;
+        }
+        foodItemTwoFinger = {
+          item: item,
+          x: midX,
+          y: midY,
+          t: Date.now(),
+        };
+      },
+      { passive: true }
+    );
+    weekGridEl.addEventListener(
+      "touchmove",
+      function (e) {
+        if (!foodItemTwoFinger || e.touches.length < 2) return;
+        var t0 = e.touches[0];
+        var t1 = e.touches[1];
+        var midX = (t0.clientX + t1.clientX) / 2;
+        var midY = (t0.clientY + t1.clientY) / 2;
+        if (
+          Math.abs(midX - foodItemTwoFinger.x) > 14 ||
+          Math.abs(midY - foodItemTwoFinger.y) > 14
+        ) {
+          foodItemTwoFinger = null;
+        }
+      },
+      { passive: true }
+    );
+    weekGridEl.addEventListener("touchend", function (e) {
+      if (!foodItemTwoFinger || e.touches.length > 0) return;
+      var rec = foodItemTwoFinger;
+      foodItemTwoFinger = null;
+      if (Date.now() - rec.t > 400) return;
+      e.preventDefault();
+      showDayFoodItemPopover(rec.item, rec.x, rec.y);
+    });
+    weekGridEl.addEventListener("touchcancel", function () {
+      foodItemTwoFinger = null;
     });
     weekGridEl.addEventListener("click", function (e) {
       var guidedFoodItem = e.target.closest(".day__food-item");
@@ -29725,6 +30221,14 @@
     if (!e.target.closest(".day__copy")) closeAllDayCopyMenus();
     if (!e.target.closest(".day__guided-others")) closeAllGuidedOthersMenus();
     if (!e.target.closest(".day__food-item")) clearGuidedFoodItemActive(null);
+    if (
+      dayFoodItemPopoverEl &&
+      !dayFoodItemPopoverEl.hidden &&
+      Date.now() - dayFoodItemPopoverOpenedAt > 250 &&
+      !e.target.closest("#day-food-item-popover")
+    ) {
+      hideDayFoodItemPopover();
+    }
     // Keep the widened day column while a modal is open (e.g. picking a food in
     // Add food). Collapsing on that click looks like the food was already added.
     if (
