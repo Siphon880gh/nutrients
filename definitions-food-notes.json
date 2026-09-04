@@ -94,6 +94,11 @@
       "label": "Salt*iodized",
       "pattern": "\\bsalt\\b.*iodized",
       "note": "<p>Iodized salt refers to salt used when preparing food at home that has been fortified with iodine. Most restaurants use regular, non-iodized salt because iodized salt can cost more and may slightly affect the flavor of food. So, only count salt toward your iodine intake when you know iodine has been added.</p>"
+    },
+    {
+      "label": "Mexican - Taco Addon",
+      "pattern": "\\bmexican\\b.*taco\\s*addon\\b",
+      "note": "Additive-only entries using standard portions: 2 tablespoons cooked beans (30 g), 2 tablespoons shredded cheese (14 g), and—where included—1 tablespoon sour cream (15 g)."
     }
   ]
 }
