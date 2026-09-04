@@ -10504,10 +10504,11 @@
         Math.max(0, Math.round(window.innerHeight - rect.top)) + "px"
       );
     } else {
-      root.setProperty(
-        "--app-sheet-top",
-        Math.max(0, Math.round(rect.bottom)) + "px"
-      );
+      var sheetTop = Math.max(0, Math.round(rect.bottom));
+      if (rect.top > 1) {
+        sheetTop = Math.max(0, Math.round(rect.height));
+      }
+      root.setProperty("--app-sheet-top", sheetTop + "px");
       root.setProperty("--app-sheet-bottom", "0px");
     }
   }
@@ -10518,16 +10519,30 @@
     if (body) body.scrollTop = 0;
   }
 
+  var exclusiveOverlayScrollY = 0;
+  var exclusiveOverlayScrollSaved = false;
+
   function syncExclusiveOverlayUi() {
     var overlayOpen = !!(
       foodDefinitionsOpen ||
       microRequirementsOpen ||
       longevityPanelOpen
     );
+    if (overlayOpen && !exclusiveOverlayScrollSaved) {
+      exclusiveOverlayScrollY = window.scrollY;
+      exclusiveOverlayScrollSaved = true;
+    }
+    document.documentElement.classList.toggle("exclusive-overlay-open", overlayOpen);
     document.body.classList.toggle("exclusive-overlay-open", overlayOpen);
     if (overlayOpen) hideDayFoodItemPopover();
     updateBodyModalOpen();
     syncAppSheetOffset();
+    if (overlayOpen) {
+      window.requestAnimationFrame(syncAppSheetOffset);
+    } else if (exclusiveOverlayScrollSaved) {
+      exclusiveOverlayScrollSaved = false;
+      window.scrollTo(0, exclusiveOverlayScrollY);
+    }
   }
 
   function closeExclusiveOverlays() {

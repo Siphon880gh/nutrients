@@ -1489,8 +1489,26 @@ body.app-nav-shortcuts-visible [data-app-shortcut] > .app-nav__shortcut {
   }
 }
 
+html.exclusive-overlay-open,
+html.exclusive-overlay-open body {
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+
+body.exclusive-overlay-open .week__header,
+body.exclusive-overlay-open .logged-out-banner {
+  display: none;
+}
+
 body.exclusive-overlay-open .app-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
   z-index: 105;
+  margin: 0;
+  padding-left: 1rem;
+  padding-right: 1rem;
   background: #f4f4f2;
   backdrop-filter: none;
 }
@@ -13914,6 +13932,9 @@ button.longevity-form__label-link:focus-visible {
   }
 
   body.exclusive-overlay-open .app-nav {
+    top: auto;
+    bottom: 0;
+    padding: 0.35rem 0.4rem calc(0.35rem + env(safe-area-inset-bottom, 0px));
     background: #fff;
   }
 
