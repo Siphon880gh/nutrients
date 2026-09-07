@@ -654,7 +654,7 @@
   var WEEK_DAYS_HINT_GUIDED =
     'Day meals are saved in this browser. Use <strong>Add food</strong> to pick from your food definitions, or <strong>Add Others</strong> for inserting headings and dividers. Turn on <strong>Advanced</strong> for free-text entry.';
   var WEEK_DAYS_HINT_ADVANCED =
-    'Day meals are saved in this browser. You can add a multiplier at the end of a food (Eg. <code>* 2</code>), start a line with <code>//</code> or <code>#</code> for a comment, or use <code>---</code> as a divider.';
+    'Day meals are saved in this browser. You can add a multiplier at the end of a food (Eg. <code>* 2</code> or <code>* 2/3</code>), start a line with <code>//</code> or <code>#</code> for a comment, or use <code>---</code> as a divider.';
   var ADD_FOOD_PAGE_SIZE = 25;
   var DAY_SERVING_STEP = 0.25;
   var dayMealsByDate = {};
@@ -3457,19 +3457,42 @@
     return KEYWORD_BOUNDARY_BEFORE + escapedName + KEYWORD_BOUNDARY_AFTER;
   }
 
-  var KEYWORD_SERVING_MULTIPLIER_RE = /^\s*\*\s*((?:\d+(?:\.\d+)?)|(?:\.\d+))/;
+  var SERVING_AMOUNT_RE_SRC =
+    "(?:\\d+(?:\\.\\d+)?|\\.\\d+)(?:\\s*/\\s*(?:\\d+(?:\\.\\d+)?|\\.\\d+))?";
+  var KEYWORD_SERVING_MULTIPLIER_RE = new RegExp(
+    "^\\s*\\*\\s*(" + SERVING_AMOUNT_RE_SRC + ")"
+  );
+  var SERVING_MULTIPLIER_SUFFIX_RE = new RegExp(
+    "\\s*\\*\\s*(" + SERVING_AMOUNT_RE_SRC + ")\\s*$"
+  );
+
+  function parseServingMultiplierAmount(token) {
+    var raw = String(token || "").trim();
+    if (!raw) return NaN;
+    var parts = raw.split("/");
+    var n;
+    if (parts.length === 2) {
+      var num = parseFloat(parts[0].trim());
+      var den = parseFloat(parts[1].trim());
+      if (!(num > 0 && den > 0 && isFinite(num) && isFinite(den))) return NaN;
+      n = num / den;
+    } else if (parts.length === 1) {
+      n = parseFloat(raw);
+    } else {
+      return NaN;
+    }
+    return n > 0 && isFinite(n) ? n : NaN;
+  }
 
   function keywordServingMultiplier(text, afterIndex) {
     var m = text.slice(afterIndex).match(KEYWORD_SERVING_MULTIPLIER_RE);
     if (!m) return 1;
-    var n = parseFloat(m[1]);
+    var n = parseServingMultiplierAmount(m[1]);
     return n > 0 && isFinite(n) ? n : 1;
   }
 
   function stripKeywordServingMultiplier(text) {
-    return String(text)
-      .replace(/\s*\*\s*(?:\d+(?:\.\d+)?|\.\d+)\s*$/, "")
-      .trim();
+    return String(text).replace(SERVING_MULTIPLIER_SUFFIX_RE, "").trim();
   }
 
   function makeId() {
@@ -4919,7 +4942,7 @@
       "- One original line can be several foods written together. Example: `oatmeal milk` is two food entries — rewrite it as two separate lines from the table (the oatmeal wording, then the milk wording), not as one combined name.",
       "- Only split when each part matches a table food. If only some parts match, rewrite the matching parts and keep the unmatched remainder as-is. Do not invent foods that are not in the table. Put split foods on consecutive lines in the same place as the original combined line.",
       "- Do not drop foods or add foods that were not in the original line, except for this kind of split.",
-      "- Serving syntax: append `* N` at the end of the food name to multiply that food's usual portion. Example: `oatmeal * 2` is two servings. Omit `* 1`.",
+      "- Serving syntax: append `* N` at the end of the food name to multiply that food's usual portion. `N` may be a whole number, decimal, or fraction (`2/3`). Example: `oatmeal * 2` is two servings; `oatmeal * 2/3` is two-thirds of a serving (same as `* 0.667`). Omit `* 1`.",
       "- If the original line contains a serving — a trailing `* N`, or a quantity in the text such as 2, 2x, 1/2, or 3 cups — apply that serving to the corrected table food name with `* N`. Keep the table's food name; only change the multiplier.",
       "- If the chosen table row already ends with `* M`, replace `M` with the original line's serving. Never stack multipliers (`oatmeal * 1 * 2` is wrong; write `oatmeal * 2`).",
       "- Compare against the table food's built-in portion. If the table name is `1 cup oatmeal` and the original is `2 cups oatmeal` or `oatmeal * 2`, write `1 cup oatmeal * 2`.",
@@ -11100,7 +11123,10 @@
     return html;
   }
 
-  var SERVING_MULTIPLIER_HTML_RE = /(\s*\*\s*(?:\d+(?:\.\d+)?|\.\d+))/g;
+  var SERVING_MULTIPLIER_HTML_RE = new RegExp(
+    "(\\s*\\*\\s*" + SERVING_AMOUNT_RE_SRC + ")",
+    "g"
+  );
 
   function highlightServingMultipliersHtml(html) {
     return String(html).replace(
@@ -27555,9 +27581,9 @@
 
   function dayMealLineServings(line) {
     var visible = visibleDayLineText(line);
-    var m = visible.match(/\*\s*((?:\d+(?:\.\d+)?)|(?:\.\d+))\s*$/);
+    var m = visible.match(SERVING_MULTIPLIER_SUFFIX_RE);
     if (!m) return 1;
-    var n = parseFloat(m[1]);
+    var n = parseServingMultiplierAmount(m[1]);
     return n > 0 && isFinite(n) ? n : 1;
   }
 
