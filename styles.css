@@ -7977,6 +7977,7 @@ button.dashboard__longevity-name:focus-visible {
 .day__clear,
 .day__copy-toggle,
 .day__favorite,
+.day__ai,
 .day__ignore {
   display: inline-flex;
   align-items: center;
@@ -8026,6 +8027,9 @@ button.dashboard__longevity-name:focus-visible {
 .day__favorite:hover:not(:disabled),
 .day__favorite:focus:not(:disabled),
 .day__favorite:focus-visible:not(:disabled),
+.day__ai:hover:not(:disabled),
+.day__ai:focus:not(:disabled),
+.day__ai:focus-visible:not(:disabled),
 .day__ignore:hover:not(:disabled),
 .day__ignore:focus:not(:disabled),
 .day__ignore:focus-visible:not(:disabled),
@@ -8045,6 +8049,9 @@ button.dashboard__longevity-name:focus-visible {
 .day__favorite:hover:not(:disabled) .day__action-label,
 .day__favorite:focus:not(:disabled) .day__action-label,
 .day__favorite:focus-visible:not(:disabled) .day__action-label,
+.day__ai:hover:not(:disabled) .day__action-label,
+.day__ai:focus:not(:disabled) .day__action-label,
+.day__ai:focus-visible:not(:disabled) .day__action-label,
 .day__ignore:hover:not(:disabled) .day__action-label,
 .day__ignore:focus:not(:disabled) .day__action-label,
 .day__ignore:focus-visible:not(:disabled) .day__action-label,
@@ -8054,6 +8061,15 @@ button.dashboard__longevity-name:focus-visible {
   opacity: 1;
 }
 
+.day__ai:hover:not(:disabled) .day__action-label,
+.day__ai:focus:not(:disabled) .day__action-label,
+.day__ai:focus-visible:not(:disabled) .day__action-label {
+  max-width: 6.75rem;
+}
+
+.day__ai:hover:not(:disabled),
+.day__ai:focus:not(:disabled),
+.day__ai:focus-visible:not(:disabled),
 .day__ignore:hover:not(:disabled),
 .day__ignore:focus:not(:disabled),
 .day__ignore:focus-visible:not(:disabled),
@@ -8061,6 +8077,9 @@ button.dashboard__longevity-name:focus-visible {
   padding: 0.15rem 0.28rem 0.15rem 0.4rem;
 }
 
+.day__ai:hover:not(:disabled) .day__action-label,
+.day__ai:focus:not(:disabled) .day__action-label,
+.day__ai:focus-visible:not(:disabled) .day__action-label,
 .day__ignore:hover:not(:disabled) .day__action-label,
 .day__ignore:focus:not(:disabled) .day__action-label,
 .day__ignore:focus-visible:not(:disabled) .day__action-label,
@@ -8076,6 +8095,13 @@ button.dashboard__longevity-name:focus-visible {
     opacity: 1;
   }
 
+  .day__ai .day__action-label {
+    max-width: 6.75rem;
+  }
+
+  .day__ai:hover:not(:disabled) .day__action-label,
+  .day__ai:focus:not(:disabled) .day__action-label,
+  .day__ai:focus-visible:not(:disabled) .day__action-label,
   .day__ignore[aria-pressed="true"] .day__action-label,
   .day__ignore:hover:not(:disabled) .day__action-label,
   .day__ignore:focus:not(:disabled) .day__action-label,
@@ -8116,6 +8142,14 @@ button.dashboard__longevity-name:focus-visible {
   background: #eef4fa;
 }
 
+.day__ai:hover:not(:disabled),
+.day__ai:focus:not(:disabled),
+.day__ai:focus-visible:not(:disabled) {
+  color: #2a4a6e;
+  border-color: #9bb6d4;
+  background: #eef4fa;
+}
+
 .day__ignore:hover:not(:disabled),
 .day__ignore[aria-pressed="true"] {
   color: #6b5a3d;
@@ -8127,6 +8161,7 @@ button.dashboard__longevity-name:focus-visible {
 .day__clear:disabled,
 .day__copy-toggle:disabled,
 .day__favorite:disabled,
+.day__ai:disabled,
 .day__ignore:disabled {
   opacity: 0.4;
   cursor: default;
@@ -8296,10 +8331,19 @@ button.dashboard__longevity-name:focus-visible {
   flex: 1 1 auto;
 }
 
-.day__ignore {
+.day__head-tools {
+  display: inline-flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  gap: 0.25rem;
+  flex: 0 0 auto;
+  align-self: flex-start;
+}
+
+.day__head-tools .day__ai,
+.day__head-tools .day__ignore {
   flex: 0 0 auto;
   flex-direction: row-reverse;
-  align-self: flex-start;
 }
 
 .day__head-actions {
@@ -12605,6 +12649,10 @@ button.longevity-form__label-link:focus-visible {
   color: #5c5c5c;
 }
 
+.import-ai-panel__actions + .import-ai-panel__preview-label {
+  margin-top: 0.55rem;
+}
+
 .import-ai-panel__preview--tall {
   max-height: 14rem;
 }
@@ -14035,6 +14083,7 @@ button.longevity-form__label-link:focus-visible {
   .day__clear,
   .day__copy,
   .day__favorite,
+  .day__ai,
   .day__ignore,
   .day__guided-footer,
   .day__food-item-servings,
@@ -14238,6 +14287,7 @@ body.print-preview .favorites-sidebar,
 body.print-preview .day__clear,
 body.print-preview .day__copy,
 body.print-preview .day__favorite,
+body.print-preview .day__ai,
 body.print-preview .day__ignore,
 body.print-preview .day__guided-footer,
 body.print-preview .day__food-item-servings,

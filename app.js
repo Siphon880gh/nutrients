@@ -201,6 +201,19 @@
   var healthTimelineOpenChatgptEl = document.getElementById("health-timeline-open-chatgpt");
   var healthTimelineOpenClaudeEl = document.getElementById("health-timeline-open-claude");
   var healthTimelineModalDoneBtn = document.getElementById("health-timeline-modal-done");
+  var dayFoodsAiModalEl = document.getElementById("day-foods-ai-modal");
+  var dayFoodsAiModalSubtitleEl = document.getElementById(
+    "day-foods-ai-modal-subtitle"
+  );
+  var dayFoodsAiPreviewEl = document.getElementById("day-foods-ai-preview");
+  var dayFoodsAiCopyBtn = document.getElementById("day-foods-ai-copy");
+  var dayFoodsAiOpenChatgptEl = document.getElementById(
+    "day-foods-ai-open-chatgpt"
+  );
+  var dayFoodsAiOpenClaudeEl = document.getElementById("day-foods-ai-open-claude");
+  var dayFoodsAiModalDoneBtn = document.getElementById("day-foods-ai-modal-done");
+  var activeDayFoodsAiDayId = null;
+  var DAY_FOODS_AI_LOOKBACK_WEEKS = 3;
   var dashboardLongevityAnalysisBtn = document.getElementById(
     "dashboard-longevity-analysis"
   );
@@ -4758,6 +4771,7 @@
     }
     if (microGapsModalEl && !microGapsModalEl.hidden) closeMicroGapsModal();
     if (healthTimelineModalEl && !healthTimelineModalEl.hidden) closeHealthTimelineModal();
+    if (dayFoodsAiModalEl && !dayFoodsAiModalEl.hidden) closeDayFoodsAiModal();
     if (analysisPickerModalEl && !analysisPickerModalEl.hidden) {
       closeAnalysisPickerModal();
     }
@@ -4802,6 +4816,227 @@
     updateBodyModalOpen();
     if (healthTimelineModalDoneBtn) {
       healthTimelineModalDoneBtn.focus();
+    }
+  }
+
+  function dayMealFoodLinesFromText(text) {
+    var foods = [];
+    normalizeDayMealsText(text)
+      .split("\n")
+      .forEach(function (line) {
+        if (isBlankDayMealLine(line) || isCommentDayMealLine(line)) return;
+        var food = visibleDayLineText(line);
+        if (food) foods.push(food);
+      });
+    return foods;
+  }
+
+  function collectRecentFoodFrequencyRows() {
+    flushEditorsToDayMeals();
+    var byKey = {};
+    microGapsLookbackMondayKeys(DAY_FOODS_AI_LOOKBACK_WEEKS).forEach(function (
+      monKey
+    ) {
+      weekDateKeys(monKey).forEach(function (dateKey) {
+        dayMealFoodLinesFromText(dayMealsByDate[dateKey] || "").forEach(
+          function (food) {
+            var key = food.toLowerCase();
+            var row = byKey[key];
+            if (!row) {
+              byKey[key] = { food: food, count: 1, variants: {} };
+              byKey[key].variants[food] = 1;
+              return;
+            }
+            row.count += 1;
+            row.variants[food] = (row.variants[food] || 0) + 1;
+            if (row.variants[food] > (row.variants[row.food] || 0)) {
+              row.food = food;
+            }
+          }
+        );
+      });
+    });
+    return Object.keys(byKey)
+      .map(function (key) {
+        return byKey[key];
+      })
+      .sort(function (a, b) {
+        if (b.count !== a.count) return b.count - a.count;
+        return a.food.toLowerCase().localeCompare(b.food.toLowerCase());
+      });
+  }
+
+  function markdownTableCell(text) {
+    return String(text || "")
+      .replace(/\\/g, "\\\\")
+      .replace(/\|/g, "\\|")
+      .replace(/\r?\n/g, " ");
+  }
+
+  function buildRecentFoodFrequencyMarkdownTable(rows) {
+    if (!rows.length) {
+      return "_No foods logged in this week or the previous two weeks._";
+    }
+    var lines = ["| Food | Frequency |", "| --- | ---: |"];
+    rows.forEach(function (row) {
+      lines.push(
+        "| " + markdownTableCell(row.food) + " | " + row.count + " |"
+      );
+    });
+    return lines.join("\n");
+  }
+
+  function dayFoodsAiCurrentText(dayId) {
+    var el = document.getElementById(dayId);
+    if (el) return el.value;
+    var key = dateKeyForDayId(dayId);
+    return key ? dayMealsByDate[key] || "" : "";
+  }
+
+  function buildDayFoodsAiPrompt(dayId) {
+    var day = dayById(dayId);
+    var dateLabel = dateLabelForDayId(dayId);
+    var headingParts = [];
+    if (day) headingParts.push(day.label);
+    if (dateLabel) headingParts.push(dateLabel);
+    var current = dayFoodsAiCurrentText(dayId);
+    var currentBlock = current.trim() ? current : "(empty)";
+    var table = buildRecentFoodFrequencyMarkdownTable(
+      collectRecentFoodFrequencyRows()
+    );
+    return [
+      "Rewrite the day meal log below so each food line uses the more likely wording from the recent-foods table. Split a line when it is actually more than one food.",
+      "",
+      headingParts.length
+        ? "This log is for " + headingParts.join(" · ") + "."
+        : "This log is for one day in my weekly food tracker.",
+      "",
+      "Rules:",
+      "- Higher Frequency means that wording is more likely. Prefer it over rarer variations of the same food.",
+      "- If two competing name variations have the same Frequency, choose the one that is a more common serving (a typical household serving, or the serving already used most often in the table).",
+      "- Only rewrite food lines. Keep comments (lines starting with // or #), blank lines, and divider lines unchanged.",
+      "- If no likely wording can be found in the table for a line, keep that original line as-is. Do not guess, paraphrase, or invent a name.",
+      "- One original line can be several foods written together. Example: `oatmeal milk` is two food entries — rewrite it as two separate lines from the table (the oatmeal wording, then the milk wording), not as one combined name.",
+      "- Only split when each part matches a table food. If only some parts match, rewrite the matching parts and keep the unmatched remainder as-is. Do not invent foods that are not in the table. Put split foods on consecutive lines in the same place as the original combined line.",
+      "- Do not drop foods or add foods that were not in the original line, except for this kind of split.",
+      "- Serving syntax: append `* N` at the end of the food name to multiply that food's usual portion. Example: `oatmeal * 2` is two servings. Omit `* 1`.",
+      "- If the original line contains a serving — a trailing `* N`, or a quantity in the text such as 2, 2x, 1/2, or 3 cups — apply that serving to the corrected table food name with `* N`. Keep the table's food name; only change the multiplier.",
+      "- If the chosen table row already ends with `* M`, replace `M` with the original line's serving. Never stack multipliers (`oatmeal * 1 * 2` is wrong; write `oatmeal * 2`).",
+      "- Compare against the table food's built-in portion. If the table name is `1 cup oatmeal` and the original is `2 cups oatmeal` or `oatmeal * 2`, write `1 cup oatmeal * 2`.",
+      "- If a combined line has a serving that clearly belongs to only one of the foods, put `* N` on that food's line. If it clearly applies to all of them, put `* N` on each split line.",
+      "- If the original line has no serving, use the chosen table row as-is.",
+      "- Output only the rewritten day meal log as plain text, ready to paste back into the day editor. No commentary.",
+      "",
+      "Current day meal log:",
+      "-----",
+      currentBlock,
+      "-----",
+      "",
+      "Unique foods from this week and the previous two weeks (no repeats), with how often each wording was used:",
+      "",
+      table,
+    ].join("\n");
+  }
+
+  function renderDayFoodsAiPreview() {
+    if (!dayFoodsAiPreviewEl) return;
+    dayFoodsAiPreviewEl.textContent = activeDayFoodsAiDayId
+      ? buildDayFoodsAiPrompt(activeDayFoodsAiDayId)
+      : "";
+  }
+
+  function copyDayFoodsAiPromptToClipboard(done) {
+    var text = activeDayFoodsAiDayId
+      ? buildDayFoodsAiPrompt(activeDayFoodsAiDayId)
+      : "";
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(done).catch(done);
+    } else if (done) {
+      done();
+    }
+  }
+
+  function openDayFoodsAiService(url) {
+    copyDayFoodsAiPromptToClipboard(function () {
+      window.open(url, "_blank", "noopener,noreferrer");
+    });
+  }
+
+  function closeDayFoodsAiModal() {
+    if (!dayFoodsAiModalEl) return;
+    dayFoodsAiModalEl.hidden = true;
+    activeDayFoodsAiDayId = null;
+    updateBodyModalOpen();
+  }
+
+  function openDayFoodsAiModal(dayId) {
+    if (!dayFoodsAiModalEl || !dayId) return;
+
+    if (activeImportId) closeImportModal();
+    if (importAllModalEl && !importAllModalEl.hidden) closeImportAllModal();
+    if (importAllMealsModalEl && !importAllMealsModalEl.hidden) {
+      closeImportAllMealsModal();
+    }
+    if (microGapsModalEl && !microGapsModalEl.hidden) closeMicroGapsModal();
+    if (healthTimelineModalEl && !healthTimelineModalEl.hidden) {
+      closeHealthTimelineModal();
+    }
+    if (dayFoodsAiModalEl && !dayFoodsAiModalEl.hidden) {
+      closeDayFoodsAiModal();
+    }
+    if (analysisPickerModalEl && !analysisPickerModalEl.hidden) {
+      closeAnalysisPickerModal();
+    }
+    if (longevityAnalysisModalEl && !longevityAnalysisModalEl.hidden) {
+      closeLongevityAnalysisModal();
+    }
+    if (microDefModalEl && !microDefModalEl.hidden) closeMicroDefModal();
+    if (phosphorusBinderModalEl && !phosphorusBinderModalEl.hidden) {
+      closePhosphorusBinderModal();
+    }
+    if (caffeineTipModalEl && !caffeineTipModalEl.hidden) closeCaffeineTipModal();
+    if (foodNoteModalEl && !foodNoteModalEl.hidden) closeFoodNoteModal();
+    if (fatsCholesterolTipModalEl && !fatsCholesterolTipModalEl.hidden) {
+      closeFatsCholesterolTipModal();
+    }
+    if (tmaoProtectorsTipModalEl && !tmaoProtectorsTipModalEl.hidden) {
+      closeTmaoProtectorsTipModal();
+    }
+    if (fiberColonTipModalEl && !fiberColonTipModalEl.hidden) {
+      closeFiberColonTipModal();
+    }
+    if (berberineTipModalEl && !berberineTipModalEl.hidden) {
+      closeBerberineTipModal();
+    }
+    if (dashDietTipModalEl && !dashDietTipModalEl.hidden) {
+      closeDashDietTipModal();
+    }
+    if (pufaAntioxidantTipModalEl && !pufaAntioxidantTipModalEl.hidden) {
+      closePufaAntioxidantTipModal();
+    }
+    if (activeMicroId) {
+      saveMicrosFromForm();
+      closeMicroModal();
+    }
+    if (activeLongevityId) {
+      saveLongevityFromForm();
+      closeLongevityModal();
+    }
+
+    activeDayFoodsAiDayId = dayId;
+    var day = dayById(dayId);
+    var dateLabel = dateLabelForDayId(dayId);
+    if (dayFoodsAiModalSubtitleEl) {
+      var subtitleParts = [];
+      if (day) subtitleParts.push(day.label);
+      if (dateLabel) subtitleParts.push(dateLabel);
+      dayFoodsAiModalSubtitleEl.textContent = subtitleParts.join(" · ");
+    }
+    renderDayFoodsAiPreview();
+    dayFoodsAiModalEl.hidden = false;
+    updateBodyModalOpen();
+    if (dayFoodsAiModalDoneBtn) {
+      dayFoodsAiModalDoneBtn.focus();
     }
   }
 
@@ -6045,6 +6280,7 @@
     }
     if (microGapsModalEl && !microGapsModalEl.hidden) closeMicroGapsModal();
     if (healthTimelineModalEl && !healthTimelineModalEl.hidden) closeHealthTimelineModal();
+    if (dayFoodsAiModalEl && !dayFoodsAiModalEl.hidden) closeDayFoodsAiModal();
     if (!opts.keepDefModal && microDefModalEl && !microDefModalEl.hidden) closeMicroDefModal();
     if (microSourcesModalEl && !microSourcesModalEl.hidden) closeMicroSourcesModal();
     if (longevitySourcesModalEl && !longevitySourcesModalEl.hidden) {
@@ -8464,6 +8700,7 @@
     }
     if (microGapsModalEl && !microGapsModalEl.hidden) closeMicroGapsModal();
     if (healthTimelineModalEl && !healthTimelineModalEl.hidden) closeHealthTimelineModal();
+    if (dayFoodsAiModalEl && !dayFoodsAiModalEl.hidden) closeDayFoodsAiModal();
     if (microDefModalEl && !microDefModalEl.hidden) closeMicroDefModal();
     if (caffeineTipModalEl && !caffeineTipModalEl.hidden) closeCaffeineTipModal();
     if (foodNoteModalEl && !foodNoteModalEl.hidden) closeFoodNoteModal();
@@ -8515,6 +8752,7 @@
     }
     if (microGapsModalEl && !microGapsModalEl.hidden) closeMicroGapsModal();
     if (healthTimelineModalEl && !healthTimelineModalEl.hidden) closeHealthTimelineModal();
+    if (dayFoodsAiModalEl && !dayFoodsAiModalEl.hidden) closeDayFoodsAiModal();
     if (microDefModalEl && !microDefModalEl.hidden) closeMicroDefModal();
     if (phosphorusBinderModalEl && !phosphorusBinderModalEl.hidden) {
       closePhosphorusBinderModal();
@@ -8567,6 +8805,7 @@
     }
     if (microGapsModalEl && !microGapsModalEl.hidden) closeMicroGapsModal();
     if (healthTimelineModalEl && !healthTimelineModalEl.hidden) closeHealthTimelineModal();
+    if (dayFoodsAiModalEl && !dayFoodsAiModalEl.hidden) closeDayFoodsAiModal();
     if (microDefModalEl && !microDefModalEl.hidden) closeMicroDefModal();
     if (phosphorusBinderModalEl && !phosphorusBinderModalEl.hidden) {
       closePhosphorusBinderModal();
@@ -8624,6 +8863,7 @@
     }
     if (microGapsModalEl && !microGapsModalEl.hidden) closeMicroGapsModal();
     if (healthTimelineModalEl && !healthTimelineModalEl.hidden) closeHealthTimelineModal();
+    if (dayFoodsAiModalEl && !dayFoodsAiModalEl.hidden) closeDayFoodsAiModal();
     if (microDefModalEl && !microDefModalEl.hidden) closeMicroDefModal();
     if (phosphorusBinderModalEl && !phosphorusBinderModalEl.hidden) {
       closePhosphorusBinderModal();
@@ -8675,6 +8915,7 @@
     }
     if (microGapsModalEl && !microGapsModalEl.hidden) closeMicroGapsModal();
     if (healthTimelineModalEl && !healthTimelineModalEl.hidden) closeHealthTimelineModal();
+    if (dayFoodsAiModalEl && !dayFoodsAiModalEl.hidden) closeDayFoodsAiModal();
     if (microDefModalEl && !microDefModalEl.hidden) closeMicroDefModal();
     if (phosphorusBinderModalEl && !phosphorusBinderModalEl.hidden) {
       closePhosphorusBinderModal();
@@ -8726,6 +8967,7 @@
     }
     if (microGapsModalEl && !microGapsModalEl.hidden) closeMicroGapsModal();
     if (healthTimelineModalEl && !healthTimelineModalEl.hidden) closeHealthTimelineModal();
+    if (dayFoodsAiModalEl && !dayFoodsAiModalEl.hidden) closeDayFoodsAiModal();
     if (microDefModalEl && !microDefModalEl.hidden) closeMicroDefModal();
     if (phosphorusBinderModalEl && !phosphorusBinderModalEl.hidden) {
       closePhosphorusBinderModal();
@@ -8771,6 +9013,7 @@
     }
     if (microGapsModalEl && !microGapsModalEl.hidden) closeMicroGapsModal();
     if (healthTimelineModalEl && !healthTimelineModalEl.hidden) closeHealthTimelineModal();
+    if (dayFoodsAiModalEl && !dayFoodsAiModalEl.hidden) closeDayFoodsAiModal();
     if (microDefModalEl && !microDefModalEl.hidden) closeMicroDefModal();
     if (phosphorusBinderModalEl && !phosphorusBinderModalEl.hidden) {
       closePhosphorusBinderModal();
@@ -8822,6 +9065,7 @@
     }
     if (microGapsModalEl && !microGapsModalEl.hidden) closeMicroGapsModal();
     if (healthTimelineModalEl && !healthTimelineModalEl.hidden) closeHealthTimelineModal();
+    if (dayFoodsAiModalEl && !dayFoodsAiModalEl.hidden) closeDayFoodsAiModal();
     if (microDefModalEl && !microDefModalEl.hidden) closeMicroDefModal();
     if (phosphorusBinderModalEl && !phosphorusBinderModalEl.hidden) {
       closePhosphorusBinderModal();
@@ -8873,6 +9117,7 @@
     }
     if (microGapsModalEl && !microGapsModalEl.hidden) closeMicroGapsModal();
     if (healthTimelineModalEl && !healthTimelineModalEl.hidden) closeHealthTimelineModal();
+    if (dayFoodsAiModalEl && !dayFoodsAiModalEl.hidden) closeDayFoodsAiModal();
     if (microDefModalEl && !microDefModalEl.hidden) closeMicroDefModal();
     if (phosphorusBinderModalEl && !phosphorusBinderModalEl.hidden) {
       closePhosphorusBinderModal();
@@ -8927,6 +9172,7 @@
     }
     if (microGapsModalEl && !microGapsModalEl.hidden) closeMicroGapsModal();
     if (healthTimelineModalEl && !healthTimelineModalEl.hidden) closeHealthTimelineModal();
+    if (dayFoodsAiModalEl && !dayFoodsAiModalEl.hidden) closeDayFoodsAiModal();
     if (microDefModalEl && !microDefModalEl.hidden) closeMicroDefModal();
     if (phosphorusBinderModalEl && !phosphorusBinderModalEl.hidden) {
       closePhosphorusBinderModal();
@@ -10208,6 +10454,7 @@
     }
     if (microGapsModalEl && !microGapsModalEl.hidden) closeMicroGapsModal();
     if (healthTimelineModalEl && !healthTimelineModalEl.hidden) closeHealthTimelineModal();
+    if (dayFoodsAiModalEl && !dayFoodsAiModalEl.hidden) closeDayFoodsAiModal();
     if (phosphorusBinderModalEl && !phosphorusBinderModalEl.hidden) {
       closePhosphorusBinderModal();
     }
@@ -10275,6 +10522,7 @@
     }
     if (microGapsModalEl && !microGapsModalEl.hidden) closeMicroGapsModal();
     if (healthTimelineModalEl && !healthTimelineModalEl.hidden) closeHealthTimelineModal();
+    if (dayFoodsAiModalEl && !dayFoodsAiModalEl.hidden) closeDayFoodsAiModal();
     if (microDefModalEl && !microDefModalEl.hidden) closeMicroDefModal();
     if (phosphorusBinderModalEl && !phosphorusBinderModalEl.hidden) {
       closePhosphorusBinderModal();
@@ -10339,6 +10587,7 @@
       closeImportAllMealsModal();
     }
     if (healthTimelineModalEl && !healthTimelineModalEl.hidden) closeHealthTimelineModal();
+    if (dayFoodsAiModalEl && !dayFoodsAiModalEl.hidden) closeDayFoodsAiModal();
     if (analysisPickerModalEl && !analysisPickerModalEl.hidden) {
       closeAnalysisPickerModal();
     }
@@ -10447,6 +10696,7 @@
       isFavoritesSidebarOpen() ||
       (microGapsModalEl && !microGapsModalEl.hidden) ||
       (healthTimelineModalEl && !healthTimelineModalEl.hidden) ||
+      (dayFoodsAiModalEl && !dayFoodsAiModalEl.hidden) ||
       (analysisPickerModalEl && !analysisPickerModalEl.hidden) ||
       (longevityAnalysisModalEl && !longevityAnalysisModalEl.hidden) ||
       (microDefModalEl && !microDefModalEl.hidden) ||
@@ -10608,6 +10858,7 @@
     if (microDefModalEl && !microDefModalEl.hidden) closeMicroDefModal();
     if (microGapsModalEl && !microGapsModalEl.hidden) closeMicroGapsModal();
     if (healthTimelineModalEl && !healthTimelineModalEl.hidden) closeHealthTimelineModal();
+    if (dayFoodsAiModalEl && !dayFoodsAiModalEl.hidden) closeDayFoodsAiModal();
   }
 
   function applySampleFoodItems(items) {
@@ -17392,6 +17643,9 @@
     if (healthTimelineModalEl && !healthTimelineModalEl.hidden) {
       closeHealthTimelineModal();
     }
+    if (dayFoodsAiModalEl && !dayFoodsAiModalEl.hidden) {
+      closeDayFoodsAiModal();
+    }
     if (microDefModalEl && !microDefModalEl.hidden) closeMicroDefModal();
     if (activeMicroId) {
       saveMicrosFromForm();
@@ -17599,6 +17853,9 @@
     if (microGapsModalEl && !microGapsModalEl.hidden) closeMicroGapsModal();
     if (healthTimelineModalEl && !healthTimelineModalEl.hidden) {
       closeHealthTimelineModal();
+    }
+    if (dayFoodsAiModalEl && !dayFoodsAiModalEl.hidden) {
+      closeDayFoodsAiModal();
     }
     analysisPickerOptionsEl.innerHTML = analysisPickerOptionsHtml();
     analysisPickerModalEl.hidden = false;
@@ -24920,6 +25177,7 @@
     syncDayEntryModeUi();
     hideDayFoodItemPopover();
     if (!dayEntryAdvancedEnabled) {
+      closeDayFoodsAiModal();
       hideAllDaySuggests();
       loadEditorsFromDayMeals();
       ensureAllDayGuidedEls();
@@ -25755,6 +26013,9 @@
     if (microGapsModalEl && !microGapsModalEl.hidden) closeMicroGapsModal();
     if (healthTimelineModalEl && !healthTimelineModalEl.hidden) {
       closeHealthTimelineModal();
+    }
+    if (dayFoodsAiModalEl && !dayFoodsAiModalEl.hidden) {
+      closeDayFoodsAiModal();
     }
 
     // Confirm in the click handler (before fetch) so the browser keeps the
@@ -29144,6 +29405,44 @@
     });
   }
 
+  if (dayFoodsAiModalDoneBtn) {
+    dayFoodsAiModalDoneBtn.addEventListener("click", closeDayFoodsAiModal);
+  }
+
+  if (dayFoodsAiModalEl) {
+    dayFoodsAiModalEl.addEventListener("click", function (e) {
+      if (e.target.closest('[data-action="close-day-foods-ai-modal"]')) {
+        closeDayFoodsAiModal();
+      }
+    });
+  }
+
+  if (dayFoodsAiCopyBtn) {
+    dayFoodsAiCopyBtn.addEventListener("click", function () {
+      copyDayFoodsAiPromptToClipboard(function () {
+        var prev = dayFoodsAiCopyBtn.textContent;
+        dayFoodsAiCopyBtn.textContent = "Copied!";
+        window.setTimeout(function () {
+          dayFoodsAiCopyBtn.textContent = prev;
+        }, 1500);
+      });
+    });
+  }
+
+  if (dayFoodsAiOpenChatgptEl) {
+    dayFoodsAiOpenChatgptEl.addEventListener("click", function (e) {
+      e.preventDefault();
+      openDayFoodsAiService(CHATGPT_URL);
+    });
+  }
+
+  if (dayFoodsAiOpenClaudeEl) {
+    dayFoodsAiOpenClaudeEl.addEventListener("click", function (e) {
+      e.preventDefault();
+      openDayFoodsAiService(CLAUDE_URL);
+    });
+  }
+
   if (dashboardLongevityAnalysisBtn) {
     dashboardLongevityAnalysisBtn.addEventListener("click", openLongevityAnalysisModal);
   }
@@ -29454,6 +29753,10 @@
     }
     if (healthTimelineModalEl && !healthTimelineModalEl.hidden) {
       closeHealthTimelineModal();
+      return;
+    }
+    if (dayFoodsAiModalEl && !dayFoodsAiModalEl.hidden) {
+      closeDayFoodsAiModal();
       return;
     }
     if (analysisPickerModalEl && !analysisPickerModalEl.hidden) {
@@ -29962,6 +30265,13 @@
         closeFavoritesSidebar();
         var favoriteDayId = favoriteBtn.getAttribute("data-day-id");
         if (favoriteDayId) openFavoriteDayEditor(favoriteDayId);
+        return;
+      }
+      var dayFoodsAiBtn = e.target.closest('[data-action="day-foods-ai"]');
+      if (dayFoodsAiBtn) {
+        closeAllDayCopyMenus();
+        var aiDayId = dayFoodsAiBtn.getAttribute("data-day-id");
+        if (aiDayId) openDayFoodsAiModal(aiDayId);
         return;
       }
       var ignoreBtn = e.target.closest('[data-action="ignore-day"]');
