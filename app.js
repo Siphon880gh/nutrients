@@ -482,6 +482,9 @@
   var starterGuideTarget = null;
   var starterGuideScrollResizeBound = false;
   var IMPORT_SAMPLE_FOODS_URL = "samples/definitions-food.json";
+  function importSampleFoodsUrl() {
+    return IMPORT_SAMPLE_FOODS_URL + "?t=" + Date.now();
+  }
   var IMPORT_SAMPLE_MEALS_URL = "samples/day-meals.json";
   var FOOD_SOURCES_PRECOMPUTED_URL = "definitions-food-sources.json";
   var importAllMealsModalEl = document.getElementById("import-all-meals-modal");
@@ -7628,7 +7631,7 @@
       );
       return;
     }
-    foodSourcesSampleCatalogPromise = fetch(IMPORT_SAMPLE_FOODS_URL, {
+    foodSourcesSampleCatalogPromise = fetch(importSampleFoodsUrl(), {
       cache: "no-store",
     })
       .then(function (res) {
@@ -10856,7 +10859,7 @@
   }
 
   function fetchSampleFoodItems() {
-    return fetch(IMPORT_SAMPLE_FOODS_URL).then(function (res) {
+    return fetch(importSampleFoodsUrl(), { cache: "no-store" }).then(function (res) {
       if (!res.ok) throw new Error("Could not load sample food definitions");
       return res.text();
     }).then(function (raw) {
