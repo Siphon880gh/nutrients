@@ -1294,6 +1294,8 @@ body.app-nav-shortcuts-visible [data-app-shortcut] > .app-nav__shortcut {
 #food-entry,
 #food-definitions-heading,
 #food-definitions-panel,
+#meals-heading,
+#meals-panel,
 #week-summary,
 #week-summary-panel,
 #dashboard-macros-condensed,
@@ -10527,6 +10529,310 @@ body.day-word-wrap-off .day__input {
   margin-bottom: 0.55rem;
 }
 
+.app-sheet__panel.meals-sheet__panel {
+  padding: 0;
+}
+
+.app-sheet__panel.meals-sheet__panel .app-sheet__body {
+  padding: 0.75rem 1rem 1rem;
+}
+
+.meals--sheet {
+  margin: 0;
+  min-height: 0;
+}
+
+.meals--sheet .keywords__hint {
+  margin-bottom: 0.85rem;
+}
+
+.meals__toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.75rem;
+  margin-bottom: 0.85rem;
+}
+
+.meals__filter-controls {
+  flex: 1 1 12rem;
+  max-width: 24rem;
+}
+
+.meals__list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.meals__row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.55rem;
+  align-items: start;
+  padding: 0.65rem 0.75rem;
+  border: 1px solid #d8d8d4;
+  border-radius: 6px;
+  background: #fafaf8;
+}
+
+.meals__row-main {
+  min-width: 0;
+}
+
+.meals__open {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.15rem;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.meals__open:hover .meals__row-name,
+.meals__open:focus-visible .meals__row-name {
+  color: #2f5680;
+}
+
+.meals__row-name {
+  font-size: 0.95rem;
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.meals__row-meta {
+  font-size: 0.75rem;
+  color: #6a6a66;
+  line-height: 1.3;
+}
+
+.meals__row-foods {
+  margin-top: 0.1rem;
+  font-size: 0.78rem;
+  color: #4a4a46;
+  line-height: 1.35;
+}
+
+.meals__row-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  justify-content: flex-end;
+}
+
+.meals__text-btn {
+  min-height: 1.85rem;
+  padding: 0.2rem 0.55rem;
+  border: 1px solid #c8c8c4;
+  border-radius: 5px;
+  background: #fff;
+  color: #3d6b9e;
+  font: inherit;
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.meals__text-btn:hover {
+  background: #eef4fa;
+}
+
+.meals__text-btn--danger {
+  color: #7a4a4a;
+}
+
+.meals__text-btn--danger:hover {
+  background: #faf2f2;
+  border-color: #d0a8a8;
+}
+
+.meals__detail-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.45rem 0.75rem;
+  margin-bottom: 0.55rem;
+}
+
+.meals__back {
+  min-height: 1.85rem;
+  padding: 0.2rem 0.15rem;
+  border: 0;
+  background: transparent;
+  color: #3d6b9e;
+  font: inherit;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.meals__back:hover {
+  text-decoration: underline;
+}
+
+.meals__detail-name {
+  margin: 0;
+  flex: 1 1 10rem;
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+
+.meals__detail-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+}
+
+.meals__detail-hint {
+  margin: 0 0 0.65rem;
+  font-size: 0.8rem;
+  color: #5c5c5c;
+}
+
+.meals__foods {
+  list-style: none;
+  margin: 0 0 0.75rem;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.meals__food {
+  display: grid;
+  grid-template-columns: auto 1fr auto auto;
+  gap: 0.4rem;
+  align-items: center;
+  padding: 0.5rem 0.6rem;
+  border: 1px solid #d8d8d4;
+  border-radius: 6px;
+  background: #fff;
+}
+
+.meals__food-order {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.meals__food-order button {
+  min-width: 1.6rem;
+  min-height: 1.35rem;
+  padding: 0;
+  border: 1px solid #c8c8c4;
+  border-radius: 4px;
+  background: #f8f8f6;
+  font: inherit;
+  font-size: 0.75rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.meals__food-order button:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.meals__food-name {
+  min-width: 0;
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.meals__food-name--missing {
+  color: #7a4a4a;
+}
+
+.meals__food-servings {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.meals__food-servings label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #5c5c5c;
+}
+
+.meals__food-servings input {
+  width: 4.25rem;
+  min-height: 1.75rem;
+  padding: 0.15rem 0.35rem;
+  border: 1px solid #c8c8c4;
+  border-radius: 4px;
+  font: inherit;
+  font-size: 0.85rem;
+}
+
+.meals__food-remove {
+  min-width: 1.75rem;
+  min-height: 1.75rem;
+  padding: 0;
+  border: 1px solid #c8c8c4;
+  border-radius: 4px;
+  background: #f8f8f6;
+  font-size: 1rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.meals__food-remove:hover {
+  background: #faf2f2;
+  border-color: #d0a8a8;
+  color: #7a4a4a;
+}
+
+.meals__detail-empty {
+  margin: 0 0 0.75rem;
+  font-size: 0.8rem;
+  color: #5c5c5c;
+}
+
+.meals__detail-footer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.add-food-modal__result-kind,
+.day__suggest-kind {
+  display: inline-block;
+  margin-left: 0.4rem;
+  padding: 0.05rem 0.35rem;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #1f5c53;
+  background: #eef7f5;
+  border-radius: 999px;
+  vertical-align: 0.08em;
+}
+
+.add-food-modal__result--meal .add-food-modal__result-kind {
+  flex: 0 0 auto;
+}
+
+.add-food-modal__result {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.day__suggest-item--meal .day__suggest-kind {
+  flex: 0 0 auto;
+}
+
 .demographic {
   margin-top: 1rem;
 }
@@ -14049,6 +14355,7 @@ button.longevity-form__label-link:focus-visible {
   #week-summary,
   #week-summary-panel,
   #food-definitions-panel,
+  #meals-panel,
   #dashboard-macros-condensed,
   #dashboard-micro-panel,
   #dashboard-longevity-panel {
@@ -14095,6 +14402,7 @@ button.longevity-form__label-link:focus-visible {
   .demographic,
   .modal,
   #food-definitions-panel,
+  #meals-panel,
   .dashboard__micro-intro-actions,
   .dashboard__micro-hint-actions,
   .dashboard__micro-hint-ai,
@@ -14303,6 +14611,7 @@ body.print-preview .keywords,
 body.print-preview .demographic,
 body.print-preview .modal,
 body.print-preview #food-definitions-panel,
+body.print-preview #meals-panel,
 body.print-preview .dashboard__micro-intro-actions,
 body.print-preview .dashboard__micro-hint-actions,
 body.print-preview .dashboard__micro-hint-ai,

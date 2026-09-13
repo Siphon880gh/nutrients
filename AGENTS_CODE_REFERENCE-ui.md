@@ -14,7 +14,7 @@ Parent: [AGENTS_CODE_REFERENCE.md](./AGENTS_CODE_REFERENCE.md)
 │   └── .week__header-actions
 │       ├── #auth-logged-out / #auth-logged-in (.week__auth — Sign up / Log in / email / Log out)
 │       └── #settings-open (.week__settings — sex icon + “Settings”)
-├── #app-nav.app-nav           (Sources / Defs / Entry / Macros / Week / Micros / Longevity; bottom bar ≤720px)
+├── #app-nav.app-nav           (Sources / Defs / Meals / Entry / Macros / Week / Micros / Longevity; bottom bar ≤720px)
 ├── .dashboard
 │   ├── .dashboard__header
 │   │   ├── .dashboard__header-row  (Dashboard title + Print)
@@ -158,7 +158,7 @@ Pen + notes markup is **static** in `index.html`; only labels and popover **cont
 
 **Responsive / print** (lower `styles.css`): dashboard/table column counts shrink at breakpoints. Seven dashboard columns stay on one row above 1100px; card-width `@container` rules keep macro text from clipping. At `max-width: 520px`, the Mon–Sun **day editors** use a horizontal scroll-snap carousel (not a stacked single-column grid) — see **Mobile days carousel** above. Day editors keep `resize: vertical` unless print/print-preview (`resize: none`). Icon buttons, week nav, Favorite week, Favorites sidebar, unmatched UI, and day Copy/Favorite/Clear are hidden in print / print-preview.
 
-**Horizontal pill/tab carousels** (nowrap + `overflow-x: auto`, scrollbar hidden): `#app-nav .app-nav__inner` (bottom tabs at `max-width: 720px`; never wraps Longevity onto a second row), `.dashboard__sticky-options-disclosures` (Highlight / Poor storage / One-day excess). Food Entry / Macros / Sources / Analysis (and week ←/→) call `closeExclusiveOverlays()` so Food Definitions, Micro requirements, and Longevity sheets close instead of covering the jump target.
+**Horizontal pill/tab carousels** (nowrap + `overflow-x: auto`, scrollbar hidden): `#app-nav .app-nav__inner` (bottom tabs at `max-width: 720px`; never wraps Longevity onto a second row), `.dashboard__sticky-options-disclosures` (Highlight / Poor storage / One-day excess). Food Entry / Macros / Sources / Analysis (and week ←/→) call `closeExclusiveOverlays()` so Food Definitions, Meals, Micro requirements, and Longevity sheets close instead of covering the jump target.
 
 **Sticky filters section carousel** (≤900px): `.dashboard__micro-sticky-filters` / `.dashboard__longevity-sticky-filters` — each `.dashboard__sticky-filter-group` is one scroll-snap slide inside `.dashboard__sticky-filters-track`. Micro order: **Filter by** → Show nutrients with → By nutrient; longevity: Show → By nutrient. Chevron nav `.dashboard__sticky-filters-carousel-nav` (`data-sticky-filters-carousel="prev|next"`, current label `#micro-sticky-filters-carousel-current` / `#longevity-sticky-filters-carousel-current`). While a Filter-by menu is open in the carousel, lists are moved to `document.body` with `.dashboard__micro-condition-list--fixed` (`position: fixed` via `syncMicroFilterMenuPositions`) so they escape track overflow and sticky `backdrop-filter` containing blocks; restored to their dropdown home on close. Desktop keeps groups in one wrapping row (`display: contents` on the track).
 
@@ -185,6 +185,10 @@ Notable columns:
 **Footer** — `.keywords__footer`: `#add-keyword` plus `.keywords__bulk` (`#sort-foods-alphabetically`, `#export-all-foods`, `#import-all-foods`, `#import-sample-foods`).
 
 Horizontal scroll on narrow screens: `.keywords__panel { overflow-x: auto }`, `min-width` on table.
+
+## Saved meals sheet
+
+**`#meals-panel`** — exclusive overlay like food definitions (`#dashboard-meals-jump` in `#app-nav`). List view (`#meals-list-view`): search `#meals-search`, **New meal**, rows with Open / Rename / Delete. Detail view (`#meals-detail-view`): back, rename/delete, food list with servings + reorder, **Add food** (reuses `#add-food-modal` targeting the meal). Create/rename uses `#meal-name-modal`. Persisted in `nutrients_meals`.
 
 ## Auth header & modals
 

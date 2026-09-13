@@ -7,6 +7,7 @@
  *   nutrients_session            Session | null
  *   nutrients_food_definitions   FoodDefinition[]  (+ userId)
  *   nutrients_day_meals          DayMealsRow[]     (+ userId)
+ *   nutrients_meals              SavedMeal[]       (+ userId)
  *   nutrients_favorites          Favorite[]        (+ userId)
  *   nutrients_settings           SettingsRow[]     (+ userId)
  */
@@ -216,6 +217,7 @@ var NutrientsPersist = (function () {
   var KEYS = {
     FOOD_DEFINITIONS: "nutrients_food_definitions",
     DAY_MEALS: "nutrients_day_meals",
+    MEALS: "nutrients_meals",
     FAVORITES: "nutrients_favorites",
     SETTINGS: "nutrients_settings",
     ORPHAN_LEGACY: "nutrients_orphan_legacy",
@@ -596,6 +598,10 @@ var NutrientsPersist = (function () {
     );
   }
 
+  function isMultiUserSavedMeals(data) {
+    return isMultiUserFavorites(data);
+  }
+
   function isMultiUserSettings(data) {
     return Array.isArray(data);
   }
@@ -665,6 +671,11 @@ var NutrientsPersist = (function () {
     if (!isMultiUserFavorites(loadJson(KEYS.FAVORITES))) {
       if (safeGet(KEYS.FAVORITES) == null) {
         saveJson(KEYS.FAVORITES, []);
+      }
+    }
+    if (!isMultiUserSavedMeals(loadJson(KEYS.MEALS))) {
+      if (safeGet(KEYS.MEALS) == null) {
+        saveJson(KEYS.MEALS, []);
       }
     }
     if (!isMultiUserSettings(loadJson(KEYS.SETTINGS))) {
@@ -905,6 +916,26 @@ var NutrientsPersist = (function () {
     );
   }
 
+  function loadMeals() {
+    migrateIfNeeded();
+    var userId = currentUserId();
+    if (!userId) return null;
+    return rowsForUser(loadJson(KEYS.MEALS), userId).map(stripUserId);
+  }
+
+  function saveMeals(rows) {
+    migrateIfNeeded();
+    var userId = currentUserId();
+    if (!userId || !Array.isArray(rows)) return false;
+    var next = rows.map(function (row) {
+      return withUserId(stripUserId(row), userId);
+    });
+    return saveJson(
+      KEYS.MEALS,
+      replaceUserRows(loadJson(KEYS.MEALS), userId, next)
+    );
+  }
+
   function loadSettings() {
     migrateIfNeeded();
     var userId = currentUserId();
@@ -978,6 +1009,8 @@ var NutrientsPersist = (function () {
     saveDayMeals: saveDayMeals,
     loadFavorites: loadFavorites,
     saveFavorites: saveFavorites,
+    loadMeals: loadMeals,
+    saveMeals: saveMeals,
     loadSettings: loadSettings,
     saveSettings: saveSettings,
     patchSettings: patchSettings,

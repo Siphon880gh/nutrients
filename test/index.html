@@ -166,6 +166,7 @@
         <div class="row">
           <button type="button" class="btn-small" data-seed="A-food">Save food “Egg A”</button>
           <button type="button" class="btn-small" data-seed="A-meals">Save day meal “Egg A”</button>
+          <button type="button" class="btn-small" data-seed="A-saved-meal">Save meal “Breakfast A”</button>
           <button type="button" class="btn-small" data-seed="A-fav">Save favorite “Week A”</button>
           <button type="button" class="btn-small" data-seed="A-settings">Set demographic female + TDEE 2100</button>
         </div>
@@ -183,6 +184,7 @@
         <div class="row">
           <button type="button" class="btn-small" data-seed="B-food">Save food “Rice B”</button>
           <button type="button" class="btn-small" data-seed="B-meals">Save day meal “Rice B”</button>
+          <button type="button" class="btn-small" data-seed="B-saved-meal">Save meal “Lunch B”</button>
           <button type="button" class="btn-small" data-seed="B-fav">Save favorite “Day B”</button>
           <button type="button" class="btn-small" data-seed="B-settings">Set demographic male + TDEE 2500</button>
         </div>
@@ -207,7 +209,7 @@
     </section>
   </div>
 
-  <script src="../persist.js?t=1786431230"></script>
+  <script src="../persist.js?t=1789372800"></script>
   <script>
 (function () {
   var KEYS = [
@@ -215,6 +217,7 @@
     "nutrients_session",
     "nutrients_food_definitions",
     "nutrients_day_meals",
+    "nutrients_meals",
     "nutrients_favorites",
     "nutrients_settings",
     "nutrients_orphan_legacy",
@@ -384,6 +387,26 @@
         days: { "2026-07-14": "Rice B" },
       });
       log("Saved day meal for B", "ok");
+    } else if (id === "A-saved-meal") {
+      if (!requireLogin(creds("A").email)) return;
+      NutrientsPersist.saveMeals([
+        {
+          id: "meal-a",
+          name: "Breakfast A",
+          foods: [{ keywordId: "food-a", name: "Egg A", servings: 2 }],
+        },
+      ]);
+      log('Saved meal "Breakfast A"', "ok");
+    } else if (id === "B-saved-meal") {
+      if (!requireLogin(creds("B").email)) return;
+      NutrientsPersist.saveMeals([
+        {
+          id: "meal-b",
+          name: "Lunch B",
+          foods: [{ keywordId: "food-b", name: "Rice B", servings: 1 }],
+        },
+      ]);
+      log('Saved meal "Lunch B"', "ok");
     } else if (id === "A-fav") {
       if (!requireLogin(creds("A").email)) return;
       NutrientsPersist.saveFavorites([
@@ -534,11 +557,14 @@
       },
     },
     {
-      name: "Day meals / favorites / settings isolated per user",
+      name: "Day meals / saved meals / favorites / settings isolated per user",
       run: function () {
         clearNutrientsStorage(true);
         NutrientsAuth.signup("isoA@example.com", "passA");
         NutrientsPersist.saveDayMeals({ version: 2, days: { "2026-07-13": "A" } });
+        NutrientsPersist.saveMeals([
+          { id: "ma", name: "Breakfast A", foods: [{ name: "Egg A", servings: 1 }] },
+        ]);
         NutrientsPersist.saveFavorites([
           { id: "fa", type: "week", dateKey: "2026-07-13", name: "Week A", description: "" },
         ]);
@@ -546,16 +572,21 @@
         NutrientsAuth.logout();
         NutrientsAuth.signup("isoB@example.com", "passB");
         NutrientsPersist.saveDayMeals({ version: 2, days: { "2026-07-14": "B" } });
+        NutrientsPersist.saveMeals([
+          { id: "mb", name: "Lunch B", foods: [{ name: "Rice B", servings: 1 }] },
+        ]);
         NutrientsPersist.saveFavorites([
           { id: "fb", type: "day", dateKey: "2026-07-14", name: "Day B", description: "" },
         ]);
         NutrientsPersist.patchSettings({ demographic: "male", tdee: 2500 });
         var mealsB = NutrientsPersist.loadDayMeals();
+        var savedB = NutrientsPersist.loadMeals();
         var favsB = NutrientsPersist.loadFavorites();
         var tdeeB = NutrientsPersist.getSetting("tdee");
         NutrientsAuth.logout();
         NutrientsAuth.login("isoA@example.com", "passA");
         var mealsA = NutrientsPersist.loadDayMeals();
+        var savedA = NutrientsPersist.loadMeals();
         var favsA = NutrientsPersist.loadFavorites();
         var tdeeA = NutrientsPersist.getSetting("tdee");
         var demoA = NutrientsPersist.getSetting("demographic");
@@ -563,6 +594,8 @@
           mealsA.days["2026-07-13"] === "A" &&
           !mealsA.days["2026-07-14"] &&
           mealsB.days["2026-07-14"] === "B" &&
+          savedA[0].name === "Breakfast A" &&
+          savedB[0].name === "Lunch B" &&
           favsA[0].name === "Week A" &&
           favsB[0].name === "Day B" &&
           demoA === "female" &&

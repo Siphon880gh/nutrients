@@ -21,6 +21,7 @@ Nutrients uses **repository modules** in [`persist.js`](./persist.js) so UI/doma
 │  nutrients_users / nutrients_session                      │
 │  nutrients_food_definitions (+ userId)                   │
 │  nutrients_day_meals (+ userId)                          │
+│  nutrients_meals (+ userId)                              │
 │  nutrients_favorites (+ userId)                          │
 │  nutrients_settings (+ userId)                            │
 └─────────────────────────────────────────────────────────┘
@@ -49,6 +50,7 @@ Spec: [`specs-data-persistence.md`](./specs-data-persistence.md).
 | `isLoggedIn()` | Proxy to auth |
 | `load/saveFoodDefinitions` | Current user’s food rows |
 | `load/saveDayMeals` | Current user’s day-meals row |
+| `load/saveMeals` | Current user’s saved meal templates |
 | `load/saveFavorites` | Current user’s favorites |
 | `load/save/patchSettings`, `get/setSetting` | Current user’s settings row |
 
@@ -63,9 +65,9 @@ Top-right (`.week__header-actions`): **Log in** / **Sign up** when logged out; e
 Browser-only UI at [`test/index.html`](./test/index.html) (visit `/test/` on the same origin as the app).
 
 **Features:**
-- Live display of `nutrients_users`, `nutrients_session`, food / day-meals / favorites / settings tables, and orphan key
+- Live display of `nutrients_users`, `nutrients_session`, food / day-meals / saved meals / favorites / settings tables, and orphan key
 - Manual Sign up / Log in / Log out for User A and User B
-- Seed buttons that save foods, day meals, favorites, and settings through `NutrientsPersist` (validates per-user isolation)
+- Seed buttons that save foods, day meals, saved meals, favorites, and settings through `NutrientsPersist` (validates per-user isolation)
 - **Run all tests** suite for signup, login, logout, logged-out no-op saves, per-user entity isolation, persistence across re-login, email normalization
 - Action log + clear nutrients_* keys
 

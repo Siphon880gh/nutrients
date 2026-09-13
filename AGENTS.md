@@ -20,7 +20,7 @@ Authoring guides (human + agent): `GUIDE_ADDING_FOOD.md`, `GUIDE_IMPROVING_FOOD.
 
 - Static client-only app: `index.html`, `styles.css`, `persist.js`, `app.js` (IIFE).
 - No bundler, no backend. Open via a static file server so `fetch` of JSON works.
-- Food definitions, day meals, favorites, and settings persist in `localStorage` via `NutrientsAuth` + `NutrientsPersist` (users/session + per-`userId` entity tables); sample data lives under `samples/`.
+- Food definitions, day meals, saved meals, favorites, and settings persist in `localStorage` via `NutrientsAuth` + `NutrientsPersist` (users/session + per-`userId` entity tables); sample data lives under `samples/`.
 - Header auth: Sign up / Log in / Log out (local accounts for multi-user testing).
 - Persistence test harness: [`test/index.html`](./test/index.html) (open `/test/` on the static server).
 - Category filter map: `definitions-food-categories.json`.

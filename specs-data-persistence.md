@@ -12,7 +12,7 @@ LocalStorage is organized like a small client-side database:
 
 - One **users** table for accounts/credentials
 - One **session** key for who is logged in
-- Separate **entity tables** (foods, day meals, favorites, settings), where **each record includes `userId`**
+- Separate **entity tables** (foods, day meals, saved meals, favorites, settings), where **each record includes `userId`**
 
 UI code never calls `localStorage` for app data; it uses the repositories only.
 
@@ -24,6 +24,7 @@ UI code never calls `localStorage` for app data; it uses the repositories only.
 | `nutrients_session` | Current logged-in session | `Session \| null` |
 | `nutrients_food_definitions` | Food definitions table | rows with `userId` |
 | `nutrients_day_meals` | Day meals / diary table | one row per user (`userId` + days map) |
+| `nutrients_meals` | Saved meal templates | rows with `userId` (named food combinations) |
 | `nutrients_favorites` | Diary favorites table | rows with `userId` |
 | `nutrients_settings` | Settings table | one row per user (`userId` + prefs) |
 | `nutrients_orphan_legacy` | Temporary pre–multi-user payload | claimed by first signup, then removed |
@@ -142,6 +143,29 @@ Empty day strings are omitted when saving. `ignoredDays` is optional on load (mi
 ```
 
 Array order within a user’s subset is browse/manage order.
+
+### Saved Meals Table (`nutrients_meals`)
+
+Reusable named food combinations (distinct from day-meal diary text).
+
+```javascript
+[
+  {
+    userId: string,
+    id: string,           // "meal-{timestamp}-{random}"
+    name: string,
+    foods: [
+      {
+        keywordId: string,  // food definition id when known
+        name: string,       // display / match fallback
+        servings: number    // > 0
+      }
+    ]
+  }
+]
+```
+
+Array order within a user’s subset is browse/manage order. Selecting a saved meal in **Add food** or Advanced autocomplete expands its foods (with stored servings) onto the day.
 
 ### Settings Table (`nutrients_settings`)
 
@@ -317,8 +341,9 @@ User rows and entity rows are **kept**; only the session is cleared.
 | Food row edit / import / micros / longevity | `nutrients_food_definitions` |
 | Day textarea / week nav / meal import | `nutrients_day_meals` (+ `viewedWeekStart` in settings) |
 | Favorite add / edit / delete / reorder | `nutrients_favorites` |
+| Saved meal create / rename / delete / foods | `nutrients_meals` |
 | Demographic, TDEE, weight, UI toggles, filters, highlights, page size, editor height | `nutrients_settings` |
-| `beforeunload` | definitions, demographic, TDEE, day meals, day highlights |
+| `beforeunload` | definitions, demographic, TDEE, day meals, saved meals, day highlights |
 
 After signup, login, or logout, `app.js` calls `afterAuthSessionChange()` to reload repository data into memory and refresh the UI.
 
@@ -333,7 +358,7 @@ UI / domain code in `app.js` must not call `localStorage` for app data. All read
 Use [`test/index.html`](./test/index.html) (`/test/`) to exercise:
 
 - Signup / login / logout and session key contents  
-- Per-user foods, day meals, favorites, settings  
+- Per-user foods, day meals, saved meals, favorites, settings  
 - Isolation between User A and User B  
 - Persistence across logout → re-login  
 - Email case normalization  

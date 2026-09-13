@@ -99,6 +99,31 @@
   );
   var foodDefinitionsPanelEl = document.getElementById("food-definitions-panel");
   var foodDefinitionsCloseEl = document.getElementById("food-definitions-close");
+  var dashboardMealsJumpEl = document.getElementById("dashboard-meals-jump");
+  var mealsPanelEl = document.getElementById("meals-panel");
+  var mealsCloseEl = document.getElementById("meals-close");
+  var mealsListViewEl = document.getElementById("meals-list-view");
+  var mealsDetailViewEl = document.getElementById("meals-detail-view");
+  var mealsListEl = document.getElementById("meals-list");
+  var mealsEmptyEl = document.getElementById("meals-empty");
+  var mealsFilterEmptyEl = document.getElementById("meals-filter-empty");
+  var mealsSearchEl = document.getElementById("meals-search");
+  var mealsSearchClearBtn = document.getElementById("meals-search-clear");
+  var mealsNewBtn = document.getElementById("meals-new");
+  var mealsDetailBackBtn = document.getElementById("meals-detail-back");
+  var mealsDetailNameEl = document.getElementById("meals-detail-name");
+  var mealsDetailRenameBtn = document.getElementById("meals-detail-rename");
+  var mealsDetailDeleteBtn = document.getElementById("meals-detail-delete");
+  var mealsDetailFoodsEl = document.getElementById("meals-detail-foods");
+  var mealsDetailEmptyEl = document.getElementById("meals-detail-empty");
+  var mealsDetailAddFoodBtn = document.getElementById("meals-detail-add-food");
+  var mealNameModalEl = document.getElementById("meal-name-modal");
+  var mealNameModalTitleEl = document.getElementById("meal-name-modal-title");
+  var mealNameModalHintEl = document.getElementById("meal-name-modal-hint");
+  var mealNameInputEl = document.getElementById("meal-name-input");
+  var mealNameErrorEl = document.getElementById("meal-name-error");
+  var mealNameCancelBtn = document.getElementById("meal-name-cancel");
+  var mealNameSaveBtn = document.getElementById("meal-name-save");
   var dashboardFoodEntryJumpEl = document.getElementById(
     "dashboard-food-entry-jump"
   );
@@ -612,6 +637,7 @@
   var addFoodCancelBtn = document.getElementById("add-food-cancel");
   var addFoodSubmitBtn = document.getElementById("add-food-submit");
   var addFoodPendingDayId = null;
+  var addFoodPendingMealId = null;
   var addFoodSelectedItems = [];
   var addFoodSelectedListKey = "";
   var addFoodResultsPage = 0;
@@ -664,6 +690,10 @@
   var ignoredDaysByDate = {};
   var viewedWeekStart = null;
   var diaryFavorites = [];
+  var savedMeals = [];
+  var mealsPanelOpen = false;
+  var activeMealId = null;
+  var mealNameEditId = null;
   var activeFavoriteDayKey = null;
   var activeDiarySearchDayKey = null;
   var favoriteEditPending = null;
@@ -10717,6 +10747,7 @@
       (copyDateModalEl && !copyDateModalEl.hidden) ||
       (copyConflictModalEl && !copyConflictModalEl.hidden) ||
       (favoriteEditModalEl && !favoriteEditModalEl.hidden) ||
+      (mealNameModalEl && !mealNameModalEl.hidden) ||
       (addFoodModalEl && !addFoodModalEl.hidden) ||
       (weekQuizModalEl && !weekQuizModalEl.hidden) ||
       isFavoritesSidebarOpen() ||
@@ -10749,6 +10780,7 @@
       (macroSplitHintModalEl && !macroSplitHintModalEl.hidden) ||
       (keywordPositionModalEl && !keywordPositionModalEl.hidden) ||
       foodDefinitionsOpen ||
+      mealsPanelOpen ||
       microRequirementsOpen ||
       longevityPanelOpen ||
       !!activeImportId ||
@@ -10765,7 +10797,7 @@
     var root = document.documentElement.style;
     if (
       !nav ||
-      !(foodDefinitionsOpen || microRequirementsOpen || longevityPanelOpen)
+      !(foodDefinitionsOpen || mealsPanelOpen || microRequirementsOpen || longevityPanelOpen)
     ) {
       root.removeProperty("--app-sheet-top");
       root.removeProperty("--app-sheet-bottom");
@@ -10801,6 +10833,7 @@
   function syncExclusiveOverlayUi() {
     var overlayOpen = !!(
       foodDefinitionsOpen ||
+      mealsPanelOpen ||
       microRequirementsOpen ||
       longevityPanelOpen
     );
@@ -10823,6 +10856,7 @@
 
   function closeExclusiveOverlays() {
     if (foodDefinitionsOpen) setFoodDefinitionsOpen(false);
+    if (mealsPanelOpen) setMealsPanelOpen(false);
     if (microRequirementsOpen) setMicroRequirementsOpen(false);
     if (longevityPanelOpen) setLongevityPanelOpen(false);
   }
@@ -18362,6 +18396,7 @@
     if (longevityPanelOpen) {
       setMicroRequirementsOpen(false);
       setFoodDefinitionsOpen(false);
+      setMealsPanelOpen(false);
       renderLongevityPanel();
       initStickyFiltersCarousel();
       resetAppSheetScroll(dashboardLongevityPanelEl);
@@ -18380,6 +18415,31 @@
       } else if (analysisActiveKind === "longevity") {
         dismissLongevityAnalysisReturnWidget();
       }
+    }
+    syncExclusiveOverlayUi();
+  }
+
+  function setMealsPanelOpen(open) {
+    mealsPanelOpen = !!open;
+    if (dashboardMealsJumpEl) {
+      dashboardMealsJumpEl.setAttribute(
+        "aria-expanded",
+        mealsPanelOpen ? "true" : "false"
+      );
+      dashboardMealsJumpEl.classList.toggle(
+        "app-nav__btn--open",
+        mealsPanelOpen
+      );
+    }
+    if (mealsPanelEl) {
+      mealsPanelEl.hidden = !mealsPanelOpen;
+    }
+    if (mealsPanelOpen) {
+      setFoodDefinitionsOpen(false);
+      setMicroRequirementsOpen(false);
+      setLongevityPanelOpen(false);
+      renderMealsPanel();
+      resetAppSheetScroll(mealsPanelEl);
     }
     syncExclusiveOverlayUi();
   }
@@ -18424,6 +18484,7 @@
     if (foodDefinitionsOpen) {
       setMicroRequirementsOpen(false);
       setLongevityPanelOpen(false);
+      setMealsPanelOpen(false);
       resetAppSheetScroll(foodDefinitionsPanelEl);
     }
     syncExclusiveOverlayUi();
@@ -18441,6 +18502,7 @@
     if (microRequirementsOpen) {
       setLongevityPanelOpen(false);
       setFoodDefinitionsOpen(false);
+      setMealsPanelOpen(false);
       maybeApplyMicroFirstOpenPreset();
       renderMicroRequirements();
       initStickyFiltersCarousel();
@@ -19431,8 +19493,9 @@
   function syncAddFoodSubmitLabel() {
     if (!addFoodSubmitBtn) return;
     var n = addFoodSelectedItems.length;
+    var dest = addFoodPendingMealId ? "meal" : "day";
     addFoodSubmitBtn.textContent =
-      n > 1 ? "Add to day (" + n + ")" : "Add to day";
+      n > 1 ? "Add to " + dest + " (" + n + ")" : "Add to " + dest;
   }
 
   function syncAuthUi() {
@@ -19509,6 +19572,7 @@
     loadKeywordsPageSize();
     loadDayNotes();
     loadFavorites();
+    loadMeals();
     loadDayHighlightsPreference();
     loadDayWordWrapPreference();
     loadDayEntryAdvancedPreference();
@@ -19550,6 +19614,7 @@
     refreshAll();
     syncAuthUi();
     syncWeekMealsToolbarPrimary();
+    if (mealsPanelOpen) renderMealsPanel();
     window.setTimeout(function () {
       maybeOfferLostMealsRecovery();
     }, 0);
@@ -23327,6 +23392,483 @@
     });
   }
 
+  function makeMealId() {
+    return "meal-" + Date.now() + "-" + Math.floor(Math.random() * 100000);
+  }
+
+  function clampMealServings(n) {
+    if (!isFinite(n) || n <= 0) return 1;
+    n = Math.round(n * 1000) / 1000;
+    if (n < 0.01) n = 0.01;
+    return n;
+  }
+
+  function normalizeMealFood(raw) {
+    if (!raw || typeof raw !== "object") return null;
+    var name = typeof raw.name === "string" ? raw.name.trim() : "";
+    var keywordId = raw.keywordId != null ? String(raw.keywordId) : "";
+    if (!name && !keywordId) return null;
+    return {
+      keywordId: keywordId,
+      name: name,
+      servings: clampMealServings(parseFloat(raw.servings)),
+    };
+  }
+
+  function normalizeMealEntry(raw) {
+    if (!raw || typeof raw !== "object") return null;
+    var name = typeof raw.name === "string" ? raw.name.trim() : "";
+    if (!name) return null;
+    var foods = Array.isArray(raw.foods)
+      ? raw.foods.map(normalizeMealFood).filter(Boolean)
+      : [];
+    return {
+      id: String(raw.id || "").trim() || makeMealId(),
+      name: name,
+      foods: foods,
+    };
+  }
+
+  function saveMeals() {
+    if (!persist) return;
+    if (persist.saveMeals(savedMeals)) showSaveToast();
+  }
+
+  function loadMeals() {
+    savedMeals = [];
+    if (!persist) return;
+    var parsed = persist.loadMeals();
+    if (!parsed) return;
+    parsed.forEach(function (item) {
+      var entry = normalizeMealEntry(item);
+      if (entry) savedMeals.push(entry);
+    });
+  }
+
+  function mealById(id) {
+    var key = String(id || "");
+    for (var i = 0; i < savedMeals.length; i++) {
+      if (savedMeals[i].id === key) return savedMeals[i];
+    }
+    return null;
+  }
+
+  function mealIndexById(id) {
+    var key = String(id || "");
+    for (var i = 0; i < savedMeals.length; i++) {
+      if (savedMeals[i].id === key) return i;
+    }
+    return -1;
+  }
+
+  function mealNames() {
+    var seen = {};
+    var names = [];
+    savedMeals.forEach(function (meal) {
+      var name = meal.name.trim();
+      if (!name) return;
+      var key = name.toLowerCase();
+      if (seen[key]) return;
+      seen[key] = true;
+      names.push(name);
+    });
+    return names;
+  }
+
+  function mealNameTaken(name, exceptId) {
+    var key = String(name || "").trim().toLowerCase();
+    if (!key) return false;
+    for (var i = 0; i < savedMeals.length; i++) {
+      if (exceptId && savedMeals[i].id === exceptId) continue;
+      if (savedMeals[i].name.trim().toLowerCase() === key) return true;
+    }
+    return false;
+  }
+
+  function defaultMealName() {
+    var base = "Meal";
+    var n = 1;
+    var name = base;
+    while (mealNameTaken(name)) {
+      n += 1;
+      name = base + " " + n;
+    }
+    return name;
+  }
+
+  function keywordIdForName(name) {
+    var key = String(name || "").trim().toLowerCase();
+    if (!key) return "";
+    for (var i = 0; i < keywords.length; i++) {
+      if (keywords[i].name.trim().toLowerCase() === key) {
+        return String(keywords[i].id);
+      }
+    }
+    return "";
+  }
+
+  function resolveMealFoodName(food) {
+    if (!food) return "";
+    if (food.keywordId) {
+      var i = findIndex(food.keywordId);
+      if (i >= 0 && keywords[i].name.trim()) return keywords[i].name.trim();
+    }
+    var name = String(food.name || "").trim();
+    if (!name) return "";
+    var matched = foodDefinitionNameForLine(name);
+    return matched || name;
+  }
+
+  function mealFoodIsDefined(food) {
+    var name = resolveMealFoodName(food);
+    return !!(name && lineMatchesFoodDefinition(name));
+  }
+
+  function mealHasAddableFoods(mealId) {
+    var meal = mealById(mealId);
+    if (!meal || !meal.foods.length) return false;
+    return meal.foods.some(mealFoodIsDefined);
+  }
+
+  function mealFoodLines(mealId) {
+    var meal = mealById(mealId);
+    if (!meal) return [];
+    var lines = [];
+    meal.foods.forEach(function (food) {
+      var name = resolveMealFoodName(food);
+      if (!name || !lineMatchesFoodDefinition(name)) return;
+      var line = formatDayFoodLine(name, food.servings);
+      if (line) lines.push(line);
+    });
+    return lines;
+  }
+
+  function mealFoodPreview(meal) {
+    if (!meal || !meal.foods.length) return "";
+    return meal.foods
+      .map(function (food) {
+        return resolveMealFoodName(food) || food.name || "";
+      })
+      .filter(Boolean)
+      .slice(0, 6)
+      .join(", ");
+  }
+
+  function filteredSavedMeals() {
+    var q = mealsSearchEl ? String(mealsSearchEl.value || "").trim().toLowerCase() : "";
+    if (!q) return savedMeals.slice();
+    return savedMeals.filter(function (meal) {
+      if (meal.name.toLowerCase().indexOf(q) >= 0) return true;
+      return meal.foods.some(function (food) {
+        var name = resolveMealFoodName(food).toLowerCase();
+        return name.indexOf(q) >= 0;
+      });
+    });
+  }
+
+  function showMealsListView() {
+    activeMealId = null;
+    if (mealsListViewEl) mealsListViewEl.hidden = false;
+    if (mealsDetailViewEl) mealsDetailViewEl.hidden = true;
+    renderMealsList();
+  }
+
+  function showMealDetail(mealId) {
+    var meal = mealById(mealId);
+    if (!meal) {
+      showMealsListView();
+      return;
+    }
+    activeMealId = meal.id;
+    if (mealsListViewEl) mealsListViewEl.hidden = true;
+    if (mealsDetailViewEl) mealsDetailViewEl.hidden = false;
+    renderMealDetail();
+  }
+
+  function renderMealsList() {
+    if (!mealsListEl) return;
+    var rows = filteredSavedMeals();
+    var hasAny = savedMeals.length > 0;
+    var q = mealsSearchEl ? String(mealsSearchEl.value || "").trim() : "";
+    if (mealsSearchClearBtn) mealsSearchClearBtn.hidden = !q;
+    if (mealsEmptyEl) mealsEmptyEl.hidden = hasAny;
+    if (mealsFilterEmptyEl) mealsFilterEmptyEl.hidden = !hasAny || rows.length > 0;
+    mealsListEl.hidden = !rows.length;
+    mealsListEl.innerHTML = rows
+      .map(function (meal) {
+        var count = meal.foods.length;
+        var preview = mealFoodPreview(meal);
+        return (
+          '<div class="meals__row" role="listitem" data-meal-id="' +
+          escapeAttr(meal.id) +
+          '">' +
+          '<div class="meals__row-main">' +
+          '<button type="button" class="meals__open" data-action="open-meal" data-meal-id="' +
+          escapeAttr(meal.id) +
+          '">' +
+          '<span class="meals__row-name">' +
+          escapeHtml(meal.name) +
+          "</span>" +
+          '<span class="meals__row-meta">' +
+          (count === 1 ? "1 food" : count + " foods") +
+          "</span>" +
+          (preview
+            ? '<span class="meals__row-foods">' + escapeHtml(preview) + "</span>"
+            : "") +
+          "</button></div>" +
+          '<div class="meals__row-actions">' +
+          '<button type="button" class="meals__text-btn" data-action="rename-meal" data-meal-id="' +
+          escapeAttr(meal.id) +
+          '">Rename</button>' +
+          '<button type="button" class="meals__text-btn meals__text-btn--danger" data-action="delete-meal" data-meal-id="' +
+          escapeAttr(meal.id) +
+          '">Delete</button>' +
+          "</div></div>"
+        );
+      })
+      .join("");
+  }
+
+  function renderMealDetail() {
+    var meal = mealById(activeMealId);
+    if (!meal) {
+      showMealsListView();
+      return;
+    }
+    if (mealsDetailNameEl) mealsDetailNameEl.textContent = meal.name;
+    if (!mealsDetailFoodsEl) return;
+    var hasFoods = meal.foods.length > 0;
+    if (mealsDetailEmptyEl) mealsDetailEmptyEl.hidden = hasFoods;
+    mealsDetailFoodsEl.hidden = !hasFoods;
+    mealsDetailFoodsEl.innerHTML = meal.foods
+      .map(function (food, index) {
+        var name = resolveMealFoodName(food) || food.name || "Untitled food";
+        var missing = !mealFoodIsDefined(food);
+        return (
+          '<li class="meals__food" data-meal-food-index="' +
+          index +
+          '">' +
+          '<span class="meals__food-order" role="group" aria-label="Move ' +
+          escapeAttr(name) +
+          '">' +
+          '<button type="button" data-action="move-meal-food-up" data-meal-food-index="' +
+          index +
+          '" aria-label="Move up"' +
+          (index === 0 ? " disabled" : "") +
+          ">↑</button>" +
+          '<button type="button" data-action="move-meal-food-down" data-meal-food-index="' +
+          index +
+          '" aria-label="Move down"' +
+          (index === meal.foods.length - 1 ? " disabled" : "") +
+          ">↓</button></span>" +
+          '<span class="meals__food-name' +
+          (missing ? " meals__food-name--missing" : "") +
+          '">' +
+          escapeHtml(name) +
+          (missing ? " (missing definition)" : "") +
+          "</span>" +
+          '<span class="meals__food-servings">' +
+          '<label for="meal-food-servings-' +
+          index +
+          '">Servings</label>' +
+          '<input id="meal-food-servings-' +
+          index +
+          '" type="number" min="0" step="any" inputmode="decimal" value="' +
+          escapeAttr(String(food.servings)) +
+          '" data-action="meal-food-servings" data-meal-food-index="' +
+          index +
+          '">' +
+          "</span>" +
+          '<button type="button" class="meals__food-remove" data-action="remove-meal-food" data-meal-food-index="' +
+          index +
+          '" aria-label="Remove ' +
+          escapeAttr(name) +
+          '">×</button>' +
+          "</li>"
+        );
+      })
+      .join("");
+  }
+
+  function renderMealsPanel() {
+    if (activeMealId && mealById(activeMealId)) renderMealDetail();
+    else showMealsListView();
+  }
+
+  function showMealNameError(message) {
+    if (!mealNameErrorEl) return;
+    if (!message) {
+      mealNameErrorEl.hidden = true;
+      mealNameErrorEl.textContent = "";
+      return;
+    }
+    mealNameErrorEl.hidden = false;
+    mealNameErrorEl.textContent = message;
+  }
+
+  function closeMealNameModal() {
+    if (!mealNameModalEl) return;
+    mealNameModalEl.hidden = true;
+    mealNameEditId = null;
+    showMealNameError("");
+    updateBodyModalOpen();
+  }
+
+  function openMealNameModal(opts) {
+    opts = opts || {};
+    if (!mealNameModalEl) return;
+    mealNameEditId = opts.mealId || null;
+    var renaming = !!mealNameEditId;
+    if (mealNameModalTitleEl) {
+      mealNameModalTitleEl.textContent = renaming ? "Rename meal" : "New meal";
+    }
+    if (mealNameModalHintEl) {
+      mealNameModalHintEl.textContent = renaming
+        ? "Choose a name you will recognize in Add food."
+        : "Name this meal. You can add foods next.";
+    }
+    if (mealNameSaveBtn) {
+      mealNameSaveBtn.textContent = renaming ? "Rename" : "Create meal";
+    }
+    if (mealNameInputEl) {
+      mealNameInputEl.value = opts.name || (renaming ? "" : defaultMealName());
+    }
+    showMealNameError("");
+    mealNameModalEl.hidden = false;
+    updateBodyModalOpen();
+    window.setTimeout(function () {
+      if (!mealNameInputEl) return;
+      mealNameInputEl.focus();
+      mealNameInputEl.select();
+    }, 0);
+  }
+
+  function beginNewMeal() {
+    requireLoggedInForPersist("creating a meal").then(function (ok) {
+      if (ok) openMealNameModal({});
+    });
+  }
+
+  function beginRenameMeal(mealId) {
+    var meal = mealById(mealId);
+    if (!meal) return;
+    requireLoggedInForPersist("renaming a meal").then(function (ok) {
+      if (ok) openMealNameModal({ mealId: meal.id, name: meal.name });
+    });
+  }
+
+  function submitMealNameModal() {
+    var name = mealNameInputEl ? String(mealNameInputEl.value || "").trim() : "";
+    if (!name) {
+      showMealNameError("Enter a meal name.");
+      return;
+    }
+    if (mealNameTaken(name, mealNameEditId)) {
+      showMealNameError("A meal already uses that name.");
+      return;
+    }
+    if (mealNameEditId) {
+      var existing = mealById(mealNameEditId);
+      if (!existing) {
+        closeMealNameModal();
+        return;
+      }
+      existing.name = name;
+      saveMeals();
+      closeMealNameModal();
+      renderMealsPanel();
+      return;
+    }
+    var meal = {
+      id: makeMealId(),
+      name: name,
+      foods: [],
+    };
+    savedMeals.push(meal);
+    saveMeals();
+    closeMealNameModal();
+    if (!mealsPanelOpen) setMealsPanelOpen(true);
+    showMealDetail(meal.id);
+  }
+
+  function deleteMeal(mealId) {
+    var meal = mealById(mealId);
+    if (!meal) return;
+    requireLoggedInForPersist("deleting a meal").then(function (ok) {
+      if (!ok) return;
+      return showAppConfirm({
+        title: "Delete meal",
+        message: "Delete “" + meal.name + "”? This cannot be undone.",
+        confirmLabel: "Delete meal",
+        cancelLabel: "Cancel",
+      }).then(function (confirmed) {
+        if (!confirmed) return;
+        var idx = mealIndexById(mealId);
+        if (idx < 0) return;
+        savedMeals.splice(idx, 1);
+        if (activeMealId === mealId) activeMealId = null;
+        saveMeals();
+        renderMealsPanel();
+      });
+    });
+  }
+
+  function appendFoodsToMeal(mealId, items) {
+    var meal = mealById(mealId);
+    if (!meal || !items || !items.length) return;
+    items.forEach(function (item) {
+      var name = String(item.name || "").trim();
+      if (!name || !lineMatchesFoodDefinition(name)) return;
+      var canonical = foodDefinitionNameForLine(name) || name;
+      meal.foods.push({
+        keywordId: keywordIdForName(canonical),
+        name: canonical,
+        servings: clampMealServings(item.servings),
+      });
+    });
+    saveMeals();
+    if (activeMealId === mealId) renderMealDetail();
+  }
+
+  function moveMealFood(mealId, fromIndex, toIndex) {
+    var meal = mealById(mealId);
+    if (!meal) return;
+    if (
+      fromIndex < 0 ||
+      fromIndex >= meal.foods.length ||
+      toIndex < 0 ||
+      toIndex >= meal.foods.length ||
+      fromIndex === toIndex
+    ) {
+      return;
+    }
+    var moved = meal.foods.splice(fromIndex, 1)[0];
+    meal.foods.splice(toIndex, 0, moved);
+    saveMeals();
+    renderMealDetail();
+  }
+
+  function removeMealFood(mealId, index) {
+    var meal = mealById(mealId);
+    if (!meal || index < 0 || index >= meal.foods.length) return;
+    meal.foods.splice(index, 1);
+    saveMeals();
+    renderMealDetail();
+  }
+
+  function setMealFoodServings(mealId, index, rawValue) {
+    var meal = mealById(mealId);
+    if (!meal || index < 0 || index >= meal.foods.length) return;
+    meal.foods[index].servings = clampMealServings(parseFloat(rawValue));
+    saveMeals();
+    var input =
+      mealsDetailFoodsEl &&
+      mealsDetailFoodsEl.querySelector(
+        '[data-action="meal-food-servings"][data-meal-food-index="' + index + '"]'
+      );
+    if (input) input.value = String(meal.foods[index].servings);
+  }
+
   function findFavoriteIndexById(id) {
     for (var i = 0; i < diaryFavorites.length; i++) {
       if (diaryFavorites[i].id === id) return i;
@@ -26944,15 +27486,16 @@
     return { start: 0, len: commonPrefixLen(q, name) };
   }
 
-  function foodSuggestMatches(query) {
+  function foodSuggestMatches(query, names) {
     var q = query.trim();
     if (!q) return [];
 
     var ql = q.toLowerCase();
     var tokens = ql.split(/\s+/).filter(Boolean);
     var results = [];
+    var list = names || keywordNames();
 
-    keywordNames().forEach(function (name) {
+    list.forEach(function (name) {
       var nl = name.toLowerCase();
       var prefixLen = commonPrefixLen(q, name);
       var match = null;
@@ -27023,27 +27566,94 @@
     return results;
   }
 
+  function mealSuggestMatches(query) {
+    var names = mealNames();
+    if (!names.length) return [];
+    return foodSuggestMatches(query, names)
+      .map(function (match) {
+        var meal = null;
+        var key = String(match.name || "").trim().toLowerCase();
+        for (var i = 0; i < savedMeals.length; i++) {
+          if (savedMeals[i].name.trim().toLowerCase() === key) {
+            meal = savedMeals[i];
+            break;
+          }
+        }
+        if (!meal || !mealHasAddableFoods(meal.id)) return null;
+        match.kind = "meal";
+        match.mealId = meal.id;
+        return match;
+      })
+      .filter(Boolean);
+  }
+
+  function mergeFoodAndMealSuggestMatches(query) {
+    var foods = foodSuggestMatches(query).map(function (match) {
+      match.kind = "food";
+      return match;
+    });
+    var meals = mealSuggestMatches(query);
+    return meals.concat(foods).sort(function (a, b) {
+      if (a.score !== b.score) return a.score - b.score;
+      if (a.kind !== b.kind) return a.kind === "meal" ? -1 : 1;
+      return a.name.length - b.name.length;
+    });
+  }
+
+  function browseMealNames() {
+    return savedMeals
+      .filter(function (meal) {
+        return mealHasAddableFoods(meal.id);
+      })
+      .slice()
+      .sort(function (a, b) {
+        return a.name.localeCompare(b.name, undefined, { sensitivity: "base" });
+      })
+      .map(function (meal) {
+        return {
+          name: meal.name,
+          score: 0,
+          kind: "meal",
+          mealId: meal.id,
+        };
+      });
+  }
+
   function daySuggestItemHtml(match) {
     var name = match.name;
-    var start = match.highlight.start;
-    var len = match.highlight.len;
+    var range = match.highlight || { start: 0, len: 0 };
+    var start = range.start;
+    var len = range.len;
     var before = escapeHtml(name.substring(0, start));
-    var matched = escapeHtml(name.substring(start, start + len));
-    var after = escapeHtml(name.substring(start + len));
+    var matched = len ? escapeHtml(name.substring(start, start + len)) : escapeHtml(name);
+    var after = len ? escapeHtml(name.substring(start + len)) : "";
+    var isMeal = match.kind === "meal" && match.mealId;
+    var mealAttr = isMeal
+      ? ' data-meal-id="' + escapeAttr(match.mealId) + '"'
+      : "";
+    var kindClass = isMeal ? " day__suggest-item--meal" : "";
+    var badge = isMeal ? '<span class="day__suggest-kind">Meal</span>' : "";
     return (
-      '<button type="button" class="day__suggest-item" data-food-name="' +
+      '<button type="button" class="day__suggest-item' +
+      kindClass +
+      '" data-food-name="' +
       escapeAttr(name) +
-      '" role="option" title="' +
-      escapeAttr(name) +
+      '"' +
+      mealAttr +
+      ' role="option" title="' +
+      escapeAttr(isMeal ? name + " (meal)" : name) +
       '">' +
       '<span class="day__suggest-item-chevron day__suggest-item-chevron--left" data-action="scroll-suggest-left" role="button" tabindex="-1" aria-label="Show start of food name">‹</span>' +
       '<span class="day__suggest-item-viewport">' +
       '<span class="day__suggest-item-label">' +
-      (before ? '<span class="day__suggest-rest">' + before + "</span>" : "") +
-      '<span class="day__suggest-match">' +
-      matched +
-      "</span>" +
-      (after ? '<span class="day__suggest-rest">' + after + "</span>" : "") +
+      (len
+        ? (before ? '<span class="day__suggest-rest">' + before + "</span>" : "") +
+          '<span class="day__suggest-match">' +
+          matched +
+          "</span>" +
+          (after ? '<span class="day__suggest-rest">' + after + "</span>" : "")
+        : '<span class="day__suggest-rest">' + escapeHtml(name) + "</span>") +
+      badge +
       "</span></span>" +
       '<span class="day__suggest-item-chevron day__suggest-item-chevron--right" data-action="scroll-suggest-right" role="button" tabindex="-1" aria-label="Show end of food name">›</span>' +
       "</button>"
@@ -27472,12 +28082,41 @@
       }
       var btn = e.target.closest("[data-food-name]");
       if (!btn) return;
-      applyDayFoodSuggest(textarea, btn.getAttribute("data-food-name"));
+      applyDaySuggestChoice(textarea, btn);
     });
     bindDaySuggestHover(el);
     bindDaySuggestResize(editor);
     editor.appendChild(el);
     return el;
+  }
+
+  function applyDaySuggestChoice(textarea, btn) {
+    if (!btn) return;
+    var mealId = btn.getAttribute("data-meal-id");
+    if (mealId) {
+      applyDayMealSuggest(textarea, mealId);
+      return;
+    }
+    applyDayFoodSuggest(textarea, btn.getAttribute("data-food-name"));
+  }
+
+  function applyDayMealSuggest(textarea, mealId) {
+    var meal = mealById(mealId);
+    var lines = mealFoodLines(mealId);
+    if (!meal || !lines.length) return;
+    var info = getCurrentLineInfo(textarea);
+    var replacement = "// " + meal.name + "\n" + lines.join("\n");
+    var value = textarea.value;
+    textarea.value =
+      value.substring(0, info.lineStart) +
+      replacement +
+      value.substring(info.lineEnd);
+    var pos = info.lineStart + replacement.length;
+    textarea.setSelectionRange(pos, pos);
+    clearDaySuggestDismissed(textarea);
+    hideDaySuggest(textarea);
+    applyDayNoteChange(textarea);
+    textarea.focus();
   }
 
   function applyDayFoodSuggest(textarea, foodName) {
@@ -27553,7 +28192,7 @@
       return;
     }
 
-    var matches = foodSuggestMatches(query);
+    var matches = mergeFoodAndMealSuggestMatches(query);
     if (!matches.length) {
       hideDaySuggest(textarea);
       return;
@@ -28613,14 +29252,25 @@
         return a.localeCompare(b, undefined, { sensitivity: "base" });
       })
       .map(function (name) {
-        return { name: name, score: 0 };
+        return { name: name, score: 0, kind: "food" };
       });
   }
 
   function addFoodSearchMatches(query) {
     var q = String(query || "").trim();
-    if (!q) return browseFoodDefinitionNames();
-    return foodSuggestMatches(q);
+    var includeMeals = !addFoodPendingMealId;
+    if (!q) {
+      var foods = browseFoodDefinitionNames();
+      if (!includeMeals) return foods;
+      return browseMealNames().concat(foods);
+    }
+    if (!includeMeals) {
+      return foodSuggestMatches(q).map(function (match) {
+        match.kind = "food";
+        return match;
+      });
+    }
+    return mergeFoodAndMealSuggestMatches(q);
   }
 
   function addFoodItemIndexByName(name) {
@@ -28840,7 +29490,10 @@
     }
     if (addFoodResultsEl) {
       addFoodResultsEl.querySelectorAll(".add-food-modal__result").forEach(function (btn) {
-        var selected = addFoodItemIndexByName(btn.getAttribute("data-food-name")) >= 0;
+        var mealId = btn.getAttribute("data-meal-id");
+        var selected = mealId
+          ? isAddFoodMealFullySelected(mealId)
+          : addFoodItemIndexByName(btn.getAttribute("data-food-name")) >= 0;
         btn.classList.toggle("add-food-modal__result--selected", selected);
         btn.setAttribute("aria-selected", selected ? "true" : "false");
       });
@@ -28860,6 +29513,44 @@
     addFoodSelectedItems.push({ name: foodName, servings: 1 });
     showAddFoodError("");
     syncAddFoodSelectedUi();
+  }
+
+  function selectAddFoodMeal(mealId) {
+    var meal = mealById(mealId);
+    if (!meal) return;
+    var added = 0;
+    meal.foods.forEach(function (food) {
+      var name = resolveMealFoodName(food);
+      if (!name || !lineMatchesFoodDefinition(name)) return;
+      var canonical = foodDefinitionNameForLine(name) || name;
+      if (addFoodItemIndexByName(canonical) >= 0) return;
+      addFoodSelectedItems.push({
+        name: canonical,
+        servings: clampAddFoodServings(food.servings),
+      });
+      added += 1;
+    });
+    if (!added) {
+      showAddFoodError(
+        meal.foods.length
+          ? "Those meal foods are already selected or no longer in your definitions."
+          : "This meal has no foods yet."
+      );
+      return;
+    }
+    showAddFoodError("");
+    syncAddFoodSelectedUi();
+  }
+
+  function isAddFoodMealFullySelected(mealId) {
+    var meal = mealById(mealId);
+    if (!meal) return false;
+    var defined = meal.foods.filter(mealFoodIsDefined);
+    if (!defined.length) return false;
+    return defined.every(function (food) {
+      var name = resolveMealFoodName(food);
+      return name && addFoodItemIndexByName(name) >= 0;
+    });
   }
 
   function removeAddFoodName(name) {
@@ -28941,6 +29632,7 @@
     addFoodResultsEl.innerHTML = pageMatches
       .map(function (match) {
         var name = match.name;
+        var isMeal = match.kind === "meal" && match.mealId;
         var range = foodSuggestHighlightRange(name, query);
         var labelHtml;
         if (range && range.len > 0) {
@@ -28953,12 +29645,25 @@
         } else {
           labelHtml = escapeHtml(name);
         }
+        if (isMeal) {
+          labelHtml += '<span class="add-food-modal__result-kind">Meal</span>';
+        }
+        var action = isMeal ? "select-add-food-meal" : "select-add-food";
+        var extra = isMeal
+          ? ' data-meal-id="' + escapeAttr(match.mealId) + '"'
+          : "";
         return (
           '<li role="option">' +
-          '<button type="button" class="add-food-modal__result" data-action="select-add-food" data-food-name="' +
+          '<button type="button" class="add-food-modal__result' +
+          (isMeal ? " add-food-modal__result--meal" : "") +
+          '" data-action="' +
+          action +
+          '" data-food-name="' +
           escapeAttr(name) +
-          '" title="' +
-          escapeAttr(name) +
+          '"' +
+          extra +
+          ' title="' +
+          escapeAttr(isMeal ? name + " (meal)" : name) +
           '">' +
           labelHtml +
           "</button>" +
@@ -28974,6 +29679,7 @@
     if (!addFoodModalEl) return;
     addFoodModalEl.hidden = true;
     addFoodPendingDayId = null;
+    addFoodPendingMealId = null;
     addFoodSelectedItems = [];
     addFoodDragIndex = -1;
     addFoodSelectedListKey = "";
@@ -28995,29 +29701,46 @@
     updateBodyModalOpen();
   }
 
-  function openAddFoodModal(dayId) {
-    if (!addFoodModalEl || !dayId) return;
+  function openAddFoodModal(dayId, opts) {
+    opts = opts || {};
+    if (!addFoodModalEl) return;
+    if (!dayId && !opts.mealId) return;
     closeAllDayCopyMenus();
-    addFoodPendingDayId = dayId;
+    addFoodPendingDayId = dayId || null;
+    addFoodPendingMealId = opts.mealId || null;
     addFoodSelectedItems = [];
     addFoodSelectedListKey = "";
     addFoodResultsPage = 0;
     showAddFoodError("");
     if (addFoodSearchEl) addFoodSearchEl.value = "";
-    var day = dayById(dayId);
-    var dateLabel = dateLabelForDayId(dayId);
+    var meal = addFoodPendingMealId ? mealById(addFoodPendingMealId) : null;
+    var day = dayId ? dayById(dayId) : null;
+    var dateLabel = dayId ? dateLabelForDayId(dayId) : "";
     if (addFoodModalTitleEl) {
-      addFoodModalTitleEl.textContent =
-        "Add food" + (day ? " — " + day.label : "");
+      if (meal) {
+        addFoodModalTitleEl.textContent = "Add food — " + meal.name;
+      } else {
+        addFoodModalTitleEl.textContent =
+          "Add food" + (day ? " — " + day.label : "");
+      }
     }
     if (addFoodModalHintEl) {
-      addFoodModalHintEl.textContent = dateLabel
-        ? "Pick one or more foods from your definitions for " + dateLabel
-        : "Pick one or more foods from your definitions";
+      if (meal) {
+        addFoodModalHintEl.textContent =
+          "Pick foods from your definitions to add to this meal";
+      } else if (dateLabel) {
+        addFoodModalHintEl.textContent =
+          "Pick foods or a saved meal for " + dateLabel;
+      } else {
+        addFoodModalHintEl.textContent =
+          "Pick one or more foods or a saved meal";
+      }
     }
-    var dayPanel = document.getElementById(dayId);
-    var dayEl = dayPanel && dayPanel.closest ? dayPanel.closest(".day") : null;
-    if (dayEl) focusWeekDayColumn(dayEl);
+    if (dayId) {
+      var dayPanel = document.getElementById(dayId);
+      var dayEl = dayPanel && dayPanel.closest ? dayPanel.closest(".day") : null;
+      if (dayEl) focusWeekDayColumn(dayEl);
+    }
     addFoodModalEl.hidden = false;
     updateBodyModalOpen();
     var emptyLibrary = !keywords.length;
@@ -29034,11 +29757,16 @@
     }, 0);
   }
 
+  function openAddFoodModalForMeal(mealId) {
+    openAddFoodModal(null, { mealId: mealId });
+  }
+
   function beginCreateFoodFromAddFood(query) {
     var name = String(query || "").trim();
     if (!name) return;
     addFoodCreateReturn = {
       dayId: addFoodPendingDayId,
+      mealId: addFoodPendingMealId,
       name: name,
     };
     closeAddFoodModal();
@@ -29059,8 +29787,12 @@
   }
 
   function maybeReturnToAddFoodAfterDefinitionSave() {
-    if (!addFoodCreateReturn || !addFoodCreateReturn.dayId) return;
+    if (!addFoodCreateReturn) return;
     var pending = addFoodCreateReturn;
+    if (!pending.dayId && !pending.mealId) {
+      addFoodCreateReturn = null;
+      return;
+    }
     addFoodCreateReturn = null;
     var item = keywords.find(function (k) {
       return (
@@ -29071,12 +29803,12 @@
       );
     });
     if (!item || !lineMatchesFoodDefinition(item.name)) return;
-    openAddFoodModal(pending.dayId);
+    if (pending.mealId) openAddFoodModal(null, { mealId: pending.mealId });
+    else openAddFoodModal(pending.dayId);
     selectAddFoodName(item.name, { addOnly: true });
   }
 
   function runAddFoodSubmit() {
-    if (!addFoodPendingDayId) return;
     flushAddFoodServingsFromInputs();
     if (!addFoodSelectedItems.length) {
       showAddFoodError("Select a food from the list.");
@@ -29088,6 +29820,12 @@
         return;
       }
     }
+    if (addFoodPendingMealId) {
+      appendFoodsToMeal(addFoodPendingMealId, addFoodSelectedItems);
+      closeAddFoodModal();
+      return;
+    }
+    if (!addFoodPendingDayId) return;
     addFoodSelectedItems.forEach(function (item) {
       appendDayFoodLine(addFoodPendingDayId, item.name, item.servings);
     });
@@ -29239,7 +29977,7 @@
         var foodName = pick.getAttribute("data-food-name");
         if (!foodName) return;
         e.preventDefault();
-        applyDayFoodSuggest(textarea, foodName);
+        applyDaySuggestChoice(textarea, pick);
         return;
       }
       if (e.key !== "Escape") return;
@@ -29860,8 +30598,21 @@
       closeAuthLoginModal();
       return;
     }
+    if (mealNameModalEl && !mealNameModalEl.hidden) {
+      closeMealNameModal();
+      return;
+    }
     if (foodDefinitionsOpen) {
       setFoodDefinitionsOpen(false);
+      return;
+    }
+    if (mealsPanelOpen) {
+      if (activeMealId) {
+        e.preventDefault();
+        showMealsListView();
+        return;
+      }
+      setMealsPanelOpen(false);
       return;
     }
     if (longevityNavCanGoBack()) {
@@ -30936,6 +31687,7 @@
     saveDemographic();
     saveTdee();
     saveDayNotes();
+    saveMeals();
     saveDayHighlightsPreference();
   });
 
@@ -31202,6 +31954,129 @@
   if (dashboardFoodDefinitionsJumpEl) {
     dashboardFoodDefinitionsJumpEl.addEventListener("click", function () {
       setFoodDefinitionsOpen(!foodDefinitionsOpen);
+    });
+  }
+
+  if (dashboardMealsJumpEl) {
+    dashboardMealsJumpEl.addEventListener("click", function () {
+      setMealsPanelOpen(!mealsPanelOpen);
+    });
+  }
+
+  if (mealsCloseEl) {
+    mealsCloseEl.addEventListener("click", function () {
+      setMealsPanelOpen(false);
+    });
+  }
+  if (mealsPanelEl) {
+    mealsPanelEl.addEventListener("click", function (e) {
+      if (e.target.closest('[data-action="close-meals-panel"]')) {
+        setMealsPanelOpen(false);
+        return;
+      }
+      var openMealBtn = e.target.closest('[data-action="open-meal"]');
+      if (openMealBtn) {
+        showMealDetail(openMealBtn.getAttribute("data-meal-id"));
+        return;
+      }
+      var renameBtn = e.target.closest('[data-action="rename-meal"]');
+      if (renameBtn) {
+        beginRenameMeal(renameBtn.getAttribute("data-meal-id"));
+        return;
+      }
+      var deleteBtn = e.target.closest('[data-action="delete-meal"]');
+      if (deleteBtn) {
+        deleteMeal(deleteBtn.getAttribute("data-meal-id"));
+        return;
+      }
+      var moveUp = e.target.closest('[data-action="move-meal-food-up"]');
+      if (moveUp && activeMealId) {
+        var upIndex = parseInt(moveUp.getAttribute("data-meal-food-index"), 10);
+        moveMealFood(activeMealId, upIndex, upIndex - 1);
+        return;
+      }
+      var moveDown = e.target.closest('[data-action="move-meal-food-down"]');
+      if (moveDown && activeMealId) {
+        var downIndex = parseInt(moveDown.getAttribute("data-meal-food-index"), 10);
+        moveMealFood(activeMealId, downIndex, downIndex + 1);
+        return;
+      }
+      var removeFood = e.target.closest('[data-action="remove-meal-food"]');
+      if (removeFood && activeMealId) {
+        var removeIndex = parseInt(
+          removeFood.getAttribute("data-meal-food-index"),
+          10
+        );
+        removeMealFood(activeMealId, removeIndex);
+      }
+    });
+    mealsPanelEl.addEventListener("change", function (e) {
+      var servingsInput = e.target.closest(
+        '[data-action="meal-food-servings"]'
+      );
+      if (!servingsInput || !activeMealId) return;
+      var servingsIndex = parseInt(
+        servingsInput.getAttribute("data-meal-food-index"),
+        10
+      );
+      setMealFoodServings(activeMealId, servingsIndex, servingsInput.value);
+    });
+  }
+  if (mealsNewBtn) {
+    mealsNewBtn.addEventListener("click", beginNewMeal);
+  }
+  if (mealsDetailBackBtn) {
+    mealsDetailBackBtn.addEventListener("click", showMealsListView);
+  }
+  if (mealsDetailRenameBtn) {
+    mealsDetailRenameBtn.addEventListener("click", function () {
+      if (activeMealId) beginRenameMeal(activeMealId);
+    });
+  }
+  if (mealsDetailDeleteBtn) {
+    mealsDetailDeleteBtn.addEventListener("click", function () {
+      if (activeMealId) deleteMeal(activeMealId);
+    });
+  }
+  if (mealsDetailAddFoodBtn) {
+    mealsDetailAddFoodBtn.addEventListener("click", function () {
+      if (!activeMealId) return;
+      requireLoggedInForPersist("adding food to a meal").then(function (ok) {
+        if (ok) openAddFoodModalForMeal(activeMealId);
+      });
+    });
+  }
+  if (mealsSearchEl) {
+    mealsSearchEl.addEventListener("input", function () {
+      renderMealsList();
+    });
+  }
+  if (mealsSearchClearBtn) {
+    mealsSearchClearBtn.addEventListener("click", function () {
+      if (mealsSearchEl) mealsSearchEl.value = "";
+      renderMealsList();
+      if (mealsSearchEl) mealsSearchEl.focus();
+    });
+  }
+  if (mealNameCancelBtn) {
+    mealNameCancelBtn.addEventListener("click", closeMealNameModal);
+  }
+  if (mealNameSaveBtn) {
+    mealNameSaveBtn.addEventListener("click", submitMealNameModal);
+  }
+  if (mealNameModalEl) {
+    mealNameModalEl.addEventListener("click", function (e) {
+      if (e.target.closest('[data-action="close-meal-name-modal"]')) {
+        closeMealNameModal();
+      }
+    });
+  }
+  if (mealNameInputEl) {
+    mealNameInputEl.addEventListener("keydown", function (e) {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        submitMealNameModal();
+      }
     });
   }
 
@@ -32757,6 +33632,11 @@
         selectAddFoodName(pickBtn.getAttribute("data-food-name"));
         return;
       }
+      var mealPickBtn = e.target.closest('[data-action="select-add-food-meal"]');
+      if (mealPickBtn) {
+        selectAddFoodMeal(mealPickBtn.getAttribute("data-meal-id"));
+        return;
+      }
       var createBtn = e.target.closest('[data-action="create-food-from-search"]');
       if (createBtn) {
         beginCreateFoodFromAddFood(createBtn.getAttribute("data-query"));
@@ -32804,9 +33684,13 @@
           ? addFoodResultsEl.querySelector(".add-food-modal__result")
           : null;
         if (first) {
-          selectAddFoodName(first.getAttribute("data-food-name"), {
-            addOnly: true,
-          });
+          if (first.getAttribute("data-action") === "select-add-food-meal") {
+            selectAddFoodMeal(first.getAttribute("data-meal-id"));
+          } else {
+            selectAddFoodName(first.getAttribute("data-food-name"), {
+              addOnly: true,
+            });
+          }
         }
       }
     });

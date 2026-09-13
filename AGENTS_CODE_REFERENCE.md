@@ -70,6 +70,8 @@ When context is tight: read **this file** first, then open the one feature file 
 │  modals, single/bulk/sample import, reorder,             │
 │  move-to-position; empty-state sample link)              │
 │  ← persisted: `nutrients_food_definitions` (+ userId)   │
+│  Saved meals sheet (CRUD, add foods, rename/delete)      │
+│  ← persisted: `nutrients_meals` (+ userId)               │
 │  Settings (header): sex / micro DV profile + TDEE + weight│
 │  ← persisted: `nutrients_settings` (+ userId)             │
 │  Auth (header): Sign up / Log in / Log out                │
@@ -77,7 +79,7 @@ When context is tight: read **this file** first, then open the one feature file 
 └─────────────────────────────────────────────────────────┘
 ```
 
-**Persisted** (via `NutrientsAuth` / `NutrientsPersist`): `nutrients_users`, `nutrients_session`, `nutrients_food_definitions`, `nutrients_day_meals`, `nutrients_favorites`, `nutrients_settings` (all entity rows include `userId`). Details: [specs-data-persistence.md](./specs-data-persistence.md). Bulk export/import for meals and foods; sample foods from `samples/definitions-food.json`; sample meals from `samples/day-meals.json`; clear per day / viewed week with `confirm`.
+**Persisted** (via `NutrientsAuth` / `NutrientsPersist`): `nutrients_users`, `nutrients_session`, `nutrients_food_definitions`, `nutrients_day_meals`, `nutrients_meals`, `nutrients_favorites`, `nutrients_settings` (all entity rows include `userId`). Details: [specs-data-persistence.md](./specs-data-persistence.md). Bulk export/import for meals and foods; sample foods from `samples/definitions-food.json`; sample meals from `samples/day-meals.json`; reusable **saved meals** (named food combinations) from the Meals sheet. Clear per day / viewed week with `confirm`.
 
 ## File tree
 

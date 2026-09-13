@@ -403,7 +403,7 @@ Default day UI is a **MyFitnessPal-style list** (not free-text). Body class `day
 
 **Guided DOM** — `ensureDayGuidedEl` injects `.day__guided` (list + **Add food** + **Add Others** + **Rearrange**). Rearrange shows a drag handle on each line; HTML5 drag/drop with before/after/end drop indicators (`reorderGuidedEntry`). Remove asks confirm. Still persists as newline text.
 
-**Add food modal** — `#add-food-modal`: search (`addFoodSearchMatches` / `foodSuggestMatches`, or A–Z browse when empty), paginated results (`ADD_FOOD_PAGE_SIZE` = 25; `#add-food-pagination` Prev/Next), select definition only, set servings, **Add to day** → `appendDayFoodLine`. Escape / backdrop closes (`closeAddFoodModal` in modal Escape stack + `updateBodyModalOpen`).
+**Add food modal** — `#add-food-modal`: search (`addFoodSearchMatches` / `foodSuggestMatches` + saved meal names, or A–Z browse with meals first when empty), paginated results (`ADD_FOOD_PAGE_SIZE` = 25; `#add-food-pagination` Prev/Next), select definition or a **Meal** (expands its foods into the selected list with stored servings), set servings, **Add to day** → `appendDayFoodLine`. Same modal can target a saved meal (`openAddFoodModalForMeal`) and **Add to meal**. Escape / backdrop closes (`closeAddFoodModal` in modal Escape stack + `updateBodyModalOpen`).
 
 **Hint** — `#week-days-hint` swaps guided vs advanced copy in `syncDayEntryModeUi`.
 
@@ -413,7 +413,9 @@ Default day UI is a **MyFitnessPal-style list** (not free-text). Body class `day
 
 ## Food-name suggestions (day autocomplete)
 
-Advanced mode only (textarea). While typing on the **current line** of a day textarea, a popover suggests matching food-definition names (all matches).
+Advanced mode only (textarea). While typing on the **current line** of a day textarea, a popover suggests matching food-definition names and saved meal names (all matches). Picking a meal inserts `// Meal name` plus its food lines.
+
+**Show/hide** — `updateDaySuggest(textarea)` (called from `bindDay` on `input` / `keyup` / `click`, plus a document `selectionchange` handler when a day textarea is focused):
 
 **Show/hide** — `updateDaySuggest(textarea)` (called from `bindDay` on `input` / `keyup` / `click`, plus a document `selectionchange` handler when a day textarea is focused):
 
@@ -421,7 +423,7 @@ Advanced mode only (textarea). While typing on the **current line** of a day tex
 - Hidden when the line is already a `//` / `#` comment, already matches a full food name, or has no fuzzy/prefix matches (food suggestions need at least `DAY_SUGGEST_MIN_CHARS` = 2).
 - Hidden on `blur`; dismissed per line via **Dismiss** or **Escape** (`_daySuggestDismissedLine` tracks the line start offset).
 
-**Matching** — `foodSuggestMatches(query)` against `keywordNames()`:
+**Matching** — `mergeFoodAndMealSuggestMatches(query)` (`foodSuggestMatches` against `keywordNames()`, `mealSuggestMatches` against `mealNames()`):
 
 - Prefix match (score 0), fuzzy prefix via Levenshtein on the first `query.length` chars (score 1+), or word-boundary substring (score 2).
 - When the query has multiple space-separated words, also match if **each** token appears at a word boundary in **any order** (score 3 in typed order, 4 otherwise) — e.g. `Chinese chicken` → `Chicken - Chinese…`.
