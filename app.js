@@ -100,6 +100,7 @@
   var foodDefinitionsPanelEl = document.getElementById("food-definitions-panel");
   var foodDefinitionsCloseEl = document.getElementById("food-definitions-close");
   var dashboardMealsJumpEl = document.getElementById("dashboard-meals-jump");
+  var weekSavedMealsOpenEl = document.getElementById("week-saved-meals-open");
   var mealsPanelEl = document.getElementById("meals-panel");
   var mealsCloseEl = document.getElementById("meals-close");
   var mealsListViewEl = document.getElementById("meals-list-view");
@@ -636,8 +637,38 @@
   var addFoodErrorEl = document.getElementById("add-food-error");
   var addFoodCancelBtn = document.getElementById("add-food-cancel");
   var addFoodSubmitBtn = document.getElementById("add-food-submit");
+  var addFoodSubmitSplitEl = document.getElementById("add-food-submit-split");
+  var addFoodSubmitMenuToggleBtn = document.getElementById(
+    "add-food-submit-menu-toggle"
+  );
+  var addFoodSubmitMenuEl = document.getElementById("add-food-submit-menu");
+  var addFoodMealPickerModalEl = document.getElementById(
+    "add-food-meal-picker-modal"
+  );
+  var addFoodMealPickerListEl = document.getElementById(
+    "add-food-meal-picker-list"
+  );
+  var addFoodMealPickerEmptyEl = document.getElementById(
+    "add-food-meal-picker-empty"
+  );
+  var addFoodMealPickerNameEl = document.getElementById(
+    "add-food-meal-picker-name"
+  );
+  var addFoodMealPickerErrorEl = document.getElementById(
+    "add-food-meal-picker-error"
+  );
+  var addFoodMealPickerCancelBtn = document.getElementById(
+    "add-food-meal-picker-cancel"
+  );
+  var addFoodMealPickerCreateBtn = document.getElementById(
+    "add-food-meal-picker-create"
+  );
+  var addFoodMealPickerOpenAllBtn = document.getElementById(
+    "add-food-meal-picker-open-all"
+  );
   var addFoodPendingDayId = null;
   var addFoodPendingMealId = null;
+  var addFoodSubmitMode = "day";
   var addFoodSelectedItems = [];
   var addFoodSelectedListKey = "";
   var addFoodResultsPage = 0;
@@ -681,7 +712,7 @@
   var dayEntryAdvancedEnabled = false;
   var guidedRearrangeByDay = {};
   var WEEK_DAYS_HINT_GUIDED =
-    'Day meals are saved in this browser. Use <strong>Add food</strong> to pick from your food definitions, or <strong>Add Others</strong> for inserting headings and dividers. Turn on <strong>Advanced</strong> for free-text entry.';
+    'Use <strong>Add food</strong> to pick foods or a <strong>saved meal</strong>. Open <strong>Saved meals</strong> to create and edit those combinations. <strong>Add Others</strong> inserts headings and dividers. Turn on <strong>Advanced</strong> for free-text entry.';
   var WEEK_DAYS_HINT_ADVANCED =
     'Day meals are saved in this browser. You can add a multiplier at the end of a food (Eg. <code>* 2</code> or <code>* 2/3</code>), start a line with <code>//</code> or <code>#</code> for a comment, or use <code>---</code> as a divider.';
   var ADD_FOOD_PAGE_SIZE = 25;
@@ -10749,6 +10780,7 @@
       (favoriteEditModalEl && !favoriteEditModalEl.hidden) ||
       (mealNameModalEl && !mealNameModalEl.hidden) ||
       (addFoodModalEl && !addFoodModalEl.hidden) ||
+      (addFoodMealPickerModalEl && !addFoodMealPickerModalEl.hidden) ||
       (weekQuizModalEl && !weekQuizModalEl.hidden) ||
       isFavoritesSidebarOpen() ||
       (microGapsModalEl && !microGapsModalEl.hidden) ||
@@ -18431,6 +18463,12 @@
         mealsPanelOpen
       );
     }
+    if (weekSavedMealsOpenEl) {
+      weekSavedMealsOpenEl.setAttribute(
+        "aria-expanded",
+        mealsPanelOpen ? "true" : "false"
+      );
+    }
     if (mealsPanelEl) {
       mealsPanelEl.hidden = !mealsPanelOpen;
     }
@@ -19493,9 +19531,168 @@
   function syncAddFoodSubmitLabel() {
     if (!addFoodSubmitBtn) return;
     var n = addFoodSelectedItems.length;
-    var dest = addFoodPendingMealId ? "meal" : "day";
+    var dest = addFoodSubmitDestination();
     addFoodSubmitBtn.textContent =
       n > 1 ? "Add to " + dest + " (" + n + ")" : "Add to " + dest;
+  }
+
+  function addFoodSubmitDestination() {
+    if (addFoodPendingMealId) return "meal";
+    return addFoodSubmitMode === "meal" ? "meal" : "day";
+  }
+
+  function closeAddFoodSubmitMenu() {
+    if (addFoodSubmitMenuEl) addFoodSubmitMenuEl.hidden = true;
+    if (addFoodSubmitMenuToggleBtn) {
+      addFoodSubmitMenuToggleBtn.setAttribute("aria-expanded", "false");
+    }
+  }
+
+  function syncAddFoodSubmitSplitUi() {
+    var locked = !!addFoodPendingMealId;
+    if (addFoodSubmitSplitEl) {
+      addFoodSubmitSplitEl.classList.toggle(
+        "add-food-submit-split--locked",
+        locked
+      );
+    }
+    if (addFoodSubmitMenuToggleBtn) {
+      addFoodSubmitMenuToggleBtn.hidden = locked;
+      addFoodSubmitMenuToggleBtn.disabled = locked;
+    }
+    if (locked) closeAddFoodSubmitMenu();
+    var dest = addFoodSubmitDestination();
+    if (addFoodSubmitMenuEl) {
+      addFoodSubmitMenuEl
+        .querySelectorAll('[data-action="add-food-submit-mode"]')
+        .forEach(function (btn) {
+          var on = btn.getAttribute("data-mode") === dest;
+          btn.setAttribute("aria-checked", on ? "true" : "false");
+        });
+    }
+    syncAddFoodSubmitLabel();
+  }
+
+  function setAddFoodSubmitMode(mode) {
+    addFoodSubmitMode = mode === "meal" ? "meal" : "day";
+    closeAddFoodSubmitMenu();
+    syncAddFoodSubmitSplitUi();
+  }
+
+  function snapshotAddFoodSelectedItems() {
+    return addFoodSelectedItems.map(function (item) {
+      return { name: item.name, servings: item.servings };
+    });
+  }
+
+  function showAddFoodMealPickerError(message) {
+    if (!addFoodMealPickerErrorEl) return;
+    if (!message) {
+      addFoodMealPickerErrorEl.hidden = true;
+      addFoodMealPickerErrorEl.textContent = "";
+      return;
+    }
+    addFoodMealPickerErrorEl.hidden = false;
+    addFoodMealPickerErrorEl.textContent = message;
+  }
+
+  function closeAddFoodMealPicker() {
+    if (!addFoodMealPickerModalEl || addFoodMealPickerModalEl.hidden) {
+      showAddFoodMealPickerError("");
+      return;
+    }
+    addFoodMealPickerModalEl.hidden = true;
+    showAddFoodMealPickerError("");
+    updateBodyModalOpen();
+  }
+
+  function renderAddFoodMealPickerList() {
+    if (!addFoodMealPickerListEl) return;
+    var rows = savedMeals.slice().sort(function (a, b) {
+      return a.name.localeCompare(b.name, undefined, { sensitivity: "base" });
+    });
+    if (addFoodMealPickerEmptyEl) addFoodMealPickerEmptyEl.hidden = rows.length > 0;
+    addFoodMealPickerListEl.hidden = !rows.length;
+    addFoodMealPickerListEl.innerHTML = rows
+      .map(function (meal) {
+        var count = meal.foods.length;
+        return (
+          '<button type="button" class="add-food-meal-picker__meal" role="listitem" data-action="pick-add-food-meal" data-meal-id="' +
+          escapeAttr(meal.id) +
+          '">' +
+          '<span class="add-food-meal-picker__meal-name">' +
+          escapeHtml(meal.name) +
+          "</span>" +
+          '<span class="add-food-meal-picker__meal-meta">' +
+          (count === 1 ? "1 food" : count + " foods") +
+          "</span></button>"
+        );
+      })
+      .join("");
+  }
+
+  function openAddFoodMealPicker() {
+    if (!addFoodMealPickerModalEl) return;
+    renderAddFoodMealPickerList();
+    showAddFoodMealPickerError("");
+    if (addFoodMealPickerNameEl) {
+      addFoodMealPickerNameEl.value = defaultMealName();
+    }
+    addFoodMealPickerModalEl.hidden = false;
+    updateBodyModalOpen();
+    window.setTimeout(function () {
+      if (addFoodMealPickerNameEl) {
+        addFoodMealPickerNameEl.focus();
+        addFoodMealPickerNameEl.select();
+      }
+    }, 0);
+  }
+
+  function addSelectedFoodsToSavedMeal(mealId) {
+    var meal = mealById(mealId);
+    if (!meal) return;
+    requireLoggedInForPersist("adding foods to a meal").then(function (ok) {
+      if (!ok) return;
+      var items = snapshotAddFoodSelectedItems();
+      if (!items.length) return;
+      appendFoodsToMeal(meal.id, items);
+      closeAddFoodMealPicker();
+      closeAddFoodModal();
+    });
+  }
+
+  function createMealFromAddFoodPicker() {
+    var name = addFoodMealPickerNameEl
+      ? String(addFoodMealPickerNameEl.value || "").trim()
+      : "";
+    if (!name) {
+      showAddFoodMealPickerError("Enter a meal name.");
+      return;
+    }
+    if (mealNameTaken(name)) {
+      showAddFoodMealPickerError("A meal already uses that name.");
+      return;
+    }
+    requireLoggedInForPersist("creating a meal").then(function (ok) {
+      if (!ok) return;
+      var items = snapshotAddFoodSelectedItems();
+      if (!items.length) return;
+      var meal = {
+        id: makeMealId(),
+        name: name,
+        foods: [],
+      };
+      savedMeals.push(meal);
+      appendFoodsToMeal(meal.id, items);
+      closeAddFoodMealPicker();
+      closeAddFoodModal();
+    });
+  }
+
+  function openSavedMealsFromAddFoodPicker() {
+    closeAddFoodMealPicker();
+    closeAddFoodModal();
+    setMealsPanelOpen(true);
   }
 
   function syncAuthUi() {
@@ -28564,7 +28761,7 @@
       '<div class="day__guided-footer">' +
       '<button type="button" class="day__add-food" data-action="open-add-food" data-day-id="' +
       escapeAttr(dayId) +
-      '">Add food</button>' +
+      '" title="Pick foods or a saved meal">Add food</button>' +
       '<div class="day__guided-footer-secondary">' +
       '<div class="day__guided-others">' +
       '<button type="button" class="day__add-others" data-action="toggle-guided-others" data-day-id="' +
@@ -29482,7 +29679,7 @@
         : "Selected";
     }
     if (addFoodSubmitBtn) addFoodSubmitBtn.disabled = !hasSelection;
-    syncAddFoodSubmitLabel();
+    syncAddFoodSubmitSplitUi();
     var key = addFoodSelectedNamesKey();
     if (key !== addFoodSelectedListKey) {
       addFoodSelectedListKey = key;
@@ -29677,9 +29874,12 @@
 
   function closeAddFoodModal() {
     if (!addFoodModalEl) return;
+    closeAddFoodSubmitMenu();
+    closeAddFoodMealPicker();
     addFoodModalEl.hidden = true;
     addFoodPendingDayId = null;
     addFoodPendingMealId = null;
+    addFoodSubmitMode = "day";
     addFoodSelectedItems = [];
     addFoodDragIndex = -1;
     addFoodSelectedListKey = "";
@@ -29708,6 +29908,7 @@
     closeAllDayCopyMenus();
     addFoodPendingDayId = dayId || null;
     addFoodPendingMealId = opts.mealId || null;
+    addFoodSubmitMode = addFoodPendingMealId ? "meal" : "day";
     addFoodSelectedItems = [];
     addFoodSelectedListKey = "";
     addFoodResultsPage = 0;
@@ -29751,6 +29952,7 @@
     if (addFoodCreateRowEl) addFoodCreateRowEl.hidden = true;
     if (!emptyLibrary) renderAddFoodResults();
     syncAddFoodSelectedUi();
+    syncAddFoodSubmitSplitUi();
     window.setTimeout(function () {
       if (emptyLibrary && addFoodImportSampleBtn) addFoodImportSampleBtn.focus();
       else if (addFoodSearchEl) addFoodSearchEl.focus();
@@ -29823,6 +30025,12 @@
     if (addFoodPendingMealId) {
       appendFoodsToMeal(addFoodPendingMealId, addFoodSelectedItems);
       closeAddFoodModal();
+      return;
+    }
+    if (addFoodSubmitMode === "meal") {
+      requireLoggedInForPersist("adding foods to a meal").then(function (ok) {
+        if (ok) openAddFoodMealPicker();
+      });
       return;
     }
     if (!addFoodPendingDayId) return;
@@ -30496,6 +30704,19 @@
     }
     if (favoriteEditModalEl && !favoriteEditModalEl.hidden) {
       closeFavoriteEditModal();
+      return;
+    }
+    if (addFoodMealPickerModalEl && !addFoodMealPickerModalEl.hidden) {
+      closeAddFoodMealPicker();
+      return;
+    }
+    if (
+      addFoodSubmitMenuEl &&
+      !addFoodSubmitMenuEl.hidden &&
+      addFoodModalEl &&
+      !addFoodModalEl.hidden
+    ) {
+      closeAddFoodSubmitMenu();
       return;
     }
     if (addFoodModalEl && !addFoodModalEl.hidden) {
@@ -31813,6 +32034,12 @@
       dashboardFoodDefinitionsJumpEl.click();
       return;
     }
+    if (e.key === "c" || e.key === "C") {
+      if (!dashboardMealsJumpEl) return;
+      e.preventDefault();
+      dashboardMealsJumpEl.click();
+      return;
+    }
     if (e.key === "e" || e.key === "E") {
       if (!dashboardFoodEntryJumpEl) return;
       e.preventDefault();
@@ -31959,6 +32186,11 @@
 
   if (dashboardMealsJumpEl) {
     dashboardMealsJumpEl.addEventListener("click", function () {
+      setMealsPanelOpen(!mealsPanelOpen);
+    });
+  }
+  if (weekSavedMealsOpenEl) {
+    weekSavedMealsOpenEl.addEventListener("click", function () {
       setMealsPanelOpen(!mealsPanelOpen);
     });
   }
@@ -33617,6 +33849,70 @@
 
   if (addFoodSubmitBtn) {
     addFoodSubmitBtn.addEventListener("click", runAddFoodSubmit);
+  }
+  if (addFoodSubmitMenuToggleBtn) {
+    addFoodSubmitMenuToggleBtn.addEventListener("click", function (e) {
+      e.stopPropagation();
+      if (!addFoodSubmitMenuEl || addFoodPendingMealId) return;
+      var open = addFoodSubmitMenuEl.hidden;
+      addFoodSubmitMenuEl.hidden = !open;
+      addFoodSubmitMenuToggleBtn.setAttribute(
+        "aria-expanded",
+        open ? "true" : "false"
+      );
+    });
+  }
+  if (addFoodSubmitMenuEl) {
+    addFoodSubmitMenuEl.addEventListener("click", function (e) {
+      var modeBtn = e.target.closest('[data-action="add-food-submit-mode"]');
+      if (!modeBtn) return;
+      setAddFoodSubmitMode(modeBtn.getAttribute("data-mode"));
+    });
+  }
+  document.addEventListener("click", function (e) {
+    if (
+      !addFoodSubmitMenuEl ||
+      addFoodSubmitMenuEl.hidden ||
+      e.target.closest("#add-food-submit-split")
+    ) {
+      return;
+    }
+    closeAddFoodSubmitMenu();
+  });
+  if (addFoodMealPickerCancelBtn) {
+    addFoodMealPickerCancelBtn.addEventListener("click", closeAddFoodMealPicker);
+  }
+  if (addFoodMealPickerCreateBtn) {
+    addFoodMealPickerCreateBtn.addEventListener(
+      "click",
+      createMealFromAddFoodPicker
+    );
+  }
+  if (addFoodMealPickerOpenAllBtn) {
+    addFoodMealPickerOpenAllBtn.addEventListener(
+      "click",
+      openSavedMealsFromAddFoodPicker
+    );
+  }
+  if (addFoodMealPickerNameEl) {
+    addFoodMealPickerNameEl.addEventListener("keydown", function (e) {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        createMealFromAddFoodPicker();
+      }
+    });
+  }
+  if (addFoodMealPickerModalEl) {
+    addFoodMealPickerModalEl.addEventListener("click", function (e) {
+      if (e.target.closest('[data-action="close-add-food-meal-picker"]')) {
+        closeAddFoodMealPicker();
+        return;
+      }
+      var mealBtn = e.target.closest('[data-action="pick-add-food-meal"]');
+      if (mealBtn) {
+        addSelectedFoodsToSavedMeal(mealBtn.getAttribute("data-meal-id"));
+      }
+    });
   }
   if (addFoodCancelBtn) {
     addFoodCancelBtn.addEventListener("click", closeAddFoodModal);

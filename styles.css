@@ -308,6 +308,29 @@ body {
   color: #333;
 }
 
+.week__saved-meals-toggle {
+  display: inline-flex;
+  align-items: center;
+  min-height: 1.9rem;
+  padding: 0.25rem 0.65rem;
+  font: inherit;
+  font-size: 0.8rem;
+  font-weight: 600;
+  line-height: 1.2;
+  cursor: pointer;
+  border: 1px solid #c8c8c4;
+  border-radius: 4px;
+  background: #fafaf8;
+  color: #333;
+}
+
+.week__saved-meals-toggle:hover:not(:disabled),
+.week__saved-meals-toggle[aria-expanded="true"] {
+  border-color: #3d6b9e;
+  background: #eaf1f8;
+  color: #3d6b9e;
+}
+
 .week__favorites-toggle:hover:not(:disabled),
 .week__favorites-toggle[aria-expanded="true"] {
   border-color: #2a7a6e;
@@ -9764,6 +9787,174 @@ input[type="number"]::-webkit-inner-spin-button {
 .day__guided-others-menu button:hover {
   background: #eef4fa;
   color: #3d6b9e;
+}
+
+.add-food-submit-split {
+  position: relative;
+  display: inline-flex;
+  align-items: stretch;
+}
+
+.add-food-submit-split__action {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.add-food-submit-split__chevron {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.15rem;
+  padding: 0.5rem 0.35rem;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  border-left-color: rgba(255, 255, 255, 0.35);
+}
+
+.add-food-submit-split__chevron-mark {
+  display: block;
+  width: 0;
+  height: 0;
+  border-left: 0.32rem solid transparent;
+  border-right: 0.32rem solid transparent;
+  border-top: 0.38rem solid currentColor;
+}
+
+.add-food-submit-split .modal__done:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+
+.add-food-submit-split--locked .add-food-submit-split__action {
+  border-radius: 4px;
+}
+
+.add-food-submit-split--locked .add-food-submit-split__chevron,
+.add-food-submit-split--locked .add-food-submit-split__menu {
+  display: none;
+}
+
+.add-food-submit-split__menu {
+  position: absolute;
+  right: 0;
+  bottom: calc(100% + 0.3rem);
+  z-index: 2;
+  min-width: 10.5rem;
+  padding: 0.25rem;
+  border: 1px solid #c8c8c4;
+  border-radius: 6px;
+  background: #fff;
+  box-shadow: 0 8px 24px rgba(26, 26, 26, 0.12);
+}
+
+.add-food-submit-split__menu[hidden] {
+  display: none;
+}
+
+.add-food-submit-split__menu button {
+  display: block;
+  width: 100%;
+  margin: 0;
+  padding: 0.45rem 0.65rem;
+  border: 0;
+  border-radius: 4px;
+  background: transparent;
+  color: #1a1a1a;
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 500;
+  text-align: left;
+  cursor: pointer;
+}
+
+.add-food-submit-split__menu button:hover,
+.add-food-submit-split__menu button:focus-visible {
+  background: #e8eef4;
+}
+
+.add-food-submit-split__menu button[aria-checked="true"] {
+  color: #2a4a6e;
+}
+
+.add-food-submit-split__menu button[aria-checked="true"]::after {
+  content: " ✓";
+  font-weight: 700;
+}
+
+#add-food-meal-picker-modal {
+  z-index: 110;
+}
+
+.add-food-meal-picker__body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.add-food-meal-picker__list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  max-height: min(40vh, 16rem);
+  overflow-y: auto;
+}
+
+.add-food-meal-picker__meal {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.1rem;
+  width: 100%;
+  margin: 0;
+  padding: 0.55rem 0.7rem;
+  border: 1px solid #d8d8d4;
+  border-radius: 6px;
+  background: #fafaf8;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.add-food-meal-picker__meal:hover,
+.add-food-meal-picker__meal:focus-visible {
+  border-color: #9eb4cc;
+  background: #eef4fa;
+}
+
+.add-food-meal-picker__meal-name {
+  font-weight: 600;
+}
+
+.add-food-meal-picker__meal-meta {
+  font-size: 0.78rem;
+  color: #5c5c5c;
+}
+
+.add-food-meal-picker__empty {
+  margin: 0;
+  font-size: 0.85rem;
+  color: #5c5c5c;
+}
+
+.add-food-meal-picker__open-all {
+  align-self: flex-start;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #2a5a8a;
+  text-decoration: underline;
+  text-decoration-color: rgba(42, 90, 138, 0.35);
+  text-underline-offset: 0.12em;
+  cursor: pointer;
+}
+
+.add-food-meal-picker__open-all:hover {
+  color: #1a4570;
+  text-decoration-color: currentColor;
 }
 
 .add-food-modal__body {

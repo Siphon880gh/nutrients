@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Nutrients — Week meals</title>
-  <link rel="stylesheet" href="styles.css?t=1789372800">
+  <link rel="stylesheet" href="styles.css?t=1789412400">
 </head>
 <body class="show-daily-intake-icons day-entry-guided">
   <svg class="app-icon-symbols" width="0" height="0" aria-hidden="true" focusable="false">
@@ -137,8 +137,10 @@
           <span class="app-nav__label app-nav__label--short" aria-hidden="true">Defs</span>
           <span class="app-nav__shortcut" aria-hidden="true">D</span>
         </button>
-        <button type="button" id="dashboard-meals-jump" class="app-nav__btn" aria-label="Meals" aria-expanded="false" aria-haspopup="dialog" aria-controls="meals-panel">
-          <span class="app-nav__label" aria-hidden="true">Meals</span>
+        <button type="button" id="dashboard-meals-jump" class="app-nav__btn" data-app-shortcut="C" aria-label="Saved meals" aria-expanded="false" aria-haspopup="dialog" aria-controls="meals-panel" aria-keyshortcuts="C">
+          <span class="app-nav__label app-nav__label--full" aria-hidden="true">Saved meals</span>
+          <span class="app-nav__label app-nav__label--short" aria-hidden="true">Meals</span>
+          <span class="app-nav__shortcut" aria-hidden="true">C</span>
         </button>
       </div>
     </nav>
@@ -190,11 +192,14 @@
         <button type="button" id="favorites-open" class="week__favorites-toggle" aria-haspopup="dialog" aria-expanded="false" aria-controls="favorites-sidebar">
           Favorites
         </button>
+        <button type="button" id="week-saved-meals-open" class="week__saved-meals-toggle" aria-haspopup="dialog" aria-expanded="false" aria-controls="meals-panel">
+          Saved meals
+        </button>
       </div>
       <div class="week__entry-tools">
         <div class="week__days-toolbar">
           <p id="week-days-hint" class="week__days-hint">
-            Day meals are saved in this browser. Use <strong>Add food</strong> to pick from your food definitions, or <strong>Add Others</strong> for inserting headings and dividers. Turn on <strong>Advanced</strong> for free-text entry.
+            Use <strong>Add food</strong> to pick foods or a <strong>saved meal</strong>. Open <strong>Saved meals</strong> to create and edit those combinations. <strong>Add Others</strong> inserts headings and dividers. Turn on <strong>Advanced</strong> for free-text entry.
           </p>
           <div class="week__days-actions">
             <button type="button" id="import-sample-meals" class="week__meals-bulk week__meals-bulk--primary">Import sample</button>
@@ -1102,10 +1107,10 @@
         <div class="app-sheet__body">
           <section class="meals meals--sheet">
             <div class="keywords__header">
-              <h2 id="meals-heading" class="keywords__title">Meals</h2>
-              <button type="button" id="meals-close" class="dashboard__panel-close" aria-label="Close meals">×</button>
+              <h2 id="meals-heading" class="keywords__title">Saved meals</h2>
+              <button type="button" id="meals-close" class="dashboard__panel-close" aria-label="Close saved meals">×</button>
             </div>
-            <p class="keywords__hint">Save named food combinations. In Add food, type a meal name to insert its foods along with individual foods.</p>
+            <p class="keywords__hint">Create a named food combination here, then Add food on that meal. To log it on a day, type the meal name in that day’s Add food list.</p>
             <div id="meals-list-view">
               <div class="meals__toolbar">
                 <form class="keywords__filter-controls meals__filter-controls" onsubmit="return false;">
@@ -1127,7 +1132,7 @@
               </div>
               <div id="meals-list" class="meals__list" role="list"></div>
               <p id="meals-empty" class="keywords__empty" hidden>
-                No meals yet. Create one, add foods, then pick the meal name from Add food.
+                No saved meals yet. Create one, add foods to it, then pick the meal name from a day’s Add food list.
               </p>
               <p id="meals-filter-empty" class="keywords__filter-empty" hidden>
                 No meals match your search.
@@ -1324,7 +1329,40 @@
       </div>
       <footer class="modal__footer modal__footer--split">
         <button type="button" id="add-food-cancel" class="modal__secondary">Cancel</button>
-        <button type="button" id="add-food-submit" class="modal__done" disabled>Add to day</button>
+        <div id="add-food-submit-split" class="add-food-submit-split">
+          <button type="button" id="add-food-submit" class="modal__done add-food-submit-split__action" disabled>Add to day</button>
+          <button type="button" id="add-food-submit-menu-toggle" class="modal__done add-food-submit-split__chevron" aria-haspopup="menu" aria-expanded="false" aria-controls="add-food-submit-menu" aria-label="Switch add destination">
+            <span class="add-food-submit-split__chevron-mark" aria-hidden="true"></span>
+          </button>
+          <div id="add-food-submit-menu" class="add-food-submit-split__menu" hidden role="menu">
+            <button type="button" role="menuitemradio" aria-checked="true" data-action="add-food-submit-mode" data-mode="day">Add to day</button>
+            <button type="button" role="menuitemradio" aria-checked="false" data-action="add-food-submit-mode" data-mode="meal">Add to meal</button>
+          </div>
+        </div>
+      </footer>
+    </div>
+  </div>
+
+  <div id="add-food-meal-picker-modal" class="modal" hidden>
+    <div class="modal__backdrop" data-action="close-add-food-meal-picker"></div>
+    <div class="modal__panel" role="dialog" aria-modal="true" aria-labelledby="add-food-meal-picker-title">
+      <header class="modal__header">
+        <h3 id="add-food-meal-picker-title" class="modal__title">Add to meal</h3>
+        <p class="modal__subtitle">Choose a saved meal, or create a new one.</p>
+      </header>
+      <div class="import-modal__body add-food-meal-picker__body">
+        <div id="add-food-meal-picker-list" class="add-food-meal-picker__list" role="list"></div>
+        <p id="add-food-meal-picker-empty" class="add-food-meal-picker__empty" hidden>No saved meals yet. Create one below.</p>
+        <div class="import-json-wrap">
+          <label class="import-json-wrap__label" for="add-food-meal-picker-name">New meal name</label>
+          <input type="text" id="add-food-meal-picker-name" class="week-jump-input" maxlength="80" autocomplete="off" spellcheck="true">
+        </div>
+        <p id="add-food-meal-picker-error" class="import-modal__error" hidden></p>
+        <button type="button" id="add-food-meal-picker-open-all" class="add-food-meal-picker__open-all">Open Saved meals</button>
+      </div>
+      <footer class="modal__footer modal__footer--split">
+        <button type="button" id="add-food-meal-picker-cancel" class="modal__secondary">Cancel</button>
+        <button type="button" id="add-food-meal-picker-create" class="modal__done">Create meal</button>
       </footer>
     </div>
   </div>
@@ -3051,6 +3089,6 @@
   <script src="demographic-dv.js?t=1786025202"></script>
   <script src="longevity-dv.js?t=1784087916"></script>
   <script src="persist.js?t=1789372800"></script>
-  <script src="app.js?t=1789372800"></script>
+  <script src="app.js?t=1789412400"></script>
 </body>
 </html>
