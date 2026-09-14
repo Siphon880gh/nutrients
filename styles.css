@@ -9795,29 +9795,40 @@ input[type="number"]::-webkit-inner-spin-button {
   align-items: stretch;
 }
 
-.add-food-submit-split__action {
+.add-food-submit-split > .add-food-submit-split__action.modal__done {
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
+  padding-right: 0.85rem;
 }
 
-.add-food-submit-split__chevron {
+.add-food-submit-split > .add-food-submit-split__chevron.modal__done {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 2.15rem;
-  padding: 0.5rem 0.35rem;
+  width: 1.75rem;
+  min-width: 1.75rem;
+  padding: 0.5rem 0;
+  margin-left: -1px;
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
-  border-left-color: rgba(255, 255, 255, 0.35);
+  border-left-color: rgba(255, 255, 255, 0.32);
+}
+
+.add-food-submit-split > .add-food-submit-split__chevron.modal__done:hover,
+.add-food-submit-split > .add-food-submit-split__chevron.modal__done:focus-visible {
+  border-left-color: rgba(255, 255, 255, 0.45);
 }
 
 .add-food-submit-split__chevron-mark {
   display: block;
-  width: 0;
-  height: 0;
-  border-left: 0.32rem solid transparent;
-  border-right: 0.32rem solid transparent;
-  border-top: 0.38rem solid currentColor;
+  width: 0.72rem;
+  height: 0.72rem;
+  flex-shrink: 0;
+  transition: transform 0.15s ease;
+}
+
+.add-food-submit-split__chevron[aria-expanded="true"] .add-food-submit-split__chevron-mark {
+  transform: rotate(180deg);
 }
 
 .add-food-submit-split .modal__done:disabled {
@@ -9825,8 +9836,9 @@ input[type="number"]::-webkit-inner-spin-button {
   cursor: default;
 }
 
-.add-food-submit-split--locked .add-food-submit-split__action {
+.add-food-submit-split--locked > .add-food-submit-split__action.modal__done {
   border-radius: 4px;
+  padding-right: 1rem;
 }
 
 .add-food-submit-split--locked .add-food-submit-split__chevron,

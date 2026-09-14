@@ -99,6 +99,11 @@
       "label": "Mexican - Taco Addon",
       "pattern": "\\bmexican\\b.*taco\\s*addon\\b",
       "note": "Additive-only entries using standard portions: 2 tablespoons cooked beans (30 g), 2 tablespoons shredded cheese (14 g), and—where included—1 tablespoon sour cream (15 g)."
+    },
+    {
+      "label": "Carl's Jr. Western Bacon Cheeseburger",
+      "pattern": "\\bwestern\\s*bacon\\s*cheeseburger\\b",
+      "note": "This food definition is the Single Western Bacon Cheeseburger (248 g): one charbroiled beef patty, two strips of Cherrywood bacon, American cheese, crispy onion rings, and BBQ sauce on a seeded bun. It does not include fries or a drink. Double and Triple versions add extra patties and are much higher in calories, fat, protein, and sodium."
     }
   ]
 }
