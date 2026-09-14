@@ -182,7 +182,7 @@
     {
       "id": "meals",
       "label": "Prepared meals",
-      "patterns": ["^Denny", "^Starbucks", "^Trifecta"]
+      "patterns": ["^Denny", "^Starbucks", "^Trifecta", "^Hong Kong"]
     },
     {
       "id": "salt",
