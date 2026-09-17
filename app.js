@@ -711,6 +711,9 @@
   var dayWordWrapEnabled = true;
   var dayEntryAdvancedEnabled = false;
   var guidedRearrangeByDay = {};
+  var guidedSelectedLinesByDay = {};
+  var GUIDED_HANDLE_SELECT_MS = 300;
+  var GUIDED_HANDLE_SELECT_MOVE_PX = 8;
   var WEEK_DAYS_HINT_GUIDED =
     'Use <strong>Add food</strong> to pick foods or a <strong>saved meal</strong>. Open <strong>Saved meals</strong> to create and edit those combinations. <strong>Add Others</strong> inserts headings and dividers. Turn on <strong>Advanced</strong> for free-text entry.';
   var WEEK_DAYS_HINT_ADVANCED =
@@ -24721,6 +24724,7 @@
       if (!el) return;
       el.value = dayMealsByDate[keys[i]] || "";
     });
+    guidedSelectedLinesByDay = {};
     if (!dayEntryAdvancedEnabled) renderAllDayGuidedLists();
     markIgnoredDays();
   }
@@ -25952,6 +25956,7 @@
       renderAllDayGuidedLists();
     } else {
       guidedRearrangeByDay = {};
+      guidedSelectedLinesByDay = {};
     }
   }
 
@@ -28650,6 +28655,7 @@
     if (enabled) guidedRearrangeByDay[dayId] = true;
     else {
       delete guidedRearrangeByDay[dayId];
+      delete guidedSelectedLinesByDay[dayId];
       if (guidedDragState && guidedDragState.dayId === dayId) endGuidedDrag();
     }
     var guided = ensureDayGuidedEl(dayId);
@@ -28681,6 +28687,83 @@
   }
 
   var guidedDragState = null;
+  var guidedHandlePress = null;
+  var guidedHandleLastPress = null;
+
+  function isGuidedFoodLineSelected(dayId, lineIndex) {
+    var set = guidedSelectedLinesByDay[dayId];
+    return !!(set && set[lineIndex]);
+  }
+
+  function applyGuidedFoodLineSelectedDom(dayId, lineIndex, itemEl) {
+    var item =
+      itemEl ||
+      document.querySelector(
+        '.day__food-item[data-day-id="' +
+          dayId +
+          '"][data-line-index="' +
+          lineIndex +
+          '"]'
+      );
+    if (!item) return;
+    var on = isGuidedFoodLineSelected(dayId, lineIndex);
+    item.classList.toggle("day__food-item--selected", on);
+    var handle = item.querySelector('[data-action="guided-drag-handle"]');
+    if (!handle) return;
+    handle.setAttribute("aria-pressed", on ? "true" : "false");
+    handle.setAttribute(
+      "aria-label",
+      on ? "Deselect, or drag selected foods" : "Select or drag to rearrange"
+    );
+    handle.setAttribute(
+      "title",
+      on
+        ? "Selected — click to deselect, or drag with other selected foods"
+        : "Click to select, drag to rearrange"
+    );
+  }
+
+  function toggleGuidedFoodLineSelected(dayId, lineIndex, itemEl) {
+    if (!dayId || isNaN(lineIndex) || !isGuidedRearrangeEnabled(dayId)) return;
+    var set = guidedSelectedLinesByDay[dayId];
+    if (!set) set = {};
+    if (set[lineIndex]) {
+      delete set[lineIndex];
+      if (!Object.keys(set).length) delete guidedSelectedLinesByDay[dayId];
+      else guidedSelectedLinesByDay[dayId] = set;
+    } else {
+      set[lineIndex] = true;
+      guidedSelectedLinesByDay[dayId] = set;
+    }
+    applyGuidedFoodLineSelectedDom(dayId, lineIndex, itemEl);
+  }
+
+  function movingGuidedLineIndexes(dayId, extraLineIndex) {
+    var textarea = document.getElementById(dayId);
+    var set = guidedSelectedLinesByDay[dayId] || {};
+    var out = [];
+    if (!textarea) {
+      if (extraLineIndex >= 0) out.push(extraLineIndex);
+      return out;
+    }
+    var entries = parseDayGuidedLines(textarea.value);
+    for (var i = 0; i < entries.length; i++) {
+      var lineIndex = entries[i].lineIndex;
+      if (set[lineIndex] || lineIndex === extraLineIndex) out.push(lineIndex);
+    }
+    if (!out.length && extraLineIndex >= 0) out.push(extraLineIndex);
+    return out;
+  }
+
+  function dayGuidedItemClassName(kindClass, dayId, lineIndex) {
+    return (
+      "day__food-item " +
+      kindClass +
+      (isGuidedFoodLineSelected(dayId, lineIndex)
+        ? " day__food-item--selected"
+        : "")
+    );
+  }
 
   function clearGuidedDropIndicators(listEl) {
     if (!listEl) {
@@ -28703,41 +28786,214 @@
   }
 
   function endGuidedDrag() {
-    if (guidedDragState && guidedDragState.itemEl) {
-      guidedDragState.itemEl.classList.remove("day__food-item--dragging");
+    document.querySelectorAll(".day__food-item--dragging").forEach(function (el) {
+      el.classList.remove("day__food-item--dragging");
+    });
+    if (guidedDragState && guidedDragState.ghostEl && guidedDragState.ghostEl.parentNode) {
+      guidedDragState.ghostEl.parentNode.removeChild(guidedDragState.ghostEl);
     }
     clearGuidedDropIndicators(null);
     guidedDragState = null;
   }
 
-  function reorderGuidedEntry(dayId, fromLineIndex, insertBeforeEntryPos) {
+  function setGuidedDragImage(dataTransfer, itemEl, count) {
+    if (!dataTransfer || !itemEl) return;
+    if (count <= 1) {
+      try {
+        dataTransfer.setDragImage(itemEl, 12, 12);
+      } catch (err) {
+        /* ignore */
+      }
+      return;
+    }
+    var ghost = itemEl.cloneNode(true);
+    ghost.classList.add("day__food-item--drag-ghost");
+    ghost.style.position = "absolute";
+    ghost.style.top = "-1000px";
+    ghost.style.left = "0";
+    ghost.style.width = itemEl.offsetWidth + "px";
+    ghost.style.pointerEvents = "none";
+    var badge = document.createElement("span");
+    badge.className = "day__food-item-drag-count";
+    badge.textContent = String(count);
+    ghost.appendChild(badge);
+    document.body.appendChild(ghost);
+    if (guidedDragState) guidedDragState.ghostEl = ghost;
+    try {
+      dataTransfer.setDragImage(ghost, 12, 12);
+    } catch (err) {
+      /* ignore */
+    }
+  }
+
+  function guidedDropFromPoint(listEl, clientY, fromLineSet) {
+    var items = listEl.querySelectorAll(".day__food-item");
+    if (!items.length) {
+      return { dropBeforePos: 0, dropEnd: true, indicatorEl: null, before: false };
+    }
+    var lastRect = items[items.length - 1].getBoundingClientRect();
+    if (clientY >= lastRect.bottom - 4) {
+      return {
+        dropBeforePos: items.length,
+        dropEnd: true,
+        indicatorEl: null,
+        before: false,
+      };
+    }
+    var lastNonMoving = null;
+    for (var i = 0; i < items.length; i++) {
+      var item = items[i];
+      var lineIndex = parseInt(item.getAttribute("data-line-index"), 10);
+      if (fromLineSet[lineIndex]) continue;
+      var rect = item.getBoundingClientRect();
+      var pos = parseInt(item.getAttribute("data-entry-pos"), 10);
+      if (isNaN(pos)) continue;
+      if (clientY < rect.top + rect.height / 2) {
+        return {
+          dropBeforePos: pos,
+          dropEnd: false,
+          indicatorEl: item,
+          before: true,
+        };
+      }
+      lastNonMoving = item;
+    }
+    if (lastNonMoving) {
+      var lastPos = parseInt(lastNonMoving.getAttribute("data-entry-pos"), 10);
+      return {
+        dropBeforePos: isNaN(lastPos) ? items.length : lastPos + 1,
+        dropEnd: false,
+        indicatorEl: lastNonMoving,
+        before: false,
+      };
+    }
+    return {
+      dropBeforePos: items.length,
+      dropEnd: true,
+      indicatorEl: null,
+      before: false,
+    };
+  }
+
+  function reorderGuidedEntries(dayId, fromLineIndexes, insertBeforeEntryPos) {
     var textarea = document.getElementById(dayId);
-    if (!textarea) return;
+    if (!textarea || !fromLineIndexes || !fromLineIndexes.length) return;
     var lines = dayTextareaLines(textarea);
     var entries = parseDayGuidedLines(textarea.value);
-    var fromPos = -1;
-    for (var i = 0; i < entries.length; i++) {
-      if (entries[i].lineIndex === fromLineIndex) {
-        fromPos = i;
+    var fromSet = {};
+    for (var i = 0; i < fromLineIndexes.length; i++) {
+      fromSet[fromLineIndexes[i]] = true;
+    }
+    var moving = [];
+    var remaining = [];
+    var originalTexts = [];
+    for (var e = 0; e < entries.length; e++) {
+      var text = lines[entries[e].lineIndex];
+      originalTexts.push(text);
+      if (fromSet[entries[e].lineIndex]) moving.push(text);
+      else remaining.push(text);
+    }
+    if (!moving.length) return;
+    var insertAt = 0;
+    for (var p = 0; p < entries.length; p++) {
+      if (p >= insertBeforeEntryPos) break;
+      if (!fromSet[entries[p].lineIndex]) insertAt += 1;
+    }
+    if (insertAt < 0) insertAt = 0;
+    if (insertAt > remaining.length) insertAt = remaining.length;
+    var next = remaining.slice();
+    for (var s = 0; s < moving.length; s++) {
+      next.splice(insertAt + s, 0, moving[s]);
+    }
+    var unchanged = next.length === originalTexts.length;
+    if (unchanged) {
+      for (var u = 0; u < next.length; u++) {
+        if (next[u] !== originalTexts[u]) {
+          unchanged = false;
+          break;
+        }
+      }
+    }
+    if (unchanged) return;
+    var keepSelected = false;
+    for (var k = 0; k < fromLineIndexes.length; k++) {
+      if (isGuidedFoodLineSelected(dayId, fromLineIndexes[k])) {
+        keepSelected = true;
         break;
       }
     }
-    if (fromPos < 0) return;
-    var texts = entries.map(function (entry) {
-      return lines[entry.lineIndex];
-    });
-    var moved = texts.splice(fromPos, 1)[0];
-    var insertAt = insertBeforeEntryPos;
-    if (fromPos < insertAt) insertAt -= 1;
-    if (insertAt < 0) insertAt = 0;
-    if (insertAt > texts.length) insertAt = texts.length;
-    if (insertAt === fromPos) return;
-    texts.splice(insertAt, 0, moved);
-    setDayTextareaLines(textarea, texts);
+    if (keepSelected) {
+      var nextSelected = {};
+      for (var n = 0; n < moving.length; n++) {
+        nextSelected[insertAt + n] = true;
+      }
+      guidedSelectedLinesByDay[dayId] = nextSelected;
+    } else {
+      delete guidedSelectedLinesByDay[dayId];
+    }
+    setDayTextareaLines(textarea, next);
+  }
+
+  function guidedHandleFromEvent(e) {
+    if (!e.target || !e.target.closest) return null;
+    var handle = e.target.closest('[data-action="guided-drag-handle"]');
+    if (!handle) return null;
+    if (weekGridEl && !weekGridEl.contains(handle)) return null;
+    return handle;
+  }
+
+  function markGuidedHandleMoved(e) {
+    var press = guidedHandlePress;
+    if (!press || press.moved) return;
+    if (
+      Math.abs(e.clientX - press.x) > GUIDED_HANDLE_SELECT_MOVE_PX ||
+      Math.abs(e.clientY - press.y) > GUIDED_HANDLE_SELECT_MOVE_PX
+    ) {
+      press.moved = true;
+    }
+  }
+
+  function unbindGuidedHandlePressListeners() {
+    document.removeEventListener("pointermove", onGuidedHandlePointerMove, true);
+    document.removeEventListener("pointerup", onGuidedHandlePointerUp, true);
+    document.removeEventListener("pointercancel", onGuidedHandlePointerCancel, true);
+  }
+
+  function onGuidedHandlePointerMove(e) {
+    markGuidedHandleMoved(e);
+  }
+
+  function onGuidedHandlePointerUp() {
+    finishGuidedHandlePress(false);
+  }
+
+  function onGuidedHandlePointerCancel() {
+    finishGuidedHandlePress(true);
+  }
+
+  function finishGuidedHandlePress(asCancel) {
+    var press = guidedHandlePress;
+    if (!press) return null;
+    guidedHandlePress = null;
+    guidedHandleLastPress = press;
+    unbindGuidedHandlePressListeners();
+    if (
+      !asCancel &&
+      !press.dragged &&
+      !press.moved &&
+      Date.now() - press.t <= GUIDED_HANDLE_SELECT_MS &&
+      press.dayId &&
+      !isNaN(press.lineIndex)
+    ) {
+      toggleGuidedFoodLineSelected(press.dayId, press.lineIndex, press.item);
+      press.didToggle = true;
+    }
+    return press;
   }
 
   function dayGuidedDragHandleHtml(dayId, lineIndex, entryPos) {
     if (!isGuidedRearrangeEnabled(dayId)) return "";
+    var selected = isGuidedFoodLineSelected(dayId, lineIndex);
     return (
       '<button type="button" class="day__food-item-drag" data-action="guided-drag-handle" data-day-id="' +
       escapeAttr(dayId) +
@@ -28745,7 +29001,17 @@
       lineIndex +
       '" data-entry-pos="' +
       entryPos +
-      '" draggable="true" aria-label="Drag to rearrange" title="Drag to rearrange">' +
+      '" draggable="true" aria-pressed="' +
+      (selected ? "true" : "false") +
+      '" aria-label="' +
+      (selected
+        ? "Deselect, or drag selected foods"
+        : "Select or drag to rearrange") +
+      '" title="' +
+      (selected
+        ? "Selected — click to deselect, or drag with other selected foods"
+        : "Click to select, drag to rearrange") +
+      '">' +
       '<svg class="day__food-item-drag-icon" viewBox="0 0 16 16" aria-hidden="true" focusable="false">' +
       '<circle cx="5" cy="3.5" r="1.25"/><circle cx="11" cy="3.5" r="1.25"/>' +
       '<circle cx="5" cy="8" r="1.25"/><circle cx="11" cy="8" r="1.25"/>' +
@@ -29195,7 +29461,9 @@
     var servings = formatGuidedServingsValue(entry.servings);
     var rearrange = isGuidedRearrangeEnabled(dayId);
     return (
-      '<li class="day__food-item day__food-item--food" data-line-index="' +
+      '<li class="' +
+      dayGuidedItemClassName("day__food-item--food", dayId, entry.lineIndex) +
+      '" data-line-index="' +
       entry.lineIndex +
       '" data-entry-pos="' +
       entryPos +
@@ -29236,7 +29504,9 @@
     var rearrange = isGuidedRearrangeEnabled(dayId);
     if (entry.kind === "divider") {
       return (
-        '<li class="day__food-item day__food-item--divider" data-line-index="' +
+        '<li class="' +
+        dayGuidedItemClassName("day__food-item--divider", dayId, entry.lineIndex) +
+        '" data-line-index="' +
         entry.lineIndex +
         '" data-entry-pos="' +
         entryPos +
@@ -29261,7 +29531,9 @@
     if (entry.kind === "comment") {
       var commentLabel = guidedCommentDisplayText(entry.text);
       return (
-        '<li class="day__food-item day__food-item--comment" data-line-index="' +
+        '<li class="' +
+        dayGuidedItemClassName("day__food-item--comment", dayId, entry.lineIndex) +
+        '" data-line-index="' +
         entry.lineIndex +
         '" data-entry-pos="' +
         entryPos +
@@ -29294,7 +29566,9 @@
       );
     }
     return (
-      '<li class="day__food-item day__food-item--unmatched" data-line-index="' +
+      '<li class="' +
+      dayGuidedItemClassName("day__food-item--unmatched", dayId, entry.lineIndex) +
+      '" data-line-index="' +
       entry.lineIndex +
       '" data-entry-pos="' +
       entryPos +
@@ -29380,6 +29654,7 @@
     if (!entries.length) {
       listEl.innerHTML = "";
       if (emptyEl) emptyEl.hidden = false;
+      delete guidedSelectedLinesByDay[dayId];
       return;
     }
     if (emptyEl) emptyEl.hidden = true;
@@ -31158,6 +31433,35 @@
       foodItemTwoFinger = null;
     });
     weekGridEl.addEventListener("click", function (e) {
+      var dragHandleBtn = e.target.closest('[data-action="guided-drag-handle"]');
+      if (dragHandleBtn && weekGridEl.contains(dragHandleBtn)) {
+        e.preventDefault();
+        e.stopPropagation();
+        var press = guidedHandleLastPress;
+        guidedHandleLastPress = null;
+        if (press && press.didToggle) return;
+        var isKeyboard = e.detail === 0;
+        var isClickLike =
+          press &&
+          !press.dragged &&
+          !press.moved &&
+          Date.now() - press.t <= GUIDED_HANDLE_SELECT_MS + 80;
+        if (isKeyboard || isClickLike) {
+          var selectDayId = dragHandleBtn.getAttribute("data-day-id");
+          var selectLine = parseInt(
+            dragHandleBtn.getAttribute("data-line-index"),
+            10
+          );
+          if (selectDayId && !isNaN(selectLine)) {
+            toggleGuidedFoodLineSelected(
+              selectDayId,
+              selectLine,
+              dragHandleBtn.closest(".day__food-item")
+            );
+          }
+        }
+        return;
+      }
       var guidedFoodItem = e.target.closest(".day__food-item");
       if (guidedFoodItem && weekGridEl.contains(guidedFoodItem)) {
         setGuidedFoodItemActive(guidedFoodItem, e.target);
@@ -31306,6 +31610,33 @@
         }
       }
     });
+    weekGridEl.addEventListener("pointerdown", function (e) {
+      if (e.button && e.button !== 0) return;
+      var handle = guidedHandleFromEvent(e);
+      if (!handle) return;
+      var item = handle.closest(".day__food-item");
+      var dayId = handle.getAttribute("data-day-id");
+      var lineIndex = parseInt(handle.getAttribute("data-line-index"), 10);
+      var entryPos = parseInt(handle.getAttribute("data-entry-pos"), 10);
+      unbindGuidedHandlePressListeners();
+      guidedHandleLastPress = null;
+      guidedHandlePress = {
+        handle: handle,
+        item: item,
+        dayId: dayId,
+        lineIndex: lineIndex,
+        entryPos: entryPos,
+        t: Date.now(),
+        x: e.clientX,
+        y: e.clientY,
+        moved: false,
+        dragged: false,
+        didToggle: false,
+      };
+      document.addEventListener("pointermove", onGuidedHandlePointerMove, true);
+      document.addEventListener("pointerup", onGuidedHandlePointerUp, true);
+      document.addEventListener("pointercancel", onGuidedHandlePointerCancel, true);
+    });
     weekGridEl.addEventListener("dragstart", function (e) {
       var handle = e.target.closest('[data-action="guided-drag-handle"]');
       if (!handle) return;
@@ -31321,25 +31652,40 @@
         e.preventDefault();
         return;
       }
+      if (guidedHandlePress) {
+        markGuidedHandleMoved(e);
+        guidedHandlePress.dragged = true;
+      }
+      var fromLineIndexes = movingGuidedLineIndexes(dayId, lineIndex);
+      var fromLineSet = {};
+      for (var i = 0; i < fromLineIndexes.length; i++) {
+        fromLineSet[fromLineIndexes[i]] = true;
+      }
       guidedDragState = {
         dayId: dayId,
         fromLineIndex: lineIndex,
+        fromLineIndexes: fromLineIndexes,
+        fromLineSet: fromLineSet,
         fromPos: entryPos,
         itemEl: item,
         listEl: item.closest(".day__food-list"),
       };
-      item.classList.add("day__food-item--dragging");
+      var listEl = guidedDragState.listEl;
+      if (listEl) {
+        listEl.querySelectorAll(".day__food-item").forEach(function (el) {
+          var li = parseInt(el.getAttribute("data-line-index"), 10);
+          if (fromLineSet[li]) el.classList.add("day__food-item--dragging");
+        });
+      } else {
+        item.classList.add("day__food-item--dragging");
+      }
       if (e.dataTransfer) {
         e.dataTransfer.effectAllowed = "move";
         e.dataTransfer.setData(
           "text/plain",
-          dayId + ":" + lineIndex + ":" + entryPos
+          dayId + ":" + fromLineIndexes.join(",")
         );
-        try {
-          e.dataTransfer.setDragImage(item, 12, 12);
-        } catch (err) {
-          /* ignore */
-        }
+        setGuidedDragImage(e.dataTransfer, item, fromLineIndexes.length);
       }
     });
     weekGridEl.addEventListener("dragend", function () {
@@ -31348,7 +31694,6 @@
     weekGridEl.addEventListener("dragover", function (e) {
       if (!guidedDragState) return;
       var listEl = e.target.closest(".day__food-list");
-      var item = e.target.closest(".day__food-item");
       var guided = e.target.closest(".day__guided");
       if (!guided || guided.getAttribute("data-day-id") !== guidedDragState.dayId) {
         return;
@@ -31361,38 +31706,20 @@
         guidedDragState.listEl;
       if (!activeList) return;
       clearGuidedDropIndicators(activeList);
-      if (item && activeList.contains(item) && item !== guidedDragState.itemEl) {
-        var rect = item.getBoundingClientRect();
-        var before = e.clientY < rect.top + rect.height / 2;
-        item.classList.add(
-          before ? "day__food-item--drop-before" : "day__food-item--drop-after"
+      var drop = guidedDropFromPoint(
+        activeList,
+        e.clientY,
+        guidedDragState.fromLineSet || {}
+      );
+      guidedDragState.dropBeforePos = drop.dropBeforePos;
+      if (drop.dropEnd) {
+        activeList.classList.add("day__food-list--drop-end");
+      } else if (drop.indicatorEl) {
+        drop.indicatorEl.classList.add(
+          drop.before
+            ? "day__food-item--drop-before"
+            : "day__food-item--drop-after"
         );
-        guidedDragState.dropBeforePos = before
-          ? parseInt(item.getAttribute("data-entry-pos"), 10)
-          : parseInt(item.getAttribute("data-entry-pos"), 10) + 1;
-      } else if (!item || item === guidedDragState.itemEl) {
-        // Empty area / over self / end of list
-        var items = activeList.querySelectorAll(".day__food-item");
-        if (!items.length) {
-          activeList.classList.add("day__food-list--drop-end");
-          guidedDragState.dropBeforePos = 0;
-          return;
-        }
-        var last = items[items.length - 1];
-        var lastRect = last.getBoundingClientRect();
-        if (e.clientY >= lastRect.bottom - 4 || item === guidedDragState.itemEl) {
-          if (e.clientY >= lastRect.top + lastRect.height / 2) {
-            activeList.classList.add("day__food-list--drop-end");
-            guidedDragState.dropBeforePos = items.length;
-          } else if (item === guidedDragState.itemEl) {
-            var selfPos = guidedDragState.fromPos;
-            var selfRect = guidedDragState.itemEl.getBoundingClientRect();
-            guidedDragState.dropBeforePos =
-              e.clientY < selfRect.top + selfRect.height / 2
-                ? selfPos
-                : selfPos + 1;
-          }
-        }
       }
     });
     weekGridEl.addEventListener("dragleave", function (e) {
@@ -31407,13 +31734,15 @@
       if (!guidedDragState) return;
       e.preventDefault();
       var dayId = guidedDragState.dayId;
-      var fromLineIndex = guidedDragState.fromLineIndex;
+      var fromLineIndexes = guidedDragState.fromLineIndexes || [
+        guidedDragState.fromLineIndex,
+      ];
       var insertBefore =
         typeof guidedDragState.dropBeforePos === "number"
           ? guidedDragState.dropBeforePos
           : guidedDragState.fromPos;
       endGuidedDrag();
-      reorderGuidedEntry(dayId, fromLineIndex, insertBefore);
+      reorderGuidedEntries(dayId, fromLineIndexes, insertBefore);
     });
     weekGridEl.addEventListener("change", function (e) {
       var servingsInput = e.target.closest(

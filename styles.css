@@ -9716,6 +9716,19 @@ input[type="number"]::-webkit-inner-spin-button {
   cursor: grabbing;
 }
 
+.day__food-item-drag[aria-pressed="true"] {
+  background: #3d6b9e;
+  border-color: #3d6b9e;
+  color: #fff;
+}
+
+.day__food-item-drag[aria-pressed="true"]:hover,
+.day__food-item-drag[aria-pressed="true"]:focus-visible {
+  background: #335c88;
+  border-color: #335c88;
+  color: #fff;
+}
+
 .day__food-item-drag-icon {
   display: block;
   width: 0.85rem;
@@ -9723,8 +9736,43 @@ input[type="number"]::-webkit-inner-spin-button {
   fill: currentColor;
 }
 
+.day__guided--rearrange .day__food-item--selected,
+.day__guided--rearrange .day__food-item--food.day__food-item--selected,
+.day__guided--rearrange .day__food-item--comment.day__food-item--selected,
+.day__guided--rearrange .day__food-item--divider.day__food-item--selected,
+.day__guided--rearrange .day__food-item--unmatched.day__food-item--selected {
+  background: #e4eef8;
+  box-shadow: inset 3px 0 0 #3d6b9e;
+}
+
 .day__food-item--dragging {
   opacity: 0.45;
+}
+
+.day__food-item--drag-ghost {
+  z-index: 0;
+  background: #fff;
+  border: 1px solid #c8d6e6;
+  border-radius: 6px;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
+  opacity: 1;
+}
+
+.day__food-item-drag-count {
+  position: absolute;
+  top: -0.4rem;
+  right: -0.4rem;
+  min-width: 1.15rem;
+  height: 1.15rem;
+  padding: 0 0.28rem;
+  border-radius: 999px;
+  background: #3d6b9e;
+  color: #fff;
+  font-size: 0.65rem;
+  font-weight: 700;
+  line-height: 1.15rem;
+  text-align: center;
+  box-shadow: 0 0 0 2px #fff;
 }
 
 .day__food-item--drop-before,
