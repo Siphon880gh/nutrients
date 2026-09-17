@@ -2324,6 +2324,19 @@ body.app-nav-shortcuts-visible .dashboard__micro-status-dropdown {
   font-weight: 600;
 }
 
+#food-note-modal .modal__panel--wide {
+  max-width: min(48rem, calc(100vw - 1.5rem));
+}
+
+#food-note-modal-body {
+  display: block;
+  overflow: auto;
+}
+
+#food-note-modal-body .micro-tip-modal__table {
+  min-width: 32rem;
+}
+
 .macro-split-modal__body > p {
   margin-bottom: 0.85rem;
 }

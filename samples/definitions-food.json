@@ -7688,7 +7688,7 @@
     }
   },
   {
-    "name": "Drink - Starbucks Bacon & Gruyère Egg Bites - 2 bites",
+    "name": "Junk Food - Starbucks Bacon & Gruyère Egg Bites - 2 bites",
     "protein": 19,
     "carbs": 9,
     "fats": 20,
@@ -12675,6 +12675,300 @@
       "addedSugar": 0,
       "refinedCarbs": 0,
       "netCarbs": 57.5
+    }
+  },
+  {
+    "name": "Vegetable - Taro with skin - sm (1 small, boiled without salt; estimated 50 g edible flesh after discarding skin)",
+    "protein": 0.26,
+    "carbs": 17.3,
+    "fats": 0.06,
+    "micros": {
+      "fiber": 2.55,
+      "sodium": 0.5,
+      "potassium": 242,
+      "calcium": 9,
+      "iron": 0.36,
+      "copper": 78,
+      "magnesium": 15,
+      "zinc": 0.14,
+      "selenium": 0.3,
+      "manganese": 0.225,
+      "vitaminA": 2,
+      "vitaminD": 0,
+      "vitaminE": 1.47,
+      "vitaminK": 0.5,
+      "thiamin": 0.054,
+      "riboflavin": 0.014,
+      "niacin": 0.255,
+      "pantothenicAcid": 0.168,
+      "vitaminB6": 0.166,
+      "folate": 9.5,
+      "vitaminB12": 0,
+      "vitaminC": 2.5,
+      "phosphorus": 38,
+      "choline": 8.65
+    },
+    "longevity": {
+      "saturatedFat": 0.012,
+      "monounsaturatedFat": 0.005,
+      "polyunsaturatedFat": 0.023,
+      "transFat": 0,
+      "cholesterol": 0,
+      "copper": true,
+      "selenium": true,
+      "vitaminE": true,
+      "vitaminK": true,
+      "phosphorus": true,
+      "choline": true
+    },
+    "carbQuality": {
+      "addedSugar": 0,
+      "refinedCarbs": 0
+    }
+  },
+  {
+    "name": "Vegetable - Taro with skin - md (1 medium, boiled without salt; estimated 100 g edible flesh after discarding skin)",
+    "protein": 0.52,
+    "carbs": 34.6,
+    "fats": 0.11,
+    "micros": {
+      "fiber": 5.1,
+      "sodium": 1,
+      "potassium": 484,
+      "calcium": 18,
+      "iron": 0.72,
+      "copper": 156,
+      "magnesium": 30,
+      "zinc": 0.27,
+      "selenium": 0.6,
+      "manganese": 0.449,
+      "vitaminA": 4,
+      "vitaminD": 0,
+      "vitaminE": 2.93,
+      "vitaminK": 1,
+      "thiamin": 0.107,
+      "riboflavin": 0.028,
+      "niacin": 0.51,
+      "pantothenicAcid": 0.336,
+      "vitaminB6": 0.331,
+      "folate": 19,
+      "vitaminB12": 0,
+      "vitaminC": 5,
+      "phosphorus": 76,
+      "choline": 17.3
+    },
+    "longevity": {
+      "saturatedFat": 0.023,
+      "monounsaturatedFat": 0.009,
+      "polyunsaturatedFat": 0.046,
+      "transFat": 0,
+      "cholesterol": 0,
+      "copper": true,
+      "selenium": true,
+      "vitaminE": true,
+      "vitaminK": true,
+      "phosphorus": true,
+      "choline": true
+    },
+    "carbQuality": {
+      "addedSugar": 0,
+      "refinedCarbs": 0
+    }
+  },
+  {
+    "name": "Vegetable - Taro with skin - lg (1 large, boiled without salt; estimated 150 g edible flesh after discarding skin)",
+    "protein": 0.78,
+    "carbs": 51.9,
+    "fats": 0.17,
+    "micros": {
+      "fiber": 7.65,
+      "sodium": 1.5,
+      "potassium": 726,
+      "calcium": 27,
+      "iron": 1.08,
+      "copper": 234,
+      "magnesium": 45,
+      "zinc": 0.41,
+      "selenium": 0.9,
+      "manganese": 0.674,
+      "vitaminA": 6,
+      "vitaminD": 0,
+      "vitaminE": 4.4,
+      "vitaminK": 1.5,
+      "thiamin": 0.161,
+      "riboflavin": 0.042,
+      "niacin": 0.765,
+      "pantothenicAcid": 0.504,
+      "vitaminB6": 0.497,
+      "folate": 28.5,
+      "vitaminB12": 0,
+      "vitaminC": 7.5,
+      "phosphorus": 114,
+      "choline": 25.95
+    },
+    "longevity": {
+      "saturatedFat": 0.035,
+      "monounsaturatedFat": 0.014,
+      "polyunsaturatedFat": 0.069,
+      "transFat": 0,
+      "cholesterol": 0,
+      "copper": true,
+      "selenium": true,
+      "vitaminE": true,
+      "vitaminK": true,
+      "phosphorus": true,
+      "choline": true
+    },
+    "carbQuality": {
+      "addedSugar": 0,
+      "refinedCarbs": 0
+    }
+  },
+  {
+    "name": "Vegetable - Taro without skin - sm (1 small, boiled without salt; estimated 50 g edible portion)",
+    "protein": 0.26,
+    "carbs": 17.3,
+    "fats": 0.06,
+    "micros": {
+      "fiber": 2.55,
+      "sodium": 0.5,
+      "potassium": 242,
+      "calcium": 9,
+      "iron": 0.36,
+      "copper": 78,
+      "magnesium": 15,
+      "zinc": 0.14,
+      "selenium": 0.3,
+      "manganese": 0.225,
+      "vitaminA": 2,
+      "vitaminD": 0,
+      "vitaminE": 1.47,
+      "vitaminK": 0.5,
+      "thiamin": 0.054,
+      "riboflavin": 0.014,
+      "niacin": 0.255,
+      "pantothenicAcid": 0.168,
+      "vitaminB6": 0.166,
+      "folate": 9.5,
+      "vitaminB12": 0,
+      "vitaminC": 2.5,
+      "phosphorus": 38,
+      "choline": 8.65
+    },
+    "longevity": {
+      "saturatedFat": 0.012,
+      "monounsaturatedFat": 0.005,
+      "polyunsaturatedFat": 0.023,
+      "transFat": 0,
+      "cholesterol": 0,
+      "copper": true,
+      "selenium": true,
+      "vitaminE": true,
+      "vitaminK": true,
+      "phosphorus": true,
+      "choline": true
+    },
+    "carbQuality": {
+      "addedSugar": 0,
+      "refinedCarbs": 0
+    }
+  },
+  {
+    "name": "Vegetable - Taro without skin - md (1 medium, boiled without salt; estimated 100 g edible portion)",
+    "protein": 0.52,
+    "carbs": 34.6,
+    "fats": 0.11,
+    "micros": {
+      "fiber": 5.1,
+      "sodium": 1,
+      "potassium": 484,
+      "calcium": 18,
+      "iron": 0.72,
+      "copper": 156,
+      "magnesium": 30,
+      "zinc": 0.27,
+      "selenium": 0.6,
+      "manganese": 0.449,
+      "vitaminA": 4,
+      "vitaminD": 0,
+      "vitaminE": 2.93,
+      "vitaminK": 1,
+      "thiamin": 0.107,
+      "riboflavin": 0.028,
+      "niacin": 0.51,
+      "pantothenicAcid": 0.336,
+      "vitaminB6": 0.331,
+      "folate": 19,
+      "vitaminB12": 0,
+      "vitaminC": 5,
+      "phosphorus": 76,
+      "choline": 17.3
+    },
+    "longevity": {
+      "saturatedFat": 0.023,
+      "monounsaturatedFat": 0.009,
+      "polyunsaturatedFat": 0.046,
+      "transFat": 0,
+      "cholesterol": 0,
+      "copper": true,
+      "selenium": true,
+      "vitaminE": true,
+      "vitaminK": true,
+      "phosphorus": true,
+      "choline": true
+    },
+    "carbQuality": {
+      "addedSugar": 0,
+      "refinedCarbs": 0
+    }
+  },
+  {
+    "name": "Vegetable - Taro without skin - lg (1 large, boiled without salt; estimated 150 g edible portion)",
+    "protein": 0.78,
+    "carbs": 51.9,
+    "fats": 0.17,
+    "micros": {
+      "fiber": 7.65,
+      "sodium": 1.5,
+      "potassium": 726,
+      "calcium": 27,
+      "iron": 1.08,
+      "copper": 234,
+      "magnesium": 45,
+      "zinc": 0.41,
+      "selenium": 0.9,
+      "manganese": 0.674,
+      "vitaminA": 6,
+      "vitaminD": 0,
+      "vitaminE": 4.4,
+      "vitaminK": 1.5,
+      "thiamin": 0.161,
+      "riboflavin": 0.042,
+      "niacin": 0.765,
+      "pantothenicAcid": 0.504,
+      "vitaminB6": 0.497,
+      "folate": 28.5,
+      "vitaminB12": 0,
+      "vitaminC": 7.5,
+      "phosphorus": 114,
+      "choline": 25.95
+    },
+    "longevity": {
+      "saturatedFat": 0.035,
+      "monounsaturatedFat": 0.014,
+      "polyunsaturatedFat": 0.069,
+      "transFat": 0,
+      "cholesterol": 0,
+      "copper": true,
+      "selenium": true,
+      "vitaminE": true,
+      "vitaminK": true,
+      "phosphorus": true,
+      "choline": true
+    },
+    "carbQuality": {
+      "addedSugar": 0,
+      "refinedCarbs": 0
     }
   },
   {
@@ -34134,7 +34428,6 @@
     "carbQuality": {},
     "source": "[Hong Kong Centre for Food Safety: measured dim sum nutrient values, scaled to 4 pieces](https://www.cfs.gov.hk/english/programme/programme_rafs/images/20070227_ra_dim_sum_annex_6_Page_2.png)"
   },
-
   {
     "name": "Dim Sum - Chinese Beef Ball (Ngao Yu), 1 piece",
     "protein": 4,
@@ -36723,6 +37016,168 @@
     }
   },
   {
+    "name": "Dim Sum Dumpling - Gaau ji 1 piece (about 30 g; boiled pork and cabbage; estimated, no sauce)",
+    "protein": 2,
+    "carbs": 5,
+    "fats": 1.5,
+    "micros": {
+      "fiber": 0.3,
+      "sodium": 100,
+      "potassium": 45,
+      "calcium": 8,
+      "iron": 0.3,
+      "magnesium": 5,
+      "zinc": 0.3,
+      "selenium": 5,
+      "vitaminB12": 0.08
+    },
+    "longevity": {
+      "saturatedFat": 0.5,
+      "monounsaturatedFat": 0.6,
+      "polyunsaturatedFat": 0.3,
+      "cholesterol": 6,
+      "selenium": true
+    },
+    "carbQuality": {
+      "refinedCarbs": 4.5
+    }
+  },
+  {
+    "name": "Dim Sum Dumpling - Gaau ji 4 pieces (about 120 g; boiled pork and cabbage; estimated, no sauce)",
+    "protein": 8,
+    "carbs": 20,
+    "fats": 6,
+    "micros": {
+      "fiber": 1.2,
+      "sodium": 400,
+      "potassium": 180,
+      "calcium": 32,
+      "iron": 1.2,
+      "magnesium": 20,
+      "zinc": 1.2,
+      "selenium": 20,
+      "vitaminB12": 0.32
+    },
+    "longevity": {
+      "saturatedFat": 2,
+      "monounsaturatedFat": 2.4,
+      "polyunsaturatedFat": 1.2,
+      "cholesterol": 24,
+      "selenium": true
+    },
+    "carbQuality": {
+      "refinedCarbs": 18
+    }
+  },
+  {
+    "name": "Dim Sum Dumpling - Wonton Dumpling 1 piece (about 25 g; boiled pork and shrimp; estimated, no broth or sauce)",
+    "protein": 2.5,
+    "carbs": 3.5,
+    "fats": 1.3,
+    "micros": {
+      "fiber": 0.1,
+      "sodium": 100,
+      "potassium": 35,
+      "calcium": 10,
+      "iron": 0.25,
+      "magnesium": 5,
+      "zinc": 0.25,
+      "selenium": 6,
+      "vitaminB12": 0.12
+    },
+    "longevity": {
+      "saturatedFat": 0.4,
+      "monounsaturatedFat": 0.5,
+      "polyunsaturatedFat": 0.25,
+      "cholesterol": 18,
+      "selenium": true
+    },
+    "carbQuality": {
+      "refinedCarbs": 3.3
+    }
+  },
+  {
+    "name": "Dim Sum Dumpling - Wonton Dumpling 6 pieces (about 150 g; boiled pork and shrimp; estimated, no broth or sauce)",
+    "protein": 15,
+    "carbs": 21,
+    "fats": 7.8,
+    "micros": {
+      "fiber": 0.6,
+      "sodium": 600,
+      "potassium": 210,
+      "calcium": 60,
+      "iron": 1.5,
+      "magnesium": 30,
+      "zinc": 1.5,
+      "selenium": 36,
+      "vitaminB12": 0.72
+    },
+    "longevity": {
+      "saturatedFat": 2.4,
+      "monounsaturatedFat": 3,
+      "polyunsaturatedFat": 1.5,
+      "cholesterol": 108,
+      "selenium": true
+    },
+    "carbQuality": {
+      "refinedCarbs": 19.8
+    }
+  },
+  {
+    "name": "Dim Sum Dumpling - Sui Gow 1 piece (about 45 g; boiled pork, shrimp and vegetables; estimated, no broth or sauce)",
+    "protein": 4.5,
+    "carbs": 6.5,
+    "fats": 2.2,
+    "micros": {
+      "fiber": 0.4,
+      "sodium": 170,
+      "potassium": 70,
+      "calcium": 18,
+      "iron": 0.45,
+      "magnesium": 9,
+      "zinc": 0.45,
+      "selenium": 10,
+      "vitaminB12": 0.2
+    },
+    "longevity": {
+      "saturatedFat": 0.7,
+      "monounsaturatedFat": 0.9,
+      "polyunsaturatedFat": 0.4,
+      "cholesterol": 30,
+      "selenium": true
+    },
+    "carbQuality": {
+      "refinedCarbs": 5.7
+    }
+  },
+  {
+    "name": "Dim Sum Dumpling - Sui Gow 3 pieces (about 135 g; boiled pork, shrimp and vegetables; estimated, no broth or sauce)",
+    "protein": 13.5,
+    "carbs": 19.5,
+    "fats": 6.6,
+    "micros": {
+      "fiber": 1.2,
+      "sodium": 510,
+      "potassium": 210,
+      "calcium": 54,
+      "iron": 1.35,
+      "magnesium": 27,
+      "zinc": 1.35,
+      "selenium": 30,
+      "vitaminB12": 0.6
+    },
+    "longevity": {
+      "saturatedFat": 2.1,
+      "monounsaturatedFat": 2.7,
+      "polyunsaturatedFat": 1.2,
+      "cholesterol": 90,
+      "selenium": true
+    },
+    "carbQuality": {
+      "refinedCarbs": 17.1
+    }
+  },
+  {
     "name": "Fruit - Guava md (about 100 g)",
     "protein": 2.55,
     "carbs": 14.32,
@@ -36822,6 +37277,44 @@
       "netCarbs": 8.9
     }
   },
+  {
+    "name": "Noodles - Wonton Noodles (Not including dumplings) 1 cup cooked (about 140 g; plain, drained, without broth or sauce; estimated)",
+    "protein": 7,
+    "carbs": 40,
+    "fats": 1.5,
+    "micros": {
+    "fiber": 2,
+    "iron": 1,
+    "calcium": 15,
+    "potassium": 50
+    },
+    "longevity": {
+    "saturatedFat": 0.3
+    },
+    "carbQuality": {
+    "addedSugar": 0,
+    "refinedCarbs": 38
+    }
+    },
+    {
+    "name": "Noodles - Wonton Noodles (Not including dumplings) 1 bowl of cooked noodles (about 1.5 cups, 210 g; plain, drained, without broth or sauce; estimated)",
+    "protein": 10.5,
+    "carbs": 60,
+    "fats": 2.25,
+    "micros": {
+    "fiber": 3,
+    "iron": 1.5,
+    "calcium": 22.5,
+    "potassium": 75
+    },
+    "longevity": {
+    "saturatedFat": 0.45
+    },
+    "carbQuality": {
+    "addedSugar": 0,
+    "refinedCarbs": 57
+    }
+    },
   {
     "name": "Fruit - Guava lg (about 165 g)",
     "protein": 4.21,
