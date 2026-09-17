@@ -14,7 +14,7 @@ Parent: [AGENTS_CODE_REFERENCE.md](./AGENTS_CODE_REFERENCE.md)
 │   └── .week__header-actions
 │       ├── #auth-logged-out / #auth-logged-in (.week__auth — Sign up / Log in / email / Log out)
 │       └── #settings-open (.week__settings — sex icon + “Settings”)
-├── #app-nav.app-nav           (Sources / Defs / Saved meals **C** / Entry / Macros / Week / Micros / Longevity; bottom bar ≤720px)
+├── #app-nav.app-nav           (Entry / Saved meals **G** / Macros / Micros / Longevity / Analysis / Sources / Defs; bottom bar ≤720px)
 ├── .dashboard
 │   ├── .dashboard__header
 │   │   ├── .dashboard__header-row  (Dashboard title + Print)
@@ -188,7 +188,7 @@ Horizontal scroll on narrow screens: `.keywords__panel { overflow-x: auto }`, `m
 
 ## Saved meals sheet
 
-**`#meals-panel`** — exclusive overlay like food definitions (`#dashboard-meals-jump` **Saved meals** in `#app-nav` with shortcut **C**, plus `#week-saved-meals-open` in `.week__nav`). List view (`#meals-list-view`): search `#meals-search`, **New meal**, rows with Open / Rename / Delete. Detail view (`#meals-detail-view`): back, rename/delete, food list with servings + reorder, **Add food** (reuses `#add-food-modal` targeting the meal). Create/rename uses `#meal-name-modal`. From a day’s Add food, **Add to meal** opens `#add-food-meal-picker-modal`. Persisted in `nutrients_meals`.
+**`#meals-panel`** — exclusive overlay like food definitions (`#dashboard-meals-jump` **Saved meals** in `#app-nav` with shortcut **G**, plus `#week-saved-meals-open` in `.week__nav`). Sheet title is **Food Sources (Groups)** (`#meals-heading`). List view (`#meals-list-view`): search `#meals-search`, **New meal**, rows with Open / Rename / Delete. Detail view (`#meals-detail-view`): back, rename/delete, food list with servings + reorder, **Add food** (reuses `#add-food-modal` targeting the meal). Create/rename uses `#meal-name-modal`. From a day’s Add food, **Add to meal** opens `#add-food-meal-picker-modal`. Persisted in `nutrients_meals`.
 
 ## Auth header & modals
 

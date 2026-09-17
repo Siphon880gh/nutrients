@@ -32034,7 +32034,7 @@
       dashboardFoodDefinitionsJumpEl.click();
       return;
     }
-    if (e.key === "c" || e.key === "C") {
+    if (e.key === "g" || e.key === "G") {
       if (!dashboardMealsJumpEl) return;
       e.preventDefault();
       dashboardMealsJumpEl.click();

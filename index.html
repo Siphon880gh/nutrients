@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Nutrients — Week meals</title>
-  <link rel="stylesheet" href="styles.css?t=1789412500">
+  <link rel="stylesheet" href="styles.css?t=1789609070">
 </head>
 <body class="show-daily-intake-icons day-entry-guided">
   <svg class="app-icon-symbols" width="0" height="0" aria-hidden="true" focusable="false">
@@ -109,6 +109,11 @@
           <span class="app-nav__label app-nav__label--short" aria-hidden="true">Entry</span>
           <span class="app-nav__shortcut" aria-hidden="true">E</span>
         </button>
+        <button type="button" id="dashboard-meals-jump" class="app-nav__btn" data-app-shortcut="G" aria-label="Saved meals" aria-expanded="false" aria-haspopup="dialog" aria-controls="meals-panel" aria-keyshortcuts="G">
+          <span class="app-nav__label app-nav__label--full" aria-hidden="true">Saved meals</span>
+          <span class="app-nav__label app-nav__label--short" aria-hidden="true">Meals</span>
+          <span class="app-nav__shortcut" aria-hidden="true">G</span>
+        </button>
         <button type="button" id="dashboard-macros-jump" class="app-nav__btn" data-app-shortcut="M" aria-label="Macros" aria-keyshortcuts="M">
           <span class="app-nav__label" aria-hidden="true">Macros</span>
           <span class="app-nav__shortcut" aria-hidden="true">M</span>
@@ -139,11 +144,6 @@
           <span class="app-nav__label app-nav__label--full" aria-hidden="true">Food Definitions</span>
           <span class="app-nav__label app-nav__label--short" aria-hidden="true">Defs</span>
           <span class="app-nav__shortcut" aria-hidden="true">D</span>
-        </button>
-        <button type="button" id="dashboard-meals-jump" class="app-nav__btn" data-app-shortcut="C" aria-label="Saved meals" aria-expanded="false" aria-haspopup="dialog" aria-controls="meals-panel" aria-keyshortcuts="C">
-          <span class="app-nav__label app-nav__label--full" aria-hidden="true">Saved meals</span>
-          <span class="app-nav__label app-nav__label--short" aria-hidden="true">Meals</span>
-          <span class="app-nav__shortcut" aria-hidden="true">C</span>
         </button>
       </div>
     </nav>
@@ -1110,8 +1110,8 @@
         <div class="app-sheet__body">
           <section class="meals meals--sheet">
             <div class="keywords__header">
-              <h2 id="meals-heading" class="keywords__title">Saved meals</h2>
-              <button type="button" id="meals-close" class="dashboard__panel-close" aria-label="Close saved meals">×</button>
+              <h2 id="meals-heading" class="keywords__title">Food Sources (Groups)</h2>
+              <button type="button" id="meals-close" class="dashboard__panel-close" aria-label="Close Food Sources (Groups)">×</button>
             </div>
             <p class="keywords__hint">Create a named food combination here, then Add food on that meal. To log it on a day, type the meal name in that day’s Add food list.</p>
             <div id="meals-list-view">
@@ -3094,6 +3094,6 @@
   <script src="demographic-dv.js?t=1786025202"></script>
   <script src="longevity-dv.js?t=1784087916"></script>
   <script src="persist.js?t=1789372800"></script>
-  <script src="app.js?t=1789412400"></script>
+  <script src="app.js?t=1789609361"></script>
 </body>
 </html>
