@@ -9204,6 +9204,38 @@ body.day-entry-guided .day__guided {
   display: none;
 }
 
+.day__finish-rearrange-popover {
+  position: fixed;
+  z-index: 130;
+  margin: 0;
+  padding: 0.45rem 0.75rem;
+  border: 1px solid #3d6b9e;
+  border-radius: 8px;
+  background: #fff;
+  color: #3d6b9e;
+  font: inherit;
+  font-size: 0.78rem;
+  font-weight: 650;
+  line-height: 1.2;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.14);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.day__finish-rearrange-popover:hover,
+.day__finish-rearrange-popover:focus-visible {
+  background: #eef4fa;
+}
+
+.day__finish-rearrange-popover:focus-visible {
+  outline: 2px solid #3d6b9e;
+  outline-offset: 2px;
+}
+
+.day__finish-rearrange-popover[hidden] {
+  display: none;
+}
+
 .day__food-popover-title {
   margin: 0 0 0.45rem;
   font-size: 0.82rem;
@@ -14660,6 +14692,7 @@ button.longevity-form__label-link:focus-visible {
   .day__food-item-servings,
   .day__food-item-edit,
   .day__food-item-remove,
+  .day__finish-rearrange-popover,
   .week__entry-mode-toggle,
   .week__unmatched-lines,
   .keywords,
@@ -14865,6 +14898,7 @@ body.print-preview .day__guided-footer,
 body.print-preview .day__food-item-servings,
 body.print-preview .day__food-item-edit,
 body.print-preview .day__food-item-remove,
+body.print-preview .day__finish-rearrange-popover,
 body.print-preview .week__entry-mode-toggle,
 body.print-preview .week__unmatched-lines,
 body.print-preview .day__suggest,

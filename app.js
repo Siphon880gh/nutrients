@@ -601,6 +601,9 @@
   );
   var dayFoodItemPopoverOpenedAt = 0;
   var dayFoodItemPopoverState = null;
+  var guidedFinishPopoverEl = document.getElementById("guided-finish-popover");
+  var guidedFinishPopoverState = null;
+  var guidedFinishPopoverOpenedAt = 0;
   var weekQuizOpenBtn = document.getElementById("week-quiz-open");
   var weekQuizModalEl = document.getElementById("week-quiz-modal");
   var weekQuizWeekLabelEl = document.getElementById("week-quiz-week-label");
@@ -714,6 +717,7 @@
   var guidedSelectedLinesByDay = {};
   var GUIDED_HANDLE_SELECT_MS = 300;
   var GUIDED_HANDLE_SELECT_MOVE_PX = 8;
+  var GUIDED_FINISH_MOVE_PX = 36;
   var WEEK_DAYS_HINT_GUIDED =
     'Use <strong>Add food</strong> to pick foods or a <strong>saved meal</strong>. Open <strong>Saved meals</strong> to create and edit those combinations. <strong>Add Others</strong> inserts headings and dividers. Turn on <strong>Advanced</strong> for free-text entry.';
   var WEEK_DAYS_HINT_ADVANCED =
@@ -10878,7 +10882,10 @@
     }
     document.documentElement.classList.toggle("exclusive-overlay-open", overlayOpen);
     document.body.classList.toggle("exclusive-overlay-open", overlayOpen);
-    if (overlayOpen) hideDayFoodItemPopover();
+    if (overlayOpen) {
+      hideDayFoodItemPopover();
+      hideGuidedFinishPopover();
+    }
     updateBodyModalOpen();
     syncAppSheetOffset();
     if (overlayOpen) {
@@ -24725,6 +24732,7 @@
       el.value = dayMealsByDate[keys[i]] || "";
     });
     guidedSelectedLinesByDay = {};
+    hideGuidedFinishPopover();
     if (!dayEntryAdvancedEnabled) renderAllDayGuidedLists();
     markIgnoredDays();
   }
@@ -25948,6 +25956,7 @@
     saveDayEntryAdvancedPreference();
     syncDayEntryModeUi();
     hideDayFoodItemPopover();
+    hideGuidedFinishPopover();
     if (!dayEntryAdvancedEnabled) {
       closeDayFoodsAiModal();
       hideAllDaySuggests();
@@ -28657,6 +28666,12 @@
       delete guidedRearrangeByDay[dayId];
       delete guidedSelectedLinesByDay[dayId];
       if (guidedDragState && guidedDragState.dayId === dayId) endGuidedDrag();
+      if (
+        guidedFinishPopoverState &&
+        guidedFinishPopoverState.dayId === dayId
+      ) {
+        hideGuidedFinishPopover();
+      }
     }
     var guided = ensureDayGuidedEl(dayId);
     if (guided) {
@@ -28786,6 +28801,7 @@
   }
 
   function endGuidedDrag() {
+    document.removeEventListener("dragover", onGuidedDragTrackPoint, true);
     document.querySelectorAll(".day__food-item--dragging").forEach(function (el) {
       el.classList.remove("day__food-item--dragging");
     });
@@ -28794,6 +28810,95 @@
     }
     clearGuidedDropIndicators(null);
     guidedDragState = null;
+  }
+
+  function onGuidedDragTrackPoint(e) {
+    if (!guidedDragState) return;
+    if (typeof e.clientX !== "number") return;
+    guidedDragState.lastX = e.clientX;
+    guidedDragState.lastY = e.clientY;
+  }
+
+  function guidedFinishPopoverPoint(e, fallbackX, fallbackY) {
+    if (e && typeof e.clientX === "number" && (e.clientX || e.clientY)) {
+      return { x: e.clientX, y: e.clientY };
+    }
+    if (typeof fallbackX === "number" && typeof fallbackY === "number") {
+      return { x: fallbackX, y: fallbackY };
+    }
+    return null;
+  }
+
+  function unbindGuidedFinishPopoverDismiss() {
+    document.removeEventListener("pointermove", onGuidedFinishPointerMove, true);
+    document.removeEventListener("scroll", onGuidedFinishDismissScroll, true);
+    document.removeEventListener("wheel", onGuidedFinishDismissScroll, true);
+  }
+
+  function bindGuidedFinishPopoverDismiss() {
+    unbindGuidedFinishPopoverDismiss();
+    document.addEventListener("pointermove", onGuidedFinishPointerMove, true);
+    document.addEventListener("scroll", onGuidedFinishDismissScroll, true);
+    document.addEventListener("wheel", onGuidedFinishDismissScroll, true);
+  }
+
+  function onGuidedFinishDismissScroll() {
+    hideGuidedFinishPopover();
+  }
+
+  function onGuidedFinishPointerMove(e) {
+    if (!guidedFinishPopoverEl || guidedFinishPopoverEl.hidden) return;
+    if (guidedFinishPopoverEl.contains(e.target)) return;
+    var rect = guidedFinishPopoverEl.getBoundingClientRect();
+    var pad = GUIDED_FINISH_MOVE_PX;
+    if (
+      e.clientX >= rect.left - pad &&
+      e.clientX <= rect.right + pad &&
+      e.clientY >= rect.top - pad &&
+      e.clientY <= rect.bottom + pad
+    ) {
+      return;
+    }
+    hideGuidedFinishPopover();
+  }
+
+  function hideGuidedFinishPopover() {
+    unbindGuidedFinishPopoverDismiss();
+    if (guidedFinishPopoverEl) guidedFinishPopoverEl.hidden = true;
+    guidedFinishPopoverState = null;
+  }
+
+  function positionGuidedFinishPopover(x, y) {
+    if (!guidedFinishPopoverEl) return;
+    var margin = 8;
+    guidedFinishPopoverEl.style.left = "0px";
+    guidedFinishPopoverEl.style.top = "0px";
+    var width = guidedFinishPopoverEl.offsetWidth;
+    var height = guidedFinishPopoverEl.offsetHeight;
+    var left = x - 16;
+    var top = y - height / 2;
+    if (left + width > window.innerWidth - margin) {
+      left = window.innerWidth - width - margin;
+    }
+    if (top + height > window.innerHeight - margin) {
+      top = window.innerHeight - height - margin;
+    }
+    left = Math.max(margin, left);
+    top = Math.max(margin, top);
+    guidedFinishPopoverEl.style.left = left + "px";
+    guidedFinishPopoverEl.style.top = top + "px";
+  }
+
+  function showGuidedFinishPopover(dayId, x, y) {
+    if (!guidedFinishPopoverEl || !dayId) return;
+    if (!isGuidedRearrangeEnabled(dayId)) return;
+    if (typeof x !== "number" || typeof y !== "number") return;
+    hideDayFoodItemPopover();
+    guidedFinishPopoverState = { dayId: dayId, x: x, y: y };
+    guidedFinishPopoverEl.hidden = false;
+    positionGuidedFinishPopover(x, y);
+    guidedFinishPopoverOpenedAt = Date.now();
+    bindGuidedFinishPopoverDismiss();
   }
 
   function setGuidedDragImage(dataTransfer, itemEl, count) {
@@ -29454,6 +29559,20 @@
         e.stopPropagation();
         jumpFromFoodItemPopover(jump.getAttribute("data-nutrient-key"));
       }
+    });
+  }
+
+  if (guidedFinishPopoverEl) {
+    guidedFinishPopoverEl.addEventListener("pointerdown", function (e) {
+      e.stopPropagation();
+    });
+    guidedFinishPopoverEl.addEventListener("click", function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      var dayId =
+        guidedFinishPopoverState && guidedFinishPopoverState.dayId;
+      hideGuidedFinishPopover();
+      if (dayId) setGuidedRearrangeEnabled(dayId, false);
     });
   }
 
@@ -31669,7 +31788,11 @@
         fromPos: entryPos,
         itemEl: item,
         listEl: item.closest(".day__food-list"),
+        lastX: e.clientX,
+        lastY: e.clientY,
       };
+      document.addEventListener("dragover", onGuidedDragTrackPoint, true);
+      hideGuidedFinishPopover();
       var listEl = guidedDragState.listEl;
       if (listEl) {
         listEl.querySelectorAll(".day__food-item").forEach(function (el) {
@@ -31688,11 +31811,20 @@
         setGuidedDragImage(e.dataTransfer, item, fromLineIndexes.length);
       }
     });
-    weekGridEl.addEventListener("dragend", function () {
+    weekGridEl.addEventListener("dragend", function (e) {
+      if (!guidedDragState) return;
+      var dayId = guidedDragState.dayId;
+      var point = guidedFinishPopoverPoint(
+        e,
+        guidedDragState.lastX,
+        guidedDragState.lastY
+      );
       endGuidedDrag();
+      if (point) showGuidedFinishPopover(dayId, point.x, point.y);
     });
     weekGridEl.addEventListener("dragover", function (e) {
       if (!guidedDragState) return;
+      onGuidedDragTrackPoint(e);
       var listEl = e.target.closest(".day__food-list");
       var guided = e.target.closest(".day__guided");
       if (!guided || guided.getAttribute("data-day-id") !== guidedDragState.dayId) {
@@ -31741,8 +31873,14 @@
         typeof guidedDragState.dropBeforePos === "number"
           ? guidedDragState.dropBeforePos
           : guidedDragState.fromPos;
+      var point = guidedFinishPopoverPoint(
+        e,
+        guidedDragState.lastX,
+        guidedDragState.lastY
+      );
       endGuidedDrag();
       reorderGuidedEntries(dayId, fromLineIndexes, insertBefore);
+      if (point) showGuidedFinishPopover(dayId, point.x, point.y);
     });
     weekGridEl.addEventListener("change", function (e) {
       var servingsInput = e.target.closest(
