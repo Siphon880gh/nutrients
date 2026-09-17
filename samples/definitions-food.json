@@ -8284,6 +8284,40 @@
     }
   },
   {
+    "name": "Starbucks - Venti Iced Pumpkin Cream Shaken Espresso (24 fl oz; standard oatmilk and pumpkin cream cold foam; estimated)",
+    "protein": 4,
+    "carbs": 51,
+    "fats": 17,
+    "micros": {
+      "fiber": 1
+    },
+    "longevity": {
+      "saturatedFat": 10
+    },
+    "carbQuality": {
+      "addedSugar": 42
+    },
+    "notes": "Approximate recipe-based estimates, including added sugar; the current official venti nutrition could not be verified. Reference for the standard recipe and grande nutrition: Starbucks fall drink nutrition."
+  },
+  {
+    "name": "Starbucks - Venti Iced Pumpkin Cream Chai (24 fl oz; standard 2% milk and pumpkin cream cold foam; estimated)",
+    "protein": 11,
+    "carbs": 73,
+    "fats": 18,
+    "micros": {
+      "fiber": 0,
+      "sodium": 200
+    },
+    "longevity": {
+      "saturatedFat": 11,
+      "cholesterol": 60
+    },
+    "carbQuality": {
+      "addedSugar": 55
+    },
+    "notes": "Approximate estimates using the updated chai base plus pumpkin cream cold foam; the current official venti total could not be verified. Added sugar is estimated separately from naturally occurring milk sugar. Base-drink reference: Starbucks nutrition compilation."
+  },
+  {
     "name": "Drink - Matcha Einspanner 16 oz (Damo)",
     "protein": 8.1,
     "carbs": 34,
@@ -37442,38 +37476,38 @@
     "carbs": 40,
     "fats": 1.5,
     "micros": {
-    "fiber": 2,
-    "iron": 1,
-    "calcium": 15,
-    "potassium": 50
+      "fiber": 2,
+      "iron": 1,
+      "calcium": 15,
+      "potassium": 50
     },
     "longevity": {
-    "saturatedFat": 0.3
+      "saturatedFat": 0.3
     },
     "carbQuality": {
-    "addedSugar": 0,
-    "refinedCarbs": 38
+      "addedSugar": 0,
+      "refinedCarbs": 38
     }
-    },
-    {
+  },
+  {
     "name": "Noodles - Wonton Noodles (Not including dumplings) 1 bowl of cooked noodles (about 1.5 cups, 210 g; plain, drained, without broth or sauce; estimated)",
     "protein": 10.5,
     "carbs": 60,
     "fats": 2.25,
     "micros": {
-    "fiber": 3,
-    "iron": 1.5,
-    "calcium": 22.5,
-    "potassium": 75
+      "fiber": 3,
+      "iron": 1.5,
+      "calcium": 22.5,
+      "potassium": 75
     },
     "longevity": {
-    "saturatedFat": 0.45
+      "saturatedFat": 0.45
     },
     "carbQuality": {
-    "addedSugar": 0,
-    "refinedCarbs": 57
+      "addedSugar": 0,
+      "refinedCarbs": 57
     }
-    },
+  },
   {
     "name": "Fruit - Guava lg (about 165 g)",
     "protein": 4.21,
