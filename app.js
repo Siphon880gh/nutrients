@@ -29088,6 +29088,47 @@
     return !!(set && set[lineIndex]);
   }
 
+  function guidedSelectedIndexes(dayId) {
+    var set = guidedSelectedLinesByDay[dayId];
+    if (!set) return [];
+    var out = [];
+    var keys = Object.keys(set);
+    for (var i = 0; i < keys.length; i++) {
+      var idx = parseInt(keys[i], 10);
+      if (isFinite(idx)) out.push(idx);
+    }
+    out.sort(function (a, b) {
+      return a - b;
+    });
+    return out;
+  }
+
+  function syncDayGuidedFooterPrimaryAction(dayId) {
+    var guided = document.querySelector(
+      '.day__guided[data-day-id="' + dayId + '"]'
+    );
+    if (!guided) return;
+    var addBtn = guided.querySelector('[data-action="open-add-food"]');
+    var dupBtn = guided.querySelector(
+      '[data-action="duplicate-guided-selected"]'
+    );
+    var rearrangeOn = isGuidedRearrangeEnabled(dayId);
+    var selectedCount = guidedSelectedIndexes(dayId).length;
+    var showDup = rearrangeOn && selectedCount > 0;
+    if (addBtn) {
+      addBtn.hidden = !!showDup;
+      addBtn.disabled = rearrangeOn && !showDup;
+      addBtn.setAttribute("aria-disabled", addBtn.disabled ? "true" : "false");
+      addBtn.title = addBtn.disabled
+        ? "Select foods to duplicate, or turn off Rearrange to add food"
+        : "Pick foods or a saved meal";
+    }
+    if (dupBtn) {
+      dupBtn.hidden = !showDup;
+      dupBtn.disabled = !showDup;
+    }
+  }
+
   function applyGuidedFoodLineSelectedDom(dayId, lineIndex, itemEl) {
     var item =
       itemEl ||
@@ -29129,6 +29170,7 @@
       guidedSelectedLinesByDay[dayId] = set;
     }
     applyGuidedFoodLineSelectedDom(dayId, lineIndex, itemEl);
+    syncDayGuidedFooterPrimaryAction(dayId);
   }
 
   function movingGuidedLineIndexes(dayId, extraLineIndex) {
@@ -29163,6 +29205,9 @@
 
   function clearGuidedDropIndicators(listEl) {
     if (!listEl) {
+      document.querySelectorAll(".day__guided--drop-target").forEach(function (el) {
+        el.classList.remove("day__guided--drop-target");
+      });
       document.querySelectorAll(".day__food-item--drop-before, .day__food-item--drop-after, .day__food-list--drop-end").forEach(function (el) {
         el.classList.remove(
           "day__food-item--drop-before",
@@ -29172,6 +29217,8 @@
       });
       return;
     }
+    var guided = listEl.closest(".day__guided");
+    if (guided) guided.classList.remove("day__guided--drop-target");
     listEl.querySelectorAll(".day__food-item--drop-before, .day__food-item--drop-after").forEach(function (el) {
       el.classList.remove(
         "day__food-item--drop-before",
@@ -29179,6 +29226,15 @@
       );
     });
     listEl.classList.remove("day__food-list--drop-end");
+  }
+
+  function guidedElFromEventTarget(target) {
+    if (!target || !target.closest) return null;
+    var guided = target.closest(".day__guided");
+    if (guided) return guided;
+    var dayEl = target.closest(".day");
+    if (!dayEl || (weekGridEl && !weekGridEl.contains(dayEl))) return null;
+    return dayEl.querySelector(".day__guided");
   }
 
   function endGuidedDrag() {
@@ -29361,7 +29417,153 @@
     };
   }
 
-  function reorderGuidedEntries(dayId, fromLineIndexes, insertBeforeEntryPos) {
+  function moveGuidedEntriesToDay(
+    fromDayId,
+    toDayId,
+    fromLineIndexes,
+    insertBeforeEntryPos
+  ) {
+    if (!fromDayId || !toDayId || fromDayId === toDayId) return;
+    if (!fromLineIndexes || !fromLineIndexes.length) return;
+    var fromTextarea = document.getElementById(fromDayId);
+    var toTextarea = document.getElementById(toDayId);
+    if (!fromTextarea || !toTextarea) return;
+    var fromLines = dayTextareaLines(fromTextarea);
+    var fromEntries = parseDayGuidedLines(fromTextarea.value);
+    var toLines = dayTextareaLines(toTextarea);
+    var toEntries = parseDayGuidedLines(toTextarea.value);
+    var fromSet = {};
+    var i;
+    for (i = 0; i < fromLineIndexes.length; i++) {
+      fromSet[fromLineIndexes[i]] = true;
+    }
+    var moving = [];
+    var fromRemaining = [];
+    for (i = 0; i < fromEntries.length; i++) {
+      var fromText = fromLines[fromEntries[i].lineIndex];
+      if (fromSet[fromEntries[i].lineIndex]) moving.push(fromText);
+      else fromRemaining.push(fromText);
+    }
+    if (!moving.length) return;
+    var destTexts = [];
+    for (i = 0; i < toEntries.length; i++) {
+      destTexts.push(toLines[toEntries[i].lineIndex]);
+    }
+    var insertAt =
+      typeof insertBeforeEntryPos === "number" && isFinite(insertBeforeEntryPos)
+        ? insertBeforeEntryPos
+        : destTexts.length;
+    if (insertAt < 0) insertAt = 0;
+    if (insertAt > destTexts.length) insertAt = destTexts.length;
+    var destNext = destTexts.slice();
+    for (i = 0; i < moving.length; i++) {
+      destNext.splice(insertAt + i, 0, moving[i]);
+    }
+    var keepSelected = false;
+    for (i = 0; i < fromLineIndexes.length; i++) {
+      if (isGuidedFoodLineSelected(fromDayId, fromLineIndexes[i])) {
+        keepSelected = true;
+        break;
+      }
+    }
+    delete guidedSelectedLinesByDay[fromDayId];
+    if (keepSelected && isGuidedRearrangeEnabled(toDayId)) {
+      var nextSelected = {};
+      for (i = 0; i < moving.length; i++) {
+        nextSelected[insertAt + i] = true;
+      }
+      guidedSelectedLinesByDay[toDayId] = nextSelected;
+    }
+    setDayTextareaLines(fromTextarea, fromRemaining);
+    setDayTextareaLines(toTextarea, destNext);
+  }
+
+  function duplicateGuidedSelectedLines(dayId) {
+    if (!dayId || !isGuidedRearrangeEnabled(dayId)) return;
+    var selectedIndexes = guidedSelectedIndexes(dayId);
+    if (!selectedIndexes.length) return;
+    var textarea = document.getElementById(dayId);
+    if (!textarea) return;
+    var lines = dayTextareaLines(textarea);
+    var entries = parseDayGuidedLines(textarea.value);
+    var selectedSet = {};
+    var i;
+    for (i = 0; i < selectedIndexes.length; i++) {
+      selectedSet[selectedIndexes[i]] = true;
+    }
+    var texts = [];
+    var copies = [];
+    var lastSelectedPos = -1;
+    for (i = 0; i < entries.length; i++) {
+      var text = lines[entries[i].lineIndex];
+      texts.push(text);
+      if (selectedSet[entries[i].lineIndex]) {
+        copies.push(text);
+        lastSelectedPos = i;
+      }
+    }
+    if (!copies.length || lastSelectedPos < 0) return;
+    var next = texts.slice();
+    var insertAt = lastSelectedPos + 1;
+    for (i = 0; i < copies.length; i++) {
+      next.splice(insertAt + i, 0, copies[i]);
+    }
+    setDayTextareaLines(textarea, next);
+    setGuidedRearrangeEnabled(dayId, false);
+    window.requestAnimationFrame(function () {
+      scrollDayGuidedItemsIntoView(dayId, insertAt, copies.length);
+    });
+  }
+
+  function scrollDayGuidedItemsIntoView(dayId, startLineIndex, count) {
+    if (!dayId || !isFinite(startLineIndex)) return;
+    var guided = document.querySelector(
+      '.day__guided[data-day-id="' + dayId + '"]'
+    );
+    if (!guided) return;
+    var first = guided.querySelector(
+      '.day__food-item[data-line-index="' + startLineIndex + '"]'
+    );
+    if (!first) return;
+    var lastIndex = startLineIndex + Math.max(1, count || 1) - 1;
+    var last =
+      lastIndex === startLineIndex
+        ? first
+        : guided.querySelector(
+            '.day__food-item[data-line-index="' + lastIndex + '"]'
+          ) || first;
+    var scroller = guided.querySelector(".day__guided-scroll");
+    if (scroller && scroller.clientHeight > 0) {
+      var box = scroller.getBoundingClientRect();
+      var firstRect = first.getBoundingClientRect();
+      var lastRect = last.getBoundingClientRect();
+      var pad = 8;
+      if (firstRect.top < box.top + pad) {
+        scroller.scrollTop += firstRect.top - box.top - pad;
+      } else if (lastRect.bottom > box.bottom - pad) {
+        var delta = lastRect.bottom - box.bottom + pad;
+        var nextFirstTop = firstRect.top - delta;
+        if (nextFirstTop < box.top + pad) {
+          scroller.scrollTop += firstRect.top - box.top - pad;
+        } else {
+          scroller.scrollTop += delta;
+        }
+      }
+    }
+    setGuidedFoodItemActive(first, first);
+  }
+
+  function reorderGuidedEntries(dayId, fromLineIndexes, insertBeforeEntryPos, toDayId) {
+    toDayId = toDayId || dayId;
+    if (toDayId !== dayId) {
+      moveGuidedEntriesToDay(
+        dayId,
+        toDayId,
+        fromLineIndexes,
+        insertBeforeEntryPos
+      );
+      return;
+    }
     var textarea = document.getElementById(dayId);
     if (!textarea || !fromLineIndexes || !fromLineIndexes.length) return;
     var lines = dayTextareaLines(textarea);
@@ -29510,6 +29712,9 @@
   function dayGuidedFooterHtml(dayId) {
     var rearrangeOn = isGuidedRearrangeEnabled(dayId);
     var removeSelectOn = isGuidedRemoveSelectEnabled(dayId);
+    var selectedCount = guidedSelectedIndexes(dayId).length;
+    var showDup = rearrangeOn && selectedCount > 0;
+    var addDisabled = rearrangeOn && !showDup;
     return (
       '<div class="day__guided-footer">' +
       '<div class="day__guided-footer-main"' +
@@ -29517,7 +29722,21 @@
       ">" +
       '<button type="button" class="day__add-food" data-action="open-add-food" data-day-id="' +
       escapeAttr(dayId) +
-      '" title="Pick foods or a saved meal">Add food</button>' +
+      '"' +
+      (showDup ? " hidden" : "") +
+      (addDisabled ? " disabled" : "") +
+      ' aria-disabled="' +
+      (addDisabled ? "true" : "false") +
+      '" title="' +
+      (addDisabled
+        ? "Select foods to duplicate, or turn off Rearrange to add food"
+        : "Pick foods or a saved meal") +
+      '">Add food</button>' +
+      '<button type="button" class="day__duplicate-food" data-action="duplicate-guided-selected" data-day-id="' +
+      escapeAttr(dayId) +
+      '"' +
+      (showDup ? "" : " hidden") +
+      ' title="Duplicate selected foods">Duplicate</button>' +
       '<div class="day__guided-footer-secondary">' +
       '<div class="day__guided-others">' +
       '<button type="button" class="day__add-others" data-action="toggle-guided-others" data-day-id="' +
@@ -29897,6 +30116,13 @@
     return item;
   }
 
+  function dayFoodItemPopoverBlockedTarget(target) {
+    if (!target || !target.closest) return true;
+    if (target.closest('[data-action="guided-drag-handle"]')) return false;
+    if (target.closest("input, textarea, button, a, select, label")) return true;
+    return false;
+  }
+
   function showDayFoodItemPopover(itemEl, x, y) {
     if (!dayFoodItemPopoverEl || !dayFoodItemPopoverBodyEl || !itemEl) return;
     if (dayEntryAdvancedEnabled) return;
@@ -29910,6 +30136,17 @@
     if (!entry || entry.kind !== "food") return;
     var ki = findKeywordIndexByName(entry.name);
     if (ki < 0) return;
+    if (dayId && isGuidedRearrangeEnabled(dayId)) {
+      setGuidedRearrangeEnabled(dayId, false);
+      var refreshed = document.querySelector(
+        '.day__food-item--food[data-day-id="' +
+          dayId +
+          '"][data-line-index="' +
+          lineIndex +
+          '"]'
+      );
+      if (refreshed) itemEl = refreshed;
+    }
     dayFoodItemPopoverState = {
       entry: entry,
       kw: keywords[ki],
@@ -29925,9 +30162,7 @@
 
   function handleDayFoodItemPopoverEvent(e) {
     if (dayEntryAdvancedEnabled) return false;
-    if (e.target.closest("input, textarea, button, a, select, label")) {
-      return false;
-    }
+    if (dayFoodItemPopoverBlockedTarget(e.target)) return false;
     var item = guidedFoodItemFromEventTarget(e.target);
     if (!item) return false;
     e.preventDefault();
@@ -30131,7 +30366,8 @@
       !guided.querySelector(".day__add-others") ||
       !guided.querySelector('[data-action="toggle-guided-rearrange"]') ||
       !guided.querySelector('[data-action="cancel-guided-remove-select"]') ||
-      !guided.querySelector('[data-action="confirm-guided-remove-select"]')
+      !guided.querySelector('[data-action="confirm-guided-remove-select"]') ||
+      !guided.querySelector('[data-action="duplicate-guided-selected"]')
     ) {
       var oldFooter = guided.querySelector(".day__guided-footer");
       var wrap = document.createElement("div");
@@ -30179,6 +30415,7 @@
         clearGuidedRemoveSelectState(dayId);
         syncDayGuidedRemoveSelectUi(dayId);
       }
+      syncDayGuidedFooterPrimaryAction(dayId);
       return;
     }
     if (emptyEl) emptyEl.hidden = true;
@@ -30191,6 +30428,7 @@
         return dayGuidedOtherItemHtml(entry, dayId, entryPos, entryCount);
       })
       .join("");
+    syncDayGuidedFooterPrimaryAction(dayId);
   }
 
   function renderAllDayGuidedLists() {
@@ -30707,6 +30945,7 @@
     opts = opts || {};
     if (!addFoodModalEl) return;
     if (!dayId && !opts.mealId) return;
+    if (dayId && isGuidedRearrangeEnabled(dayId)) return;
     closeAllDayCopyMenus();
     addFoodPendingDayId = dayId || null;
     addFoodPendingMealId = opts.mealId || null;
@@ -31925,7 +32164,7 @@
         var item = guidedFoodItemFromEventTarget(el);
         if (
           !item ||
-          (el && el.closest && el.closest("input, textarea, button, a, select, label"))
+          dayFoodItemPopoverBlockedTarget(el)
         ) {
           foodItemTwoFinger = null;
           return;
@@ -32059,12 +32298,24 @@
         e.preventDefault();
         closeAllDayCopyMenus();
         closeAllGuidedOthersMenus();
+        if (openAddFoodBtn.disabled) return;
         var openDayId = openAddFoodBtn.getAttribute("data-day-id");
         if (openDayId) {
           requireLoggedInForPersist("adding food").then(function (ok) {
             if (ok) openAddFoodModal(openDayId);
           });
         }
+        return;
+      }
+      var duplicateGuidedBtn = e.target.closest(
+        '[data-action="duplicate-guided-selected"]'
+      );
+      if (duplicateGuidedBtn) {
+        e.preventDefault();
+        closeAllDayCopyMenus();
+        closeAllGuidedOthersMenus();
+        var duplicateDayId = duplicateGuidedBtn.getAttribute("data-day-id");
+        if (duplicateDayId) duplicateGuidedSelectedLines(duplicateDayId);
         return;
       }
       var toggleOthersBtn = e.target.closest(
@@ -32233,6 +32484,7 @@
       }
       guidedDragState = {
         dayId: dayId,
+        dropDayId: dayId,
         fromLineIndex: lineIndex,
         fromLineIndexes: fromLineIndexes,
         fromLineSet: fromLineSet,
@@ -32276,24 +32528,28 @@
     weekGridEl.addEventListener("dragover", function (e) {
       if (!guidedDragState) return;
       onGuidedDragTrackPoint(e);
-      var listEl = e.target.closest(".day__food-list");
-      var guided = e.target.closest(".day__guided");
-      if (!guided || guided.getAttribute("data-day-id") !== guidedDragState.dayId) {
+      var guided = guidedElFromEventTarget(e.target);
+      if (!guided) {
+        clearGuidedDropIndicators(null);
         return;
       }
       e.preventDefault();
       if (e.dataTransfer) e.dataTransfer.dropEffect = "move";
+      var dropDayId = guided.getAttribute("data-day-id") || guidedDragState.dayId;
+      var listEl = e.target.closest(".day__food-list");
       var activeList =
         listEl ||
         (guided && guided.querySelector(".day__food-list")) ||
         guidedDragState.listEl;
       if (!activeList) return;
-      clearGuidedDropIndicators(activeList);
-      var drop = guidedDropFromPoint(
-        activeList,
-        e.clientY,
-        guidedDragState.fromLineSet || {}
-      );
+      clearGuidedDropIndicators(null);
+      guided.classList.add("day__guided--drop-target");
+      var fromLineSet =
+        dropDayId === guidedDragState.dayId
+          ? guidedDragState.fromLineSet || {}
+          : {};
+      var drop = guidedDropFromPoint(activeList, e.clientY, fromLineSet);
+      guidedDragState.dropDayId = dropDayId;
       guidedDragState.dropBeforePos = drop.dropBeforePos;
       if (drop.dropEnd) {
         activeList.classList.add("day__food-list--drop-end");
@@ -32317,20 +32573,25 @@
       if (!guidedDragState) return;
       e.preventDefault();
       var dayId = guidedDragState.dayId;
+      var toDayId = guidedDragState.dropDayId || dayId;
       var fromLineIndexes = guidedDragState.fromLineIndexes || [
         guidedDragState.fromLineIndex,
       ];
-      var insertBefore =
-        typeof guidedDragState.dropBeforePos === "number"
-          ? guidedDragState.dropBeforePos
-          : guidedDragState.fromPos;
+      var insertBefore;
+      if (typeof guidedDragState.dropBeforePos === "number") {
+        insertBefore = guidedDragState.dropBeforePos;
+      } else if (toDayId === dayId) {
+        insertBefore = guidedDragState.fromPos;
+      } else {
+        insertBefore = Infinity;
+      }
       var point = guidedFinishPopoverPoint(
         e,
         guidedDragState.lastX,
         guidedDragState.lastY
       );
       endGuidedDrag();
-      reorderGuidedEntries(dayId, fromLineIndexes, insertBefore);
+      reorderGuidedEntries(dayId, fromLineIndexes, insertBefore, toDayId);
       if (point) showGuidedFinishPopover(dayId, point.x, point.y);
     });
     weekGridEl.addEventListener("change", function (e) {

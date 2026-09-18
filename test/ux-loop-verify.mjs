@@ -105,6 +105,26 @@ mustNotMatch(
 // P3 — add food submit count
 mustInclude(appJs, "syncAddFoodSubmitLabel", "P3 add food submit label");
 
+// Rearrange — grayed Add food, Duplicate, popover exits rearrange, cross-column move
+mustInclude(appJs, "syncDayGuidedFooterPrimaryAction", "rearrange footer primary action");
+mustInclude(appJs, "duplicate-guided-selected", "rearrange Duplicate action");
+mustInclude(appJs, "duplicateGuidedSelectedLines", "rearrange Duplicate helper");
+mustInclude(appJs, "moveGuidedEntriesToDay", "rearrange cross-column move");
+mustInclude(appJs, "guidedElFromEventTarget", "rearrange drop host helper");
+mustInclude(
+  appJs,
+  "Select foods to duplicate, or turn off Rearrange to add food",
+  "rearrange disabled Add food title"
+);
+mustInclude(
+  appJs,
+  "if (dayId && isGuidedRearrangeEnabled(dayId)) {\n      setGuidedRearrangeEnabled(dayId, false);",
+  "popover exits rearrange"
+);
+mustInclude(stylesCss, "day__duplicate-food", "Duplicate button style");
+mustInclude(stylesCss, ".day__add-food:disabled", "grayed Add food in rearrange");
+mustInclude(stylesCss, "day__guided--drop-target", "cross-column drop target");
+
 // Touch — 44px day actions
 mustInclude(stylesCss, "min-width: 2.75rem", "P1/P2 44px day actions");
 

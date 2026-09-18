@@ -9698,10 +9698,46 @@ input[type="number"]::-webkit-inner-spin-button {
   cursor: pointer;
 }
 
-.day__add-food:hover {
+.day__add-food:hover:not(:disabled) {
   background: #dde8f4;
   border-color: #2a4a6e;
   border-style: solid;
+}
+
+.day__add-food:disabled {
+  background: #e6e6e2;
+  border-color: #c8c8c4;
+  border-style: solid;
+  color: #8a8a86;
+  cursor: not-allowed;
+  opacity: 0.72;
+}
+
+.day__duplicate-food {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 2.05rem;
+  padding: 0.35rem 0.5rem;
+  border: 1px solid #3d6b9e;
+  border-radius: 5px;
+  background: #eef4fa;
+  color: #2a4a6e;
+  font: inherit;
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.day__duplicate-food:hover {
+  background: #dde8f4;
+  border-color: #2a4a6e;
+}
+
+.day__add-food[hidden],
+.day__duplicate-food[hidden] {
+  display: none;
 }
 
 .day__guided-footer-secondary {
@@ -9957,6 +9993,14 @@ input[type="number"]::-webkit-inner-spin-button {
 
 .day__food-list--drop-end::after {
   bottom: 0.15rem;
+}
+
+.day__guided--drop-target {
+  box-shadow: inset 0 0 0 2px rgba(61, 107, 158, 0.35);
+}
+
+.day__guided--drop-target .day__food-list {
+  min-height: 2.25rem;
 }
 
 .day__guided--rearrange .day__food-item {
