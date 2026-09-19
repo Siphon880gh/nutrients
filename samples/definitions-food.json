@@ -33489,6 +33489,63 @@
     }
   },
   {
+    "name": "Junk Food - Sour Candy 1 piece (about 2 g)",
+    "protein": 0,
+    "carbs": 1.8,
+    "fats": 0,
+    "micros": {
+      "fiber": 0,
+      "sodium": 1.8
+    },
+    "longevity": {
+      "saturatedFat": 0,
+      "transFat": 0,
+      "cholesterol": 0
+    },
+    "carbQuality": {
+      "addedSugar": 1.4,
+      "refinedCarbs": 1.8
+    }
+  },
+  {
+    "name": "Junk Food - Sour Candy 1 oz (about a small handful)",
+    "protein": 0,
+    "carbs": 26,
+    "fats": 0,
+    "micros": {
+      "fiber": 0,
+      "sodium": 25
+    },
+    "longevity": {
+      "saturatedFat": 0,
+      "transFat": 0,
+      "cholesterol": 0
+    },
+    "carbQuality": {
+      "addedSugar": 20,
+      "refinedCarbs": 26
+    }
+  },
+  {
+    "name": "Junk Food - Sour Candy 1 small bag (2 oz)",
+    "protein": 0,
+    "carbs": 52,
+    "fats": 0,
+    "micros": {
+      "fiber": 0,
+      "sodium": 50
+    },
+    "longevity": {
+      "saturatedFat": 0,
+      "transFat": 0,
+      "cholesterol": 0
+    },
+    "carbQuality": {
+      "addedSugar": 40,
+      "refinedCarbs": 52
+    }
+  },
+  {
     "name": "Green beans 1 cup",
     "protein": 1.9,
     "carbs": 7,

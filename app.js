@@ -639,6 +639,10 @@
   var addFoodSelectedListEl = document.getElementById("add-food-selected-list");
   var addFoodErrorEl = document.getElementById("add-food-error");
   var addFoodCancelBtn = document.getElementById("add-food-cancel");
+  var addFoodCalcToggleBtn = document.getElementById("add-food-calc-toggle");
+  var addFoodCalcEl = document.getElementById("add-food-calculator");
+  var addFoodCalcDisplayEl = document.getElementById("add-food-calc-display");
+  var addFoodCalcClearBtn = document.getElementById("add-food-calc-clear");
   var addFoodSubmitBtn = document.getElementById("add-food-submit");
   var addFoodSubmitSplitEl = document.getElementById("add-food-submit-split");
   var addFoodSubmitMenuToggleBtn = document.getElementById(
@@ -30627,6 +30631,8 @@
   }
 
   var addFoodDragIndex = -1;
+  var addFoodCalcOpen = false;
+  var addFoodCalc = null;
 
   function moveAddFoodSelectedItem(fromIndex, toIndex) {
     flushAddFoodServingsFromInputs();
@@ -30719,6 +30725,7 @@
         : "Selected";
     }
     if (addFoodSubmitBtn) addFoodSubmitBtn.disabled = !hasSelection;
+    syncAddFoodCalcToggleUi();
     syncAddFoodSubmitSplitUi();
     var key = addFoodSelectedNamesKey();
     if (key !== addFoodSelectedListKey) {
@@ -30912,6 +30919,284 @@
     syncAddFoodSelectedUi();
   }
 
+  function createAddFoodCalcState() {
+    return {
+      display: "0",
+      acc: null,
+      op: null,
+      fresh: true,
+      lastOp: null,
+      lastRhs: null,
+      error: false,
+      showClear: false,
+    };
+  }
+
+  function addFoodCalcRound(n) {
+    if (!isFinite(n)) return n;
+    return Math.round(n * 1e12) / 1e12;
+  }
+
+  function addFoodCalcFormat(n) {
+    if (!isFinite(n)) return "Error";
+    n = addFoodCalcRound(n);
+    if (Object.is(n, -0)) n = 0;
+    var abs = Math.abs(n);
+    if (abs !== 0 && (abs >= 1e9 || abs < 1e-8)) {
+      return String(n.toExponential(5))
+        .replace("e+", "e")
+        .replace(/\.?0+e/, "e");
+    }
+    var s = String(n);
+    if (s.indexOf("e") >= 0) return s.replace("e+", "e");
+    if (s.indexOf(".") >= 0) {
+      s = s.replace(/(\.\d*?)0+$/, "$1").replace(/\.$/, "");
+    }
+    if (s.replace("-", "").replace(".", "").length > 9) {
+      return String(n.toExponential(5)).replace("e+", "e");
+    }
+    return s;
+  }
+
+  function addFoodCalcParse() {
+    if (!addFoodCalc || addFoodCalc.error) return NaN;
+    var n = parseFloat(addFoodCalc.display);
+    return isFinite(n) ? n : NaN;
+  }
+
+  function addFoodCalcSetDisplayFromNumber(n) {
+    if (!addFoodCalc) return;
+    addFoodCalc.error = !isFinite(n);
+    addFoodCalc.display = addFoodCalc.error ? "Error" : addFoodCalcFormat(n);
+    addFoodCalc.fresh = true;
+  }
+
+  function addFoodCalcCompute(a, op, b) {
+    var result;
+    if (op === "+") result = a + b;
+    else if (op === "-") result = a - b;
+    else if (op === "*") result = a * b;
+    else if (op === "/") result = b === 0 ? NaN : a / b;
+    else result = b;
+    return addFoodCalcRound(result);
+  }
+
+  function syncAddFoodCalcUi() {
+    if (!addFoodCalc) addFoodCalc = createAddFoodCalcState();
+    if (addFoodCalcDisplayEl) {
+      addFoodCalcDisplayEl.textContent = addFoodCalc.display;
+      var len = String(addFoodCalc.display).replace(/[^0-9e]/gi, "").length;
+      addFoodCalcDisplayEl.classList.toggle("add-food-calc__display--long", len > 6);
+      addFoodCalcDisplayEl.classList.toggle("add-food-calc__display--xl", len > 8);
+    }
+    if (addFoodCalcClearBtn) {
+      addFoodCalcClearBtn.textContent = addFoodCalc.showClear ? "C" : "AC";
+      addFoodCalcClearBtn.setAttribute(
+        "aria-label",
+        addFoodCalc.showClear ? "Clear" : "All clear"
+      );
+    }
+    if (!addFoodCalcEl) return;
+    addFoodCalcEl.querySelectorAll(".add-food-calc__key--op[data-value]").forEach(
+      function (btn) {
+        var on = !!(
+          addFoodCalc.op &&
+          addFoodCalc.fresh &&
+          btn.getAttribute("data-value") === addFoodCalc.op
+        );
+        btn.classList.toggle("is-active", on);
+        btn.setAttribute("aria-pressed", on ? "true" : "false");
+      }
+    );
+  }
+
+  function resetAddFoodCalcState() {
+    addFoodCalc = createAddFoodCalcState();
+    syncAddFoodCalcUi();
+  }
+
+  function applyAddFoodCalc(action, value) {
+    if (!addFoodCalc) addFoodCalc = createAddFoodCalcState();
+    if (addFoodCalc.error && action !== "clear") {
+      var keep = action === "digit" || action === "dot";
+      addFoodCalc = createAddFoodCalcState();
+      if (!keep) {
+        syncAddFoodCalcUi();
+        return;
+      }
+    }
+    if (action === "clear") {
+      if (addFoodCalc.showClear) {
+        addFoodCalc.display = "0";
+        addFoodCalc.fresh = true;
+        addFoodCalc.showClear = false;
+        addFoodCalc.error = false;
+      } else {
+        addFoodCalc = createAddFoodCalcState();
+      }
+      syncAddFoodCalcUi();
+      return;
+    }
+    if (action === "digit") {
+      var d = String(value || "");
+      if (!/^\d$/.test(d)) return;
+      if (addFoodCalc.fresh || addFoodCalc.display === "0") {
+        addFoodCalc.display = d;
+        addFoodCalc.fresh = false;
+      } else {
+        var digits = addFoodCalc.display.replace(/[^0-9]/g, "");
+        if (digits.length >= 9) return;
+        addFoodCalc.display += d;
+      }
+      addFoodCalc.showClear = true;
+      syncAddFoodCalcUi();
+      return;
+    }
+    if (action === "dot") {
+      if (addFoodCalc.fresh) {
+        addFoodCalc.display = "0.";
+        addFoodCalc.fresh = false;
+      } else if (addFoodCalc.display.indexOf(".") < 0) {
+        addFoodCalc.display += ".";
+      }
+      addFoodCalc.showClear = true;
+      syncAddFoodCalcUi();
+      return;
+    }
+    if (action === "sign") {
+      if (addFoodCalc.display === "0" || addFoodCalc.display === "0.") {
+        syncAddFoodCalcUi();
+        return;
+      }
+      if (addFoodCalc.display.charAt(0) === "-") {
+        addFoodCalc.display = addFoodCalc.display.slice(1);
+      } else {
+        addFoodCalc.display = "-" + addFoodCalc.display;
+      }
+      syncAddFoodCalcUi();
+      return;
+    }
+    if (action === "percent") {
+      var pct = addFoodCalcParse();
+      if (!isFinite(pct)) return;
+      if (
+        addFoodCalc.op &&
+        (addFoodCalc.op === "+" || addFoodCalc.op === "-") &&
+        addFoodCalc.acc != null
+      ) {
+        pct = addFoodCalc.acc * (pct / 100);
+      } else {
+        pct = pct / 100;
+      }
+      addFoodCalcSetDisplayFromNumber(pct);
+      addFoodCalc.showClear = true;
+      syncAddFoodCalcUi();
+      return;
+    }
+    if (action === "backspace") {
+      if (addFoodCalc.fresh || addFoodCalc.error) return;
+      var next = addFoodCalc.display.slice(0, -1);
+      if (!next || next === "-" || next === "-0") next = "0";
+      addFoodCalc.display = next;
+      if (addFoodCalc.display === "0") {
+        addFoodCalc.fresh = true;
+        addFoodCalc.showClear = false;
+      }
+      syncAddFoodCalcUi();
+      return;
+    }
+    if (action === "op") {
+      var nextOp = value;
+      if (nextOp !== "+" && nextOp !== "-" && nextOp !== "*" && nextOp !== "/") {
+        return;
+      }
+      var rhs = addFoodCalcParse();
+      if (
+        addFoodCalc.op &&
+        !addFoodCalc.fresh &&
+        addFoodCalc.acc != null &&
+        isFinite(rhs)
+      ) {
+        var chained = addFoodCalcCompute(addFoodCalc.acc, addFoodCalc.op, rhs);
+        addFoodCalcSetDisplayFromNumber(chained);
+        addFoodCalc.acc = chained;
+      } else if (isFinite(rhs)) {
+        addFoodCalc.acc = rhs;
+      }
+      addFoodCalc.op = nextOp;
+      addFoodCalc.fresh = true;
+      addFoodCalc.lastOp = null;
+      addFoodCalc.lastRhs = null;
+      addFoodCalc.showClear = false;
+      syncAddFoodCalcUi();
+      return;
+    }
+    if (action === "eq") {
+      var cur = addFoodCalcParse();
+      if (addFoodCalc.op && addFoodCalc.acc != null) {
+        var b =
+          addFoodCalc.fresh && addFoodCalc.lastRhs != null
+            ? addFoodCalc.lastRhs
+            : cur;
+        if (!isFinite(b)) b = 0;
+        var computed = addFoodCalcCompute(addFoodCalc.acc, addFoodCalc.op, b);
+        addFoodCalc.lastOp = addFoodCalc.op;
+        addFoodCalc.lastRhs = b;
+        addFoodCalcSetDisplayFromNumber(computed);
+        addFoodCalc.acc = computed;
+        addFoodCalc.op = null;
+      } else if (
+        addFoodCalc.lastOp &&
+        addFoodCalc.lastRhs != null &&
+        isFinite(cur)
+      ) {
+        var repeated = addFoodCalcCompute(
+          cur,
+          addFoodCalc.lastOp,
+          addFoodCalc.lastRhs
+        );
+        addFoodCalcSetDisplayFromNumber(repeated);
+        addFoodCalc.acc = repeated;
+      }
+      addFoodCalc.showClear = false;
+      syncAddFoodCalcUi();
+    }
+  }
+
+  function setAddFoodCalcOpen(open, opts) {
+    opts = opts || {};
+    var next = !!open;
+    addFoodCalcOpen = next;
+    if (addFoodModalEl) {
+      addFoodModalEl.classList.toggle("add-food-modal--calc-open", next);
+    }
+    if (addFoodCalcEl) {
+      addFoodCalcEl.setAttribute("aria-hidden", next ? "false" : "true");
+      if ("inert" in addFoodCalcEl) addFoodCalcEl.inert = !next;
+    }
+    if (addFoodCalcToggleBtn) {
+      addFoodCalcToggleBtn.setAttribute("aria-expanded", next ? "true" : "false");
+    }
+    if (next) {
+      if (!addFoodCalc) addFoodCalc = createAddFoodCalcState();
+      syncAddFoodCalcUi();
+    } else if (!opts.silent && addFoodCalcToggleBtn && !addFoodCalcToggleBtn.hidden) {
+      addFoodCalcToggleBtn.focus();
+    }
+  }
+
+  function toggleAddFoodCalc() {
+    setAddFoodCalcOpen(!addFoodCalcOpen);
+  }
+
+  function syncAddFoodCalcToggleUi() {
+    var hasSelection = addFoodSelectedItems.length > 0;
+    if (addFoodCalcToggleBtn) addFoodCalcToggleBtn.hidden = !hasSelection;
+    if (!hasSelection && addFoodCalcOpen) {
+      setAddFoodCalcOpen(false, { silent: true });
+    }
+  }
+
   function closeAddFoodModal() {
     if (!addFoodModalEl) return;
     closeAddFoodSubmitMenu();
@@ -30938,6 +31223,9 @@
     if (addFoodSelectedListEl) addFoodSelectedListEl.innerHTML = "";
     if (addFoodSelectedEl) addFoodSelectedEl.hidden = true;
     if (addFoodSubmitBtn) addFoodSubmitBtn.disabled = true;
+    if (addFoodCalcToggleBtn) addFoodCalcToggleBtn.hidden = true;
+    resetAddFoodCalcState();
+    setAddFoodCalcOpen(false, { silent: true });
     updateBodyModalOpen();
   }
 
@@ -30953,6 +31241,8 @@
     addFoodSelectedItems = [];
     addFoodSelectedListKey = "";
     addFoodResultsPage = 0;
+    resetAddFoodCalcState();
+    setAddFoodCalcOpen(false, { silent: true });
     showAddFoodError("");
     if (addFoodSearchEl) addFoodSearchEl.value = "";
     var meal = addFoodPendingMealId ? mealById(addFoodPendingMealId) : null;
@@ -31761,6 +32051,10 @@
       return;
     }
     if (addFoodModalEl && !addFoodModalEl.hidden) {
+      if (addFoodCalcOpen) {
+        setAddFoodCalcOpen(false);
+        return;
+      }
       closeAddFoodModal();
       return;
     }
@@ -35102,6 +35396,22 @@
         closeAddFoodModal();
         return;
       }
+      if (e.target.closest('[data-action="toggle-add-food-calc"]')) {
+        toggleAddFoodCalc();
+        return;
+      }
+      if (e.target.closest('[data-action="collapse-add-food-calc"]')) {
+        setAddFoodCalcOpen(false);
+        return;
+      }
+      var calcKey = e.target.closest("[data-calc]");
+      if (calcKey && addFoodCalcEl && addFoodCalcEl.contains(calcKey)) {
+        applyAddFoodCalc(
+          calcKey.getAttribute("data-calc"),
+          calcKey.getAttribute("data-value")
+        );
+        return;
+      }
       var pickBtn = e.target.closest('[data-action="select-add-food"]');
       if (pickBtn) {
         selectAddFoodName(pickBtn.getAttribute("data-food-name"));
@@ -35146,6 +35456,41 @@
       }
     });
   }
+  document.addEventListener("keydown", function (e) {
+    if (!addFoodCalcOpen || !addFoodModalEl || addFoodModalEl.hidden) return;
+    if (addFoodMealPickerModalEl && !addFoodMealPickerModalEl.hidden) return;
+    var target = e.target;
+    if (
+      target &&
+      target.closest &&
+      target.closest("input, textarea, select, [contenteditable='true']")
+    ) {
+      return;
+    }
+    var key = e.key;
+    if (
+      target &&
+      target.closest &&
+      (target.closest("#add-food-calc-toggle") ||
+        target.closest("[data-action='collapse-add-food-calc']") ||
+        target.closest("[data-calc]")) &&
+      (key === "Enter" || key === " ")
+    ) {
+      return;
+    }
+    var handled = true;
+    if (key >= "0" && key <= "9") applyAddFoodCalc("digit", key);
+    else if (key === "." || key === ",") applyAddFoodCalc("dot");
+    else if (key === "+" ) applyAddFoodCalc("op", "+");
+    else if (key === "-") applyAddFoodCalc("op", "-");
+    else if (key === "*") applyAddFoodCalc("op", "*");
+    else if (key === "/") applyAddFoodCalc("op", "/");
+    else if (key === "Enter" || key === "=") applyAddFoodCalc("eq");
+    else if (key === "%") applyAddFoodCalc("percent");
+    else if (key === "Backspace") applyAddFoodCalc("backspace");
+    else handled = false;
+    if (handled) e.preventDefault();
+  });
   if (addFoodSearchEl) {
     addFoodSearchEl.addEventListener("input", function () {
       addFoodResultsPage = 0;
