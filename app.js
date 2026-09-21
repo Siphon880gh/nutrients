@@ -518,6 +518,8 @@
   var importAllMealsErrorEl = document.getElementById("import-all-meals-error");
   var importAllMealsApplyBtn = document.getElementById("import-all-meals-apply");
   var importAllMealsCancelBtn = document.getElementById("import-all-meals-cancel");
+  var importAllMealsFileEl = document.getElementById("import-all-meals-file");
+  var importAllMealsFileBtn = document.getElementById("import-all-meals-file-btn");
   var exportAllMealsBtn = document.getElementById("export-all-meals");
   var importAllMealsBtn = document.getElementById("import-all-meals");
   var importSampleMealsBtn = document.getElementById("import-sample-meals");
@@ -26864,10 +26866,54 @@
     importAllMealsErrorEl.textContent = message;
   }
 
+  function resetImportAllMealsFileInput() {
+    if (importAllMealsFileEl) importAllMealsFileEl.value = "";
+  }
+
+  function isJsonImportFile(file) {
+    if (!file) return false;
+    var name = String(file.name || "").toLowerCase();
+    var type = String(file.type || "").toLowerCase();
+    return (
+      type === "application/json" ||
+      type === "text/json" ||
+      name.slice(-5) === ".json"
+    );
+  }
+
+  function loadImportAllMealsJsonFile(file) {
+    if (!file) return;
+    if (!isJsonImportFile(file)) {
+      showImportAllMealsError("Choose a .json file");
+      resetImportAllMealsFileInput();
+      return;
+    }
+
+    var reader = new FileReader();
+    reader.onload = function () {
+      var text = typeof reader.result === "string" ? reader.result : "";
+      if (!importAllMealsJsonEl) return;
+      importAllMealsJsonEl.value = text;
+      try {
+        parseImportAllDayMealsObject(text);
+        showImportAllMealsError("");
+      } catch (e) {
+        showImportAllMealsError(e.message || "Invalid JSON");
+      }
+      importAllMealsJsonEl.focus();
+    };
+    reader.onerror = function () {
+      showImportAllMealsError("Could not read that file");
+      resetImportAllMealsFileInput();
+    };
+    reader.readAsText(file);
+  }
+
   function closeImportAllMealsModal() {
     if (!importAllMealsModalEl) return;
     importAllMealsModalEl.hidden = true;
     showImportAllMealsError("");
+    resetImportAllMealsFileInput();
     updateBodyModalOpen();
   }
 
@@ -26885,6 +26931,7 @@
 
     importAllMealsJsonEl.value = exportAllDayMealsJson();
     showImportAllMealsError("");
+    resetImportAllMealsFileInput();
     importAllMealsModalEl.hidden = false;
     updateBodyModalOpen();
     importAllMealsJsonEl.focus();
@@ -33372,6 +33419,18 @@
   if (importAllMealsJsonEl) {
     importAllMealsJsonEl.addEventListener("input", function () {
       showImportAllMealsError("");
+    });
+  }
+
+  if (importAllMealsFileBtn && importAllMealsFileEl) {
+    importAllMealsFileBtn.addEventListener("click", function () {
+      importAllMealsFileEl.click();
+    });
+    importAllMealsFileEl.addEventListener("change", function () {
+      var file =
+        importAllMealsFileEl.files && importAllMealsFileEl.files[0];
+      loadImportAllMealsJsonFile(file);
+      resetImportAllMealsFileInput();
     });
   }
 

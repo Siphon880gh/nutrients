@@ -113,6 +113,7 @@ Human/agent authoring guides (not loaded by the app): `GUIDE_ADDING_FOOD.md`, `G
 ## Day meals import (`#import-all-meals-modal`)
 
 - `exportAllDayMeals` → `nutrients-day-meals.json` (full v2 diary `{version:2,days:{…}}`); `openImportAllMealsModal` prefills `exportAllDayMealsJson()`.
+- `#import-all-meals-file-btn` / `#import-all-meals-file` — **Import JSON file** fills the textarea from a `.json` file (`loadImportAllMealsJsonFile`); apply still uses `#import-all-meals-apply`.
 - `parseImportAllDayMealsObject` accepts either a **legacy week** object keyed by day ids (`mon`…`sun`) or a **v2 diary** (`version: 2` + `days` map of `YYYY-MM-DD` → string).
 - `getImportAllMealsMissingMode` — radio `import-all-meals-missing`: `empty` (default) or `keep`.
   - Legacy week: apply to the **viewed week**; `empty` clears viewed-week days not listed.
@@ -238,4 +239,4 @@ Bulk array example:
 
 ## Related CSS
 
-Import/AI styles in `styles.css` — search `.import-modal`, `.import-ai-panel`, `.micro-gaps-modal`, `.modal__panel--wide` (see [ui doc](./AGENTS_CODE_REFERENCE-ui.md)).
+Import/AI styles in `styles.css` — search `.import-modal`, `.import-json-wrap__file-btn`, `.import-ai-panel`, `.micro-gaps-modal`, `.modal__panel--wide` (see [ui doc](./AGENTS_CODE_REFERENCE-ui.md)).

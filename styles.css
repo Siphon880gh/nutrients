@@ -13889,12 +13889,38 @@ button.longevity-form__label-link:focus-visible {
   min-height: 0;
 }
 
+.import-json-wrap__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
 .import-json-wrap__label {
   font-size: 0.72rem;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.03em;
   color: #5c5c5c;
+}
+
+.import-json-wrap__file-btn {
+  padding: 0.28rem 0.6rem;
+  font: inherit;
+  font-size: 0.75rem;
+  font-weight: 500;
+  cursor: pointer;
+  border-radius: 4px;
+  border: 1px solid #c8c8c4;
+  background: #f8f8f6;
+  color: inherit;
+  white-space: nowrap;
+}
+
+.import-json-wrap__file-btn:hover {
+  background: #eeeee8;
+  border-color: #a8a8a4;
 }
 
 .import-json-wrap--ai .import-modal__json {

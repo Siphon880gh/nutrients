@@ -1648,12 +1648,12 @@
         <h3 id="import-all-meals-modal-title" class="modal__title">Import all day meals</h3>
       </header>
       <div class="import-modal__body">
-        <p class="import-modal__hint">Paste either a <strong>legacy week</strong> object (<code>mon</code>…<code>sun</code> strings, applied to the viewed week) or a <strong>v2 diary</strong> (<code>{"version":2,"days":{"YYYY-MM-DD":"…"}}</code>).</p>
+        <p class="import-modal__hint">Paste or import a JSON file: a <strong>legacy week</strong> object (<code>mon</code>…<code>sun</code> strings, applied to the viewed week) or a <strong>v2 diary</strong> (<code>{"version":2,"days":{"YYYY-MM-DD":"…"}}</code>).</p>
         <fieldset class="import-all-mode">
           <legend class="import-all-mode__legend">Days missing from JSON</legend>
           <label class="import-all-mode__option">
             <input type="radio" name="import-all-meals-missing" value="empty" checked>
-            <span class="import-all-mode__text"><strong>Empty out</strong> — for a legacy week, clear viewed-week days not listed; for v2, replace the whole diary with imported dates only.</span>
+            <span class="import-all-mode__text"><strong>Empty out</strong> — clear meals on days that aren’t in the import.</span>
           </label>
           <label class="import-all-mode__option">
             <input type="radio" name="import-all-meals-missing" value="keep">
@@ -1661,7 +1661,11 @@
           </label>
         </fieldset>
         <div class="import-json-wrap">
-          <label class="import-json-wrap__label" for="import-all-meals-json">JSON</label>
+          <div class="import-json-wrap__head">
+            <label class="import-json-wrap__label" for="import-all-meals-json">JSON</label>
+            <button type="button" id="import-all-meals-file-btn" class="import-json-wrap__file-btn">Import JSON file</button>
+            <input type="file" id="import-all-meals-file" class="visually-hidden" accept=".json,application/json" tabindex="-1" aria-hidden="true">
+          </div>
           <textarea id="import-all-meals-json" class="import-modal__json" rows="14" spellcheck="false"></textarea>
         </div>
         <p id="import-all-meals-error" class="import-modal__error" hidden></p>
