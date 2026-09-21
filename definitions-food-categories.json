@@ -3,7 +3,7 @@
     {
       "id": "cereal",
       "label": "Cereal",
-      "patterns": ["^Cereals?\\b", "^Shredded Wheat"]
+      "patterns": ["^Cereals?\\b", "^Shredded Wheat", "^Oats\\b"]
     },
     {
       "id": "fruit",
