@@ -5019,6 +5019,7 @@
       "- Higher Frequency means that wording is more likely. Prefer it over rarer variations of the same food.",
       "- If two competing name variations have the same Frequency, choose the one that is a more common serving (a typical household serving, or the serving already used most often in the table).",
       "- Only rewrite food lines. Keep comments (lines starting with // or #) and blank lines unchanged. Omit divider lines such as -----.",
+      "- For food names that cannot be found in the list of complete food names, query autosuggest.php?food= to find matching autocomplete entries from the food definitions.",
       "- If no likely wording can be found in the table for a line, keep that original line as-is. Do not guess, paraphrase, or invent a name.",
       "- One original line can be several foods written together. Example: `oatmeal milk` is two food entries — rewrite it as two separate lines from the table (the oatmeal wording, then the milk wording), not as one combined name.",
       "- Only split when each part matches a table food. If only some parts match, rewrite the matching parts and keep the unmatched remainder as-is. Do not invent foods that are not in the table. Put split foods on consecutive lines in the same place as the original combined line.",
