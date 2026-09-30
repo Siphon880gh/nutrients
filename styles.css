@@ -7808,6 +7808,11 @@ button.dashboard__longevity-name:focus-visible {
   outline-offset: 2px;
 }
 
+.week__highlight-toggle:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
 .week__highlight-toggle--off {
   border-color: #d0d0ca;
   background: transparent;
@@ -8182,7 +8187,8 @@ button.dashboard__longevity-name:focus-visible {
 
 .day__ai:hover:not(:disabled),
 .day__ai:focus:not(:disabled),
-.day__ai:focus-visible:not(:disabled) {
+.day__ai:focus-visible:not(:disabled),
+.day__line-select[aria-pressed="true"] {
   color: #2a4a6e;
   border-color: #9bb6d4;
   background: #eef4fa;
@@ -8382,6 +8388,23 @@ button.dashboard__longevity-name:focus-visible {
 .day__head-tools .day__ignore {
   flex: 0 0 auto;
   flex-direction: row-reverse;
+}
+
+body.day-entry-advanced
+  .day__head-tools
+  .day__ai.week__advanced-only {
+  display: none;
+}
+
+body.day-entry-advanced
+  .day:focus-within
+  .day__head-tools
+  .day__ai.week__advanced-only,
+body.day-entry-advanced
+  .day.day--focus-wide
+  .day__head-tools
+  .day__ai.week__advanced-only {
+  display: inline-flex;
 }
 
 .day__head-actions {
@@ -10934,6 +10957,11 @@ body.day-word-wrap-off .day__backdrop {
   z-index: 1;
   pointer-events: auto;
   cursor: text;
+}
+
+.day--line-select .day__input,
+.day--line-select .day__editor--viewing .day__backdrop {
+  cursor: pointer;
 }
 
 .day__editor--editing .day__backdrop,

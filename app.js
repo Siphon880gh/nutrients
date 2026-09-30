@@ -594,6 +594,9 @@
   var EARLIEST_DIARY_DATE = "2026-05-01";
   var dayHighlightsToggleBtn = document.getElementById("day-highlights-toggle");
   var dayWordWrapToggleBtn = document.getElementById("day-word-wrap-toggle");
+  var dayLineSelectToggleBtns = document.querySelectorAll(
+    '[data-action="day-line-select"]'
+  );
   var dayEntryAdvancedToggleBtn = document.getElementById(
     "day-entry-advanced-toggle"
   );
@@ -718,6 +721,9 @@
   var tdeeCalcCleared = false;
   var dayHighlightsEnabled = true;
   var dayWordWrapEnabled = true;
+  var dayLineSelectEnabled = false;
+  var dayLineSelectDayId = null;
+  var dayLineSelectPreviousWordWrap = true;
   var dayEntryAdvancedEnabled = false;
   var guidedRearrangeByDay = {};
   var guidedSelectedLinesByDay = {};
@@ -5019,7 +5025,6 @@
       "- Higher Frequency means that wording is more likely. Prefer it over rarer variations of the same food.",
       "- If two competing name variations have the same Frequency, choose the one that is a more common serving (a typical household serving, or the serving already used most often in the table).",
       "- Only rewrite food lines. Keep comments (lines starting with // or #) and blank lines unchanged. Omit divider lines such as -----.",
-      "- For food names that cannot be found in the list of complete food names, query autosuggest.php?food= to find matching autocomplete entries from the food definitions.",
       "- If no likely wording can be found in the table for a line, keep that original line as-is. Do not guess, paraphrase, or invent a name.",
       "- One original line can be several foods written together. Example: `oatmeal milk` is two food entries — rewrite it as two separate lines from the table (the oatmeal wording, then the milk wording), not as one combined name.",
       "- Only split when each part matches a table food. If only some parts match, rewrite the matching parts and keep the unmatched remainder as-is. Do not invent foods that are not in the table. Put split foods on consecutive lines in the same place as the original combined line.",
@@ -5030,7 +5035,21 @@
       "- Compare against the table food's built-in portion. If the table name is `1 cup oatmeal` and the original is `2 cups oatmeal` or `oatmeal * 2`, write `1 cup oatmeal * 2`.",
       "- If a combined line has a serving that clearly belongs to only one of the foods, put `* N` on that food's line. If it clearly applies to all of them, put `* N` on each split line.",
       "- If the original line has no serving, use the chosen table row as-is.",
-      "- Output only the rewritten food lines, comments, and blank lines in one fenced text code block. Do not add a title, heading, divider, or any text outside the code block.",
+      "",
+      "Autocomplete lookup:",
+      "- After matching foods against the recent-foods table, identify any entries that lack a specific, complete food definition.",
+      "- A food must be looked up if its name is generic, incomplete, ambiguous, or lacks sufficient serving information, EVEN IF an identical entry exists in the recent-foods table.",
+      "- Collect all such foods into one comma-separated list. Remove serving multipliers before searching.",
+      "- Construct the URL using: https://wengindustries.com/app/nutrients/autosuggest.php?food=<comma-separated-food-names>",
+      "- You MUST attempt to open the constructed URL using your web browsing tool. Do not simply construct the URL without visiting it.",
+      "- Read the actual response and compare the returned autocomplete entries against the original foods.",
+      "- Only use a returned food definition when it is a reasonable match. Never substitute a different food merely because its name is similar.",
+      "- If the URL cannot be accessed, explicitly state that the lookup failed. Do not invent autocomplete results.",
+      "",
+      "Output requirements:",
+      "- Return the rewritten meal log in one fenced text code block.",
+      "- If you attempted an autocomplete lookup, print the exact URL you constructed immediately after the code block.",
+      "- If the lookup failed, explain why and ask me to open that URL and paste its response.",
       "",
       "Current day meal log:",
       "-----",
@@ -21948,6 +21967,32 @@
     textarea.setSelectionRange(start, end);
   }
 
+  function selectDayLineAtPosition(textarea, pos) {
+    var text = String(textarea.value || "");
+    var point = Math.max(0, Math.min(text.length, Number(pos) || 0));
+    var start = point;
+    var end = point;
+    while (
+      start > 0 &&
+      text.charAt(start - 1) !== "\n" &&
+      text.charAt(start - 1) !== "\r"
+    ) {
+      start -= 1;
+    }
+    while (
+      end < text.length &&
+      text.charAt(end) !== "\n" &&
+      text.charAt(end) !== "\r"
+    ) {
+      end += 1;
+    }
+    hideDaySuggest(textarea);
+    setDayEditorMode(textarea, "editing");
+    setDayInputSelection(textarea, start, end);
+    setDayLineSelectEnabled(false);
+    updateDaySuggest(textarea, true);
+  }
+
   function updateDayHighlights(textarea) {
     var editor = textarea.closest(".day__editor");
     if (!editor) return;
@@ -25924,6 +25969,61 @@
     syncDayWordWrapToggleUi();
   }
 
+  function syncDayLineSelectToggleUi() {
+    document.body.classList.toggle(
+      "day-line-select-mode",
+      !!dayLineSelectEnabled
+    );
+    DAYS.forEach(function (day) {
+      var textarea = document.getElementById(day.id);
+      var dayEl = textarea && textarea.closest(".day");
+      if (dayEl) {
+        dayEl.classList.toggle(
+          "day--line-select",
+          dayLineSelectEnabled && dayLineSelectDayId === day.id
+        );
+      }
+    });
+    if (dayWordWrapToggleBtn) {
+      dayWordWrapToggleBtn.disabled = !!dayLineSelectEnabled;
+    }
+    dayLineSelectToggleBtns.forEach(function (btn) {
+      var dayId = btn.getAttribute("data-day-id");
+      var day = dayById(dayId);
+      var active = dayLineSelectEnabled && dayId === dayLineSelectDayId;
+      btn.setAttribute("aria-pressed", active ? "true" : "false");
+      btn.setAttribute(
+        "aria-label",
+        active
+          ? "Cancel food entry line selection on " + (day ? day.label : dayId)
+          : "Select a food entry line on " + (day ? day.label : dayId)
+      );
+    });
+  }
+
+  function setDayLineSelectEnabled(enabled, dayId) {
+    var nextDayId = enabled && dayById(dayId) ? dayId : null;
+    var next = !!nextDayId && !!dayEntryAdvancedEnabled;
+    if (
+      next === dayLineSelectEnabled &&
+      nextDayId === dayLineSelectDayId
+    ) {
+      return;
+    }
+    if (next) {
+      if (!dayLineSelectEnabled) {
+        dayLineSelectPreviousWordWrap = dayWordWrapEnabled;
+      }
+      dayWordWrapEnabled = true;
+    } else {
+      dayWordWrapEnabled = dayLineSelectPreviousWordWrap;
+    }
+    dayLineSelectEnabled = next;
+    dayLineSelectDayId = next ? nextDayId : null;
+    syncDayWordWrapToggleUi();
+    syncDayLineSelectToggleUi();
+  }
+
   function saveDayEntryAdvancedPreference() {
     if (!persist) return;
     persist.setSetting("dayEntryAdvanced", !!dayEntryAdvancedEnabled);
@@ -25938,6 +26038,9 @@
   }
 
   function syncDayEntryModeUi() {
+    if (!dayEntryAdvancedEnabled && dayLineSelectEnabled) {
+      setDayLineSelectEnabled(false);
+    }
     document.body.classList.toggle(
       "day-entry-guided",
       !dayEntryAdvancedEnabled
@@ -25965,6 +26068,9 @@
   }
 
   function setDayEntryAdvancedEnabled(enabled) {
+    if (!enabled && dayLineSelectEnabled) {
+      setDayLineSelectEnabled(false);
+    }
     dayEntryAdvancedEnabled = !!enabled;
     saveDayEntryAdvancedPreference();
     syncDayEntryModeUi();
@@ -27691,13 +27797,16 @@
   function getCurrentLineInfo(textarea) {
     var value = textarea.value;
     var pos = textarea.selectionStart;
+    var selectionEnd = textarea.selectionEnd;
     var lineStart = value.lastIndexOf("\n", pos - 1) + 1;
     var lineEnd = value.indexOf("\n", pos);
     if (lineEnd === -1) lineEnd = value.length;
+    var queryEnd =
+      pos === lineStart && selectionEnd === lineEnd ? lineEnd : pos;
     return {
       lineStart: lineStart,
       lineEnd: lineEnd,
-      text: value.substring(lineStart, pos),
+      text: value.substring(lineStart, queryEnd),
       fullLine: value.substring(lineStart, lineEnd),
     };
   }
@@ -28141,8 +28250,8 @@
   function daySuggestCaretRect(textarea, backdrop) {
     if (!textarea) return null;
     var pos =
-      typeof textarea.selectionStart === "number"
-        ? textarea.selectionStart
+      typeof textarea.selectionEnd === "number"
+        ? textarea.selectionEnd
         : 0;
     var pad = getComputedStyle(textarea);
     var lineHeight = parseFloat(pad.lineHeight);
@@ -28414,13 +28523,13 @@
     return suggestEl.querySelector(".day__suggest-item");
   }
 
-  function updateDaySuggest(textarea) {
+  function updateDaySuggest(textarea, preferFullLine) {
     if (!textarea || !textarea.classList.contains("day__input")) return;
     var editor = textarea.closest(".day__editor");
     if (!editor) return;
 
     var info = getCurrentLineInfo(textarea);
-    var query = info.text;
+    var query = preferFullLine ? info.fullLine : info.text;
 
     syncDaySuggestDismissedLine(textarea);
 
@@ -28450,10 +28559,7 @@
     }
 
     var queryTrimmed = query.trim();
-    if (
-      queryTrimmed.length < DAY_SUGGEST_MIN_CHARS ||
-      lineMatchesFoodDefinition(info.fullLine)
-    ) {
+    if (queryTrimmed.length < DAY_SUGGEST_MIN_CHARS) {
       hideDaySuggest(textarea);
       return;
     }
@@ -31522,9 +31628,43 @@
       resetDayEditorWidth(editor);
       updateDayEditorMode(textarea);
     });
+    textarea.addEventListener("mousedown", function (e) {
+      if (
+        !dayLineSelectEnabled ||
+        dayLineSelectDayId !== textarea.id ||
+        e.button !== 0
+      ) {
+        return;
+      }
+      e.preventDefault();
+      var pos = caretIndexFromBackdropPoint(textarea, e.clientX, e.clientY);
+      if (pos == null) {
+        textarea.focus();
+        return;
+      }
+      selectDayLineAtPosition(textarea, pos);
+    });
 
     if (backdrop) {
       backdrop.addEventListener("mousedown", function (e) {
+        if (
+          dayLineSelectEnabled &&
+          dayLineSelectDayId === textarea.id &&
+          e.button === 0
+        ) {
+          e.preventDefault();
+          var linePos = caretIndexFromBackdropPoint(
+            textarea,
+            e.clientX,
+            e.clientY
+          );
+          if (linePos == null) {
+            textarea.focus();
+            return;
+          }
+          selectDayLineAtPosition(textarea, linePos);
+          return;
+        }
         if (!dayHighlightsEnabled || e.button !== 0) return;
         if (editor.classList.contains("day__editor--editing")) return;
         e.preventDefault();
@@ -31536,6 +31676,7 @@
         }
         textarea._daySelectAnchor = pos;
         setDayInputSelection(textarea, pos, pos);
+        updateDaySuggest(textarea, true);
       });
     }
 
@@ -31547,7 +31688,7 @@
       updateDaySuggest(textarea);
     });
     textarea.addEventListener("click", function () {
-      updateDaySuggest(textarea);
+      updateDaySuggest(textarea, true);
     });
     textarea.addEventListener("keydown", function (e) {
       var suggestEl = editor.querySelector(".day__suggest");
@@ -35312,6 +35453,14 @@
       setDayWordWrapEnabled(!dayWordWrapEnabled);
     });
   }
+
+  dayLineSelectToggleBtns.forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var dayId = btn.getAttribute("data-day-id");
+      var active = dayLineSelectEnabled && dayLineSelectDayId === dayId;
+      setDayLineSelectEnabled(!active, dayId);
+    });
+  });
 
   if (dayEntryAdvancedToggleBtn) {
     dayEntryAdvancedToggleBtn.addEventListener("click", function () {
