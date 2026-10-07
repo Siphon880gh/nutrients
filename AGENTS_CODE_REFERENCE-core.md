@@ -425,7 +425,7 @@ Advanced mode only (textarea). While typing on the **current line** of a day tex
 
 **Matching** — `mergeFoodAndMealSuggestMatches(query)` (`foodSuggestMatches` against `keywordNames()`, `mealSuggestMatches` against `mealNames()`):
 
-- Prefix match (score 0), fuzzy prefix via Levenshtein on the first `query.length` chars (score 1+), or word-boundary substring (score 2).
+- Prefix match (score 0), fuzzy prefix via Levenshtein on the first `query.length` chars (score 1+), or word-boundary substring (score 2). A word may start after a space, hyphen, or `(`, so aliases in parentheses match (e.g. `dragon` → `Longan (Dragon eye)`).
 - When the query has multiple space-separated words, also match if **each** token appears at a word boundary in **any order** (score 3 in typed order, 4 otherwise) — e.g. `Chinese chicken` → `Chicken - Chinese…`.
 - Highlight range from `foodSuggestHighlightRange` → `daySuggestItemHtml`.
 

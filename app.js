@@ -27826,11 +27826,8 @@
     while (at <= haystack.length - needle.length) {
       var idx = haystack.indexOf(needle, at);
       if (idx < 0) return -1;
-      if (
-        idx === 0 ||
-        haystack.charAt(idx - 1) === " " ||
-        haystack.charAt(idx - 1) === "-"
-      ) {
+      var prev = idx === 0 ? "" : haystack.charAt(idx - 1);
+      if (idx === 0 || prev === " " || prev === "-" || prev === "(") {
         return idx;
       }
       at = idx + 1;
