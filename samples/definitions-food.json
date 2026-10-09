@@ -15936,6 +15936,25 @@
     }
   },
   {
+    "name": "Junk Food - Lotte Rice Crisps (Korea as Ssallo Byul) 1 piece (estimated 4 g; original)",
+    "protein": 0.18,
+    "carbs": 2.58,
+    "fats": 1.29,
+    "micros": {
+      "sodium": 23
+    },
+    "longevity": {
+      "saturatedFat": 0.45,
+      "transFat": 0,
+      "cholesterol": 0
+    },
+    "carbQuality": {
+      "addedSugar": 0.39,
+      "refinedCarbs": 2.58
+    },
+    "source": "Scaled from the Lotte Ssallo Byul original 62 g bag label (350 kcal; protein 2.8 g; carbohydrate 40 g; sugars 6 g; fat 20 g; saturated fat 7 g; trans fat 0 g; cholesterol 0 mg; sodium 360 mg). One piece estimated at 4 g; pieces are irregular clusters."
+  },
+  {
     "name": "Junk Food - Turtle Chips 1 chip (estimated 1.5 g; Sweet Corn assumed)",
     "protein": 0.1,
     "carbs": 0.8,
@@ -24227,6 +24246,30 @@
     }
   },
   {
+    "name": "Junk Food, Popcorn - Popcorners Sea Salt 1 snack bag (1 oz / 28 g)",
+    "protein": 2,
+    "carbs": 20,
+    "fats": 2.5,
+    "micros": {
+      "fiber": 1,
+      "sodium": 190,
+      "potassium": 35,
+      "calcium": 0,
+      "iron": 0
+    },
+    "longevity": {
+      "saturatedFat": 0,
+      "transFat": 0,
+      "cholesterol": 0
+    },
+    "carbQuality": {
+      "glycemicIndex": 55,
+      "addedSugar": 0,
+      "refinedCarbs": 0,
+      "netCarbs": 19
+    }
+  },
+  {
     "name": "Popcorn - LesserEvil Himalayan Salt Organic 2 cups (2 Handfuls)",
     "protein": 1.4,
     "carbs": 10.6,
@@ -28488,6 +28531,382 @@
       "addedSugar": 2.8,
       "refinedCarbs": 19.1,
       "netCarbs": 19.1
+    }
+  },
+  {
+    "name": "Cereal - Hospitality Original Shredded Wheat Bite Size 1 cup",
+    "protein": 4.8,
+    "carbs": 40,
+    "fats": 1.2,
+    "micros": {
+      "sodium": 0,
+      "potassium": 208,
+      "calcium": 0,
+      "iron": 1.44,
+      "magnesium": 64,
+      "zinc": 1.46,
+      "vitaminA": 0,
+      "vitaminD": 0,
+      "vitaminB12": 0,
+      "vitaminB6": 0.07,
+      "vitaminC": 0,
+      "folate": 19,
+      "thiamin": 0.08,
+      "riboflavin": 0,
+      "niacin": 2,
+      "pantothenicAcid": 0.38,
+      "vitaminE": 0.31,
+      "vitaminK": 0.72,
+      "selenium": 2.8,
+      "copper": 160,
+      "phosphorus": 184,
+      "choline": 11,
+      "manganese": 1.9,
+      "molybdenum": 27,
+      "omega3": 0.04,
+      "omega6": 0.76,
+      "histidine": 130,
+      "isoleucine": 161,
+      "leucine": 326,
+      "lysine": 130,
+      "methionine": 83,
+      "phenylalanine": 248,
+      "threonine": 133,
+      "tryptophan": 63,
+      "valine": 205,
+      "arginine": 235,
+      "cysteine": 100,
+      "glutamine": 1573,
+      "glycine": 207,
+      "proline": 754,
+      "tyrosine": 100,
+      "taurine": 0,
+      "solubleFiber": 0.9,
+      "insolubleFiber": 6.3,
+      "fiber": 7.2,
+      "vitaminK1": 0.72,
+      "vitaminK2": 0,
+      "vitaminK2MK4": 0,
+      "vitaminK2MK7": 0
+    },
+    "longevity": {
+      "saturatedFat": 0,
+      "monounsaturatedFat": 0,
+      "polyunsaturatedFat": 0.8,
+      "transFat": 0,
+      "cholesterol": 0,
+      "omega3": true,
+      "omega6": true,
+      "omega9": 0,
+      "ala": 0.04,
+      "epa": 0,
+      "dha": 0,
+      "linoleicAcid": 0.76,
+      "arachidonicAcid": 0,
+      "oleicAcid": 0,
+      "palmitoleicAcid": 0,
+      "vitaminE": true,
+      "vitaminK": true,
+      "vitaminK1": true,
+      "vitaminK2": true,
+      "selenium": true,
+      "phosphorus": true,
+      "choline": true,
+      "copper": true,
+      "lutein": 0.08,
+      "methionine": true,
+      "vitaminK2MK4": true,
+      "vitaminK2MK7": true,
+      "betaine": 34,
+      "carotenoids": 0.08
+    },
+    "carbQuality": {
+      "glycemicIndex": 75,
+      "addedSugar": 0,
+      "refinedCarbs": 0,
+      "netCarbs": 32.8
+    }
+  },
+  {
+    "name": "Cereal - Hospitality Original Shredded Wheat Bite Size 2 cups",
+    "protein": 9.6,
+    "carbs": 80,
+    "fats": 2.4,
+    "micros": {
+      "sodium": 0,
+      "potassium": 416,
+      "calcium": 0,
+      "iron": 2.88,
+      "magnesium": 128,
+      "zinc": 2.93,
+      "vitaminA": 0,
+      "vitaminD": 0,
+      "vitaminB12": 0,
+      "vitaminB6": 0.13,
+      "vitaminC": 0,
+      "folate": 38,
+      "thiamin": 0.16,
+      "riboflavin": 0,
+      "niacin": 4,
+      "pantothenicAcid": 0.77,
+      "vitaminE": 0.62,
+      "vitaminK": 1.44,
+      "selenium": 5.7,
+      "copper": 321,
+      "phosphorus": 369,
+      "choline": 22,
+      "manganese": 3.79,
+      "molybdenum": 55,
+      "omega3": 0.08,
+      "omega6": 1.52,
+      "histidine": 259,
+      "isoleucine": 322,
+      "leucine": 653,
+      "lysine": 261,
+      "methionine": 166,
+      "phenylalanine": 496,
+      "threonine": 267,
+      "tryptophan": 126,
+      "valine": 410,
+      "arginine": 471,
+      "cysteine": 200,
+      "glutamine": 3145,
+      "glycine": 414,
+      "proline": 1508,
+      "tyrosine": 200,
+      "taurine": 0,
+      "solubleFiber": 1.8,
+      "insolubleFiber": 12.6,
+      "fiber": 14.4,
+      "vitaminK1": 1.44,
+      "vitaminK2": 0,
+      "vitaminK2MK4": 0,
+      "vitaminK2MK7": 0
+    },
+    "longevity": {
+      "saturatedFat": 0,
+      "monounsaturatedFat": 0,
+      "polyunsaturatedFat": 1.6,
+      "transFat": 0,
+      "cholesterol": 0,
+      "omega3": true,
+      "omega6": true,
+      "omega9": 0,
+      "ala": 0.08,
+      "epa": 0,
+      "dha": 0,
+      "linoleicAcid": 1.52,
+      "arachidonicAcid": 0,
+      "oleicAcid": 0,
+      "palmitoleicAcid": 0,
+      "vitaminE": true,
+      "vitaminK": true,
+      "vitaminK1": true,
+      "vitaminK2": true,
+      "selenium": true,
+      "phosphorus": true,
+      "choline": true,
+      "copper": true,
+      "lutein": 0.17,
+      "methionine": true,
+      "vitaminK2MK4": true,
+      "vitaminK2MK7": true,
+      "betaine": 68,
+      "carotenoids": 0.17
+    },
+    "carbQuality": {
+      "glycemicIndex": 75,
+      "addedSugar": 0,
+      "refinedCarbs": 0,
+      "netCarbs": 65.6
+    }
+  },
+  {
+    "name": "Cereal - Hospitality Original Shredded Wheat Bite Size 1\u00bd cups**",
+    "protein": 7.2,
+    "carbs": 60,
+    "fats": 1.8,
+    "micros": {
+      "sodium": 0,
+      "potassium": 312,
+      "calcium": 0,
+      "iron": 2.16,
+      "magnesium": 96,
+      "zinc": 2.2,
+      "vitaminA": 0,
+      "vitaminD": 0,
+      "vitaminB12": 0,
+      "vitaminB6": 0.1,
+      "vitaminC": 0,
+      "folate": 29,
+      "thiamin": 0.12,
+      "riboflavin": 0,
+      "niacin": 3,
+      "pantothenicAcid": 0.58,
+      "vitaminE": 0.47,
+      "vitaminK": 1.08,
+      "selenium": 4.2,
+      "copper": 240,
+      "phosphorus": 276,
+      "choline": 17,
+      "manganese": 2.84,
+      "molybdenum": 41,
+      "omega3": 0.06,
+      "omega6": 1.14,
+      "histidine": 195,
+      "isoleucine": 241,
+      "leucine": 489,
+      "lysine": 196,
+      "methionine": 124,
+      "phenylalanine": 372,
+      "threonine": 200,
+      "tryptophan": 95,
+      "valine": 307,
+      "arginine": 353,
+      "cysteine": 150,
+      "glutamine": 2359,
+      "glycine": 310,
+      "proline": 1131,
+      "tyrosine": 150,
+      "taurine": 0,
+      "solubleFiber": 1.4,
+      "insolubleFiber": 9.4,
+      "fiber": 10.8,
+      "vitaminK1": 1.08,
+      "vitaminK2": 0,
+      "vitaminK2MK4": 0,
+      "vitaminK2MK7": 0
+    },
+    "longevity": {
+      "saturatedFat": 0,
+      "monounsaturatedFat": 0,
+      "polyunsaturatedFat": 1.2,
+      "transFat": 0,
+      "cholesterol": 0,
+      "omega3": true,
+      "omega6": true,
+      "omega9": 0,
+      "ala": 0.06,
+      "epa": 0,
+      "dha": 0,
+      "linoleicAcid": 1.14,
+      "arachidonicAcid": 0,
+      "oleicAcid": 0,
+      "palmitoleicAcid": 0,
+      "vitaminE": true,
+      "vitaminK": true,
+      "vitaminK1": true,
+      "vitaminK2": true,
+      "selenium": true,
+      "phosphorus": true,
+      "choline": true,
+      "copper": true,
+      "lutein": 0.13,
+      "methionine": true,
+      "vitaminK2MK4": true,
+      "vitaminK2MK7": true,
+      "betaine": 51,
+      "carotenoids": 0.13
+    },
+    "carbQuality": {
+      "glycemicIndex": 75,
+      "addedSugar": 0,
+      "refinedCarbs": 0,
+      "netCarbs": 49.2
+    }
+  },
+  {
+    "name": "Cereal - Hospitality Original Shredded Wheat Bite Size \u00be cup*",
+    "protein": 3.6,
+    "carbs": 30,
+    "fats": 0.9,
+    "micros": {
+      "sodium": 0,
+      "potassium": 156,
+      "calcium": 0,
+      "iron": 1.08,
+      "magnesium": 48,
+      "zinc": 1.1,
+      "vitaminA": 0,
+      "vitaminD": 0,
+      "vitaminB12": 0,
+      "vitaminB6": 0.05,
+      "vitaminC": 0,
+      "folate": 14,
+      "thiamin": 0.06,
+      "riboflavin": 0,
+      "niacin": 1.5,
+      "pantothenicAcid": 0.29,
+      "vitaminE": 0.23,
+      "vitaminK": 0.54,
+      "selenium": 2.1,
+      "copper": 120,
+      "phosphorus": 138,
+      "choline": 8,
+      "manganese": 1.42,
+      "molybdenum": 21,
+      "omega3": 0.03,
+      "omega6": 0.57,
+      "histidine": 97,
+      "isoleucine": 121,
+      "leucine": 245,
+      "lysine": 98,
+      "methionine": 62,
+      "phenylalanine": 186,
+      "threonine": 100,
+      "tryptophan": 47,
+      "valine": 154,
+      "arginine": 177,
+      "cysteine": 75,
+      "glutamine": 1179,
+      "glycine": 155,
+      "proline": 565,
+      "tyrosine": 75,
+      "taurine": 0,
+      "solubleFiber": 0.7,
+      "insolubleFiber": 4.7,
+      "fiber": 5.4,
+      "vitaminK1": 0.54,
+      "vitaminK2": 0,
+      "vitaminK2MK4": 0,
+      "vitaminK2MK7": 0
+    },
+    "longevity": {
+      "saturatedFat": 0,
+      "monounsaturatedFat": 0,
+      "polyunsaturatedFat": 0.6,
+      "transFat": 0,
+      "cholesterol": 0,
+      "omega3": true,
+      "omega6": true,
+      "omega9": 0,
+      "ala": 0.03,
+      "epa": 0,
+      "dha": 0,
+      "linoleicAcid": 0.57,
+      "arachidonicAcid": 0,
+      "oleicAcid": 0,
+      "palmitoleicAcid": 0,
+      "vitaminE": true,
+      "vitaminK": true,
+      "vitaminK1": true,
+      "vitaminK2": true,
+      "selenium": true,
+      "phosphorus": true,
+      "choline": true,
+      "copper": true,
+      "lutein": 0.06,
+      "methionine": true,
+      "vitaminK2MK4": true,
+      "vitaminK2MK7": true,
+      "betaine": 25,
+      "carotenoids": 0.06
+    },
+    "carbQuality": {
+      "glycemicIndex": 75,
+      "addedSugar": 0,
+      "refinedCarbs": 0,
+      "netCarbs": 24.6
     }
   },
   {
@@ -37905,7 +38324,7 @@
     }
   },
   {
-    "name": "Bagel - Lox Bagel (Thin Salmon, Capers, Red Onion, Cream Cheese)",
+    "name": "Bagel, Lox - entire bagel (thin salmon, capers, red onion, cream cheese)",
     "protein": 20.3,
     "carbs": 54.6,
     "fats": 13.5,
@@ -37977,7 +38396,79 @@
     }
   },
   {
-    "name": "Bagel, Plain - 1 bagel (105 g)",
+    "name": "Bagel, Lox - half bagel (thin salmon, capers, red onion, cream cheese)",
+    "protein": 10.2,
+    "carbs": 27.3,
+    "fats": 6.8,
+    "micros": {
+      "fiber": 0.95,
+      "sodium": 444,
+      "potassium": 118,
+      "calcium": 127,
+      "iron": 1.98,
+      "copper": 125,
+      "magnesium": 20.6,
+      "zinc": 0.57,
+      "selenium": 18.8,
+      "manganese": 0.28,
+      "vitaminA": 52,
+      "vitaminARetinol": 51,
+      "vitaminABetaCarotene": 9,
+      "vitaminD": 3.6,
+      "vitaminE": 4.2,
+      "omega3": 0.15,
+      "epa": 0.04,
+      "dha": 0.06,
+      "omega6": 0.48,
+      "vitaminK": 1.8,
+      "vitaminK1": 0.5,
+      "vitaminK2": 1.3,
+      "vitaminK2MK4": 1.3,
+      "thiamin": 0.29,
+      "riboflavin": 0.23,
+      "niacin": 3.28,
+      "pantothenicAcid": 0.47,
+      "vitaminB6": 0.11,
+      "folate": 55,
+      "vitaminB12": 0.74,
+      "vitaminC": 0.44,
+      "phosphorus": 102,
+      "choline": 30,
+      "quercetin": 1
+    },
+    "longevity": {
+      "saturatedFat": 3.4,
+      "monounsaturatedFat": 2,
+      "polyunsaturatedFat": 0.7,
+      "transFat": 0.19,
+      "cholesterol": 20,
+      "omega3": true,
+      "omega6": true,
+      "omega9": 1.7,
+      "ala": 0.03,
+      "epa": true,
+      "dha": true,
+      "linoleicAcid": 0.47,
+      "oleicAcid": 1.5,
+      "vitaminE": true,
+      "vitaminK": true,
+      "vitaminK1": true,
+      "vitaminK2": true,
+      "vitaminK2MK4": true,
+      "selenium": true,
+      "copper": true,
+      "quercetin": true,
+      "phosphorus": true,
+      "choline": true
+    },
+    "carbQuality": {
+      "glycemicIndex": 70,
+      "addedSugar": 1.5,
+      "refinedCarbs": 25
+    }
+  },
+  {
+    "name": "Bagel, Plain - entire bagel (105 g)",
     "protein": 11.1,
     "carbs": 55,
     "fats": 1.4,
@@ -38043,7 +38534,7 @@
     }
   },
   {
-    "name": "Bagel, Plain - 1/2 bagel (53 g)",
+    "name": "Bagel, Plain - half bagel (53 g)",
     "protein": 5.6,
     "carbs": 27.5,
     "fats": 0.7,
@@ -38109,7 +38600,7 @@
     }
   },
   {
-    "name": "Bagel, Cheese - 1 bagel (85 g)",
+    "name": "Bagel, Cheese - entire bagel (85 g)",
     "protein": 9,
     "carbs": 38,
     "fats": 4.5,
@@ -38142,7 +38633,7 @@
     }
   },
   {
-    "name": "Bagel, Cheese - 1/2 bagel (43 g)",
+    "name": "Bagel, Cheese - half bagel (43 g)",
     "protein": 4.5,
     "carbs": 19,
     "fats": 2.3,
@@ -38175,7 +38666,7 @@
     }
   },
   {
-    "name": "Bagel, Everything - 1 bagel (95 g)",
+    "name": "Bagel, Everything - entire bagel (95 g)",
     "protein": 9,
     "carbs": 53,
     "fats": 4,
@@ -38203,7 +38694,7 @@
     }
   },
   {
-    "name": "Bagel, Everything - 1/2 bagel (48 g)",
+    "name": "Bagel, Everything - half bagel (48 g)",
     "protein": 4.5,
     "carbs": 26.5,
     "fats": 2,
@@ -38228,6 +38719,218 @@
       "addedSugar": 2.5,
       "refinedCarbs": 25.5,
       "netCarbs": 25.5
+    }
+  },
+  {
+    "name": "Cream cheese 1 tablespoon (15 g)",
+    "protein": 0.9,
+    "carbs": 0.7,
+    "fats": 5,
+    "micros": {
+      "sodium": 55,
+      "potassium": 19,
+      "calcium": 15,
+      "magnesium": 1.4,
+      "zinc": 0.09,
+      "selenium": 1.3,
+      "phosphorus": 16,
+      "vitaminA": 41,
+      "vitaminARetinol": 41,
+      "vitaminE": 0.13,
+      "vitaminK": 0.3,
+      "vitaminK1": 0.3,
+      "thiamin": 0.006,
+      "riboflavin": 0.035,
+      "niacin": 0.014,
+      "vitaminB6": 0.006,
+      "folate": 1,
+      "choline": 4,
+      "omega3": 0.024,
+      "epa": 0.002,
+      "omega6": 0.11
+    },
+    "longevity": {
+      "saturatedFat": 3,
+      "monounsaturatedFat": 1,
+      "polyunsaturatedFat": 0.22,
+      "cholesterol": 15,
+      "ala": 0.02,
+      "linoleicAcid": 0.11,
+      "arachidonicAcid": 0.008,
+      "palmitoleicAcid": 0.1,
+      "omega3": true,
+      "omega6": true,
+      "epa": true,
+      "vitaminE": true,
+      "vitaminK": true,
+      "vitaminK1": true,
+      "selenium": true,
+      "phosphorus": true,
+      "choline": true
+    },
+    "carbQuality": {
+      "addedSugar": 0,
+      "refinedCarbs": 0,
+      "netCarbs": 0.7
+    }
+  },
+  {
+    "name": "Cream cheese 2 tablespoons (30 g)",
+    "protein": 1.7,
+    "carbs": 1.4,
+    "fats": 10.1,
+    "micros": {
+      "sodium": 110,
+      "potassium": 38,
+      "calcium": 29,
+      "magnesium": 2.7,
+      "zinc": 0.18,
+      "selenium": 2.6,
+      "phosphorus": 32,
+      "vitaminA": 82,
+      "vitaminARetinol": 82,
+      "vitaminE": 0.26,
+      "vitaminK": 0.6,
+      "vitaminK1": 0.6,
+      "thiamin": 0.011,
+      "riboflavin": 0.069,
+      "niacin": 0.028,
+      "vitaminB6": 0.012,
+      "folate": 3,
+      "choline": 8,
+      "omega3": 0.048,
+      "epa": 0.003,
+      "omega6": 0.23
+    },
+    "longevity": {
+      "saturatedFat": 5.9,
+      "monounsaturatedFat": 2.1,
+      "polyunsaturatedFat": 0.44,
+      "cholesterol": 30,
+      "ala": 0.039,
+      "linoleicAcid": 0.21,
+      "arachidonicAcid": 0.016,
+      "palmitoleicAcid": 0.2,
+      "omega3": true,
+      "omega6": true,
+      "epa": true,
+      "vitaminE": true,
+      "vitaminK": true,
+      "vitaminK1": true,
+      "selenium": true,
+      "phosphorus": true,
+      "choline": true
+    },
+    "carbQuality": {
+      "addedSugar": 0,
+      "refinedCarbs": 0,
+      "netCarbs": 1.4
+    }
+  },
+  {
+    "name": "Cream cheese 1 oz (28 g)",
+    "protein": 1.6,
+    "carbs": 1.3,
+    "fats": 9.4,
+    "micros": {
+      "sodium": 103,
+      "potassium": 35,
+      "calcium": 27,
+      "magnesium": 2.5,
+      "zinc": 0.17,
+      "selenium": 2.4,
+      "phosphorus": 30,
+      "vitaminA": 77,
+      "vitaminARetinol": 77,
+      "vitaminE": 0.24,
+      "vitaminK": 0.6,
+      "vitaminK1": 0.6,
+      "thiamin": 0.011,
+      "riboflavin": 0.064,
+      "niacin": 0.026,
+      "vitaminB6": 0.011,
+      "folate": 3,
+      "choline": 7.5,
+      "omega3": 0.045,
+      "epa": 0.003,
+      "omega6": 0.21
+    },
+    "longevity": {
+      "saturatedFat": 5.5,
+      "monounsaturatedFat": 1.9,
+      "polyunsaturatedFat": 0.41,
+      "cholesterol": 28,
+      "ala": 0.037,
+      "linoleicAcid": 0.2,
+      "arachidonicAcid": 0.015,
+      "palmitoleicAcid": 0.18,
+      "omega3": true,
+      "omega6": true,
+      "epa": true,
+      "vitaminE": true,
+      "vitaminK": true,
+      "vitaminK1": true,
+      "selenium": true,
+      "phosphorus": true,
+      "choline": true
+    },
+    "carbQuality": {
+      "addedSugar": 0,
+      "refinedCarbs": 0,
+      "netCarbs": 1.3
+    }
+  },
+  {
+    "name": "Cream cheese bagel spread - half bagel (1 tablespoon on one cut half, 15 g)",
+    "protein": 0.9,
+    "carbs": 0.7,
+    "fats": 5,
+    "micros": {
+      "sodium": 55,
+      "potassium": 19,
+      "calcium": 15,
+      "magnesium": 1.4,
+      "zinc": 0.09,
+      "selenium": 1.3,
+      "phosphorus": 16,
+      "vitaminA": 41,
+      "vitaminARetinol": 41,
+      "vitaminE": 0.13,
+      "vitaminK": 0.3,
+      "vitaminK1": 0.3,
+      "thiamin": 0.006,
+      "riboflavin": 0.035,
+      "niacin": 0.014,
+      "vitaminB6": 0.006,
+      "folate": 1,
+      "choline": 4,
+      "omega3": 0.024,
+      "epa": 0.002,
+      "omega6": 0.11
+    },
+    "longevity": {
+      "saturatedFat": 3,
+      "monounsaturatedFat": 1,
+      "polyunsaturatedFat": 0.22,
+      "cholesterol": 15,
+      "ala": 0.02,
+      "linoleicAcid": 0.11,
+      "arachidonicAcid": 0.008,
+      "palmitoleicAcid": 0.1,
+      "omega3": true,
+      "omega6": true,
+      "epa": true,
+      "vitaminE": true,
+      "vitaminK": true,
+      "vitaminK1": true,
+      "selenium": true,
+      "phosphorus": true,
+      "choline": true
+    },
+    "carbQuality": {
+      "addedSugar": 0,
+      "refinedCarbs": 0,
+      "netCarbs": 0.7
     }
   },
   {
@@ -39579,6 +40282,378 @@
       "addedSugar": 14,
       "refinedCarbs": 68,
       "netCarbs": 73
+    }
+  },
+  {
+    "name": "Trader Joe's Mandarin Orange Chicken 1 cup (140g)",
+    "protein": 21,
+    "carbs": 24,
+    "fats": 16,
+    "micros": {
+      "sodium": 330,
+      "calcium": 20,
+      "iron": 1.4,
+      "vitaminA": 0,
+      "vitaminC": 2.4,
+      "fiber": 1
+    },
+    "longevity": {
+      "saturatedFat": 3.5,
+      "transFat": 0,
+      "cholesterol": 95
+    },
+    "carbQuality": {
+      "glycemicIndex": 55,
+      "addedSugar": 6,
+      "refinedCarbs": 17,
+      "netCarbs": 23
+    }
+  },
+  {
+    "name": "Trader Joe's Mandarin Style Orange Chicken Bowl 1 bowl (369g)",
+    "protein": 28,
+    "carbs": 84,
+    "fats": 12,
+    "micros": {
+      "sodium": 680,
+      "potassium": 610,
+      "calcium": 60,
+      "vitaminD": 0,
+      "fiber": 6
+    },
+    "longevity": {
+      "saturatedFat": 5,
+      "transFat": 0,
+      "cholesterol": 90
+    },
+    "carbQuality": {
+      "glycemicIndex": 64,
+      "addedSugar": 20,
+      "refinedCarbs": 58,
+      "netCarbs": 78
+    }
+  },
+  {
+    "name": "Trader Joe's Chicken Tikka Masala 1 tray (241g)",
+    "protein": 21,
+    "carbs": 39,
+    "fats": 14,
+    "micros": {
+      "sodium": 580,
+      "calcium": 80,
+      "vitaminA": 225,
+      "vitaminD": 0,
+      "vitaminC": 6,
+      "fiber": 1
+    },
+    "longevity": {
+      "saturatedFat": 2.5,
+      "transFat": 0,
+      "cholesterol": 50
+    },
+    "carbQuality": {
+      "glycemicIndex": 58,
+      "refinedCarbs": 32,
+      "netCarbs": 38
+    }
+  },
+  {
+    "name": "Trader Joe's Butter Chicken with Basmati Rice 1 container (354g)",
+    "protein": 24,
+    "carbs": 49,
+    "fats": 13,
+    "micros": {
+      "sodium": 640,
+      "potassium": 530,
+      "calcium": 50,
+      "vitaminA": 120,
+      "vitaminD": 0,
+      "vitaminC": 1,
+      "fiber": 2
+    },
+    "longevity": {
+      "saturatedFat": 4.5,
+      "transFat": 0,
+      "cholesterol": 80
+    },
+    "carbQuality": {
+      "glycemicIndex": 58,
+      "refinedCarbs": 44,
+      "netCarbs": 47
+    }
+  },
+  {
+    "name": "Trader Joe's Palak Paneer 1/2 container (142g)",
+    "protein": 10,
+    "carbs": 9,
+    "fats": 16,
+    "micros": {
+      "sodium": 510,
+      "potassium": 320,
+      "calcium": 320,
+      "vitaminD": 0,
+      "fiber": 4
+    },
+    "longevity": {
+      "saturatedFat": 5,
+      "transFat": 0,
+      "cholesterol": 20
+    },
+    "carbQuality": {
+      "glycemicIndex": 35,
+      "refinedCarbs": 0,
+      "netCarbs": 5
+    }
+  },
+  {
+    "name": "Trader Joe's Chicken Fried Rice 1 1/3 cups (169g)",
+    "protein": 9,
+    "carbs": 47,
+    "fats": 4.5,
+    "micros": {
+      "sodium": 650,
+      "potassium": 140,
+      "iron": 0.72,
+      "vitaminD": 0,
+      "fiber": 1
+    },
+    "longevity": {
+      "saturatedFat": 1,
+      "transFat": 0,
+      "cholesterol": 40
+    },
+    "carbQuality": {
+      "glycemicIndex": 64,
+      "addedSugar": 2,
+      "refinedCarbs": 41,
+      "netCarbs": 46
+    }
+  },
+  {
+    "name": "Trader Joe's Vegetable Fried Rice 1 1/4 cups (159g)",
+    "protein": 5,
+    "carbs": 42,
+    "fats": 1,
+    "micros": {
+      "sodium": 570,
+      "vitaminA": 270,
+      "vitaminC": 0,
+      "fiber": 3
+    },
+    "longevity": {
+      "saturatedFat": 0,
+      "cholesterol": 0
+    },
+    "carbQuality": {
+      "glycemicIndex": 64,
+      "refinedCarbs": 35,
+      "netCarbs": 39
+    }
+  },
+  {
+    "name": "Trader Joe's Japanese Style Fried Rice 1 1/2 cups (180g)",
+    "protein": 9,
+    "carbs": 58,
+    "fats": 7,
+    "micros": {
+      "sodium": 680,
+      "potassium": 260,
+      "calcium": 70,
+      "vitaminD": 0,
+      "fiber": 3
+    },
+    "longevity": {
+      "saturatedFat": 1,
+      "transFat": 0,
+      "cholesterol": 0
+    },
+    "carbQuality": {
+      "glycemicIndex": 64,
+      "refinedCarbs": 50,
+      "netCarbs": 55
+    }
+  },
+  {
+    "name": "Trader Joe's Kung Pao Chicken 1 cup (150g)",
+    "protein": 24,
+    "carbs": 17,
+    "fats": 10,
+    "micros": {
+      "sodium": 690,
+      "fiber": 2
+    },
+    "longevity": {
+      "saturatedFat": 2
+    },
+    "carbQuality": {
+      "glycemicIndex": 40,
+      "addedSugar": 8,
+      "refinedCarbs": 7,
+      "netCarbs": 15
+    }
+  },
+  {
+    "name": "Trader Joe's Beef & Broccoli 1 cup with sauce (116g)",
+    "protein": 8,
+    "carbs": 31,
+    "fats": 8,
+    "micros": {
+      "sodium": 410,
+      "potassium": 230,
+      "calcium": 20,
+      "vitaminD": 1,
+      "fiber": 2
+    },
+    "longevity": {
+      "saturatedFat": 2,
+      "transFat": 0,
+      "cholesterol": 15
+    },
+    "carbQuality": {
+      "glycemicIndex": 50,
+      "addedSugar": 18,
+      "refinedCarbs": 11,
+      "netCarbs": 29
+    }
+  },
+  {
+    "name": "Trader Joe's Vegetable Pad Thai 1 tray (300g)",
+    "protein": 10,
+    "carbs": 64,
+    "fats": 11,
+    "micros": {
+      "sodium": 900,
+      "potassium": 410,
+      "calcium": 50,
+      "iron": 2,
+      "vitaminD": 0,
+      "fiber": 4
+    },
+    "longevity": {
+      "saturatedFat": 2.5,
+      "transFat": 0,
+      "cholesterol": 0
+    },
+    "carbQuality": {
+      "glycemicIndex": 60,
+      "addedSugar": 11,
+      "refinedCarbs": 34,
+      "netCarbs": 60
+    }
+  },
+  {
+    "name": "Trader Joe's Cauliflower Gnocchi 1 cup (140g)",
+    "protein": 2,
+    "carbs": 22,
+    "fats": 3,
+    "micros": {
+      "sodium": 460,
+      "potassium": 210,
+      "calcium": 40,
+      "iron": 0.9,
+      "vitaminD": 0,
+      "fiber": 6
+    },
+    "longevity": {
+      "saturatedFat": 0.5,
+      "transFat": 0,
+      "cholesterol": 0
+    },
+    "carbQuality": {
+      "glycemicIndex": 52,
+      "addedSugar": 0,
+      "refinedCarbs": 16,
+      "netCarbs": 16
+    }
+  },
+  {
+    "name": "Trader Joe's Pork Gyoza Potstickers 7 potstickers (140g)",
+    "protein": 10,
+    "carbs": 32,
+    "fats": 6,
+    "micros": {
+      "sodium": 680,
+      "calcium": 40,
+      "fiber": 2
+    },
+    "longevity": {
+      "saturatedFat": 2,
+      "transFat": 0,
+      "cholesterol": 20
+    },
+    "carbQuality": {
+      "glycemicIndex": 55,
+      "refinedCarbs": 27,
+      "netCarbs": 30
+    }
+  },
+  {
+    "name": "Trader Joe's Chicken Gyoza Potstickers 7 pieces (140g)",
+    "protein": 10,
+    "carbs": 30,
+    "fats": 5,
+    "micros": {
+      "sodium": 550,
+      "calcium": 20,
+      "fiber": 4
+    },
+    "longevity": {
+      "saturatedFat": 2,
+      "cholesterol": 20
+    },
+    "carbQuality": {
+      "glycemicIndex": 55,
+      "refinedCarbs": 26,
+      "netCarbs": 26
+    }
+  },
+  {
+    "name": "Trader Joe's Reduced Guilt Mac & Cheese 1 container (198g)",
+    "protein": 15,
+    "carbs": 40,
+    "fats": 6,
+    "micros": {
+      "sodium": 540,
+      "potassium": 80,
+      "calcium": 260,
+      "iron": 0,
+      "vitaminA": 30,
+      "vitaminD": 0,
+      "vitaminC": 0,
+      "fiber": 1
+    },
+    "longevity": {
+      "saturatedFat": 3.5,
+      "transFat": 0,
+      "cholesterol": 20
+    },
+    "carbQuality": {
+      "glycemicIndex": 55,
+      "addedSugar": 0,
+      "refinedCarbs": 35,
+      "netCarbs": 39
+    }
+  },
+  {
+    "name": "Trader Joe's Microwavable Mac & Cheese 1 packet (61g)",
+    "protein": 9,
+    "carbs": 39,
+    "fats": 4,
+    "micros": {
+      "sodium": 570,
+      "calcium": 100,
+      "iron": 0.7,
+      "fiber": 2
+    },
+    "longevity": {
+      "saturatedFat": 2.5,
+      "transFat": 0,
+      "cholesterol": 10
+    },
+    "carbQuality": {
+      "glycemicIndex": 55,
+      "refinedCarbs": 32,
+      "netCarbs": 37
     }
   }
 ]
