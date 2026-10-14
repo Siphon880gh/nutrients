@@ -848,6 +848,8 @@
   var foodSourcesStackedOnDef = null;
   /** When set, Food Sources was opened from a nutrient modal food-source chip; back reopens that def modal. */
   var foodSourcesReturnDefModal = null;
+  /** When set, Food Sources was opened from a my-food modal; Return reopens that modal. */
+  var foodSourcesReturnMyFood = null;
   var activeMicroSourcesKey = null;
   var activeMicroSourcesScope = "week";
   var activeMicroSourcesSort = { key: "amount", dir: "desc" };
@@ -882,6 +884,13 @@
   var foodSourcesFilterEl = document.getElementById("food-sources-filter");
   var foodSourcesModalDoneBtn = document.getElementById("food-sources-modal-done");
   var foodSourcesModalBackBtn = document.getElementById("food-sources-modal-back");
+  var foodSourcesReturnMyFoodsBtn = document.getElementById(
+    "food-sources-return-my-foods"
+  );
+  var microSourcesFindOtherBtn = document.getElementById("micro-sources-find-other");
+  var longevitySourcesFindOtherBtn = document.getElementById(
+    "longevity-sources-find-other"
+  );
   var foodSourcesModalFooterEl = document.getElementById("food-sources-modal-footer");
   var foodSourcesFullscreenToggleBtn = document.getElementById(
     "food-sources-fullscreen-toggle"
@@ -7254,22 +7263,22 @@
     if (longevitySourcesFilterEl) longevitySourcesFilterEl.value = activeLongevitySourcesFilter;
   }
 
-  function openLongevitySourcesModal(nutrientKey, kind, stackOnDef, scope) {
-    if (!longevitySourcesModalEl || !nutrientKey || !kind) return;
-    var label;
+  function longevitySourcesDisplayLabel(nutrientKey, kind) {
+    if (!nutrientKey || !kind) return "";
     if (kind === "micro") {
       var microField = microFieldByKey(nutrientKey);
-      if (!microField) return;
-      label = microField.label;
-    } else if (kind === "glycemicLoad") {
-      label = "Avg daily glycemic load";
-    } else if (kind === "macro" && nutrientKey === "protein") {
-      label = "Protein";
-    } else {
-      var longevityField = longevityFieldByKey(nutrientKey);
-      if (!longevityField) return;
-      label = longevityField.label;
+      return microField ? microField.label : "";
     }
+    if (kind === "glycemicLoad") return "Avg daily glycemic load";
+    if (kind === "macro" && nutrientKey === "protein") return "Protein";
+    var longevityField = longevityFieldByKey(nutrientKey);
+    return longevityField ? longevityField.label : "";
+  }
+
+  function openLongevitySourcesModal(nutrientKey, kind, stackOnDef, scope) {
+    if (!longevitySourcesModalEl || !nutrientKey || !kind) return;
+    var label = longevitySourcesDisplayLabel(nutrientKey, kind);
+    if (!label) return;
 
     closeOtherModalsForSources({
       keepDefModal: !!stackOnDef,
@@ -8019,17 +8028,72 @@
   }
 
   function syncFoodSourcesBackBtn() {
-    if (!foodSourcesModalBackBtn) return;
-    var on = !!foodSourcesReturnDefModal;
-    foodSourcesModalBackBtn.hidden = !on;
-    if (on) {
-      foodSourcesModalBackBtn.textContent = foodSourcesDefBackLabel(
-        foodSourcesReturnDefModal
-      );
+    var backOn = !!foodSourcesReturnDefModal;
+    var myFoodOn = !!foodSourcesReturnMyFood;
+    if (foodSourcesModalBackBtn) {
+      foodSourcesModalBackBtn.hidden = !backOn;
+      if (backOn) {
+        foodSourcesModalBackBtn.textContent = foodSourcesDefBackLabel(
+          foodSourcesReturnDefModal
+        );
+      }
+    }
+    if (foodSourcesReturnMyFoodsBtn) {
+      foodSourcesReturnMyFoodsBtn.hidden = !myFoodOn;
     }
     if (foodSourcesModalFooterEl) {
-      foodSourcesModalFooterEl.classList.toggle("modal__footer--split", on);
+      foodSourcesModalFooterEl.classList.toggle(
+        "modal__footer--split",
+        backOn || myFoodOn
+      );
     }
+  }
+
+  function myFoodSourcesReturnState(kind) {
+    if (kind === "micro") {
+      return {
+        kind: "micro",
+        key: activeMicroSourcesKey,
+        scope: activeMicroSourcesScope,
+        sort: {
+          key: activeMicroSourcesSort.key,
+          dir: activeMicroSourcesSort.dir,
+        },
+        filter: activeMicroSourcesFilter,
+        fullscreen: microSourcesFullscreen,
+        stackedOnDef: !!sourcesModalStackedOnDef,
+        defMicroKey: activeMicroDefKey,
+        defLongevityKey: activeLongevityDefKey,
+      };
+    }
+    return {
+      kind: "longevity",
+      key: activeLongevitySourcesKey,
+      sourcesKind: activeLongevitySourcesKind,
+      scope: activeLongevitySourcesScope,
+      sort: {
+        key: activeLongevitySourcesSort.key,
+        dir: activeLongevitySourcesSort.dir,
+      },
+      filter: activeLongevitySourcesFilter,
+      fullscreen: longevitySourcesFullscreen,
+      stackedOnDef: !!sourcesModalStackedOnDef,
+      defMicroKey: activeMicroDefKey,
+      defLongevityKey: activeLongevityDefKey,
+    };
+  }
+
+  function renderFoodSourcesWhenReady() {
+    if (foodSourcesPrecomputedRows && foodSourcesPrecomputedRows.length) {
+      renderFoodSourcesBody();
+      return;
+    }
+    invalidateFoodSourcesRowsCache();
+    ensureFoodSourcesSampleCatalog(function () {
+      invalidateFoodSourcesRowsCache();
+      renderFoodSourcesBody();
+    });
+    renderFoodSourcesBody();
   }
 
   function clearFoodSourcesReturnDefModal() {
@@ -8262,6 +8326,7 @@
   function openFoodSourcesModal() {
     if (!foodSourcesModalEl) return;
     closeOtherModalsForSources();
+    foodSourcesReturnMyFood = null;
     clearFoodSourcesReturnDefModal();
     activeFoodSourcesSort = defaultFoodSourcesSortForKey("nutrient");
     activeFoodSourcesFilter = "";
@@ -8270,20 +8335,7 @@
     foodSourcesModalEl.hidden = false;
     updateBodyModalOpen();
     if (foodSourcesFilterEl) foodSourcesFilterEl.focus();
-
-    // Prefer precomputed grocery list (definitions-food-sources.json) for instant open.
-    if (foodSourcesPrecomputedRows && foodSourcesPrecomputedRows.length) {
-      renderFoodSourcesBody();
-      return;
-    }
-
-    // Fallback: live match against sample foods (slower).
-    invalidateFoodSourcesRowsCache();
-    ensureFoodSourcesSampleCatalog(function () {
-      invalidateFoodSourcesRowsCache();
-      renderFoodSourcesBody();
-    });
-    renderFoodSourcesBody();
+    renderFoodSourcesWhenReady();
   }
 
   function openFoodSourcesFromDefFoodSource(filter) {
@@ -8300,6 +8352,7 @@
       closeOtherModalsForSources({ keepDefModal: true });
     }
 
+    foodSourcesReturnMyFood = null;
     foodSourcesReturnDefModal = {
       microKey: microKey,
       longevityKey: longevityKey,
@@ -8324,16 +8377,7 @@
       activeFoodSourcesSort = defaultFoodSourcesSortForKey("nutrient");
       setFoodSourcesFullscreen(false);
       foodSourcesModalEl.hidden = false;
-      if (foodSourcesPrecomputedRows && foodSourcesPrecomputedRows.length) {
-        renderFoodSourcesBody();
-      } else {
-        invalidateFoodSourcesRowsCache();
-        ensureFoodSourcesSampleCatalog(function () {
-          invalidateFoodSourcesRowsCache();
-          renderFoodSourcesBody();
-        });
-        renderFoodSourcesBody();
-      }
+      renderFoodSourcesWhenReady();
     } else {
       renderFoodSourcesBody();
     }
@@ -8347,6 +8391,7 @@
     if (foodSourcesStackedOnDef && microDefModalEl && !microDefModalEl.hidden) {
       closeMicroDefModal();
     }
+    foodSourcesReturnMyFood = null;
     clearFoodSourcesReturnDefModal();
     setFoodSourcesStackedOnDef(false);
     activeFoodSourcesSort = defaultFoodSourcesSortForKey("nutrient");
@@ -8355,6 +8400,92 @@
     setFoodSourcesFullscreen(false);
     foodSourcesModalEl.hidden = true;
     updateBodyModalOpen();
+  }
+
+  function openFoodSourcesFromMyFood(filterText, returnState) {
+    if (!foodSourcesModalEl || !returnState) return;
+    var foodFilter = String(filterText || "").trim();
+    if (!foodFilter) return;
+
+    if (returnState.kind === "micro") {
+      closeMicroSourcesModal();
+    } else if (returnState.kind === "longevity") {
+      closeLongevitySourcesModal();
+    } else {
+      return;
+    }
+
+    if (returnState.stackedOnDef && microDefModalEl) {
+      microDefModalEl.hidden = true;
+    }
+
+    foodSourcesReturnMyFood = returnState;
+    clearFoodSourcesReturnDefModal();
+    setFoodSourcesStackedOnDef(false);
+    activeFoodSourcesSort = defaultFoodSourcesSortForKey("nutrient");
+    activeFoodSourcesFilter = foodFilter;
+    setFoodSourcesFullscreen(false);
+    syncFoodSourcesControls();
+    foodSourcesModalEl.hidden = false;
+    updateBodyModalOpen();
+    renderFoodSourcesWhenReady();
+    if (foodSourcesFilterEl) foodSourcesFilterEl.focus();
+  }
+
+  function myFoodDefStillUnder(state) {
+    if (!state || !state.stackedOnDef || !microDefModalEl) return false;
+    if (!state.defMicroKey && !state.defLongevityKey) return false;
+    return (
+      activeMicroDefKey === state.defMicroKey &&
+      activeLongevityDefKey === state.defLongevityKey
+    );
+  }
+
+  function restoreMyFoodSourcesModal(state) {
+    if (!state) return;
+    var stackOnDef = myFoodDefStillUnder(state);
+    if (stackOnDef && microDefModalEl.hidden) {
+      microDefModalEl.hidden = false;
+    }
+    if (state.kind === "micro") {
+      openMicroSourcesModal(state.key, state.scope, stackOnDef);
+      activeMicroSourcesFilter = state.filter || "";
+      if (state.sort && state.sort.key) {
+        activeMicroSourcesSort = { key: state.sort.key, dir: state.sort.dir };
+      }
+      setMicroSourcesFullscreen(!!state.fullscreen);
+      syncMicroSourcesControls();
+      renderMicroSourcesBody();
+      if (microSourcesFindOtherBtn) microSourcesFindOtherBtn.focus();
+      return;
+    }
+    openLongevitySourcesModal(
+      state.key,
+      state.sourcesKind,
+      stackOnDef,
+      state.scope
+    );
+    activeLongevitySourcesFilter = state.filter || "";
+    if (state.sort && state.sort.key) {
+      activeLongevitySourcesSort = { key: state.sort.key, dir: state.sort.dir };
+    }
+    setLongevitySourcesFullscreen(!!state.fullscreen);
+    syncLongevitySourcesControls();
+    renderLongevitySourcesBody();
+    if (longevitySourcesFindOtherBtn) longevitySourcesFindOtherBtn.focus();
+  }
+
+  function returnFromFoodSourcesToMyFood() {
+    if (!foodSourcesReturnMyFood) return;
+    var state = foodSourcesReturnMyFood;
+    var keepDef = myFoodDefStillUnder(state);
+    foodSourcesReturnMyFood = null;
+    setFoodSourcesStackedOnDef(false);
+    if (!keepDef && microDefModalEl && !microDefModalEl.hidden) {
+      closeMicroDefModal();
+    }
+    closeFoodSourcesModal();
+    restoreMyFoodSourcesModal(state);
   }
 
   function longevitySourcesIconHtml(nutrientKey, kind, defaultDayId) {
@@ -26319,6 +26450,21 @@
     syncDashboardDayFocusHighlight();
   }
 
+  function clickInsideWeekDay(e) {
+    if (e.target && e.target.closest && e.target.closest(".week__grid .day")) {
+      return true;
+    }
+    // Suggestion rows are removed during the click, which detaches the target.
+    // The original path still ran through the day column.
+    var path = typeof e.composedPath === "function" ? e.composedPath() : [];
+    for (var i = 0; i < path.length; i++) {
+      var node = path[i];
+      if (!node || node.nodeType !== 1 || !node.classList.contains("day")) continue;
+      if (node.closest && node.closest(".week__grid")) return true;
+    }
+    return false;
+  }
+
   function clearWeekDayColumnFocus(opts) {
     opts = opts || {};
     var grid = document.querySelector(".week__grid");
@@ -28445,6 +28591,9 @@
       e.stopPropagation();
     });
     el.addEventListener("click", function (e) {
+      // The row is removed while this click is still bubbling. Stop it here so
+      // the document outside-click handler does not collapse the day column.
+      e.stopPropagation();
       var textarea = editor.querySelector(".day__input");
       if (!textarea) return;
       if (e.target.closest('[data-action="dismiss-suggest"]')) {
@@ -33242,7 +33391,7 @@
     // Add food). Collapsing on that click looks like the food was already added.
     if (
       !document.body.classList.contains("modal-open") &&
-      !e.target.closest(".week__grid .day")
+      !clickInsideWeekDay(e)
     ) {
       clearWeekDayColumnFocus();
     }
@@ -34651,6 +34800,10 @@
 
   if (foodSourcesModalEl) {
     foodSourcesModalEl.addEventListener("click", function (e) {
+      if (e.target.closest('[data-action="return-to-my-foods"]')) {
+        returnFromFoodSourcesToMyFood();
+        return;
+      }
       if (e.target.closest('[data-action="return-to-def-modal"]')) {
         returnFromFoodSourcesToDefModal();
         return;
@@ -34678,6 +34831,25 @@
 
   if (microSourcesModalDoneBtn) {
     microSourcesModalDoneBtn.addEventListener("click", closeMicroSourcesModal);
+  }
+
+  if (microSourcesFindOtherBtn) {
+    microSourcesFindOtherBtn.addEventListener("click", function () {
+      var field = microFieldByKey(activeMicroSourcesKey);
+      if (!field) return;
+      openFoodSourcesFromMyFood(field.label, myFoodSourcesReturnState("micro"));
+    });
+  }
+
+  if (longevitySourcesFindOtherBtn) {
+    longevitySourcesFindOtherBtn.addEventListener("click", function () {
+      var label = longevitySourcesDisplayLabel(
+        activeLongevitySourcesKey,
+        activeLongevitySourcesKind
+      );
+      if (!label) return;
+      openFoodSourcesFromMyFood(label, myFoodSourcesReturnState("longevity"));
+    });
   }
 
   if (microSourcesScopeEl) {
