@@ -111,6 +111,11 @@
       "note": "<p>A <strong>chop</strong> is half a roll. Log <code>1 chop (half a roll)</code> or <code>1 roll (2 chops)</code> — the numbers match that portion, not a whole plate.</p><p>A typical dim sum plate is 3 rolls (6 chops). Values are Hong Kong restaurant steamed rice-rolls as measured by CFS; extra sweet soy poured at the table is not included.</p>"
     },
     {
+      "label": "Vietnamese Sandwich",
+      "pattern": "\\bvietnamese\\s+sandwich\\b",
+      "note": "Half a foot is considered one sandwich. Any Vietnamese sandwich uses that length: about 6 inches."
+    },
+    {
       "label": "Quaker Instant Oatmeal",
       "pattern": "\\bquaker\\s+instant\\s+oatmeal\\b",
       "note": "<p>Based on the <strong>Quaker Instant Oatmeal Flavor Variety</strong> box sold as 15.1 oz at CVS (10 packets × 1.51 oz / 43 g). Flavors in the pack are Maple &amp; Brown Sugar, Apples &amp; Cinnamon, and Cinnamon &amp; Spice. Nutrient numbers are an <strong>average packet</strong>, not one flavor.</p><p><strong>Water:</strong> box hot-prep is up to ½ cup boiling water; microwave is up to ⅔ cup water. Water does not add calories or macros.</p><p><strong>Milk:</strong> the milk entries use <strong>½ cup whole milk per packet</strong> (the box’s hot-prep amount). Two packets use 1 cup whole milk. Microwave directions allow up to ⅔ cup milk per packet — if you use that much, log extra milk (about 2½ tbsp more than ½ cup) or use <code>Milk whole ½ cup * 1.33</code> with the water-prepared packet.</p>"

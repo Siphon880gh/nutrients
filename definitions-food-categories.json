@@ -183,12 +183,17 @@
     {
       "id": "meals",
       "label": "Prepared meals",
-      "patterns": ["^Denny", "^Starbucks", "^Trifecta", "^Hong Kong"]
+      "patterns": ["^Denny", "^Starbucks", "^Trifecta", "^Hong Kong", "^Golden Deli"]
     },
     {
       "id": "salt",
       "label": "Salt",
       "patterns": ["^Table Salt"]
+    },
+    {
+      "id": "pizza",
+      "label": "Pizza",
+      "patterns": ["^Pizza slice\\b", "^Prince St Square Slice\\b"]
     }
   ]
 }
