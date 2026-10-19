@@ -42480,5 +42480,54 @@
       "netCarbs": 47.1
     },
     "notes": "Same ingredient weights as Prince St Square Slice - Pepperoni, plus 35 g low-moisture part-skim mozzarella (USDA FDC 171244) for an extra cheese layer. Total 301 g. GI 36, the international-tables Pizza Hut pan-pizza value. Soluble fiber is 22% of total fiber."
+  },
+  {
+    "name": "Chocolate biscuit 1 piece (about 15 g)",
+    "protein": 0.96,
+    "carbs": 8.8,
+    "fats": 4.08,
+    "micros": {
+      "fiber": 0.26,
+      "sodium": 34.4,
+      "potassium": 51.6,
+      "calcium": 24.5,
+      "iron": 0.3,
+      "copper": 42,
+      "magnesium": 6.9,
+      "zinc": 0.15,
+      "selenium": 0.45,
+      "manganese": 0.102,
+      "vitaminA": 4.2,
+      "vitaminARetinol": 4.2,
+      "vitaminE": 0.236,
+      "omega3": 0.014,
+      "omega6": 0.261,
+      "thiamin": 0.021,
+      "riboflavin": 0.029,
+      "niacin": 0.18,
+      "folate": 2.1,
+      "phosphorus": 30.6,
+      "chloride": 27
+    },
+    "longevity": {
+      "saturatedFat": 2.26,
+      "monounsaturatedFat": 1.31,
+      "polyunsaturatedFat": 0.275,
+      "transFat": 0.014,
+      "cholesterol": 2.55,
+      "lutein": 0.005,
+      "vitaminE": true,
+      "omega3": true,
+      "omega6": true,
+      "selenium": true,
+      "copper": true,
+      "phosphorus": true
+    },
+    "carbQuality": {
+      "addedSugar": 4.76,
+      "refinedCarbs": 8.8,
+      "netCarbs": 8.54
+    },
+    "notes": "One 15 g piece scaled from the UK 2011 analysis of short or sweet biscuits fully coated in chocolate (Department of Health; products included Breakaway, Rocky, and chocolate fingers; CoFID 11-809). Per 100 g: protein 6.4 g, fat 27.2 g, AOAC fibre 1.7 g. Carbohydrate is stored as weight (8.8 g), converted from reported monosaccharide equivalents (sucrose 33.3 g, lactose 5.9 g, starch 23.5 g) with the survey factors 1.05 for disaccharides and 1.10 for starch. Added sugar is sucrose only; lactose from the chocolate is not added sugar. Refined carbs are the full available carbohydrate. Niacin is preformed niacin, not niacin equivalents. Beta-carotene was below 10 µg/100 g. Vitamin B6, B12, vitamin C, vitamin D, vitamin K, and iodine were not reported. No measured glycemic index is stored."
   }
 ]
