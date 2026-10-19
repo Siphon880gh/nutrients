@@ -5024,7 +5024,7 @@
       collectRecentFoodFrequencyRows()
     );
     return [
-      "Rewrite the day meal log below so each food line uses the more likely wording from the recent-foods table. Split a line when it is actually more than one food.",
+      "Rewrite the day meal log below so each food line uses the more likely wording from the recent-foods table. Split a line when it is actually more than one food. Remove empty lines. Remove comment lines that start with // or #. Remove divider lines that has “--” or “---” as first characters.",
       "",
       headingParts.length
         ? "This log is for " + headingParts.join(" · ") + "."
@@ -14578,6 +14578,940 @@
     if (healthTimelineModalEl && !healthTimelineModalEl.hidden) {
       renderHealthTimelineAiPreview();
     }
+  }
+
+  var microGraphModalEl = document.getElementById("micro-graph-modal");
+  var microGraphSubtitleEl = document.getElementById("micro-graph-modal-subtitle");
+  var microGraphChartEl = document.getElementById("micro-graph-chart");
+  var microGraphReadoutEl = document.getElementById("micro-graph-readout");
+  var microGraphChipsEl = document.getElementById("micro-graph-chips");
+  var microGraphAddInputEl = document.getElementById("micro-graph-add-input");
+  var microGraphSuggestEl = document.getElementById("micro-graph-suggest");
+  var microGraphModeDayEl = document.getElementById("micro-graph-mode-day");
+  var microGraphModeWeekEl = document.getElementById("micro-graph-mode-week");
+  var microGraphOpenBtn = document.getElementById("dashboard-micro-graph-open");
+  var microGraphDoneBtn = document.getElementById("micro-graph-modal-done");
+  var microGraphMode = "day";
+  var microGraphSelection = [];
+  var microGraphCache = null;
+  var microGraphReturnFocus = null;
+  var microGraphSuggestActive = -1;
+  var MICRO_GRAPH_COLORS = [
+    "#3d6b9e",
+    "#1f5c53",
+    "#b45309",
+    "#9b2c2c",
+    "#6b4c9a",
+    "#0f766e",
+    "#a16207",
+    "#1d4ed8",
+    "#be185d",
+    "#365314",
+    "#7c2d12",
+    "#155e75",
+  ];
+
+  function microGraphEntry(spec) {
+    if (!spec) return null;
+    if (spec.source === "derived") {
+      var derivedField = microDisplayFieldByKey(spec.key);
+      return derivedField
+        ? { source: "derived", field: derivedField }
+        : null;
+    }
+    if (spec.source === "longevity") {
+      var longevityField = longevityFieldByKey(spec.key);
+      return longevityField
+        ? { source: "longevity", field: longevityField }
+        : null;
+    }
+    var microField = microFieldByKey(spec.key);
+    if (microField) return { source: "micro", field: microField };
+    var longevityFallback = longevityFieldByKey(spec.key);
+    if (longevityFallback) {
+      return { source: "longevity", field: longevityFallback };
+    }
+    var derivedFallback = microDisplayFieldByKey(spec.key);
+    return derivedFallback
+      ? { source: "derived", field: derivedFallback }
+      : null;
+  }
+
+  function microGraphSelectionFromFilters() {
+    var fields = microConditionDisplayFields();
+    var out = [];
+    var seen = {};
+    function push(entry) {
+      if (!entry || !entry.field || !entry.field.key || seen[entry.field.key]) {
+        return;
+      }
+      seen[entry.field.key] = true;
+      out.push({ key: entry.field.key, source: entry.source || "micro" });
+    }
+    if (!microViewDaily) {
+      var weekMicro = weekMicroTotals();
+      var weekLongevity = weekLongevityTotals();
+      fields.forEach(function (entry) {
+        if (microEntryMatchesStatusFilter(entry, weekMicro, weekLongevity, false)) {
+          push(entry);
+        }
+      });
+      return out;
+    }
+    DAYS.forEach(function (day) {
+      var el = document.getElementById(day.id);
+      var text = el ? el.value : "";
+      var micro = microTotalsFromText(text);
+      var longevity = longevityTotalsFromText(text);
+      fields.forEach(function (entry) {
+        if (microEntryMatchesStatusFilter(entry, micro, longevity, true)) {
+          push(entry);
+        }
+      });
+    });
+    return out;
+  }
+
+  function microGraphSelectionFromVisiblePanel() {
+    var root = microViewDaily ? dashboardMicroDailyGridEl : dashboardMicroListEl;
+    if (!root || root.hidden) return null;
+    var selector = microViewDaily
+      ? ".dashboard__micro-day-name[data-micro-def], .dashboard__micro-day-name[data-longevity-def]"
+      : ".dashboard__micro-name[data-micro-def], .dashboard__micro-name[data-longevity-def]";
+    var buttons = root.querySelectorAll(selector);
+    var out = [];
+    var seen = {};
+    Array.prototype.forEach.call(buttons, function (btn) {
+      var longevity = btn.hasAttribute("data-longevity-def");
+      var key = longevity
+        ? btn.getAttribute("data-longevity-def")
+        : btn.getAttribute("data-micro-def");
+      if (!key || seen[key]) return;
+      seen[key] = true;
+      var source = longevity ? "longevity" : "micro";
+      if (microDerivedDefByKey(key)) source = "derived";
+      out.push({ key: key, source: source });
+    });
+    return out;
+  }
+
+  function shownMicroGraphSelection() {
+    var visible = microGraphSelectionFromVisiblePanel();
+    if (visible !== null) return visible;
+    return microGraphSelectionFromFilters();
+  }
+
+  function microGraphCatalog() {
+    var list = [];
+    var seen = {};
+    function push(entry) {
+      if (!entry || !entry.field || seen[entry.field.key]) return;
+      seen[entry.field.key] = true;
+      list.push(entry);
+    }
+    MICRO_ALL_FIELDS.forEach(function (field) {
+      push({ source: "micro", field: field });
+    });
+    Object.keys(MICRO_DERIVED_DEFS).forEach(function (key) {
+      var field = microDisplayFieldByKey(key);
+      if (field) push({ source: "derived", field: field });
+    });
+    LONGEVITY_FIELDS.forEach(function (field) {
+      if (field.key === "glycemicIndex") return;
+      push({ source: "longevity", field: field });
+    });
+    return list;
+  }
+
+  function microGraphSuggestMatches(query) {
+    var q = (query || "").trim().toLowerCase();
+    if (!q) return [];
+    var selected = {};
+    microGraphSelection.forEach(function (spec) {
+      selected[spec.key] = true;
+    });
+    var results = [];
+    microGraphCatalog().forEach(function (entry) {
+      if (selected[entry.field.key]) return;
+      var label = entry.field.label || entry.field.key;
+      var ll = label.toLowerCase();
+      var code = (entry.field.code || "").toLowerCase();
+      var keyl = entry.field.key.toLowerCase();
+      if (
+        ll.indexOf(q) === -1 &&
+        code.indexOf(q) === -1 &&
+        keyl.indexOf(q) === -1
+      ) {
+        return;
+      }
+      results.push({
+        key: entry.field.key,
+        source: entry.source,
+        label: label,
+        starts: ll.indexOf(q) === 0,
+      });
+    });
+    results.sort(function (a, b) {
+      if (a.starts !== b.starts) return a.starts ? -1 : 1;
+      return a.label.length - b.label.length;
+    });
+    return results.slice(0, 8);
+  }
+
+  function microGraphSpan() {
+    var endMonday = viewedWeekStart || currentWeekMondayKey();
+    var startMonday = endMonday;
+    Object.keys(dayMealsByDate).forEach(function (key) {
+      if (!String(dayMealsByDate[key] || "").trim()) return;
+      var d = parseDateKey(key);
+      if (!d) return;
+      var mon = toDateKey(mondayOf(d));
+      if (mon < startMonday) startMonday = mon;
+    });
+    if (startMonday > endMonday) startMonday = endMonday;
+    return { startMonday: startMonday, endMonday: endMonday };
+  }
+
+  function microGraphDateKeys() {
+    var span = microGraphSpan();
+    var start = parseDateKey(span.startMonday);
+    var endMonday = parseDateKey(span.endMonday);
+    var keys = [];
+    if (!start || !endMonday) return keys;
+    var end = addDays(endMonday, 6);
+    var cursor = start;
+    var guard = 0;
+    var endKey = toDateKey(end);
+    while (cursor && toDateKey(cursor) <= endKey && guard < 800) {
+      keys.push(toDateKey(cursor));
+      cursor = addDays(cursor, 1);
+      guard++;
+    }
+    if (keys.length > 400) keys = keys.slice(keys.length - 400);
+    return keys;
+  }
+
+  function microGraphWeekMondayKeys() {
+    var span = microGraphSpan();
+    var cursor = parseDateKey(span.startMonday);
+    var end = span.endMonday;
+    var keys = [];
+    var guard = 0;
+    if (!cursor) return [end];
+    while (toDateKey(cursor) <= end && guard < 260) {
+      keys.push(toDateKey(cursor));
+      cursor = addDays(cursor, 7);
+      guard++;
+    }
+    if (!keys.length) keys = [end];
+    if (keys.length > 104) keys = keys.slice(keys.length - 104);
+    return keys;
+  }
+
+  function microGraphTextsForDates(dateKeys) {
+    var texts = [];
+    dateKeys.forEach(function (dateKey) {
+      if (ignoredDaysByDate[dateKey]) return;
+      texts.push(dayMealsByDate[dateKey] || "");
+    });
+    return texts;
+  }
+
+  function microGraphBucketFromTexts(texts) {
+    var micro = emptyMicroTotals();
+    var longevity = emptyLongevityTotals();
+    texts.forEach(function (text) {
+      micro = addMicroTotals(micro, microTotalsFromText(text));
+      longevity = addLongevityTotals(longevity, longevityTotalsFromText(text));
+    });
+    return {
+      micro: micro,
+      longevity: longevity,
+      divisor: texts.length > 0 ? texts.length : 1,
+    };
+  }
+
+  function microGraphWeekDateKeys(mondayKey) {
+    var keys = weekDateKeys(mondayKey);
+    var lastIdx = keys.length - 1;
+    if (mondayKey === currentWeekMondayKey()) {
+      var today = todayDateKey();
+      for (var i = 0; i < keys.length; i++) {
+        if (keys[i] === today) {
+          lastIdx = i;
+          break;
+        }
+      }
+    }
+    return keys.slice(0, lastIdx + 1);
+  }
+
+  function microGraphDayPoints() {
+    var dateKeys = microGraphDateKeys();
+    var useWeekdayLabel = dateKeys.length <= 7;
+    return dateKeys.map(function (dateKey) {
+      var d = parseDateKey(dateKey);
+      var dayId = d
+        ? ["sun", "mon", "tue", "wed", "thu", "fri", "sat"][d.getDay()]
+        : "";
+      var day = null;
+      for (var i = 0; i < DAYS.length; i++) {
+        if (DAYS[i].id === dayId) day = DAYS[i];
+      }
+      var label =
+        useWeekdayLabel && day
+          ? day.label
+          : d
+            ? d.getMonth() + 1 + "/" + d.getDate()
+            : dateKey;
+      return {
+        label: label,
+        title:
+          (day ? day.label + " " : "") +
+          (d ? formatDayDateLabel(d) : dateKey) +
+          (ignoredDaysByDate[dateKey] ? " · ignored" : ""),
+        today: dateKey === todayDateKey(),
+        bucket: microGraphBucketFromTexts([dayMealsByDate[dateKey] || ""]),
+      };
+    });
+  }
+
+  function microGraphWeekPoints() {
+    return microGraphWeekMondayKeys().map(function (mondayKey) {
+      var d = parseDateKey(mondayKey);
+      var dateKeys = microGraphWeekDateKeys(mondayKey);
+      var partial =
+        mondayKey === currentWeekMondayKey() && dateKeys.length < 7;
+      return {
+        label: d ? d.getMonth() + 1 + "/" + d.getDate() : mondayKey,
+        title:
+          formatWeekRangeLabel(mondayKey) +
+          (partial ? " · through today" : ""),
+        today: false,
+        bucket: microGraphBucketFromTexts(microGraphTextsForDates(dateKeys)),
+      };
+    });
+  }
+
+  function microGraphPoints() {
+    var weekStart = viewedWeekStart || currentWeekMondayKey();
+    if (!microGraphCache || microGraphCache.weekStart !== weekStart) {
+      flushEditorsToDayMeals();
+      microGraphCache = { weekStart: weekStart, day: null, week: null };
+    }
+    if (!microGraphCache[microGraphMode]) {
+      microGraphCache[microGraphMode] =
+        microGraphMode === "week" ? microGraphWeekPoints() : microGraphDayPoints();
+    }
+    return microGraphCache[microGraphMode];
+  }
+
+  function microGraphPointValue(entry, bucket) {
+    var field = entry.field;
+    if (entry.source === "derived") {
+      var ratio = insolubleToSolubleFiberRatio(bucket.micro, true);
+      var derived = microDerivedDefByKey(field.key);
+      var ideal = derived && derived.idealRatio ? derived.idealRatio : 3;
+      var display = insolubleToSolubleFiberTargetPct(ratio, ideal, field.key);
+      return {
+        pct: display.pct,
+        amountText:
+          ratio == null || isNaN(ratio) ? "—" : fmtNum(ratio) + ":1",
+      };
+    }
+    var sum;
+    if (entry.source === "longevity") {
+      sum = bucket.longevity[field.key] || 0;
+    } else if (field.key === "fiber") {
+      sum = fiberTotalFromParts(bucket.micro);
+    } else {
+      sum = bucket.micro[field.key] || 0;
+    }
+    var daily = sum / (bucket.divisor || 1);
+    var pct;
+    if (entry.source === "longevity" && dailyLongevityDv(field.key)) {
+      pct = (daily / dailyLongevityDv(field.key)) * 100;
+    } else {
+      pct = microNutrientTargetPct(field.key, daily).pct;
+    }
+    var unit = field.unit || "";
+    return {
+      pct: pct,
+      amountText: fmtNum(daily) + (unit ? " " + unit : ""),
+    };
+  }
+
+  function microGraphSeries() {
+    var points = microGraphPoints();
+    return microGraphSelection
+      .map(function (spec, index) {
+        var entry = microGraphEntry(spec);
+        if (!entry) return null;
+        var values = points.map(function (point) {
+          return microGraphPointValue(entry, point.bucket);
+        });
+        var hasPct = values.some(function (value) {
+          return value.pct != null && !isNaN(value.pct);
+        });
+        return {
+          key: spec.key,
+          label: entry.field.label || spec.key,
+          color: MICRO_GRAPH_COLORS[index % MICRO_GRAPH_COLORS.length],
+          hasPct: hasPct,
+          values: values,
+        };
+      })
+      .filter(Boolean);
+  }
+
+  function microGraphYMax(series) {
+    var max = 100;
+    series.forEach(function (seriesItem) {
+      seriesItem.values.forEach(function (value) {
+        if (value.pct != null && !isNaN(value.pct) && value.pct > max) {
+          max = value.pct;
+        }
+      });
+    });
+    if (max <= 100) return 100;
+    var step = max <= 200 ? 50 : max <= 500 ? 100 : 200;
+    return Math.ceil(max / step) * step;
+  }
+
+  function microGraphTicks(yMax) {
+    var ticks = [0, yMax];
+    if (yMax > 100) ticks.push(100);
+    else ticks.push(50);
+    if (yMax >= 200) ticks.push(yMax / 2);
+    var seen = {};
+    return ticks
+      .filter(function (tick) {
+        var key = String(Math.round(tick));
+        if (seen[key]) return false;
+        seen[key] = true;
+        return true;
+      })
+      .sort(function (a, b) {
+        return a - b;
+      });
+  }
+
+  function microGraphLinePath(xs, values, yFor) {
+    var d = "";
+    var pen = false;
+    for (var i = 0; i < values.length; i++) {
+      var pct = values[i].pct;
+      if (pct == null || isNaN(pct)) {
+        pen = false;
+        continue;
+      }
+      d +=
+        (pen ? "L" : "M") +
+        xs[i].toFixed(1) +
+        " " +
+        yFor(pct).toFixed(1);
+      pen = true;
+    }
+    return d;
+  }
+
+  function microGraphChartHtml(points, series) {
+    if (!points.length) {
+      return '<p class="micro-graph-empty">No days to graph yet.</p>';
+    }
+    var yMax = microGraphYMax(series);
+    var padL = 48;
+    var padR = 16;
+    var padT = 28;
+    var padB = 32;
+    var plotH = 252;
+    var colWMin = microGraphMode === "day" ? 44 : 88;
+    var plotW = Math.max(
+      220,
+      Math.max(points.length - 1, 1) * colWMin
+    );
+    var width = padL + plotW + padR;
+    var height = padT + plotH + padB;
+    function xFor(index) {
+      if (points.length <= 1) return padL + plotW / 2;
+      return padL + (index * plotW) / (points.length - 1);
+    }
+    function yFor(pct) {
+      var clamped = Math.max(0, pct);
+      return padT + plotH * (1 - clamped / yMax);
+    }
+    var xs = points.map(function (_, index) {
+      return xFor(index);
+    });
+    var labelStep =
+      points.length <= 8 ? 1 : Math.ceil(points.length / 8);
+    var html =
+      '<svg viewBox="0 0 ' +
+      width +
+      " " +
+      height +
+      '" style="min-width:' +
+      width +
+      'px" role="img" aria-label="Line graph of selected nutrients as percent of daily target">';
+    html +=
+      '<text class="micro-graph-y-title" x="' +
+      padL +
+      '" y="16" text-anchor="start">% of daily target</text>';
+    microGraphTicks(yMax).forEach(function (tick) {
+      var y = yFor(tick);
+      html +=
+        '<line x1="' +
+        padL +
+        '" y1="' +
+        y.toFixed(1) +
+        '" x2="' +
+        (padL + plotW) +
+        '" y2="' +
+        y.toFixed(1) +
+        '" stroke="#ecece8" stroke-width="1"></line>';
+      html +=
+        '<text x="' +
+        (padL - 8) +
+        '" y="' +
+        (y + 4).toFixed(1) +
+        '" text-anchor="end">' +
+        escapeHtml(fmtNum(tick) + "%") +
+        "</text>";
+    });
+    var y100 = yFor(100);
+    html +=
+      '<line x1="' +
+      padL +
+      '" y1="' +
+      y100.toFixed(1) +
+      '" x2="' +
+      (padL + plotW) +
+      '" y2="' +
+      y100.toFixed(1) +
+      '" stroke="#9eb4cc" stroke-width="1" stroke-dasharray="4 3"></line>';
+    series.forEach(function (seriesItem) {
+      if (!seriesItem.hasPct) return;
+      var path = microGraphLinePath(xs, seriesItem.values, yFor);
+      if (!path) return;
+      html +=
+        '<path d="' +
+        path +
+        '" fill="none" stroke="' +
+        seriesItem.color +
+        '" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"></path>';
+      seriesItem.values.forEach(function (value, index) {
+        if (value.pct == null || isNaN(value.pct)) return;
+        html +=
+          '<circle cx="' +
+          xs[index].toFixed(1) +
+          '" cy="' +
+          yFor(value.pct).toFixed(1) +
+          '" r="' +
+          (points.length > 24 ? "2.2" : "3.2") +
+          '" fill="' +
+          seriesItem.color +
+          '"></circle>';
+      });
+    });
+    var colW =
+      points.length <= 1 ? plotW : plotW / (points.length - 1);
+    points.forEach(function (point, index) {
+      var x = xs[index];
+      html +=
+        '<rect data-micro-graph-col="' +
+        index +
+        '" x="' +
+        (x - colW / 2).toFixed(1) +
+        '" y="' +
+        padT +
+        '" width="' +
+        colW.toFixed(1) +
+        '" height="' +
+        plotH +
+        '" fill="transparent"></rect>';
+      if (index % labelStep !== 0 && index !== points.length - 1) return;
+      html +=
+        '<text class="micro-graph-x-label' +
+        (point.today ? " micro-graph-x-label--today" : "") +
+        '" x="' +
+        x.toFixed(1) +
+        '" y="' +
+        (height - 10) +
+        '" text-anchor="middle">' +
+        escapeHtml(point.label) +
+        "</text>";
+    });
+    html +=
+      '<line class="micro-graph-guide" x1="0" y1="' +
+      padT +
+      '" x2="0" y2="' +
+      (padT + plotH) +
+      '" stroke="#2a2a28" stroke-width="1" visibility="hidden" pointer-events="none"></line>';
+    html += "</svg>";
+    if (microGraphChartEl) {
+      microGraphChartEl._model = {
+        points: points,
+        series: series,
+        xs: xs,
+        padT: padT,
+        plotH: plotH,
+      };
+      microGraphChartEl._activeCol = null;
+    }
+    return html;
+  }
+
+  function microGraphReadoutHtml(model, index) {
+    var point = model.points[index];
+    if (!point) return "";
+    var html =
+      '<p class="micro-graph-readout-title">' +
+      escapeHtml(point.title) +
+      "</p>";
+    if (!model.series.length) {
+      html += "<p>Add a vitamin to draw a line.</p>";
+      return html;
+    }
+    html += '<ul class="micro-graph-readout-list">';
+    model.series.forEach(function (seriesItem) {
+      var value = seriesItem.values[index];
+      var pctText =
+        value && value.pct != null && !isNaN(value.pct)
+          ? fmtNum(value.pct) + "%"
+          : "No target";
+      html +=
+        "<li><span class=\"micro-graph-readout-swatch\" style=\"background:" +
+        seriesItem.color +
+        '"></span><span class="micro-graph-readout-name">' +
+        escapeHtml(seriesItem.label) +
+        '</span><span class="micro-graph-readout-pct">' +
+        escapeHtml(pctText) +
+        '</span><span class="micro-graph-readout-amt">' +
+        escapeHtml(value ? value.amountText : "—") +
+        "</span></li>";
+    });
+    html += "</ul>";
+    return html;
+  }
+
+  function showMicroGraphColumn(index) {
+    if (!microGraphChartEl || !microGraphChartEl._model) return;
+    var model = microGraphChartEl._model;
+    if (!model.points[index]) return;
+    microGraphChartEl._activeCol = index;
+    var guide = microGraphChartEl.querySelector(".micro-graph-guide");
+    if (guide) {
+      var x = model.xs[index];
+      guide.setAttribute("x1", x);
+      guide.setAttribute("x2", x);
+      guide.setAttribute("y1", model.padT);
+      guide.setAttribute("y2", model.padT + model.plotH);
+      guide.setAttribute("visibility", "visible");
+    }
+    if (microGraphReadoutEl) {
+      microGraphReadoutEl.innerHTML = microGraphReadoutHtml(model, index);
+    }
+  }
+
+  function hideMicroGraphGuide() {
+    if (!microGraphChartEl) return;
+    var guide = microGraphChartEl.querySelector(".micro-graph-guide");
+    if (guide) guide.setAttribute("visibility", "hidden");
+  }
+
+  function microGraphChipHtml(seriesItem) {
+    return (
+      '<span class="micro-graph-chip' +
+      (seriesItem.hasPct ? "" : " micro-graph-chip--untargeted") +
+      '" role="listitem">' +
+      '<span class="micro-graph-chip-swatch" style="background:' +
+      seriesItem.color +
+      '"></span>' +
+      '<span class="micro-graph-chip-label">' +
+      escapeHtml(seriesItem.label) +
+      "</span>" +
+      '<button type="button" class="micro-graph-chip-remove" data-micro-graph-remove="' +
+      escapeAttr(seriesItem.key) +
+      '" aria-label="Remove ' +
+      escapeAttr(seriesItem.label) +
+      '">×</button></span>'
+    );
+  }
+
+  function microGraphSubtitle(points) {
+    var scale = " Each line is the percent of that nutrient's daily target.";
+    if (microGraphMode === "week") {
+      var weekCount = points.length;
+      return (
+        weekCount +
+        (weekCount === 1 ? " week" : " weeks") +
+        " through " +
+        formatWeekRangeLabel(viewedWeekStart) +
+        ". Weekly average, ignored days left out." +
+        scale
+      );
+    }
+    var dayCount = points.length;
+    return (
+      dayCount +
+      (dayCount === 1 ? " day" : " days") +
+      " through " +
+      formatWeekRangeLabel(viewedWeekStart) +
+      "." +
+      scale
+    );
+  }
+
+  function renderMicroGraph() {
+    if (microGraphModeDayEl) {
+      microGraphModeDayEl.setAttribute(
+        "aria-pressed",
+        microGraphMode === "day" ? "true" : "false"
+      );
+    }
+    if (microGraphModeWeekEl) {
+      microGraphModeWeekEl.setAttribute(
+        "aria-pressed",
+        microGraphMode === "week" ? "true" : "false"
+      );
+    }
+    var points = microGraphPoints();
+    var series = microGraphSeries();
+    if (microGraphSubtitleEl) {
+      microGraphSubtitleEl.textContent = microGraphSubtitle(points);
+    }
+    if (microGraphChartEl) {
+      microGraphChartEl.innerHTML = microGraphChartHtml(points, series);
+    }
+    if (microGraphChipsEl) {
+      microGraphChipsEl.innerHTML = series.map(microGraphChipHtml).join("");
+    }
+    if (microGraphReadoutEl) {
+      microGraphReadoutEl.textContent = series.length
+        ? "Hover a column, or use the left and right arrow keys, to read every line."
+        : "Nothing is selected. Add a vitamin to draw a line.";
+    }
+  }
+
+  function hideMicroGraphSuggest() {
+    microGraphSuggestActive = -1;
+    if (!microGraphSuggestEl) return;
+    microGraphSuggestEl.hidden = true;
+    microGraphSuggestEl.innerHTML = "";
+    if (microGraphAddInputEl) {
+      microGraphAddInputEl.setAttribute("aria-expanded", "false");
+      microGraphAddInputEl.removeAttribute("aria-activedescendant");
+    }
+  }
+
+  function renderMicroGraphSuggest() {
+    if (!microGraphAddInputEl || !microGraphSuggestEl) return;
+    var matches = microGraphSuggestMatches(microGraphAddInputEl.value);
+    if (!matches.length) {
+      hideMicroGraphSuggest();
+      return;
+    }
+    if (microGraphSuggestActive >= matches.length) microGraphSuggestActive = 0;
+    microGraphSuggestEl.innerHTML = matches
+      .map(function (match, index) {
+        return (
+          '<button type="button" class="dashboard__nutrient-filter-suggest-item' +
+          (index === microGraphSuggestActive
+            ? " dashboard__nutrient-filter-suggest-item--active"
+            : "") +
+          '" role="option" id="micro-graph-opt-' +
+          index +
+          '" data-micro-graph-pick="' +
+          escapeAttr(match.key) +
+          '" data-micro-graph-source="' +
+          escapeAttr(match.source) +
+          '">' +
+          escapeHtml(match.label) +
+          "</button>"
+        );
+      })
+      .join("");
+    microGraphSuggestEl.hidden = false;
+    microGraphAddInputEl.setAttribute("aria-expanded", "true");
+    if (microGraphSuggestActive >= 0) {
+      microGraphAddInputEl.setAttribute(
+        "aria-activedescendant",
+        "micro-graph-opt-" + microGraphSuggestActive
+      );
+    } else {
+      microGraphAddInputEl.removeAttribute("aria-activedescendant");
+    }
+  }
+
+  function addMicroGraphNutrient(key, source) {
+    if (!key) return;
+    var exists = microGraphSelection.some(function (spec) {
+      return spec.key === key;
+    });
+    if (exists) return;
+    microGraphSelection.push({ key: key, source: source || "micro" });
+    if (microGraphAddInputEl) microGraphAddInputEl.value = "";
+    hideMicroGraphSuggest();
+    renderMicroGraph();
+  }
+
+  function removeMicroGraphNutrient(key) {
+    microGraphSelection = microGraphSelection.filter(function (spec) {
+      return spec.key !== key;
+    });
+    renderMicroGraph();
+  }
+
+  function setMicroGraphMode(mode) {
+    microGraphMode = mode === "week" ? "week" : "day";
+    renderMicroGraph();
+  }
+
+  function openMicroGraphModal() {
+    if (!microGraphModalEl) return;
+    flushEditorsToDayMeals();
+    microGraphCache = null;
+    microGraphMode = "day";
+    microGraphSelection = shownMicroGraphSelection();
+    microGraphReturnFocus = document.activeElement;
+    if (microGraphAddInputEl) microGraphAddInputEl.value = "";
+    hideMicroGraphSuggest();
+    microGraphModalEl.hidden = false;
+    renderMicroGraph();
+    if (microGraphModeDayEl) microGraphModeDayEl.focus();
+  }
+
+  function closeMicroGraphModal() {
+    if (!microGraphModalEl || microGraphModalEl.hidden) return;
+    microGraphModalEl.hidden = true;
+    hideMicroGraphSuggest();
+    if (microGraphAddInputEl) microGraphAddInputEl.value = "";
+    var back = microGraphReturnFocus;
+    microGraphReturnFocus = null;
+    if (back && typeof back.focus === "function") back.focus();
+  }
+
+  function microGraphSuggestIsOpen() {
+    return !!(microGraphSuggestEl && !microGraphSuggestEl.hidden);
+  }
+
+  if (microGraphOpenBtn) {
+    microGraphOpenBtn.addEventListener("click", openMicroGraphModal);
+  }
+  if (microGraphDoneBtn) {
+    microGraphDoneBtn.addEventListener("click", closeMicroGraphModal);
+  }
+  if (microGraphModeDayEl) {
+    microGraphModeDayEl.addEventListener("click", function () {
+      setMicroGraphMode("day");
+    });
+  }
+  if (microGraphModeWeekEl) {
+    microGraphModeWeekEl.addEventListener("click", function () {
+      setMicroGraphMode("week");
+    });
+  }
+  if (microGraphModalEl) {
+    microGraphModalEl.addEventListener("click", function (e) {
+      if (e.target.closest('[data-action="close-micro-graph-modal"]')) {
+        closeMicroGraphModal();
+        return;
+      }
+      var removeBtn = e.target.closest("[data-micro-graph-remove]");
+      if (removeBtn) {
+        removeMicroGraphNutrient(
+          removeBtn.getAttribute("data-micro-graph-remove")
+        );
+        return;
+      }
+      var pick = e.target.closest("[data-micro-graph-pick]");
+      if (pick) {
+        addMicroGraphNutrient(
+          pick.getAttribute("data-micro-graph-pick"),
+          pick.getAttribute("data-micro-graph-source")
+        );
+      }
+    });
+  }
+  if (microGraphSuggestEl) {
+    microGraphSuggestEl.addEventListener("mousedown", function (e) {
+      if (e.target.closest("[data-micro-graph-pick]")) e.preventDefault();
+    });
+  }
+  if (microGraphAddInputEl) {
+    microGraphAddInputEl.addEventListener("input", function () {
+      microGraphSuggestActive = -1;
+      renderMicroGraphSuggest();
+    });
+    microGraphAddInputEl.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && microGraphSuggestIsOpen()) {
+        e.preventDefault();
+        e.stopPropagation();
+        hideMicroGraphSuggest();
+        return;
+      }
+      if (!microGraphSuggestIsOpen()) return;
+      var count = microGraphSuggestEl
+        ? microGraphSuggestEl.querySelectorAll("[data-micro-graph-pick]").length
+        : 0;
+      if (!count) return;
+      if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+        e.preventDefault();
+        if (microGraphSuggestActive < 0) {
+          microGraphSuggestActive = e.key === "ArrowDown" ? 0 : count - 1;
+        } else if (e.key === "ArrowDown") {
+          microGraphSuggestActive = (microGraphSuggestActive + 1) % count;
+        } else {
+          microGraphSuggestActive =
+            (microGraphSuggestActive - 1 + count) % count;
+        }
+        renderMicroGraphSuggest();
+        return;
+      }
+      if (e.key === "Enter" && microGraphSuggestActive >= 0) {
+        e.preventDefault();
+        var active = document.getElementById(
+          "micro-graph-opt-" + microGraphSuggestActive
+        );
+        if (active) {
+          addMicroGraphNutrient(
+            active.getAttribute("data-micro-graph-pick"),
+            active.getAttribute("data-micro-graph-source")
+          );
+        }
+      }
+    });
+  }
+  if (microGraphChartEl) {
+    microGraphChartEl.addEventListener("mouseover", function (e) {
+      var col = e.target.closest("[data-micro-graph-col]");
+      if (!col) return;
+      showMicroGraphColumn(
+        parseInt(col.getAttribute("data-micro-graph-col"), 10)
+      );
+    });
+    microGraphChartEl.addEventListener("click", function (e) {
+      var col = e.target.closest("[data-micro-graph-col]");
+      if (!col) return;
+      showMicroGraphColumn(
+        parseInt(col.getAttribute("data-micro-graph-col"), 10)
+      );
+    });
+    microGraphChartEl.addEventListener("mouseleave", hideMicroGraphGuide);
+    microGraphChartEl.addEventListener("keydown", function (e) {
+      if (e.key !== "ArrowLeft" && e.key !== "ArrowRight") return;
+      var model = microGraphChartEl._model;
+      if (!model || !model.points.length) return;
+      e.preventDefault();
+      var current = microGraphChartEl._activeCol;
+      if (current == null || isNaN(current)) {
+        current = e.key === "ArrowRight" ? -1 : model.points.length;
+      }
+      var next = e.key === "ArrowRight" ? current + 1 : current - 1;
+      if (next < 0) next = 0;
+      if (next >= model.points.length) next = model.points.length - 1;
+      showMicroGraphColumn(next);
+    });
   }
 
   function longevityBarRefPopoverLabel(reqAmount) {
@@ -32373,6 +33307,14 @@
 
   document.addEventListener("keydown", function (e) {
     if (e.key !== "Escape") return;
+    if (microGraphModalEl && !microGraphModalEl.hidden) {
+      if (microGraphSuggestIsOpen()) {
+        hideMicroGraphSuggest();
+        return;
+      }
+      closeMicroGraphModal();
+      return;
+    }
     if (dayFoodItemPopoverEl && !dayFoodItemPopoverEl.hidden) {
       hideDayFoodItemPopover();
       return;

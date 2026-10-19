@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Nutrients — Week meals</title>
-  <link rel="stylesheet" href="styles.css?t=1789731900">
+  <link rel="stylesheet" href="styles.css?t=1792415400">
 </head>
 <body class="show-daily-intake-icons day-entry-guided">
   <svg class="app-icon-symbols" width="0" height="0" aria-hidden="true" focusable="false">
@@ -715,7 +715,10 @@
           <div class="dashboard__micro-hint-block">
             <p id="dashboard-micro-hint" class="dashboard__micro-hint"><span id="dashboard-micro-hint-text">Average daily intake vs your demographic daily values (Mon–Sun). On the current week, averages use Mon through today.</span></p>
             <div class="dashboard__micro-hint-actions">
-              <button type="button" id="dashboard-micro-analysis-week" class="dashboard__analysis-btn" data-app-shortcut="A" aria-keyshortcuts="A" aria-haspopup="dialog" aria-controls="longevity-analysis-modal">Run Analysis<span class="app-nav__shortcut" aria-hidden="true">A</span></button>
+              <div class="dashboard__analysis-pair" role="group" aria-label="Analysis and graph">
+                <button type="button" id="dashboard-micro-analysis-week" class="dashboard__analysis-btn" data-app-shortcut="A" aria-keyshortcuts="A" aria-haspopup="dialog" aria-controls="longevity-analysis-modal">Run Analysis<span class="app-nav__shortcut" aria-hidden="true">A</span></button>
+                <button type="button" id="dashboard-micro-graph-open" class="dashboard__analysis-btn dashboard__analysis-btn--pair" aria-haspopup="dialog" aria-controls="micro-graph-modal">Graph</button>
+              </div>
               <button type="button" id="micro-gaps-ai-open" class="dashboard__micro-hint-action-btn dashboard__micro-hint-ai" aria-label="Ask AI to help fill in the gaps"><span class="dashboard__micro-hint-action-icon" aria-hidden="true">✨</span><span>Ask AI to help fill gaps</span></button>
               <button type="button" id="health-timeline-ai-open" class="dashboard__micro-hint-action-btn dashboard__micro-hint-ai" aria-label="Ask AI what happens to your health if you keep eating like this weekly"><span class="dashboard__micro-hint-action-icon" aria-hidden="true">✨</span><span>Ask AI: health timeline</span></button>
             </div>
@@ -3195,6 +3198,35 @@
     </div>
   </div>
 
+  <div id="micro-graph-modal" class="modal" hidden>
+    <div class="modal__backdrop" data-action="close-micro-graph-modal"></div>
+    <div class="modal__panel modal__panel--wide micro-graph-modal__panel" role="dialog" aria-modal="true" aria-labelledby="micro-graph-modal-title">
+      <header class="modal__header">
+        <h3 id="micro-graph-modal-title" class="modal__title">Nutrient graph</h3>
+        <p id="micro-graph-modal-subtitle" class="modal__subtitle"></p>
+      </header>
+      <div class="micro-graph-modal__toolbar">
+        <div class="dashboard__micro-segmented" role="group" aria-label="Graph period">
+          <button type="button" id="micro-graph-mode-day" class="dashboard__micro-segment" aria-pressed="true">Day by day</button>
+          <button type="button" id="micro-graph-mode-week" class="dashboard__micro-segment" aria-pressed="false">Week by week</button>
+        </div>
+      </div>
+      <div class="micro-graph-modal__body">
+        <div id="micro-graph-chart" class="micro-graph-chart" tabindex="0" aria-label="Nutrient graph. Left and right arrows read one column."></div>
+        <p id="micro-graph-readout" class="micro-graph-readout" aria-live="polite"></p>
+        <div id="micro-graph-chips" class="micro-graph-chips" role="list" aria-label="Graphed nutrients"></div>
+        <div class="dashboard__nutrient-filter-combobox micro-graph-add">
+          <label class="micro-graph-add__label" for="micro-graph-add-input">Add vitamin</label>
+          <input type="search" id="micro-graph-add-input" class="dashboard__nutrient-filter-input" placeholder="Search vitamins and minerals" autocomplete="off" spellcheck="false" aria-autocomplete="list" aria-controls="micro-graph-suggest" aria-expanded="false">
+          <div id="micro-graph-suggest" class="dashboard__nutrient-filter-suggest" role="listbox" hidden></div>
+        </div>
+      </div>
+      <footer class="modal__footer">
+        <button type="button" id="micro-graph-modal-done" class="modal__done">Done</button>
+      </footer>
+    </div>
+  </div>
+
   <div id="starter-guide" class="starter-guide" hidden role="dialog" aria-modal="false" aria-labelledby="starter-guide-text">
     <div class="starter-guide__panel">
       <p id="starter-guide-text" class="starter-guide__text"></p>
@@ -3206,6 +3238,6 @@
   <script src="demographic-dv.js?t=1786025202"></script>
   <script src="longevity-dv.js?t=1784087916"></script>
   <script src="persist.js?t=1789372800"></script>
-  <script src="app.js?t=1791878186"></script>
+  <script src="app.js?t=1792416000"></script>
 </body>
 </html>
