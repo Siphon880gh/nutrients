@@ -36315,6 +36315,19 @@
       microMoreShortcutEl.click();
       return;
     }
+    if (
+      e.shiftKey &&
+      !e.ctrlKey &&
+      !e.metaKey &&
+      !e.altKey &&
+      (e.key === "A" || e.key === "a" || e.code === "KeyA")
+    ) {
+      if (!microGraphOpenBtn) return;
+      e.preventDefault();
+      if (microGraphModalEl && !microGraphModalEl.hidden) return;
+      microGraphOpenBtn.click();
+      return;
+    }
     if (anyAppNavModifierDown(e)) return;
     if (e.key === "ArrowLeft" || e.key === "ArrowRight") {
       var ae = document.activeElement;
