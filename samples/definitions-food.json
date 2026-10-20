@@ -42636,5 +42636,2085 @@
       "netCarbs": 4.07
     },
     "notes": "Original Giant stick label, one stick 0.97 oz (27.5 g), scaled to 1 oz (28 g). USDA Branded FDC 2775154 (published 2026-08-20) and the Conagra quality sheet for UPC 00026200117003. Per stick: 6 g protein, 5 g carbohydrate, 10 g fat, 3.5 g saturated fat, 0 g trans fat, 1 g polyunsaturated fat, 30 mg cholesterol, 450 mg sodium, 150 mg potassium, 40 mg calcium, 0.7 mg iron, 1 g fiber, 0 mcg vitamin D, 0 mcg vitamin A RAE, 0 mg vitamin C. Monounsaturated fat is 4.5 g per stick, from 16.36 g/100 g on that FDC record; the quality sheet rounds it to 4 g. Added sugar is 0.99 g per stick (FDC added sugars 3.6 g/100 g); the sheet prints it as less than 1 g. No glycemic index is published for this stick."
+  },
+  {
+    "name": "Arby's - Double Roast Beef Sandwich 1 sandwich (239 g)",
+    "protein": 38,
+    "carbs": 38,
+    "fats": 24,
+    "micros": {
+      "sodium": 1610,
+      "fiber": 2
+    },
+    "longevity": {
+      "saturatedFat": 9,
+      "transFat": 1.5,
+      "cholesterol": 95
+    },
+    "carbQuality": {
+      "netCarbs": 36
+    },
+    "notes": "Arby's US nutrition guide (Aug 2026 PDF), Double Roast Beef, 239 g: 510 kcal, 24 g fat, 9 g saturated fat, 1.5 g trans fat, 95 mg cholesterol, 1610 mg sodium, 38 g carbohydrate, 2 g fiber, 5 g sugars, 38 g protein. No glycemic index is published."
+  },
+  {
+    "name": "Panda Express - Grilled Teriyaki Chicken 1 entree (6 oz)",
+    "protein": 36,
+    "carbs": 8,
+    "fats": 13,
+    "micros": {
+      "sodium": 530,
+      "fiber": 0
+    },
+    "longevity": {
+      "saturatedFat": 4,
+      "transFat": 0,
+      "cholesterol": 185
+    },
+    "carbQuality": {
+      "netCarbs": 8
+    },
+    "notes": "Panda Express nutrition PDF, Grilled Teriyaki Chicken, 6 oz entree: 300 kcal, 13 g fat, 4 g saturated fat, 0 g trans fat, 185 mg cholesterol, 530 mg sodium, 8 g carbohydrate, 0 g fiber, 8 g sugars, 36 g protein. Panda's figure includes the teriyaki sauce; the log also had a 'no sauce' 10 oz entry, which will be a bit lower in carbs and sodium per ounce."
+  },
+  {
+    "name": "Panda Express - Fried Rice 1 side (9.3 oz)",
+    "protein": 12,
+    "carbs": 82,
+    "fats": 16,
+    "micros": {
+      "sodium": 790,
+      "fiber": 1
+    },
+    "longevity": {
+      "saturatedFat": 3,
+      "transFat": 0,
+      "cholesterol": 150
+    },
+    "carbQuality": {
+      "netCarbs": 81
+    },
+    "notes": "Panda Express nutrition PDF, Fried Rice side, 9.3 oz: 520 kcal, 16 g fat, 3 g saturated fat, 0 g trans fat, 150 mg cholesterol, 790 mg sodium, 82 g carbohydrate, 1 g fiber, 3 g sugars, 12 g protein."
+  },
+  {
+    "name": "Panda Express - Fortune Cookie 1 cookie (8 g)",
+    "protein": 1,
+    "carbs": 7,
+    "fats": 0,
+    "micros": {
+      "sodium": 8
+    },
+    "notes": "Panda Express nutrition PDF, Fortune Cookie, 8 g: 32 kcal, 0 g fat, 8 mg sodium, 7 g carbohydrate, 3 g sugars, 1 g protein. Fiber, cholesterol and saturated fat are not listed separately."
+  },
+  {
+    "name": "Panda Express - Mixed Veggies 1 entree portion (4.3 oz)",
+    "protein": 2,
+    "carbs": 8,
+    "fats": 0,
+    "micros": {
+      "sodium": 280,
+      "fiber": 3
+    },
+    "longevity": {
+      "saturatedFat": 0,
+      "transFat": 0,
+      "cholesterol": 0
+    },
+    "carbQuality": {
+      "netCarbs": 5
+    },
+    "notes": "Panda Express nutrition PDF, Mixed Veggies entree portion, 4.3 oz: 35 kcal, 0 g fat, 280 mg sodium, 8 g carbohydrate, 3 g fiber, 2 g sugars, 2 g protein. The 8.6 oz side portion is 80 kcal, 0.5 g fat, 540 mg sodium, 16 g carbohydrate, 5 g fiber, 4 g protein."
+  },
+  {
+    "name": "Chipotle - Chicken Burrito (White Rice, Cheese, Guacamole) 1 burrito",
+    "protein": 52,
+    "carbs": 99,
+    "fats": 50,
+    "micros": {
+      "sodium": 1820,
+      "fiber": 10
+    },
+    "longevity": {
+      "saturatedFat": 13,
+      "cholesterol": 155
+    },
+    "carbQuality": {
+      "netCarbs": 89
+    },
+    "notes": "Chipotle US per-ingredient nutrition (calories match Chipotle's 3/2025 menu nutrition sheet): flour tortilla 320 kcal/9 g fat/50 g carbs/3 g fiber/8 g protein/600 mg sodium; chicken 4 oz 180/7/0/0/32/310; white rice 4 oz 210/4/40/1/4/350; cheese 1 oz 110/8/1/0/6/190; guacamole 4 oz 230/22/8/6/2/370. Total 1050 kcal, 13 g saturated fat, 155 mg cholesterol, 1820 mg sodium, about 1 g sugars. Beans, salsa and sour cream are not included."
+  },
+  {
+    "name": "Chipotle - Queso Blanco 2 oz (entree spoonful)",
+    "protein": 5,
+    "carbs": 4,
+    "fats": 9,
+    "micros": {
+      "sodium": 250,
+      "fiber": 0
+    },
+    "longevity": {
+      "saturatedFat": 6,
+      "cholesterol": 30
+    },
+    "carbQuality": {
+      "netCarbs": 4
+    },
+    "notes": "Chipotle US per-ingredient nutrition (calories match Chipotle's 3/2025 menu nutrition sheet): Queso Blanco entree portion (one spoonful on a burrito or bowl), 2 oz: 120 kcal, 9 g fat, 6 g saturated fat, 30 mg cholesterol, 250 mg sodium, 4 g carbohydrate, 0 g fiber, 1 g sugars, 5 g protein."
+  },
+  {
+    "name": "Chipotle - Barbacoa 4 oz",
+    "protein": 24,
+    "carbs": 2,
+    "fats": 7,
+    "micros": {
+      "sodium": 530,
+      "fiber": 1
+    },
+    "longevity": {
+      "saturatedFat": 2.5,
+      "cholesterol": 65
+    },
+    "carbQuality": {
+      "netCarbs": 1
+    },
+    "notes": "Chipotle US per-ingredient nutrition (calories match Chipotle's 3/2025 menu nutrition sheet): Barbacoa, 4 oz: 170 kcal, 7 g fat, 2.5 g saturated fat, 65 mg cholesterol, 530 mg sodium, 2 g carbohydrate, 1 g fiber, 0 g sugars, 24 g protein."
+  },
+  {
+    "name": "Chipotle - Flour Tortilla (burrito, 13 inch) 1 tortilla",
+    "protein": 8,
+    "carbs": 50,
+    "fats": 9,
+    "micros": {
+      "sodium": 600,
+      "fiber": 3
+    },
+    "longevity": {
+      "saturatedFat": 0.5,
+      "cholesterol": 0
+    },
+    "carbQuality": {
+      "netCarbs": 47
+    },
+    "notes": "Chipotle US per-ingredient nutrition (calories match Chipotle's 3/2025 menu nutrition sheet): burrito flour tortilla, 1 tortilla: 320 kcal, 9 g fat, 0.5 g saturated fat, 0 mg cholesterol, 600 mg sodium, 50 g carbohydrate, 3 g fiber, 0 g sugars, 8 g protein."
+  },
+  {
+    "name": "Chipotle - Chicken Burrito Bowl (Brown Rice, Fresh Tomato Salsa, Guacamole, Cheese) 1 bowl",
+    "protein": 44,
+    "carbs": 49,
+    "fats": 43,
+    "micros": {
+      "sodium": 1610,
+      "fiber": 9
+    },
+    "longevity": {
+      "saturatedFat": 11.5,
+      "cholesterol": 155
+    },
+    "carbQuality": {
+      "netCarbs": 40
+    },
+    "notes": "Chipotle US per-ingredient nutrition (calories match Chipotle's 3/2025 menu nutrition sheet): chicken 4 oz 180 kcal/7 g fat/0 g carbs/32 g protein/310 mg sodium; brown rice 4 oz 210/6/36 (2 g fiber)/4/190; fresh tomato salsa 4 oz 25/0/4 (1 g fiber)/0/550; guacamole 4 oz 230/22/8 (6 g fiber)/2/370; cheese 1 oz 110/8/1/6/190. Total 755 kcal, 11.5 g saturated fat, 155 mg cholesterol, 1610 mg sodium, about 2 g sugars. Lettuce adds almost nothing."
+  },
+  {
+    "name": "Denny's - Fit Slam 1 plate (15 oz)",
+    "protein": 27,
+    "carbs": 59,
+    "fats": 12,
+    "micros": {
+      "sodium": 860,
+      "fiber": 5
+    },
+    "longevity": {
+      "saturatedFat": 2.5,
+      "transFat": 0,
+      "cholesterol": 30
+    },
+    "carbQuality": {
+      "netCarbs": 54
+    },
+    "notes": "Denny's nutrition guide (Oct 2022 edition), Fit Slam, 15 oz: 450 kcal, 12 g fat, 2.5 g saturated fat, 0 g trans fat, 30 mg cholesterol, 860 mg sodium, 59 g carbohydrate, 5 g fiber, 22 g sugars, 27 g protein."
+  },
+  {
+    "name": "Denny's - Bacon 4 strips",
+    "protein": 14,
+    "carbs": 2,
+    "fats": 16,
+    "micros": {
+      "sodium": 700,
+      "fiber": 0
+    },
+    "longevity": {
+      "saturatedFat": 6,
+      "transFat": 0,
+      "cholesterol": 45
+    },
+    "carbQuality": {
+      "netCarbs": 2
+    },
+    "notes": "Denny's nutrition guide (Oct 2022 edition), Bacon Strips (4): 210 kcal, 16 g fat, 6 g saturated fat, 0 g trans fat, 45 mg cholesterol, 700 mg sodium, 2 g carbohydrate, 0 g fiber, 1 g sugars, 14 g protein."
+  },
+  {
+    "name": "Denny's - Red-Skinned Potatoes 1 side (5 oz)",
+    "protein": 4,
+    "carbs": 30,
+    "fats": 13,
+    "micros": {
+      "sodium": 800,
+      "fiber": 3
+    },
+    "longevity": {
+      "saturatedFat": 2.5,
+      "transFat": 0,
+      "cholesterol": 0
+    },
+    "carbQuality": {
+      "netCarbs": 27
+    },
+    "notes": "Denny's nutrition guide (Oct 2022 edition), Red-Skinned Potatoes side, 5 oz: 250 kcal, 13 g fat, 2.5 g saturated fat, 0 g trans fat, 0 mg cholesterol, 800 mg sodium, 30 g carbohydrate, 3 g fiber, 2 g sugars, 4 g protein. The log had 4 oz portions."
+  },
+  {
+    "name": "Denny's - Seasonal Fruit 1 side (6 oz)",
+    "protein": 1,
+    "carbs": 25,
+    "fats": 0,
+    "micros": {
+      "sodium": 5,
+      "fiber": 3
+    },
+    "longevity": {
+      "saturatedFat": 0,
+      "transFat": 0,
+      "cholesterol": 0
+    },
+    "carbQuality": {
+      "netCarbs": 22
+    },
+    "notes": "Denny's nutrition guide (Oct 2022 edition), Seasonal Fruit side, 6 oz: 100 kcal, 0 g fat, 0 mg cholesterol, 5 mg sodium, 25 g carbohydrate, 3 g fiber, 17 g sugars, 1 g protein. The log had a 4 oz portion."
+  },
+  {
+    "name": "Denny's - French Toast 1 slice",
+    "protein": 9,
+    "carbs": 26,
+    "fats": 19,
+    "micros": {
+      "sodium": 470,
+      "fiber": 1
+    },
+    "longevity": {
+      "saturatedFat": 8,
+      "transFat": 0,
+      "cholesterol": 190
+    },
+    "carbQuality": {
+      "netCarbs": 25
+    },
+    "notes": "Denny's nutrition guide (Oct 2022 edition), Slice of French Toast (1): 320 kcal, 19 g fat, 8 g saturated fat, 0 g trans fat, 190 mg cholesterol, 470 mg sodium, 26 g carbohydrate, 1 g fiber, 6 g sugars, 9 g protein. Logged as '7 Grain French Toast'; the guide lists one French toast slice."
+  },
+  {
+    "name": "Denny's - Moons Over My Hammy with Hash Browns 1 plate (18 oz)",
+    "protein": 47,
+    "carbs": 90,
+    "fats": 54,
+    "micros": {
+      "sodium": 2960,
+      "fiber": 3
+    },
+    "longevity": {
+      "saturatedFat": 18,
+      "transFat": 1,
+      "cholesterol": 560
+    },
+    "carbQuality": {
+      "netCarbs": 87
+    },
+    "notes": "Denny's nutrition guide (Oct 2022 edition), Moons Over My Hammy served with hash browns, 18 oz: 1040 kcal, 54 g fat, 18 g saturated fat, 1 g trans fat, 560 mg cholesterol, 2960 mg sodium, 90 g carbohydrate, 3 g fiber, 4 g sugars, 47 g protein. Logged as a 17 oz sandwich."
+  },
+  {
+    "name": "Baja Fresh - Baja Burrito Chicken 1 burrito (425 g)",
+    "protein": 43,
+    "carbs": 59,
+    "fats": 44,
+    "micros": {
+      "sodium": 1840,
+      "fiber": 6
+    },
+    "longevity": {
+      "saturatedFat": 15,
+      "transFat": 0,
+      "cholesterol": 115
+    },
+    "carbQuality": {
+      "netCarbs": 53
+    },
+    "notes": "Baja Fresh official nutrition PDF (burrito with protein, beans as listed by Baja Fresh), Baja Burrito with chicken, 425 g: 800 kcal, 44 g fat, 15 g saturated fat, 0 g trans fat, 115 mg cholesterol, 1840 mg sodium, 59 g carbohydrate, 6 g fiber, 5 g sugars, 43 g protein."
+  },
+  {
+    "name": "Baja Fresh - Burrito Ultimo Steak 1 burrito (544 g)",
+    "protein": 42,
+    "carbs": 83,
+    "fats": 50,
+    "micros": {
+      "sodium": 2460,
+      "fiber": 4
+    },
+    "longevity": {
+      "saturatedFat": 21,
+      "transFat": 1,
+      "cholesterol": 125
+    },
+    "carbQuality": {
+      "netCarbs": 79
+    },
+    "notes": "Baja Fresh official nutrition PDF (burrito with protein, beans as listed by Baja Fresh), Burrito Ultimo with steak, 544 g: 950 kcal, 50 g fat, 21 g saturated fat, 1 g trans fat, 125 mg cholesterol, 2460 mg sodium, 83 g carbohydrate, 4 g fiber, 8 g sugars, 42 g protein."
+  },
+  {
+    "name": "WaBa Grill - Rib-Eye Steak Plate 1 plate",
+    "protein": 44,
+    "carbs": 130,
+    "fats": 27,
+    "micros": {
+      "sodium": 1700,
+      "fiber": 3
+    },
+    "longevity": {
+      "saturatedFat": 12,
+      "transFat": 2,
+      "cholesterol": 110
+    },
+    "carbQuality": {
+      "netCarbs": 127
+    },
+    "notes": "WaBa Grill nutrition chart (Jan 2025), Rib-Eye Steak Plate (with rice and WaBa sauce): 980 kcal, 27 g fat, 12 g saturated fat, 2 g trans fat, 110 mg cholesterol, 1700 mg sodium, 130 g carbohydrate, 3 g fiber, 35 g sugars, 44 g protein. Logged as 'Steak Plate'."
+  },
+  {
+    "name": "WaBa Grill - Wild Caught Salmon Bowl 1 bowl",
+    "protein": 29,
+    "carbs": 90,
+    "fats": 5,
+    "micros": {
+      "sodium": 710,
+      "fiber": 1
+    },
+    "longevity": {
+      "saturatedFat": 1,
+      "transFat": 0,
+      "cholesterol": 70
+    },
+    "carbQuality": {
+      "netCarbs": 89
+    },
+    "notes": "WaBa Grill nutrition chart (Jan 2025), Wild Caught Salmon Bowl: 540 kcal, 5 g fat, 1 g saturated fat, 0 g trans fat, 70 mg cholesterol, 710 mg sodium, 90 g carbohydrate, 1 g fiber, 9 g sugars, 29 g protein."
+  },
+  {
+    "name": "WaBa Grill - Teriyaki Salmon Veggie Bowl 1 bowl",
+    "protein": 30,
+    "carbs": 80,
+    "fats": 5,
+    "micros": {
+      "sodium": 760,
+      "fiber": 4
+    },
+    "longevity": {
+      "saturatedFat": 1,
+      "transFat": 0,
+      "cholesterol": 70
+    },
+    "carbQuality": {
+      "netCarbs": 76
+    },
+    "notes": "WaBa Grill nutrition chart (Jan 2025), Salmon Veggie Bowl: 500 kcal, 5 g fat, 1 g saturated fat, 0 g trans fat, 70 mg cholesterol, 760 mg sodium, 80 g carbohydrate, 4 g fiber, 14 g sugars, 30 g protein. The log weighed the bowl at 398 g."
+  },
+  {
+    "name": "Yoshinoya - Original Beef (bowl topping, large portion) 196 g",
+    "protein": 27,
+    "carbs": 8,
+    "fats": 63,
+    "micros": {
+      "sodium": 1156,
+      "potassium": 165
+    },
+    "longevity": {
+      "saturatedFat": 29,
+      "cholesterol": 118
+    },
+    "notes": "Yoshinoya America official nutrition page (Sides section), Beef large protein portion, 196 g: 686 kcal, 63 g fat, 29 g saturated fat, 118 mg cholesterol, 165 mg potassium, 1156 mg sodium, 8 g carbohydrate, 27 g protein. Fiber and sugars are not listed. The log had 141.5 g of beef from an XL combo bowl."
+  },
+  {
+    "name": "Yoshinoya - Teriyaki Chicken (bowl topping, regular portion) 166 g",
+    "protein": 30,
+    "carbs": 11,
+    "fats": 9,
+    "micros": {
+      "sodium": 660,
+      "potassium": 305
+    },
+    "longevity": {
+      "cholesterol": 145
+    },
+    "carbQuality": {
+      "addedSugar": 8
+    },
+    "notes": "Yoshinoya America official nutrition page (Sides section), Teriyaki Chicken regular portion, 166 g: 250 kcal, 9 g fat, 145 mg cholesterol, 305 mg potassium, 660 mg sodium, 11 g carbohydrate, 8 g sugars (8 g added), 30 g protein. The log had 125 g from an XL combo bowl."
+  },
+  {
+    "name": "Jersey Mike's - #13 Original Italian, Regular 1 sub",
+    "protein": 45,
+    "carbs": 65,
+    "fats": 55,
+    "micros": {
+      "sodium": 2495,
+      "fiber": 4
+    },
+    "longevity": {
+      "saturatedFat": 15,
+      "cholesterol": 75
+    },
+    "carbQuality": {
+      "netCarbs": 61
+    },
+    "notes": "Jersey Mike's published nutrition (via healthyfastfood.org mirror of Jersey Mike's data), #13 The Original Italian, regular size on white: 940 kcal, 55 g fat, 15 g saturated fat, 75 mg cholesterol, 2495 mg sodium, 65 g carbohydrate, 4 g fiber, 10 g sugars, 45 g protein. The log weighed it at 483 g."
+  },
+  {
+    "name": "Jersey Mike's - California Club, Regular 1 sub",
+    "protein": 43,
+    "carbs": 66,
+    "fats": 58,
+    "micros": {
+      "sodium": 2122,
+      "fiber": 8
+    },
+    "longevity": {
+      "saturatedFat": 13,
+      "cholesterol": 84
+    },
+    "carbQuality": {
+      "netCarbs": 58
+    },
+    "notes": "Jersey Mike's published nutrition (via healthyfastfood.org mirror of Jersey Mike's data), California Club, regular size: 910 kcal, 58 g fat, 13 g saturated fat, 84 mg cholesterol, 2122 mg sodium, 66 g carbohydrate, 8 g fiber, 7 g sugars, 43 g protein. Logged on wheat at 319 g; the published figure may assume white bread."
+  },
+  {
+    "name": "Starbucks - Egg White & Roasted Red Pepper Egg Bites 2 bites (130 g)",
+    "protein": 12,
+    "carbs": 11,
+    "fats": 8,
+    "micros": {
+      "sodium": 470,
+      "fiber": 0
+    },
+    "longevity": {
+      "saturatedFat": 5,
+      "transFat": 0,
+      "cholesterol": 25
+    },
+    "carbQuality": {
+      "netCarbs": 11
+    },
+    "notes": "Starbucks official product nutrition page, Egg White & Roasted Red Pepper Egg Bites, 1 serving (2 bites, 130 g): 170 kcal, 8 g fat, 5 g saturated fat, 0 g trans fat, 25 mg cholesterol, 470 mg sodium, 11 g carbohydrate, 0 g fiber, 3 g sugars, 12 g protein."
+  },
+  {
+    "name": "Starbucks - Chicken & Hummus Protein Box 1 box",
+    "protein": 22,
+    "carbs": 32,
+    "fats": 9,
+    "micros": {
+      "sodium": 780,
+      "fiber": 7
+    },
+    "longevity": {
+      "saturatedFat": 2,
+      "transFat": 0,
+      "cholesterol": 45
+    },
+    "carbQuality": {
+      "netCarbs": 25
+    },
+    "notes": "Starbucks Chicken & Hummus Protein Box as published by Starbucks (via fastfoodnutrition.org): 300 kcal, 9 g fat, 2 g saturated fat, 0 g trans fat, 45 mg cholesterol, 780 mg sodium, 32 g carbohydrate, 7 g fiber, 6 g sugars, 22 g protein."
+  },
+  {
+    "name": "Starbucks - Iced Lemon Loaf 1 slice (115 g)",
+    "protein": 5,
+    "carbs": 59,
+    "fats": 17,
+    "micros": {
+      "sodium": 270
+    },
+    "longevity": {
+      "saturatedFat": 8,
+      "cholesterol": 90
+    },
+    "notes": "Starbucks Iced Lemon Loaf, 1 slice (115 g): 410 kcal, 17 g fat, 8 g saturated fat, 90 mg cholesterol, 270 mg sodium, 59 g carbohydrate, 36 g sugars, 5 g protein (Starbucks published values via search listings; the official page did not load). Fiber is not reported here."
+  },
+  {
+    "name": "Starbucks - Iced Caffè Americano Venti (24 fl oz)",
+    "protein": 1,
+    "carbs": 3,
+    "fats": 0,
+    "micros": {
+      "sodium": 20
+    },
+    "notes": "Starbucks Iced Caffè Americano, Venti 24 fl oz: 15 kcal, 0 g fat, 20 mg sodium, 3 g carbohydrate, 0 g sugars, 1 g protein."
+  },
+  {
+    "name": "Jamba - Açaí Primo Bowl Regular 1 bowl",
+    "protein": 7,
+    "carbs": 102,
+    "fats": 9,
+    "micros": {
+      "sodium": 40,
+      "fiber": 13
+    },
+    "longevity": {
+      "saturatedFat": 2,
+      "transFat": 0,
+      "cholesterol": 0
+    },
+    "carbQuality": {
+      "netCarbs": 89
+    },
+    "notes": "Jamba nutrition spreadsheet (April 2026), Açaí Primo Bowl, regular: 500 kcal, 9 g fat, 2 g saturated fat, 0 g trans fat, 0 mg cholesterol, 40 mg sodium, 102 g carbohydrate, 13 g fiber, 62 g sugars, 7 g protein. Logged as 18 oz."
+  },
+  {
+    "name": "Jamba - Whey Protein Boost 1 boost",
+    "protein": 13,
+    "carbs": 2,
+    "fats": 1,
+    "micros": {
+      "sodium": 30,
+      "fiber": 0
+    },
+    "longevity": {
+      "saturatedFat": 1,
+      "transFat": 0,
+      "cholesterol": 35
+    },
+    "carbQuality": {
+      "netCarbs": 2
+    },
+    "notes": "Jamba nutrition spreadsheet (April 2026), Whey Protein boost: 70 kcal, 1 g fat, 1 g saturated fat, 0 g trans fat, 35 mg cholesterol, 30 mg sodium, 2 g carbohydrate, 0 g fiber, 1 g sugars, 13 g protein."
+  },
+  {
+    "name": "Jamba - Soy Protein Boost 1 boost (8.9 g)",
+    "protein": 9,
+    "carbs": 0,
+    "fats": 0,
+    "micros": {
+      "sodium": 0,
+      "fiber": 0
+    },
+    "longevity": {
+      "saturatedFat": 0,
+      "transFat": 0,
+      "cholesterol": 0
+    },
+    "carbQuality": {
+      "netCarbs": 0
+    },
+    "notes": "Jamba nutrition spreadsheet (April 2026), Soy Protein boost: 40 kcal, 9 g protein; fat, carbohydrate, fiber, sugars, cholesterol and sodium all listed as 0."
+  },
+  {
+    "name": "Junk Food - AMC Large Popcorn without Buttery Topping (150 fl oz bag)",
+    "protein": 19,
+    "carbs": 117,
+    "fats": 39,
+    "micros": {
+      "sodium": 1450,
+      "potassium": 490,
+      "fiber": 22
+    },
+    "longevity": {
+      "saturatedFat": 3
+    },
+    "carbQuality": {
+      "netCarbs": 95
+    },
+    "notes": "AMC Theatres nutrition guide, Large Popcorn (150 fl oz), popped in canola oil, no buttery topping: 870 kcal, 39 g fat, 3 g saturated fat, 1450 mg sodium, 490 mg potassium, 117 g carbohydrate, 22 g fiber, 1 g sugars, 19 g protein. Mono and polyunsaturated fat columns were ambiguous in the source and are omitted."
+  },
+  {
+    "name": "P.F. Chang's - Pork Dumplings, Steamed 6 dumplings",
+    "protein": 18,
+    "carbs": 42,
+    "fats": 21,
+    "micros": {
+      "sodium": 1380,
+      "fiber": 0
+    },
+    "longevity": {
+      "saturatedFat": 6,
+      "transFat": 0,
+      "cholesterol": 60
+    },
+    "carbQuality": {
+      "netCarbs": 42
+    },
+    "notes": "P.F. Chang's nutrition guide, Pork Dumplings steamed (6 pieces, with sauce as served): 480 kcal, 21 g fat, 6 g saturated fat, 0 g trans fat, 60 mg cholesterol, 1380 mg sodium, 42 g carbohydrate, 0 g fiber, 12 g sugars, 18 g protein. The log had 10 dumplings."
+  },
+  {
+    "name": "Dickey's - Pulled Pork 1/4 lb (4 oz)",
+    "protein": 28,
+    "carbs": 2,
+    "fats": 19,
+    "micros": {
+      "sodium": 621,
+      "fiber": 0
+    },
+    "longevity": {
+      "saturatedFat": 7,
+      "transFat": 0,
+      "cholesterol": 98
+    },
+    "carbQuality": {
+      "netCarbs": 2
+    },
+    "notes": "Dickey's Barbecue Pit restaurant nutrition via MyFoodDiary (third-party listing of Dickey's data; Dickey's own calculator loads by script and was not readable): Pulled Pork 1/4 lb: 297 kcal, 19 g fat, 7 g saturated fat, 0 g trans fat, 98 mg cholesterol, 621 mg sodium, 2 g carbohydrate, 0 g fiber, 1 g sugars, 28 g protein."
+  },
+  {
+    "name": "Dickey's - Beef Brisket 1/4 lb (4 oz)",
+    "protein": 32,
+    "carbs": 2,
+    "fats": 22,
+    "micros": {
+      "sodium": 658,
+      "fiber": 0
+    },
+    "longevity": {
+      "saturatedFat": 9,
+      "transFat": 0,
+      "cholesterol": 117
+    },
+    "carbQuality": {
+      "netCarbs": 2
+    },
+    "notes": "Dickey's Barbecue Pit restaurant nutrition via MyFoodDiary (third-party listing of Dickey's data; Dickey's own calculator loads by script and was not readable): Beef Brisket 1/4 lb: 335 kcal, 22 g fat, 9 g saturated fat, 0 g trans fat, 117 mg cholesterol, 658 mg sodium, 2 g carbohydrate, 0 g fiber, 1 g sugars, 32 g protein. Logged as chopped brisket, 6 oz."
+  },
+  {
+    "name": "Dickey's - Barbecue Beans 4 oz",
+    "protein": 4,
+    "carbs": 22,
+    "fats": 0,
+    "micros": {
+      "sodium": 325,
+      "fiber": 4
+    },
+    "longevity": {
+      "saturatedFat": 0,
+      "transFat": 0,
+      "cholesterol": 0
+    },
+    "carbQuality": {
+      "netCarbs": 18
+    },
+    "notes": "Dickey's Barbecue Pit restaurant nutrition via MyFoodDiary (third-party listing of Dickey's data; Dickey's own calculator loads by script and was not readable): Barbecue Beans 4 oz: 110 kcal, 0 g fat, 0 mg cholesterol, 325 mg sodium, 22 g carbohydrate, 4 g fiber, 8 g sugars, 4 g protein."
+  },
+  {
+    "name": "Dickey's - Jalapeño Beans 4 oz",
+    "protein": 5,
+    "carbs": 17,
+    "fats": 2,
+    "micros": {
+      "sodium": 544,
+      "fiber": 5
+    },
+    "longevity": {
+      "saturatedFat": 0,
+      "transFat": 0,
+      "cholesterol": 0
+    },
+    "carbQuality": {
+      "netCarbs": 12
+    },
+    "notes": "Dickey's Barbecue Pit restaurant nutrition via MyFoodDiary (third-party listing of Dickey's data; Dickey's own calculator loads by script and was not readable): Jalapeño Beans 4 oz: 98 kcal, 2 g fat, 0 mg cholesterol, 544 mg sodium, 17 g carbohydrate, 5 g fiber, 1 g sugars, 5 g protein."
+  },
+  {
+    "name": "Dickey's - Mac & Cheese 4 oz",
+    "protein": 7,
+    "carbs": 13,
+    "fats": 8,
+    "micros": {
+      "sodium": 603,
+      "fiber": 1
+    },
+    "longevity": {
+      "saturatedFat": 4,
+      "transFat": 0,
+      "cholesterol": 22
+    },
+    "carbQuality": {
+      "netCarbs": 12
+    },
+    "notes": "Dickey's Barbecue Pit restaurant nutrition via MyFoodDiary (third-party listing of Dickey's data; Dickey's own calculator loads by script and was not readable): Mac & Cheese 4 oz: 156 kcal, 8 g fat, 4 g saturated fat, 0 g trans fat, 22 mg cholesterol, 603 mg sodium, 13 g carbohydrate, 1 g fiber, 2 g sugars, 7 g protein."
+  },
+  {
+    "name": "Dickey's - Barbecue Sauce 2 tbsp",
+    "protein": 0,
+    "carbs": 9,
+    "fats": 0,
+    "micros": {
+      "sodium": 110,
+      "fiber": 0
+    },
+    "longevity": {
+      "saturatedFat": 0,
+      "cholesterol": 0
+    },
+    "carbQuality": {
+      "netCarbs": 9
+    },
+    "notes": "Dickey's Barbecue Pit restaurant nutrition via MyFoodDiary (third-party listing of Dickey's data; Dickey's own calculator loads by script and was not readable): Barbecue Sauce 2 tbsp: 35 kcal, 0 g fat, 110 mg sodium, 9 g carbohydrate, 0 g fiber, 8 g sugars, 0 g protein."
+  },
+  {
+    "name": "Urban Plates - Beet Salad with Goat Cheese 5 oz",
+    "protein": 5,
+    "carbs": 17,
+    "fats": 5,
+    "micros": {
+      "sodium": 360,
+      "fiber": 4
+    },
+    "longevity": {
+      "saturatedFat": 2,
+      "transFat": 0,
+      "cholesterol": 5
+    },
+    "carbQuality": {
+      "netCarbs": 13
+    },
+    "notes": "Urban Plates current nutrition PDF, Beet Salad with Goat Cheese, 5 oz: 130 kcal, 5 g fat, 2 g saturated fat, 0 g trans fat, 5 mg cholesterol, 360 mg sodium, 17 g carbohydrate, 4 g fiber, 12 g sugars, 5 g protein. The log had 4 oz."
+  },
+  {
+    "name": "Urban Plates - White & Red Quinoa with Tomato Pesto 6 oz",
+    "protein": 5,
+    "carbs": 25,
+    "fats": 13,
+    "micros": {
+      "sodium": 610,
+      "fiber": 3
+    },
+    "longevity": {
+      "saturatedFat": 1,
+      "transFat": 0,
+      "cholesterol": 0
+    },
+    "carbQuality": {
+      "netCarbs": 22
+    },
+    "notes": "Urban Plates current nutrition PDF, White & Red Quinoa with Tomato Pesto, 6 oz: 230 kcal, 13 g fat, 1 g saturated fat, 0 g trans fat, 0 mg cholesterol, 610 mg sodium, 25 g carbohydrate, 3 g fiber, 2 g sugars, 5 g protein."
+  },
+  {
+    "name": "Urban Plates - Chocolate Vanilla Cake 1 slice",
+    "protein": 10,
+    "carbs": 98,
+    "fats": 53,
+    "micros": {
+      "sodium": 690,
+      "fiber": 4
+    },
+    "longevity": {
+      "saturatedFat": 30,
+      "transFat": 0,
+      "cholesterol": 220
+    },
+    "carbQuality": {
+      "netCarbs": 94
+    },
+    "notes": "Urban Plates current nutrition PDF, Chocolate Vanilla Cake slice: 880 kcal, 53 g fat, 30 g saturated fat, 0 g trans fat, 220 mg cholesterol, 690 mg sodium, 98 g carbohydrate, 4 g fiber, 72 g sugars, 10 g protein."
+  },
+  {
+    "name": "Urban Plates - Grilled Steak Sandwich 1 sandwich",
+    "protein": 43,
+    "carbs": 65,
+    "fats": 37,
+    "micros": {
+      "sodium": 1190,
+      "fiber": 2
+    },
+    "longevity": {
+      "saturatedFat": 7,
+      "transFat": 0,
+      "cholesterol": 120
+    },
+    "carbQuality": {
+      "netCarbs": 63
+    },
+    "notes": "Urban Plates current nutrition PDF, Grilled Steak Sandwich: 760 kcal, 37 g fat, 7 g saturated fat, 0 g trans fat, 120 mg cholesterol, 1190 mg sodium, 65 g carbohydrate, 2 g fiber, 1 g sugars, 43 g protein."
+  },
+  {
+    "name": "Boston Market - Quarter White Rotisserie Chicken 1 quarter (187 g)",
+    "protein": 51,
+    "carbs": 1,
+    "fats": 13,
+    "micros": {
+      "sodium": 710,
+      "fiber": 0
+    },
+    "longevity": {
+      "saturatedFat": 4,
+      "transFat": 0,
+      "cholesterol": 165
+    },
+    "carbQuality": {
+      "netCarbs": 1
+    },
+    "notes": "Boston Market product nutrition, ingredients and allergens sheet (2016 official PDF; the newer portal no longer loads), Quarter White Rotisserie Chicken (with skin), 187 g: 320 kcal, 13 g fat, 4 g saturated fat, 0 g trans fat, 165 mg cholesterol, 710 mg sodium, 1 g carbohydrate, 0 g fiber, 1 g sugars, 51 g protein. The logged 13.2 oz likely included bones."
+  },
+  {
+    "name": "Boston Market - Fresh Steamed Vegetables 1 side (136 g)",
+    "protein": 2,
+    "carbs": 8,
+    "fats": 2,
+    "micros": {
+      "sodium": 40,
+      "fiber": 3
+    },
+    "longevity": {
+      "saturatedFat": 0,
+      "transFat": 0,
+      "cholesterol": 0
+    },
+    "carbQuality": {
+      "netCarbs": 5
+    },
+    "notes": "Boston Market product nutrition, ingredients and allergens sheet (2016 official PDF; the newer portal no longer loads), Fresh Steamed Vegetables, 136 g: 60 kcal, 2 g fat, 0 g saturated fat, 0 mg cholesterol, 40 mg sodium, 8 g carbohydrate, 3 g fiber, 3 g sugars, 2 g protein."
+  },
+  {
+    "name": "Boston Market - Cornbread 1 piece (57 g)",
+    "protein": 3,
+    "carbs": 34,
+    "fats": 6,
+    "micros": {
+      "sodium": 300,
+      "fiber": 1
+    },
+    "longevity": {
+      "saturatedFat": 2,
+      "transFat": 0,
+      "cholesterol": 10
+    },
+    "carbQuality": {
+      "netCarbs": 33
+    },
+    "notes": "Boston Market product nutrition, ingredients and allergens sheet (2016 official PDF; the newer portal no longer loads), Cornbread, 57 g: 200 kcal, 6 g fat, 2 g saturated fat, 0 g trans fat, 10 mg cholesterol, 300 mg sodium, 34 g carbohydrate, 1 g fiber, 13 g sugars, 3 g protein."
+  },
+  {
+    "name": "Boston Market - Poultry Gravy 4 oz (113 g)",
+    "protein": 2,
+    "carbs": 8,
+    "fats": 1,
+    "micros": {
+      "sodium": 350,
+      "fiber": 0
+    },
+    "longevity": {
+      "saturatedFat": 0,
+      "transFat": 0,
+      "cholesterol": 10
+    },
+    "carbQuality": {
+      "netCarbs": 8
+    },
+    "notes": "Boston Market product nutrition, ingredients and allergens sheet (2016 official PDF; the newer portal no longer loads), Poultry Gravy, 113 g (4 oz): 50 kcal, 1 g fat, 0 g saturated fat, 10 mg cholesterol, 350 mg sodium, 8 g carbohydrate, 0 g fiber, 0 g sugars, 2 g protein. The log had about 1 oz (0.13 cup)."
+  },
+  {
+    "name": "Boston Market - Sweet Corn 1 side (176 g)",
+    "protein": 6,
+    "carbs": 37,
+    "fats": 4,
+    "micros": {
+      "sodium": 95,
+      "fiber": 2
+    },
+    "longevity": {
+      "saturatedFat": 1,
+      "transFat": 0,
+      "cholesterol": 0
+    },
+    "carbQuality": {
+      "netCarbs": 35
+    },
+    "notes": "Boston Market product nutrition, ingredients and allergens sheet (2016 official PDF; the newer portal no longer loads), Sweet Corn, 176 g: 170 kcal, 4 g fat, 1 g saturated fat, 0 g trans fat, 0 mg cholesterol, 95 mg sodium, 37 g carbohydrate, 2 g fiber, 10 g sugars, 6 g protein. The log had 183 g."
+  },
+  {
+    "name": "The Cheesecake Factory - Four Cheese Pasta with Chicken 1 plate (dinner)",
+    "protein": 90,
+    "carbs": 132,
+    "fats": 66,
+    "micros": {
+      "sodium": 4890,
+      "fiber": 11
+    },
+    "longevity": {
+      "saturatedFat": 27,
+      "transFat": 1,
+      "cholesterol": 220
+    },
+    "carbQuality": {
+      "netCarbs": 121
+    },
+    "notes": "The Cheesecake Factory Nutritional Guide (Summer 2026 PDF), Four Cheese Pasta with Chicken, dinner portion: 1480 kcal, 66 g fat, 27 g saturated fat, 1 g trans fat, 220 mg cholesterol, 4890 mg sodium, 132 g carbohydrate, 11 g fiber, 23 g sugars, 90 g protein. The lunch portion is 1060 kcal (43 g fat, 111 g carbs, 59 g protein)."
+  },
+  {
+    "name": "The Cheesecake Factory - SkinnyLicious Hamburger 1 burger",
+    "protein": 35,
+    "carbs": 41,
+    "fats": 30,
+    "micros": {
+      "sodium": 1180,
+      "fiber": 3
+    },
+    "longevity": {
+      "saturatedFat": 11,
+      "transFat": 1.5,
+      "cholesterol": 105
+    },
+    "carbQuality": {
+      "netCarbs": 38
+    },
+    "notes": "The Cheesecake Factory Nutritional Guide (Summer 2026 PDF), SkinnyLicious Hamburger: 570 kcal, 30 g fat, 11 g saturated fat, 1.5 g trans fat, 105 mg cholesterol, 1180 mg sodium, 41 g carbohydrate, 3 g fiber, 9 g sugars, 35 g protein. The log included a side salad; the guide lists the burger by itself."
+  },
+  {
+    "name": "The Cheesecake Factory - Sourdough Baguette 1 baguette",
+    "protein": 9,
+    "carbs": 55,
+    "fats": 1,
+    "micros": {
+      "sodium": 660,
+      "fiber": 2
+    },
+    "longevity": {
+      "saturatedFat": 0,
+      "transFat": 0,
+      "cholesterol": 0
+    },
+    "carbQuality": {
+      "netCarbs": 53
+    },
+    "notes": "The Cheesecake Factory Nutritional Guide (Summer 2026 PDF), Sourdough Baguette (table bread): 260 kcal, 1 g fat, 0 g saturated fat, 0 g trans fat, 0 mg cholesterol, 660 mg sodium, 55 g carbohydrate, 2 g fiber, 1 g sugars, 9 g protein."
+  },
+  {
+    "name": "Stonefire Grill - Baby Back Ribs, Half Rack 1/2 rack",
+    "protein": 35,
+    "carbs": 14,
+    "fats": 23,
+    "micros": {
+      "sodium": 610,
+      "fiber": 0
+    },
+    "longevity": {
+      "saturatedFat": 8.5
+    },
+    "carbQuality": {
+      "netCarbs": 14
+    },
+    "notes": "Stonefire Grill official nutrition page (stonefiregrill.com/nutritional-info), Baby Back Ribs half rack: 420 kcal, 23 g fat, 8.5 g saturated fat, 610 mg sodium, 14 g carbohydrate, 0 g fiber, 35 g protein. Cholesterol and sugars are not published."
+  },
+  {
+    "name": "Stonefire Grill - Fresh Salmon Filet, Plain 1 filet",
+    "protein": 39,
+    "carbs": 0,
+    "fats": 13,
+    "micros": {
+      "sodium": 90,
+      "fiber": 0
+    },
+    "longevity": {
+      "saturatedFat": 2
+    },
+    "carbQuality": {
+      "netCarbs": 0
+    },
+    "notes": "Stonefire Grill official nutrition page (stonefiregrill.com/nutritional-info), Fresh Salmon Filet, plain: 280 kcal, 13 g fat, 2 g saturated fat, 90 mg sodium, 0 g carbohydrate, 0 g fiber, 39 g protein. The filet weight is not published; the log had 4 oz of roasted salmon."
+  },
+  {
+    "name": "Stonefire Grill - Breadstick 1 breadstick",
+    "protein": 8,
+    "carbs": 20,
+    "fats": 9,
+    "micros": {
+      "sodium": 420
+    },
+    "longevity": {
+      "saturatedFat": 4
+    },
+    "notes": "Stonefire Grill official nutrition page (stonefiregrill.com/nutritional-info), Freshly Baked Breadstick (1): 200 kcal, 9 g fat, 4 g saturated fat, 420 mg sodium, 20 g carbohydrate, under 1 g fiber, 8 g protein."
+  },
+  {
+    "name": "Urbane Cafe - The Ahi Tuna Salad 1 salad",
+    "protein": 28,
+    "carbs": 13,
+    "fats": 7,
+    "micros": {
+      "sodium": 180,
+      "fiber": 6
+    },
+    "longevity": {
+      "saturatedFat": 2.5,
+      "transFat": 1,
+      "cholesterol": 50
+    },
+    "carbQuality": {
+      "netCarbs": 7
+    },
+    "notes": "Urbane Cafe interactive nutrition menu (Nutritionix-hosted, official), The Ahi Tuna Salad: 230 kcal, 7 g fat, 2.5 g saturated fat, 1 g trans fat, 50 mg cholesterol, 180 mg sodium, 13 g carbohydrate, 6 g fiber, 5 g sugars, 28 g protein. The log weighed it at 354 g."
+  },
+  {
+    "name": "Urbane Cafe - BBQ Tri Tip Sandwich 1 sandwich",
+    "protein": 47,
+    "carbs": 71,
+    "fats": 39,
+    "micros": {
+      "sodium": 830,
+      "fiber": 7
+    },
+    "longevity": {
+      "saturatedFat": 13,
+      "transFat": 0,
+      "cholesterol": 120
+    },
+    "carbQuality": {
+      "netCarbs": 64
+    },
+    "notes": "Urbane Cafe interactive nutrition menu (Nutritionix-hosted, official), BBQ Tri Tip Sandwich: 800 kcal, 39 g fat, 13 g saturated fat, 0 g trans fat, 120 mg cholesterol, 830 mg sodium, 71 g carbohydrate, 7 g fiber, 16 g sugars, 47 g protein."
+  },
+  {
+    "name": "Urbane Cafe - Salmon Bowl 1 bowl",
+    "protein": 38,
+    "carbs": 73,
+    "fats": 35,
+    "micros": {
+      "sodium": 1180,
+      "fiber": 10
+    },
+    "longevity": {
+      "saturatedFat": 3,
+      "transFat": 0,
+      "cholesterol": 50
+    },
+    "carbQuality": {
+      "netCarbs": 63
+    },
+    "notes": "Urbane Cafe interactive nutrition menu (Nutritionix-hosted, official), Salmon Bowl: 750 kcal, 35 g fat, 3 g saturated fat, 0 g trans fat, 50 mg cholesterol, 1180 mg sodium, 73 g carbohydrate, 10 g fiber, 12 g sugars, 38 g protein."
+  },
+  {
+    "name": "Urbane Cafe - Focaccia Bread Wedge (with salads and bowls) 1 wedge",
+    "protein": 7,
+    "carbs": 24,
+    "fats": 2,
+    "micros": {
+      "sodium": 20,
+      "fiber": 3
+    },
+    "longevity": {
+      "saturatedFat": 0,
+      "transFat": 0,
+      "cholesterol": 0
+    },
+    "carbQuality": {
+      "netCarbs": 21
+    },
+    "notes": "Urbane Cafe interactive nutrition menu (Nutritionix-hosted, official), Focaccia Bread served with salads and bowls: 150 kcal, 2 g fat, 0 g saturated fat, 0 g trans fat, 0 mg cholesterol, 20 mg sodium, 24 g carbohydrate, 3 g fiber, 0 g sugars, 7 g protein."
+  },
+  {
+    "name": "Tender Greens - Grilled Salmon (protein portion) 1 serving",
+    "protein": 25,
+    "carbs": 1,
+    "fats": 22,
+    "micros": {
+      "sodium": 450,
+      "fiber": 0
+    },
+    "longevity": {
+      "saturatedFat": 4,
+      "cholesterol": 75
+    },
+    "carbQuality": {
+      "netCarbs": 1
+    },
+    "notes": "Tender Greens interactive nutrition menu (Nutritionix-hosted, official), Proteins: Grilled Salmon: 300 kcal, 22 g fat, 4 g saturated fat, 75 mg cholesterol, 450 mg sodium, 1 g carbohydrate, 0 g fiber, 0 g sugars, 25 g protein. Plate sides are not included."
+  },
+  {
+    "name": "Tender Greens - Chipotle Barbecue Chicken Salad 1 salad",
+    "protein": 28,
+    "carbs": 29,
+    "fats": 46,
+    "micros": {
+      "sodium": 1290,
+      "fiber": 7
+    },
+    "longevity": {
+      "saturatedFat": 8,
+      "cholesterol": 80
+    },
+    "carbQuality": {
+      "netCarbs": 22
+    },
+    "notes": "Tender Greens interactive nutrition menu (Nutritionix-hosted, official), Salads: Chipotle Barbecue Chicken: 640 kcal, 46 g fat, 8 g saturated fat, 80 mg cholesterol, 1290 mg sodium, 29 g carbohydrate, 7 g fiber, 8 g sugars, 28 g protein."
+  },
+  {
+    "name": "Sheetz - Fryz Biggz Cup 1 cup",
+    "protein": 4,
+    "carbs": 62,
+    "fats": 13,
+    "micros": {
+      "sodium": 540,
+      "fiber": 6
+    },
+    "longevity": {
+      "saturatedFat": 1.5,
+      "transFat": 0,
+      "cholesterol": 0
+    },
+    "carbQuality": {
+      "addedSugar": 0,
+      "netCarbs": 56
+    },
+    "notes": "Sheetz interactive nutrition menu (Nutritionix-hosted, official), Fryz - Biggz Cup: 380 kcal, 13 g fat, 1.5 g saturated fat, 0 g trans fat, 0 mg cholesterol, 540 mg sodium, 62 g carbohydrate, 6 g fiber, 0 g sugars, 0 g added sugars, 4 g protein. Logged as 'French Fries (Cup), 3.5 oz'; Sheetz does not publish the cup weight."
+  },
+  {
+    "name": "Trifecta - Chicken Breast & Sweet Potatoes with Mixed Vegetables 1 meal (340 g)",
+    "protein": 39,
+    "carbs": 29,
+    "fats": 5,
+    "micros": {
+      "sodium": 260,
+      "fiber": 6
+    },
+    "longevity": {
+      "saturatedFat": 1,
+      "transFat": 0
+    },
+    "carbQuality": {
+      "netCarbs": 23
+    },
+    "notes": "Trifecta Nutrition product page (shop.trifectanutrition.com), Chicken Breast & Sweet Potatoes with mixed vegetables, 340 g (4 oz each chicken, sweet potato, vegetables): 310 kcal, 5 g fat, 1 g saturated fat, 0 g trans fat, 260 mg sodium, 29 g carbohydrate, 6 g fiber, 3 g sugars, 39 g protein."
+  },
+  {
+    "name": "Trifecta - Flat Iron Steak, Sweet Potato & Mixed Vegetables 1 meal",
+    "protein": 32,
+    "carbs": 32,
+    "fats": 15,
+    "micros": {
+      "sodium": 210,
+      "fiber": 6
+    },
+    "carbQuality": {
+      "netCarbs": 26
+    },
+    "notes": "Trifecta Steak, Sweet Potato & Mixed Vegetables meal per Carb Manager's restaurant/brand database (third-party; the meal is no longer on Trifecta's site): 390 kcal, 15 g fat, 210 mg sodium, 32 g carbohydrate, 6 g fiber, 32 g protein."
+  },
+  {
+    "name": "Planters Honey Roasted Peanuts 1 oz (28 g, about 39 pieces)",
+    "protein": 7,
+    "carbs": 7,
+    "fats": 13,
+    "micros": {
+      "sodium": 85,
+      "potassium": 180,
+      "calcium": 30,
+      "iron": 1.7,
+      "magnesium": 65,
+      "manganese": 0.46,
+      "copper": 180,
+      "niacin": 4,
+      "vitaminD": 0,
+      "vitaminE": 2.3,
+      "fiber": 2
+    },
+    "longevity": {
+      "saturatedFat": 1.5,
+      "polyunsaturatedFat": 4,
+      "transFat": 0,
+      "cholesterol": 0,
+      "vitaminE": true,
+      "copper": true
+    },
+    "carbQuality": {
+      "addedSugar": 2,
+      "netCarbs": 5
+    },
+    "notes": "Planters.com label, Honey Roasted Peanuts, 1 oz (28 g, about 39 pieces): 160 kcal, 13 g fat, 1.5 g saturated fat, 0 g trans fat, 4 g polyunsaturated fat, 0 mg cholesterol, 85 mg sodium, 7 g carbohydrate, 2 g fiber, 4 g sugars (2 g added), 7 g protein, 30 mg calcium, 0.18 mg copper, 1.7 mg iron, 65 mg magnesium, 0.46 mg manganese, 4 mg niacin, 180 mg potassium, 0 mcg vitamin D, 2.3 mg vitamin E."
+  },
+  {
+    "name": "Danisa Traditional Butter Cookies 30 g",
+    "protein": 2,
+    "carbs": 20,
+    "fats": 7,
+    "micros": {
+      "sodium": 60,
+      "fiber": 0.99
+    },
+    "longevity": {
+      "saturatedFat": 5,
+      "transFat": 0,
+      "cholesterol": 9.9
+    },
+    "carbQuality": {
+      "netCarbs": 19.01
+    },
+    "notes": "Danisa Traditional Butter Cookies label as listed in USDA FoodData Central Branded (via MyFoodData, UPC 633090226465), 30 g: 150 kcal, 7 g fat, 5 g saturated fat, 0 g trans fat, 9.9 mg cholesterol, 60 mg sodium, 20 g carbohydrate, 0.99 g fiber, 8 g sugars, 2 g protein. Logs listed 30 g as both 3 and 6 pieces, so no piece count is given."
+  },
+  {
+    "name": "Muscle Milk Genuine Zero Sugar Vanilla Crème Protein Shake 14 fl oz (414 mL)",
+    "protein": 25,
+    "carbs": 8,
+    "fats": 4.5,
+    "micros": {
+      "sodium": 210,
+      "potassium": 580,
+      "calcium": 330,
+      "iron": 0.1,
+      "vitaminA": 230,
+      "vitaminD": 8,
+      "fiber": 6
+    },
+    "longevity": {
+      "saturatedFat": 1,
+      "transFat": 0,
+      "cholesterol": 10
+    },
+    "carbQuality": {
+      "addedSugar": 0,
+      "netCarbs": 2
+    },
+    "notes": "Retailer label (Kroger family / Foods Co listing, UPC 0087606300202), 1 bottle 414 mL: 160 kcal, 4.5 g fat, 1 g saturated fat, 0 g trans fat, 10 mg cholesterol, 210 mg sodium, 8 g carbohydrate, 6 g fiber, 0 g sugars, 0 g added sugars, 25 g protein, 330 mg calcium, 0.1 mg iron, 580 mg potassium, 230 mcg vitamin A, 8 mcg vitamin D."
+  },
+  {
+    "name": "Levels Grass-Fed Whey Protein, Unflavored 1 scoop (32 g)",
+    "protein": 25,
+    "carbs": 2,
+    "fats": 2.5,
+    "micros": {
+      "sodium": 70,
+      "potassium": 160,
+      "calcium": 130,
+      "iron": 0.2,
+      "vitaminD": 0,
+      "fiber": 0,
+      "histidine": 470,
+      "isoleucine": 1480,
+      "leucine": 2600,
+      "lysine": 2210,
+      "methionine": 510,
+      "phenylalanine": 770,
+      "threonine": 1710,
+      "tryptophan": 420,
+      "valine": 1470,
+      "arginine": 680,
+      "cysteine": 500,
+      "glycine": 480,
+      "proline": 1440,
+      "tyrosine": 700
+    },
+    "longevity": {
+      "saturatedFat": 1.5,
+      "transFat": 0,
+      "cholesterol": 75,
+      "methionine": true
+    },
+    "carbQuality": {
+      "addedSugar": 0,
+      "netCarbs": 2
+    },
+    "notes": "Levels label (iHerb listing), 1 scoop 32 g: 130 kcal, 2.5 g fat, 1.5 g saturated fat, 0 g trans fat, 75 mg cholesterol, 70 mg sodium, 2 g carbohydrate, 0 g fiber, 2 g sugars, 0 g added sugars, 25 g protein, 0 mcg vitamin D, 130 mg calcium, 0.2 mg iron, 160 mg potassium. Amino acids per scoop are the label's approximate values (mg); cysteine is the label's cystine. The log described a scoop as 30 g."
+  },
+  {
+    "name": "Universal Animal Meal Protein Powder 3 level scoops (122 g)",
+    "protein": 46,
+    "carbs": 48,
+    "fats": 14,
+    "micros": {
+      "sodium": 590,
+      "potassium": 570,
+      "fiber": 4
+    },
+    "longevity": {
+      "saturatedFat": 3.5,
+      "transFat": 0,
+      "cholesterol": 230
+    },
+    "carbQuality": {
+      "netCarbs": 44
+    },
+    "notes": "Universal Nutrition Animal Meal supplement facts (retailer listing, mysupplementstore.com), 3 level scoops 122 g: 500 kcal, 14 g fat, 3.5 g saturated fat, 0 g trans fat, 230 mg cholesterol, 590 mg sodium, 570 mg potassium, 48 g carbohydrate, 4 g fiber, 15 g sugars, 46 g protein. Newer labels use 2 heaping scoops (120 g) at about the same values."
+  },
+  {
+    "name": "Huel Ready-to-Drink Vanilla 1 bottle (500 mL)",
+    "protein": 20,
+    "carbs": 37,
+    "fats": 19,
+    "micros": {
+      "sodium": 276,
+      "fiber": 6
+    },
+    "longevity": {
+      "saturatedFat": 4,
+      "monounsaturatedFat": 7,
+      "polyunsaturatedFat": 7,
+      "transFat": 0,
+      "cholesterol": 0
+    },
+    "carbQuality": {
+      "addedSugar": 3,
+      "netCarbs": 31
+    },
+    "notes": "Huel US ready-to-drink nutrition page, Vanilla v1.0, per 500 mL bottle: 400 kcal, 19 g fat, 4 g saturated fat, 0 g trans fat, 7 g polyunsaturated fat, 7 g monounsaturated fat, 0 mg cholesterol, 276 mg sodium, 37 g carbohydrate, 6 g fiber, 3 g sugars (3 g added), 20 g protein. The log had 2 cups, about 473 mL."
+  },
+  {
+    "name": "Phoenix Organic Lemonade 1 cup (240 mL)",
+    "protein": 0,
+    "carbs": 17.96,
+    "fats": 0,
+    "micros": {
+      "sodium": 7.4
+    },
+    "longevity": {
+      "saturatedFat": 0
+    },
+    "notes": "Phoenix Organics (NZ) Organic Lemonade per Open Food Facts product 9413494002114 (crowd-sourced label transcription): per 100 mL 30 kcal, 0 g fat, 7.48 g carbohydrate, all sugars, 0 g protein, 3.1 mg sodium; scaled to 240 mL: 72 kcal, 17.96 g carbohydrate and sugars, 7.4 mg sodium."
+  },
+  {
+    "name": "Junk Food - Lay's Classic Potato Chips 1 oz (28 g)",
+    "protein": 2,
+    "carbs": 15,
+    "fats": 10,
+    "micros": {
+      "sodium": 170,
+      "potassium": 350,
+      "calcium": 0,
+      "iron": 0.361,
+      "magnesium": 16,
+      "zinc": 0.3,
+      "niacin": 1.2,
+      "vitaminB6": 0.2,
+      "vitaminA": 0,
+      "vitaminC": 5.99,
+      "fiber": 1.01
+    },
+    "longevity": {
+      "saturatedFat": 1.5,
+      "transFat": 0,
+      "cholesterol": 0
+    },
+    "carbQuality": {
+      "netCarbs": 13.99
+    },
+    "notes": "Lay's Classic Potato Chips. USDA FoodData Central Branded FDC 2618318 (2025-12-18 release), label values per 100 g/mL scaled to 28 g/mL; about 160 kcal."
+  },
+  {
+    "name": "Blue Diamond Almonds, Lightly Salted 1 oz (28 g, about 28 nuts)",
+    "protein": 6,
+    "carbs": 5,
+    "fats": 16,
+    "micros": {
+      "sodium": 40,
+      "potassium": 190,
+      "calcium": 80.1,
+      "iron": 1,
+      "magnesium": 75,
+      "vitaminD": 0,
+      "fiber": 3
+    },
+    "longevity": {
+      "saturatedFat": 1,
+      "monounsaturatedFat": 10,
+      "polyunsaturatedFat": 4,
+      "transFat": 0,
+      "cholesterol": 0
+    },
+    "carbQuality": {
+      "addedSugar": 0,
+      "netCarbs": 2
+    },
+    "notes": "Blue Diamond Lightly Salted Almonds. USDA FoodData Central Branded FDC 2621824 (2025-12-18 release), label values per 100 g/mL scaled to 28 g/mL; about 170 kcal."
+  },
+  {
+    "name": "Kar's All Energy Trail Mix 1 package (2 oz, 57 g)",
+    "protein": 7,
+    "carbs": 27,
+    "fats": 17,
+    "micros": {
+      "sodium": 14.8,
+      "potassium": 330,
+      "calcium": 39.9,
+      "iron": 1.44,
+      "vitaminC": 0,
+      "fiber": 3.02
+    },
+    "longevity": {
+      "saturatedFat": 4.5,
+      "transFat": 0,
+      "cholesterol": 0
+    },
+    "carbQuality": {
+      "netCarbs": 23.98
+    },
+    "notes": "Kar's All Energy Trail Mix (the FDC record is the unsalted variety). USDA FoodData Central Branded FDC 1932821 (2025-12-18 release), label values per 100 g/mL scaled to 57 g/mL; about 280 kcal."
+  },
+  {
+    "name": "Kar's Original Trail Mix, Unsalted 1 package (2 oz, 57 g)",
+    "protein": 9,
+    "carbs": 24,
+    "fats": 18,
+    "micros": {
+      "sodium": 5.13,
+      "potassium": 390,
+      "calcium": 59.8,
+      "iron": 1.8,
+      "vitaminC": 0,
+      "fiber": 3.99
+    },
+    "longevity": {
+      "saturatedFat": 2.5,
+      "transFat": 0,
+      "cholesterol": 0
+    },
+    "carbQuality": {
+      "netCarbs": 20.01
+    },
+    "notes": "Kar's Original Trail Mix, Unsalted. Used for the logged 'Kars - Organic Trail Mix (Unsalted)'; no Kar's organic trail mix exists in FDC, so 'Organic' is treated as 'Original'. USDA FoodData Central Branded FDC 1932828 (2025-12-18 release), label values per 100 g/mL scaled to 57 g/mL; about 270 kcal."
+  },
+  {
+    "name": "Pepsi 12 fl oz can (355 mL)",
+    "protein": 0,
+    "carbs": 41,
+    "fats": 0,
+    "micros": {
+      "sodium": 28.4
+    },
+    "carbQuality": {
+      "addedSugar": 40.8
+    },
+    "notes": "Pepsi soda, 12 fl oz can. Values in FDC are per 100 mL. USDA FoodData Central Branded FDC 2671486 (2025-12-18 release), label values per 100 g/mL scaled to 355 g/mL; about 149 kcal."
+  },
+  {
+    "name": "Diet Pepsi 12 fl oz can (355 mL)",
+    "protein": 0,
+    "carbs": 0.14,
+    "fats": 0,
+    "micros": {
+      "sodium": 35.5,
+      "potassium": 39,
+      "calcium": 0,
+      "iron": 0,
+      "fiber": 0
+    },
+    "longevity": {
+      "saturatedFat": 0,
+      "transFat": 0,
+      "cholesterol": 0
+    },
+    "carbQuality": {
+      "netCarbs": 0.14
+    },
+    "notes": "Diet Pepsi, 12 fl oz aluminum can. Values in FDC are per 100 mL. USDA FoodData Central Branded FDC 763988 (2025-12-18 release), label values per 100 g/mL scaled to 355 g/mL; about 0 kcal."
+  },
+  {
+    "name": "Minute Maid Apple Juice 12 fl oz bottle (355 mL)",
+    "protein": 0,
+    "carbs": 41,
+    "fats": 0,
+    "micros": {
+      "sodium": 28.4,
+      "potassium": 359,
+      "calcium": 21.3,
+      "magnesium": 17.8,
+      "vitaminC": 54
+    },
+    "carbQuality": {
+      "addedSugar": 0
+    },
+    "notes": "Minute Maid 100% Apple Juice. Values in FDC are per 100 mL. Also stands in for the logged generic 'Juice - Apple Juice'. USDA FoodData Central Branded FDC 2595034 (2025-12-18 release), label values per 100 g/mL scaled to 355 g/mL; about 170 kcal."
+  },
+  {
+    "name": "Sky Flakes Crackers 1 pack (25 g)",
+    "protein": 2,
+    "carbs": 16,
+    "fats": 5,
+    "micros": {
+      "sodium": 170,
+      "calcium": 0,
+      "iron": 1.08,
+      "vitaminC": 1.2,
+      "fiber": 2
+    },
+    "longevity": {
+      "saturatedFat": 4,
+      "transFat": 0,
+      "cholesterol": 0
+    },
+    "carbQuality": {
+      "netCarbs": 14
+    },
+    "notes": "Sky Flakes crackers (M.Y. San), single pack 25 g. USDA FoodData Central Branded FDC 2012648 (2025-12-18 release), label values per 100 g/mL scaled to 25 g/mL; about 120 kcal."
+  },
+  {
+    "name": "Nature's Soy Silken Tofu 8 oz (227 g)",
+    "protein": 14.96,
+    "carbs": 4.99,
+    "fats": 7.49,
+    "micros": {
+      "sodium": 25,
+      "calcium": 49.9,
+      "iron": 1.34,
+      "vitaminC": 0,
+      "fiber": 2.5
+    },
+    "longevity": {
+      "saturatedFat": 1.25,
+      "transFat": 0,
+      "cholesterol": 0
+    },
+    "carbQuality": {
+      "netCarbs": 2.5
+    },
+    "notes": "Nature's Soy Silken Tofu (the brand's soft tofu; label serving 91 g). USDA FoodData Central Branded FDC 1769292 (2025-12-18 release), label values per 100 g/mL scaled to 227 g/mL; about 150 kcal."
+  },
+  {
+    "name": "Galbani String Cheese, Low-Moisture Part-Skim Mozzarella 1 stick (28 g)",
+    "protein": 7,
+    "carbs": 0,
+    "fats": 6,
+    "micros": {
+      "sodium": 170,
+      "potassium": 24.1,
+      "calcium": 185,
+      "iron": 0,
+      "vitaminD": 0,
+      "fiber": 0
+    },
+    "longevity": {
+      "saturatedFat": 3.5,
+      "transFat": 0,
+      "cholesterol": 19.9
+    },
+    "carbQuality": {
+      "addedSugar": 0,
+      "netCarbs": 0
+    },
+    "notes": "Galbani low-moisture part-skim mozzarella string cheese. Also stands in for the logged 'Wisconsin String Cheese'. USDA FoodData Central Branded FDC 2674806 (2025-12-18 release), label values per 100 g/mL scaled to 28 g/mL; about 80 kcal."
+  },
+  {
+    "name": "Tapatío Hot Sauce 1 tsp (5 g)",
+    "protein": 0,
+    "carbs": 0,
+    "fats": 0,
+    "micros": {
+      "sodium": 90,
+      "potassium": 0,
+      "calcium": 0,
+      "iron": 0,
+      "fiber": 0
+    },
+    "longevity": {
+      "saturatedFat": 0,
+      "transFat": 0,
+      "cholesterol": 0
+    },
+    "carbQuality": {
+      "addedSugar": 0,
+      "netCarbs": 0
+    },
+    "notes": "Tapatío Salsa Picante hot sauce. USDA FoodData Central Branded FDC 1856913 (2025-12-18 release), label values per 100 g/mL scaled to 5 g/mL; about 0 kcal."
+  },
+  {
+    "name": "Spaghetti with Meat in Tomato Sauce (ready-to-heat) 1 cup (250 g)",
+    "protein": 14.35,
+    "carbs": 46.85,
+    "fats": 10.85,
+    "micros": {
+      "fiber": 4,
+      "sodium": 838,
+      "potassium": 428,
+      "calcium": 40,
+      "iron": 2.93,
+      "magnesium": 45,
+      "zinc": 2.2,
+      "selenium": 39.5,
+      "vitaminA": 32.5,
+      "vitaminARetinol": 0,
+      "vitaminABetaCarotene": 373,
+      "vitaminD": 0,
+      "vitaminE": 3.25,
+      "vitaminK": 18.3,
+      "thiamin": 0.38,
+      "riboflavin": 0.27,
+      "niacin": 7.01,
+      "vitaminB6": 0.308,
+      "vitaminB12": 0.6,
+      "vitaminC": 2,
+      "phosphorus": 148,
+      "choline": 39,
+      "copper": 222,
+      "folate": 165,
+      "vitaminK1": 18.3,
+      "omega3": 0.318,
+      "epa": 0,
+      "dha": 0,
+      "omega6": 2.42
+    },
+    "longevity": {
+      "saturatedFat": 2.42,
+      "monounsaturatedFat": 4.1,
+      "polyunsaturatedFat": 2.75,
+      "cholesterol": 20,
+      "ala": 0.318,
+      "linoleicAcid": 2.41,
+      "arachidonicAcid": 0.01,
+      "oleicAcid": 3.81,
+      "palmitoleicAcid": 0.153,
+      "lutein": 0.19,
+      "vitaminE": true,
+      "vitaminK": true,
+      "vitaminK1": true,
+      "omega3": true,
+      "epa": true,
+      "dha": true,
+      "omega6": true,
+      "selenium": true,
+      "copper": true,
+      "phosphorus": true,
+      "choline": true
+    },
+    "carbQuality": {
+      "netCarbs": 42.85
+    },
+    "notes": "USDA FNDDS 2021-2023 (FoodData Central survey foods, Oct 2024 release) FDC 2708839: Pasta with tomato-based sauce and meat, ready-to-heat. Scaled to 250 g (FNDDS 1 cup = 250 g). Generic stand-in for the logged 'Finest - Spaghetti In Tomato Sauce With Meat' (brand label not found); logged at 2.5 and 3.5 cups. Vitamin K is phylloquinone only; omega-3 is 18:3 plus EPA, DHA and DPA, omega-6 is 18:2 plus 20:4, all undifferentiated. Folate is DFE. Cystine is stored as cysteine. Keys USDA does not report are omitted."
+  },
+  {
+    "name": "Asparagus, cooked 5 oz (142 g)",
+    "protein": 3.41,
+    "carbs": 5.84,
+    "fats": 0.31,
+    "micros": {
+      "fiber": 2.84,
+      "sodium": 19.9,
+      "potassium": 318,
+      "calcium": 32.7,
+      "iron": 1.29,
+      "magnesium": 19.9,
+      "zinc": 0.852,
+      "manganese": 0.219,
+      "selenium": 8.66,
+      "vitaminA": 71,
+      "vitaminARetinol": 0,
+      "vitaminABetaCarotene": 858,
+      "vitaminD": 0,
+      "vitaminE": 2.13,
+      "vitaminK": 71.9,
+      "thiamin": 0.23,
+      "riboflavin": 0.197,
+      "niacin": 1.54,
+      "pantothenicAcid": 0.32,
+      "vitaminB6": 0.112,
+      "vitaminB12": 0,
+      "vitaminC": 10.9,
+      "phosphorus": 76.7,
+      "choline": 37.1,
+      "copper": 234,
+      "folate": 212,
+      "vitaminK1": 71.9,
+      "omega3": 0.041,
+      "epa": 0,
+      "dha": 0,
+      "omega6": 0.108,
+      "histidine": 75,
+      "isoleucine": 116,
+      "leucine": 199,
+      "lysine": 160,
+      "methionine": 48,
+      "phenylalanine": 116,
+      "threonine": 131,
+      "tryptophan": 41,
+      "valine": 178,
+      "arginine": 141,
+      "cysteine": 48,
+      "glycine": 788,
+      "proline": 143,
+      "tyrosine": 81
+    },
+    "longevity": {
+      "saturatedFat": 0.068,
+      "monounsaturatedFat": 0,
+      "polyunsaturatedFat": 0.149,
+      "transFat": 0,
+      "cholesterol": 0,
+      "ala": 0.041,
+      "linoleicAcid": 0.108,
+      "arachidonicAcid": 0,
+      "oleicAcid": 0,
+      "palmitoleicAcid": 0,
+      "betaine": 1.28,
+      "lutein": 1.09,
+      "vitaminE": true,
+      "vitaminK": true,
+      "vitaminK1": true,
+      "omega3": true,
+      "epa": true,
+      "dha": true,
+      "omega6": true,
+      "selenium": true,
+      "copper": true,
+      "methionine": true,
+      "phosphorus": true,
+      "choline": true
+    },
+    "carbQuality": {
+      "netCarbs": 3
+    },
+    "notes": "USDA SR Legacy FDC 168390: Asparagus, cooked, boiled, drained. Scaled to 142 g (5 oz). Used for the logged 'Urban Plates - Asparagus, 5 oz'; Urban Plates' current nutrition guide no longer lists asparagus, so the restaurant's added oil and salt are not included. Vitamin K is phylloquinone only; omega-3 is 18:3 plus EPA, DHA and DPA, omega-6 is 18:2 plus 20:4, all undifferentiated. Folate is DFE. Cystine is stored as cysteine. Keys USDA does not report are omitted."
+  },
+  {
+    "name": "Fruit Salad, fresh (no dressing) 5 oz (142 g)",
+    "protein": 0.91,
+    "carbs": 19.79,
+    "fats": 0.3,
+    "micros": {
+      "fiber": 2.13,
+      "sodium": 5.68,
+      "potassium": 270,
+      "calcium": 12.8,
+      "iron": 0.256,
+      "magnesium": 19.9,
+      "zinc": 0.199,
+      "selenium": 0.426,
+      "vitaminA": 44,
+      "vitaminARetinol": 0,
+      "vitaminABetaCarotene": 525,
+      "vitaminD": 0,
+      "vitaminE": 0.227,
+      "vitaminK": 4.54,
+      "thiamin": 0.057,
+      "riboflavin": 0.034,
+      "niacin": 0.537,
+      "vitaminB6": 0.119,
+      "vitaminB12": 0,
+      "vitaminC": 28,
+      "phosphorus": 27,
+      "choline": 8.8,
+      "copper": 85.2,
+      "folate": 11.4,
+      "vitaminK1": 4.54,
+      "omega3": 0.021,
+      "epa": 0,
+      "dha": 0,
+      "omega6": 0.047
+    },
+    "longevity": {
+      "saturatedFat": 0.064,
+      "monounsaturatedFat": 0.02,
+      "polyunsaturatedFat": 0.067,
+      "cholesterol": 0,
+      "ala": 0.021,
+      "linoleicAcid": 0.047,
+      "arachidonicAcid": 0,
+      "oleicAcid": 0.017,
+      "palmitoleicAcid": 0.003,
+      "lutein": 0.043,
+      "vitaminE": true,
+      "vitaminK": true,
+      "vitaminK1": true,
+      "omega3": true,
+      "epa": true,
+      "dha": true,
+      "omega6": true,
+      "selenium": true,
+      "copper": true,
+      "phosphorus": true,
+      "choline": true
+    },
+    "carbQuality": {
+      "netCarbs": 17.66
+    },
+    "notes": "USDA FNDDS 2021-2023 (FoodData Central survey foods, Oct 2024 release) FDC 2709287: Fruit salad, fresh or raw, excluding citrus fruits, no dressing. Scaled to 142 g (5 oz; FNDDS 1 cup = 150 g). Used for the logged 'Urban Plates - Fruit Salad, 5 oz'; Urban Plates' current guide does not list it. Vitamin K is phylloquinone only; omega-3 is 18:3 plus EPA, DHA and DPA, omega-6 is 18:2 plus 20:4, all undifferentiated. Folate is DFE. Cystine is stored as cysteine. Keys USDA does not report are omitted."
+  },
+  {
+    "name": "Tuna, Yellowfin (Ahi), grilled 4 oz (113 g)",
+    "protein": 32.94,
+    "carbs": 0,
+    "fats": 0.67,
+    "micros": {
+      "fiber": 0,
+      "sodium": 61,
+      "potassium": 596,
+      "calcium": 4.52,
+      "iron": 1.04,
+      "magnesium": 47.5,
+      "zinc": 0.508,
+      "manganese": 0.015,
+      "selenium": 122,
+      "vitaminA": 24.9,
+      "vitaminARetinol": 24.9,
+      "vitaminABetaCarotene": 0,
+      "vitaminD": 2.26,
+      "vitaminE": 0.328,
+      "vitaminK": 0.113,
+      "thiamin": 0.151,
+      "riboflavin": 0.155,
+      "niacin": 24.9,
+      "pantothenicAcid": 0.377,
+      "vitaminB6": 1.17,
+      "vitaminB12": 2.66,
+      "vitaminC": 0,
+      "phosphorus": 376,
+      "choline": 87.7,
+      "copper": 48.6,
+      "folate": 2.26,
+      "vitaminK1": 0.113,
+      "omega3": 0.144,
+      "epa": 0.017,
+      "dha": 0.119,
+      "omega6": 0.046,
+      "histidine": 929,
+      "isoleucine": 1454,
+      "leucine": 2565,
+      "lysine": 2898,
+      "methionine": 935,
+      "phenylalanine": 1233,
+      "threonine": 1383,
+      "tryptophan": 354,
+      "valine": 1625,
+      "arginine": 1888,
+      "cysteine": 339,
+      "glycine": 3232,
+      "proline": 1514,
+      "tyrosine": 1066
+    },
+    "longevity": {
+      "saturatedFat": 0.232,
+      "monounsaturatedFat": 0.156,
+      "polyunsaturatedFat": 0.198,
+      "transFat": 0.023,
+      "cholesterol": 53.1,
+      "ala": 0.002,
+      "linoleicAcid": 0.026,
+      "arachidonicAcid": 0.02,
+      "oleicAcid": 0.112,
+      "palmitoleicAcid": 0.016,
+      "lutein": 0,
+      "vitaminE": true,
+      "vitaminK": true,
+      "vitaminK1": true,
+      "omega3": true,
+      "epa": true,
+      "dha": true,
+      "omega6": true,
+      "selenium": true,
+      "copper": true,
+      "methionine": true,
+      "phosphorus": true,
+      "choline": true
+    },
+    "carbQuality": {
+      "netCarbs": 0
+    },
+    "notes": "USDA SR Legacy FDC 172006: Fish, tuna, yellowfin, fresh, cooked, dry heat. Scaled to 113 g (4 oz). Used for the logged 'Urban Plates - Grilled Wild Ahi Tuna, 4 oz'; seasoning and oil not included. Vitamin K is phylloquinone only; omega-3 is 18:3 plus EPA, DHA and DPA, omega-6 is 18:2 plus 20:4, all undifferentiated. Folate is DFE. Cystine is stored as cysteine. Keys USDA does not report are omitted."
+  },
+  {
+    "name": "Pinto Beans, cooked 1 cup (171 g)",
+    "protein": 15.41,
+    "carbs": 44.84,
+    "fats": 1.11,
+    "micros": {
+      "fiber": 15.4,
+      "sodium": 1.71,
+      "potassium": 746,
+      "calcium": 78.7,
+      "iron": 3.57,
+      "magnesium": 85.5,
+      "zinc": 1.68,
+      "manganese": 0.775,
+      "selenium": 10.6,
+      "vitaminA": 0,
+      "vitaminARetinol": 0,
+      "vitaminABetaCarotene": 0,
+      "vitaminD": 0,
+      "vitaminE": 1.61,
+      "vitaminK": 5.99,
+      "thiamin": 0.33,
+      "riboflavin": 0.106,
+      "niacin": 0.544,
+      "pantothenicAcid": 0.359,
+      "vitaminB6": 0.392,
+      "vitaminB12": 0,
+      "vitaminC": 1.37,
+      "phosphorus": 251,
+      "choline": 60.4,
+      "copper": 374,
+      "folate": 294,
+      "vitaminK1": 5.99,
+      "omega3": 0.234,
+      "epa": 0,
+      "dha": 0,
+      "omega6": 0.168,
+      "histidine": 422,
+      "isoleucine": 728,
+      "leucine": 1308,
+      "lysine": 1077,
+      "methionine": 200,
+      "phenylalanine": 908,
+      "threonine": 566,
+      "tryptophan": 185,
+      "valine": 887,
+      "arginine": 845,
+      "cysteine": 144,
+      "glycine": 1929,
+      "proline": 624,
+      "tyrosine": 364
+    },
+    "longevity": {
+      "saturatedFat": 0.233,
+      "monounsaturatedFat": 0.227,
+      "polyunsaturatedFat": 0.402,
+      "transFat": 0,
+      "cholesterol": 0,
+      "ala": 0.234,
+      "linoleicAcid": 0.168,
+      "arachidonicAcid": 0,
+      "oleicAcid": 0.227,
+      "palmitoleicAcid": 0,
+      "betaine": 0.171,
+      "lutein": 0,
+      "vitaminE": true,
+      "vitaminK": true,
+      "vitaminK1": true,
+      "omega3": true,
+      "epa": true,
+      "dha": true,
+      "omega6": true,
+      "selenium": true,
+      "copper": true,
+      "methionine": true,
+      "phosphorus": true,
+      "choline": true
+    },
+    "carbQuality": {
+      "glycemicIndex": 39,
+      "netCarbs": 29.44
+    },
+    "notes": "USDA SR Legacy FDC 175200: Beans, pinto, mature seeds, cooked, boiled, without salt. Scaled to 171 g (SR 1 cup = 171 g). Boiled without salt. Glycemic index 39 for boiled pinto beans (International Tables of Glycemic Index, Atkinson et al. 2008). Vitamin K is phylloquinone only; omega-3 is 18:3 plus EPA, DHA and DPA, omega-6 is 18:2 plus 20:4, all undifferentiated. Folate is DFE. Cystine is stored as cysteine. Keys USDA does not report are omitted."
+  },
+  {
+    "name": "Scallops, steamed 4 oz (113 g)",
+    "protein": 17.22,
+    "carbs": 4.54,
+    "fats": 0.7,
+    "micros": {
+      "fiber": 0,
+      "sodium": 340,
+      "potassium": 293,
+      "calcium": 9.04,
+      "iron": 0.542,
+      "magnesium": 31.6,
+      "zinc": 1.3,
+      "selenium": 18.3,
+      "vitaminA": 1.13,
+      "vitaminARetinol": 1.13,
+      "vitaminABetaCarotene": 0,
+      "vitaminD": 0,
+      "vitaminE": 0,
+      "vitaminK": 0,
+      "thiamin": 0.009,
+      "riboflavin": 0.02,
+      "niacin": 0.954,
+      "vitaminB6": 0.094,
+      "vitaminB12": 1.71,
+      "vitaminC": 0,
+      "phosphorus": 477,
+      "choline": 92.8,
+      "copper": 32.8,
+      "folate": 17,
+      "vitaminK1": 0,
+      "omega3": 0.156,
+      "epa": 0.06,
+      "dha": 0.087,
+      "omega6": 0.018
+    },
+    "longevity": {
+      "saturatedFat": 0.183,
+      "monounsaturatedFat": 0.069,
+      "polyunsaturatedFat": 0.185,
+      "cholesterol": 33.9,
+      "ala": 0.005,
+      "linoleicAcid": 0.011,
+      "arachidonicAcid": 0.007,
+      "oleicAcid": 0.044,
+      "palmitoleicAcid": 0.012,
+      "lutein": 0,
+      "vitaminE": true,
+      "vitaminK": true,
+      "vitaminK1": true,
+      "omega3": true,
+      "epa": true,
+      "dha": true,
+      "omega6": true,
+      "selenium": true,
+      "copper": true,
+      "phosphorus": true,
+      "choline": true
+    },
+    "carbQuality": {
+      "netCarbs": 4.54
+    },
+    "notes": "USDA FNDDS 2021-2023 (FoodData Central survey foods, Oct 2024 release) FDC 2706358: Scallops, steamed or boiled. Scaled to 113 g (4 oz). Used for the logged 'Fishbowl Poke - Regular - Scallop Protein, 4 oz'; the poke shop's own marinade is not included. Vitamin K is phylloquinone only; omega-3 is 18:3 plus EPA, DHA and DPA, omega-6 is 18:2 plus 20:4, all undifferentiated. Folate is DFE. Cystine is stored as cysteine. Keys USDA does not report are omitted."
+  },
+  {
+    "name": "Pork Belly, cooked 4 oz (113 g)",
+    "protein": 30.04,
+    "carbs": 0,
+    "fats": 36.43,
+    "micros": {
+      "fiber": 0,
+      "sodium": 506,
+      "potassium": 321,
+      "calcium": 62.1,
+      "iron": 1.22,
+      "magnesium": 22.6,
+      "zinc": 3.98,
+      "selenium": 42.3,
+      "vitaminA": 11.3,
+      "vitaminARetinol": 11.3,
+      "vitaminABetaCarotene": 0,
+      "vitaminD": 1.81,
+      "vitaminE": 0.316,
+      "vitaminK": 0,
+      "thiamin": 0.61,
+      "riboflavin": 0.446,
+      "niacin": 10.1,
+      "vitaminB6": 0.548,
+      "vitaminB12": 1.01,
+      "vitaminC": 0,
+      "phosphorus": 224,
+      "choline": 104,
+      "copper": 148,
+      "folate": 0,
+      "vitaminK1": 0,
+      "omega3": 0.277,
+      "epa": 0,
+      "dha": 0.003,
+      "omega6": 5.56
+    },
+    "longevity": {
+      "saturatedFat": 13.2,
+      "monounsaturatedFat": 15.8,
+      "polyunsaturatedFat": 6.07,
+      "cholesterol": 118,
+      "ala": 0.247,
+      "linoleicAcid": 5.42,
+      "arachidonicAcid": 0.132,
+      "oleicAcid": 14.8,
+      "palmitoleicAcid": 0.759,
+      "lutein": 0,
+      "vitaminE": true,
+      "vitaminK": true,
+      "vitaminK1": true,
+      "omega3": true,
+      "epa": true,
+      "dha": true,
+      "omega6": true,
+      "selenium": true,
+      "copper": true,
+      "phosphorus": true,
+      "choline": true
+    },
+    "carbQuality": {
+      "netCarbs": 0
+    },
+    "notes": "USDA FNDDS 2021-2023 (FoodData Central survey foods, Oct 2024 release) FDC 2705901: Pork, belly. Scaled to 113 g (4 oz). Used for the logged 'Restaurant - Braised Pork Belly, 4 oz'; braising liquid and sauce sugars are not included. Vitamin K is phylloquinone only; omega-3 is 18:3 plus EPA, DHA and DPA, omega-6 is 18:2 plus 20:4, all undifferentiated. Folate is DFE. Cystine is stored as cysteine. Keys USDA does not report are omitted."
   }
 ]
