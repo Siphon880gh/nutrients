@@ -14672,6 +14672,9 @@
   var microGraphHoverValueEl = microGraphHoverEl
     ? microGraphHoverEl.querySelector(".micro-graph-hover-value")
     : null;
+  var microGraphHoverWhenEl = microGraphHoverEl
+    ? microGraphHoverEl.querySelector(".micro-graph-hover-when")
+    : null;
   var microGraphPointMenuEl = document.getElementById("micro-graph-point-menu");
   var microGraphPointSwatchEl = document.getElementById("micro-graph-point-swatch");
   var microGraphPointNameEl = document.getElementById("micro-graph-point-name");
@@ -15828,6 +15831,13 @@
     if (microGraphHoverValueEl) {
       microGraphHoverValueEl.textContent =
         hit.kind === "dot" ? hit.valueText : "";
+    }
+    if (microGraphHoverWhenEl) {
+      var hoverModel = microGraphChartEl && microGraphChartEl._model;
+      var hoverPoint =
+        hoverModel && hit.index != null ? hoverModel.points[hit.index] : null;
+      microGraphHoverWhenEl.textContent =
+        hoverPoint && hoverPoint.title ? hoverPoint.title : "";
     }
     microGraphHoverEl.hidden = false;
     placeMicroGraphHover(clientX, clientY);

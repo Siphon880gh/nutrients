@@ -44716,5 +44716,1037 @@
       "netCarbs": 0
     },
     "notes": "USDA FNDDS 2021-2023 (FoodData Central survey foods, Oct 2024 release) FDC 2705901: Pork, belly. Scaled to 113 g (4 oz). Used for the logged 'Restaurant - Braised Pork Belly, 4 oz'; braising liquid and sauce sugars are not included. Vitamin K is phylloquinone only; omega-3 is 18:3 plus EPA, DHA and DPA, omega-6 is 18:2 plus 20:4, all undifferentiated. Folate is DFE. Cystine is stored as cysteine. Keys USDA does not report are omitted."
+  },
+  {
+    "name": "Ice Cream Scoop - Baskin-Robbins Triple Mango 2.5 oz scoop (71 g)",
+    "protein": 2,
+    "carbs": 22,
+    "fats": 4.5,
+    "micros": {
+      "fiber": 0,
+      "sodium": 30,
+      "potassium": 78,
+      "calcium": 56,
+      "iron": 0,
+      "vitaminD": 0
+    },
+    "longevity": {
+      "saturatedFat": 2.5,
+      "transFat": 0,
+      "cholesterol": 15
+    },
+    "carbQuality": {
+      "addedSugar": 15,
+      "netCarbs": 22
+    },
+    "notes": "Baskin-Robbins Product Nutrition Guide (baskinrobbins.com/en/nutrition, printed 07-13-2026). 2.5 oz scoop (71 g), 130 kcal. Label nutrients only. Trans fat on this guide is naturally occurring. Total sugars 18 g are not a stored key; added sugar is in carbQuality. Unlisted vitamins and minerals are omitted."
+  },
+  {
+    "name": "Ice Cream Scoop - Baskin-Robbins Triple Mango 4 oz scoop (113 g)",
+    "protein": 2,
+    "carbs": 35,
+    "fats": 7,
+    "micros": {
+      "fiber": 1,
+      "sodium": 45,
+      "potassium": 124,
+      "calcium": 89,
+      "iron": 0,
+      "vitaminD": 0
+    },
+    "longevity": {
+      "saturatedFat": 4.5,
+      "transFat": 0,
+      "cholesterol": 25
+    },
+    "carbQuality": {
+      "addedSugar": 24,
+      "netCarbs": 34
+    },
+    "notes": "Baskin-Robbins Product Nutrition Guide (baskinrobbins.com/en/nutrition, printed 07-13-2026). 4 oz scoop (113 g), 210 kcal. Label nutrients only. Trans fat on this guide is naturally occurring. Total sugars 29 g are not a stored key; added sugar is in carbQuality. Unlisted vitamins and minerals are omitted."
+  },
+  {
+    "name": "Ice Cream Scoop - Baskin-Robbins Reduced Fat, No Sugar Added Pineapple Coconut 2.5 oz scoop (71 g)",
+    "protein": 3,
+    "carbs": 18,
+    "fats": 4,
+    "micros": {
+      "fiber": 2,
+      "sodium": 50,
+      "potassium": 133,
+      "calcium": 99,
+      "iron": 0,
+      "vitaminD": 0
+    },
+    "longevity": {
+      "saturatedFat": 2.5,
+      "transFat": 0,
+      "cholesterol": 15
+    },
+    "carbQuality": {
+      "addedSugar": 0,
+      "netCarbs": 16
+    },
+    "notes": "Baskin-Robbins Product Nutrition Guide (baskinrobbins.com/en/nutrition, printed 07-13-2026). 2.5 oz scoop (71 g), 100 kcal. Label nutrients only. Trans fat on this guide is naturally occurring. Total sugars 5 g are not a stored key; added sugar is in carbQuality. Sugar alcohols 9 g are included in the labeled carbohydrate and are not a stored key. Unlisted vitamins and minerals are omitted."
+  },
+  {
+    "name": "Ice Cream Scoop - Baskin-Robbins Reduced Fat, No Sugar Added Pineapple Coconut 4 oz scoop (113 g)",
+    "protein": 5,
+    "carbs": 29,
+    "fats": 6,
+    "micros": {
+      "fiber": 3,
+      "sodium": 80,
+      "potassium": 212,
+      "calcium": 158,
+      "iron": 0,
+      "vitaminD": 0
+    },
+    "longevity": {
+      "saturatedFat": 4,
+      "transFat": 0,
+      "cholesterol": 25
+    },
+    "carbQuality": {
+      "addedSugar": 0,
+      "netCarbs": 26
+    },
+    "notes": "Baskin-Robbins Product Nutrition Guide (baskinrobbins.com/en/nutrition, printed 07-13-2026). 4 oz scoop (113 g), 160 kcal. Label nutrients only. Trans fat on this guide is naturally occurring. Total sugars 8 g are not a stored key; added sugar is in carbQuality. Sugar alcohols 14 g are included in the labeled carbohydrate and are not a stored key. Unlisted vitamins and minerals are omitted."
+  },
+  {
+    "name": "Ice Cream Scoop - Baskin-Robbins Baseball Nut 2.5 oz scoop (71 g)",
+    "protein": 3,
+    "carbs": 21,
+    "fats": 9,
+    "micros": {
+      "fiber": 0,
+      "sodium": 80,
+      "potassium": 142,
+      "calcium": 89,
+      "iron": 0,
+      "vitaminD": 0
+    },
+    "longevity": {
+      "saturatedFat": 4.5,
+      "transFat": 0,
+      "cholesterol": 25
+    },
+    "carbQuality": {
+      "addedSugar": 11,
+      "netCarbs": 21
+    },
+    "notes": "Baskin-Robbins Product Nutrition Guide (baskinrobbins.com/en/nutrition, printed 07-13-2026). 2.5 oz scoop (71 g), 170 kcal. Label nutrients only. Trans fat on this guide is naturally occurring. Total sugars 15 g are not a stored key; added sugar is in carbQuality. Unlisted vitamins and minerals are omitted."
+  },
+  {
+    "name": "Ice Cream Scoop - Baskin-Robbins Baseball Nut 4 oz scoop (113 g)",
+    "protein": 5,
+    "carbs": 34,
+    "fats": 14,
+    "micros": {
+      "fiber": 1,
+      "sodium": 125,
+      "potassium": 226,
+      "calcium": 141,
+      "iron": 1,
+      "vitaminD": 0
+    },
+    "longevity": {
+      "saturatedFat": 8,
+      "transFat": 0,
+      "cholesterol": 45
+    },
+    "carbQuality": {
+      "addedSugar": 18,
+      "netCarbs": 33
+    },
+    "notes": "Baskin-Robbins Product Nutrition Guide (baskinrobbins.com/en/nutrition, printed 07-13-2026). 4 oz scoop (113 g), 280 kcal. Label nutrients only. Trans fat on this guide is naturally occurring. Total sugars 23 g are not a stored key; added sugar is in carbQuality. Unlisted vitamins and minerals are omitted."
+  },
+  {
+    "name": "Ice Cream Scoop - Baskin-Robbins Pistachio Almond 2.5 oz scoop (71 g)",
+    "protein": 4,
+    "carbs": 16,
+    "fats": 12,
+    "micros": {
+      "fiber": 1,
+      "sodium": 50,
+      "potassium": 180,
+      "calcium": 118,
+      "iron": 0,
+      "vitaminD": 0
+    },
+    "longevity": {
+      "saturatedFat": 5,
+      "transFat": 0,
+      "cholesterol": 30
+    },
+    "carbQuality": {
+      "addedSugar": 8,
+      "netCarbs": 15
+    },
+    "notes": "Baskin-Robbins Product Nutrition Guide (baskinrobbins.com/en/nutrition, printed 07-13-2026). 2.5 oz scoop (71 g), 180 kcal. Label nutrients only. Trans fat on this guide is naturally occurring. Total sugars 12 g are not a stored key; added sugar is in carbQuality. Unlisted vitamins and minerals are omitted."
+  },
+  {
+    "name": "Ice Cream Scoop - Baskin-Robbins Pistachio Almond 4 oz scoop (113 g)",
+    "protein": 7,
+    "carbs": 25,
+    "fats": 19,
+    "micros": {
+      "fiber": 1,
+      "sodium": 80,
+      "potassium": 287,
+      "calcium": 188,
+      "iron": 0,
+      "vitaminD": 0
+    },
+    "longevity": {
+      "saturatedFat": 8,
+      "transFat": 0,
+      "cholesterol": 50
+    },
+    "carbQuality": {
+      "addedSugar": 13,
+      "netCarbs": 24
+    },
+    "notes": "Baskin-Robbins Product Nutrition Guide (baskinrobbins.com/en/nutrition, printed 07-13-2026). 4 oz scoop (113 g), 290 kcal. Label nutrients only. Trans fat on this guide is naturally occurring. Total sugars 19 g are not a stored key; added sugar is in carbQuality. Unlisted vitamins and minerals are omitted."
+  },
+  {
+    "name": "Ice Cream Scoop - Baskin-Robbins Rainbow Sherbet 2.5 oz scoop (71 g)",
+    "protein": 1,
+    "carbs": 22,
+    "fats": 1.5,
+    "micros": {
+      "fiber": 0,
+      "sodium": 15,
+      "potassium": 53,
+      "calcium": 34,
+      "iron": 0,
+      "vitaminD": 0
+    },
+    "longevity": {
+      "saturatedFat": 1,
+      "transFat": 0,
+      "cholesterol": 5
+    },
+    "carbQuality": {
+      "addedSugar": 15,
+      "netCarbs": 22
+    },
+    "notes": "Baskin-Robbins Product Nutrition Guide (baskinrobbins.com/en/nutrition, printed 07-13-2026). 2.5 oz scoop (71 g), 100 kcal. Label nutrients only. Trans fat on this guide is naturally occurring. Total sugars 17 g are not a stored key; added sugar is in carbQuality. Unlisted vitamins and minerals are omitted."
+  },
+  {
+    "name": "Ice Cream Scoop - Baskin-Robbins Rainbow Sherbet 4 oz scoop (113 g)",
+    "protein": 1,
+    "carbs": 35,
+    "fats": 2,
+    "micros": {
+      "fiber": 0,
+      "sodium": 25,
+      "potassium": 84,
+      "calcium": 55,
+      "iron": 0,
+      "vitaminD": 0
+    },
+    "longevity": {
+      "saturatedFat": 1.5,
+      "transFat": 0,
+      "cholesterol": 10
+    },
+    "carbQuality": {
+      "addedSugar": 24,
+      "netCarbs": 35
+    },
+    "notes": "Baskin-Robbins Product Nutrition Guide (baskinrobbins.com/en/nutrition, printed 07-13-2026). 4 oz scoop (113 g), 160 kcal. Label nutrients only. Trans fat on this guide is naturally occurring. Total sugars 26 g are not a stored key; added sugar is in carbQuality. Unlisted vitamins and minerals are omitted."
+  },
+  {
+    "name": "Ice Cream Scoop - Baskin-Robbins OREO 'n Cold Brew 2.5 oz scoop (71 g)",
+    "protein": 3,
+    "carbs": 22,
+    "fats": 11,
+    "micros": {
+      "fiber": 1,
+      "sodium": 95,
+      "potassium": 205,
+      "calcium": 89,
+      "iron": 1,
+      "vitaminD": 0
+    },
+    "longevity": {
+      "saturatedFat": 5,
+      "transFat": 0,
+      "cholesterol": 25
+    },
+    "carbQuality": {
+      "addedSugar": 12,
+      "netCarbs": 21
+    },
+    "notes": "Baskin-Robbins Product Nutrition Guide (baskinrobbins.com/en/nutrition, printed 07-13-2026). 2.5 oz scoop (71 g), 200 kcal. Label nutrients only. Trans fat on this guide is naturally occurring. Total sugars 15 g are not a stored key; added sugar is in carbQuality. Unlisted vitamins and minerals are omitted."
+  },
+  {
+    "name": "Ice Cream Scoop - Baskin-Robbins OREO 'n Cold Brew 4 oz scoop (113 g)",
+    "protein": 5,
+    "carbs": 35,
+    "fats": 18,
+    "micros": {
+      "fiber": 2,
+      "sodium": 150,
+      "potassium": 327,
+      "calcium": 141,
+      "iron": 1,
+      "vitaminD": 0
+    },
+    "longevity": {
+      "saturatedFat": 8,
+      "transFat": 0,
+      "cholesterol": 40
+    },
+    "carbQuality": {
+      "addedSugar": 18,
+      "netCarbs": 33
+    },
+    "notes": "Baskin-Robbins Product Nutrition Guide (baskinrobbins.com/en/nutrition, printed 07-13-2026). 4 oz scoop (113 g), 320 kcal. Label nutrients only. Trans fat on this guide is naturally occurring. Total sugars 24 g are not a stored key; added sugar is in carbQuality. Unlisted vitamins and minerals are omitted."
+  },
+  {
+    "name": "Ice Cream Scoop - Baskin-Robbins Vanilla 2.5 oz scoop (71 g)",
+    "protein": 3,
+    "carbs": 17,
+    "fats": 10,
+    "micros": {
+      "fiber": 0,
+      "sodium": 40,
+      "potassium": 132,
+      "calcium": 98,
+      "iron": 0,
+      "vitaminD": 0
+    },
+    "longevity": {
+      "saturatedFat": 6,
+      "transFat": 0,
+      "cholesterol": 40
+    },
+    "carbQuality": {
+      "addedSugar": 10,
+      "netCarbs": 17
+    },
+    "notes": "Baskin-Robbins Product Nutrition Guide (baskinrobbins.com/en/nutrition, printed 07-13-2026). 2.5 oz scoop (71 g), 170 kcal. Label nutrients only. Trans fat on this guide is naturally occurring. Total sugars 14 g are not a stored key; added sugar is in carbQuality. Unlisted vitamins and minerals are omitted."
+  },
+  {
+    "name": "Ice Cream Scoop - Baskin-Robbins Vanilla 4 oz scoop (113 g)",
+    "protein": 4,
+    "carbs": 26,
+    "fats": 16,
+    "micros": {
+      "fiber": 0,
+      "sodium": 65,
+      "potassium": 210,
+      "calcium": 157,
+      "iron": 0,
+      "vitaminD": 0
+    },
+    "longevity": {
+      "saturatedFat": 10,
+      "transFat": 0.5,
+      "cholesterol": 65
+    },
+    "carbQuality": {
+      "addedSugar": 16,
+      "netCarbs": 26
+    },
+    "notes": "Baskin-Robbins Product Nutrition Guide (baskinrobbins.com/en/nutrition, printed 07-13-2026). 4 oz scoop (113 g), 260 kcal. Label nutrients only. Trans fat on this guide is naturally occurring. Total sugars 22 g are not a stored key; added sugar is in carbQuality. Unlisted vitamins and minerals are omitted."
+  },
+  {
+    "name": "Ice Cream Scoop - Baskin-Robbins Chocolate 2.5 oz scoop (71 g)",
+    "protein": 3,
+    "carbs": 16,
+    "fats": 9,
+    "micros": {
+      "fiber": 1,
+      "sodium": 75,
+      "potassium": 214,
+      "calcium": 101,
+      "iron": 1,
+      "vitaminD": 0
+    },
+    "longevity": {
+      "saturatedFat": 6,
+      "transFat": 0,
+      "cholesterol": 30
+    },
+    "carbQuality": {
+      "addedSugar": 8,
+      "netCarbs": 15
+    },
+    "notes": "Baskin-Robbins Product Nutrition Guide (baskinrobbins.com/en/nutrition, printed 07-13-2026). 2.5 oz scoop (71 g), 150 kcal. Label nutrients only. Trans fat on this guide is naturally occurring. Total sugars 12 g are not a stored key; added sugar is in carbQuality. Unlisted vitamins and minerals are omitted."
+  },
+  {
+    "name": "Ice Cream Scoop - Baskin-Robbins Chocolate 4 oz scoop (113 g)",
+    "protein": 5,
+    "carbs": 26,
+    "fats": 14,
+    "micros": {
+      "fiber": 2,
+      "sodium": 115,
+      "potassium": 341,
+      "calcium": 161,
+      "iron": 2,
+      "vitaminD": 0
+    },
+    "longevity": {
+      "saturatedFat": 9,
+      "transFat": 0,
+      "cholesterol": 50
+    },
+    "carbQuality": {
+      "addedSugar": 13,
+      "netCarbs": 24
+    },
+    "notes": "Baskin-Robbins Product Nutrition Guide (baskinrobbins.com/en/nutrition, printed 07-13-2026). 4 oz scoop (113 g), 240 kcal. Label nutrients only. Trans fat on this guide is naturally occurring. Total sugars 19 g are not a stored key; added sugar is in carbQuality. Unlisted vitamins and minerals are omitted."
+  },
+  {
+    "name": "Ice Cream Scoop - Baskin-Robbins World Class Chocolate 2.5 oz scoop (71 g)",
+    "protein": 3,
+    "carbs": 16,
+    "fats": 10,
+    "micros": {
+      "fiber": 1,
+      "sodium": 60,
+      "potassium": 169,
+      "calcium": 97,
+      "iron": 1,
+      "vitaminD": 0
+    },
+    "longevity": {
+      "saturatedFat": 7,
+      "transFat": 0,
+      "cholesterol": 30
+    },
+    "carbQuality": {
+      "addedSugar": 8,
+      "netCarbs": 15
+    },
+    "notes": "Baskin-Robbins Product Nutrition Guide (baskinrobbins.com/en/nutrition, printed 07-13-2026). 2.5 oz scoop (71 g), 160 kcal. Label nutrients only. Trans fat on this guide is naturally occurring. Total sugars 11 g are not a stored key; added sugar is in carbQuality. Unlisted vitamins and minerals are omitted."
+  },
+  {
+    "name": "Ice Cream Scoop - Baskin-Robbins World Class Chocolate 4 oz scoop (113 g)",
+    "protein": 5,
+    "carbs": 25,
+    "fats": 16,
+    "micros": {
+      "fiber": 1,
+      "sodium": 90,
+      "potassium": 269,
+      "calcium": 155,
+      "iron": 1,
+      "vitaminD": 0
+    },
+    "longevity": {
+      "saturatedFat": 11,
+      "transFat": 0,
+      "cholesterol": 45
+    },
+    "carbQuality": {
+      "addedSugar": 12,
+      "netCarbs": 24
+    },
+    "notes": "Baskin-Robbins Product Nutrition Guide (baskinrobbins.com/en/nutrition, printed 07-13-2026). 4 oz scoop (113 g), 260 kcal. Label nutrients only. Trans fat on this guide is naturally occurring. Total sugars 18 g are not a stored key; added sugar is in carbQuality. Unlisted vitamins and minerals are omitted."
+  },
+  {
+    "name": "Ice Cream Scoop - Baskin-Robbins Mint Chocolate Chip 2.5 oz scoop (71 g)",
+    "protein": 3,
+    "carbs": 17,
+    "fats": 10,
+    "micros": {
+      "fiber": 1,
+      "sodium": 55,
+      "potassium": 166,
+      "calcium": 104,
+      "iron": 1,
+      "vitaminD": 0
+    },
+    "longevity": {
+      "saturatedFat": 6,
+      "transFat": 0,
+      "cholesterol": 35
+    },
+    "carbQuality": {
+      "addedSugar": 10,
+      "netCarbs": 16
+    },
+    "notes": "Baskin-Robbins Product Nutrition Guide (baskinrobbins.com/en/nutrition, printed 07-13-2026). 2.5 oz scoop (71 g), 170 kcal. Label nutrients only. Trans fat on this guide is naturally occurring. Total sugars 14 g are not a stored key; added sugar is in carbQuality. Unlisted vitamins and minerals are omitted."
+  },
+  {
+    "name": "Ice Cream Scoop - Baskin-Robbins Mint Chocolate Chip 4 oz scoop (113 g)",
+    "protein": 5,
+    "carbs": 28,
+    "fats": 16,
+    "micros": {
+      "fiber": 1,
+      "sodium": 85,
+      "potassium": 265,
+      "calcium": 166,
+      "iron": 1,
+      "vitaminD": 0
+    },
+    "longevity": {
+      "saturatedFat": 10,
+      "transFat": 0,
+      "cholesterol": 55
+    },
+    "carbQuality": {
+      "addedSugar": 16,
+      "netCarbs": 27
+    },
+    "notes": "Baskin-Robbins Product Nutrition Guide (baskinrobbins.com/en/nutrition, printed 07-13-2026). 4 oz scoop (113 g), 260 kcal. Label nutrients only. Trans fat on this guide is naturally occurring. Total sugars 22 g are not a stored key; added sugar is in carbQuality. Unlisted vitamins and minerals are omitted."
+  },
+  {
+    "name": "Ice Cream Scoop - Baskin-Robbins Chocolate Chip 2.5 oz scoop (71 g)",
+    "protein": 3,
+    "carbs": 17,
+    "fats": 10,
+    "micros": {
+      "fiber": 1,
+      "sodium": 55,
+      "potassium": 170,
+      "calcium": 100,
+      "iron": 0.6,
+      "vitaminD": 0
+    },
+    "longevity": {
+      "saturatedFat": 6,
+      "transFat": 0,
+      "cholesterol": 35
+    },
+    "carbQuality": {
+      "addedSugar": 10,
+      "netCarbs": 16
+    },
+    "notes": "Baskin-Robbins Product Nutrition Guide (baskinrobbins.com/en/nutrition, printed 07-13-2026). 2.5 oz scoop (71 g), 170 kcal. Label nutrients only. Trans fat on this guide is naturally occurring. Total sugars 14 g are not a stored key; added sugar is in carbQuality. Unlisted vitamins and minerals are omitted."
+  },
+  {
+    "name": "Ice Cream Scoop - Baskin-Robbins Chocolate Chip 4 oz scoop (113 g)",
+    "protein": 5,
+    "carbs": 28,
+    "fats": 16,
+    "micros": {
+      "fiber": 1,
+      "sodium": 90,
+      "potassium": 260,
+      "calcium": 170,
+      "iron": 0.9,
+      "vitaminD": 0.1
+    },
+    "longevity": {
+      "saturatedFat": 10,
+      "transFat": 0,
+      "cholesterol": 55
+    },
+    "carbQuality": {
+      "addedSugar": 16,
+      "netCarbs": 27
+    },
+    "notes": "Baskin-Robbins Product Nutrition Guide (baskinrobbins.com/en/nutrition, printed 07-13-2026). 4 oz scoop (113 g), 260 kcal. Label nutrients only. Trans fat on this guide is naturally occurring. Total sugars 22 g are not a stored key; added sugar is in carbQuality. Unlisted vitamins and minerals are omitted."
+  },
+  {
+    "name": "Ice Cream Scoop - Baskin-Robbins Chocolate Chip Cookie Dough 2.5 oz scoop (71 g)",
+    "protein": 3,
+    "carbs": 22,
+    "fats": 10,
+    "micros": {
+      "fiber": 0,
+      "sodium": 85,
+      "potassium": 135,
+      "calcium": 91,
+      "iron": 0,
+      "vitaminD": 0
+    },
+    "longevity": {
+      "saturatedFat": 6,
+      "transFat": 0,
+      "cholesterol": 35
+    },
+    "carbQuality": {
+      "addedSugar": 13,
+      "netCarbs": 22
+    },
+    "notes": "Baskin-Robbins Product Nutrition Guide (baskinrobbins.com/en/nutrition, printed 07-13-2026). 2.5 oz scoop (71 g), 180 kcal. Label nutrients only. Trans fat on this guide is naturally occurring. Total sugars 16 g are not a stored key; added sugar is in carbQuality. Unlisted vitamins and minerals are omitted."
+  },
+  {
+    "name": "Ice Cream Scoop - Baskin-Robbins Chocolate Chip Cookie Dough 4 oz scoop (113 g)",
+    "protein": 5,
+    "carbs": 36,
+    "fats": 15,
+    "micros": {
+      "fiber": 1,
+      "sodium": 130,
+      "potassium": 215,
+      "calcium": 145,
+      "iron": 1,
+      "vitaminD": 1
+    },
+    "longevity": {
+      "saturatedFat": 9,
+      "transFat": 0.5,
+      "cholesterol": 55
+    },
+    "carbQuality": {
+      "addedSugar": 21,
+      "netCarbs": 35
+    },
+    "notes": "Baskin-Robbins Product Nutrition Guide (baskinrobbins.com/en/nutrition, printed 07-13-2026). 4 oz scoop (113 g), 290 kcal. Label nutrients only. Trans fat on this guide is naturally occurring. Total sugars 26 g are not a stored key; added sugar is in carbQuality. Unlisted vitamins and minerals are omitted."
+  },
+  {
+    "name": "Ice Cream Scoop - Baskin-Robbins OREO Cookies 'n Cream 2.5 oz scoop (71 g)",
+    "protein": 3,
+    "carbs": 20,
+    "fats": 9,
+    "micros": {
+      "fiber": 0,
+      "sodium": 80,
+      "potassium": 141,
+      "calcium": 100,
+      "iron": 0,
+      "vitaminD": 0
+    },
+    "longevity": {
+      "saturatedFat": 5,
+      "transFat": 0,
+      "cholesterol": 30
+    },
+    "carbQuality": {
+      "addedSugar": 11,
+      "netCarbs": 20
+    },
+    "notes": "Baskin-Robbins Product Nutrition Guide (baskinrobbins.com/en/nutrition, printed 07-13-2026). 2.5 oz scoop (71 g), 170 kcal. Label nutrients only. Trans fat on this guide is naturally occurring. Total sugars 15 g are not a stored key; added sugar is in carbQuality. Unlisted vitamins and minerals are omitted."
+  },
+  {
+    "name": "Ice Cream Scoop - Baskin-Robbins OREO Cookies 'n Cream 4 oz scoop (113 g)",
+    "protein": 5,
+    "carbs": 32,
+    "fats": 15,
+    "micros": {
+      "fiber": 0,
+      "sodium": 125,
+      "potassium": 224,
+      "calcium": 159,
+      "iron": 1,
+      "vitaminD": 0
+    },
+    "longevity": {
+      "saturatedFat": 8,
+      "transFat": 0,
+      "cholesterol": 50
+    },
+    "carbQuality": {
+      "addedSugar": 18,
+      "netCarbs": 32
+    },
+    "notes": "Baskin-Robbins Product Nutrition Guide (baskinrobbins.com/en/nutrition, printed 07-13-2026). 4 oz scoop (113 g), 280 kcal. Label nutrients only. Trans fat on this guide is naturally occurring. Total sugars 23 g are not a stored key; added sugar is in carbQuality. This row's values are from the 05-15-2026 print of the same guide. The 07-13-2026 page listed the serving, but the value cells did not extract; complete rows on that page matched the earlier print. Unlisted vitamins and minerals are omitted."
+  },
+  {
+    "name": "Ice Cream Scoop - Baskin-Robbins Pralines 'n Cream 2.5 oz scoop (71 g)",
+    "protein": 3,
+    "carbs": 20,
+    "fats": 9,
+    "micros": {
+      "fiber": 0,
+      "sodium": 105,
+      "potassium": 134,
+      "calcium": 96,
+      "iron": 0,
+      "vitaminD": 0
+    },
+    "longevity": {
+      "saturatedFat": 5,
+      "transFat": 0,
+      "cholesterol": 30
+    },
+    "carbQuality": {
+      "addedSugar": 11,
+      "netCarbs": 20
+    },
+    "notes": "Baskin-Robbins Product Nutrition Guide (baskinrobbins.com/en/nutrition, printed 07-13-2026). 2.5 oz scoop (71 g), 170 kcal. Label nutrients only. Trans fat on this guide is naturally occurring. Total sugars 15 g are not a stored key; added sugar is in carbQuality. Unlisted vitamins and minerals are omitted."
+  },
+  {
+    "name": "Ice Cream Scoop - Baskin-Robbins Pralines 'n Cream 4 oz scoop (113 g)",
+    "protein": 4,
+    "carbs": 31,
+    "fats": 14,
+    "micros": {
+      "fiber": 1,
+      "sodium": 170,
+      "potassium": 213,
+      "calcium": 153,
+      "iron": 0,
+      "vitaminD": 0
+    },
+    "longevity": {
+      "saturatedFat": 8,
+      "transFat": 0,
+      "cholesterol": 45
+    },
+    "carbQuality": {
+      "addedSugar": 18,
+      "netCarbs": 30
+    },
+    "notes": "Baskin-Robbins Product Nutrition Guide (baskinrobbins.com/en/nutrition, printed 07-13-2026). 4 oz scoop (113 g), 270 kcal. Label nutrients only. Trans fat on this guide is naturally occurring. Total sugars 24 g are not a stored key; added sugar is in carbQuality. Unlisted vitamins and minerals are omitted."
+  },
+  {
+    "name": "Ice Cream Scoop - Baskin-Robbins Jamoca Almond Fudge 2.5 oz scoop (71 g)",
+    "protein": 3,
+    "carbs": 19,
+    "fats": 9,
+    "micros": {
+      "fiber": 1,
+      "sodium": 45,
+      "potassium": 170,
+      "calcium": 98,
+      "iron": 0,
+      "vitaminD": 0
+    },
+    "longevity": {
+      "saturatedFat": 4.5,
+      "transFat": 0,
+      "cholesterol": 25
+    },
+    "carbQuality": {
+      "addedSugar": 10,
+      "netCarbs": 18
+    },
+    "notes": "Baskin-Robbins Product Nutrition Guide (baskinrobbins.com/en/nutrition, printed 07-13-2026). 2.5 oz scoop (71 g), 170 kcal. Label nutrients only. Trans fat on this guide is naturally occurring. Total sugars 14 g are not a stored key; added sugar is in carbQuality. Unlisted vitamins and minerals are omitted."
+  },
+  {
+    "name": "Ice Cream Scoop - Baskin-Robbins Jamoca Almond Fudge 4 oz scoop (113 g)",
+    "protein": 5,
+    "carbs": 31,
+    "fats": 15,
+    "micros": {
+      "fiber": 1,
+      "sodium": 70,
+      "potassium": 270,
+      "calcium": 156,
+      "iron": 1,
+      "vitaminD": 0
+    },
+    "longevity": {
+      "saturatedFat": 7,
+      "transFat": 0,
+      "cholesterol": 40
+    },
+    "carbQuality": {
+      "addedSugar": 16,
+      "netCarbs": 30
+    },
+    "notes": "Baskin-Robbins Product Nutrition Guide (baskinrobbins.com/en/nutrition, printed 07-13-2026). 4 oz scoop (113 g), 270 kcal. Label nutrients only. Trans fat on this guide is naturally occurring. Total sugars 22 g are not a stored key; added sugar is in carbQuality. Unlisted vitamins and minerals are omitted."
+  },
+  {
+    "name": "Ice Cream Scoop - Baskin-Robbins Rocky Road 2.5 oz scoop (71 g)",
+    "protein": 4,
+    "carbs": 22,
+    "fats": 9,
+    "micros": {
+      "fiber": 1,
+      "sodium": 65,
+      "potassium": 213,
+      "calcium": 99,
+      "iron": 1,
+      "vitaminD": 0
+    },
+    "longevity": {
+      "saturatedFat": 5,
+      "transFat": 0,
+      "cholesterol": 30
+    },
+    "carbQuality": {
+      "addedSugar": 13,
+      "netCarbs": 21
+    },
+    "notes": "Baskin-Robbins Product Nutrition Guide (baskinrobbins.com/en/nutrition, printed 07-13-2026). 2.5 oz scoop (71 g), 180 kcal. Label nutrients only. Trans fat on this guide is naturally occurring. Total sugars 16 g are not a stored key; added sugar is in carbQuality. This row's values are from the 05-15-2026 print of the same guide. The 07-13-2026 page listed the serving, but the value cells did not extract; complete rows on that page matched the earlier print. Unlisted vitamins and minerals are omitted."
+  },
+  {
+    "name": "Ice Cream Scoop - Baskin-Robbins Rocky Road 4 oz scoop (113 g)",
+    "protein": 6,
+    "carbs": 35,
+    "fats": 15,
+    "micros": {
+      "fiber": 2,
+      "sodium": 105,
+      "potassium": 339,
+      "calcium": 157,
+      "iron": 2,
+      "vitaminD": 0
+    },
+    "longevity": {
+      "saturatedFat": 8,
+      "transFat": 0,
+      "cholesterol": 45
+    },
+    "carbQuality": {
+      "addedSugar": 20,
+      "netCarbs": 33
+    },
+    "notes": "Baskin-Robbins Product Nutrition Guide (baskinrobbins.com/en/nutrition, printed 07-13-2026). 4 oz scoop (113 g), 290 kcal. Label nutrients only. Trans fat on this guide is naturally occurring. Total sugars 26 g are not a stored key; added sugar is in carbQuality. Unlisted vitamins and minerals are omitted."
+  },
+  {
+    "name": "Ice Cream Scoop - Baskin-Robbins Very Berry Strawberry 2.5 oz scoop (71 g)",
+    "protein": 2,
+    "carbs": 17,
+    "fats": 7,
+    "micros": {
+      "fiber": 0,
+      "sodium": 40,
+      "potassium": 130,
+      "calcium": 84,
+      "iron": 0,
+      "vitaminD": 0
+    },
+    "longevity": {
+      "saturatedFat": 4,
+      "transFat": 0,
+      "cholesterol": 25
+    },
+    "carbQuality": {
+      "addedSugar": 11,
+      "netCarbs": 17
+    },
+    "notes": "Baskin-Robbins Product Nutrition Guide (baskinrobbins.com/en/nutrition, printed 07-13-2026). 2.5 oz scoop (71 g), 140 kcal. Label nutrients only. Trans fat on this guide is naturally occurring. Total sugars 15 g are not a stored key; added sugar is in carbQuality. Unlisted vitamins and minerals are omitted."
+  },
+  {
+    "name": "Ice Cream Scoop - Baskin-Robbins Very Berry Strawberry 4 oz scoop (113 g)",
+    "protein": 4,
+    "carbs": 40,
+    "fats": 11,
+    "micros": {
+      "fiber": 1,
+      "sodium": 65,
+      "potassium": 207,
+      "calcium": 134,
+      "iron": 0,
+      "vitaminD": 0
+    },
+    "longevity": {
+      "saturatedFat": 7,
+      "transFat": 0,
+      "cholesterol": 40
+    },
+    "carbQuality": {
+      "addedSugar": 17,
+      "netCarbs": 39
+    },
+    "notes": "Baskin-Robbins Product Nutrition Guide (baskinrobbins.com/en/nutrition, printed 07-13-2026). 4 oz scoop (113 g), 220 kcal. Label nutrients only. Trans fat on this guide is naturally occurring. Total sugars 23 g are not a stored key; added sugar is in carbQuality. The guide lists 40 g carbohydrate for this 4 oz scoop. That does not scale from the 2.5 oz scoop (17 g carbohydrate) or the pre-packed quart (21 g carbohydrate per 98 g). Unlisted vitamins and minerals are omitted."
+  },
+  {
+    "name": "Ice Cream Scoop - Baskin-Robbins Gold Medal Ribbon 2.5 oz scoop (71 g)",
+    "protein": 3,
+    "carbs": 18,
+    "fats": 8,
+    "micros": {
+      "fiber": 0,
+      "sodium": 100,
+      "potassium": 155,
+      "calcium": 100,
+      "iron": 0,
+      "vitaminD": 0
+    },
+    "longevity": {
+      "saturatedFat": 5,
+      "transFat": 0,
+      "cholesterol": 30
+    },
+    "carbQuality": {
+      "addedSugar": 9,
+      "netCarbs": 18
+    },
+    "notes": "Baskin-Robbins Product Nutrition Guide (baskinrobbins.com/en/nutrition, printed 07-13-2026). 2.5 oz scoop (71 g), 150 kcal. Label nutrients only. Trans fat on this guide is naturally occurring. Total sugars 13 g are not a stored key; added sugar is in carbQuality. Unlisted vitamins and minerals are omitted."
+  },
+  {
+    "name": "Ice Cream Scoop - Baskin-Robbins Gold Medal Ribbon 4 oz scoop (113 g)",
+    "protein": 5,
+    "carbs": 29,
+    "fats": 13,
+    "micros": {
+      "fiber": 1,
+      "sodium": 160,
+      "potassium": 246,
+      "calcium": 159,
+      "iron": 1,
+      "vitaminD": 0
+    },
+    "longevity": {
+      "saturatedFat": 8,
+      "transFat": 0,
+      "cholesterol": 45
+    },
+    "carbQuality": {
+      "addedSugar": 15,
+      "netCarbs": 28
+    },
+    "notes": "Baskin-Robbins Product Nutrition Guide (baskinrobbins.com/en/nutrition, printed 07-13-2026). 4 oz scoop (113 g), 240 kcal. Label nutrients only. Trans fat on this guide is naturally occurring. Total sugars 21 g are not a stored key; added sugar is in carbQuality. Unlisted vitamins and minerals are omitted."
+  },
+  {
+    "name": "Ice Cream Scoop - Baskin-Robbins Old Fashioned Butter Pecan 2.5 oz scoop (71 g)",
+    "protein": 3,
+    "carbs": 16,
+    "fats": 11,
+    "micros": {
+      "fiber": 0,
+      "sodium": 70,
+      "potassium": 154,
+      "calcium": 105,
+      "iron": 0,
+      "vitaminD": 0
+    },
+    "longevity": {
+      "saturatedFat": 6,
+      "transFat": 0,
+      "cholesterol": 35
+    },
+    "carbQuality": {
+      "addedSugar": 8,
+      "netCarbs": 16
+    },
+    "notes": "Baskin-Robbins Product Nutrition Guide (baskinrobbins.com/en/nutrition, printed 07-13-2026). 2.5 oz scoop (71 g), 180 kcal. Label nutrients only. Trans fat on this guide is naturally occurring. Total sugars 12 g are not a stored key; added sugar is in carbQuality. This row's values are from the 05-15-2026 print of the same guide. The 07-13-2026 page listed the serving, but the value cells did not extract; complete rows on that page matched the earlier print. Unlisted vitamins and minerals are omitted."
+  },
+  {
+    "name": "Ice Cream Scoop - Baskin-Robbins Old Fashioned Butter Pecan 4 oz scoop (113 g)",
+    "protein": 5,
+    "carbs": 25,
+    "fats": 18,
+    "micros": {
+      "fiber": 1,
+      "sodium": 110,
+      "potassium": 245,
+      "calcium": 167,
+      "iron": 0,
+      "vitaminD": 0
+    },
+    "longevity": {
+      "saturatedFat": 9,
+      "transFat": 0,
+      "cholesterol": 50
+    },
+    "carbQuality": {
+      "addedSugar": 13,
+      "netCarbs": 24
+    },
+    "notes": "Baskin-Robbins Product Nutrition Guide (baskinrobbins.com/en/nutrition, printed 07-13-2026). 4 oz scoop (113 g), 280 kcal. Label nutrients only. Trans fat on this guide is naturally occurring. Total sugars 20 g are not a stored key; added sugar is in carbQuality. Unlisted vitamins and minerals are omitted."
+  },
+  {
+    "name": "Ice Cream Scoop - Baskin-Robbins Cotton Candy 2.5 oz scoop (71 g)",
+    "protein": 3,
+    "carbs": 16,
+    "fats": 9,
+    "micros": {
+      "fiber": 0,
+      "sodium": 55,
+      "potassium": 146,
+      "calcium": 108,
+      "iron": 0,
+      "vitaminD": 0
+    },
+    "longevity": {
+      "saturatedFat": 6,
+      "transFat": 0,
+      "cholesterol": 35
+    },
+    "carbQuality": {
+      "addedSugar": 9,
+      "netCarbs": 16
+    },
+    "notes": "Baskin-Robbins Product Nutrition Guide (baskinrobbins.com/en/nutrition, printed 07-13-2026). 2.5 oz scoop (71 g), 160 kcal. Label nutrients only. Trans fat on this guide is naturally occurring. Total sugars 13 g are not a stored key; added sugar is in carbQuality. Unlisted vitamins and minerals are omitted."
+  },
+  {
+    "name": "Ice Cream Scoop - Baskin-Robbins Cotton Candy 4 oz scoop (113 g)",
+    "protein": 5,
+    "carbs": 25,
+    "fats": 14,
+    "micros": {
+      "fiber": 0,
+      "sodium": 85,
+      "potassium": 232,
+      "calcium": 173,
+      "iron": 0,
+      "vitaminD": 0
+    },
+    "longevity": {
+      "saturatedFat": 9,
+      "transFat": 0.5,
+      "cholesterol": 55
+    },
+    "carbQuality": {
+      "addedSugar": 14,
+      "netCarbs": 25
+    },
+    "notes": "Baskin-Robbins Product Nutrition Guide (baskinrobbins.com/en/nutrition, printed 07-13-2026). 4 oz scoop (113 g), 250 kcal. Label nutrients only. Trans fat on this guide is naturally occurring. Total sugars 21 g are not a stored key; added sugar is in carbQuality. Unlisted vitamins and minerals are omitted."
+  },
+  {
+    "name": "Baskin-Robbins Fresh-Baked Waffle Cone 1 cone (57 g)",
+    "protein": 2,
+    "carbs": 29,
+    "fats": 4,
+    "micros": {
+      "fiber": 1,
+      "sodium": 5,
+      "potassium": 26,
+      "calcium": 10,
+      "iron": 1,
+      "vitaminD": 0
+    },
+    "longevity": {
+      "saturatedFat": 1,
+      "transFat": 0,
+      "cholesterol": 10
+    },
+    "carbQuality": {
+      "addedSugar": 12,
+      "netCarbs": 28
+    },
+    "notes": "Baskin-Robbins Product Nutrition Guide (baskinrobbins.com/en/nutrition, printed 07-13-2026). 1 cone (57 g), 150 kcal. Label nutrients only. Trans fat on this guide is naturally occurring. Total sugars 13 g are not a stored key; added sugar is in carbQuality. Unlisted vitamins and minerals are omitted."
+  },
+  {
+    "name": "Baskin-Robbins Cake Cone 1 cone (6 g)",
+    "protein": 1,
+    "carbs": 5,
+    "fats": 0,
+    "micros": {
+      "fiber": 0,
+      "sodium": 10,
+      "potassium": 0,
+      "calcium": 1,
+      "iron": 0,
+      "vitaminD": 0
+    },
+    "longevity": {
+      "saturatedFat": 0,
+      "transFat": 0,
+      "cholesterol": 0
+    },
+    "carbQuality": {
+      "addedSugar": 0,
+      "netCarbs": 5
+    },
+    "notes": "Baskin-Robbins Product Nutrition Guide (baskinrobbins.com/en/nutrition, printed 07-13-2026). 1 cone (6 g), 25 kcal. Label nutrients only. Trans fat on this guide is naturally occurring. Total sugars 0 g are not a stored key; added sugar is in carbQuality. Unlisted vitamins and minerals are omitted."
+  },
+  {
+    "name": "Baskin-Robbins Sugar Cone 1 cone (12 g)",
+    "protein": 1,
+    "carbs": 10,
+    "fats": 0.5,
+    "micros": {
+      "fiber": 0,
+      "sodium": 55,
+      "potassium": 14,
+      "calcium": 3,
+      "iron": 0,
+      "vitaminD": 0
+    },
+    "longevity": {
+      "saturatedFat": 0,
+      "transFat": 0,
+      "cholesterol": 0
+    },
+    "carbQuality": {
+      "addedSugar": 4,
+      "netCarbs": 10
+    },
+    "notes": "Baskin-Robbins Product Nutrition Guide (baskinrobbins.com/en/nutrition, printed 07-13-2026). 1 cone (12 g), 50 kcal. Label nutrients only. Trans fat on this guide is naturally occurring. Total sugars 4 g are not a stored key; added sugar is in carbQuality. Unlisted vitamins and minerals are omitted."
   }
 ]

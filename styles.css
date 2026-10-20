@@ -15857,6 +15857,14 @@ body.print-preview .day__backdrop {
   display: none;
 }
 
+.micro-graph-hover-when {
+  color: #6b6b67;
+}
+
+.micro-graph-hover-when:empty {
+  display: none;
+}
+
 .micro-graph-point-menu {
   position: absolute;
   z-index: 5;
