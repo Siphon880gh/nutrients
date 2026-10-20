@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Nutrients — Week meals</title>
-  <link rel="stylesheet" href="styles.css?t=1792446000">
+  <link rel="stylesheet" href="styles.css?t=1792474000">
 </head>
 <body class="show-daily-intake-icons day-entry-guided">
   <svg class="app-icon-symbols" width="0" height="0" aria-hidden="true" focusable="false">
@@ -3222,7 +3222,7 @@
             <span class="micro-graph-zoom-keys" aria-hidden="true"><span class="micro-graph-zoom-mod"></span><span class="micro-graph-zoom-keychar">−</span></span>
           </button>
         </div>
-        <p id="micro-graph-gesture" class="micro-graph-gesture">Scroll to pan. Shift+scroll zooms days. Shift+Ctrl+scroll zooms percent. Drag to pan.</p>
+        <p id="micro-graph-gesture" class="micro-graph-gesture">Scroll to pan. Shift+scroll zooms days. Shift+Ctrl+scroll zooms percent. Drag to pan. Shift+drag resizes.</p>
       </div>
       <div class="micro-graph-modal__body">
         <div class="micro-graph-chart-wrap">
@@ -3272,10 +3272,21 @@
       <header class="modal__header modal__header--with-tools">
         <div class="modal__header-text">
           <h3 id="micro-graph-sources-title" class="modal__title">Foods that contributed</h3>
-          <p id="micro-graph-sources-subtitle" class="modal__subtitle"></p>
         </div>
         <button type="button" id="micro-graph-sources-week" class="modal__tool-btn" aria-pressed="false" aria-controls="micro-graph-sources-body" title="Show each food's share of the week">Show week</button>
       </header>
+      <div class="micro-graph-sources-date" role="group" aria-label="Date for this nutrient">
+        <button type="button" id="micro-graph-sources-prev" class="micro-graph-sources-date-btn" aria-label="Previous date">
+          <svg class="micro-graph-sources-date-icon micro-graph-sources-date-icon--prev" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" focusable="false"><use href="#icon-chevron-down"></use></svg>
+        </button>
+        <div class="micro-graph-sources-date-copy">
+          <p id="micro-graph-sources-date" class="micro-graph-sources-date-label"></p>
+          <p id="micro-graph-sources-subtitle" class="micro-graph-sources-date-value"></p>
+        </div>
+        <button type="button" id="micro-graph-sources-next" class="micro-graph-sources-date-btn" aria-label="Next date">
+          <svg class="micro-graph-sources-date-icon micro-graph-sources-date-icon--next" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" focusable="false"><use href="#icon-chevron-down"></use></svg>
+        </button>
+      </div>
       <div id="micro-graph-sources-body" class="micro-sources-modal__body"></div>
       <footer class="modal__footer">
         <button type="button" id="micro-graph-sources-done" class="modal__done">Done</button>
@@ -3294,6 +3305,6 @@
   <script src="demographic-dv.js?t=1786025202"></script>
   <script src="longevity-dv.js?t=1784087916"></script>
   <script src="persist.js?t=1789372800"></script>
-  <script src="app.js?t=1792446000"></script>
+  <script src="app.js?t=1792474000"></script>
 </body>
 </html>

@@ -14687,6 +14687,9 @@
   var microGraphSourcesSubtitleEl = document.getElementById("micro-graph-sources-subtitle");
   var microGraphSourcesBodyEl = document.getElementById("micro-graph-sources-body");
   var microGraphSourcesDoneBtn = document.getElementById("micro-graph-sources-done");
+  var microGraphSourcesDateEl = document.getElementById("micro-graph-sources-date");
+  var microGraphSourcesPrevBtn = document.getElementById("micro-graph-sources-prev");
+  var microGraphSourcesNextBtn = document.getElementById("micro-graph-sources-next");
   var microGraphPointHit = null;
   var microGraphReadoutEl = document.getElementById("micro-graph-readout");
   var microGraphChipsEl = document.getElementById("micro-graph-chips");
@@ -14701,6 +14704,7 @@
   var microGraphDoneBtn = document.getElementById("micro-graph-modal-done");
   var microGraphMode = "day";
   var microGraphSelection = [];
+  var microGraphFocusKey = "";
   var microGraphReadoutSort = { key: "", dir: "asc" };
   var microGraphZoomMax = null;
   var microGraphYMin = 0;
@@ -15333,12 +15337,23 @@
     var i1 = Math.min(points.length - 1, Math.ceil(layout.x0 + layout.span) + 1);
     var visibleCount = Math.max(1, i1 - i0);
     var labelStep = visibleCount <= 8 ? 1 : Math.ceil(visibleCount / 8);
+    var graphLabel = "Line graph of selected nutrients as percent of daily target";
+    if (microGraphFocusKey) {
+      series.forEach(function (seriesItem) {
+        if (seriesItem.key === microGraphFocusKey) {
+          graphLabel =
+            "Line graph of " + seriesItem.label + " as percent of daily target";
+        }
+      });
+    }
     var html =
       '<svg viewBox="0 0 ' +
       width +
       " " +
       height +
-      '" preserveAspectRatio="none" role="img" aria-label="Line graph of selected nutrients as percent of daily target">';
+      '" preserveAspectRatio="none" role="img" aria-label="' +
+      escapeAttr(graphLabel) +
+      '">';
     html +=
       '<text class="micro-graph-y-title" x="' +
       padL +
@@ -15378,6 +15393,7 @@
         '" stroke="#9eb4cc" stroke-width="1" stroke-dasharray="4 3"></line>';
     }
     series.forEach(function (seriesItem) {
+      if (microGraphFocusKey && seriesItem.key !== microGraphFocusKey) return;
       if (!seriesItem.hasPct) return;
       var path = microGraphLinePath(xs, seriesItem.values, yFor);
       if (!path) return;
@@ -15593,12 +15609,32 @@
       "</tr></thead></table>";
     html += '<div class="micro-graph-readout-scroll"><table class="micro-graph-readout-table"><tbody>';
     microGraphReadoutRows(model.series, index).forEach(function (row) {
+      var rowClass = "";
+      if (microGraphFocusKey) {
+        rowClass =
+          microGraphFocusKey === row.key
+            ? ' class="is-focused"'
+            : ' class="is-muted"';
+      }
+      var focused = microGraphFocusKey === row.key;
       html +=
-        '<tr><td class="micro-graph-readout-name"><span class="micro-graph-readout-name-label"><span class="micro-graph-readout-swatch" style="background:' +
+        "<tr" +
+        rowClass +
+        '><td class="micro-graph-readout-name"><span class="micro-graph-readout-name-label"><button type="button" class="micro-graph-readout-name-btn" data-micro-graph-sources="' +
+        escapeAttr(row.key) +
+        '" title="Foods that contributed"><span class="micro-graph-readout-swatch" style="background:' +
         row.color +
-        '"></span><span>' +
+        '"></span><span class="micro-graph-readout-name-text">' +
         escapeHtml(row.label) +
-        '</span></span></td><td class="micro-graph-readout-pct">' +
+        '</span></button><button type="button" class="micro-graph-readout-focus-btn" data-micro-graph-focus="' +
+        escapeAttr(row.key) +
+        '" aria-pressed="' +
+        (focused ? "true" : "false") +
+        '" aria-label="' +
+        escapeAttr(focused ? "Show all vitamins" : "Show only " + row.label) +
+        '" title="' +
+        escapeAttr(focused ? "Show all lines" : "Show only this line") +
+        '"><svg class="micro-graph-readout-focus-icon" viewBox="0 0 16 16" width="13" height="13" aria-hidden="true" focusable="false"><use href="#icon-sticky-filter"></use></svg></button></span></td><td class="micro-graph-readout-pct">' +
         escapeHtml(row.pctText) +
         '</td><td class="micro-graph-readout-amt">' +
         escapeHtml(row.amountText) +
@@ -15674,7 +15710,6 @@
   }
 
   function hideMicroGraphPointMenu() {
-    microGraphPointHit = null;
     if (microGraphPointMenuEl) microGraphPointMenuEl.hidden = true;
   }
 
@@ -15737,6 +15772,7 @@
     var bestLine = null;
     var bestLineDist = 10;
     model.series.forEach(function (seriesItem) {
+      if (microGraphFocusKey && seriesItem.key !== microGraphFocusKey) return;
       if (!seriesItem.hasPct) return;
       var prev = null;
       seriesItem.values.forEach(function (value, index) {
@@ -15928,12 +15964,22 @@
     items.forEach(function (item) {
       total += item.amount;
     });
+    var daySum = 0;
+    var hasDaySum = false;
+    var weekSum = 0;
+    var hasWeekSum = false;
     var html =
       '<table class="micro-graph-sources-table"><thead><tr>' +
       '<th scope="col">Food</th>' +
       '<th scope="col" class="micro-graph-sources-amt">Amount</th>' +
       '<th scope="col" class="micro-graph-sources-day">Day<span class="micro-graph-sources-colhint">% of daily target</span></th>' +
-      '<th scope="col" class="micro-graph-sources-week">Week<span class="micro-graph-sources-colhint">% of this week</span></th>' +
+      '<th scope="col" class="micro-graph-sources-week"><span class="micro-graph-sources-week-head">Week<button type="button" class="micro-graph-sources-week-info" aria-expanded="false" aria-label="About the week share">' +
+      '<svg class="micro-graph-sources-week-info-icon" viewBox="0 0 16 16" width="13" height="13" aria-hidden="true" focusable="false">' +
+      '<circle cx="8" cy="8" r="6.25" fill="none" stroke="currentColor" stroke-width="1.2"></circle>' +
+      '<path d="M8 7.1v4.4" fill="none" stroke="currentColor" stroke-width="1.35" stroke-linecap="round"></path>' +
+      '<circle cx="8" cy="4.75" r="0.7" fill="currentColor"></circle></svg>' +
+      '<span class="micro-graph-sources-week-tip" role="tooltip">Aim for at least 14% (1 out of 7 days).</span></button></span>' +
+      '<span class="micro-graph-sources-colhint">% of this week</span></th>' +
       "</tr></thead><tbody>";
     items.forEach(function (item, index) {
       var share = total > 0 ? (item.amount / total) * 100 : 0;
@@ -15942,6 +15988,14 @@
       var amountText = fmtNum(item.amount) + (unit ? " " + unit : "");
       var targetText = targetSlice != null ? fmtNum(targetSlice) + "%" : "—";
       var weekText = item.weekShare != null ? fmtNum(item.weekShare) + "%" : "—";
+      if (targetSlice != null && !isNaN(targetSlice)) {
+        daySum += targetSlice;
+        hasDaySum = true;
+      }
+      if (item.weekShare != null && !isNaN(item.weekShare)) {
+        weekSum += item.weekShare;
+        hasWeekSum = true;
+      }
       html +=
         "<tr>" +
         '<td class="micro-graph-sources-food-cell">' +
@@ -15965,11 +16019,20 @@
         escapeHtml(weekText) +
         "</td></tr>";
     });
-    html += "</tbody></table>";
+    html +=
+      '</tbody><tfoot><tr class="micro-graph-sources-sum">' +
+      '<th scope="row">Total</th>' +
+      '<td class="micro-graph-sources-amt"></td>' +
+      '<td class="micro-graph-sources-day">' +
+      escapeHtml(hasDaySum ? fmtNum(daySum) + "%" : "—") +
+      "</td>" +
+      '<td class="micro-graph-sources-week">' +
+      escapeHtml(hasWeekSum ? fmtNum(weekSum) + "%" : "—") +
+      "</td></tr></tfoot></table>";
     return html;
   }
 
-  function openMicroGraphSourcesModal() {
+  function fillMicroGraphSourcesModal(resetWeek) {
     var hit = microGraphPointHit;
     if (!hit || !microGraphSourcesModalEl) return;
     var model = microGraphChartEl && microGraphChartEl._model;
@@ -15982,21 +16045,36 @@
         microGraphMergeContributions(weekKeys, group.nutrientKey, group.source)
       );
     });
-    if (microGraphSourcesModalEl) {
-      microGraphSourcesModalEl.classList.remove("is-week");
-    }
     var weekBtn = document.getElementById("micro-graph-sources-week");
-    if (weekBtn) {
-      weekBtn.setAttribute("aria-pressed", "false");
-      weekBtn.textContent = "Show week";
+    if (resetWeek) {
+      microGraphSourcesModalEl.classList.remove("is-week");
+      if (weekBtn) {
+        weekBtn.setAttribute("aria-pressed", "false");
+        weekBtn.textContent = "Show week";
+      }
     }
     if (microGraphSourcesTitleEl) {
       microGraphSourcesTitleEl.textContent = hit.label;
     }
+    if (microGraphSourcesDateEl) {
+      microGraphSourcesDateEl.textContent =
+        point && point.title ? point.title : "";
+    }
     if (microGraphSourcesSubtitleEl) {
-      microGraphSourcesSubtitleEl.textContent = point && point.title
-        ? "Logged foods behind " + hit.valueText + " on " + point.title + "."
-        : "Logged foods behind this point.";
+      microGraphSourcesSubtitleEl.textContent = hit.valueText
+        ? hit.valueText
+        : "";
+    }
+    var noun = microGraphMode === "week" ? "week" : "day";
+    var index = hit.index;
+    var count = model && model.points ? model.points.length : 0;
+    if (microGraphSourcesPrevBtn) {
+      microGraphSourcesPrevBtn.disabled = !(index > 0);
+      microGraphSourcesPrevBtn.setAttribute("aria-label", "Previous " + noun);
+    }
+    if (microGraphSourcesNextBtn) {
+      microGraphSourcesNextBtn.disabled = !(count && index < count - 1);
+      microGraphSourcesNextBtn.setAttribute("aria-label", "Next " + noun);
     }
     var html = "";
     groups.forEach(function (group) {
@@ -16009,13 +16087,73 @@
       html += microGraphSourcesListHtml(group.items, group.unit, hit.pct);
     });
     if (microGraphSourcesBodyEl) microGraphSourcesBodyEl.innerHTML = html;
+  }
+
+  function openMicroGraphSourcesModal() {
+    if (!microGraphPointHit || !microGraphSourcesModalEl) return;
+    fillMicroGraphSourcesModal(true);
     hideMicroGraphPointMenu();
     microGraphSourcesModalEl.hidden = false;
+  }
+
+  function stepMicroGraphSources(delta) {
+    var hit = microGraphPointHit;
+    var model = microGraphChartEl && microGraphChartEl._model;
+    if (!hit || !model || !model.points.length) return;
+    var index = hit.index + delta;
+    if (index < 0 || index >= model.points.length) return;
+    var seriesItem = null;
+    model.series.forEach(function (item) {
+      if (item.key === hit.key) seriesItem = item;
+    });
+    if (!seriesItem) return;
+    var value = seriesItem.values[index] || {};
+    microGraphPointHit = {
+      kind: "dot",
+      key: seriesItem.key,
+      source: seriesItem.source,
+      label: seriesItem.label,
+      color: seriesItem.color,
+      valueText: microGraphHitValueText(value),
+      pct: value.pct,
+      amountText: value.amountText || "—",
+      index: index,
+    };
+    showMicroGraphColumn(index);
+    fillMicroGraphSourcesModal(false);
   }
 
   function closeMicroGraphSourcesModal() {
     if (!microGraphSourcesModalEl) return;
     microGraphSourcesModalEl.hidden = true;
+  }
+
+  function openMicroGraphSourcesForKey(key) {
+    var model = microGraphChartEl && microGraphChartEl._model;
+    if (!model || !key) return;
+    var index = microGraphChartEl._activeCol;
+    if (index == null || !model.points[index]) {
+      index = microGraphColumnToShow(model.points, model.series, null);
+    }
+    if (index == null || !model.points[index]) return;
+    var seriesItem = null;
+    model.series.forEach(function (item) {
+      if (item.key === key) seriesItem = item;
+    });
+    if (!seriesItem) return;
+    var value = seriesItem.values[index] || {};
+    microGraphPointHit = {
+      kind: "dot",
+      key: seriesItem.key,
+      source: seriesItem.source,
+      label: seriesItem.label,
+      color: seriesItem.color,
+      valueText: microGraphHitValueText(value),
+      pct: value.pct,
+      amountText: value.amountText || "—",
+      index: index,
+    };
+    openMicroGraphSourcesModal();
   }
 
   var graphFoodTraceTimer = null;
@@ -16322,6 +16460,37 @@
     renderMicroGraph();
   }
 
+  function syncMicroGraphFocus(series) {
+    if (!microGraphFocusKey) return;
+    var found = false;
+    series.forEach(function (item) {
+      if (item.key === microGraphFocusKey) found = true;
+    });
+    if (!found) microGraphFocusKey = "";
+  }
+
+  function microGraphDrawSeries(series) {
+    if (!microGraphFocusKey) return series;
+    return series.filter(function (item) {
+      return item.key === microGraphFocusKey;
+    });
+  }
+
+  function toggleMicroGraphFocus(key) {
+    if (!key) return;
+    microGraphFocusKey = microGraphFocusKey === key ? "" : key;
+    renderMicroGraph();
+    if (!microGraphReadoutEl) return;
+    var buttons = microGraphReadoutEl.querySelectorAll("[data-micro-graph-focus]");
+    var i;
+    for (i = 0; i < buttons.length; i++) {
+      if (buttons[i].getAttribute("data-micro-graph-focus") === key) {
+        buttons[i].focus();
+        break;
+      }
+    }
+  }
+
   function renderMicroGraph() {
     hideMicroGraphHover();
     hideMicroGraphPointMenu();
@@ -16339,6 +16508,8 @@
     }
     var points = microGraphPoints();
     var series = microGraphSeries();
+    syncMicroGraphFocus(series);
+    var drawSeries = microGraphDrawSeries(series);
     var keepCol =
       microGraphChartEl && microGraphChartEl._activeCol != null
         ? microGraphChartEl._activeCol
@@ -16347,7 +16518,7 @@
       microGraphSubtitleEl.textContent = microGraphSubtitle(points);
     }
     var showCol = microGraphColumnToShow(points, series, keepCol);
-    var layout = points.length ? microGraphLayout(points, series) : null;
+    var layout = points.length ? microGraphLayout(points, drawSeries) : null;
     if (microGraphChartEl) {
       microGraphChartEl._yMax = layout ? layout.yMax : 100;
       microGraphChartEl._dataCeil = layout ? layout.dataCeil : 100;
@@ -16356,7 +16527,7 @@
         ? microGraphChartHtml(points, series, layout)
         : "";
     }
-    renderMicroGraphMinimap(points, series, layout);
+    renderMicroGraphMinimap(points, drawSeries, layout);
     if (microGraphZoomInBtn) {
       var yRange = layout ? layout.yMax - layout.yMin : 100;
       microGraphZoomInBtn.disabled =
@@ -16508,6 +16679,7 @@
         return;
       }
       microGraphSelection = [];
+      microGraphFocusKey = "";
       renderMicroGraph();
       if (microGraphAddInputEl) microGraphAddInputEl.focus();
     });
@@ -16530,6 +16702,7 @@
     microGraphX0 = null;
     microGraphXSpan = null;
     microGraphSelection = shownMicroGraphSelection();
+    microGraphFocusKey = "";
     microGraphReturnFocus = document.activeElement;
     if (microGraphAddInputEl) microGraphAddInputEl.value = "";
     hideMicroGraphSuggest();
@@ -16541,7 +16714,9 @@
   function closeMicroGraphModal() {
     if (!microGraphModalEl || microGraphModalEl.hidden) return;
     microGraphModalEl.hidden = true;
+    microGraphFocusKey = "";
     microGraphModalEl.classList.remove("micro-graph-modal--keys");
+    if (microGraphChartEl) microGraphChartEl.classList.remove("is-resize-ready");
     hideMicroGraphSuggest();
     hideMicroGraphHover();
     hideMicroGraphPointMenu();
@@ -16608,6 +16783,30 @@
     microGraphYMin = next.yMin;
     microGraphZoomMax = next.yMax;
   }
+
+  function microGraphResizeDrag(layout, pan, dx, dy) {
+    var xFactor = Math.exp(dx / 200);
+    var yFactor = Math.exp(dy / 200);
+    var nextSpan = pan.span * xFactor;
+    var nextRange = pan.yRange * yFactor;
+    var fracX = pan.span ? (pan.anchorIndex - pan.x0) / pan.span : 0.5;
+    var fracY = pan.yRange ? (pan.anchorPct - pan.yMin) / pan.yRange : 0.5;
+    var xNext = microGraphClampX(
+      layout.n,
+      layout.plotW,
+      nextSpan,
+      pan.anchorIndex - fracX * nextSpan
+    );
+    microGraphX0 = xNext.x0;
+    microGraphXSpan = xNext.span;
+    var yNext = microGraphClampY(
+      pan.anchorPct - fracY * nextRange,
+      pan.anchorPct + (1 - fracY) * nextRange,
+      layout.dataCeil
+    );
+    microGraphYMin = yNext.yMin;
+    microGraphZoomMax = yNext.yMax;
+  }
   if (microGraphZoomInBtn) {
     microGraphZoomInBtn.addEventListener("click", function () {
       zoomMicroGraph(-1);
@@ -16648,12 +16847,34 @@
       }
     });
   }
+  if (microGraphSourcesPrevBtn) {
+    microGraphSourcesPrevBtn.addEventListener("click", function () {
+      stepMicroGraphSources(-1);
+    });
+  }
+  if (microGraphSourcesNextBtn) {
+    microGraphSourcesNextBtn.addEventListener("click", function () {
+      stepMicroGraphSources(1);
+    });
+  }
   if (microGraphSourcesModalEl) {
     microGraphSourcesModalEl.addEventListener("click", function (e) {
       if (e.target.closest('[data-action="close-micro-graph-sources"]')) {
         closeMicroGraphSourcesModal();
         return;
       }
+      var infoBtn = e.target.closest(".micro-graph-sources-week-info");
+      if (infoBtn) {
+        e.preventDefault();
+        var open = infoBtn.getAttribute("aria-expanded") === "true";
+        infoBtn.setAttribute("aria-expanded", open ? "false" : "true");
+        return;
+      }
+      microGraphSourcesModalEl
+        .querySelectorAll(".micro-graph-sources-week-info[aria-expanded='true']")
+        .forEach(function (btn) {
+          btn.setAttribute("aria-expanded", "false");
+        });
       var foodBtn = e.target.closest("[data-micro-graph-jump-food]");
       if (!foodBtn) return;
       jumpToLoggedFood(
@@ -16685,6 +16906,12 @@
     if (microGraphModalEl) {
       microGraphModalEl.classList.toggle("micro-graph-modal--keys", !!down);
     }
+    if (microGraphChartEl) {
+      microGraphChartEl.classList.toggle(
+        "is-resize-ready",
+        !!(open && e && e.shiftKey)
+      );
+    }
     var label = down ? microGraphZoomModLabel(e) : "";
     var mods = document.querySelectorAll(".micro-graph-zoom-mod");
     for (var i = 0; i < mods.length; i++) {
@@ -16697,10 +16924,10 @@
         '<span class="micro-graph-gesture-hot">Shift + Ctrl + scroll</span> zooms the percent axis';
     } else if (e && e.shiftKey) {
       gesture.innerHTML =
-        '<span class="micro-graph-gesture-hot">Shift + scroll</span> zooms the days';
+        '<span class="micro-graph-gesture-hot">Shift + drag</span> resizes days and percent. Shift + scroll zooms the days.';
     } else {
       gesture.textContent =
-        "Scroll to pan. Shift+scroll zooms days. Shift+Ctrl+scroll zooms percent. Drag to pan.";
+        "Scroll to pan. Shift+scroll zooms days. Shift+Ctrl+scroll zooms percent. Drag to pan. Shift+drag resizes.";
     }
   }
   function microGraphZoomKey(e) {
@@ -16733,6 +16960,7 @@
     if (microGraphModalEl) {
       microGraphModalEl.classList.remove("micro-graph-modal--keys");
     }
+    if (microGraphChartEl) microGraphChartEl.classList.remove("is-resize-ready");
   });
   if (microGraphModalEl) {
     microGraphModalEl.addEventListener("click", function (e) {
@@ -16753,6 +16981,20 @@
         if (microGraphChartEl && microGraphChartEl._activeCol != null) {
           showMicroGraphColumn(microGraphChartEl._activeCol, sortKey);
         }
+        return;
+      }
+      var focusBtn = e.target.closest("[data-micro-graph-focus]");
+      if (focusBtn) {
+        e.preventDefault();
+        toggleMicroGraphFocus(focusBtn.getAttribute("data-micro-graph-focus"));
+        return;
+      }
+      var sourcesBtn = e.target.closest("[data-micro-graph-sources]");
+      if (sourcesBtn) {
+        e.preventDefault();
+        openMicroGraphSourcesForKey(
+          sourcesBtn.getAttribute("data-micro-graph-sources")
+        );
         return;
       }
       if (e.target.closest("[data-micro-graph-remove-untargeted]")) {
@@ -16936,6 +17178,23 @@
     microGraphChartEl.addEventListener("pointerdown", function (e) {
       var layout = microGraphChartEl._layout;
       if (!layout || e.button !== 0) return;
+      var resize = !!e.shiftKey;
+      var anchorIndex = layout.x0 + layout.span / 2;
+      var anchorPct = (layout.yMin + layout.yMax) / 2;
+      if (resize) {
+        var svg = microGraphChartEl.querySelector("svg");
+        var svgPt = svg ? microGraphSvgPoint(svg, e.clientX, e.clientY) : null;
+        if (svgPt) {
+          var fracX = (svgPt.x - layout.padL) / layout.plotW;
+          if (fracX < 0) fracX = 0;
+          if (fracX > 1) fracX = 1;
+          anchorIndex = layout.x0 + fracX * layout.span;
+          var fracY = 1 - (svgPt.y - layout.padT) / layout.plotH;
+          if (fracY < 0) fracY = 0;
+          if (fracY > 1) fracY = 1;
+          anchorPct = layout.yMin + fracY * (layout.yMax - layout.yMin);
+        }
+      }
       microGraphChartEl._pan = {
         id: e.pointerId,
         x: e.clientX,
@@ -16945,8 +17204,11 @@
         span: layout.span,
         yRange: layout.yMax - layout.yMin,
         moved: false,
+        resize: resize,
+        anchorIndex: anchorIndex,
+        anchorPct: anchorPct,
       };
-      microGraphChartEl.classList.add("is-panning");
+      microGraphChartEl.classList.add(resize ? "is-resizing" : "is-panning");
       if (microGraphChartEl.setPointerCapture) {
         microGraphChartEl.setPointerCapture(e.pointerId);
       }
@@ -16960,23 +17222,27 @@
       if (!pan.moved && Math.abs(dx) + Math.abs(dy) < 4) return;
       pan.moved = true;
       microGraphDidPan = true;
-      microGraphSetX(
-        layout,
-        pan.x0 - (dx / Math.max(layout.plotW, 1)) * pan.span,
-        pan.span
-      );
-      var dPct = (dy / Math.max(layout.plotH, 1)) * pan.yRange;
-      microGraphSetY(layout, pan.yMin - dPct, pan.yMin + pan.yRange - dPct);
+      if (pan.resize) {
+        microGraphResizeDrag(layout, pan, dx, dy);
+      } else {
+        microGraphSetX(
+          layout,
+          pan.x0 - (dx / Math.max(layout.plotW, 1)) * pan.span,
+          pan.span
+        );
+        var dPct = (dy / Math.max(layout.plotH, 1)) * pan.yRange;
+        microGraphSetY(layout, pan.yMin - dPct, pan.yMin + pan.yRange - dPct);
+      }
       renderMicroGraph();
     });
     microGraphChartEl.addEventListener("pointerup", function (e) {
       if (!microGraphChartEl._pan || e.pointerId !== microGraphChartEl._pan.id) return;
       microGraphChartEl._pan = null;
-      microGraphChartEl.classList.remove("is-panning");
+      microGraphChartEl.classList.remove("is-panning", "is-resizing");
     });
     microGraphChartEl.addEventListener("pointercancel", function () {
       microGraphChartEl._pan = null;
-      microGraphChartEl.classList.remove("is-panning");
+      microGraphChartEl.classList.remove("is-panning", "is-resizing");
     });
     if (microGraphMinimapEl) {
       microGraphMinimapEl.addEventListener("pointerdown", function (e) {

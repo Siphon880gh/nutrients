@@ -15700,6 +15700,11 @@ body.print-preview .day__backdrop {
   touch-action: none;
 }
 
+.micro-graph-chart.is-resize-ready,
+.micro-graph-chart.is-resizing {
+  cursor: nwse-resize;
+}
+
 .micro-graph-chart.is-panning {
   cursor: grabbing;
 }
@@ -15942,7 +15947,8 @@ body.print-preview .day__backdrop {
 
 .micro-graph-sources-table {
   width: 100%;
-  border-collapse: collapse;
+  border-collapse: separate;
+  border-spacing: 0;
   font-size: 0.75rem;
 }
 
@@ -16008,6 +16014,186 @@ body.print-preview .day__backdrop {
 
 #micro-graph-sources-modal.is-week .micro-graph-sources-week {
   display: table-cell;
+}
+
+.micro-graph-sources-table tfoot th,
+.micro-graph-sources-table tfoot td {
+  position: sticky;
+  bottom: 0;
+  z-index: 2;
+  border-top: 2px solid #d8d8d2;
+  border-bottom: 0;
+  background: #fff;
+  font-weight: 750;
+  box-shadow: 0 -6px 8px rgba(255, 255, 255, 0.9);
+}
+
+.micro-graph-sources-table tfoot th {
+  text-align: left;
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: 0.75rem;
+  color: #2a2a28;
+}
+
+.micro-graph-sources-table tfoot td.micro-graph-sources-day {
+  background: #e7f0f8;
+}
+
+.micro-graph-sources-table tfoot td.micro-graph-sources-week {
+  background: #f4ecdf;
+}
+
+.micro-graph-sources-date {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin: 0;
+  padding: 0.55rem 1rem;
+  background: #e7f0f8;
+  border-bottom: 1px solid #c5d6ea;
+}
+
+.micro-graph-sources-date-copy {
+  flex: 1 1 auto;
+  min-width: 0;
+  text-align: center;
+}
+
+.micro-graph-sources-date-label {
+  margin: 0;
+  font-size: 1.15rem;
+  font-weight: 750;
+  line-height: 1.2;
+  color: #16365c;
+}
+
+.micro-graph-sources-date-value {
+  margin: 0.12rem 0 0;
+  font-size: 0.82rem;
+  font-weight: 650;
+  line-height: 1.3;
+  color: #3d5f86;
+}
+
+.micro-graph-sources-date-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 1.85rem;
+  height: 1.85rem;
+  padding: 0;
+  border: 1px solid #9eb4cc;
+  border-radius: 6px;
+  background: #fff;
+  color: #1e4a78;
+  cursor: pointer;
+}
+
+.micro-graph-sources-date-btn:hover,
+.micro-graph-sources-date-btn:focus-visible {
+  border-color: #2f5f9f;
+  background: #f7fbff;
+}
+
+.micro-graph-sources-date-btn:focus-visible {
+  outline: 2px solid #4a7fd4;
+  outline-offset: 1px;
+}
+
+.micro-graph-sources-date-btn:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.micro-graph-sources-date-icon {
+  display: block;
+}
+
+.micro-graph-sources-date-icon--prev {
+  transform: rotate(90deg);
+}
+
+.micro-graph-sources-date-icon--next {
+  transform: rotate(-90deg);
+}
+
+.micro-graph-sources-week-head {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.15rem;
+}
+
+.micro-graph-sources-week-info {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.15rem;
+  height: 1.15rem;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: #8a6a42;
+  cursor: pointer;
+}
+
+.micro-graph-sources-week-info:hover,
+.micro-graph-sources-week-info:focus-visible,
+.micro-graph-sources-week-info[aria-expanded="true"] {
+  color: #5c4324;
+  background: rgba(92, 67, 36, 0.1);
+}
+
+.micro-graph-sources-week-info:focus-visible {
+  outline: 2px solid #4a7fd4;
+  outline-offset: 1px;
+}
+
+.micro-graph-sources-week-info-icon {
+  display: block;
+}
+
+.micro-graph-sources-week-tip {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 8;
+  width: 13.5rem;
+  padding: 0.45rem 0.6rem;
+  border-radius: 4px;
+  background: #1a1a1a;
+  color: #fff;
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 1.35;
+  text-align: left;
+  text-transform: none;
+  white-space: normal;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+}
+
+.micro-graph-sources-week-tip::before {
+  content: "";
+  position: absolute;
+  bottom: 100%;
+  right: 0.28rem;
+  border: 5px solid transparent;
+  border-bottom-color: #1a1a1a;
+}
+
+.micro-graph-sources-week-info:hover .micro-graph-sources-week-tip,
+.micro-graph-sources-week-info:focus-visible .micro-graph-sources-week-tip,
+.micro-graph-sources-week-info[aria-expanded="true"] .micro-graph-sources-week-tip {
+  opacity: 1;
+  visibility: visible;
 }
 
 .micro-graph-sources-rank {
@@ -16260,8 +16446,106 @@ body.print-preview .day__backdrop {
 .micro-graph-readout-name-label {
   display: flex;
   align-items: center;
-  gap: 0.35rem;
+  gap: 0.28rem;
+  width: 100%;
   min-width: 0;
+}
+
+.micro-graph-readout-name-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  flex: 1 1 auto;
+  min-width: 0;
+  margin: 0;
+  padding: 0.04rem 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-weight: 650;
+  line-height: 1.2;
+  text-align: left;
+  cursor: pointer;
+}
+
+.micro-graph-readout-name-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+}
+
+.micro-graph-readout-name-btn:hover .micro-graph-readout-name-text,
+.micro-graph-readout-name-btn:focus-visible .micro-graph-readout-name-text {
+  text-decoration: underline;
+  text-underline-offset: 0.12em;
+}
+
+.micro-graph-readout-name-btn:focus-visible {
+  outline: 2px solid #4a7fd4;
+  outline-offset: 1px;
+  border-radius: 3px;
+}
+
+.micro-graph-readout-focus-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 1.15rem;
+  height: 1.15rem;
+  padding: 0;
+  border: 0;
+  border-radius: 3px;
+  background: transparent;
+  color: #6b6b67;
+  cursor: pointer;
+}
+
+.micro-graph-readout-focus-btn:hover,
+.micro-graph-readout-focus-btn:focus-visible {
+  background: rgba(42, 42, 40, 0.08);
+  color: #2a2a28;
+}
+
+.micro-graph-readout-focus-btn[aria-pressed="true"] {
+  background: #d9e6f5;
+  color: #1f4e86;
+}
+
+.micro-graph-readout-focus-btn:focus-visible {
+  outline: 2px solid #4a7fd4;
+  outline-offset: 1px;
+}
+
+.micro-graph-readout-focus-icon {
+  display: block;
+}
+
+.micro-graph-readout-table tbody tr.is-muted td {
+  color: #b0aea8;
+}
+
+.micro-graph-readout-table tbody tr.is-muted .micro-graph-readout-swatch {
+  opacity: 0.3;
+}
+
+.micro-graph-readout-table tbody tr.is-muted .micro-graph-readout-name-btn {
+  color: #b0aea8;
+  font-weight: 550;
+}
+
+.micro-graph-readout-table tbody tr.is-muted .micro-graph-readout-focus-btn {
+  color: #8d8d88;
+}
+
+.micro-graph-readout-table tbody tr.is-focused td {
+  background: #e7f0e4;
+}
+
+.micro-graph-readout-table tbody tr.is-focused:hover td {
+  background: #dcead8;
 }
 
 .micro-graph-readout-pct {
