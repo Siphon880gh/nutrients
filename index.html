@@ -3249,7 +3249,10 @@
           </div>
         </div>
         <div id="micro-graph-readout" class="micro-graph-readout" aria-live="polite"></div>
-        <div id="micro-graph-chips" class="micro-graph-chips" role="list" aria-label="Graphed nutrients"></div>
+        <div class="micro-graph-selection-bar">
+          <div id="micro-graph-chips" class="micro-graph-chips" role="list" aria-label="Graphed nutrients"></div>
+          <button type="button" id="micro-graph-clear-all" class="micro-graph-clear-all" hidden>Clear all</button>
+        </div>
         <div class="dashboard__nutrient-filter-combobox micro-graph-add">
           <label class="micro-graph-add__label" for="micro-graph-add-input">Add vitamin</label>
           <input type="search" id="micro-graph-add-input" class="dashboard__nutrient-filter-input" placeholder="Search vitamins and minerals" autocomplete="off" spellcheck="false" aria-autocomplete="list" aria-controls="micro-graph-suggest" aria-expanded="false">

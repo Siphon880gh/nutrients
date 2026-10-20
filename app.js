@@ -14687,6 +14687,7 @@
   var microGraphPointHit = null;
   var microGraphReadoutEl = document.getElementById("micro-graph-readout");
   var microGraphChipsEl = document.getElementById("micro-graph-chips");
+  var microGraphClearAllBtn = document.getElementById("micro-graph-clear-all");
   var microGraphAddInputEl = document.getElementById("micro-graph-add-input");
   var microGraphSuggestEl = document.getElementById("micro-graph-suggest");
   var microGraphModeDayEl = document.getElementById("micro-graph-mode-day");
@@ -16363,6 +16364,19 @@
     if (microGraphChipsEl) {
       microGraphChipsEl.innerHTML = series.map(microGraphChipHtml).join("");
     }
+    if (microGraphClearAllBtn) {
+      var canClearGraph = series.length > 0;
+      microGraphClearAllBtn.hidden = !canClearGraph;
+      microGraphClearAllBtn.disabled = !canClearGraph;
+      if (canClearGraph) {
+        microGraphClearAllBtn.setAttribute(
+          "aria-label",
+          "Clear " +
+            (series.length === 1 ? "the vitamin" : "all " + series.length + " vitamins") +
+            " from the graph"
+        );
+      }
+    }
     if (showCol != null) {
       showMicroGraphColumn(showCol);
     } else if (microGraphReadoutEl) {
@@ -16460,6 +16474,33 @@
       return spec.key !== key;
     });
     renderMicroGraph();
+  }
+
+  function confirmClearAllMicroGraph() {
+    if (!microGraphSelection.length) return;
+    if (appConfirmModalEl && !appConfirmModalEl.hidden) return;
+    var count = microGraphSelection.length;
+    showAppConfirm({
+      title: "Clear all vitamins",
+      message:
+        "Remove all " +
+        count +
+        (count === 1 ? " vitamin" : " vitamins") +
+        " from this graph? Logged meals stay unchanged.",
+      confirmLabel: "Clear all",
+      cancelLabel: "Cancel",
+    }).then(function (ok) {
+      if (!microGraphModalEl || microGraphModalEl.hidden) return;
+      if (!ok) {
+        if (microGraphClearAllBtn && !microGraphClearAllBtn.hidden) {
+          microGraphClearAllBtn.focus();
+        }
+        return;
+      }
+      microGraphSelection = [];
+      renderMicroGraph();
+      if (microGraphAddInputEl) microGraphAddInputEl.focus();
+    });
   }
 
   function setMicroGraphMode(mode) {
@@ -16706,6 +16747,10 @@
       }
       if (e.target.closest("[data-micro-graph-remove-untargeted]")) {
         removeMicroGraphUntargeted();
+        return;
+      }
+      if (e.target.closest("#micro-graph-clear-all")) {
+        confirmClearAllMicroGraph();
         return;
       }
       var removeBtn = e.target.closest("[data-micro-graph-remove]");
@@ -34756,6 +34801,14 @@
 
   document.addEventListener("keydown", function (e) {
     if (e.key !== "Escape") return;
+    if (appConfirmModalEl && !appConfirmModalEl.hidden) {
+      closeAppConfirmModal(false);
+      return;
+    }
+    if (appAlertModalEl && !appAlertModalEl.hidden) {
+      closeAppAlertModal();
+      return;
+    }
     if (microGraphSourcesModalEl && !microGraphSourcesModalEl.hidden) {
       closeMicroGraphSourcesModal();
       return;
@@ -35890,6 +35943,12 @@
       if (e.target.closest('[data-action="close-app-confirm-modal"]')) {
         closeAppConfirmModal(false);
       }
+    });
+    appConfirmModalEl.addEventListener("keydown", function (e) {
+      if (e.key !== "Escape") return;
+      e.preventDefault();
+      e.stopPropagation();
+      closeAppConfirmModal(false);
     });
   }
   if (appAlertDoneBtn) {

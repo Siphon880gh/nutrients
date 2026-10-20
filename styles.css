@@ -13050,6 +13050,11 @@ body.day-word-wrap-off .day__input {
   z-index: 110;
 }
 
+#app-confirm-modal,
+#app-alert-modal {
+  z-index: 180;
+}
+
 #micro-def-modal.modal--stacked {
   z-index: 120;
 }
@@ -16082,7 +16087,8 @@ body.print-preview .day__backdrop {
   font-weight: 650;
 }
 
-.micro-graph-readout-clear-untargeted {
+.micro-graph-readout-clear-untargeted,
+.micro-graph-clear-all {
   flex: 0 0 auto;
   margin: 0;
   padding: 0.12rem 0.4rem;
@@ -16098,12 +16104,15 @@ body.print-preview .day__backdrop {
 }
 
 .micro-graph-readout-clear-untargeted:hover,
-.micro-graph-readout-clear-untargeted:focus-visible {
+.micro-graph-readout-clear-untargeted:focus-visible,
+.micro-graph-clear-all:hover,
+.micro-graph-clear-all:focus-visible {
   border-color: #9eb4cc;
   color: #2a2a28;
 }
 
-.micro-graph-readout-clear-untargeted:focus-visible {
+.micro-graph-readout-clear-untargeted:focus-visible,
+.micro-graph-clear-all:focus-visible {
   outline: 2px solid #4a7fd4;
   outline-offset: 1px;
 }
@@ -16252,13 +16261,31 @@ body.print-preview .day__backdrop {
   outline-offset: 1px;
 }
 
+.micro-graph-selection-bar {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  flex: 0 0 auto;
+  min-width: 0;
+}
+
 .micro-graph-chips {
   display: flex;
   flex-wrap: wrap;
   gap: 0.35rem;
   max-height: 3.4rem;
   overflow: auto;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.micro-graph-clear-all {
   flex: 0 0 auto;
+  margin: 0 0 0 auto;
+}
+
+.micro-graph-clear-all[hidden] {
+  display: none;
 }
 
 .micro-graph-chip {
