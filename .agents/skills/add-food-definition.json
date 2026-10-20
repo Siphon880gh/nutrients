@@ -1,0 +1,85 @@
+{
+  "name": "add-food-definition",
+  "description": "Use when the user names a food to add, asks to add a food entry, or wants a new food written into samples/definitions-food.json from the Import food nutrition prompt.",
+  "purpose": "Add one or more named foods to samples/definitions-food.json. Nutrition objects follow the Import food definition prompt builder (Have AI help me), then get appended to the sample file.",
+  "onInvoke": [
+    "The user named a food (or a list of foods) to add to the sample food definitions. You fill the Import food prompt yourself and append the objects. Do not stop after drafting a prompt for ChatGPT.",
+    "If they did not name a food, ask which food. Do not invent a food.",
+    "If they already named a portion, use that portion. If they did not, follow the serving rules below and write the entry. Ask only when the name is a different food under two reasonable readings (which brand, which recipe), not when only the household serving is unspecified."
+  ],
+  "files": {
+    "definitions": "samples/definitions-food.json",
+    "promptBuilder": "app.js functions buildAiPromptFromPortion, jsonSchemaExample, nutrientListForPrompt",
+    "ui": "Import food definition modal → ✨ Have AI help me (#import-ai-panel, #import-ai-portion)"
+  },
+  "promptSource": {
+    "readBeforeWriting": [
+      "Read buildAiPromptFromPortion, jsonSchemaExample, and nutrientListForPrompt in app.js before estimating nutrients.",
+      "Keys, labels, and units come from those functions. If this skill and app.js disagree, app.js wins.",
+      "jsonSchemaExample() zeroes every key as a shape demo. Those zeroes are not data. Do not paste that object into the file."
+    ],
+    "rulesFromBuilder": [
+      "Return JSON matching the structure: one object, or an array when there is more than one common serving. Omit any nutrient key you cannot estimate.",
+      "Use the portion in the name field.",
+      "If the food is missing serving information, append a common serving size to the end of the food name (e.g. 1/2 cup, 1 cup, 1 oz, 2 oz, 3 oz). Prefer everyday portions people actually log. If the serving is in oz, add a visual reference in parentheses if possible (e.g. \"3 oz (palm-sized)\", \"1 oz (about a small handful)\"). If it's usually eaten all in one sitting from a container or bag, name it as container or bag followed by oz etc in parenthesis.",
+      "If the food has more than one common serving size people actually log, return an array of objects — one object per serving — with all nutrients scaled to that serving. When the user already named one portion, write only that portion.",
+      "Amounts for the micro requirements panel belong in micros. When the same nutrient key also appears in longevity, store the number in micros only and set longevity[key] to true.",
+      "If the food is a multivitamin or vitamin entry: Don't just list the label DV. Adjust both the DV and actual values for typical absorption, since we don't absorb 100% of a pill for every vitamin. If there is fat soluble vitamins, assume enough fats were eaten to absorb the fat-soluble vitamins (A, D, E, K)."
+    ]
+  },
+  "objectShape": {
+    "required": {
+      "name": "Non-empty string. Food, then the serving at the end, matching existing names such as \"Lamb steak 3 oz (palm-sized)\". Keep the user's wording when it already includes a serving.",
+      "protein": "number, grams for that serving",
+      "carbs": "number, grams for that serving",
+      "fats": "number, grams for that serving"
+    },
+    "optional": {
+      "micros": "object of numeric amounts. Units are whatever nutrientListForPrompt assigns to that key.",
+      "longevity": "object. Longevity-only keys are numbers. Keys that also exist in micros are boolean true.",
+      "carbQuality": "object. glycemicIndex (GI, not grams), addedSugar (g), refinedCarbs (g). Also set netCarbs (g) to carbs minus fiber when fiber is known; the file stores it even though CARB_QUALITY_KEYS does not list it.",
+      "notes": "string. Cite the published source, the gram weight scaled to, and any important omission. The prompt schema omits notes; the sample file includes them."
+    },
+    "bridgeExample": {
+      "micros": { "copper": 214, "selenium": 1 },
+      "longevity": { "copper": true, "selenium": true, "saturatedFat": 3.4 }
+    }
+  },
+  "values": [
+    "Scale every number to the serving in the name.",
+    "Use a published source: USDA FoodData Central, a national food table (CoFID or equivalent), or the product label for a branded food. Name that source in notes.",
+    "Omit keys the source does not report. A stored 0 means the source reported zero, or the nutrient is absent for that food (vitamin B12 in an unfortified plant food, vitamin C in unfortified oil).",
+    "Do not copy the zero-filled schema. Do not invent a full micronutrient panel to look complete.",
+    "Protein, carbs, and fats are required. If you cannot find those three, do not append the food; say what source you checked.",
+    "Only use micros, longevity, and carbQuality keys that jsonSchemaExample / nutrientListForPrompt emit, plus carbQuality.netCarbs and notes."
+  ],
+  "workflow": [
+    "Search samples/definitions-food.json for the food name (case-insensitive). Use search; do not load the whole file.",
+    "If the same food and the same serving already exist, report the existing name and stop. Do not add a second copy. A different serving of the same food is allowed when it is not already there.",
+    "Read the three prompt-builder functions in app.js. Estimate nutrients using their rules and units.",
+    "Build one object per serving you are adding.",
+    "Append those objects to the end of the JSON array. Put a comma after the previous last object. Match the file's 2-space indent. Do not re-serialize or reformat the rest of the file.",
+    "Validate, then tell the user each new name, its serving, and the source in notes."
+  ],
+  "duplicateCheck": {
+    "search": "Grep samples/definitions-food.json for the food words and for \"name\" lines.",
+    "sameServing": "Stop and report the existing name.",
+    "differentServing": "Append only the new serving, scaled on its own.",
+    "userNamedPortion": "One object for that portion, even if other servings are also common."
+  },
+  "validate": {
+    "command": "node -e \"JSON.parse(require('fs').readFileSync('samples/definitions-food.json','utf8')); console.log('valid JSON')\"",
+    "also": [
+      "The file must still be a JSON array.",
+      "Each name you just added appears once, and that object has numeric protein, carbs, and fats.",
+      "The file already contains a few repeated names. Do not treat those as a reason to reformat the file. Do not add another copy of a name that is already present."
+    ]
+  },
+  "doNot": [
+    "Do not write the entry only in the chat.",
+    "Do not edit definitions-food-categories.json in this skill. If the new name is likely uncategorized, say so. Categorizing is the categorize-food-definitions skill.",
+    "Do not change existing food objects.",
+    "Do not put a bridge nutrient's number in longevity. The number stays in micros; longevity gets true.",
+    "Do not add foods the user did not name."
+  ]
+}
