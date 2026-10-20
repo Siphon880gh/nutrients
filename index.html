@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Nutrients — Week meals</title>
-  <link rel="stylesheet" href="styles.css?t=1792415400">
+  <link rel="stylesheet" href="styles.css?t=1792446000">
 </head>
 <body class="show-daily-intake-icons day-entry-guided">
   <svg class="app-icon-symbols" width="0" height="0" aria-hidden="true" focusable="false">
@@ -3210,10 +3210,45 @@
           <button type="button" id="micro-graph-mode-day" class="dashboard__micro-segment" aria-pressed="true">Day by day</button>
           <button type="button" id="micro-graph-mode-week" class="dashboard__micro-segment" aria-pressed="false">Week by week</button>
         </div>
+        <div class="dashboard__micro-segmented micro-graph-zoom" role="group" aria-label="Graph scale">
+          <button type="button" id="micro-graph-zoom-in" class="dashboard__micro-segment micro-graph-zoom-btn" title="Zoom in. Hold Shift, Command, Option, or Control and press +" aria-keyshortcuts="Shift+Equal Control+Equal Meta+Equal Alt+Equal">
+            <svg class="micro-graph-zoom-icon" viewBox="0 0 16 16" width="15" height="15" aria-hidden="true" focusable="false"><circle cx="6.5" cy="6.5" r="4" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M9.6 9.6 13 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M6.5 4.7v3.6M4.7 6.5h3.6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+            <span class="micro-graph-zoom-text">Zoom in</span>
+            <span class="micro-graph-zoom-keys" aria-hidden="true"><span class="micro-graph-zoom-mod"></span><span class="micro-graph-zoom-keychar">+</span></span>
+          </button>
+          <button type="button" id="micro-graph-zoom-out" class="dashboard__micro-segment micro-graph-zoom-btn" title="Zoom out. Hold Shift, Command, Option, or Control and press −" aria-keyshortcuts="Shift+Minus Control+Minus Meta+Minus Alt+Minus">
+            <svg class="micro-graph-zoom-icon" viewBox="0 0 16 16" width="15" height="15" aria-hidden="true" focusable="false"><circle cx="6.5" cy="6.5" r="4" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M9.6 9.6 13 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M4.7 6.5h3.6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+            <span class="micro-graph-zoom-text">Zoom out</span>
+            <span class="micro-graph-zoom-keys" aria-hidden="true"><span class="micro-graph-zoom-mod"></span><span class="micro-graph-zoom-keychar">−</span></span>
+          </button>
+        </div>
+        <p id="micro-graph-gesture" class="micro-graph-gesture">Scroll to pan. Shift+scroll zooms days. Shift+Ctrl+scroll zooms percent. Drag to pan.</p>
       </div>
       <div class="micro-graph-modal__body">
-        <div id="micro-graph-chart" class="micro-graph-chart" tabindex="0" aria-label="Nutrient graph. Left and right arrows read one column."></div>
-        <p id="micro-graph-readout" class="micro-graph-readout" aria-live="polite"></p>
+        <div class="micro-graph-chart-wrap">
+          <div id="micro-graph-chart" class="micro-graph-chart" tabindex="0" aria-label="Nutrient graph. Left and right arrows read one column."></div>
+          <div id="micro-graph-minimap" class="micro-graph-minimap" hidden aria-label="Overview of the full graph. Drag to move the zoomed view."></div>
+          <div id="micro-graph-hover" class="micro-graph-hover" hidden role="tooltip">
+            <span class="micro-graph-hover-swatch" aria-hidden="true"></span>
+            <span class="micro-graph-hover-copy">
+              <span class="micro-graph-hover-name"></span>
+              <span class="micro-graph-hover-value"></span>
+            </span>
+          </div>
+          <div id="micro-graph-point-menu" class="micro-graph-point-menu" hidden>
+            <div class="micro-graph-point-menu__head">
+              <span class="micro-graph-hover-swatch" id="micro-graph-point-swatch" aria-hidden="true"></span>
+              <span class="micro-graph-hover-copy">
+                <span class="micro-graph-hover-name" id="micro-graph-point-name"></span>
+                <span class="micro-graph-hover-value" id="micro-graph-point-value"></span>
+                <span class="micro-graph-point-menu__when" id="micro-graph-point-when"></span>
+              </span>
+            </div>
+            <button type="button" id="micro-graph-point-sources" class="micro-graph-point-menu__action">Foods that contributed</button>
+            <button type="button" id="micro-graph-point-remove" class="micro-graph-point-menu__action micro-graph-point-menu__action--remove">Remove from graph</button>
+          </div>
+        </div>
+        <div id="micro-graph-readout" class="micro-graph-readout" aria-live="polite"></div>
         <div id="micro-graph-chips" class="micro-graph-chips" role="list" aria-label="Graphed nutrients"></div>
         <div class="dashboard__nutrient-filter-combobox micro-graph-add">
           <label class="micro-graph-add__label" for="micro-graph-add-input">Add vitamin</label>
@@ -3223,6 +3258,23 @@
       </div>
       <footer class="modal__footer">
         <button type="button" id="micro-graph-modal-done" class="modal__done">Done</button>
+      </footer>
+    </div>
+  </div>
+
+  <div id="micro-graph-sources-modal" class="modal" hidden>
+    <div class="modal__backdrop" data-action="close-micro-graph-sources"></div>
+    <div class="modal__panel modal__panel--wide" role="dialog" aria-modal="true" aria-labelledby="micro-graph-sources-title">
+      <header class="modal__header modal__header--with-tools">
+        <div class="modal__header-text">
+          <h3 id="micro-graph-sources-title" class="modal__title">Foods that contributed</h3>
+          <p id="micro-graph-sources-subtitle" class="modal__subtitle"></p>
+        </div>
+        <button type="button" id="micro-graph-sources-week" class="modal__tool-btn" aria-pressed="false" aria-controls="micro-graph-sources-body" title="Show each food's share of the week">Show week</button>
+      </header>
+      <div id="micro-graph-sources-body" class="micro-sources-modal__body"></div>
+      <footer class="modal__footer">
+        <button type="button" id="micro-graph-sources-done" class="modal__done">Done</button>
       </footer>
     </div>
   </div>
@@ -3238,6 +3290,6 @@
   <script src="demographic-dv.js?t=1786025202"></script>
   <script src="longevity-dv.js?t=1784087916"></script>
   <script src="persist.js?t=1789372800"></script>
-  <script src="app.js?t=1792416000"></script>
+  <script src="app.js?t=1792446000"></script>
 </body>
 </html>
