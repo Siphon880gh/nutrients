@@ -89,6 +89,35 @@ Longevity nutrients by section — fats, omegas, fiber, and related compounds fo
 - `definitions-micronutrients.json` and `definitions-longevity.json` contain nutrient explanation copy.
 - `demographic-dv.js` and `longevity-dv.js` provide daily value targets.
 - Browser `localStorage` (via `persist.js` / `NutrientsPersist`) stores food definitions, day meals, favorites, and settings across sessions. See `specs-data-persistence.md`.
+- `migrations/food-text.json` renames food text already saved in this browser. See **Food text migrations** below.
+
+## Food text migrations
+
+Use this when a food name changes and older diary lines should follow it. Edit `migrations/food-text.json`. Each rule replaces `from` with `to`.
+
+```json
+{
+  "rules": [
+    {
+      "id": "2026-10-22-hk-cafe-chicken-steak-with-skin",
+      "from": "Hong Kong Cafe Style - Chicken Steak 1 piece (about 5 oz cooked, palm-sized)",
+      "to": "Hong Kong Cafe Style - Chicken Steak 1 piece with skin (about 5 oz cooked, palm-sized)"
+    }
+  ]
+}
+```
+
+On each load, the app searches stored nutrients data for that exact text and rewrites it. This covers every account on this browser: past days, saved meals, food definition names, and quiz favorites. A serving operator after the name stays put, so a line ending in `*2` or `* 2/3` is still `*2` or `* 2/3` after the rename.
+
+Leave a rule in the file after it has run. Once the old text is gone, later loads change nothing.
+
+Also update the sample JSON so new imports use the new name:
+
+```bash
+node scripts/apply-food-text-migrations.js
+```
+
+That applies the same rules inside the sample food file, sample day meals, and the other food JSON files. It replaces the text only and does not reformat those files. Then reload the app so saved history in this browser is updated too.
 
 ## QA Food Definitions Tool
 

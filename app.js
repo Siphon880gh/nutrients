@@ -22663,6 +22663,7 @@
 
   function loadPersistedAppState() {
     if (persist) persist.migrate();
+    applyLoadedFoodTextMigrations();
     loadFoodDefinitions();
     loadKeywordReorderOpen();
     loadKeywordCaloriesOpen();
@@ -38991,6 +38992,35 @@
     );
   }
 
+  var FOOD_TEXT_MIGRATIONS_URL = "migrations/food-text.json";
+  var foodTextMigrations = [];
+
+  function loadFoodTextMigrations(done) {
+    fetch(FOOD_TEXT_MIGRATIONS_URL, { cache: "no-store" })
+      .then(function (res) {
+        if (!res.ok) throw new Error("Could not load food text migrations");
+        return res.json();
+      })
+      .then(function (data) {
+        foodTextMigrations =
+          persist && persist.normalizeFoodTextMigrations
+            ? persist.normalizeFoodTextMigrations(data)
+            : [];
+      })
+      .catch(function () {
+        foodTextMigrations = [];
+      })
+      .then(function () {
+        if (done) done();
+      });
+  }
+
+  function applyLoadedFoodTextMigrations() {
+    if (!persist || !persist.applyFoodTextMigrations) return;
+    if (!foodTextMigrations.length) return;
+    persist.applyFoodTextMigrations(foodTextMigrations);
+  }
+
   function boot() {
     loadPersistedAppState();
     initCopyMenuLabels();
@@ -39008,7 +39038,7 @@
   }
 
   loadAppConfig(function () {
-    var pending = 5;
+    var pending = 6;
     function definitionsReady() {
       pending -= 1;
       if (pending === 0) boot();
@@ -39018,6 +39048,7 @@
     loadFoodNotesDefinitions(definitionsReady);
     loadFoodCategoriesDefinitions(definitionsReady);
     loadFoodSourcesPrecomputed(definitionsReady);
+    loadFoodTextMigrations(definitionsReady);
   });
 
   syncAuthUi();

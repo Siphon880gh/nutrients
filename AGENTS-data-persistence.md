@@ -45,6 +45,7 @@ Spec: [`specs-data-persistence.md`](./specs-data-persistence.md).
 | Method | Description |
 |--------|-------------|
 | `migrate()` | Hyphen legacy → tables; single-user payloads → orphan; ensure multi-user array shapes |
+| `applyFoodTextMigrations(data)` | Rename stored food text from [`migrations/food-text.json`](./migrations/food-text.json). Runs for every user row, including past days. Keeps a trailing `*2` / `* 2/3`. Call after fetch and before loading entities into memory |
 | `claimOrphanForUser(userId, isFirstUser)` | Used by signup for the first account |
 | `clearCache()` | Drop settings cache (logout) |
 | `isLoggedIn()` | Proxy to auth |
@@ -84,5 +85,6 @@ Loads `../persist.js` so it exercises the real repositories (shared `localStorag
 ## Agent Notes
 
 - New durable preference: add field to `defaultSettings()`, document in `specs-data-persistence.md`, read/write via settings helpers.
+- Food renames that must reach old diary lines: add a `{ from, to }` rule in `migrations/food-text.json`, and run `node scripts/apply-food-text-migrations.js` so sample JSON stays in step. The app applies the file on load.
 - Do not add new hyphenated `nutrients-*` keys or bypass the repositories.
 - Passwords are plaintext for local testing only.

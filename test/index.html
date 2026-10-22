@@ -209,7 +209,7 @@
     </section>
   </div>
 
-  <script src="../persist.js?t=1789372800"></script>
+  <script src="../persist.js?t=1792663352"></script>
   <script>
 (function () {
   var KEYS = [
@@ -712,10 +712,22 @@
   if (typeof NutrientsAuth === "undefined" || typeof NutrientsPersist === "undefined") {
     log("persist.js failed to load — open via static server at /test/", "err");
   } else {
-    NutrientsPersist.migrate();
-    renderTestList();
-    refreshStorageDisplay();
-    log("Harness ready (shared localStorage with app)", "ok");
+    fetch("../migrations/food-text.json", { cache: "no-store" })
+      .then(function (res) {
+        if (!res.ok) throw new Error("Could not load food text migrations");
+        return res.json();
+      })
+      .then(function (data) {
+        NutrientsPersist.applyFoodTextMigrations(data);
+      })
+      .catch(function () {
+        NutrientsPersist.migrate();
+      })
+      .then(function () {
+        renderTestList();
+        refreshStorageDisplay();
+        log("Harness ready (shared localStorage with app)", "ok");
+      });
   }
 })();
   </script>

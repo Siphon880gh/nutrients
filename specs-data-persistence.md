@@ -322,6 +322,7 @@ User rows and entity rows are **kept**; only the session is cleared.
 2. **Single-user table payloads** (arrays/objects without `userId`) → copied to `nutrients_orphan_legacy`; live tables reset to multi-user `[]` shapes  
 3. **First Sign up** claims the orphan into that user’s rows and deletes `nutrients_orphan_legacy`  
 4. Later signups get empty defaults (no orphan claim)
+5. **Food text renames** in [`migrations/food-text.json`](./migrations/food-text.json). On load, before diary data is copied into memory, each `from` string is replaced with `to` in every `nutrients_*` / `nutrients-*` localStorage value except `nutrients_users` and `nutrients_session`. That covers every user’s past days, saved meals, food names, quiz favorites, and orphan legacy. A trailing serving operator (`*2`, `* 2/3`) stays on the line. The same file updates sample JSON via `node scripts/apply-food-text-migrations.js` (text replace only, no reformat). Rules stay in the file; once `from` is gone, later loads do not write.
 
 `Settings.version` / day-meals `version` support future schema bumps.
 

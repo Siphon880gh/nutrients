@@ -10,6 +10,10 @@
  *   nutrients_meals              SavedMeal[]       (+ userId)
  *   nutrients_favorites          Favorite[]        (+ userId)
  *   nutrients_settings           SettingsRow[]     (+ userId)
+ *
+ * Food-name renames live in migrations/food-text.json. applyFoodTextMigrations()
+ * rewrites matching text in every nutrients localStorage value except accounts
+ * and the session. A trailing serving operator such as " *2" stays put.
  */
 var NutrientsAuth = (function () {
   var KEYS = {
@@ -995,11 +999,180 @@ var NutrientsPersist = (function () {
     return patchSettings(partial);
   }
 
+  var SKIP_TEXT_MIGRATION_KEYS = {
+    nutrients_users: true,
+    nutrients_session: true,
+  };
+
+  function normalizeFoodTextMigrations(data) {
+    var list = data;
+    if (data && typeof data === "object" && !Array.isArray(data)) {
+      list = data.rules;
+    }
+    if (!Array.isArray(list)) return [];
+    var out = [];
+    for (var i = 0; i < list.length; i++) {
+      var rule = list[i];
+      if (!rule || typeof rule.from !== "string" || typeof rule.to !== "string") {
+        continue;
+      }
+      if (!rule.from || rule.from === rule.to) continue;
+      out.push({ from: rule.from, to: rule.to });
+    }
+    return out;
+  }
+
+  /**
+   * Replace `from` with `to`. When `to` already contains `from` (a prefix
+   * rename such as "Apple" → "Apple with skin"), an existing `to` is left
+   * alone so a later load does not keep inserting the phrase.
+   * Characters after the match — including " *2" or "* 2/3" — stay in place.
+   */
+  function replaceFoodText(text, from, to) {
+    if (typeof text !== "string" || typeof from !== "string" || typeof to !== "string") {
+      return text;
+    }
+    if (!from || from === to || text.indexOf(from) === -1) return text;
+    if (to.indexOf(from) === -1) return text.split(from).join(to);
+
+    var fromInTo = to.indexOf(from);
+    var out = "";
+    var i = 0;
+    while (i < text.length) {
+      var at = text.indexOf(from, i);
+      if (at === -1) {
+        out += text.slice(i);
+        break;
+      }
+      var start = at - fromInTo;
+      if (start >= 0 && text.slice(start, start + to.length) === to) {
+        var end = start + to.length;
+        out += text.slice(i, end);
+        i = end;
+        continue;
+      }
+      out += text.slice(i, at);
+      out += to;
+      i = at + from.length;
+    }
+    return out;
+  }
+
+  function applyFoodTextRulesToString(text, rulesOrData) {
+    var rules = normalizeFoodTextMigrations(rulesOrData);
+    if (typeof text !== "string" || !rules.length) return text;
+    var next = text;
+    for (var i = 0; i < rules.length; i++) {
+      next = replaceFoodText(next, rules[i].from, rules[i].to);
+    }
+    return next;
+  }
+
+  function mapFoodText(node, rules) {
+    if (typeof node === "string") {
+      var replaced = applyFoodTextRulesToString(node, rules);
+      return replaced === node ? node : replaced;
+    }
+    if (Array.isArray(node)) {
+      var arrChanged = false;
+      var arr = new Array(node.length);
+      for (var i = 0; i < node.length; i++) {
+        var mappedItem = mapFoodText(node[i], rules);
+        if (mappedItem !== node[i]) arrChanged = true;
+        arr[i] = mappedItem;
+      }
+      return arrChanged ? arr : node;
+    }
+    if (node && typeof node === "object") {
+      var keys = Object.keys(node);
+      var objChanged = false;
+      var out = {};
+      for (var k = 0; k < keys.length; k++) {
+        var key = keys[k];
+        var nextKey = applyFoodTextRulesToString(key, rules);
+        if (nextKey !== key) objChanged = true;
+        var mapped = mapFoodText(node[key], rules);
+        if (mapped !== node[key]) objChanged = true;
+        out[nextKey] = mapped;
+      }
+      return objChanged ? out : node;
+    }
+    return node;
+  }
+
+  function localStorageKeys() {
+    var keys = [];
+    try {
+      for (var i = 0; i < localStorage.length; i++) {
+        var key = localStorage.key(i);
+        if (key) keys.push(key);
+      }
+    } catch (e) {
+      return [];
+    }
+    return keys;
+  }
+
+  function isFoodTextStorageKey(key) {
+    if (!key || SKIP_TEXT_MIGRATION_KEYS[key]) return false;
+    return key.indexOf("nutrients_") === 0 || key.indexOf("nutrients-") === 0;
+  }
+
+  /**
+   * Apply food-text renames to stored nutrients data for every user.
+   * `data` is migrations/food-text.json (`{ rules: [...] }`) or a rules array.
+   * Call this on load, before entity rows are copied into memory.
+   */
+  function applyFoodTextMigrations(data) {
+    migrateIfNeeded();
+    var rules = normalizeFoodTextMigrations(data);
+    var changedKeys = [];
+    if (!rules.length) {
+      return { applied: 0, changedKeys: changedKeys };
+    }
+
+    var keys = localStorageKeys();
+    for (var i = 0; i < keys.length; i++) {
+      var key = keys[i];
+      if (!isFoodTextStorageKey(key)) continue;
+      var raw = safeGet(key);
+      if (typeof raw !== "string" || !raw) continue;
+      var mentions = false;
+      for (var r = 0; r < rules.length; r++) {
+        if (raw.indexOf(rules[r].from) !== -1) {
+          mentions = true;
+          break;
+        }
+      }
+      if (!mentions) continue;
+
+      var parsed;
+      var isJson = false;
+      try {
+        parsed = JSON.parse(raw);
+        isJson = true;
+      } catch (e) {
+        parsed = raw;
+      }
+      var next = mapFoodText(parsed, rules);
+      if (next === parsed) continue;
+      var saved = isJson ? saveJson(key, next) : safeSet(key, next);
+      if (!saved) continue;
+      changedKeys.push(key);
+      if (key === KEYS.SETTINGS) clearCache();
+    }
+
+    return { applied: rules.length, changedKeys: changedKeys };
+  }
+
   return {
     KEYS: KEYS,
     SCHEMA_VERSION: SCHEMA_VERSION,
     defaultSettings: defaultSettings,
     migrate: migrateIfNeeded,
+    normalizeFoodTextMigrations: normalizeFoodTextMigrations,
+    applyFoodTextRulesToString: applyFoodTextRulesToString,
+    applyFoodTextMigrations: applyFoodTextMigrations,
     clearCache: clearCache,
     claimOrphanForUser: claimOrphanForUser,
     isLoggedIn: isLoggedIn,
