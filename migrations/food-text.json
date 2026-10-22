@@ -1,5 +1,10 @@
 {
   "description": "Rename stored food text. On each app load, every nutrients localStorage value (all users, every past day, saved meals, food names, quiz favorites, and orphaned legacy data) is searched for each rule's from string and rewritten to to. A serving operator after the name, such as \" *2\", \"*2\", or \" * 2/3\", is left in place. Add a rule here to rename history. Also update the food in the sample JSON files by running: node scripts/apply-food-text-migrations.js. Leave a rule in this file after it has run. Once the old text is gone, later loads change nothing. If to already contains from, an existing to is not renamed again.",
   "rules": [
+    {
+      "id": "2026-10-22-hk-cafe-chicken-steak-with-skin",
+      "from": "Hong Kong Cafe Style - Chicken Steak 1 piece (about 5 oz cooked, palm-sized)",
+      "to": "Hong Kong Cafe Style - Chicken Steak 1 piece with skin (about 5 oz cooked, palm-sized)"
+    }
   ]
 }
