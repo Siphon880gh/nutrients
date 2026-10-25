@@ -12191,22 +12191,54 @@
   }
 
   /**
+   * Last day index included in actual week averages.
+   * Past and future viewed weeks: Sunday. Current week: today.
+   */
+  function weekWindowLastIndex() {
+    var lastIdx = DAYS.length - 1;
+    if (isCurrentWeek()) {
+      var idx = dayIndexById(todayDayId());
+      if (idx >= 0) lastIdx = idx;
+    }
+    return lastIdx;
+  }
+
+  /**
+   * Days in the averaging window that are not marked Ignore.
+   * Can be 0 when every day in the window is ignored.
+   */
+  function weekIncludedDayCount() {
+    var lastIdx = weekWindowLastIndex();
+    var counted = 0;
+    for (var i = 0; i <= lastIdx; i++) {
+      if (!isDayIgnoredForWeekTotals(DAYS[i].id)) counted++;
+    }
+    return counted;
+  }
+
+  /**
    * Divisor for weekly → daily averages used by % DV panels.
    * Past and future viewed weeks: full Mon–Sun (7).
    * Current calendar week: Mon through today’s blue column (inclusive).
    * Days marked Ignore on the food entry are omitted from the count.
    */
   function weekAverageDayCount() {
-    var lastIdx = DAYS.length - 1;
-    if (isCurrentWeek()) {
-      var idx = dayIndexById(todayDayId());
-      if (idx >= 0) lastIdx = idx;
+    var counted = weekIncludedDayCount();
+    return counted > 0 ? counted : weekWindowLastIndex() + 1;
+  }
+
+  /**
+   * Days the ~lb/week figure covers.
+   * Each non-ignored day in Mon–Sun counts. Days still ahead in the current
+   * week are included at the same daily pace. An ignored day is not replaced
+   * with that average.
+   */
+  function weekWeightPaceDayCount() {
+    var n = 0;
+    for (var i = 0; i < DAYS.length; i++) {
+      if (!isDayIgnoredForWeekTotals(DAYS[i].id)) n++;
     }
-    var counted = 0;
-    for (var i = 0; i <= lastIdx; i++) {
-      if (!isDayIgnoredForWeekTotals(DAYS[i].id)) counted++;
-    }
-    return counted > 0 ? counted : lastIdx + 1;
+    return n;
   }
 
   function isDayIgnoredForWeekTotals(dayId) {
@@ -12239,7 +12271,7 @@
       (labels.length === 1 ? " is" : " are") +
       " ignored this week. Ignored " +
       dayWord +
-      " still show on the food entry and daily cards, but they are left out of week total, weekly nutrients, and weekly longevity.</p>"
+      " still show on the food entry and daily cards, but they are left out of week total, weekly nutrients, weekly longevity, and the weekly pounds estimate.</p>"
     );
   }
 
@@ -24355,10 +24387,12 @@
     var dayCount = weekAverageDayCount();
     var dayAvgCal = week.totalCal / dayCount;
     var tdee = getTdee();
-    // Current week before Sunday: TDEE × days elapsed (Mon–today); otherwise × 7.
+    // Current week before Sunday: TDEE × days elapsed (Mon–today); otherwise
+    // TDEE × included days. Ignored days are already omitted from dayCount.
     var periodTdee = tdee ? tdee * dayCount : 0;
     var thirdStatHtml;
     var partialWeek = dayCount < DAYS.length;
+    var weekStillOpen = weekWindowLastIndex() < DAYS.length - 1;
     var weekCalHtml;
     var dayAvgCalHtml;
 
@@ -24374,8 +24408,12 @@
         fmtNumGrouped(tdee) +
         "</span>";
       var periodDelta = week.totalCal - periodTdee;
-      var dailyDelta = periodDelta / dayCount;
-      var lbsPerWeek = (dailyDelta * DAYS.length) / 3500;
+      var dailyDelta = dayCount ? periodDelta / dayCount : 0;
+      // ~lb/week matches the calorie gap (3,500 kcal ≈ 1 lb). Ignored days
+      // drop out of that gap and are not filled back in at the daily average.
+      // Days still ahead this week keep the current pace.
+      var paceDays = weekWeightPaceDayCount();
+      var lbsPerWeek = (dailyDelta * paceDays) / 3500;
       var statClass = "week-summary__card";
       var label = "Maintenance";
       if (periodDelta < -25 * dayCount) {
@@ -24387,7 +24425,7 @@
       }
       var deltaPrefix = periodDelta >= 0 ? "+" : "";
       var lbsPrefix = lbsPerWeek >= 0 ? "+" : "";
-      var deltaUnit = partialWeek ? " cal so far" : " cal/week";
+      var deltaUnit = weekStillOpen ? " cal so far" : " cal/week";
       thirdStatHtml =
         '<div class="' +
         statClass +
@@ -27128,8 +27166,12 @@
       btn.setAttribute(
         "aria-label",
         ignored
-          ? "Include " + day.label + " in week total, weekly nutrients, and weekly longevity"
-          : "Exclude " + day.label + " from week total, weekly nutrients, and weekly longevity"
+          ? "Include " +
+            day.label +
+            " in week total, weekly nutrients, weekly longevity, and the weekly pounds estimate"
+          : "Exclude " +
+            day.label +
+            " from week total, weekly nutrients, weekly longevity, and the weekly pounds estimate"
       );
     });
   }
