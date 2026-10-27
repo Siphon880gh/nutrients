@@ -24446,7 +24446,6 @@
         deltaUnit +
         "</span>" +
         '<span class="week-summary__projection">' +
-        "~" +
         lbsPrefix +
         fmtNum(lbsPerWeek) +
         " lb/week</span>" +
