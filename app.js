@@ -24425,7 +24425,13 @@
       }
       var deltaPrefix = periodDelta >= 0 ? "+" : "";
       var lbsPrefix = lbsPerWeek >= 0 ? "+" : "";
-      var deltaUnit = weekStillOpen ? " cal so far" : " cal/week";
+      // A closed week with ignored days spans only the counted days, so
+      // label the gap with that span instead of a full week.
+      var deltaUnit = weekStillOpen
+        ? " cal so far"
+        : partialWeek
+          ? " cal (" + dayCount + "d)"
+          : " cal/week";
       thirdStatHtml =
         '<div class="' +
         statClass +
