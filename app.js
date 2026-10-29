@@ -850,6 +850,7 @@
   var foodSourcesReturnDefModal = null;
   /** When set, Food Sources was opened from a my-food modal; Return reopens that modal. */
   var foodSourcesReturnMyFood = null;
+  var foodSourcesFoodDetail = null;
   var activeMicroSourcesKey = null;
   var activeMicroSourcesScope = "week";
   var activeMicroSourcesSort = { key: "amount", dir: "desc" };
@@ -887,6 +888,12 @@
   var foodSourcesReturnMyFoodsBtn = document.getElementById(
     "food-sources-return-my-foods"
   );
+  var foodSourcesFoodBackBtn = document.getElementById("food-sources-food-back");
+  var foodSourcesTitleEl = document.getElementById("food-sources-modal-title");
+  var foodSourcesSubtitleEl = document.getElementById("food-sources-modal-subtitle");
+  var foodSourcesSubtitleDefault = foodSourcesSubtitleEl
+    ? foodSourcesSubtitleEl.textContent
+    : "";
   var microSourcesFindOtherBtn = document.getElementById("micro-sources-find-other");
   var longevitySourcesFindOtherBtn = document.getElementById(
     "longevity-sources-find-other"
@@ -6082,7 +6089,9 @@
       microDefModalBackBtn.hidden = !defModalReturnSources;
       if (defModalReturnSources) {
         microDefModalBackBtn.textContent =
-          defModalReturnSources.kind === "food" ? "← Food Sources" : "← My food";
+          defModalReturnSources.kind === "food"
+            ? foodSourcesDetailBackLabel(defModalReturnSources.foodDetail)
+            : "← My food";
       }
     }
     if (microDefModalFooterEl) {
@@ -6341,17 +6350,22 @@
     updateBodyModalOpen();
     if (returnTo.kind === "food") {
       setFoodSourcesStackedOnDef(false);
+      foodSourcesFoodDetail = returnTo.foodDetail || null;
+      activeFoodSourcesSort =
+        returnTo.sort || defaultFoodSourcesSortForKey("nutrient");
+      activeFoodSourcesFilter = returnTo.filter || "";
+      setFoodSourcesFullscreen(!!returnTo.fullscreen);
+      syncFoodSourcesControls();
       if (foodSourcesModalEl && foodSourcesModalEl.hidden) {
-        activeFoodSourcesSort =
-          returnTo.sort || defaultFoodSourcesSortForKey("nutrient");
-        activeFoodSourcesFilter = returnTo.filter || "";
-        setFoodSourcesFullscreen(!!returnTo.fullscreen);
-        syncFoodSourcesControls();
         foodSourcesModalEl.hidden = false;
-        renderFoodSourcesBody();
-        updateBodyModalOpen();
       }
-      if (foodSourcesModalDoneBtn) foodSourcesModalDoneBtn.focus();
+      renderFoodSourcesBody();
+      updateBodyModalOpen();
+      if (foodSourcesFoodDetail && foodSourcesFoodBackBtn) {
+        foodSourcesFoodBackBtn.focus();
+      } else if (foodSourcesModalDoneBtn) {
+        foodSourcesModalDoneBtn.focus();
+      }
       return;
     }
     if (returnTo.kind === "micro") {
@@ -8013,7 +8027,15 @@
       sort: activeFoodSourcesSort,
       filter: activeFoodSourcesFilter,
       fullscreen: foodSourcesFullscreen,
+      foodDetail: foodSourcesFoodDetail,
     };
+  }
+
+  function foodSourcesDetailBackLabel(foodName) {
+    if (!foodName) return "← Food Sources";
+    var text = String(foodName).trim();
+    if (text.length > 42) text = text.slice(0, 40).trim() + "…";
+    return "← " + text;
   }
 
   function foodSourcesDefBackLabel(state) {
@@ -8031,6 +8053,7 @@
   function syncFoodSourcesBackBtn() {
     var backOn = !!foodSourcesReturnDefModal;
     var myFoodOn = !!foodSourcesReturnMyFood;
+    var detailOn = !!foodSourcesFoodDetail;
     if (foodSourcesModalBackBtn) {
       foodSourcesModalBackBtn.hidden = !backOn;
       if (backOn) {
@@ -8039,14 +8062,30 @@
         );
       }
     }
+    if (foodSourcesFoodBackBtn) {
+      foodSourcesFoodBackBtn.hidden = !detailOn;
+    }
     if (foodSourcesReturnMyFoodsBtn) {
       foodSourcesReturnMyFoodsBtn.hidden = !myFoodOn;
     }
     if (foodSourcesModalFooterEl) {
       foodSourcesModalFooterEl.classList.toggle(
         "modal__footer--split",
-        backOn || myFoodOn
+        backOn || myFoodOn || detailOn
       );
+    }
+    if (foodSourcesModalEl) {
+      foodSourcesModalEl.classList.toggle("food-sources-modal--detail", detailOn);
+    }
+    if (foodSourcesTitleEl) {
+      foodSourcesTitleEl.textContent = detailOn
+        ? foodSourcesFoodDetail
+        : "Food Sources";
+    }
+    if (foodSourcesSubtitleEl) {
+      foodSourcesSubtitleEl.textContent = detailOn
+        ? "1 serving · highest share of daily need first."
+        : foodSourcesSubtitleDefault;
     }
   }
 
@@ -8253,8 +8292,181 @@
     return false;
   }
 
+  function foodSourcesCatalogEntryByName(name) {
+    var want = String(name || "").trim().toLowerCase();
+    if (!want) return null;
+    var catalog = foodSourcesMatchCatalog();
+    for (var i = 0; i < catalog.length; i++) {
+      var entryName = String(catalog[i].name || "").trim().toLowerCase();
+      if (entryName === want) return catalog[i];
+    }
+    return null;
+  }
+
+  function foodSourcesNutrientRowsFromKeyword(kw) {
+    var rows = [];
+    var seen = {};
+    function push(field, amount, source) {
+      if (!field || !field.key || seen[field.key]) return;
+      if (FOOD_ITEM_POPOVER_SKIP_MICRO_KEYS[field.key]) return;
+      var n = Number(amount);
+      if (!isFinite(n) || n <= 0) return;
+      seen[field.key] = true;
+      var target = microRowTargetDisplay(field, n, source);
+      var pct =
+        target && target.pct != null && isFinite(target.pct) ? target.pct : null;
+      rows.push({
+        key: field.key,
+        label: field.label,
+        unit: field.unit || "",
+        amount: n,
+        pct: pct,
+        pctText: pct == null ? "—" : formatTargetPctNumber(pct),
+        source: source,
+      });
+    }
+    if (kw && kw.micros) {
+      MICRO_ALL_FIELDS.forEach(function (field) {
+        var raw =
+          field.key === "fiber"
+            ? fiberTotalFromParts(kw.micros)
+            : kw.micros[field.key];
+        push(field, parseFloat(raw), "micro");
+      });
+    }
+    if (kw) {
+      LONGEVITY_FIELDS.forEach(function (field) {
+        push(field, parseFloat(resolveLongevityValue(kw, field.key)), "longevity");
+      });
+    }
+    rows.sort(function (a, b) {
+      if (a.pct == null && b.pct == null) return b.amount - a.amount;
+      if (a.pct == null) return 1;
+      if (b.pct == null) return -1;
+      if (a.pct !== b.pct) return b.pct - a.pct;
+      return String(a.label || "").localeCompare(String(b.label || ""));
+    });
+    return rows;
+  }
+
+  function foodSourcesNutrientRowsForFood(foodName) {
+    var kw = foodSourcesCatalogEntryByName(foodName);
+    if (kw) return foodSourcesNutrientRowsFromKeyword(kw);
+    var rows = [];
+    var seen = {};
+    getFoodSourcesRows().forEach(function (row) {
+      if (row.food !== foodName || seen[row.nutrientKey] || !(row.amount > 0)) return;
+      var field =
+        microDisplayFieldByKey(row.nutrientKey) ||
+        longevityFieldByKey(row.nutrientKey);
+      if (!field) {
+        field = {
+          key: row.nutrientKey,
+          label: row.nutrientLabel || row.nutrientKey,
+          unit: row.unit || "",
+        };
+      }
+      seen[row.nutrientKey] = true;
+      var source = microFieldByKey(row.nutrientKey) ? "micro" : "longevity";
+      var target = microRowTargetDisplay(field, row.amount, source);
+      var pct =
+        target && target.pct != null && isFinite(target.pct) ? target.pct : null;
+      rows.push({
+        key: row.nutrientKey,
+        label: field.label,
+        unit: field.unit || row.unit || "",
+        amount: row.amount,
+        pct: pct,
+        pctText: pct == null ? "—" : formatTargetPctNumber(pct),
+        source: source,
+      });
+    });
+    rows.sort(function (a, b) {
+      if (a.pct == null && b.pct == null) return b.amount - a.amount;
+      if (a.pct == null) return 1;
+      if (b.pct == null) return -1;
+      return b.pct - a.pct;
+    });
+    return rows;
+  }
+
+  function renderFoodSourcesFoodDetail() {
+    if (!foodSourcesBodyEl) return;
+    syncFoodSourcesBackBtn();
+    var nutrients = foodSourcesNutrientRowsForFood(foodSourcesFoodDetail);
+    if (!nutrients.length) {
+      foodSourcesBodyEl.innerHTML =
+        '<p class="food-sources-modal__empty">No nutrient amounts stored for this food.</p>';
+      return;
+    }
+    var html =
+      '<table class="food-sources-modal__table food-sources-modal__table--nutrients">' +
+      "<thead><tr>" +
+      "<th scope=\"col\">Nutrient</th>" +
+      "<th scope=\"col\">% of daily need</th>" +
+      "<th scope=\"col\">Amount</th>" +
+      '<th scope="col" class="food-sources-modal__info-col"><span class="visually-hidden">About nutrient</span></th>' +
+      "</tr></thead><tbody>";
+    nutrients.forEach(function (row) {
+      var hasDef = foodSourcesNutrientHasDef(row.key);
+      html +=
+        "<tr>" +
+        "<td>" +
+        (hasDef
+          ? '<button type="button" class="food-sources-modal__nutrient-btn" data-food-sources-def="' +
+            escapeAttr(row.key) +
+            '">' +
+            escapeHtml(row.label) +
+            "</button>"
+          : escapeHtml(row.label)) +
+        "</td>" +
+        '<td class="food-sources-modal__pct">' +
+        escapeHtml(row.pctText) +
+        "</td>" +
+        '<td class="food-sources-modal__amount">' +
+        escapeHtml(fmtFoodSourcesAmount(row.amount)) +
+        (row.unit ? " " + escapeHtml(row.unit) : "") +
+        "</td>" +
+        '<td class="food-sources-modal__info-col">' +
+        foodSourcesDefIconHtml(row.key, row.label) +
+        "</td></tr>";
+    });
+    html +=
+      "</tbody></table>" +
+      '<p class="food-sources-modal__count">' +
+      nutrients.length +
+      " nutrient" +
+      (nutrients.length === 1 ? "" : "s") +
+      "</p>";
+    foodSourcesBodyEl.innerHTML = html;
+  }
+
+  function openFoodSourcesFoodDetail(foodName) {
+    var name = String(foodName || "").trim();
+    if (!name) return;
+    foodSourcesFoodDetail = name;
+    if (foodSourcesSampleCatalog) {
+      renderFoodSourcesBody();
+      return;
+    }
+    ensureFoodSourcesSampleCatalog(function () {
+      if (foodSourcesFoodDetail === name) renderFoodSourcesBody();
+    });
+  }
+
+  function closeFoodSourcesFoodDetail() {
+    foodSourcesFoodDetail = null;
+    renderFoodSourcesBody();
+    if (foodSourcesFilterEl) foodSourcesFilterEl.focus();
+  }
+
   function renderFoodSourcesBody() {
     if (!foodSourcesBodyEl) return;
+    if (foodSourcesFoodDetail) {
+      renderFoodSourcesFoodDetail();
+      return;
+    }
+    syncFoodSourcesBackBtn();
     var rows = getFoodSourcesRows().slice();
     var filter = String(activeFoodSourcesFilter || "").trim();
     var terms = foodSourcesFilterTerms(filter);
@@ -8286,16 +8498,21 @@
       html +=
         '<tr class="food-sources-modal__row' +
         (row.matched ? "" : " food-sources-modal__row--unmatched") +
-        '"' +
-        (hasDef
-          ? ' data-food-sources-def="' + escapeAttr(row.nutrientKey) + '"'
-          : "") +
-        ">" +
+        '">' +
         '<td class="food-sources-modal__food">' +
+        '<button type="button" class="food-sources-modal__food-btn" data-food-sources-food="' +
+        escapeAttr(row.food) +
+        '">' +
         escapeHtml(row.food) +
-        "</td>" +
+        "</button></td>" +
         '<td class="food-sources-modal__nutrient">' +
-        escapeHtml(row.nutrientText) +
+        (hasDef
+          ? '<button type="button" class="food-sources-modal__nutrient-btn" data-food-sources-def="' +
+            escapeAttr(row.nutrientKey) +
+            '">' +
+            escapeHtml(row.nutrientText) +
+            "</button>"
+          : escapeHtml(row.nutrientText)) +
         "</td>" +
         '<td class="food-sources-modal__info-col">' +
         foodSourcesDefIconHtml(row.nutrientKey, row.nutrientLabel) +
@@ -8328,6 +8545,7 @@
     if (!foodSourcesModalEl) return;
     closeOtherModalsForSources();
     foodSourcesReturnMyFood = null;
+    foodSourcesFoodDetail = null;
     clearFoodSourcesReturnDefModal();
     activeFoodSourcesSort = defaultFoodSourcesSortForKey("nutrient");
     activeFoodSourcesFilter = "";
@@ -8354,6 +8572,7 @@
     }
 
     foodSourcesReturnMyFood = null;
+    foodSourcesFoodDetail = null;
     foodSourcesReturnDefModal = {
       microKey: microKey,
       longevityKey: longevityKey,
@@ -8393,6 +8612,7 @@
       closeMicroDefModal();
     }
     foodSourcesReturnMyFood = null;
+    foodSourcesFoodDetail = null;
     clearFoodSourcesReturnDefModal();
     setFoodSourcesStackedOnDef(false);
     activeFoodSourcesSort = defaultFoodSourcesSortForKey("nutrient");
@@ -8421,6 +8641,7 @@
     }
 
     foodSourcesReturnMyFood = returnState;
+    foodSourcesFoodDetail = null;
     clearFoodSourcesReturnDefModal();
     setFoodSourcesStackedOnDef(false);
     activeFoodSourcesSort = defaultFoodSourcesSortForKey("nutrient");
@@ -19873,6 +20094,31 @@
         (!!limitBandId && limitBandId === longevityAnalysisActiveLimitBand);
       sectionEl.hidden = !(matchesAim && matchesLimit);
     });
+    var pills = longevityAnalysisReportEl.querySelectorAll("[data-analysis-nutrient]");
+    Array.prototype.forEach.call(pills, function (pill) {
+      var kind = pill.getAttribute("data-analysis-pill-kind");
+      var bandId = pill.getAttribute("data-analysis-pill-band") || "";
+      var show =
+        kind === "limit"
+          ? !limitActive || bandId === longevityAnalysisActiveLimitBand
+          : !aimActive || bandId === longevityAnalysisActiveAimBand;
+      pill.hidden = !show;
+      if (!show && pill.getAttribute("aria-pressed") === "true") {
+        pill.setAttribute("aria-pressed", "false");
+        pill.classList.remove("analysis-nutrient-pill--selected");
+        var choice = pill
+          .closest(".analysis-nutrient-board")
+          .querySelector(".analysis-nutrient-choice");
+        if (choice) choice.hidden = true;
+      }
+    });
+    var groups = longevityAnalysisReportEl.querySelectorAll(
+      ".analysis-nutrient-board__group"
+    );
+    Array.prototype.forEach.call(groups, function (group) {
+      var visible = group.querySelector("[data-analysis-nutrient]:not([hidden])");
+      group.hidden = !visible;
+    });
     syncLongevityAnalysisFilterEmojis();
   }
 
@@ -20449,7 +20695,434 @@
     return microSourcesIconHtml(entry.key, dayId);
   }
 
-  function microAnalysisNutrientRowsHtml(entries, limiting) {
+  var MICRO_SHORTFALL_FEEL = {
+    fiber: {
+      early: "Constipation, hungry again sooner",
+      later: "Ongoing constipation, harder time with cholesterol and blood sugar",
+    },
+    potassium: {
+      early: "Muscle cramps, weakness, constipation",
+      later: "Marked weakness, heart-rhythm feelings",
+    },
+    calcium: {
+      early: "Muscle cramps, tingling around the mouth, restless sleep",
+      later: "Weaker bones, tooth problems, muscle spasms",
+    },
+    iron: {
+      early: "Tired, pale, cold hands, short of breath on stairs",
+      later: "Breathlessness, brittle nails, hair thinning, craving ice",
+    },
+    copper: {
+      early: "Tiredness that iron does not fix, paler skin",
+      later: "Numbness, unsteady walking, early gray hair",
+    },
+    magnesium: {
+      early: "Twitchy muscles, cramps, trouble sleeping, tense mood",
+      later: "Cramping that keeps coming back, fatigue, skipped-beat feelings",
+    },
+    zinc: {
+      early: "Blunted taste or smell, more colds, slow skin healing",
+      later: "Hair thinning, rash, poor appetite, diarrhea",
+    },
+    selenium: {
+      early: "Tired, feeling cold, brittle hair",
+      later: "Hair loss, nail ridges, muscle weakness, sluggish thyroid",
+    },
+    manganese: {
+      early: "Often nothing you would notice",
+      later: "Rare: weaker bones and slower wound healing",
+    },
+    chromium: {
+      early: "Often quiet; blood sugar may swing more",
+      later: "Still uncommon; poorer blood-sugar control if intake stays very low",
+    },
+    iodine: {
+      early: "Tired, feeling cold, a full feeling in the neck",
+      later: "Enlarged thyroid, dry skin, slowed thinking",
+    },
+    vitaminA: {
+      early: "Harder to see in dim light, dry eyes, dry skin",
+      later: "Night blindness, rough skin, more infections",
+    },
+    vitaminARetinol: {
+      early: "Harder to see in dim light, dry eyes",
+      later: "Night blindness, rough skin, more infections",
+    },
+    vitaminABetaCarotene: {
+      early: "Often quiet. Dry skin if plant pigments stay very low",
+      later: "Dim-light trouble if the body cannot make enough vitamin A",
+    },
+    vitaminD: {
+      early: "Tired, low mood, trouble sleeping, muscle aches",
+      later: "Bone pain, weak muscles, more colds, soft bones",
+    },
+    vitaminE: {
+      early: "Often quiet; immunity may feel a bit lower",
+      later: "Tingling, muscle weakness, trouble with balance",
+    },
+    omega3: {
+      early: "Dry skin, dry eyes, stiff joints, low mood",
+      later: "Flaky skin, lingering aches, concentration that feels dull",
+    },
+    vitaminK: {
+      early: "Bruises easily, gums bleed when brushing",
+      later: "Bleeding that lasts longer, weaker bones",
+    },
+    vitaminK1: {
+      early: "Bruises easily, gums bleed when brushing",
+      later: "Bleeding that is harder to stop",
+    },
+    vitaminK2: {
+      early: "Often no early feeling",
+      later: "Weaker bones over many years",
+    },
+    thiamin: {
+      early: "Tired, irritable, poor appetite, tingling",
+      later: "Nerve pain, racing heart, confusion, unsteady walking",
+    },
+    riboflavin: {
+      early: "Cracked lip corners, sore tongue, eyes that mind bright light",
+      later: "Sore mouth and skin, tiredness from anemia",
+    },
+    niacin: {
+      early: "Tired, low appetite, skin that burns easily in the sun",
+      later: "Diarrhea, scaly rash on sun-exposed skin, confusion",
+    },
+    pantothenicAcid: {
+      early: "Tired, numb or burning feet — uncommon",
+      later: "Burning feet and low mood if the lack continues",
+    },
+    vitaminB6: {
+      early: "Irritable, cracked lips, low mood",
+      later: "Tingling nerves, anemia, inflamed skin",
+    },
+    biotin: {
+      early: "Thinning hair, brittle nails, rash around the mouth",
+      later: "Hair loss, scaly rash, numbness",
+    },
+    folate: {
+      early: "Tired, irritable, mouth sores",
+      later: "Anemia, shortness of breath; in pregnancy, higher neural-tube risk",
+    },
+    vitaminB12: {
+      early: "Tired, tingling in hands or feet, low mood",
+      later: "Numbness, trouble with balance, memory fog, smooth sore tongue",
+    },
+    vitaminC: {
+      early: "Tired, easy bruises, gums that bleed when brushing",
+      later: "Slow wound healing, corkscrew hairs, joint pain",
+    },
+    phosphorus: {
+      early: "Weakness, low appetite, bone aches — uncommon from food alone",
+      later: "Bone pain, muscle weakness",
+    },
+    choline: {
+      early: "Brain fog, low energy, muscle aches",
+      later: "Ongoing fatigue and brain fog; fatty liver in severe lack",
+    },
+    molybdenum: {
+      early: "Usually none",
+      later: "Rare: fast heartbeat, headache, night-vision trouble",
+    },
+    chloride: {
+      early: "Rare on its own: cramps if intake is extremely low",
+      later: "Weakness — uncommon outside illness or heavy fluid loss",
+    },
+    tryptophan: {
+      early: "Trouble sleeping, lower mood",
+      later: "Low mood that lingers, restless sleep",
+    },
+    lysine: {
+      early: "Cold sores more easily for some people",
+      later: "Slower skin repair",
+    },
+    insolubleToSolubleFiber2To1: {
+      early: "Stools less comfortable when the two fibers stay out of balance",
+      later: "Constipation or loose stools until the balance comes back",
+    },
+  };
+
+  var MICRO_SHORTFALL_FEEL_ALIAS = {
+    solubleFiber: "fiber",
+    insolubleFiber: "fiber",
+    epa: "omega3",
+    dha: "omega3",
+    vitaminK2MK4: "vitaminK2",
+    vitaminK2MK7: "vitaminK2",
+    insolubleToSolubleFiber: "insolubleToSolubleFiber2To1",
+  };
+
+  var MICRO_AMINO_SHORTFALL_KEYS = {
+    histidine: true,
+    isoleucine: true,
+    leucine: true,
+    methionine: true,
+    phenylalanine: true,
+    threonine: true,
+    valine: true,
+    arginine: true,
+    cysteine: true,
+    glutamine: true,
+    glycine: true,
+    proline: true,
+    tyrosine: true,
+    taurine: true,
+  };
+
+  var MICRO_AMINO_SHORTFALL_FEEL = {
+    early: "Weaker workouts, slower recovery, hungry again sooner",
+    later: "Less muscle, thinner hair, slower healing",
+  };
+
+  function microShortfallFeelForKey(key) {
+    if (!key) return null;
+    if (MICRO_SHORTFALL_FEEL[key]) return MICRO_SHORTFALL_FEEL[key];
+    var alias = MICRO_SHORTFALL_FEEL_ALIAS[key];
+    if (alias && MICRO_SHORTFALL_FEEL[alias]) return MICRO_SHORTFALL_FEEL[alias];
+    if (MICRO_AMINO_SHORTFALL_KEYS[key]) return MICRO_AMINO_SHORTFALL_FEEL;
+    return null;
+  }
+
+  function microAnalysisFeelSpanHtml(text, tone, span, mobileLabel) {
+    return (
+      '<span class="longevity-analysis-report__feel longevity-analysis-report__feel--' +
+      tone +
+      (span ? " longevity-analysis-report__feel--span" : "") +
+      '">' +
+      (mobileLabel
+        ? '<span class="longevity-analysis-report__feel-label">' +
+          escapeHtml(mobileLabel) +
+          "</span>"
+        : "") +
+      escapeHtml(text) +
+      "</span>"
+    );
+  }
+
+  function microAnalysisFeelCellsHtml(entry, limiting) {
+    if (limiting) {
+      return microAnalysisFeelSpanHtml("Not a shortfall", "na", true, "");
+    }
+    var pct = entry && entry.pct;
+    if (pct != null && isFinite(pct) && pct >= 85) {
+      return microAnalysisFeelSpanHtml("Target met", "ok", true, "");
+    }
+    var feel = microShortfallFeelForKey(entry && entry.key);
+    if (!feel) {
+      return microAnalysisFeelSpanHtml("No typical shortfall picture", "na", true, "");
+    }
+    return (
+      microAnalysisFeelSpanHtml(feel.early, "low", false, "Initially") +
+      microAnalysisFeelSpanHtml(feel.later, "low", false, "Much later")
+    );
+  }
+
+  var ANALYSIS_NUTRIENT_PILL_SKIP = {
+    fiber: true,
+    solubleFiber: true,
+    insolubleFiber: true,
+    insolubleToSolubleFiber: true,
+    insolubleToSolubleFiber2To1: true,
+    omega3: true,
+    epa: true,
+    dha: true,
+    omega6: true,
+    quercetin: true,
+    tryptophan: true,
+    lysine: true,
+  };
+
+  function analysisNutrientPillSkipped(key) {
+    if (!key || ANALYSIS_NUTRIENT_PILL_SKIP[key]) return true;
+    if (MICRO_AMINO_SHORTFALL_KEYS[key]) return true;
+    return !microFieldByKey(key);
+  }
+
+  function analysisNutrientPillName(label) {
+    var text = String(label || "Nutrient").replace(/\s+/g, " ").trim();
+    var match = text.match(/\(([^)]+)\)\s*$/);
+    if (match) {
+      var before = text.slice(0, match.index).replace(/[,;]\s*$/, "").trim();
+      if (before.length > 18 && match[1].length <= 14) return match[1];
+      if (before) return before;
+    }
+    if (text.length > 22) return text.slice(0, 20).trim() + "…";
+    return text;
+  }
+
+  function analysisNutrientPillEntries(bySection, limiting) {
+    var seen = {};
+    var list = [];
+    MICRO_ANALYSIS_SECTIONS.forEach(function (section) {
+      var buckets = bySection[section.id] || { aim: [], limit: [] };
+      var entries = limiting ? buckets.limit : buckets.aim;
+      (entries || []).forEach(function (entry) {
+        if (!entry || !entry.key || seen[entry.key]) return;
+        if (analysisNutrientPillSkipped(entry.key)) return;
+        // Want more is only a shortfall. At or over 100% the target is already met.
+        if (!limiting && !(entry.pct < 100)) return;
+        seen[entry.key] = true;
+        list.push(entry);
+      });
+    });
+    list.sort(function (a, b) {
+      if (a.pct !== b.pct) return limiting ? b.pct - a.pct : a.pct - b.pct;
+      return String(a.label || "").localeCompare(String(b.label || ""));
+    });
+    return list;
+  }
+
+  function analysisNutrientPillsHtml(entries, limiting) {
+    return entries
+      .map(function (entry) {
+        var band = microAnalysisNutrientBandForPct(entry.pct, limiting);
+        var color = band && band.color ? band.color : "yellow";
+        var bandId = band && band.id ? band.id : "";
+        var full = entry.label || "Nutrient";
+        var pctText = formatTargetPctNumber(entry.pct);
+        var meta = pctText + (limiting ? " of the ceiling" : " of target");
+        var feel =
+          !limiting && entry.pct < 85 ? microShortfallFeelForKey(entry.key) : null;
+        if (feel && feel.early) meta += " · " + feel.early;
+        return (
+          '<button type="button" class="analysis-nutrient-pill analysis-nutrient-pill--' +
+          escapeAttr(color) +
+          '" data-analysis-nutrient="' +
+          escapeAttr(entry.key) +
+          '" data-analysis-nutrient-label="' +
+          escapeAttr(full) +
+          '" data-analysis-nutrient-source="' +
+          escapeAttr(entry.source || "micro") +
+          '" data-analysis-nutrient-meta="' +
+          escapeAttr(meta) +
+          '" data-analysis-pill-kind="' +
+          (limiting ? "limit" : "aim") +
+          '" data-analysis-pill-band="' +
+          escapeAttr(bandId) +
+          '" aria-pressed="false">' +
+          '<span class="analysis-nutrient-pill__name">' +
+          escapeHtml(analysisNutrientPillName(full)) +
+          "</span>" +
+          '<span class="analysis-nutrient-pill__pct">' +
+          escapeHtml(pctText) +
+          "</span></button>"
+        );
+      })
+      .join("");
+  }
+
+  function microAnalysisNutrientBoardHtml(bySection) {
+    var aim = analysisNutrientPillEntries(bySection, false);
+    var limit = analysisNutrientPillEntries(bySection, true);
+    if (!aim.length && !limit.length) return "";
+    function group(label, entries, limiting) {
+      if (!entries.length) return "";
+      return (
+        '<div class="analysis-nutrient-board__group">' +
+        '<p class="analysis-nutrient-board__label">' +
+        escapeHtml(label) +
+        "</p>" +
+        '<div class="analysis-nutrient-board__pills">' +
+        analysisNutrientPillsHtml(entries, limiting) +
+        "</div></div>"
+      );
+    }
+    return (
+      '<div class="analysis-nutrient-board">' +
+      group("Want more", aim, false) +
+      group("Want less", limit, true) +
+      '<div class="analysis-nutrient-choice" hidden>' +
+      '<div class="analysis-nutrient-choice__text">' +
+      '<p class="analysis-nutrient-choice__name"></p>' +
+      '<p class="analysis-nutrient-choice__meta"></p>' +
+      "</div>" +
+      '<div class="analysis-nutrient-choice__actions">' +
+      '<button type="button" class="analysis-nutrient-choice__ranked" data-analysis-nutrient-action="ranked">Your food ranked</button>' +
+      '<button type="button" class="analysis-nutrient-choice__other" data-analysis-nutrient-action="other">Try other food</button>' +
+      "</div></div></div>"
+    );
+  }
+
+  function selectAnalysisNutrientPill(pill) {
+    var board = pill.closest(".analysis-nutrient-board");
+    if (!board) return;
+    var choice = board.querySelector(".analysis-nutrient-choice");
+    if (!choice) return;
+    var already = pill.getAttribute("aria-pressed") === "true";
+    board.querySelectorAll("[data-analysis-nutrient]").forEach(function (btn) {
+      btn.setAttribute("aria-pressed", "false");
+      btn.classList.remove("analysis-nutrient-pill--selected");
+    });
+    if (already) {
+      choice.hidden = true;
+      return;
+    }
+    pill.setAttribute("aria-pressed", "true");
+    pill.classList.add("analysis-nutrient-pill--selected");
+    choice.hidden = false;
+    choice.setAttribute("data-key", pill.getAttribute("data-analysis-nutrient") || "");
+    choice.setAttribute(
+      "data-label",
+      pill.getAttribute("data-analysis-nutrient-label") || ""
+    );
+    choice.setAttribute(
+      "data-source",
+      pill.getAttribute("data-analysis-nutrient-source") || "micro"
+    );
+    var nameEl = choice.querySelector(".analysis-nutrient-choice__name");
+    var metaEl = choice.querySelector(".analysis-nutrient-choice__meta");
+    if (nameEl) nameEl.textContent = pill.getAttribute("data-analysis-nutrient-label") || "";
+    if (metaEl) metaEl.textContent = pill.getAttribute("data-analysis-nutrient-meta") || "";
+    var group = pill.closest(".analysis-nutrient-board__group");
+    if (group) group.appendChild(choice);
+  }
+
+  function analysisNutrientChoiceScope() {
+    return analysisActiveKind === "micro-day" && analysisActiveDayId
+      ? analysisActiveDayId
+      : "week";
+  }
+
+  function openAnalysisNutrientChoice(action) {
+    var choice = action.closest(".analysis-nutrient-choice");
+    if (!choice) return;
+    var key = choice.getAttribute("data-key");
+    var label = choice.getAttribute("data-label");
+    var source = choice.getAttribute("data-source") || "micro";
+    var scope = analysisNutrientChoiceScope();
+    if (!key) return;
+    if (action.getAttribute("data-analysis-nutrient-action") === "other") {
+      openFoodSourcesFromMyFood(label, {
+        kind: source === "longevity" ? "longevity" : "micro",
+        key: key,
+        sourcesKind: source === "longevity" ? "longevity" : "micro",
+        scope: scope,
+        filter: "",
+        fullscreen: false,
+      });
+      return;
+    }
+    if (source === "longevity") {
+      openLongevitySourcesModal(key, "longevity", false, scope);
+      return;
+    }
+    openMicroSourcesModal(key, scope);
+  }
+
+  function microAnalysisFeelHeadHtml() {
+    return (
+      '<div class="longevity-analysis-report__feel-head">' +
+      '<div class="longevity-analysis-report__feel-head-grid">' +
+      "<span></span><span></span>" +
+      '<span class="longevity-analysis-report__feel-head-label">What you feel / look like initially</span>' +
+      '<span class="longevity-analysis-report__feel-head-label">What you feel / look like much later</span>' +
+      "</div>" +
+      '<p class="longevity-analysis-report__feel-note">Shown when a nutrient is under 85% of target. Common patterns if that shortfall continues — not a diagnosis.</p>' +
+      "</div>"
+    );
+  }
+
+  function microAnalysisNutrientRowsHtml(entries, limiting, showShortfallFeel) {
     if (!entries || !entries.length) return "";
     var bandsOrder = limiting
       ? LONGEVITY_ANALYSIS_LIMIT_BANDS.slice()
@@ -20494,8 +21167,15 @@
             var actions =
               microAnalysisNutrientInfoIconHtml(entry) +
               microAnalysisNutrientSourcesIconHtml(entry);
+            var feelCells = showShortfallFeel
+              ? microAnalysisFeelCellsHtml(entry, limiting)
+              : "";
             return (
-              '<div class="longevity-analysis-report__nutrient-row">' +
+              '<div class="longevity-analysis-report__nutrient-row' +
+              (showShortfallFeel
+                ? " longevity-analysis-report__nutrient-row--feel"
+                : "") +
+              '">' +
               '<span class="longevity-analysis-report__nutrient-main">' +
               '<span class="longevity-analysis-report__nutrient-name">' +
               escapeHtml(entry.label || "Untitled") +
@@ -20510,12 +21190,22 @@
               escapeAttr(entryColor) +
               '">' +
               escapeHtml(formatTargetPctNumber(entry.pct)) +
-              "</span></div>"
+              "</span>" +
+              feelCells +
+              "</div>"
             );
           })
           .join("");
+        var hasShortfall =
+          !!showShortfallFeel &&
+          !limiting &&
+          group.some(function (item) {
+            return item.pct != null && isFinite(item.pct) && item.pct < 85;
+          });
         return (
-          '<details class="longevity-analysis-report__band-group">' +
+          '<details class="longevity-analysis-report__band-group"' +
+          (hasShortfall ? " open" : "") +
+          ">" +
           '<summary class="longevity-analysis-report__band-summary">' +
           '<span class="longevity-analysis-report__band-summary-main">' +
           '<span class="longevity-analysis-report__band-label longevity-analysis-report__avg ' +
@@ -20624,11 +21314,11 @@
         "</h4>";
       html += longevityAnalysisAimStatsHtml(section.aimStats);
       if (section.aim.length) {
-        html += microAnalysisNutrientRowsHtml(section.aim, false);
+        html += microAnalysisNutrientRowsHtml(section.aim, false, true);
       }
       html += longevityAnalysisLimitStatsHtml(section.limitStats);
       if (section.limit.length) {
-        html += microAnalysisNutrientRowsHtml(section.limit, true);
+        html += microAnalysisNutrientRowsHtml(section.limit, true, true);
       }
       html += "</section>";
       return html;
@@ -20642,6 +21332,22 @@
       );
     }
 
+    // Range badges count the same vitamins and minerals as the pills below.
+    LONGEVITY_ANALYSIS_AVG_BANDS.forEach(function (b) {
+      aimBandCounts[b.id] = 0;
+    });
+    LONGEVITY_ANALYSIS_LIMIT_BANDS.forEach(function (b) {
+      limitBandCounts[b.id] = 0;
+    });
+    analysisNutrientPillEntries(bySection, false).forEach(function (entry) {
+      var band = microAnalysisNutrientBandForPct(entry.pct, false);
+      if (band && aimBandCounts[band.id] != null) aimBandCounts[band.id] += 1;
+    });
+    analysisNutrientPillEntries(bySection, true).forEach(function (entry) {
+      var band = microAnalysisNutrientBandForPct(entry.pct, true);
+      if (band && limitBandCounts[band.id] != null) limitBandCounts[band.id] += 1;
+    });
+
     return (
       '<p class="longevity-analysis-report__meta">' +
       escapeHtml(options.metaHtml || "") +
@@ -20653,6 +21359,8 @@
       ) +
       "</p>" +
       longevityAnalysisFilterBarHtml(aimBandCounts, limitBandCounts) +
+      microAnalysisNutrientBoardHtml(bySection) +
+      microAnalysisFeelHeadHtml() +
       sectionBlocks.join("")
     );
   }
@@ -20697,6 +21405,15 @@
 
     analysisActiveKind = kind;
     analysisActiveDayId = kind === "micro-day" ? dayId : null;
+    var requirementsAnalysis = kind === "micro-week" || kind === "micro-day";
+    longevityAnalysisModalEl.classList.toggle(
+      "longevity-analysis-modal--requirements",
+      requirementsAnalysis
+    );
+    longevityAnalysisReportEl.classList.toggle(
+      "longevity-analysis-report--requirements",
+      requirementsAnalysis
+    );
 
     var weekLabel = formatWeekRangeLabel(viewedWeekStart) || "this week";
     var dayCount = weekAverageDayCount();
@@ -20815,22 +21532,39 @@
     openAnalysisModal("micro-day", dayId);
   }
 
+  function analysisPickerShortcutLabel(text, key) {
+    var source = String(text || "");
+    var index = source.toLowerCase().indexOf(String(key || "").toLowerCase());
+    if (index < 0) return escapeHtml(source);
+    return (
+      escapeHtml(source.slice(0, index)) +
+      '<span class="analysis-picker__shortcut">' +
+      escapeHtml(source.charAt(index)) +
+      "</span>" +
+      escapeHtml(source.slice(index + 1))
+    );
+  }
+
   function analysisPickerOptionsHtml() {
     var weekLabel = formatWeekRangeLabel(viewedWeekStart) || "this week";
     var todayId = activeTodayDayId();
     var html =
-      '<button type="button" class="analysis-picker__btn" data-analysis-pick="longevity">' +
-      '<span class="analysis-picker__btn-title">Longevity</span>' +
-      '<span class="analysis-picker__btn-meta">Weekly longevity topics · ' +
-      escapeHtml(weekLabel) +
-      "</span></button>" +
-      '<button type="button" class="analysis-picker__btn" data-analysis-pick="micro-week">' +
-      '<span class="analysis-picker__btn-title">Requirements — all week</span>' +
+      '<button type="button" class="analysis-picker__btn" data-analysis-pick="micro-week" aria-keyshortcuts="W">' +
+      '<span class="analysis-picker__btn-title-row">' +
+      '<span class="analysis-picker__btn-title">Requirements — all ' +
+      analysisPickerShortcutLabel("week", "W") +
+      "</span></span>" +
       '<span class="analysis-picker__btn-meta">Weekly average micro % targets · ' +
       escapeHtml(weekLabel) +
       "</span></button>" +
-      '<div class="analysis-picker__day-group">' +
-      '<p class="analysis-picker__day-label">Requirements — by day</p>' +
+      '<details class="analysis-picker__day-group" id="analysis-picker-day">' +
+      '<summary class="analysis-picker__day-summary" aria-keyshortcuts="D">' +
+      '<span class="analysis-picker__day-summary-main">' +
+      '<span class="analysis-picker__day-chevron" aria-hidden="true"></span>' +
+      "<span>Select by " +
+      analysisPickerShortcutLabel("day", "D") +
+      " instead</span>" +
+      "</span></summary>" +
       '<div class="analysis-picker__day-grid">';
     DAYS.forEach(function (day) {
       var dateLabel = dateLabelForDayId(day.id);
@@ -20857,8 +21591,49 @@
           : "") +
         "</button>";
     });
-    html += "</div></div>";
+    html +=
+      "</div></details>" +
+      '<button type="button" class="analysis-picker__btn" data-analysis-pick="longevity" aria-keyshortcuts="L">' +
+      '<span class="analysis-picker__btn-title-row">' +
+      '<span class="analysis-picker__btn-title">' +
+      analysisPickerShortcutLabel("Longevity", "L") +
+      "</span></span>" +
+      '<span class="analysis-picker__btn-meta">Weekly longevity topics · ' +
+      escapeHtml(weekLabel) +
+      "</span></button>";
     return html;
+  }
+
+  function openAnalysisPickerDays(focusDay) {
+    var details = document.getElementById("analysis-picker-day");
+    if (!details) return;
+    details.open = true;
+    if (!focusDay) return;
+    var todayBtn = details.querySelector(".analysis-picker__day-btn--today");
+    var btn = todayBtn || details.querySelector("[data-analysis-pick='micro-day']");
+    if (btn && typeof btn.focus === "function") btn.focus();
+  }
+
+  function handleAnalysisPickerShortcut(e) {
+    if (!analysisPickerModalEl || analysisPickerModalEl.hidden) return false;
+    if (e.ctrlKey || e.metaKey || e.altKey || e.shiftKey) return false;
+    var key = String(e.key || "").toLowerCase();
+    if (key === "w") {
+      e.preventDefault();
+      pickAnalysisFromPicker("micro-week");
+      return true;
+    }
+    if (key === "l") {
+      e.preventDefault();
+      pickAnalysisFromPicker("longevity");
+      return true;
+    }
+    if (key === "d") {
+      e.preventDefault();
+      openAnalysisPickerDays(true);
+      return true;
+    }
+    return false;
   }
 
   function closeAnalysisPickerModal() {
@@ -34965,6 +35740,26 @@
         openLongevityDefModal(longevityDefBtn.getAttribute("data-longevity-def"));
         return;
       }
+      var nutrientAction = e.target.closest("[data-analysis-nutrient-action]");
+      if (
+        nutrientAction &&
+        longevityAnalysisReportEl &&
+        longevityAnalysisReportEl.contains(nutrientAction)
+      ) {
+        e.preventDefault();
+        openAnalysisNutrientChoice(nutrientAction);
+        return;
+      }
+      var nutrientPill = e.target.closest("[data-analysis-nutrient]");
+      if (
+        nutrientPill &&
+        longevityAnalysisReportEl &&
+        longevityAnalysisReportEl.contains(nutrientPill)
+      ) {
+        e.preventDefault();
+        selectAnalysisNutrientPill(nutrientPill);
+        return;
+      }
       var bandBtn = e.target.closest("[data-longevity-analysis-band]");
       if (bandBtn && longevityAnalysisReportEl.contains(bandBtn)) {
         var bandId = bandBtn.getAttribute("data-longevity-analysis-band");
@@ -36621,6 +37416,7 @@
   function handleAppNavShortcutKey(e) {
     if (e.defaultPrevented || e.repeat) return;
     if (isAppNavShortcutBlockedTarget(document.activeElement)) return;
+    if (handleAnalysisPickerShortcut(e)) return;
     // + / = expand more micros; allow Shift so Shift+= matches the "+" hint.
     if (
       !e.ctrlKey &&
@@ -37600,6 +38396,10 @@
         returnFromFoodSourcesToMyFood();
         return;
       }
+      if (e.target.closest('[data-action="return-to-food-sources-list"]')) {
+        closeFoodSourcesFoodDetail();
+        return;
+      }
       if (e.target.closest('[data-action="return-to-def-modal"]')) {
         returnFromFoodSourcesToDefModal();
         return;
@@ -37615,6 +38415,12 @@
           sortBtn.getAttribute("data-food-sources-sort")
         );
         renderFoodSourcesBody();
+        return;
+      }
+      var foodBtn = e.target.closest("[data-food-sources-food]");
+      if (foodBtn && foodSourcesModalEl.contains(foodBtn)) {
+        e.preventDefault();
+        openFoodSourcesFoodDetail(foodBtn.getAttribute("data-food-sources-food"));
         return;
       }
       var defBtn = e.target.closest("[data-food-sources-def]");

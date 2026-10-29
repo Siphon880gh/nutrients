@@ -1170,6 +1170,16 @@ body {
 
 .app-nav__btn {
   position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.32rem;
+  flex: 0 0 auto;
+}
+
+.app-nav__icon {
+  display: block;
+  width: 0.95rem;
+  height: 0.95rem;
   flex: 0 0 auto;
 }
 
@@ -4331,6 +4341,59 @@ body.highlight-adverse-effects .dashboard__micro-acute-btn--adverse .dashboard__
   color: #333;
 }
 
+.food-sources-modal__food-btn,
+.food-sources-modal__nutrient-btn {
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  text-underline-offset: 0.14em;
+}
+
+.food-sources-modal__food-btn {
+  font-weight: 600;
+  color: #1f3a58;
+}
+
+.food-sources-modal__nutrient-btn {
+  color: #2a5a8a;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.food-sources-modal__food-btn:hover,
+.food-sources-modal__food-btn:focus-visible,
+.food-sources-modal__nutrient-btn:hover,
+.food-sources-modal__nutrient-btn:focus-visible {
+  text-decoration-color: currentColor;
+}
+
+.food-sources-modal__food-btn:focus-visible,
+.food-sources-modal__nutrient-btn:focus-visible {
+  outline: 2px solid #3d6b9e;
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+.food-sources-modal--detail .food-sources-modal__toolbar {
+  display: none;
+}
+
+.food-sources-modal__pct,
+.food-sources-modal__amount {
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.food-sources-modal__pct {
+  font-weight: 700;
+  color: #1f3a58;
+}
+
 .food-sources-modal__nutrient {
   color: #444;
   white-space: nowrap;
@@ -5471,10 +5534,24 @@ button.dashboard__micro-day-name:focus-visible {
   outline-offset: 2px;
 }
 
+.analysis-picker__btn-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.55rem;
+  width: 100%;
+}
+
 .analysis-picker__btn-title {
   font-size: 0.88rem;
   font-weight: 650;
   color: #1f3a58;
+}
+
+.analysis-picker__shortcut {
+  text-decoration: underline;
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 0.14em;
 }
 
 .analysis-picker__btn-meta {
@@ -5486,25 +5563,70 @@ button.dashboard__micro-day-name:focus-visible {
 .analysis-picker__day-group {
   display: flex;
   flex-direction: column;
-  gap: 0.4rem;
-  margin-top: 0.15rem;
-  padding-top: 0.55rem;
-  border-top: 1px solid #ecece8;
+  gap: 0;
+  margin: -0.15rem 0 0.1rem;
+  border: 0;
 }
 
-.analysis-picker__day-label {
-  margin: 0;
-  font-size: 0.72rem;
+.analysis-picker__day-summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.55rem;
+  padding: 0.15rem 0.15rem 0.15rem 0.7rem;
+  list-style: none;
+  cursor: pointer;
+  color: #3d6b9e;
+  font-size: 0.8rem;
   font-weight: 650;
-  letter-spacing: 0.02em;
-  text-transform: uppercase;
-  color: #5c5c5c;
+}
+
+.analysis-picker__day-summary::-webkit-details-marker {
+  display: none;
+}
+
+.analysis-picker__day-summary::marker {
+  content: "";
+}
+
+.analysis-picker__day-summary-main {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  min-width: 0;
+}
+
+.analysis-picker__day-chevron {
+  flex: 0 0 auto;
+  width: 0.4rem;
+  height: 0.4rem;
+  margin-top: -0.12rem;
+  border-right: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor;
+  transform: rotate(-45deg);
+}
+
+.analysis-picker__day-group[open] .analysis-picker__day-chevron {
+  margin-top: 0.12rem;
+  transform: rotate(45deg);
+}
+
+.analysis-picker__day-summary:hover,
+.analysis-picker__day-summary:focus-visible {
+  color: #1f3a58;
+}
+
+.analysis-picker__day-summary:focus-visible {
+  outline: 2px solid #3d6b9e;
+  outline-offset: 2px;
+  border-radius: 4px;
 }
 
 .analysis-picker__day-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 0.35rem;
+  margin-top: 0.45rem;
 }
 
 .analysis-picker__day-btn {
@@ -5703,8 +5825,292 @@ button.dashboard__micro-day-name:focus-visible {
   font-variant-numeric: tabular-nums;
 }
 
+.longevity-analysis-modal--requirements .longevity-analysis-modal__panel {
+  max-width: min(72rem, calc(100vw - 2rem));
+}
+
+.longevity-analysis-report--requirements {
+  --analysis-feel-columns: minmax(8.5rem, 1.15fr) 3.5rem minmax(9.5rem, 1fr) minmax(9.5rem, 1fr);
+}
+
+.longevity-analysis-report--requirements .longevity-analysis-report__feel-head {
+  position: sticky;
+  /* The report body pads 0.75rem 1rem. top: 0 sticks below that padding, so
+     scrolling rows show through the gutter. Pull the bar over the gutter. */
+  top: -0.75rem;
+  z-index: 5;
+  margin: 0 -1rem;
+  padding: calc(0.75rem + 0.45rem) 1rem 0.55rem;
+  background-color: #fff;
+  border-bottom: 1px solid #ecece8;
+  box-shadow:
+    0 -1px 0 #fff,
+    -1px 0 0 #fff,
+    1px 0 0 #fff;
+}
+
+.longevity-analysis-report--requirements .longevity-analysis-report__feel-head::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 100%;
+  height: 0.5rem;
+  background: #fff;
+  pointer-events: none;
+}
+
+.longevity-analysis-report__feel-head-grid {
+  display: grid;
+  grid-template-columns: var(--analysis-feel-columns);
+  gap: 0.35rem 0.75rem;
+  align-items: end;
+  /* Match section padding (0.75rem) + nutrient-list padding (0.55rem). */
+  padding: 0 1.3rem;
+}
+
+.longevity-analysis-report__feel-head-label {
+  font-size: 0.68rem;
+  font-weight: 650;
+  line-height: 1.3;
+  color: #5c6b7a;
+}
+
+.analysis-nutrient-board {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  margin: 0 0 0.35rem;
+}
+
+.analysis-nutrient-board__label {
+  margin: 0 0 0.35rem;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #5c6b7a;
+}
+
+.analysis-nutrient-board__pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.analysis-nutrient-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  max-width: 100%;
+  padding: 0.28rem 0.45rem 0.28rem 0.6rem;
+  border: 1px solid #d4d4d0;
+  border-radius: 999px;
+  background: #fff;
+  color: #1f3a58;
+  font: inherit;
+  font-size: 0.75rem;
+  font-weight: 650;
+  line-height: 1.2;
+  cursor: pointer;
+}
+
+.analysis-nutrient-pill__pct {
+  padding: 0.05rem 0.35rem;
+  border-radius: 999px;
+  background: #f4f4f2;
+  color: #3d4a55;
+  font-size: 0.68rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.analysis-nutrient-pill--red {
+  border-color: #e8b4af;
+  color: #8f1d14;
+}
+
+.analysis-nutrient-pill--yellow {
+  border-color: #e6c97a;
+  color: #7a5200;
+}
+
+.analysis-nutrient-pill--green {
+  border-color: #a8d4b4;
+  color: #14632c;
+}
+
+.analysis-nutrient-pill:hover,
+.analysis-nutrient-pill:focus-visible {
+  background: #f7f9fb;
+}
+
+.analysis-nutrient-pill:focus-visible {
+  outline: 2px solid #3d6b9e;
+  outline-offset: 2px;
+}
+
+.analysis-nutrient-pill--selected {
+  background: #f4f8fc;
+  box-shadow: inset 0 0 0 1px currentColor;
+}
+
+.analysis-nutrient-pill[hidden],
+.analysis-nutrient-choice[hidden],
+.analysis-nutrient-board__group[hidden] {
+  display: none !important;
+}
+
+.analysis-nutrient-choice {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.65rem 1rem;
+  margin-top: 0.55rem;
+  padding: 0.7rem 0.75rem;
+  border: 1px solid #d7e4f2;
+  border-radius: 8px;
+  background: #f4f8fc;
+}
+
+.analysis-nutrient-choice__text {
+  min-width: 0;
+  flex: 1 1 12rem;
+}
+
+.analysis-nutrient-choice__name {
+  margin: 0;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #1f3a58;
+}
+
+.analysis-nutrient-choice__meta {
+  margin: 0.15rem 0 0;
+  font-size: 0.75rem;
+  line-height: 1.35;
+  color: #5c5c5c;
+}
+
+.analysis-nutrient-choice__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.45rem;
+}
+
+.analysis-nutrient-choice__ranked {
+  padding: 0.45rem 0.7rem;
+  border: 1px solid #c5d0dc;
+  border-radius: 6px;
+  background: #fff;
+  color: #3d4a55;
+  font: inherit;
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.analysis-nutrient-choice__ranked:hover,
+.analysis-nutrient-choice__ranked:focus-visible {
+  border-color: #3d6b9e;
+  color: #1f3a58;
+}
+
+.analysis-nutrient-choice__other {
+  padding: 0.62rem 1.05rem;
+  border: 1px solid #1f3a58;
+  border-radius: 6px;
+  background: #1f3a58;
+  color: #fff;
+  font: inherit;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.analysis-nutrient-choice__other:hover,
+.analysis-nutrient-choice__other:focus-visible {
+  background: #16304a;
+  border-color: #16304a;
+}
+
+.analysis-nutrient-choice__ranked:focus-visible,
+.analysis-nutrient-choice__other:focus-visible {
+  outline: 2px solid #3d6b9e;
+  outline-offset: 2px;
+}
+
+.longevity-analysis-report__feel-note {
+  margin: 0.35rem 0 0;
+  padding: 0 0.75rem;
+  font-size: 0.7rem;
+  line-height: 1.4;
+  color: #6a6a66;
+}
+
+.longevity-analysis-report--requirements .longevity-analysis-report__nutrient-row--feel {
+  display: grid;
+  grid-template-columns: var(--analysis-feel-columns);
+  gap: 0.3rem 0.75rem;
+  align-items: start;
+  justify-content: stretch;
+}
+
+.longevity-analysis-report__feel {
+  min-width: 0;
+  font-size: 0.74rem;
+  line-height: 1.35;
+  color: #333;
+}
+
+.longevity-analysis-report__feel--low {
+  padding-left: 0.5rem;
+  border-left: 2px solid #e4ebf3;
+}
+
+.longevity-analysis-report__feel--ok,
+.longevity-analysis-report__feel--na {
+  color: #8a8a86;
+  font-size: 0.72rem;
+}
+
+.longevity-analysis-report__feel--span {
+  grid-column: 3 / -1;
+}
+
+.longevity-analysis-report__feel-label {
+  display: none;
+  margin-bottom: 0.1rem;
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  color: #1f3a58;
+}
+
 .longevity-analysis-modal__panel {
   max-height: min(92vh, 56rem);
+}
+
+@media (max-width: 860px) {
+  .longevity-analysis-report__feel-head-grid {
+    display: none;
+  }
+
+  .longevity-analysis-report--requirements .longevity-analysis-report__nutrient-row--feel {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .longevity-analysis-report__feel,
+  .longevity-analysis-report__feel--span {
+    grid-column: 1 / -1;
+  }
+
+  .longevity-analysis-report__feel-label {
+    display: block;
+  }
 }
 
 .longevity-analysis-modal__body {
@@ -15261,16 +15667,23 @@ button.longevity-form__label-link:focus-visible {
 
   .app-nav__btn {
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
+    gap: 0.12rem;
     flex: 0 0 auto;
     min-width: 3.4rem;
     min-height: 2.75rem;
-    padding: 0.3rem 0.55rem;
+    padding: 0.3rem 0.45rem;
     font-size: 0.62rem;
     line-height: 1.15;
     text-align: center;
     border-radius: 6px;
+  }
+
+  .app-nav__icon {
+    width: 1.05rem;
+    height: 1.05rem;
   }
 
   .app-nav__label--full {
@@ -15412,6 +15825,17 @@ button.longevity-form__label-link:focus-visible {
 
   body.print-longevity-analysis .longevity-analysis-report__section {
     background: #fff;
+  }
+
+  body.print-longevity-analysis .longevity-analysis-report__feel-head {
+    position: static;
+    top: auto;
+    margin: 0;
+    box-shadow: none;
+  }
+
+  body.print-longevity-analysis .longevity-analysis-report__feel-head::after {
+    content: none;
   }
 
   .dashboard__hint,
