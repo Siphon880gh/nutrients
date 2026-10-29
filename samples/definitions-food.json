@@ -46116,5 +46116,25 @@
       "netCarbs": 30
     },
     "notes": "F#ck Carbs Low Carb Cauliflower Salad, one salad: crispy cauliflower wings, mixed greens, three sides, green onions, sesame seeds, a lemon wedge, and a dressing. Delivery-menu calories list the salad at 400 kcal and 15 g protein, the chili-dusted pineapple side at 60 kcal and 1 g protein, and the kimchi side at 15 kcal and 1 g protein. Pineapple and kimchi are two of the three sides included in the salad, so they are not added on top of the 400 kcal. The third side and the dressing are not specified. The restaurant does not publish carbs or fat. Pineapple is estimated as 120 g fruit (USDA, the amount that matches a 60 kcal side): about 16 g carbohydrate, 0 g fat, 1.7 g fiber. Kimchi is estimated as 100 g (USDA, the amount that matches a 15 kcal side): about 2 g carbohydrate, 0.5 g fat, 1.6 g fiber. The rest of the 400 kcal, after 15 g protein, is assigned 75% to fat and 25% to carbohydrate so the meal still totals about 400 kcal (15 g protein, 33 g carbohydrate, 23 g fat). Fiber here is only the pineapple and kimchi. Sodium, saturated fat, and the wings' own vitamins are omitted."
+  },
+  {
+    "name": "Phoenix Cafe - Minced String Beans, Mushroom & Sausage 1 plate (about 1 1/2 cups, 260 g, no rice)",
+    "protein": 11,
+    "carbs": 22,
+    "fats": 30,
+    "micros": {
+      "sodium": 1000,
+      "fiber": 4.5
+    },
+    "longevity": {
+      "saturatedFat": 7,
+      "transFat": 0,
+      "cholesterol": 30
+    },
+    "carbQuality": {
+      "addedSugar": 5,
+      "netCarbs": 17.5
+    },
+    "notes": "Phoenix Cafe (Hong Kong-style cafe) Minced String Beans, Mushroom & Sausage, one plate of the stir-fry only; rice is not included, so log rice separately if it comes with the dish. The restaurant does not publish nutrition, so this is an estimate for about 260 g: string beans about 150 g (USDA: 2.7 g protein, 10.5 g carbohydrate, 0.3 g fat, 4 g fiber), mushrooms about 40 g (1.2 g protein, 1.3 g carbohydrate, 0.1 g fat), minced Chinese sausage (lap cheong) about 40 g, one link (6 g protein, 4 g carbohydrate, 12 g fat, about 400 mg sodium), about 1 1/3 tbsp cooking oil (18 g fat), and a soy/oyster sauce glaze with sugar and cornstarch (1 g protein, 6 g carbohydrate, about 600 mg sodium). Total about 400 kcal (11 g protein, 22 g carbohydrate, 30 g fat). Added sugar is from the sausage cure and the sauce. Saturated fat and cholesterol are mostly from the sausage. Other micronutrients are omitted."
   }
 ]
