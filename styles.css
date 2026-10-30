@@ -11123,6 +11123,47 @@ input[type="number"]::-webkit-inner-spin-button {
   cursor: default;
 }
 
+.add-food-modal__servings-recent {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.add-food-modal__servings-recent-label {
+  color: #8a8a86;
+  font-size: 0.68rem;
+  font-weight: 600;
+}
+
+.add-food-modal__servings-recent-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.85rem;
+  height: 1.3rem;
+  padding: 0 0.45rem;
+  border: 1px solid #c5d4e6;
+  border-radius: 999px;
+  background: #fff;
+  color: #3d6b9e;
+  font: inherit;
+  font-size: 0.68rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.add-food-modal__servings-recent-chip:hover {
+  background: #eef4fa;
+}
+
+.add-food-modal__servings-recent-chip--active {
+  border-color: #3d6b9e;
+  background: #f5f8fb;
+}
+
 .add-food-modal__footer-start {
   display: flex;
   align-items: center;

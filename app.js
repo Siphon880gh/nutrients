@@ -683,6 +683,9 @@
   var addFoodSubmitMode = "day";
   var addFoodSelectedItems = [];
   var addFoodSelectedListKey = "";
+  var addFoodRecentServingsCache = null;
+  var ADD_FOOD_RECENT_SERVINGS_DAYS = 14;
+  var ADD_FOOD_RECENT_SERVINGS_MAX = 5;
   var addFoodResultsPage = 0;
   var dayFoodNotesEl = document.getElementById("day-food-notes");
   var dayFoodNotesLabelsEl = document.getElementById("day-food-notes-labels");
@@ -34429,6 +34432,15 @@
         var delta = parseFloat(btn.getAttribute("data-delta"));
         btn.disabled = atFloor && delta < 0;
       });
+    addFoodSelectedEl
+      .querySelectorAll('[data-action="set-add-food-servings"]')
+      .forEach(function (chip) {
+        if (chip.getAttribute("data-food-name") !== name) return;
+        var active =
+          Math.abs(parseFloat(chip.getAttribute("data-servings")) - item.servings) < 1e-6;
+        chip.classList.toggle("add-food-modal__servings-recent-chip--active", active);
+        chip.setAttribute("aria-pressed", active ? "true" : "false");
+      });
   }
 
   function addFoodServingsStepHtml(name, amount, label) {
@@ -34507,6 +34519,85 @@
     if (handle) handle.focus();
   }
 
+  // Servings logged per food over the 14 days before the target day (or
+  // before today when adding to a saved meal). Built once per modal open.
+  function addFoodRecentServingsRefDate() {
+    var key = addFoodPendingDayId ? dateKeyForDayId(addFoodPendingDayId) : null;
+    return (key && parseDateKey(key)) || new Date();
+  }
+
+  function buildAddFoodRecentServingsCache() {
+    flushEditorsToDayMeals();
+    var ref = addFoodRecentServingsRefDate();
+    var byFood = {};
+    for (var i = 1; i <= ADD_FOOD_RECENT_SERVINGS_DAYS; i++) {
+      var text = dayMealsByDate[toDateKey(addDays(ref, -i))];
+      if (!text) continue;
+      parseDayGuidedLines(text).forEach(function (entry) {
+        if (entry.kind !== "food") return;
+        var n = Math.round(parseFloat(entry.servings) * 1000) / 1000;
+        if (!isFinite(n) || n <= 0) return;
+        var foodKey = entry.name.toLowerCase();
+        var counts = byFood[foodKey] || (byFood[foodKey] = {});
+        counts[String(n)] = (counts[String(n)] || 0) + 1;
+      });
+    }
+    return byFood;
+  }
+
+  function addFoodRecentServingsFor(name) {
+    if (!addFoodRecentServingsCache) {
+      addFoodRecentServingsCache = buildAddFoodRecentServingsCache();
+    }
+    var counts = addFoodRecentServingsCache[String(name || "").trim().toLowerCase()];
+    if (!counts) return [];
+    return Object.keys(counts)
+      .map(function (k) {
+        return { servings: parseFloat(k), count: counts[k] };
+      })
+      .sort(function (a, b) {
+        return b.count - a.count || a.servings - b.servings;
+      })
+      .slice(0, ADD_FOOD_RECENT_SERVINGS_MAX);
+  }
+
+  function formatAddFoodServingsChip(n) {
+    return String(Math.round(n * 100) / 100);
+  }
+
+  function addFoodRecentServingsHtml(name, currentServings) {
+    var recent = addFoodRecentServingsFor(name);
+    if (!recent.length) return "";
+    return (
+      '<div class="add-food-modal__servings-recent" role="group" aria-label="Servings you logged for ' +
+      escapeAttr(name) +
+      ' in the last 2 weeks">' +
+      '<span class="add-food-modal__servings-recent-label">Last 2 wks</span>' +
+      recent
+        .map(function (r) {
+          var active = Math.abs(r.servings - currentServings) < 1e-6;
+          return (
+            '<button type="button" class="add-food-modal__servings-recent-chip' +
+            (active ? " add-food-modal__servings-recent-chip--active" : "") +
+            '" data-action="set-add-food-servings" data-food-name="' +
+            escapeAttr(name) +
+            '" data-servings="' +
+            r.servings +
+            '" aria-pressed="' +
+            (active ? "true" : "false") +
+            '" title="Logged ' +
+            r.count +
+            (r.count === 1 ? " time" : " times") +
+            ' in the last 2 weeks">' +
+            escapeHtml(formatAddFoodServingsChip(r.servings)) +
+            "</button>"
+          );
+        })
+        .join("") +
+      "</div>"
+    );
+  }
+
   function renderAddFoodSelectedList() {
     if (!addFoodSelectedListEl) return;
     addFoodSelectedListEl.innerHTML = addFoodSelectedItems
@@ -34562,7 +34653,9 @@
           addFoodServingsStepHtml(name, 0.33, ".33") +
           addFoodServingsStepHtml(name, 0.25, ".25") +
           "</div>" +
-          "</div></div></li>"
+          "</div>" +
+          addFoodRecentServingsHtml(name, parseFloat(servings)) +
+          "</div></li>"
         );
       })
       .join("");
@@ -35058,6 +35151,7 @@
     addFoodPendingMealId = null;
     addFoodSubmitMode = "day";
     addFoodSelectedItems = [];
+    addFoodRecentServingsCache = null;
     addFoodDragIndex = -1;
     addFoodSelectedListKey = "";
     addFoodResultsPage = 0;
@@ -35091,6 +35185,7 @@
     addFoodPendingMealId = opts.mealId || null;
     addFoodSubmitMode = addFoodPendingMealId ? "meal" : "day";
     addFoodSelectedItems = [];
+    addFoodRecentServingsCache = null;
     addFoodSelectedListKey = "";
     addFoodResultsPage = 0;
     resetAddFoodCalcState();
@@ -39434,6 +39529,17 @@
       var removeBtn = e.target.closest('[data-action="remove-add-food"]');
       if (removeBtn) {
         removeAddFoodName(removeBtn.getAttribute("data-food-name"));
+        return;
+      }
+      var recentChip = e.target.closest('[data-action="set-add-food-servings"]');
+      if (recentChip) {
+        var chipServings = parseFloat(recentChip.getAttribute("data-servings"));
+        if (isFinite(chipServings) && chipServings > 0) {
+          setAddFoodItemServings(
+            recentChip.getAttribute("data-food-name"),
+            chipServings
+          );
+        }
         return;
       }
       var nudgeBtn = e.target.closest('[data-action="nudge-add-food-servings"]');
