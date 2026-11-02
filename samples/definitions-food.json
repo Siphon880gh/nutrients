@@ -7783,6 +7783,80 @@
     }
   },
   {
+    "name": "Junk Food - Doritos Flamin' Hot Medium Bag (2.625 oz / 74 g)",
+    "protein": 5.3,
+    "carbs": 44.6,
+    "fats": 21,
+    "micros": {
+      "fiber": 2.6,
+      "sodium": 499,
+      "potassium": 158,
+      "calcium": 131,
+      "iron": 0.8,
+      "magnesium": 47.3,
+      "zinc": 1.1,
+      "phosphorus": 144,
+      "omega3": 0.5,
+      "omega6": 9.5
+    },
+    "longevity": {
+      "saturatedFat": 2.6,
+      "monounsaturatedFat": 6.6,
+      "polyunsaturatedFat": 10,
+      "transFat": 0,
+      "cholesterol": 0,
+      "omega3": true,
+      "omega6": true,
+      "ala": 0.5,
+      "linoleicAcid": 9.2,
+      "oleicAcid": 6.3,
+      "phosphorus": true
+    },
+    "carbQuality": {
+      "glycemicIndex": 63,
+      "addedSugar": 0,
+      "refinedCarbs": 42
+    },
+    "notes": "Whole 2.625 oz (74 g) bag, the personal bag next to the 1 oz snack bag. Kroger lists about 2.5 servings of 150 calories. Numbers are the 1 oz bag in this file multiplied by 2.625, about 390 calories. Magnesium, zinc, phosphorus, and fatty acids are those small-bag estimates scaled the same way."
+  },
+  {
+    "name": "Junk Food - Doritos Flamin' Hot Large Bag (9.25 oz / 262 g)",
+    "protein": 18.7,
+    "carbs": 159.2,
+    "fats": 74.9,
+    "micros": {
+      "fiber": 9.4,
+      "sodium": 1779,
+      "potassium": 562,
+      "calcium": 468,
+      "iron": 2.8,
+      "magnesium": 168.6,
+      "zinc": 3.7,
+      "phosphorus": 515,
+      "omega3": 1.9,
+      "omega6": 33.7
+    },
+    "longevity": {
+      "saturatedFat": 9.4,
+      "monounsaturatedFat": 23.4,
+      "polyunsaturatedFat": 35.6,
+      "transFat": 0,
+      "cholesterol": 0,
+      "omega3": true,
+      "omega6": true,
+      "ala": 1.9,
+      "linoleicAcid": 32.8,
+      "oleicAcid": 22.5,
+      "phosphorus": true
+    },
+    "carbQuality": {
+      "glycemicIndex": 63,
+      "addedSugar": 0,
+      "refinedCarbs": 149.8
+    },
+    "notes": "Whole 9.25 oz (262 g) grocery bag. Numbers are the 1 oz bag in this file scaled to the 9.25 oz net weight. Magnesium, zinc, phosphorus, and fatty acids are those small-bag estimates scaled the same way. Glycemic index 63 is unchanged."
+  },
+  {
     "name": "Junk Food - Miss Vickie's BBQ Chips Single Serve Bag (1.375 oz / 38.9 g)",
     "protein": 2,
     "carbs": 23,
@@ -7807,6 +7881,32 @@
       "netCarbs": 21
     },
     "notes": "Subway-style single-serve bag, net 1.375 oz (38.9 g). Macros and listed micros are USDA branded FDC 1458862 for that bag. Added sugar 2 g is from the 2021 PepsiCo foodservice sheet for the same bag; that older sheet listed 200 calories and 11 g fat. Glycemic index 56 is the potato-chip value already used for Tim's chips in this file."
+  },
+  {
+    "name": "Junk Food - Miss Vickie's BBQ Chips Large Bag (9 oz / 255 g)",
+    "protein": 13.1,
+    "carbs": 150.9,
+    "fats": 78.7,
+    "micros": {
+      "fiber": 13.1,
+      "sodium": 1312,
+      "potassium": 3148,
+      "calcium": 0,
+      "iron": 4.7,
+      "vitaminC": 59,
+      "vitaminD": 0
+    },
+    "longevity": {
+      "saturatedFat": 13.1,
+      "transFat": 0,
+      "cholesterol": 0
+    },
+    "carbQuality": {
+      "glycemicIndex": 56,
+      "addedSugar": 13.1,
+      "netCarbs": 137.8
+    },
+    "notes": "Whole 9 oz (255 g) grocery bag, scaled from the 1.375 oz (38.9 g) single-serve entry. Retailers list a 9 oz Smokehouse BBQ bag; the brand site currently lists only the 1.375 oz bag. No 2.5 oz personal bag of this flavor turned up, so there is no medium bag."
   },
   {
     "name": "Junk Food - Lay's Lemon (Limón) Chips Single Serve Bag (1.5 oz / 42.5 g)",
@@ -7834,6 +7934,56 @@
     "notes": "Bag weight is the 1.5 oz (42.5 g) Lay's large single-serve bag Subway uses. Lay's Limón publishes a 28 g serving (160 calories, 10 g fat, 1.5 g saturated fat, 16 g carbohydrate, 1 g fiber, 1 g total sugar, 2 g protein, 200 mg sodium, 330 mg potassium, 10 mg calcium, 0.5 mg iron, 0 mcg vitamin D, vitamin C 6% DV). Numbers here are that serving scaled by 42.5/28. A labeled 1.5 oz Limón bag was not found, and the label sources did not split added sugar from the 1 g total sugar."
   },
   {
+    "name": "Junk Food - Lay's Lemon (Limón) Chips Medium Bag (2.5 oz / 71 g)",
+    "protein": 5.1,
+    "carbs": 40.5,
+    "fats": 25.3,
+    "micros": {
+      "fiber": 2.5,
+      "sodium": 506,
+      "potassium": 835,
+      "calcium": 25,
+      "iron": 1.3,
+      "vitaminC": 13.7,
+      "vitaminD": 0
+    },
+    "longevity": {
+      "saturatedFat": 3.8,
+      "transFat": 0,
+      "cholesterol": 0
+    },
+    "carbQuality": {
+      "glycemicIndex": 56,
+      "netCarbs": 38
+    },
+    "notes": "Whole 2.5 oz (71 g) bag. Smith's panel: 2.5 servings of the 28 g Limón serving (160 calories, 10 g fat, 1.5 g saturated fat, 16 g carbohydrate, 1 g fiber, 2 g protein, 200 mg sodium, 330 mg potassium, 10 mg calcium, 0.5 mg iron, vitamin C 6% DV), scaled to the net weight, about 410 calories. Added sugar is omitted because the label does not split it from the 1 g total sugar."
+  },
+  {
+    "name": "Junk Food - Lay's Lemon (Limón) Chips Large Bag (7.75 oz / 220 g)",
+    "protein": 15.7,
+    "carbs": 125.5,
+    "fats": 78.5,
+    "micros": {
+      "fiber": 7.8,
+      "sodium": 1569,
+      "potassium": 2589,
+      "calcium": 78,
+      "iron": 3.9,
+      "vitaminC": 42.4,
+      "vitaminD": 0
+    },
+    "longevity": {
+      "saturatedFat": 11.8,
+      "transFat": 0,
+      "cholesterol": 0
+    },
+    "carbQuality": {
+      "glycemicIndex": 56,
+      "netCarbs": 117.7
+    },
+    "notes": "Whole 7.75 oz (220 g) grocery bag. The published 28 g Limón serving (160 calories, 10 g fat, 1.5 g saturated fat, 16 g carbohydrate, 1 g fiber, 2 g protein, 200 mg sodium, 330 mg potassium, 10 mg calcium, 0.5 mg iron, vitamin C 6% DV) scaled to the net weight. Added sugar is omitted because the label does not split it from the 1 g total sugar. Glycemic index 56 is the potato-chip value already used for Tim's chips."
+  },
+  {
     "name": "Junk Food - Ruffles Original Chips Single Serve Bag (1.5 oz / 42.5 g)",
     "protein": 3,
     "carbs": 23,
@@ -7857,6 +8007,57 @@
       "netCarbs": 21
     },
     "notes": "One 1.5 oz (42.5 g) single-serve bag, the Ruffles foodservice size. Nutrition is the package panel for that bag (1 serving per container): 240 calories, 1 g total sugar, no added sugar. Glycemic index 56 is the potato-chip value already used for Tim's chips in this file."
+  },
+  {
+    "name": "Junk Food - Ruffles Original Chips Medium Bag (2.5 oz / 71 g)",
+    "protein": 5.1,
+    "carbs": 38,
+    "fats": 25.3,
+    "micros": {
+      "fiber": 2.5,
+      "sodium": 380,
+      "potassium": 886,
+      "calcium": 25,
+      "iron": 1.5,
+      "vitaminC": 13.7,
+      "vitaminD": 0
+    },
+    "longevity": {
+      "saturatedFat": 3.8,
+      "transFat": 0,
+      "cholesterol": 0
+    },
+    "carbQuality": {
+      "glycemicIndex": 56,
+      "addedSugar": 0,
+      "netCarbs": 35.5
+    },
+    "notes": "Whole 2.5 oz (71 g) bag. Kroger lists 2.5 servings of 28 g: 160 calories, 10 g fat, 1.5 g saturated fat, 150 mg sodium, 15 g carbohydrate, 1 g fiber, 2 g protein, 350 mg potassium, 10 mg calcium, 0.6 mg iron, vitamin C 6% DV, no added sugar. Scaled to the net weight, about 400 calories."
+  },
+  {
+    "name": "Junk Food - Ruffles Original Chips Large Bag (8.5 oz / 241 g)",
+    "protein": 17.2,
+    "carbs": 129.1,
+    "fats": 86.1,
+    "micros": {
+      "fiber": 8.6,
+      "sodium": 1205,
+      "potassium": 3012,
+      "calcium": 86,
+      "iron": 5.2,
+      "vitaminD": 0
+    },
+    "longevity": {
+      "saturatedFat": 12.9,
+      "transFat": 0,
+      "cholesterol": 0
+    },
+    "carbQuality": {
+      "glycemicIndex": 56,
+      "addedSugar": 0,
+      "netCarbs": 120.5
+    },
+    "notes": "Whole 8.5 oz (241 g) grocery bag. Kroger's 8.5 oz panel per 28 g (160 calories, 10 g fat, 1.5 g saturated fat, 140 mg sodium, 15 g carbohydrate, 1 g fiber, 2 g protein, 350 mg potassium, 10 mg calcium, 0.6 mg iron, no added sugar) scaled to the net weight. This retail bag is not a multiple of the 1.5 oz foodservice bag. Glycemic index 56 is the potato-chip value already used for Tim's chips."
   },
   {
     "name": "Junk Food - Starbucks Bacon & Gruyère Egg Bites - 2 bites",
@@ -14691,6 +14892,64 @@
     }
   },
   {
+    "name": "Ensure Original 1 bottle (8 fl oz / 237 mL, vanilla)",
+    "protein": 9,
+    "carbs": 32,
+    "fats": 6,
+    "micros": {
+      "sodium": 210,
+      "potassium": 470,
+      "calcium": 330,
+      "iron": 4.5,
+      "magnesium": 84,
+      "zinc": 3.3,
+      "phosphorus": 250,
+      "chloride": 230,
+      "choline": 137.5,
+      "copper": 225,
+      "manganese": 0.58,
+      "selenium": 14,
+      "chromium": 9,
+      "iodine": 38,
+      "molybdenum": 16,
+      "vitaminA": 225,
+      "vitaminC": 72,
+      "vitaminD": 8,
+      "vitaminE": 7.5,
+      "vitaminK": 24,
+      "vitaminK1": 24,
+      "thiamin": 0.3,
+      "riboflavin": 0.39,
+      "niacin": 5.6,
+      "vitaminB6": 0.51,
+      "folate": 100,
+      "vitaminB12": 0.6,
+      "biotin": 7.5,
+      "pantothenicAcid": 1.5,
+      "omega3": 0.32
+    },
+    "longevity": {
+      "saturatedFat": 1,
+      "monounsaturatedFat": 3,
+      "polyunsaturatedFat": 2,
+      "transFat": 0,
+      "omega3": true,
+      "ala": 0.32,
+      "vitaminE": true,
+      "vitaminK": true,
+      "vitaminK1": true,
+      "selenium": true,
+      "phosphorus": true,
+      "choline": true,
+      "copper": true
+    },
+    "carbQuality": {
+      "addedSugar": 9,
+      "refinedCarbs": 32
+    },
+    "notes": "Ensure Original vanilla, one 8 fl oz (237 mL) bottle. Abbott Nutrition vanilla panel: 220 kcal, 6 g fat, 1 g saturated fat, 2 g polyunsaturated fat, 3 g monounsaturated fat, 0 g trans fat, 210 mg sodium, 32 g carbohydrate, 10 g total sugar, 9 g added sugar, 9 g protein, 8 mcg vitamin D, 330 mg calcium, 4.5 mg iron, 470 mg potassium. Cholesterol is under 5 mg and fiber is under 1 g, so those amounts are left off. The label lists 320 mg ALA; that is the omega-3 amount. Vitamins and minerals printed only as % DV are that percent of the adult Daily Value (vitamin A 225 mcg, vitamin C 72 mg, vitamin E 7.5 mg, vitamin K 24 mcg, thiamin 0.3 mg, riboflavin 0.39 mg, niacin 5.6 mg, vitamin B6 0.51 mg, folate 100 mcg DFE, vitamin B12 0.6 mcg, biotin 7.5 mcg, pantothenic acid 1.5 mg, choline 137.5 mg, phosphorus 250 mg, iodine 38 mcg, magnesium 84 mg, zinc 3.3 mg, selenium 14 mcg, copper 225 mcg, manganese 0.58 mg, chromium 9 mcg, molybdenum 16 mcg, chloride 230 mg). Folic acid on the label is 60 mcg. Vitamin K is phylloquinone from the ingredient list, so it is stored as K1. Milk chocolate is the same 220 kcal, 9 g protein, and 6 g fat, with 33 g carbohydrate and 1 g fiber."
+  },
+  {
     "name": "Quest Protein Bar",
     "protein": 21,
     "carbs": 22,
@@ -16706,7 +16965,29 @@
       "glycemicIndex": 63,
       "addedSugar": 39,
       "refinedCarbs": 39
-    }
+    },
+    "notes": "Coca-Cola Original, one 12 fl oz can. Coca-Cola US: 140 calories, 39 g carbohydrate, all added sugar, 45 mg sodium, 0 g fat, 0 g protein. Caffeine is 34 mg. This file has no caffeine field."
+  },
+  {
+    "name": "Junk Food - Coca Cola Bottle (20 fl oz)",
+    "protein": 0,
+    "carbs": 65,
+    "fats": 0,
+    "micros": {
+      "fiber": 0,
+      "sodium": 75
+    },
+    "longevity": {
+      "saturatedFat": 0,
+      "transFat": 0,
+      "cholesterol": 0
+    },
+    "carbQuality": {
+      "glycemicIndex": 63,
+      "addedSugar": 65,
+      "refinedCarbs": 65
+    },
+    "notes": "Coca-Cola Original, one 20 fl oz bottle, the single bottle you hold. Coca-Cola US: 240 calories, 65 g carbohydrate, all added sugar, 75 mg sodium, 0 g fat, 0 g protein. Not a significant source of fiber, vitamin D, calcium, iron, or potassium. Caffeine is 57 mg. This file has no caffeine field. Glycemic index 63 is the value already used on the 12 fl oz can."
   },
   {
     "name": "Junk Food - Dog Haus - Sooo Cali 1 hot dog (273 g)",
@@ -17163,6 +17444,31 @@
       "glycemicIndex": 56,
       "addedSugar": 1
     }
+  },
+  {
+    "name": "Junk Food - Tim's Potato Chips Jalapeno Large Bag (7.5 oz / 213 g)",
+    "protein": 15.2,
+    "carbs": 113.9,
+    "fats": 60.7,
+    "micros": {
+      "fiber": 15.2,
+      "sodium": 1671,
+      "potassium": 2658,
+      "calcium": 76,
+      "iron": 3.8,
+      "vitaminD": 0
+    },
+    "longevity": {
+      "saturatedFat": 7.6,
+      "transFat": 0,
+      "cholesterol": 0
+    },
+    "carbQuality": {
+      "glycemicIndex": 56,
+      "addedSugar": 7.6,
+      "netCarbs": 98.7
+    },
+    "notes": "Whole 7.5 oz (213 g) grocery bag. Kroger panel per 1 oz (28 g): 140 calories, 8 g fat, 1 g saturated fat, 220 mg sodium, 15 g carbohydrate, 2 g fiber, 1 g added sugar, 2 g protein, 10 mg calcium, 0.5 mg iron, 350 mg potassium. Scaled to the net weight. The 2 oz bag is a different panel (3 g fiber and 10 mg calcium for the whole bag), so this is not a multiple of that entry. No personal bag near 2.5 oz turned up, so there is no medium bag."
   },
   {
     "name": "Junk Food - Mooncake with Yolk 1/4 mooncake (about 1.6 oz/46 g; small wedge)",
@@ -17714,6 +18020,93 @@
       "refinedCarbs": 58,
       "netCarbs": 58
     }
+  },
+  {
+    "name": "Junk Food - Wendy's Breakfast Baconator 1 sandwich",
+    "protein": 34,
+    "carbs": 36,
+    "fats": 50,
+    "micros": {
+      "fiber": 1,
+      "sodium": 1610
+    },
+    "longevity": {
+      "saturatedFat": 21,
+      "transFat": 0,
+      "cholesterol": 270
+    },
+    "carbQuality": {
+      "glycemicIndex": 50,
+      "refinedCarbs": 35,
+      "netCarbs": 35
+    },
+    "notes": "Wendy's US Breakfast Baconator, one sandwich: 730 calories, 50 g fat, 21 g saturated fat, 0 g trans fat, 270 mg cholesterol, 1610 mg sodium, 36 g carbohydrate, 1 g fiber, 3 g total sugar, 34 g protein. Added sugar is not split out from the 3 g total sugar."
+  },
+  {
+    "name": "Junk Food - Wendy's Small Breakfast Wedges",
+    "protein": 3,
+    "carbs": 30,
+    "fats": 11,
+    "micros": {
+      "fiber": 4,
+      "sodium": 380
+    },
+    "longevity": {
+      "saturatedFat": 1,
+      "transFat": 0,
+      "cholesterol": 0
+    },
+    "carbQuality": {
+      "glycemicIndex": 75,
+      "addedSugar": 0,
+      "refinedCarbs": 26,
+      "netCarbs": 26
+    },
+    "notes": "Wendy's US Seasoned Potatoes, the breakfast wedges, small: 230 calories, 11 g fat, 1 g saturated fat, 0 g trans fat, 0 mg cholesterol, 380 mg sodium, 30 g carbohydrate, 4 g fiber, 0 g sugar, 3 g protein."
+  },
+  {
+    "name": "Junk Food - Wendy's Medium Breakfast Wedges",
+    "protein": 4,
+    "carbs": 43,
+    "fats": 16,
+    "micros": {
+      "fiber": 6,
+      "sodium": 540
+    },
+    "longevity": {
+      "saturatedFat": 2,
+      "transFat": 0,
+      "cholesterol": 0
+    },
+    "carbQuality": {
+      "glycemicIndex": 75,
+      "addedSugar": 0,
+      "refinedCarbs": 37,
+      "netCarbs": 37
+    },
+    "notes": "Wendy's US Seasoned Potatoes, the breakfast wedges, medium: 330 calories, 16 g fat, 2 g saturated fat, 0 g trans fat, 0 mg cholesterol, 540 mg sodium, 43 g carbohydrate, 6 g fiber, 0 g sugar, 4 g protein."
+  },
+  {
+    "name": "Junk Food - Wendy's Large Breakfast Wedges",
+    "protein": 6,
+    "carbs": 54,
+    "fats": 20,
+    "micros": {
+      "fiber": 7,
+      "sodium": 680
+    },
+    "longevity": {
+      "saturatedFat": 2,
+      "transFat": 0,
+      "cholesterol": 0
+    },
+    "carbQuality": {
+      "glycemicIndex": 75,
+      "addedSugar": 0,
+      "refinedCarbs": 47,
+      "netCarbs": 47
+    },
+    "notes": "Wendy's US Seasoned Potatoes, the breakfast wedges, large: 410 calories, 20 g fat, 2 g saturated fat, 0 g trans fat, 0 mg cholesterol, 680 mg sodium, 54 g carbohydrate, 7 g fiber, 0 g sugar, 6 g protein."
   },
   {
     "name": "Junk Food - Dave's Double",
@@ -19580,6 +19973,67 @@
       "netCarbs": 28
     },
     "source": "Hershey KIT KAT milk chocolate bar, 1 package (42 g). The label lists cholesterol as under 5 mg and fiber as under 1 g."
+  },
+  {
+    "name": "Junk Food - Kit Kat King Size 1 bar (3 oz / 85 g)",
+    "protein": 2.7,
+    "carbs": 55.8,
+    "fats": 21.3,
+    "micros": {
+      "sodium": 40
+    },
+    "longevity": {
+      "saturatedFat": 13.3
+    },
+    "carbQuality": {
+      "addedSugar": 42.5,
+      "refinedCarbs": 55.8,
+      "netCarbs": 55.8
+    },
+    "notes": "Whole 3 oz (85 g) king-size bar. Hershey panel per 3 fingers (32 g): 160 calories, 8 g fat, 5 g saturated fat, 15 mg sodium, 21 g carbohydrate, 17 g total sugar, 16 g added sugar, 1 g protein, about 2.5 servings per bar. Numbers are that serving scaled to the 85 g net weight. Cholesterol is under 5 mg per serving, so it is left off."
+  },
+  {
+    "name": "Junk Food - Kit Kat Big Kat 1 bar (3 oz / 85 g)",
+    "protein": 4,
+    "carbs": 56,
+    "fats": 22,
+    "micros": {
+      "sodium": 40
+    },
+    "longevity": {
+      "saturatedFat": 14
+    },
+    "carbQuality": {
+      "addedSugar": 42,
+      "refinedCarbs": 56,
+      "netCarbs": 56
+    },
+    "notes": "Whole 3 oz (85 g) Big Kat bar, the thicker five-wafer king size. Hershey lists 2 servings per bar. Each serving is 210 calories, 11 g fat, 7 g saturated fat, 20 mg sodium, 28 g carbohydrate, 23 g total sugar, 21 g added sugar, and 2 g protein. This entry is both servings. Cholesterol is under 5 mg per serving."
+  },
+  {
+    "name": "Junk Food - Kit Kat XL 1 bar (4.3 oz / 122 g)",
+    "protein": 5,
+    "carbs": 80,
+    "fats": 30,
+    "micros": {
+      "sodium": 50,
+      "potassium": 250,
+      "calcium": 100,
+      "iron": 3,
+      "vitaminD": 0,
+      "fiber": 0
+    },
+    "longevity": {
+      "saturatedFat": 20,
+      "transFat": 0,
+      "cholesterol": 0
+    },
+    "carbQuality": {
+      "addedSugar": 60,
+      "refinedCarbs": 80,
+      "netCarbs": 80
+    },
+    "notes": "Whole 4.3 oz (122 g) XL bar, 10 pieces. Hershey lists about 5 servings of 2 fingers: 120 calories, 6 g fat, 4 g saturated fat, 0 g trans fat, 0 mg cholesterol, 10 mg sodium, 16 g carbohydrate, 0 g fiber, 13 g total sugar, 12 g added sugar, 1 g protein, 0 mcg vitamin D, 20 mg calcium, 0.6 mg iron, 50 mg potassium. This entry is all 5 servings."
   },
   {
     "name": "Energy Drink - Alani",
@@ -44246,6 +44700,68 @@
     "notes": "Lay's Classic Potato Chips. USDA FoodData Central Branded FDC 2618318 (2025-12-18 release), label values per 100 g/mL scaled to 28 g/mL; about 160 kcal."
   },
   {
+    "name": "Junk Food - Lay's Classic Potato Chips Medium Bag (2.5 oz / 71 g)",
+    "protein": 5.1,
+    "carbs": 38,
+    "fats": 25.3,
+    "micros": {
+      "sodium": 354,
+      "potassium": 886,
+      "calcium": 25,
+      "iron": 1.5,
+      "magnesium": 40.5,
+      "zinc": 0.8,
+      "niacin": 3,
+      "vitaminB6": 0.51,
+      "vitaminA": 0,
+      "vitaminC": 13.7,
+      "vitaminD": 0,
+      "fiber": 2.5
+    },
+    "longevity": {
+      "saturatedFat": 3.8,
+      "transFat": 0,
+      "cholesterol": 0
+    },
+    "carbQuality": {
+      "glycemicIndex": 56,
+      "addedSugar": 0,
+      "netCarbs": 35.5
+    },
+    "notes": "Whole 2.5 oz (71 g) bag. Martin's lists 2.5 servings of the 28 g Lay's Classic panel (160 calories, 10 g fat, 1.5 g saturated fat, 140 mg sodium, 15 g carbohydrate, 1 g fiber, 2 g protein, 350 mg potassium, 10 mg calcium, 0.6 mg iron, vitamin C 6% DV, no added sugar). Scaled to the net weight, about 400 calories. Magnesium, zinc, niacin, and vitamin B6 are USDA branded FDC 2618318 from the 1 oz entry, scaled the same way."
+  },
+  {
+    "name": "Junk Food - Lay's Classic Potato Chips Large Bag (8 oz / 227 g)",
+    "protein": 16.2,
+    "carbs": 121.5,
+    "fats": 81,
+    "micros": {
+      "sodium": 1134,
+      "potassium": 2835,
+      "calcium": 81,
+      "iron": 4.9,
+      "magnesium": 129.6,
+      "zinc": 2.4,
+      "niacin": 9.7,
+      "vitaminB6": 1.62,
+      "vitaminA": 0,
+      "vitaminC": 43.7,
+      "vitaminD": 0,
+      "fiber": 8.1
+    },
+    "longevity": {
+      "saturatedFat": 12.1,
+      "transFat": 0,
+      "cholesterol": 0
+    },
+    "carbQuality": {
+      "glycemicIndex": 56,
+      "addedSugar": 0,
+      "netCarbs": 113.4
+    },
+    "notes": "Whole 8 oz (227 g) grocery bag. Current Lay's Classic panel per 28 g: 160 calories, 10 g fat, 1.5 g saturated fat, 140 mg sodium, 15 g carbohydrate, 1 g fiber, 2 g protein, 350 mg potassium, 10 mg calcium, 0.6 mg iron, vitamin C 6% DV, no added sugar. Scaled to the net weight. Magnesium, zinc, niacin, and vitamin B6 are USDA branded FDC 2618318 from the 1 oz entry, scaled the same way. That 1 oz entry lists 170 mg sodium; these bags use the current 140 mg label. Glycemic index 56 is the potato-chip value already used for Tim's chips."
+  },
+  {
     "name": "Blue Diamond Almonds, Lightly Salted 1 oz (28 g, about 28 nuts)",
     "protein": 6,
     "carbs": 5,
@@ -44352,6 +44868,31 @@
       "netCarbs": 0.14
     },
     "notes": "Diet Pepsi, 12 fl oz aluminum can. Values in FDC are per 100 mL. USDA FoodData Central Branded FDC 763988 (2025-12-18 release), label values per 100 g/mL scaled to 355 g/mL; about 0 kcal."
+  },
+  {
+    "name": "Drink - Simply Orange Pulp Free 1 bottle (11.5 fl oz)",
+    "protein": 2,
+    "carbs": 37,
+    "fats": 0,
+    "micros": {
+      "fiber": 0,
+      "sodium": 0,
+      "potassium": 640,
+      "calcium": 28,
+      "vitaminC": 72
+    },
+    "longevity": {
+      "saturatedFat": 0,
+      "transFat": 0,
+      "cholesterol": 0
+    },
+    "carbQuality": {
+      "glycemicIndex": 50,
+      "addedSugar": 0,
+      "refinedCarbs": 0,
+      "netCarbs": 37
+    },
+    "notes": "Simply Orange pulp-free, one 11.5 fl oz bottle, the bottle marked 160 calories. US label: 0 g fat, 0 mg sodium, 37 g carbohydrate, 33 g sugar, 0 g added sugar, 2 g protein, 28 mg calcium, 640 mg potassium, vitamin C 80% DV (72 mg). Glycemic index 50 is the orange-juice value already used for Orange juice (fortified) 1 cup."
   },
   {
     "name": "Minute Maid Apple Juice 12 fl oz bottle (355 mL)",

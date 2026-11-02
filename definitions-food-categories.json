@@ -146,7 +146,8 @@
       "patterns": [
         "^Energy Drink",
         "^Health Drink",
-        "^Jamba Juice"
+        "^Jamba Juice",
+        "^Drink - Simply"
       ]
     },
     {
@@ -157,7 +158,8 @@
         "^Quest Protein Bar",
         "^Premier Protein",
         "^Orgain\\b",
-        "^Isopure\\b"
+        "^Isopure\\b",
+        "^Ensure\\b"
       ]
     },
     {
