@@ -2872,10 +2872,11 @@
           <div class="settings-modal__tdee-row">
             <label class="settings-modal__field" for="settings-tdee">
               <span class="settings-modal__field-label">Calories per day</span>
-              <input type="number" id="settings-tdee" class="settings-modal__input" min="0" step="1" inputmode="numeric" placeholder="2500">
+              <input type="number" id="settings-tdee" class="settings-modal__input" min="0" step="1" inputmode="numeric" placeholder="2500" aria-describedby="settings-tdee-note">
             </label>
             <button type="button" id="settings-tdee-calc-open" class="settings-modal__calc-link">Calculate TDEE…</button>
           </div>
+          <p id="settings-tdee-note" class="settings-modal__field-note">This calories per day does not change when you readjust body type or goal (those settings affect only the macro split). Budget your own calorie deficit or surplus based on your goal, and you can see it at Week total.</p>
           <div class="settings-modal__tdee-row settings-modal__macro-split-row">
             <label class="settings-modal__field" for="settings-macro-body-type">
               <span class="settings-modal__field-label">Body type</span>
