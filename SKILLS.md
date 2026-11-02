@@ -18,8 +18,7 @@ Scan each path that exists under the repo root. Order matters: prefer project sk
 
 | Path | Typical format |
 |------|----------------|
-| `.agents/skills/` | `*.json` skill files and/or `*/SKILL.md` folders |
-| `.cursor/skills/` | `*/SKILL.md` folders |
+| `.agents/skills/` | `*.json` skill files and `*/SKILL.md` folders |
 | `.claude/skills/` | `*/SKILL.md` folders |
 | `.codex/skills/` | `*/SKILL.md` folders (if present) |
 | `skills/` | Legacy / alternate project skills (if present) |
@@ -30,7 +29,7 @@ For each entry found:
 
 1. **JSON skill** (e.g. `.agents/skills/my-workflow.json`):
    - Use `name` and `description` (fallback: `purpose` if description missing).
-2. **Folder skill** (e.g. `.cursor/skills/foo/SKILL.md`):
+2. **Folder skill** (e.g. `.agents/skills/foo/SKILL.md`):
    - Read YAML frontmatter `name` and `description` from `SKILL.md`.
 3. Skip junk: `.DS_Store`, README-only stubs, or files that only say skills were moved elsewhere.
 

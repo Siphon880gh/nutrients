@@ -29,4 +29,4 @@ Authoring guides (human + agent): `GUIDE_ADDING_FOOD.md`, `GUIDE_IMPROVING_FOOD.
 
 Follow [SKILLS.md](./SKILLS.md) whenever the user asks what skills are available, wants to run a project skill, or the task matches a skill description.
 
-Project skills live under `.agents/skills/` (JSON workflows). Also scan other project skill roots listed in SKILLS.md when present.
+Project skills live under `.agents/skills/` (JSON workflows and `*/SKILL.md` folders). Also scan other project skill roots listed in SKILLS.md when present.
