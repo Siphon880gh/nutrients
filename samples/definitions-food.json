@@ -46711,5 +46711,59 @@
       "netCarbs": 26.5
     },
     "notes": "Organico Wild-Caught Paleo Tuna Salad with an added scrambled-egg protein. The menu lists paleo-style wild-caught tuna salad on chopped kale and romaine, with caramelized brussels sprouts, ginger beets, Mediterranean garbanzos, and organic ranch dressing on the side. Organico's Nutrition Guide (organico.co/ingredients.html) lists the salad at 12.75 oz: 485 kcal, 35.45 g protein, 34.05 g carbohydrate, 25.85 g fat, 8.25 g fiber, 9.5 g sugar, 58 mg cholesterol, 1126 mg sodium. The ranch looks included in that total: the tuna, greens, and toppings alone come to only about 6 g fat, and the ranch's 20 g fat and 10 mg cholesterol make up the difference. The guide's Eggs (Fried or Scrambled) (2), 3 oz, add 143 kcal, 12.6 g protein, 0.7 g carbohydrate, 9.5 g fat, 372 mg cholesterol, 142 mg sodium, 0.4 g sugar. Total about 15.75 oz: 628 kcal per the guide's calorie column, or about 650 kcal from macros (48.1 g protein, 34.8 g carbohydrate, 35.4 g fat). Organico notes its values are estimates. Saturated fat and the other micronutrients are omitted."
+  },
+  {
+    "name": "Poke Salad Bar - Large Bowl Salmon x2, Spicy Tuna, Scallop (half rice/half salad, chipotle mayo + sweet hot sauce) 1 bowl (about 26 oz)",
+    "protein": 60,
+    "carbs": 88.3,
+    "fats": 60.3,
+    "micros": {
+      "sodium": 1960,
+      "fiber": 7.5
+    },
+    "longevity": {
+      "cholesterol": 167
+    },
+    "carbQuality": {
+      "addedSugar": 14,
+      "netCarbs": 80.8
+    },
+    "notes": "Poke Salad Bar (Pasadena) publishes no nutrition, so this is an estimate. The large bowl is 4 protein scoops; each scoop is assumed to be about 2 oz (57 g) of fish. Components: 1 cup cooked white rice (4.3 g protein, 45 g carbohydrate, 0.4 g fat) and about 1 1/2 cups salad greens. Proteins: salmon x2 (2 oz each: 11.6 g protein, 7.6 g fat), spicy tuna (about 1.5 oz tuna and 1 tbsp spicy mayo: 10.4 g protein, 10.2 g fat), and scallop (2 oz raw: 6.8 g protein, 1.8 g carbohydrate). Mix-ins: cucumber 1/4 cup, edamame 1/4 cup (4.2 g protein, 3.3 g carbohydrate, 1.9 g fat), and green onions. Toppings: crab salad 2 oz (imitation crab with mayo: 4.3 g protein, 8.7 g carbohydrate, 5.5 g fat), seaweed salad 1.5 oz, avocado 1/4 fruit (7.3 g fat, 3.4 g fiber), and masago 1 tbsp (3.4 g protein). Sauces: the menu has no spicy mayo or eel sauce, so this uses chipotle mayo 1.5 tbsp (14.6 g fat) and sweet hot sauce 1.5 tbsp (13 g carbohydrate, standing in for eel sauce). Crunch: crispy onions or tempura flakes, 2 tbsp (2.8 g fat). Masago and avocado are assumed available; they are not on the menu listings found. Total about 1,140 kcal (60 g protein, 88.3 g carbohydrate, 60.3 g fat); about 40% of the fat is from the two mayo-based items (chipotle mayo and spicy tuna). Added sugar is from the sweet hot sauce, crab salad, and seaweed salad. Sodium is approximate. Menu sources: Seamless/MenuPages list the large bowl as 4 proteins chosen from ahi tuna, spicy tuna, salmon, scallops, albacore, octopus, or shrimp. Pasadena Weekendr lists the sauces as yuzu ponzu, wasabi mayo, chipotle mayo, sesame shoyu, sweet chili, and sweet hot sauce."
+  },
+  {
+    "name": "Poke Salad Bar - Large Bowl Ahi Tuna x2, Salmon, Albacore (half rice/half salad, yuzu ponzu + sesame shoyu) 1 bowl (about 23 oz)",
+    "protein": 66,
+    "carbs": 68.3,
+    "fats": 18.6,
+    "micros": {
+      "sodium": 1850,
+      "fiber": 5.3
+    },
+    "longevity": {
+      "cholesterol": 97
+    },
+    "carbQuality": {
+      "addedSugar": 5,
+      "netCarbs": 63
+    },
+    "notes": "Poke Salad Bar (Pasadena) publishes no nutrition, so this is an estimate. The large bowl is 4 protein scoops; each scoop is assumed to be about 2 oz (57 g) of fish. Components: 1 cup cooked white rice (4.3 g protein, 45 g carbohydrate, 0.4 g fat) and about 1 1/2 cups salad greens. Proteins: ahi tuna x2 (2 oz each: 13.9 g protein, 0.3 g fat), salmon (2 oz: 11.6 g protein, 7.6 g fat), and albacore (2 oz: 13.5 g protein, 1.5 g fat). Toppings: cucumber 1/4 cup, seaweed salad 1.5 oz (0.6 g protein, 4.6 g carbohydrate, 1 g fat), edamame 1/4 cup (4.2 g protein, 3.3 g carbohydrate, 1.9 g fat), green onions, and mango or pineapple 1/4 cup (about 6 g carbohydrate). Sauces: yuzu ponzu 1.5 tbsp (2 g carbohydrate, about 550 mg sodium) and sesame shoyu 1.5 tbsp (soy with sesame oil: 2.5 g carbohydrate, 3.5 g fat, about 800 mg sodium). Crunch: furikake and sesame seeds, 1 tsp each. Total about 705 kcal (66 g protein, 68.3 g carbohydrate, 18.6 g fat). This is the leanest of the three because it has no mayo-based sauce, crab salad, or avocado. Most of the sodium is from the two soy-based sauces. Menu sources: Seamless/MenuPages list the large bowl as 4 proteins chosen from ahi tuna, spicy tuna, salmon, scallops, albacore, octopus, or shrimp. Pasadena Weekendr lists the sauces as yuzu ponzu, wasabi mayo, chipotle mayo, sesame shoyu, sweet chili, and sweet hot sauce."
+  },
+  {
+    "name": "Poke Salad Bar - Large Bowl Salmon, Spicy Tuna, Ahi Tuna, Shrimp (full white rice, sweet chili + chipotle mayo) 1 bowl (about 31 oz)",
+    "protein": 64.8,
+    "carbs": 136,
+    "fats": 43.6,
+    "micros": {
+      "sodium": 1720,
+      "fiber": 3.6
+    },
+    "longevity": {
+      "cholesterol": 204
+    },
+    "carbQuality": {
+      "addedSugar": 16,
+      "netCarbs": 132.4
+    },
+    "notes": "Poke Salad Bar (Pasadena) publishes no nutrition, so this is an estimate. The large bowl is 4 protein scoops; each scoop is assumed to be about 2 oz (57 g) of fish. Components: a full white rice base, assumed to be 2 cups cooked (8.6 g protein, 90 g carbohydrate, 0.8 g fat). Proteins: salmon (2 oz: 11.6 g protein, 7.6 g fat), spicy tuna (about 1.5 oz tuna and 1 tbsp spicy mayo: 10.4 g protein, 10.2 g fat), ahi tuna (2 oz: 13.9 g protein), and shrimp (2 oz cooked: 13.6 g protein, 108 mg cholesterol). Toppings: crab salad 2 oz (imitation crab with mayo: 4.3 g protein, 8.7 g carbohydrate, 5.5 g fat), pineapple and mango 1/4 cup each (about 11.6 g carbohydrate), cucumber 1/4 cup, green onions, and seaweed salad 1.5 oz. Sauces: sweet chili 1.5 tbsp (14 g carbohydrate) and chipotle mayo 1.5 tbsp (14.6 g fat). Crunch: crispy onions 2 tbsp (2.8 g fat) and furikake 1 tsp. Total about 1,200 kcal (64.8 g protein, 136 g carbohydrate, 43.6 g fat). The rice alone is about 90 g of carbohydrate; if the full base is closer to 1 1/2 cups, subtract about 22 g carbohydrate (about 95 kcal). Added sugar is from the sweet chili, crab salad, and seaweed salad. Sodium is approximate. Menu sources: Seamless/MenuPages list the large bowl as 4 proteins chosen from ahi tuna, spicy tuna, salmon, scallops, albacore, octopus, or shrimp. Pasadena Weekendr lists the sauces as yuzu ponzu, wasabi mayo, chipotle mayo, sesame shoyu, sweet chili, and sweet hot sauce."
   }
 ]
