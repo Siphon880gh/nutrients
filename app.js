@@ -219,6 +219,7 @@
   var microGapsAiCopyBtn = document.getElementById("micro-gaps-ai-copy");
   var microGapsOpenChatgptEl = document.getElementById("micro-gaps-open-chatgpt");
   var microGapsOpenClaudeEl = document.getElementById("micro-gaps-open-claude");
+  var microGapsAiHintEl = document.getElementById("micro-gaps-ai-hint");
   var microGapsModalDoneBtn = document.getElementById("micro-gaps-modal-done");
   var healthTimelineAiOpenBtn = document.getElementById("health-timeline-ai-open");
   var healthTimelineModalEl = document.getElementById("health-timeline-modal");
@@ -226,6 +227,7 @@
   var healthTimelineAiCopyBtn = document.getElementById("health-timeline-ai-copy");
   var healthTimelineOpenChatgptEl = document.getElementById("health-timeline-open-chatgpt");
   var healthTimelineOpenClaudeEl = document.getElementById("health-timeline-open-claude");
+  var healthTimelineAiHintEl = document.getElementById("health-timeline-ai-hint");
   var healthTimelineModalDoneBtn = document.getElementById("health-timeline-modal-done");
   var dayFoodsAiModalEl = document.getElementById("day-foods-ai-modal");
   var dayFoodsAiModalSubtitleEl = document.getElementById(
@@ -237,6 +239,7 @@
     "day-foods-ai-open-chatgpt"
   );
   var dayFoodsAiOpenClaudeEl = document.getElementById("day-foods-ai-open-claude");
+  var dayFoodsAiHintEl = document.getElementById("day-foods-ai-hint");
   var dayFoodsAiModalDoneBtn = document.getElementById("day-foods-ai-modal-done");
   var activeDayFoodsAiDayId = null;
   var DAY_FOODS_AI_LOOKBACK_WEEKS = 3;
@@ -489,8 +492,49 @@
   var importAiCopyBtn = document.getElementById("import-ai-copy");
   var importOpenChatgptEl = document.getElementById("import-open-chatgpt");
   var importOpenClaudeEl = document.getElementById("import-open-claude");
+  var importAiHintEl = document.getElementById("import-ai-hint");
   var CHATGPT_URL = "https://chatgpt.com/";
   var CLAUDE_URL = "https://claude.ai/new";
+
+  // Progressive disclosure: ChatGPT / Claude stay greyed out until Copy prompt,
+  // and grey out again when the preview no longer matches what was copied.
+  function createPromptHandoff(getText, serviceEls, hintEl, copyBtn) {
+    var copied = null;
+    function sync() {
+      var text = getText() || "";
+      var ready = copied !== null && copied === text;
+      var why = copied === null ? "Copy the prompt first" : "Prompt changed, copy again";
+      (serviceEls || []).forEach(function (a) {
+        if (!a) return;
+        a.classList.toggle("is-disabled", !ready);
+        if (ready) {
+          a.removeAttribute("aria-disabled");
+          a.removeAttribute("title");
+        } else {
+          a.setAttribute("aria-disabled", "true");
+          a.title = why;
+        }
+      });
+      if (hintEl) {
+        hintEl.textContent = ready ? "" : why;
+        hintEl.hidden = ready;
+        hintEl.classList.toggle("is-stale", !ready && copied !== null);
+      }
+      return ready;
+    }
+    function markCopied() {
+      copied = getText() || "";
+      sync();
+    }
+    function openIfReady(url) {
+      if (!sync()) {
+        if (copyBtn) copyBtn.focus();
+        return;
+      }
+      window.open(url, "_blank", "noopener,noreferrer");
+    }
+    return { sync: sync, markCopied: markCopied, openIfReady: openIfReady };
+  }
   var importJsonWrapEl = document.getElementById("import-json-wrap");
   var importJsonLabelEl = document.getElementById("import-json-label");
   var importAllModalEl = document.getElementById("import-all-modal");
@@ -4427,6 +4471,7 @@
     importAiPreviewEl.textContent = buildAiPromptFromPortion(
       getImportPortionValue()
     );
+    if (importHandoff) importHandoff.sync();
   }
 
   function syncImportAiInputs() {
@@ -4442,18 +4487,28 @@
 
   function copyAiPromptToClipboard(done) {
     var text = buildAiPromptFromPortion(getImportPortionValue());
+    function ok() {
+      if (importHandoff) importHandoff.markCopied();
+      if (done) done();
+    }
     if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(text).then(done).catch(done);
-    } else if (done) {
-      done();
+      navigator.clipboard.writeText(text).then(ok).catch(ok);
+    } else {
+      ok();
     }
   }
 
   function openAiService(url) {
-    copyAiPromptToClipboard(function () {
-      window.open(url, "_blank", "noopener,noreferrer");
-    });
+    if (importHandoff) importHandoff.openIfReady(url);
+    else window.open(url, "_blank", "noopener,noreferrer");
   }
+
+  var importHandoff = createPromptHandoff(
+    function () { return buildAiPromptFromPortion(getImportPortionValue()); },
+    [importOpenChatgptEl, importOpenClaudeEl],
+    importAiHintEl,
+    importAiCopyBtn
+  );
 
   var MICRO_GAPS_PREF_LABELS = {
     none: "No preferences",
@@ -4713,22 +4768,33 @@
   function renderMicroGapsAiPreview() {
     if (!microGapsAiPreviewEl) return;
     microGapsAiPreviewEl.textContent = buildMicroGapsAiPrompt();
+    if (microGapsHandoff) microGapsHandoff.sync();
   }
 
   function copyMicroGapsPromptToClipboard(done) {
     var text = buildMicroGapsAiPrompt();
+    function ok() {
+      if (microGapsHandoff) microGapsHandoff.markCopied();
+      if (done) done();
+    }
     if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(text).then(done).catch(done);
-    } else if (done) {
-      done();
+      navigator.clipboard.writeText(text).then(ok).catch(ok);
+    } else {
+      ok();
     }
   }
 
   function openMicroGapsAiService(url) {
-    copyMicroGapsPromptToClipboard(function () {
-      window.open(url, "_blank", "noopener,noreferrer");
-    });
+    if (microGapsHandoff) microGapsHandoff.openIfReady(url);
+    else window.open(url, "_blank", "noopener,noreferrer");
   }
+
+  var microGapsHandoff = createPromptHandoff(
+    function () { return buildMicroGapsAiPrompt(); },
+    [microGapsOpenChatgptEl, microGapsOpenClaudeEl],
+    microGapsAiHintEl,
+    microGapsAiCopyBtn
+  );
 
   function closeMicroGapsModal() {
     if (!microGapsModalEl) return;
@@ -4874,22 +4940,33 @@
   function renderHealthTimelineAiPreview() {
     if (!healthTimelineAiPreviewEl) return;
     healthTimelineAiPreviewEl.textContent = buildHealthTimelineAiPrompt();
+    if (healthTimelineHandoff) healthTimelineHandoff.sync();
   }
 
   function copyHealthTimelinePromptToClipboard(done) {
     var text = buildHealthTimelineAiPrompt();
+    function ok() {
+      if (healthTimelineHandoff) healthTimelineHandoff.markCopied();
+      if (done) done();
+    }
     if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(text).then(done).catch(done);
-    } else if (done) {
-      done();
+      navigator.clipboard.writeText(text).then(ok).catch(ok);
+    } else {
+      ok();
     }
   }
 
   function openHealthTimelineAiService(url) {
-    copyHealthTimelinePromptToClipboard(function () {
-      window.open(url, "_blank", "noopener,noreferrer");
-    });
+    if (healthTimelineHandoff) healthTimelineHandoff.openIfReady(url);
+    else window.open(url, "_blank", "noopener,noreferrer");
   }
+
+  var healthTimelineHandoff = createPromptHandoff(
+    function () { return buildHealthTimelineAiPrompt(); },
+    [healthTimelineOpenChatgptEl, healthTimelineOpenClaudeEl],
+    healthTimelineAiHintEl,
+    healthTimelineAiCopyBtn
+  );
 
   function closeHealthTimelineModal() {
     if (!healthTimelineModalEl) return;
@@ -5118,24 +5195,37 @@
     dayFoodsAiPreviewEl.textContent = activeDayFoodsAiDayId
       ? buildDayFoodsAiPrompt(activeDayFoodsAiDayId)
       : "";
+    if (dayFoodsHandoff) dayFoodsHandoff.sync();
   }
 
   function copyDayFoodsAiPromptToClipboard(done) {
     var text = activeDayFoodsAiDayId
       ? buildDayFoodsAiPrompt(activeDayFoodsAiDayId)
       : "";
+    function ok() {
+      if (dayFoodsHandoff) dayFoodsHandoff.markCopied();
+      if (done) done();
+    }
     if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(text).then(done).catch(done);
-    } else if (done) {
-      done();
+      navigator.clipboard.writeText(text).then(ok).catch(ok);
+    } else {
+      ok();
     }
   }
 
   function openDayFoodsAiService(url) {
-    copyDayFoodsAiPromptToClipboard(function () {
-      window.open(url, "_blank", "noopener,noreferrer");
-    });
+    if (dayFoodsHandoff) dayFoodsHandoff.openIfReady(url);
+    else window.open(url, "_blank", "noopener,noreferrer");
   }
+
+  var dayFoodsHandoff = createPromptHandoff(
+    function () {
+      return activeDayFoodsAiDayId ? buildDayFoodsAiPrompt(activeDayFoodsAiDayId) : "";
+    },
+    [dayFoodsAiOpenChatgptEl, dayFoodsAiOpenClaudeEl],
+    dayFoodsAiHintEl,
+    dayFoodsAiCopyBtn
+  );
 
   function closeDayFoodsAiModal() {
     if (!dayFoodsAiModalEl) return;

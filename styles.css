@@ -14549,6 +14549,31 @@ button.longevity-form__label-link:focus-visible {
   color: #cc785c;
 }
 
+.import-ai-panel__service.is-disabled {
+  opacity: 0.4;
+  filter: grayscale(1);
+  cursor: not-allowed;
+}
+
+.import-ai-panel__service.is-disabled:hover {
+  color: #5c5c5c;
+  text-decoration: none;
+}
+
+.import-ai-panel__hint {
+  flex-basis: 100%;
+  font-size: 0.72rem;
+  color: #8a8a86;
+}
+
+.import-ai-panel__hint.is-stale {
+  color: #8a5a00;
+}
+
+.import-ai-panel__hint[hidden] {
+  display: none;
+}
+
 .import-ai-panel__service:hover {
   color: #333;
   text-decoration: underline;
