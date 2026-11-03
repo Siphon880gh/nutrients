@@ -970,8 +970,8 @@
         <p class="dashboard__longevity-hint">Weekly average per day (Mon–Sun; current week uses Mon–today). Micronutrients repeat from your micro entries so you can reason in one place. Green bars = good for “aim” nutrients; red bars on limit nutrients mean you are high. Click <em>explain</em> on a heading or nutrient for detail.</p>
         <div class="dashboard__longevity-analysis-actions">
           <button type="button" id="dashboard-longevity-analysis" class="dashboard__analysis-btn dashboard__longevity-analysis-btn" data-app-shortcut="A" aria-keyshortcuts="A" aria-haspopup="dialog" aria-controls="longevity-analysis-modal">Run Analysis<span class="app-nav__shortcut" aria-hidden="true">A</span></button>
-          <button type="button" id="longevity-micro-gaps-ai-open" class="dashboard__micro-hint-action-btn dashboard__micro-hint-ai" aria-label="Ask AI to help fill in the gaps"><span class="dashboard__micro-hint-action-icon" aria-hidden="true">✨</span><span>Ask AI to help fill gaps</span></button>
-          <button type="button" id="longevity-health-timeline-ai-open" class="dashboard__micro-hint-action-btn dashboard__micro-hint-ai" aria-label="Ask AI for a health prognosis if you keep eating like this weekly"><span class="dashboard__micro-hint-action-icon" aria-hidden="true">✨</span><span>Ask AI: health prognosis</span></button>
+          <button type="button" id="longevity-pattern-ai-open" class="dashboard__micro-hint-action-btn dashboard__micro-hint-ai" aria-label="Ask AI how to shift your longevity pattern toward healthy years"><span class="dashboard__micro-hint-action-icon" aria-hidden="true">✨</span><span>Ask AI: improve the pattern</span></button>
+          <button type="button" id="longevity-prevention-ai-open" class="dashboard__micro-hint-action-btn dashboard__micro-hint-ai" aria-label="Ask AI for a prevention outlook if you keep this longevity pattern"><span class="dashboard__micro-hint-action-icon" aria-hidden="true">✨</span><span>Ask AI: prevention outlook</span></button>
         </div>
         <aside class="dashboard__longevity-disclaimer dashboard__panel-disclaimer" role="note">
           <button type="button" class="dashboard__panel-disclaimer-btn" data-action="dismiss-panel-disclaimer">
@@ -1880,10 +1880,10 @@
     <div class="modal__panel modal__panel--wide" role="dialog" aria-modal="true" aria-labelledby="health-timeline-modal-title">
       <header class="modal__header">
         <h3 id="health-timeline-modal-title" class="modal__title">Health prognosis from your nutrients</h3>
-        <p class="modal__subtitle">What is the likely course if you keep eating like this?</p>
+        <p id="health-timeline-modal-subtitle" class="modal__subtitle">What is the likely course if you keep eating like this?</p>
       </header>
       <div class="import-modal__body">
-        <p class="import-modal__hint">Builds a prompt from your current week averages and % DV (micro + longevity). Copy it, then use ChatGPT or Claude for a prognosis of likely health effects by body system.</p>
+        <p id="health-timeline-modal-hint" class="import-modal__hint">Builds a prompt from your current week averages and % DV (micro + longevity). Copy it, then use ChatGPT or Claude for a prognosis of likely health effects by body system.</p>
         <p class="import-modal__hint"><strong>Not medical advice.</strong> This prognosis does not diagnose, treat, or replace care from your doctor or other qualified health professional.</p>
         <div class="import-ai-panel micro-gaps-modal__panel">
           <details class="why-not-auto">
@@ -1979,8 +1979,8 @@
         <h3 id="longevity-analysis-modal-title" class="modal__title">Longevity analysis</h3>
         <p id="longevity-analysis-subtitle" class="modal__subtitle"></p>
         <div id="analysis-ai-actions" class="longevity-analysis-modal__ai" hidden>
-          <button type="button" id="analysis-micro-gaps-ai-open" class="dashboard__micro-hint-action-btn dashboard__micro-hint-ai" aria-label="Ask AI to help fill in the gaps"><span class="dashboard__micro-hint-action-icon" aria-hidden="true">✨</span><span>Ask AI to help fill gaps</span></button>
-          <button type="button" id="analysis-health-timeline-ai-open" class="dashboard__micro-hint-action-btn dashboard__micro-hint-ai" aria-label="Ask AI for a health prognosis if you keep eating like this weekly"><span class="dashboard__micro-hint-action-icon" aria-hidden="true">✨</span><span>Ask AI: health prognosis</span></button>
+          <button type="button" id="analysis-micro-gaps-ai-open" class="dashboard__micro-hint-action-btn dashboard__micro-hint-ai" aria-label="Ask AI to help fill in the gaps"><span class="dashboard__micro-hint-action-icon" aria-hidden="true">✨</span><span data-ai-action-label>Ask AI to help fill gaps</span></button>
+          <button type="button" id="analysis-health-timeline-ai-open" class="dashboard__micro-hint-action-btn dashboard__micro-hint-ai" aria-label="Ask AI for a health prognosis if you keep eating like this weekly"><span class="dashboard__micro-hint-action-icon" aria-hidden="true">✨</span><span data-ai-action-label>Ask AI: health prognosis</span></button>
         </div>
       </header>
       <div id="longevity-analysis-report" class="import-modal__body longevity-analysis-modal__body"></div>
@@ -2004,12 +2004,12 @@
     <div class="modal__panel modal__panel--wide" role="dialog" aria-modal="true" aria-labelledby="micro-gaps-modal-title">
       <header class="modal__header">
         <h3 id="micro-gaps-modal-title" class="modal__title">Fill micronutrient gaps</h3>
-        <p class="modal__subtitle">Suggestions for your week (Mon–Sun)</p>
+        <p id="micro-gaps-modal-subtitle" class="modal__subtitle">Suggestions for your week (Mon–Sun)</p>
       </header>
       <div class="import-modal__body">
-        <p class="import-modal__hint">Builds a prompt from your current week averages and % DV. Copy it, then use ChatGPT or Claude for food ideas you can add to your day notes.</p>
+        <p id="micro-gaps-modal-hint" class="import-modal__hint">Builds a prompt from your current week averages and % DV. Copy it, then use ChatGPT or Claude for food ideas you can add to your day notes.</p>
         <fieldset class="import-all-mode micro-gaps-modal__mode">
-          <legend class="import-all-mode__legend">How to fill gaps</legend>
+          <legend id="micro-gaps-mode-legend" class="import-all-mode__legend">How to fill gaps</legend>
           <label class="import-all-mode__option">
             <input type="radio" name="micro-gaps-mode" value="any" checked>
             <span class="import-all-mode__text"><strong>Eat any food</strong> — suggest foods that fit dietary preferences.</span>

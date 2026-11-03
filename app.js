@@ -229,6 +229,16 @@
   var healthTimelineOpenClaudeEl = document.getElementById("health-timeline-open-claude");
   var healthTimelineAiHintEl = document.getElementById("health-timeline-ai-hint");
   var healthTimelineModalDoneBtn = document.getElementById("health-timeline-modal-done");
+  var microGapsModalTitleEl = document.getElementById("micro-gaps-modal-title");
+  var microGapsModalSubtitleEl = document.getElementById("micro-gaps-modal-subtitle");
+  var microGapsModalHintEl = document.getElementById("micro-gaps-modal-hint");
+  var microGapsModeLegendEl = document.getElementById("micro-gaps-mode-legend");
+  var healthTimelineModalTitleEl = document.getElementById("health-timeline-modal-title");
+  var healthTimelineModalSubtitleEl = document.getElementById(
+    "health-timeline-modal-subtitle"
+  );
+  var healthTimelineModalHintEl = document.getElementById("health-timeline-modal-hint");
+  var aiPromptScope = "micro";
   var dayFoodsAiModalEl = document.getElementById("day-foods-ai-modal");
   var dayFoodsAiModalSubtitleEl = document.getElementById(
     "day-foods-ai-modal-subtitle"
@@ -4777,14 +4787,44 @@
     return parts.join("\n");
   }
 
+  function gapsPromptText() {
+    return aiPromptScope === "longevity"
+      ? buildLongevityGapsAiPrompt()
+      : buildMicroGapsAiPrompt();
+  }
+
+  function syncGapsPromptChrome() {
+    var longevity = aiPromptScope === "longevity";
+    if (microGapsModalTitleEl) {
+      microGapsModalTitleEl.textContent = longevity
+        ? "Shift the longevity pattern"
+        : "Fill micronutrient gaps";
+    }
+    if (microGapsModalSubtitleEl) {
+      microGapsModalSubtitleEl.textContent = longevity
+        ? "Food changes for healthy years (Mon–Sun)"
+        : "Suggestions for your week (Mon–Sun)";
+    }
+    if (microGapsModalHintEl) {
+      microGapsModalHintEl.textContent = longevity
+        ? "Builds a prompt from your longevity and wellness pattern — fats, omegas, carb quality, and protective compounds — rather than a micronutrient checklist. Copy it, then use ChatGPT or Claude for prevention-minded food ideas you can add to your day notes."
+        : "Builds a prompt from your current week averages and % DV. Copy it, then use ChatGPT or Claude for food ideas you can add to your day notes.";
+    }
+    if (microGapsModeLegendEl) {
+      microGapsModeLegendEl.textContent = longevity
+        ? "How to shift the pattern"
+        : "How to fill gaps";
+    }
+  }
+
   function renderMicroGapsAiPreview() {
     if (!microGapsAiPreviewEl) return;
-    microGapsAiPreviewEl.textContent = buildMicroGapsAiPrompt();
+    microGapsAiPreviewEl.textContent = gapsPromptText();
     if (microGapsHandoff) microGapsHandoff.sync();
   }
 
   function copyMicroGapsPromptToClipboard(done) {
-    var text = buildMicroGapsAiPrompt();
+    var text = gapsPromptText();
     function ok() {
       if (microGapsHandoff) microGapsHandoff.markCopied();
       if (done) done();
@@ -4802,7 +4842,7 @@
   }
 
   var microGapsHandoff = createPromptHandoff(
-    function () { return buildMicroGapsAiPrompt(); },
+    function () { return gapsPromptText(); },
     [microGapsOpenChatgptEl, microGapsOpenClaudeEl],
     microGapsAiHintEl,
     microGapsAiCopyBtn
@@ -4880,6 +4920,282 @@
     return { lines: lines, concerns: concerns };
   }
 
+  function buildLongevityPatternSnapshot() {
+    var weekLongevity = weekLongevityTotals();
+    var weekMicro = weekMicroTotals();
+    var derived = computeLongevityDerived(weekLongevity, weekMicro);
+    var lines = [];
+    var patternLines = [];
+    var aimGaps = [];
+    var limitConcerns = [];
+
+    function addPattern(label, amount, status) {
+      patternLines.push(label);
+      patternLines.push(amount);
+      patternLines.push(status);
+    }
+
+    LONGEVITY_FIELDS.forEach(function (field) {
+      var total = weekLongevity[field.key];
+      if (!total && LONGEVITY_KEYS_ALSO_IN_MICRO[field.key]) {
+        total = weekMicro[field.key];
+      }
+      if (!total) return;
+      var avgDaily = total / weekAverageDayCount();
+      var pct = avgDailyLongevityPct(field.key, total);
+      var pctText = pct == null || isNaN(pct) ? "—" : fmtNum(pct) + "% DV";
+      var role = field.limiting
+        ? "limit — stay under the reference"
+        : "aim — higher supports healthy years";
+      lines.push(field.label + " (" + role + ")");
+      lines.push(fmtNum(avgDaily) + " " + field.unit + "/day avg");
+      lines.push(pctText);
+
+      if (field.limiting && pct != null && !isNaN(pct) && pct >= 100) {
+        limitConcerns.push(field.label + " (" + fmtNum(pct) + "% of limit)");
+      } else if (!field.limiting && pct != null && !isNaN(pct) && pct < 100) {
+        aimGaps.push(field.label + " (" + fmtNum(pct) + "% DV)");
+      }
+    });
+
+    var idealOmega =
+      longevityDvStatus.omega6To3IdealMax ||
+      DEFAULT_LONGEVITY_STATUS.omega6To3IdealMax;
+    if (derived.omega6To3 != null && !isNaN(derived.omega6To3)) {
+      var omegaHigh = derived.omega6To3 > idealOmega;
+      addPattern(
+        "Omega-6 : Omega-3",
+        fmtNum(derived.omega6To3) + " : 1",
+        omegaHigh
+          ? "above ideal ≤ " + idealOmega + " : 1"
+          : "within ideal ≤ " + idealOmega + " : 1"
+      );
+      if (omegaHigh) {
+        limitConcerns.push(
+          "Omega-6 : Omega-3 (" +
+            fmtNum(derived.omega6To3) +
+            ":1, ideal ≤ " +
+            idealOmega +
+            ":1)"
+        );
+      }
+    } else if (derived.omega6G > 0 && derived.effectiveOmega3G <= 0) {
+      addPattern("Omega-6 : Omega-3", "omega-6 without omega-3", "unfavorable balance");
+      limitConcerns.push("Omega-6 without omega-3");
+    }
+
+    if (derived.satToUnsat != null && !isNaN(derived.satToUnsat)) {
+      addPattern(
+        "Saturated : unsaturated fat",
+        fmtNum(derived.satToUnsat) + " : 1",
+        "lower supports heart health"
+      );
+    }
+
+    var transMax =
+      longevityDvStatus.transFatMaxGPerDay ||
+      DEFAULT_LONGEVITY_STATUS.transFatMaxGPerDay;
+    var transHigh = derived.transFatG > transMax;
+    addPattern(
+      "Trans fat",
+      fmtNum(derived.transFatG) + " g/day avg",
+      transHigh ? "above " + transMax + " g/day limit" : "within " + transMax + " g/day limit"
+    );
+    if (transHigh) {
+      var transAlready = limitConcerns.some(function (item) {
+        return item.indexOf("Trans fat") === 0;
+      });
+      if (!transAlready) {
+        limitConcerns.push(
+          "Trans fat (" +
+            fmtNum(derived.transFatG) +
+            " g/day, limit " +
+            transMax +
+            " g/day)"
+        );
+      }
+    }
+
+    addPattern(
+      "EPA + DHA",
+      derived.epaPlusDha > 0
+        ? fmtNum(derived.epaPlusDha) + " g/day avg"
+        : "none logged",
+      "aim — supports heart and brain over the long term"
+    );
+    if (!(derived.epaPlusDha > 0)) {
+      aimGaps.push("EPA + DHA (none logged)");
+    }
+
+    if (
+      derived.pufaG > 0 &&
+      derived.pufaVitaminEProtection != null &&
+      !isNaN(derived.pufaVitaminEProtection)
+    ) {
+      var pufaPct = derived.pufaVitaminEProtection;
+      addPattern(
+        "Vitamin E : PUFA protection",
+        fmtNum(pufaPct) + "% of target",
+        pufaPct < 100 ? "below the protection target" : "at the protection target"
+      );
+      if (pufaPct < 100) {
+        aimGaps.push(
+          "Vitamin E : PUFA protection (" + fmtNum(pufaPct) + "% of target)"
+        );
+      }
+    }
+
+    var kNaMin =
+      longevityDvStatus.potassiumToSodiumIdealMin ||
+      DEFAULT_LONGEVITY_STATUS.potassiumToSodiumIdealMin;
+    if (derived.potassiumToSodium != null && !isNaN(derived.potassiumToSodium)) {
+      var kNaLow = derived.potassiumToSodium < kNaMin;
+      addPattern(
+        "Potassium : sodium",
+        fmtNum(derived.potassiumToSodium) + " : 1",
+        kNaLow ? "below " + kNaMin + " : 1 target" : "at the " + kNaMin + " : 1 target"
+      );
+      if (kNaLow) {
+        aimGaps.push(
+          "Potassium : sodium (" +
+            fmtNum(derived.potassiumToSodium) +
+            ":1, target ≥ " +
+            kNaMin +
+            ":1)"
+        );
+      }
+    }
+
+    var glMax =
+      longevityDvStatus.glycemicLoadMaxPerDay ||
+      DEFAULT_LONGEVITY_STATUS.glycemicLoadMaxPerDay;
+    if (derived.weekGl > 0) {
+      var glHigh = derived.weekGl > glMax;
+      addPattern(
+        "Glycemic load",
+        fmtNum(derived.weekGl) + "/day avg",
+        glHigh ? "above " + glMax + "/day reference" : "within " + glMax + "/day reference"
+      );
+      if (glHigh) {
+        limitConcerns.push(
+          "Glycemic load (" + fmtNum(derived.weekGl) + "/day, reference " + glMax + "/day)"
+        );
+      }
+    }
+    if (derived.giSummary && derived.giSummary.avgGi != null) {
+      var avgGi = derived.giSummary.avgGi;
+      addPattern(
+        "Average glycemic index",
+        fmtNum(avgGi) + " (" + giTierSummaryLabel(avgGi) + ")",
+        derived.giSummary.highShare + "% of carbs from high-GI foods"
+      );
+      if (avgGi > 55) {
+        limitConcerns.push(
+          "Average glycemic index (" + fmtNum(avgGi) + ", low-GI reference ≤ 55)"
+        );
+      }
+    }
+
+    return {
+      lines: lines,
+      patternLines: patternLines,
+      aimGaps: aimGaps,
+      limitConcerns: limitConcerns,
+    };
+  }
+
+  function longevityPatternPromptBody(snapshot) {
+    var parts = [
+      "Longevity and wellness nutrients (average daily). Aim = higher intake supports healthy years. Limit = the reference is a ceiling:",
+      "",
+      snapshot.lines.length
+        ? snapshot.lines.join("\n")
+        : "(No longevity nutrients logged this week.)",
+      "",
+      "Diet patterns behind healthy years (fats, omega balance, carb quality, protective compounds):",
+      "",
+      snapshot.patternLines.join("\n"),
+      "",
+    ];
+    var focus = [];
+    if (snapshot.aimGaps.length) {
+      focus.push(
+        "Protective aims still short of the reference: " + snapshot.aimGaps.join(", ")
+      );
+    }
+    if (snapshot.limitConcerns.length) {
+      focus.push(
+        "Limits and unfavorable patterns to ease: " + snapshot.limitConcerns.join(", ")
+      );
+    }
+    if (focus.length) {
+      parts.push(focus.join(". ") + ".");
+      parts.push("");
+    }
+    return parts;
+  }
+
+  function buildLongevityGapsAiPrompt() {
+    var snapshot = buildLongevityPatternSnapshot();
+    var demo = demographicLabelForPrompt();
+    var mode = getMicroGapsMode();
+    var parts = [
+      "I track meals Mon–Sun in a weekly log. The numbers below are my average daily longevity and wellness pattern for a " +
+        demo +
+        " profile. This is about extending healthy years and lowering long-term risk — heart disease, high blood pressure, stroke, type 2 diabetes, osteoporosis, and cognitive decline — through fats, omega balance, carb quality, and protective compounds. It is a different question from meeting vitamin and mineral daily values.",
+      "",
+    ];
+    parts = parts.concat(longevityPatternPromptBody(snapshot));
+
+    if (mode === "reeat") {
+      var weeks = getMicroGapsWeeksLookback();
+      var foods = microGapsSelectedReeatFoods();
+      parts.push(
+        "How can I shift this weekly pattern toward healthy years? This is the average over the week, not a single day."
+      );
+      parts.push("");
+      parts.push(
+        "I want to shift the pattern by eating more of foods I have available at home. The list below is drawn from foods I logged in the last " +
+          weeks +
+          " week" +
+          (weeks === 1 ? "" : "s") +
+          ". It is not necessarily the food that created this pattern — it is food I have on hand that I can eat more of:"
+      );
+      if (foods.length) {
+        foods.forEach(function (name) {
+          parts.push("- " + name);
+        });
+      } else {
+        parts.push("- (none selected)");
+      }
+      parts.push("");
+      parts.push(
+        "Prefer suggesting more of these foods, or swapping among them. For each suggestion, include how many more times per week, a typical serving size, whether it raises an aim nutrient or eases a limit or ratio, and which long-term outcome it mainly supports (heart, blood pressure, blood sugar, brain, bones, eyes, or gut)."
+      );
+      parts.push(
+        "Only if the pattern cannot be shifted with these foods — because they lack the needed fats, fibers, or compounds, or fixing it would require an unreasonable amount of eating — then suggest other foods besides this list. When you do that, note clearly that I have no choice and must add something outside these foods."
+      );
+    } else {
+      var pref = microGapsPreferenceText();
+      var additional =
+        microGapsAdditionalEl && microGapsAdditionalEl.value.trim();
+      parts.push(
+        "How can I shift this weekly pattern toward healthy years? This is the average over the week, not a single day. Suggest specific foods or swaps I can add to my week. For each suggestion, include how many times per week, a typical serving size, whether it raises an aim nutrient or eases a limit or ratio, and which long-term outcome it mainly supports (heart, blood pressure, blood sugar, brain, bones, eyes, or gut). Keep suggestions practical for my preferences."
+      );
+      parts.push("");
+      parts.push("Dietary preferences: " + pref + ".");
+      if (additional) {
+        parts.push(additional);
+      }
+    }
+
+    parts.push("");
+    parts.push(
+      "Answer as a longevity and prevention question: diet-pattern changes for healthy years. Leave out a vitamin-by-vitamin or mineral deficiency workup. Reply in plain language (no JSON). Use short sections or a simple list."
+    );
+    return parts.join("\n");
+  }
+
   function buildHealthTimelineAiPrompt() {
     var microSnapshot = buildMicroGapsSnapshotLines();
     var longevitySnapshot = buildHealthTimelineLongevityLines();
@@ -4949,14 +5265,69 @@
     return parts.join("\n");
   }
 
+  function buildLongevityPreventionAiPrompt() {
+    var snapshot = buildLongevityPatternSnapshot();
+    var demo = demographicLabelForPrompt();
+    var parts = [
+      "I track meals Mon–Sun in a weekly log. The numbers below are my average daily longevity and wellness pattern for a " +
+        demo +
+        " profile. Assume I keep eating roughly like this every week. Judge healthy years and prevention — how this pattern of fats, omega balance, carb quality, and protective compounds would be expected to change long-term risk. This is a different question from a micronutrient deficiency prognosis.",
+      "",
+    ];
+    parts = parts.concat(longevityPatternPromptBody(snapshot));
+    parts.push(
+      "If I continue this pattern, what is the likely prevention outlook for healthy years?"
+    );
+    parts.push("");
+    parts.push(
+      "Give an outlook from years → decades. Go through the outcomes this pattern is meant to influence: heart disease, blood pressure and stroke, type 2 diabetes and metabolic health, cognitive decline, bone health, eyes, and gut or colon health. For each, say whether my current pattern would be expected to lower risk, leave it about the same, or raise it, and name the fats, ratios, carb quality, or compounds driving that."
+    );
+    parts.push("");
+    parts.push(
+      "End with two final sections:",
+      "1. Already protective — patterns in my data that support healthy years and are worth keeping.",
+      "2. Bottom line — the overall prevention picture if I keep eating like this, and the 2–3 pattern changes that would matter most for healthy years."
+    );
+    parts.push("");
+    parts.push(
+      "Answer as a longevity and prevention question. Leave out a vitamin-by-vitamin or mineral deficiency workup, and leave out a short-term symptom timeline. This does not replace professional medical advice. It does not diagnose, treat, or replace care from a doctor or other qualified health professional. Reply in plain language (no JSON). Use clear sections."
+    );
+    return parts.join("\n");
+  }
+
+  function timelinePromptText() {
+    return aiPromptScope === "longevity"
+      ? buildLongevityPreventionAiPrompt()
+      : buildHealthTimelineAiPrompt();
+  }
+
+  function syncTimelinePromptChrome() {
+    var longevity = aiPromptScope === "longevity";
+    if (healthTimelineModalTitleEl) {
+      healthTimelineModalTitleEl.textContent = longevity
+        ? "Prevention outlook from your pattern"
+        : "Health prognosis from your nutrients";
+    }
+    if (healthTimelineModalSubtitleEl) {
+      healthTimelineModalSubtitleEl.textContent = longevity
+        ? "Healthy years if you keep eating like this"
+        : "What is the likely course if you keep eating like this?";
+    }
+    if (healthTimelineModalHintEl) {
+      healthTimelineModalHintEl.textContent = longevity
+        ? "Builds a prompt from your longevity and wellness pattern only. Copy it, then use ChatGPT or Claude for a prevention outlook across years and decades."
+        : "Builds a prompt from your current week averages and % DV (micro + longevity). Copy it, then use ChatGPT or Claude for a prognosis of likely health effects by body system.";
+    }
+  }
+
   function renderHealthTimelineAiPreview() {
     if (!healthTimelineAiPreviewEl) return;
-    healthTimelineAiPreviewEl.textContent = buildHealthTimelineAiPrompt();
+    healthTimelineAiPreviewEl.textContent = timelinePromptText();
     if (healthTimelineHandoff) healthTimelineHandoff.sync();
   }
 
   function copyHealthTimelinePromptToClipboard(done) {
-    var text = buildHealthTimelineAiPrompt();
+    var text = timelinePromptText();
     function ok() {
       if (healthTimelineHandoff) healthTimelineHandoff.markCopied();
       if (done) done();
@@ -4974,7 +5345,7 @@
   }
 
   var healthTimelineHandoff = createPromptHandoff(
-    function () { return buildHealthTimelineAiPrompt(); },
+    function () { return timelinePromptText(); },
     [healthTimelineOpenChatgptEl, healthTimelineOpenClaudeEl],
     healthTimelineAiHintEl,
     healthTimelineAiCopyBtn
@@ -4986,8 +5357,10 @@
     updateBodyModalOpen();
   }
 
-  function openHealthTimelineModal() {
+  function openTimelinePromptModal(scope) {
     if (!healthTimelineModalEl) return;
+    aiPromptScope = scope === "longevity" ? "longevity" : "micro";
+    syncTimelinePromptChrome();
 
     if (activeImportId) closeImportModal();
     if (importAllModalEl && !importAllModalEl.hidden) closeImportAllModal();
@@ -5042,6 +5415,14 @@
     if (healthTimelineModalDoneBtn) {
       healthTimelineModalDoneBtn.focus();
     }
+  }
+
+  function openHealthTimelineModal() {
+    openTimelinePromptModal("micro");
+  }
+
+  function openLongevityPreventionModal() {
+    openTimelinePromptModal("longevity");
   }
 
   function dayMealFoodLinesFromText(text) {
@@ -11201,8 +11582,10 @@
     }
   }
 
-  function openMicroGapsModal() {
+  function openGapsPromptModal(scope) {
     if (!microGapsModalEl) return;
+    aiPromptScope = scope === "longevity" ? "longevity" : "micro";
+    syncGapsPromptChrome();
 
     if (activeImportId) closeImportModal();
     if (importAllModalEl && !importAllModalEl.hidden) closeImportAllModal();
@@ -11258,6 +11641,14 @@
     } else if (microGapsPreferenceEl) {
       microGapsPreferenceEl.focus();
     }
+  }
+
+  function openMicroGapsModal() {
+    openGapsPromptModal("micro");
+  }
+
+  function openLongevityGapsModal() {
+    openGapsPromptModal("longevity");
   }
 
   function setImportAiPanelOpen(open) {
@@ -21539,6 +21930,7 @@
       requirementsAnalysis
     );
     if (analysisAiActionsEl) analysisAiActionsEl.hidden = false;
+    syncAnalysisAiActionLabels();
 
     var weekLabel = formatWeekRangeLabel(viewedWeekStart) || "this week";
     var dayCount = weekAverageDayCount();
@@ -21647,6 +22039,31 @@
 
   function openLongevityAnalysisModal() {
     openAnalysisModal("longevity");
+  }
+
+  function setAiActionButtonLabel(btn, label, ariaLabel) {
+    if (!btn) return;
+    var textEl = btn.querySelector("[data-ai-action-label]");
+    if (textEl) textEl.textContent = label;
+    if (ariaLabel) btn.setAttribute("aria-label", ariaLabel);
+  }
+
+  function syncAnalysisAiActionLabels() {
+    var longevity = analysisActiveKind === "longevity";
+    setAiActionButtonLabel(
+      analysisMicroGapsAiOpenBtn,
+      longevity ? "Ask AI: improve the pattern" : "Ask AI to help fill gaps",
+      longevity
+        ? "Ask AI how to shift your longevity pattern toward healthy years"
+        : "Ask AI to help fill in the gaps"
+    );
+    setAiActionButtonLabel(
+      analysisHealthTimelineAiOpenBtn,
+      longevity ? "Ask AI: prevention outlook" : "Ask AI: health prognosis",
+      longevity
+        ? "Ask AI for a prevention outlook if you keep this longevity pattern"
+        : "Ask AI for a health prognosis if you keep eating like this weekly"
+    );
   }
 
   function openMicroWeekAnalysisModal() {
@@ -36700,24 +37117,33 @@
   }
 
   if (analysisMicroGapsAiOpenBtn) {
-    analysisMicroGapsAiOpenBtn.addEventListener("click", openMicroGapsModal);
+    analysisMicroGapsAiOpenBtn.addEventListener("click", function () {
+      if (analysisActiveKind === "longevity") openLongevityGapsModal();
+      else openMicroGapsModal();
+    });
   }
 
   if (analysisHealthTimelineAiOpenBtn) {
-    analysisHealthTimelineAiOpenBtn.addEventListener("click", openHealthTimelineModal);
+    analysisHealthTimelineAiOpenBtn.addEventListener("click", function () {
+      if (analysisActiveKind === "longevity") openLongevityPreventionModal();
+      else openHealthTimelineModal();
+    });
   }
 
-  var longevityMicroGapsAiOpenBtn = document.getElementById(
-    "longevity-micro-gaps-ai-open"
+  var longevityPatternAiOpenBtn = document.getElementById(
+    "longevity-pattern-ai-open"
   );
-  var longevityHealthTimelineAiOpenBtn = document.getElementById(
-    "longevity-health-timeline-ai-open"
+  var longevityPreventionAiOpenBtn = document.getElementById(
+    "longevity-prevention-ai-open"
   );
-  if (longevityMicroGapsAiOpenBtn) {
-    longevityMicroGapsAiOpenBtn.addEventListener("click", openMicroGapsModal);
+  if (longevityPatternAiOpenBtn) {
+    longevityPatternAiOpenBtn.addEventListener("click", openLongevityGapsModal);
   }
-  if (longevityHealthTimelineAiOpenBtn) {
-    longevityHealthTimelineAiOpenBtn.addEventListener("click", openHealthTimelineModal);
+  if (longevityPreventionAiOpenBtn) {
+    longevityPreventionAiOpenBtn.addEventListener(
+      "click",
+      openLongevityPreventionModal
+    );
   }
 
   if (longevityAnalysisModalEl) {
