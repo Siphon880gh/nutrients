@@ -47425,5 +47425,55 @@
       "refinedCarbs": 80
     },
     "notes": "Whole 4.4 oz (124 g) giant bar. StockUpExpress lists 4 servings: 160 kcal, 8 g fat, 5 g saturated fat, 0 g trans fat, 5 mg cholesterol, 45 mg sodium, 20 g carbohydrate, less than 1 g fiber, 17 g total sugar, 15 g added sugar, 2 g protein, 0 mcg vitamin D, 30 mg calcium, 0.6 mg iron, 80 mg potassium. crunchbar.com lists the same 160 kcal serving as 31 g, and 4 of those servings are 124 g. This entry is all 4 servings, 640 kcal. Fiber is omitted because each serving is under 1 g. Contains milk and soy; may contain peanut, tree nuts, and wheat."
+  },
+  {
+    "name": "Bread, Nature's Own Honey Wheat - 1 slice (26 g)",
+    "protein": 3,
+    "carbs": 14,
+    "fats": 0.5,
+    "micros": {
+      "sodium": 120,
+      "potassium": 40,
+      "calcium": 30,
+      "iron": 0.4,
+      "vitaminD": 0,
+      "fiber": 1
+    },
+    "longevity": {
+      "saturatedFat": 0,
+      "monounsaturatedFat": 0,
+      "polyunsaturatedFat": 0,
+      "transFat": 0,
+      "cholesterol": 0
+    },
+    "carbQuality": {
+      "addedSugar": 2,
+      "netCarbs": 13
+    },
+    "notes": "20 oz loaf, current simpler Non-GMO recipe, 22 slices. One slice is 26 g (0.9 oz). Harris Teeter and Price Rite print the same panel: 70 kcal, 0.5 g fat, 0 g saturated fat, 0 g trans fat, 0 g polyunsaturated fat, 0 g monounsaturated fat, 0 mg cholesterol, 120 mg sodium, 14 g carbohydrate, 1 g fiber, 2 g total sugar, 2 g added sugar, 3 g protein, 0 mcg vitamin D, 30 mg calcium, 0.4 mg iron, 40 mg potassium. The 0.5 g of fat is what rounds the polyunsaturated and monounsaturated lines to 0 g. naturesownbread.com ingredients: wheat flour, water, whole wheat flour, yeast, honey, sugar, wheat gluten, wheat bran, and 2% or less of expeller pressed canola oil, salt, cultured wheat flour, flax seed meal, vinegar, enzymes, malted barley flour, acerola cherry powder. Contains wheat. Made on shared equipment that also processes sesame."
+  },
+  {
+    "name": "Deli Kitchen Kale & Sweet Potato Butternut Salad 1 container (8 oz / 227 g)",
+    "protein": 4,
+    "carbs": 40,
+    "fats": 22,
+    "micros": {
+      "sodium": 590,
+      "potassium": 490,
+      "calcium": 20,
+      "iron": 1.8,
+      "vitaminD": 0,
+      "fiber": 6
+    },
+    "longevity": {
+      "saturatedFat": 3,
+      "transFat": 0,
+      "cholesterol": 0
+    },
+    "carbQuality": {
+      "addedSugar": 11,
+      "netCarbs": 34
+    },
+    "notes": "Whole 8 oz (227 g) container, which is the labeled serving. The package panel: 360 kcal, 22 g fat, 3 g saturated fat, 0 g trans fat, 0 mg cholesterol, 590 mg sodium, 40 g carbohydrate, 6 g fiber, 17 g total sugar, 11 g added sugar, 4 g protein, 0 mcg vitamin D, 20 mg calcium, 1.8 mg iron, 490 mg potassium. The calcium line is printed as 20 mg (10% DV). Ingredients: roasted butternut squash and roasted sweet potato (each with sunflower oil, salt, and black pepper), brown sugar balsamic dressing (soybean oil and/or canola oil, brown sugar, balsamic vinegar, inverted sugar), quinoa, kale, dried cranberries, pecans, onion, and parmesan cheese. Contains milk and tree nuts (pecan). Distributed by Inter-American Products."
   }
 ]
