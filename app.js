@@ -259,6 +259,13 @@
   var longevityAnalysisReportEl = document.getElementById("longevity-analysis-report");
   var longevityAnalysisPrintBtn = document.getElementById("longevity-analysis-print");
   var longevityAnalysisDoneBtn = document.getElementById("longevity-analysis-done");
+  var analysisAiActionsEl = document.getElementById("analysis-ai-actions");
+  var analysisMicroGapsAiOpenBtn = document.getElementById(
+    "analysis-micro-gaps-ai-open"
+  );
+  var analysisHealthTimelineAiOpenBtn = document.getElementById(
+    "analysis-health-timeline-ai-open"
+  );
   var longevityAnalysisReturnEl = document.getElementById("longevity-analysis-return");
   var longevityAnalysisReturnOpenBtn = document.getElementById(
     "longevity-analysis-return-open"
@@ -4844,11 +4851,11 @@
     }
 
     parts.push(
-      "If I continue eating like this weekly, what would likely happen to my health over time?"
+      "If I continue eating like this weekly, what is the likely health prognosis?"
     );
     parts.push("");
     parts.push(
-      "Give me a timeline of health effects from weeks → months → years → decades. Go through body systems one by one (cardiovascular, metabolic/diabetes, brain & cognition, bones & muscles, immune, gut & colon, kidneys, skin & hair, eyes, and any others relevant to my pattern). Focus on bad health outcomes and risks driven by my current nutrient pattern—especially deficiencies, excesses, and unfavorable ratios in the data above."
+      "Give me a health prognosis from weeks → months → years → decades. Go through body systems one by one (cardiovascular, metabolic/diabetes, brain & cognition, bones & muscles, immune, gut & colon, kidneys, skin & hair, eyes, and any others relevant to my pattern). Focus on bad health outcomes and risks driven by my current nutrient pattern—especially deficiencies, excesses, and unfavorable ratios in the data above."
     );
     parts.push("");
     parts.push(
@@ -4858,7 +4865,7 @@
     );
     parts.push("");
     parts.push(
-      "This is educational—not a diagnosis. Reply in plain language (no JSON). Use clear sections and a simple timeline format."
+      "This does not replace professional medical advice. It does not diagnose, treat, or replace care from a doctor or other qualified health professional. Reply in plain language (no JSON). Use clear sections and a simple prognosis format."
     );
 
     return parts.join("\n");
@@ -21417,6 +21424,7 @@
       "longevity-analysis-report--requirements",
       requirementsAnalysis
     );
+    if (analysisAiActionsEl) analysisAiActionsEl.hidden = false;
 
     var weekLabel = formatWeekRangeLabel(viewedWeekStart) || "this week";
     var dayCount = weekAverageDayCount();
@@ -35774,6 +35782,27 @@
 
   if (longevityAnalysisPrintBtn) {
     longevityAnalysisPrintBtn.addEventListener("click", printLongevityAnalysisReport);
+  }
+
+  if (analysisMicroGapsAiOpenBtn) {
+    analysisMicroGapsAiOpenBtn.addEventListener("click", openMicroGapsModal);
+  }
+
+  if (analysisHealthTimelineAiOpenBtn) {
+    analysisHealthTimelineAiOpenBtn.addEventListener("click", openHealthTimelineModal);
+  }
+
+  var longevityMicroGapsAiOpenBtn = document.getElementById(
+    "longevity-micro-gaps-ai-open"
+  );
+  var longevityHealthTimelineAiOpenBtn = document.getElementById(
+    "longevity-health-timeline-ai-open"
+  );
+  if (longevityMicroGapsAiOpenBtn) {
+    longevityMicroGapsAiOpenBtn.addEventListener("click", openMicroGapsModal);
+  }
+  if (longevityHealthTimelineAiOpenBtn) {
+    longevityHealthTimelineAiOpenBtn.addEventListener("click", openHealthTimelineModal);
   }
 
   if (longevityAnalysisModalEl) {
