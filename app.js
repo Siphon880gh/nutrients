@@ -466,6 +466,17 @@
   var tdeeRpeModalDoneBtn = document.getElementById("tdee-rpe-modal-done");
   var tdeeHintModalEl = document.getElementById("tdee-hint-modal");
   var tdeeHintModalDoneBtn = document.getElementById("tdee-hint-modal-done");
+  var weightTrendModalEl = document.getElementById("weight-trend-modal");
+  var weightTrendSummaryEl = document.getElementById("weight-trend-summary");
+  var weightTrendWeeksEl = document.getElementById("weight-trend-weeks");
+  var weightTrendBackBtn = document.getElementById("weight-trend-back");
+  var weightTrendResetBtn = document.getElementById("weight-trend-reset");
+  var weightTrendDoneBtn = document.getElementById("weight-trend-done");
+  var weightTrendChartOpenBtn = document.getElementById("weight-trend-chart-open");
+  var weightTrendChartModalEl = document.getElementById("weight-trend-chart-modal");
+  var weightTrendChartReadingEl = document.getElementById("weight-trend-chart-reading");
+  var weightTrendChartEl = document.getElementById("weight-trend-chart");
+  var weightTrendChartBackBtn = document.getElementById("weight-trend-chart-back");
   var macroSplitHintModalEl = document.getElementById("macro-split-hint-modal");
   var macroSplitHintModalDoneBtn = document.getElementById("macro-split-hint-modal-done");
   var macroSplitCarouselPrevEl = document.getElementById("macro-split-carousel-prev");
@@ -766,6 +777,7 @@
   var userMacroSplit = null;
   var userBodyWeightKg = null;
   var settingsWeightUnit = "lb";
+  var weightTrendState = { abandonedWeeks: [], entries: [] };
   var tdeeCalcSex = DEFAULT_DEMOGRAPHIC;
   var tdeeCalcWeightUnit = "lb";
   var tdeeCalcHeightUnit = "ft";
@@ -5566,11 +5578,21 @@
     return derived ? !!derived.limiting : false;
   }
 
+  function sectionLinkIconHtml(symbolId) {
+    return (
+      '<svg class="dashboard__longevity-section-link-icon" viewBox="0 0 16 16" width="11" height="11" aria-hidden="true" focusable="false"><use href="#' +
+      symbolId +
+      '"></use></svg>'
+    );
+  }
+
   function longevitySectionTitleHtml(title, sectionDefKey) {
     var link = sectionDefKey
       ? ' <button type="button" class="dashboard__longevity-section-link" data-longevity-def="' +
         escapeAttr(sectionDefKey) +
-        '" aria-haspopup="dialog">explain</button>'
+        '" aria-haspopup="dialog">' +
+        sectionLinkIconHtml("icon-question") +
+        "explain</button>"
       : "";
     return (
       '<h3 class="dashboard__longevity-section-title">' +
@@ -11323,6 +11345,8 @@
       (tdeeHrZonesModalEl && !tdeeHrZonesModalEl.hidden) ||
       (tdeeRpeModalEl && !tdeeRpeModalEl.hidden) ||
       (tdeeHintModalEl && !tdeeHintModalEl.hidden) ||
+      (weightTrendModalEl && !weightTrendModalEl.hidden) ||
+      (weightTrendChartModalEl && !weightTrendChartModalEl.hidden) ||
       (macroSplitHintModalEl && !macroSplitHintModalEl.hidden) ||
       (keywordPositionModalEl && !keywordPositionModalEl.hidden) ||
       foodDefinitionsOpen ||
@@ -23594,6 +23618,7 @@
     loadTdee();
     loadMacroSplit();
     loadBodyWeight();
+    loadWeightTrend();
   }
 
   function applyLoadedAppStateToUi() {
@@ -25247,14 +25272,811 @@
 
   function weekSummaryExplainLinkHtml() {
     return (
-      '<button type="button" class="dashboard__longevity-section-link week-summary__explain-link" data-action="open-tdee-hint-modal" aria-haspopup="dialog">explain</button>'
+      '<button type="button" class="dashboard__longevity-section-link week-summary__explain-link" data-action="open-tdee-hint-modal" aria-haspopup="dialog">' +
+      sectionLinkIconHtml("icon-question") +
+      "explain</button>"
+    );
+  }
+
+  function weightTrendOpenButtonHtml() {
+    return (
+      '<button type="button" class="dashboard__longevity-section-link week-summary__explain-link" data-action="open-weight-trend-modal" aria-haspopup="dialog">' +
+      sectionLinkIconHtml("icon-chart") +
+      "Weight loss trend</button>"
+    );
+  }
+
+  function weekSummaryCardLinksHtml() {
+    return (
+      '<span class="week-summary__links">' +
+      weekSummaryExplainLinkHtml() +
+      weightTrendOpenButtonHtml() +
+      "</span>"
     );
   }
 
   function weekSummaryMacroExplainLinkHtml() {
     return (
-      '<button type="button" class="dashboard__longevity-section-link week-summary__explain-link" data-action="open-macro-split-hint-modal" aria-haspopup="dialog">explain</button>'
+      '<button type="button" class="dashboard__longevity-section-link week-summary__explain-link" data-action="open-macro-split-hint-modal" aria-haspopup="dialog">' +
+      sectionLinkIconHtml("icon-question") +
+      "explain</button>"
     );
+  }
+
+  var WEIGHT_TREND_WEEK_COUNT = 52;
+  var WEIGHT_TREND_KCAL_PER_LB = 3500;
+
+  function weightTrendDisplayUnit() {
+    return settingsWeightUnit === "kg" ? "kg" : "lb";
+  }
+
+  function weightTrendKgToDisplay(kg) {
+    var n = weightTrendDisplayUnit() === "lb" ? kg / 0.453592 : kg;
+    return Math.round(n * 10) / 10;
+  }
+
+  function weightTrendDisplayToKg(n) {
+    return weightTrendDisplayUnit() === "lb" ? n * 0.453592 : n;
+  }
+
+  function weightTrendMondayKeyOrNull(key) {
+    var d = parseDateKey(key);
+    if (!d) return null;
+    var monday = toDateKey(mondayOf(d));
+    return monday === String(key) ? monday : null;
+  }
+
+  function normalizeWeightTrendEntry(row) {
+    if (!row || typeof row !== "object") return null;
+    var date = parseDateKey(row.date);
+    if (!date) return null;
+    var kg = null;
+    if (row.weightKg != null && row.weightKg !== "") {
+      kg =
+        typeof row.weightKg === "number" ? row.weightKg : parseFloat(row.weightKg);
+      if (!isFinite(kg) || kg <= 0 || kg > 500) kg = null;
+    }
+    var note = typeof row.note === "string" ? row.note.trim() : "";
+    if (note.length > 500) note = note.slice(0, 500);
+    if (kg == null && !note) return null;
+    var id = typeof row.id === "string" ? row.id.trim() : "";
+    if (!id) return null;
+    var createdAt =
+      typeof row.createdAt === "number" && isFinite(row.createdAt)
+        ? row.createdAt
+        : 0;
+    return {
+      id: id,
+      date: toDateKey(date),
+      weightKg: kg,
+      note: note,
+      createdAt: createdAt,
+    };
+  }
+
+  function normalizeWeightTrend(raw) {
+    var abandonedWeeks = [];
+    var seen = {};
+    var entries = [];
+    if (raw && typeof raw === "object") {
+      if (Array.isArray(raw.abandonedWeeks)) {
+        raw.abandonedWeeks.forEach(function (key) {
+          var monday = weightTrendMondayKeyOrNull(key);
+          if (!monday || seen[monday]) return;
+          seen[monday] = true;
+          abandonedWeeks.push(monday);
+        });
+      }
+      if (Array.isArray(raw.entries)) {
+        raw.entries.forEach(function (row) {
+          var entry = normalizeWeightTrendEntry(row);
+          if (entry) entries.push(entry);
+        });
+      }
+    }
+    return { abandonedWeeks: abandonedWeeks, entries: entries };
+  }
+
+  function loadWeightTrend() {
+    weightTrendState = normalizeWeightTrend(
+      persist ? persist.getSetting("weightTrend") : null
+    );
+  }
+
+  function saveWeightTrend() {
+    if (!persist) return;
+    persist.setSetting("weightTrend", {
+      abandonedWeeks: weightTrendState.abandonedWeeks.slice(),
+      entries: weightTrendState.entries.map(function (entry) {
+        return {
+          id: entry.id,
+          date: entry.date,
+          weightKg: entry.weightKg,
+          note: entry.note,
+          createdAt: entry.createdAt,
+        };
+      }),
+    });
+  }
+
+  function mealTextForDateKey(dateKey) {
+    if (!dateKey) return "";
+    if (viewedWeekStart) {
+      var keys = weekDateKeys(viewedWeekStart);
+      var idx = keys.indexOf(dateKey);
+      if (idx >= 0) {
+        var el = document.getElementById(DAYS[idx].id);
+        if (el) return el.value;
+      }
+    }
+    return dayMealsByDate[dateKey] || "";
+  }
+
+  function weightTrendMondayKeys() {
+    var keys = [];
+    var monday = parseDateKey(currentWeekMondayKey());
+    if (!monday) return keys;
+    for (var i = 0; i < WEIGHT_TREND_WEEK_COUNT; i++) {
+      keys.push(toDateKey(addDays(monday, -7 * i)));
+    }
+    return keys;
+  }
+
+  function weightTrendWeekStats(mondayKey) {
+    var keys = weekDateKeys(mondayKey);
+    var todayKey = todayDateKey();
+    var current = mondayKey === currentWeekMondayKey();
+    var totals = emptyTotals();
+    var counted = 0;
+    var pace = 0;
+    var logged = false;
+    for (var i = 0; i < keys.length; i++) {
+      var dateKey = keys[i];
+      if (ignoredDaysByDate[dateKey]) continue;
+      pace++;
+      if (current && dateKey > todayKey) continue;
+      counted++;
+      var text = mealTextForDateKey(dateKey) || "";
+      if (String(text).trim()) logged = true;
+      totals = addTotals(totals, totalsFromText(text));
+    }
+    var stillOpen = current && keys.length === 7 && todayKey < keys[6];
+    var tdee = getTdee();
+    var stats = {
+      mondayKey: mondayKey,
+      label: formatWeekRangeLabel(mondayKey),
+      countedDays: counted,
+      stillOpen: stillOpen,
+      logged: logged,
+      periodDelta: null,
+      lbsPerWeek: null,
+      lbsActual: null,
+    };
+    if (tdee && counted > 0) {
+      var periodDelta = totals.totalCal - tdee * counted;
+      stats.periodDelta = periodDelta;
+      stats.lbsPerWeek =
+        ((periodDelta / counted) * pace) / WEIGHT_TREND_KCAL_PER_LB;
+      stats.lbsActual = periodDelta / WEIGHT_TREND_KCAL_PER_LB;
+    }
+    return stats;
+  }
+
+  var WEIGHT_TREND_NOTE_SUGGESTIONS = [
+    "Muscle growth occurring (by weight or circumference)",
+    "Muscle growth slowing",
+    "Muscle growth — need new plan",
+    "Maintenance",
+    "Maintenance ineffective…",
+    "Weight loss occurring",
+    "Weight loss slowing",
+    "Weight loss ineffective or stopped. Need to adjust something",
+  ];
+
+  function weightTrendCutoff() {
+    var max = null;
+    weightTrendState.abandonedWeeks.forEach(function (key) {
+      if (max == null || key > max) max = key;
+    });
+    return max;
+  }
+
+  function weightTrendWeekIsAbandoned(mondayKey) {
+    var cutoff = weightTrendCutoff();
+    return !!(cutoff && mondayKey <= cutoff);
+  }
+
+  function weightTrendMondayForDate(dateKey) {
+    var d = parseDateKey(dateKey);
+    if (!d) return null;
+    return toDateKey(mondayOf(d));
+  }
+
+  function weightTrendWeekEntry(mondayKey) {
+    var best = null;
+    weightTrendState.entries.forEach(function (entry) {
+      if (weightTrendMondayForDate(entry.date) !== mondayKey) return;
+      if (
+        !best ||
+        entry.date > best.date ||
+        (entry.date === best.date && entry.createdAt > best.createdAt)
+      ) {
+        best = entry;
+      }
+    });
+    return best;
+  }
+
+  function weightTrendRows() {
+    var rows = [];
+    weightTrendMondayKeys().forEach(function (mondayKey) {
+      var stats = weightTrendWeekStats(mondayKey);
+      if (!stats.logged) return;
+      stats.abandoned = weightTrendWeekIsAbandoned(mondayKey);
+      rows.push(stats);
+    });
+    return rows;
+  }
+
+  function weightTrendWindowAbandonedCount() {
+    var windowKeys = {};
+    weightTrendMondayKeys().forEach(function (key) {
+      windowKeys[key] = true;
+    });
+    var n = 0;
+    weightTrendState.abandonedWeeks.forEach(function (key) {
+      if (windowKeys[key]) n++;
+    });
+    return n;
+  }
+
+  function weightTrendSummaryText(rows) {
+    var tdee = getTdee();
+    if (!rows.length) {
+      return tdee
+        ? "No logged weeks in the past year."
+        : "No logged weeks in the past year. Set TDEE in Settings to see surplus and deficit. Weight entries still save.";
+    }
+    if (!tdee) {
+      return "Set TDEE in Settings to see each week's surplus or deficit. Weight entries still save.";
+    }
+    var included = rows.filter(function (row) {
+      return !row.abandoned && row.lbsActual != null;
+    });
+    if (!included.length) {
+      return "Every logged week in this year is abandoned. Back or Reset brings them back.";
+    }
+    var sum = 0;
+    included.forEach(function (row) {
+      sum += row.lbsActual;
+    });
+    var prefix = sum >= 0 ? "+" : "";
+    var weekWord = included.length === 1 ? "week" : "weeks";
+    var text =
+      "Estimated change " +
+      prefix +
+      fmtNum(sum) +
+      " lb from " +
+      included.length +
+      " " +
+      weekWord +
+      ".";
+    if (rows.length > included.length) {
+      text += " Abandoned weeks stay listed and are left out of this total.";
+    }
+    return text;
+  }
+
+  function weightTrendDeltaHtml(stats) {
+    if (!getTdee()) {
+      return '<span class="weight-trend__gap weight-trend__gap--muted">Set TDEE in Settings</span>';
+    }
+    if (stats.periodDelta == null) {
+      return '<span class="weight-trend__gap weight-trend__gap--muted">No counted days</span>';
+    }
+    var prefix = stats.periodDelta >= 0 ? "+" : "";
+    var unit = stats.stillOpen
+      ? " cal so far"
+      : stats.countedDays < 7
+        ? " cal (" + stats.countedDays + "d)"
+        : " cal/week";
+    var lbsPrefix = stats.lbsPerWeek >= 0 ? "+" : "";
+    var tone = "";
+    if (stats.periodDelta < -25 * stats.countedDays) {
+      tone = " weight-trend__gap--deficit";
+    } else if (stats.periodDelta > 25 * stats.countedDays) {
+      tone = " weight-trend__gap--surplus";
+    }
+    return (
+      '<span class="weight-trend__gap' +
+      tone +
+      '">' +
+      prefix +
+      fmtNumGrouped(stats.periodDelta) +
+      unit +
+      " · " +
+      lbsPrefix +
+      fmtNum(stats.lbsPerWeek) +
+      " lb/week</span>"
+    );
+  }
+
+  function renderWeightTrendModal() {
+    if (!weightTrendModalEl || weightTrendModalEl.hidden) return;
+    var rows = weightTrendRows();
+    if (weightTrendSummaryEl) {
+      weightTrendSummaryEl.textContent = weightTrendSummaryText(rows);
+    }
+    if (weightTrendBackBtn) {
+      weightTrendBackBtn.disabled = weightTrendState.abandonedWeeks.length === 0;
+    }
+    if (weightTrendResetBtn) {
+      weightTrendResetBtn.disabled = weightTrendWindowAbandonedCount() === 0;
+    }
+    if (weightTrendWeeksEl && !weightTrendFieldIsActive()) {
+      var unit = weightTrendDisplayUnit();
+      if (!rows.length) {
+        weightTrendWeeksEl.innerHTML =
+          '<p class="weight-trend__empty">No logged weeks in the past year.</p>';
+      } else {
+        weightTrendWeeksEl.innerHTML = rows
+          .map(function (row) {
+            return weightTrendWeekHtml(row, unit);
+          })
+          .join("");
+      }
+    }
+  }
+
+  function weightTrendFieldIsActive() {
+    if (!weightTrendWeeksEl || !document.activeElement) return false;
+    return (
+      weightTrendWeeksEl.contains(document.activeElement) &&
+      document.activeElement.matches("input, select, textarea")
+    );
+  }
+
+  function weightTrendNoteSuggestionsHtml(note) {
+    var html = '<option value="">Choose a note…</option>';
+    WEIGHT_TREND_NOTE_SUGGESTIONS.forEach(function (text) {
+      html +=
+        "<option" +
+        (note === text ? " selected" : "") +
+        ">" +
+        escapeHtml(text) +
+        "</option>";
+    });
+    return html;
+  }
+
+  function weightTrendWeekHtml(row, unit) {
+    var entry = weightTrendWeekEntry(row.mondayKey);
+    var weightValue =
+      entry && entry.weightKg != null
+        ? String(weightTrendKgToDisplay(entry.weightKg))
+        : "";
+    var note = entry && entry.note ? entry.note : "";
+    var action = row.abandoned
+      ? '<span class="weight-trend__abandon-actions">' +
+        '<span class="weight-trend__abandoned-label">Abandoned</span>' +
+        '<button type="button" class="weight-trend__unabandon" data-action="unabandon-weight-trend-week" data-week="' +
+        escapeAttr(row.mondayKey) +
+        '" aria-label="Bring the week of ' +
+        escapeAttr(row.label) +
+        ' back into the trend" title="Bring this week back">' +
+        '<svg class="weight-trend__unabandon-icon" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" focusable="false"><use href="#icon-chevron-down"></use></svg>' +
+        "</button></span>"
+      : '<button type="button" class="weight-trend__text-btn" data-action="abandon-weight-trend-week" data-week="' +
+        escapeAttr(row.mondayKey) +
+        '" aria-label="Abandon week of ' +
+        escapeAttr(row.label) +
+        ' and every older week">Abandon</button>';
+    return (
+      '<article class="weight-trend__week' +
+      (row.abandoned ? " weight-trend__week--abandoned" : "") +
+      '" data-week="' +
+      escapeAttr(row.mondayKey) +
+      '">' +
+      '<div class="weight-trend__week-top">' +
+      "<div>" +
+      '<div class="weight-trend__week-label">' +
+      escapeHtml(row.label) +
+      (row.stillOpen ? ' <span class="weight-trend__so-far">so far</span>' : "") +
+      "</div>" +
+      weightTrendDeltaHtml(row) +
+      "</div>" +
+      action +
+      "</div>" +
+      '<div class="weight-trend__week-log">' +
+      '<label class="weight-trend__label">Weight' +
+      '<span class="weight-trend__weight-line">' +
+      '<input type="number" class="week-jump-input" data-weight-trend-weight inputmode="decimal" min="0" step="0.1" autocomplete="off" aria-label="Weight for ' +
+      escapeAttr(row.label) +
+      '" value="' +
+      escapeAttr(weightValue) +
+      '">' +
+      '<span class="weight-trend__unit">' +
+      escapeHtml(unit) +
+      "</span></span></label>" +
+      '<label class="weight-trend__label">Note' +
+      '<select class="week-jump-input" data-weight-trend-suggest aria-label="Note suggestions for ' +
+      escapeAttr(row.label) +
+      '">' +
+      weightTrendNoteSuggestionsHtml(note) +
+      "</select>" +
+      '<input type="text" class="week-jump-input weight-trend__note-input" data-weight-trend-note maxlength="500" placeholder="Or type a note" aria-label="Note for ' +
+      escapeAttr(row.label) +
+      '" value="' +
+      escapeAttr(note) +
+      '">' +
+      "</label></div>" +
+      '<p class="import-modal__error weight-trend__row-error" data-weight-trend-error hidden></p>' +
+      "</article>"
+    );
+  }
+
+  function showWeightTrendRowError(row, message) {
+    if (!row) return;
+    var el = row.querySelector("[data-weight-trend-error]");
+    if (!el) return;
+    if (!message) {
+      el.hidden = true;
+      el.textContent = "";
+      return;
+    }
+    el.hidden = false;
+    el.textContent = message;
+  }
+
+  function saveWeightTrendWeekFromRow(row) {
+    if (!row) return;
+    var monday = weightTrendMondayKeyOrNull(row.getAttribute("data-week"));
+    if (!monday) return;
+    var weightInput = row.querySelector("[data-weight-trend-weight]");
+    var noteInput = row.querySelector("[data-weight-trend-note]");
+    var raw = weightInput ? String(weightInput.value).trim() : "";
+    var note = noteInput ? noteInput.value.trim() : "";
+    if (note.length > 500) note = note.slice(0, 500);
+    var n = raw === "" ? null : parseFloat(raw);
+    if (raw && (!isFinite(n) || n <= 0)) {
+      showWeightTrendRowError(row, "Enter a weight above 0.");
+      return;
+    }
+    if (raw && n >= 1000) {
+      showWeightTrendRowError(row, "Enter a weight below 1,000.");
+      return;
+    }
+    showWeightTrendRowError(row, "");
+    var kg = raw ? weightTrendDisplayToKg(n) : null;
+    var keptId = "";
+    weightTrendState.entries = weightTrendState.entries.filter(function (entry) {
+      if (weightTrendMondayForDate(entry.date) !== monday) return true;
+      if (!keptId) keptId = entry.id;
+      return false;
+    });
+    if (kg != null || note) {
+      weightTrendState.entries.push({
+        id: keptId || "wt-" + monday,
+        date: monday,
+        weightKg: kg,
+        note: note,
+        createdAt: Date.now(),
+      });
+    }
+    saveWeightTrend();
+  }
+
+  function openWeightTrendModal() {
+    if (!weightTrendModalEl) return;
+    weightTrendModalEl.hidden = false;
+    renderWeightTrendModal();
+    updateBodyModalOpen();
+  }
+
+  function closeWeightTrendModal() {
+    if (!weightTrendModalEl) return;
+    closeWeightTrendChartModal();
+    weightTrendModalEl.hidden = true;
+    updateBodyModalOpen();
+  }
+
+  function weightTrendDaysBetween(startKey, endKey) {
+    var start = parseDateKey(startKey);
+    var end = parseDateKey(endKey);
+    if (!start || !end) return 7;
+    var days = Math.round((end.getTime() - start.getTime()) / 86400000);
+    return days > 0 ? days : 7;
+  }
+
+  function weightTrendChartPoints() {
+    var rows = weightTrendRows().slice().reverse();
+    var points = [];
+    rows.forEach(function (row) {
+      if (row.abandoned) return;
+      var entry = weightTrendWeekEntry(row.mondayKey);
+      if (!entry || entry.weightKg == null) return;
+      var monday = parseDateKey(row.mondayKey);
+      points.push({
+        mondayKey: row.mondayKey,
+        label: monday ? formatDayDateLabel(monday) : row.mondayKey,
+        weight: weightTrendKgToDisplay(entry.weightKg),
+      });
+    });
+    return points;
+  }
+
+  function weightTrendAverage(values) {
+    var sum = 0;
+    values.forEach(function (n) {
+      sum += n;
+    });
+    return values.length ? sum / values.length : 0;
+  }
+
+  function weightTrendPaceText(rate, unit) {
+    var prefix = rate > 0 ? "+" : "";
+    return prefix + fmtNum(rate) + " " + unit + "/week";
+  }
+
+  function weightTrendChartReading(points) {
+    var unit = weightTrendDisplayUnit();
+    var threshold = unit === "kg" ? 0.1 : 0.25;
+    if (points.length < 2) {
+      return {
+        status: "need-more",
+        recentStart: -1,
+        text: "Add a weight on at least two weeks to chart the pace.",
+      };
+    }
+    var rates = [];
+    for (var i = 1; i < points.length; i++) {
+      var weeks = weightTrendDaysBetween(points[i - 1].mondayKey, points[i].mondayKey) / 7;
+      rates.push((points[i].weight - points[i - 1].weight) / weeks);
+    }
+    if (rates.length === 1) {
+      return {
+        status: "one-step",
+        recentStart: -1,
+        text:
+          "One step so far: " +
+          weightTrendPaceText(rates[0], unit) +
+          ". Add another week to see whether that pace is slowing.",
+      };
+    }
+    var recentCount = rates.length >= 4 ? 2 : 1;
+    var earlier = rates.slice(0, rates.length - recentCount);
+    var recent = rates.slice(rates.length - recentCount);
+    var earlyAvg = weightTrendAverage(earlier);
+    var recentAvg = weightTrendAverage(recent);
+    var recentStart = points.length - 1 - recentCount;
+    if (earlyAvg < -threshold && recentAvg > earlyAvg + threshold) {
+      return {
+        status: "slowing",
+        recentStart: recentStart,
+        text:
+          "Weight loss is slowing. Earlier pace " +
+          weightTrendPaceText(earlyAvg, unit) +
+          ". Latest pace " +
+          weightTrendPaceText(recentAvg, unit) +
+          ".",
+      };
+    }
+    if (recentAvg > threshold) {
+      return {
+        status: "rising",
+        recentStart: -1,
+        text: "Weight is going up. Latest pace " + weightTrendPaceText(recentAvg, unit) + ".",
+      };
+    }
+    if (earlyAvg < -threshold && recentAvg < earlyAvg - threshold) {
+      return {
+        status: "faster",
+        recentStart: -1,
+        text: "Weight loss is speeding up. Latest pace " + weightTrendPaceText(recentAvg, unit) + ".",
+      };
+    }
+    if (earlyAvg < -threshold) {
+      return {
+        status: "steady",
+        recentStart: -1,
+        text: "Weight loss is steady. Latest pace " + weightTrendPaceText(recentAvg, unit) + ".",
+      };
+    }
+    return {
+      status: "flat",
+      recentStart: -1,
+      text: "Weight is holding steady. Latest pace " + weightTrendPaceText(recentAvg, unit) + ".",
+    };
+  }
+
+  function weightTrendChartSvg(points, reading) {
+    var width = 640;
+    var height = 280;
+    var pad = { l: 52, r: 16, t: 16, b: 40 };
+    var min = points[0].weight;
+    var max = points[0].weight;
+    points.forEach(function (point) {
+      if (point.weight < min) min = point.weight;
+      if (point.weight > max) max = point.weight;
+    });
+    var span = max - min;
+    if (span < 1) {
+      min -= 0.5;
+      max += 0.5;
+    } else {
+      min -= span * 0.15;
+      max += span * 0.15;
+    }
+    span = max - min;
+    var plotW = width - pad.l - pad.r;
+    var plotH = height - pad.t - pad.b;
+    function xAt(index) {
+      if (points.length === 1) return pad.l + plotW / 2;
+      return pad.l + (index * plotW) / (points.length - 1);
+    }
+    function yAt(weight) {
+      return pad.t + ((max - weight) / span) * plotH;
+    }
+    var svg = '<svg class="weight-trend-chart__svg" viewBox="0 0 ' + width + " " + height + '" role="img" aria-label="Weekly weight">';
+    var ticks = 4;
+    for (var t = 0; t < ticks; t++) {
+      var value = min + (span * t) / (ticks - 1);
+      var y = yAt(value);
+      svg +=
+        '<line x1="' +
+        pad.l +
+        '" y1="' +
+        y.toFixed(1) +
+        '" x2="' +
+        (width - pad.r) +
+        '" y2="' +
+        y.toFixed(1) +
+        '" stroke="#e1e8f0" stroke-width="1"></line>';
+      svg +=
+        '<text x="' +
+        (pad.l - 8) +
+        '" y="' +
+        (y + 4).toFixed(1) +
+        '" text-anchor="end" font-size="12" fill="#5c5c5c">' +
+        escapeHtml(fmtNum(value)) +
+        "</text>";
+    }
+    var split = reading.status === "slowing" ? reading.recentStart : -1;
+    function segment(from, to, color) {
+      if (to <= from) return "";
+      var d = "";
+      for (var i = from; i <= to; i++) {
+        d += (i === from ? "M" : "L") + xAt(i).toFixed(1) + " " + yAt(points[i].weight).toFixed(1) + " ";
+      }
+      return '<path d="' + d.trim() + '" fill="none" stroke="' + color + '" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"></path>';
+    }
+    if (split > 0 && split < points.length) {
+      svg += segment(0, split, "#1f6b45");
+      svg += segment(split, points.length - 1, "#9a4a12");
+    } else if (points.length > 1) {
+      svg += segment(0, points.length - 1, "#2a4a6e");
+    }
+    var labelStep = Math.max(1, Math.ceil(points.length / 6));
+    points.forEach(function (point, index) {
+      var color = "#2a4a6e";
+      if (split > 0) color = index >= split ? "#9a4a12" : "#1f6b45";
+      svg +=
+        '<circle cx="' +
+        xAt(index).toFixed(1) +
+        '" cy="' +
+        yAt(point.weight).toFixed(1) +
+        '" r="' +
+        (index === points.length - 1 ? "5" : "3.5") +
+        '" fill="#fff" stroke="' +
+        color +
+        '" stroke-width="2"></circle>';
+      if (index % labelStep === 0 || index === points.length - 1) {
+        var anchor = "middle";
+        if (index === 0) anchor = "start";
+        if (index === points.length - 1) anchor = "end";
+        svg +=
+          '<text x="' +
+          xAt(index).toFixed(1) +
+          '" y="' +
+          (height - 14) +
+          '" text-anchor="' +
+          anchor +
+          '" font-size="12" fill="#5c5c5c">' +
+          escapeHtml(point.label) +
+          "</text>";
+      }
+    });
+    svg += "</svg>";
+    return svg;
+  }
+
+  function renderWeightTrendChart() {
+    if (!weightTrendChartEl) return;
+    var points = weightTrendChartPoints();
+    var reading = weightTrendChartReading(points);
+    if (weightTrendChartReadingEl) {
+      weightTrendChartReadingEl.textContent = reading.text;
+      weightTrendChartReadingEl.className = "modal__subtitle";
+      if (reading.status === "slowing") {
+        weightTrendChartReadingEl.className += " weight-trend-chart__reading--slowing";
+      } else if (reading.status === "rising") {
+        weightTrendChartReadingEl.className += " weight-trend-chart__reading--rising";
+      } else if (reading.status === "steady" || reading.status === "faster") {
+        weightTrendChartReadingEl.className += " weight-trend-chart__reading--losing";
+      }
+    }
+    if (!points.length) {
+      weightTrendChartEl.innerHTML =
+        '<p class="weight-trend__empty">No weekly weights yet.</p>';
+      return;
+    }
+    weightTrendChartEl.innerHTML = weightTrendChartSvg(points, reading);
+  }
+
+  function flushActiveWeightTrendRow() {
+    if (!weightTrendWeeksEl || !document.activeElement) return;
+    if (!weightTrendWeeksEl.contains(document.activeElement)) return;
+    var row = document.activeElement.closest("[data-week]");
+    if (row) saveWeightTrendWeekFromRow(row);
+  }
+
+  function openWeightTrendChartModal() {
+    if (!weightTrendChartModalEl) return;
+    flushActiveWeightTrendRow();
+    renderWeightTrendChart();
+    weightTrendChartModalEl.hidden = false;
+    updateBodyModalOpen();
+    if (weightTrendChartBackBtn) weightTrendChartBackBtn.focus();
+  }
+
+  function closeWeightTrendChartModal() {
+    if (!weightTrendChartModalEl || weightTrendChartModalEl.hidden) return;
+    weightTrendChartModalEl.hidden = true;
+    updateBodyModalOpen();
+    if (weightTrendChartOpenBtn) weightTrendChartOpenBtn.focus();
+  }
+
+  function abandonWeightTrendWeek(mondayKey) {
+    var monday = weightTrendMondayKeyOrNull(mondayKey);
+    if (!monday) return;
+    var cutoff = weightTrendCutoff();
+    if (cutoff && monday <= cutoff) return;
+    weightTrendState.abandonedWeeks.push(monday);
+    saveWeightTrend();
+    renderWeightTrendModal();
+  }
+
+  function undoWeightTrendAbandon() {
+    if (!weightTrendState.abandonedWeeks.length) return;
+    weightTrendState.abandonedWeeks.pop();
+    saveWeightTrend();
+    renderWeightTrendModal();
+  }
+
+  function unabandonWeightTrendWeek(mondayKey) {
+    var monday = weightTrendMondayKeyOrNull(mondayKey);
+    if (!monday || !weightTrendWeekIsAbandoned(monday)) return;
+    var next = weightTrendState.abandonedWeeks.filter(function (key) {
+      return key < monday;
+    });
+    if (next.length === weightTrendState.abandonedWeeks.length) return;
+    weightTrendState.abandonedWeeks = next;
+    saveWeightTrend();
+    renderWeightTrendModal();
+  }
+
+  function resetWeightTrendAbandons() {
+    var windowKeys = {};
+    weightTrendMondayKeys().forEach(function (key) {
+      windowKeys[key] = true;
+    });
+    var next = weightTrendState.abandonedWeeks.filter(function (key) {
+      return !windowKeys[key];
+    });
+    if (next.length === weightTrendState.abandonedWeeks.length) return;
+    weightTrendState.abandonedWeeks = next;
+    saveWeightTrend();
+    renderWeightTrendModal();
   }
 
   function renderWeekSummary(week) {
@@ -25325,7 +26147,7 @@
         lbsPrefix +
         fmtNum(lbsPerWeek) +
         " lb/week</span>" +
-        weekSummaryExplainLinkHtml() +
+        weekSummaryCardLinksHtml() +
         "</div>";
     } else {
       weekCalHtml = fmtNumGrouped(week.totalCal) + " cal";
@@ -25337,7 +26159,7 @@
         "vs TDEE" +
         "</span>" +
         '<span class="week-summary__calories week-summary__calories--muted">Set TDEE in Settings</span>' +
-        weekSummaryExplainLinkHtml() +
+        weekSummaryCardLinksHtml() +
         "</div>";
     }
 
@@ -25427,6 +26249,9 @@
     renderWeekSummaryPreview(week);
     if (weekTotalOpen) {
       renderWeekSummary(week);
+    }
+    if (weightTrendModalEl && !weightTrendModalEl.hidden) {
+      renderWeightTrendModal();
     }
     if (microRequirementsOpen) {
       renderMicroRequirements();
@@ -39249,6 +40074,90 @@
       }
       if (e.target.closest('[data-action="open-macro-split-hint-modal"]')) {
         openMacroSplitHintModal();
+      }
+      if (e.target.closest('[data-action="open-weight-trend-modal"]')) {
+        openWeightTrendModal();
+      }
+    });
+  }
+
+  if (weightTrendDoneBtn) {
+    weightTrendDoneBtn.addEventListener("click", closeWeightTrendModal);
+  }
+  if (weightTrendBackBtn) {
+    weightTrendBackBtn.addEventListener("click", undoWeightTrendAbandon);
+  }
+  if (weightTrendResetBtn) {
+    weightTrendResetBtn.addEventListener("click", resetWeightTrendAbandons);
+  }
+  if (weightTrendModalEl) {
+    weightTrendModalEl.addEventListener("change", function (e) {
+      var row = e.target.closest("[data-week]");
+      if (!row || !weightTrendWeeksEl || !weightTrendWeeksEl.contains(row)) return;
+      if (e.target.hasAttribute("data-weight-trend-suggest")) {
+        var noteInput = row.querySelector("[data-weight-trend-note]");
+        if (e.target.value && noteInput) noteInput.value = e.target.value;
+      }
+      if (
+        e.target.hasAttribute("data-weight-trend-weight") ||
+        e.target.hasAttribute("data-weight-trend-note") ||
+        e.target.hasAttribute("data-weight-trend-suggest")
+      ) {
+        saveWeightTrendWeekFromRow(row);
+      }
+    });
+    weightTrendModalEl.addEventListener("click", function (e) {
+      if (e.target.closest('[data-action="close-weight-trend-modal"]')) {
+        closeWeightTrendModal();
+        return;
+      }
+      var abandonBtn = e.target.closest(
+        '[data-action="abandon-weight-trend-week"]'
+      );
+      if (abandonBtn) {
+        var abandonRow = abandonBtn.closest("[data-week]");
+        if (abandonRow) saveWeightTrendWeekFromRow(abandonRow);
+        abandonWeightTrendWeek(abandonBtn.getAttribute("data-week"));
+        return;
+      }
+      var unabandonBtn = e.target.closest(
+        '[data-action="unabandon-weight-trend-week"]'
+      );
+      if (unabandonBtn) {
+        var unabandonRow = unabandonBtn.closest("[data-week]");
+        if (unabandonRow) saveWeightTrendWeekFromRow(unabandonRow);
+        unabandonWeightTrendWeek(unabandonBtn.getAttribute("data-week"));
+      }
+    });
+    weightTrendModalEl.addEventListener("keydown", function (e) {
+      if (e.key !== "Escape") return;
+      if (weightTrendChartModalEl && !weightTrendChartModalEl.hidden) {
+        e.preventDefault();
+        closeWeightTrendChartModal();
+        return;
+      }
+      e.preventDefault();
+      closeWeightTrendModal();
+    });
+  }
+
+  if (weightTrendChartOpenBtn) {
+    weightTrendChartOpenBtn.addEventListener("click", openWeightTrendChartModal);
+  }
+  if (weightTrendChartBackBtn) {
+    weightTrendChartBackBtn.addEventListener("click", closeWeightTrendChartModal);
+  }
+  if (weightTrendChartModalEl) {
+    weightTrendChartModalEl.addEventListener("click", function (e) {
+      if (e.target.closest('[data-action="close-weight-trend-chart-modal"]')) {
+        closeWeightTrendChartModal();
+      }
+    });
+    weightTrendChartModalEl.addEventListener("keydown", function (e) {
+      if (e.key === "Escape") {
+        e.preventDefault();
+        e.stopPropagation();
+        closeWeightTrendChartModal();
       }
     });
   }

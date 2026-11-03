@@ -267,6 +267,10 @@ var NutrientsPersist = (function () {
       tdeeCalc: null,
       macroSplit: null,
       bodyWeightKg: null,
+      weightTrend: {
+        abandonedWeeks: [],
+        entries: [],
+      },
       viewedWeekStart: null,
       dayEditorHeight: null,
       dayHighlights: true,

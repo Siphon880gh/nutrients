@@ -131,7 +131,7 @@ Pen + notes markup is **static** in `index.html`; only labels and popover **cont
 
 **`.dashboard__toggles`** — `Food Sources` (`#dashboard-food-sources-open` → `#food-sources-modal`), `Week total` (`#dashboard-week-toggle`), `Micro requirements` (`#dashboard-micro-toggle`), `Longevity` (`#dashboard-longevity-toggle`) on the row below; shared `.dashboard__toggle` / `--open`.
 
-**`.week-summary`** — below grid, full width; hidden until **Week total** toggle. Blocks: **Week total**, **Day average**, **Deficit/Surplus vs TDEE** (or prompt to set TDEE), **Macro split (week avg)** with explain links.
+**`.week-summary`** — below grid, full width; hidden until **Week total** toggle. Blocks: **Week total**, **Day average**, **Deficit/Surplus vs TDEE** (or prompt to set TDEE), **Macro split (week avg)** with explain links. The deficit/surplus card’s **Weight loss trend** link opens `#weight-trend-modal`: up to 52 logged weeks, each with a weight and note. Abandon drops that week and every older week; Back undoes the last abandon; Reset restores the year. **Chart** opens `#weight-trend-chart-modal` (weekly weights and whether loss is slowing); its **Back** returns to the week list.
 
 **Micro panel** — `.dashboard__micro-panel`:
 - **`#dashboard-micro-sticky`** (`.dashboard__micro-sticky`) — sticky top chrome: `.dashboard__micro-sticky-title` (**Micro Requirements**), View + **Daily Targets**, `.dashboard__micro-sticky-filters` row (inline S/E·A/E + nutrient search + condition/status filters), Highlight / Poor storage / One-day excess disclosures, `#dashboard-micro-close`.

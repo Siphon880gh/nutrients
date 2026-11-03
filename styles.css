@@ -6729,6 +6729,9 @@ button.dashboard__micro-day-name:focus-visible {
 }
 
 .dashboard__longevity-section-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2rem;
   padding: 0;
   border: 0;
   background: none;
@@ -6739,6 +6742,13 @@ button.dashboard__micro-day-name:focus-visible {
   text-decoration: none;
   cursor: pointer;
   opacity: 0.85;
+}
+
+.dashboard__longevity-section-link-icon {
+  display: block;
+  flex: 0 0 auto;
+  width: 11px;
+  height: 11px;
 }
 
 .dashboard__longevity-section-link:hover,
@@ -7533,6 +7543,17 @@ button.dashboard__longevity-name:focus-visible {
   text-transform: lowercase;
   color: #5d7590;
   opacity: 1;
+}
+
+.week-summary__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.15rem 0.65rem;
+  margin-top: 0.05rem;
+}
+
+.week-summary__links .week-summary__explain-link {
+  margin-top: 0;
 }
 
 .week-summary__macros-label {
@@ -13579,7 +13600,8 @@ body.day-word-wrap-off .day__input {
 #micro-sources-modal,
 #longevity-sources-modal,
 #tdee-hr-zones-modal,
-#tdee-rpe-modal {
+#tdee-rpe-modal,
+#weight-trend-chart-modal {
   z-index: 110;
 }
 
@@ -13774,6 +13796,316 @@ body.modal-open {
 .modal__panel--wide {
   max-width: 36rem;
   max-height: min(90vh, 42rem);
+}
+
+.modal__panel.weight-trend-modal__panel {
+  max-width: 52rem;
+  max-height: min(92vh, 44rem);
+}
+
+.weight-trend {
+  display: block;
+  min-height: 0;
+}
+
+.weight-trend__col-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.weight-trend__heading {
+  margin: 0;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #2a4a6e;
+}
+
+.weight-trend__tools {
+  display: flex;
+  gap: 0.35rem;
+}
+
+.weight-trend__tool {
+  padding: 0.28rem 0.6rem;
+  font-size: 0.8rem;
+}
+
+.weight-trend__tool:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.weight-trend__hint {
+  margin: 0.35rem 0 0.45rem;
+  font-size: 0.75rem;
+  line-height: 1.35;
+  color: #5c5c5c;
+}
+
+.weight-trend__weeks {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  max-height: min(68vh, 36rem);
+  overflow-y: auto;
+  padding-right: 0.15rem;
+}
+
+.weight-trend__week {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.4rem;
+  padding: 0.65rem 0.1rem;
+  border: 0;
+  border-bottom: 1px solid #ecece8;
+  border-radius: 0;
+  background: transparent;
+}
+
+.weight-trend__week:last-child {
+  border-bottom: 0;
+}
+
+.weight-trend__week .week-jump-input {
+  border: 0;
+  background: #f4f4f2;
+  box-shadow: none;
+}
+
+.weight-trend__week-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.weight-trend__week--abandoned .weight-trend__week-label,
+.weight-trend__week--abandoned .weight-trend__gap,
+.weight-trend__week--abandoned .weight-trend__abandoned-label,
+.weight-trend__week--abandoned .weight-trend__week-log {
+  opacity: 0.55;
+}
+
+.weight-trend__week-log {
+  display: grid;
+  grid-template-columns: 9.5rem minmax(0, 1fr);
+  gap: 0.35rem 0.75rem;
+}
+
+.weight-trend__weight-line {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.weight-trend__weight-line .week-jump-input {
+  width: 6.5rem;
+  min-height: 2rem;
+}
+
+.weight-trend__unit {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #444;
+}
+
+.weight-trend__note-input {
+  min-height: 2rem;
+  margin-top: 0.25rem;
+}
+
+.weight-trend__row-error {
+  margin: 0;
+}
+
+.weight-trend__week-label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #1a1a1a;
+}
+
+.weight-trend__so-far {
+  font-weight: 600;
+  color: #2a4a6e;
+}
+
+.weight-trend__gap {
+  display: block;
+  margin-top: 0.12rem;
+  font-size: 0.75rem;
+  font-variant-numeric: tabular-nums;
+  color: #444;
+}
+
+.weight-trend__gap--deficit {
+  color: #1f6b45;
+}
+
+.weight-trend__gap--surplus {
+  color: #9a4a12;
+}
+
+.weight-trend__gap--muted {
+  color: #5c5c5c;
+}
+
+.weight-trend__abandon-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.15rem;
+  flex-shrink: 0;
+}
+
+.weight-trend__abandoned-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #5c5c5c;
+}
+
+.weight-trend__unabandon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.35rem;
+  height: 1.35rem;
+  padding: 0;
+  border: 0;
+  border-radius: 4px;
+  background: none;
+  color: #3d6b9e;
+  cursor: pointer;
+}
+
+.weight-trend__unabandon:hover,
+.weight-trend__unabandon:focus-visible {
+  color: #1a3350;
+  background: #f4f4f2;
+}
+
+.weight-trend__unabandon:focus-visible {
+  outline: 2px solid #3d6b9e;
+  outline-offset: 1px;
+}
+
+.weight-trend__unabandon-icon {
+  display: block;
+}
+
+.weight-trend__text-btn {
+  flex-shrink: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-size: 0.75rem;
+  color: #3d6b9e;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.weight-trend__text-btn:hover,
+.weight-trend__text-btn:focus-visible {
+  color: #1a3350;
+}
+
+.weight-trend__form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.weight-trend__field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.weight-trend__label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #444;
+}
+
+.weight-trend__note {
+  min-height: 4.5rem;
+  resize: vertical;
+}
+
+.weight-trend__add {
+  align-self: flex-start;
+}
+
+.weight-trend__entries {
+  display: flex;
+  flex-direction: column;
+  max-height: 14rem;
+  margin-top: 0.75rem;
+  overflow-y: auto;
+}
+
+.weight-trend__entry {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.4rem 0;
+  border-bottom: 1px solid #ecece8;
+}
+
+.weight-trend__entry-meta {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #1a1a1a;
+  font-variant-numeric: tabular-nums;
+}
+
+.weight-trend__entry-note {
+  margin-top: 0.12rem;
+  font-size: 0.75rem;
+  font-weight: 400;
+  line-height: 1.35;
+  color: #444;
+  white-space: pre-wrap;
+}
+
+.weight-trend__empty {
+  margin: 0;
+  font-size: 0.8rem;
+  color: #5c5c5c;
+}
+
+.weight-trend-chart__svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.weight-trend-chart__reading--slowing {
+  color: #9a4a12;
+}
+
+.weight-trend-chart__reading--losing {
+  color: #1f6b45;
+}
+
+.weight-trend-chart__reading--rising {
+  color: #9a4a12;
+}
+
+@media (max-width: 700px) {
+  .weight-trend__week-log {
+    grid-template-columns: 1fr;
+  }
+
+  .weight-trend__weeks {
+    max-height: 62vh;
+  }
 }
 
 .modal__header {

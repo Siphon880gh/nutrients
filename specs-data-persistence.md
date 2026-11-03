@@ -203,6 +203,16 @@ One settings document per user:
   },
   macroSplit: null | { bodyType: "ectomorph" | "ecto-mesomorph" | "mesomorph" | "meso-endomorph" | "endomorph" | "ecto-endomorph", goal: "weight-loss" | "bodybuilding" | "maintenance" },
   bodyWeightKg: number | null,
+  weightTrend: {                    // weight-loss trend; does not change bodyWeightKg
+    abandonedWeeks: string[],       // Monday cutoffs, last abandon at the end. A week is out when its Monday is on or before the newest cutoff
+    entries: Array<{                // one weigh-in per week; date may be any day in that week
+      id: string,
+      date: string,                 // YYYY-MM-DD
+      weightKg: number | null,
+      note: string,
+      createdAt: number
+    }>
+  },
   viewedWeekStart: string | null,   // Monday YYYY-MM-DD
   dayEditorHeight: number | null,
   dayHighlights: boolean,           // default true

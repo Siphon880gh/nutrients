@@ -45,7 +45,7 @@ When context is tight: read **this file** first, then open the one feature file 
 │   ├─ per-day cards (macros + calories; toggle macro %;  │
 │   │   today’s weekday emphasized)                       │
 │   ├─ week summary (week total, day avg, TDEE vs intake,│
-│   │   macro split + body-type guidance)                 │
+│   │   macro split + body-type guidance, weight trend)   │
 │   ├─ Micro requirements (sticky title + close; % target;│
 │   │   condition focus; Highlight/Filter for daily+S/E+ │
 │   │   A/E icons + By Nutrients; weekly/daily + Daily    │
@@ -123,7 +123,7 @@ nutrients/
 2. **User types in a day note** → `applyDayNoteChange` (highlights via editor mode) + `renderDashboard` + `updateDayFoodNotesUi` + `updateWeekUnmatchedLines` + `updateDaySuggest` (food-name autocomplete on the current line).
 3. **User edits food row / micros modal / longevity modal** → sync to `keywords[]` → `saveFoodDefinitions()` → `refreshAll()` (persists only when logged in).
 4. **Match rule:** whole-word, case-insensitive `\b(name)\b`; each occurrence adds that definition’s macros/micros/longevity once, times the line’s optional `* N` serving multiplier (`keywordServingMultiplier`).
-5. **Calories:** protein×4 + carbs×4 + fats×9 per day; week summary sums logged days and compares to TDEE × `weekAverageDayCount()` (Mon–today on the current week; full 7 otherwise; ignored days omitted). ~lb/week uses `weekWeightPaceDayCount()` so an ignored day is not replaced with the average.
+5. **Calories:** protein×4 + carbs×4 + fats×9 per day; week summary sums logged days and compares to TDEE × `weekAverageDayCount()` (Mon–today on the current week; full 7 otherwise; ignored days omitted). ~lb/week uses `weekWeightPaceDayCount()` so an ignored day is not replaced with the average. **Weight loss trend** lists up to 52 weeks with that same gap. Abandon drops that week and every older week from the estimated-pound total (Back undoes the last abandon; Reset restores the year). Each week stores its own weight and note in settings `weightTrend`, which does not change `bodyWeightKg`.
 6. **% target / longevity coloring:** tiers from `config.json` (`microDvStatus`, `longevityStatus.normalTiers` / `limitingTiers`); denominators from `demographic-dv.js` (FDA DV, IOM bw min) and `longevity-dv.js`, or `STUDY_MIN_MICRO_REFS` (aim targets) / `STUDY_MAX_MICRO_REFS` (ceilings) for study-only nutrients.
 
 ## Domain model (food definition)

@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Nutrients — Week meals</title>
-  <link rel="stylesheet" href="styles.css?t=1793314000">
+  <link rel="stylesheet" href="styles.css?t=1793702600">
 </head>
 <body class="show-daily-intake-icons day-entry-guided">
   <svg class="app-icon-symbols" width="0" height="0" aria-hidden="true" focusable="false">
@@ -100,6 +100,15 @@
     <symbol id="icon-nav-analysis" viewBox="0 0 16 16">
       <path d="M2.35 2.45v10.25h11.3" fill="none" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round"></path>
       <path d="M4.45 9.55 6.7 7.15l2.1 1.5 3.35-4.05" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"></path>
+    </symbol>
+    <symbol id="icon-chart" viewBox="0 0 16 16">
+      <path d="M2.35 2.45v10.25h11.3" fill="none" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round"></path>
+      <path d="M4.45 9.55 6.7 7.15l2.1 1.5 3.35-4.05" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"></path>
+    </symbol>
+    <symbol id="icon-question" viewBox="0 0 16 16">
+      <circle cx="8" cy="8" r="6.15" fill="none" stroke="currentColor" stroke-width="1.35"></circle>
+      <path d="M6.15 6.35a1.9 1.9 0 1 1 2.7 1.72c-.5.28-.85.7-.85 1.28" fill="none" stroke="currentColor" stroke-width="1.35" stroke-linecap="round"></path>
+      <circle cx="8" cy="11.35" r="0.75" fill="currentColor"></circle>
     </symbol>
     <symbol id="icon-nav-sources" viewBox="0 0 16 16">
       <path d="M8.15 5.05c.15-1.35 1.15-2.2 2.4-2.4" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round"></path>
@@ -3238,6 +3247,52 @@
     </div>
   </div>
 
+  <div id="weight-trend-modal" class="modal" hidden>
+    <div class="modal__backdrop" data-action="close-weight-trend-modal"></div>
+    <div class="modal__panel modal__panel--wide weight-trend-modal__panel" role="dialog" aria-modal="true" aria-labelledby="weight-trend-modal-title">
+      <header class="modal__header">
+        <h3 id="weight-trend-modal-title" class="modal__title">Weight loss trend</h3>
+        <p id="weight-trend-summary" class="modal__subtitle" aria-live="polite"></p>
+      </header>
+      <div class="import-modal__body">
+        <div class="weight-trend">
+          <section class="weight-trend__col" aria-labelledby="weight-trend-weeks-heading">
+            <div class="weight-trend__col-head">
+              <h4 id="weight-trend-weeks-heading" class="weight-trend__heading">Weeks</h4>
+              <div class="weight-trend__tools">
+                <button type="button" id="weight-trend-chart-open" class="modal__secondary weight-trend__tool">Chart</button>
+                <button type="button" id="weight-trend-back" class="modal__secondary weight-trend__tool">Back</button>
+                <button type="button" id="weight-trend-reset" class="modal__secondary weight-trend__tool">Reset</button>
+              </div>
+            </div>
+            <p class="weight-trend__hint">Up to the last 52 weeks with logged food. Abandon leaves that week and every older week out of the estimated change. The arrow next to Abandoned brings that week back. Each week has its own weight.</p>
+            <div id="weight-trend-weeks" class="weight-trend__weeks"></div>
+          </section>
+        </div>
+      </div>
+      <footer class="modal__footer">
+        <button type="button" id="weight-trend-done" class="modal__done">Done</button>
+      </footer>
+    </div>
+  </div>
+
+  <div id="weight-trend-chart-modal" class="modal" hidden>
+    <div class="modal__backdrop" data-action="close-weight-trend-chart-modal"></div>
+    <div class="modal__panel modal__panel--wide weight-trend-modal__panel" role="dialog" aria-modal="true" aria-labelledby="weight-trend-chart-title">
+      <header class="modal__header">
+        <h3 id="weight-trend-chart-title" class="modal__title">Weight chart</h3>
+        <p id="weight-trend-chart-reading" class="modal__subtitle" aria-live="polite"></p>
+      </header>
+      <div class="import-modal__body">
+        <p class="weight-trend__hint">Weekly weights still in the trend, oldest to newest. Abandoned weeks are left out.</p>
+        <div id="weight-trend-chart" class="weight-trend-chart"></div>
+      </div>
+      <footer class="modal__footer">
+        <button type="button" id="weight-trend-chart-back" class="modal__secondary">Back</button>
+      </footer>
+    </div>
+  </div>
+
   <div id="micro-modal" class="modal" hidden>
     <div class="modal__backdrop" data-action="close-micro-modal"></div>
     <div class="modal__panel" role="dialog" aria-modal="true" aria-labelledby="micro-modal-title">
@@ -3358,7 +3413,7 @@
 
   <script src="demographic-dv.js?t=1786025202"></script>
   <script src="longevity-dv.js?t=1784087916"></script>
-  <script src="persist.js?t=1792663352"></script>
-  <script src="app.js?t=1793314000"></script>
+  <script src="persist.js?t=1793700845"></script>
+  <script src="app.js?t=1793702600"></script>
 </body>
 </html>
