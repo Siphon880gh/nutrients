@@ -19771,7 +19771,32 @@
     }
   },
   {
-    "name": "Junk Food - Snickers Bar 1 bar (1.86 oz / 52 g)",
+    "name": "Junk Food - Snickers Fun Size 1 bar (17 g, assorted)",
+    "protein": 1,
+    "carbs": 10,
+    "fats": 4,
+    "micros": {
+      "sodium": 40,
+      "potassium": 0,
+      "calcium": 0,
+      "iron": 0,
+      "vitaminD": 0,
+      "fiber": 0
+    },
+    "longevity": {
+      "saturatedFat": 1.5,
+      "transFat": 0,
+      "cholesterol": 0
+    },
+    "carbQuality": {
+      "addedSugar": 8,
+      "refinedCarbs": 10,
+      "netCarbs": 10
+    },
+    "source": "Assorted-bag size. Mars SNICKERS Fun Size label: 1 bar (17 g), 80 calories. The label lists vitamin D, calcium, iron, and potassium as 0."
+  },
+  {
+    "name": "Junk Food - Snickers Bar 1 bar (1.86 oz / 52 g, vending)",
     "protein": 5,
     "carbs": 32,
     "fats": 12,
@@ -19843,7 +19868,8 @@
       "addedSugar": 25,
       "refinedCarbs": 31,
       "netCarbs": 31
-    }
+    },
+    "source": "Vending-machine single. Mars SNICKERS Singles Size bar, 1.86 oz. Label: 250 calories, 12 g fat, 4.5 g saturated fat, 0 g trans fat, cholesterol under 5 mg, 130 mg sodium, 32 g carbohydrate, 1 g fiber, 27 g total sugar, 25 g added sugar, 5 g protein."
   },
   {
     "name": "Energy Drink - Celsius",
@@ -19928,7 +19954,7 @@
     }
   },
   {
-    "name": "Junk Food - Kit Kat Mini 1 piece (8.5 g)",
+    "name": "Junk Food - Kit Kat Miniature 1 piece (8.5 g, assorted)",
     "protein": 0.5,
     "carbs": 5.5,
     "fats": 2.25,
@@ -19950,10 +19976,10 @@
       "refinedCarbs": 5.25,
       "netCarbs": 5.25
     },
-    "source": "Hershey KIT KAT Miniatures label: 4 pieces (34 g) divided by 4. One miniature is 8.5 g."
+    "source": "Assorted-bag size. Hershey KIT KAT Miniatures, 10.1 oz pack label: 4 pieces (34 g) divided by 4. One miniature is 8.5 g. The 2.4 oz bag prints a slightly different panel (1 g protein and 23 g carbohydrate per 4 pieces)."
   },
   {
-    "name": "Junk Food - Kit Kat 1 bar (1.5 oz / 42 g)",
+    "name": "Junk Food - Kit Kat 1 bar (1.5 oz / 42 g, vending)",
     "protein": 2,
     "carbs": 28,
     "fats": 11,
@@ -19972,7 +19998,7 @@
       "refinedCarbs": 28,
       "netCarbs": 28
     },
-    "source": "Hershey KIT KAT milk chocolate bar, 1 package (42 g). The label lists cholesterol as under 5 mg and fiber as under 1 g."
+    "source": "Vending-machine single. Hershey KIT KAT milk chocolate bar, 1 package (42 g), 210 calories. The label lists cholesterol as under 5 mg and fiber as under 1 g."
   },
   {
     "name": "Junk Food - Kit Kat King Size 1 bar (3 oz / 85 g)",
@@ -20034,6 +20060,303 @@
       "netCarbs": 80
     },
     "notes": "Whole 4.3 oz (122 g) XL bar, 10 pieces. Hershey lists about 5 servings of 2 fingers: 120 calories, 6 g fat, 4 g saturated fat, 0 g trans fat, 0 mg cholesterol, 10 mg sodium, 16 g carbohydrate, 0 g fiber, 13 g total sugar, 12 g added sugar, 1 g protein, 0 mcg vitamin D, 20 mg calcium, 0.6 mg iron, 50 mg potassium. This entry is all 5 servings."
+  },
+  {
+    "name": "Junk Food - Twix Fun Size 1 bar (16 g, assorted)",
+    "protein": 0.5,
+    "carbs": 11,
+    "fats": 3.5,
+    "micros": {
+      "sodium": 30,
+      "potassium": 0,
+      "calcium": 0,
+      "iron": 0,
+      "vitaminD": 0,
+      "fiber": 0
+    },
+    "longevity": {
+      "saturatedFat": 2,
+      "transFat": 0,
+      "cholesterol": 0
+    },
+    "carbQuality": {
+      "addedSugar": 7,
+      "refinedCarbs": 11,
+      "netCarbs": 11
+    },
+    "source": "Assorted-bag size. Mars TWIX Fun Size label: 1 bar (16 g), 80 calories. Protein is printed as less than 1 g, so this uses 0.5 g. The label lists vitamin D, calcium, iron, and potassium as 0."
+  },
+  {
+    "name": "Junk Food - Twix 1 pack (1.79 oz / 51 g, vending)",
+    "protein": 2,
+    "carbs": 34,
+    "fats": 12,
+    "micros": {
+      "sodium": 105
+    },
+    "longevity": {
+      "saturatedFat": 7,
+      "transFat": 0
+    },
+    "carbQuality": {
+      "addedSugar": 23,
+      "refinedCarbs": 34,
+      "netCarbs": 34
+    },
+    "source": "Vending-machine single. Mars TWIX Caramel Full Size, 1 pack (1.79 oz, two sticks), 250 calories. The label lists cholesterol as under 5 mg and fiber as under 1 g."
+  },
+  {
+    "name": "Junk Food - Milky Way Fun Size 1 bar (17 g, assorted)",
+    "protein": 0.5,
+    "carbs": 12,
+    "fats": 3,
+    "micros": {
+      "sodium": 25,
+      "potassium": 0,
+      "calcium": 0,
+      "iron": 0,
+      "vitaminD": 0,
+      "fiber": 0
+    },
+    "longevity": {
+      "saturatedFat": 2,
+      "transFat": 0,
+      "cholesterol": 0
+    },
+    "carbQuality": {
+      "addedSugar": 9,
+      "refinedCarbs": 12,
+      "netCarbs": 12
+    },
+    "source": "Assorted-bag size. Mars MILKY WAY Fun Size label: 1 bar (17 g), 80 calories, 10 g total sugar. Protein is printed as less than 1 g, so this uses 0.5 g. The label lists vitamin D, calcium, iron, and potassium as 0."
+  },
+  {
+    "name": "Junk Food - Milky Way 1 bar (1.84 oz / 52 g, vending)",
+    "protein": 2,
+    "carbs": 37,
+    "fats": 9,
+    "micros": {
+      "sodium": 75
+    },
+    "longevity": {
+      "saturatedFat": 6,
+      "transFat": 0,
+      "cholesterol": 5
+    },
+    "carbQuality": {
+      "addedSugar": 29,
+      "refinedCarbs": 37,
+      "netCarbs": 37
+    },
+    "source": "Vending-machine single. Mars MILKY WAY Singles bar, 1.84 oz, 240 calories, 32 g total sugar. The brand label lists fiber as under 1 g."
+  },
+  {
+    "name": "Junk Food - 3 Musketeers Fun Size 1 bar (15 g, assorted)",
+    "protein": 0.5,
+    "carbs": 12,
+    "fats": 2,
+    "micros": {
+      "sodium": 25,
+      "potassium": 0,
+      "calcium": 0,
+      "iron": 0,
+      "vitaminD": 0,
+      "fiber": 0
+    },
+    "longevity": {
+      "saturatedFat": 1,
+      "transFat": 0,
+      "cholesterol": 0
+    },
+    "carbQuality": {
+      "addedSugar": 10,
+      "refinedCarbs": 12,
+      "netCarbs": 12
+    },
+    "source": "Assorted-bag size. Mars 3 MUSKETEERS Fun Size label: 1 bar (15 g), 70 calories, 10 g total sugar. Protein is printed as under 1 g, so this uses 0.5 g. The label lists vitamin D, calcium, iron, and potassium as 0."
+  },
+  {
+    "name": "Junk Food - 3 Musketeers 1 bar (1.92 oz / 54 g, vending)",
+    "protein": 1,
+    "carbs": 42,
+    "fats": 7,
+    "micros": {
+      "sodium": 95
+    },
+    "longevity": {
+      "saturatedFat": 4.5,
+      "transFat": 0
+    },
+    "carbQuality": {
+      "addedSugar": 36,
+      "refinedCarbs": 42,
+      "netCarbs": 42
+    },
+    "source": "Vending-machine single. Mars 3 MUSKETEERS Singles bar, 1.92 oz, 240 calories, 37 g total sugar. The label lists cholesterol as under 5 mg and fiber as under 1 g."
+  },
+  {
+    "name": "Junk Food - Hershey's Milk Chocolate Miniature 1 piece (8.5 g, assorted)",
+    "protein": 0.6,
+    "carbs": 5.1,
+    "fats": 2.4,
+    "micros": {
+      "sodium": 7
+    },
+    "longevity": {
+      "saturatedFat": 1.6,
+      "cholesterol": 2
+    },
+    "carbQuality": {
+      "addedSugar": 4.2,
+      "refinedCarbs": 5.1,
+      "netCarbs": 5.1
+    },
+    "source": "Assorted-bag size. Current Hershey miniatures bags list 4 pieces as 34 g, so one piece is 8.5 g. Hershey does not publish a milk-chocolate-only miniature panel (the assortment label mixes milk chocolate, Special Dark, Krackel, and Mr. Goodbar). These numbers are the current 1.55 oz bar (43 g) scaled by 8.5/43 and rounded to 1 decimal."
+  },
+  {
+    "name": "Junk Food - Hershey's Milk Chocolate 1 bar (1.55 oz / 43 g, vending)",
+    "protein": 3,
+    "carbs": 26,
+    "fats": 12,
+    "micros": {
+      "sodium": 35
+    },
+    "longevity": {
+      "saturatedFat": 8,
+      "cholesterol": 10
+    },
+    "carbQuality": {
+      "addedSugar": 21,
+      "refinedCarbs": 26,
+      "netCarbs": 26
+    },
+    "source": "Vending-machine single. Hershey milk chocolate bar, 1 bar (43 g), 210 calories, 25 g total sugar. Hershey's product page does not list fiber or trans fat."
+  },
+  {
+    "name": "Junk Food - Reese's Peanut Butter Cup Miniature 1 piece (8.7 g, assorted)",
+    "protein": 0.67,
+    "carbs": 5.33,
+    "fats": 2.33,
+    "micros": {
+      "sodium": 23
+    },
+    "longevity": {
+      "saturatedFat": 1
+    },
+    "carbQuality": {
+      "addedSugar": 4.33,
+      "refinedCarbs": 5.33,
+      "netCarbs": 5.33
+    },
+    "source": "Assorted-bag size. Hershey REESE'S Miniatures, 10.5 oz and 17.6 oz bags: 3 pieces (26 g) is 130 calories, 7 g fat, 3 g saturated fat, 70 mg sodium, 16 g carbohydrate, 14 g total sugar, 13 g added sugar, 2 g protein. This entry is that serving divided by 3 (8.7 g). The 5.3 oz bag prints 3 g protein, 15 g carbohydrate, and 80 mg sodium for the same 3 pieces. Cholesterol is under 5 mg, so it is left off."
+  },
+  {
+    "name": "Junk Food - Reese's Peanut Butter Cups 1 pack (1.5 oz / 42 g, vending)",
+    "protein": 4,
+    "carbs": 24,
+    "fats": 12,
+    "micros": {
+      "sodium": 135
+    },
+    "longevity": {
+      "saturatedFat": 4.5
+    },
+    "carbQuality": {
+      "addedSugar": 21,
+      "refinedCarbs": 24,
+      "netCarbs": 24
+    },
+    "source": "Vending-machine single. Hershey REESE'S Peanut Butter Cups, 1 package of 2 cups (42 g), 210 calories, 22 g total sugar. The product page lists cholesterol as 0% with no milligram amount, and it does not list fiber."
+  },
+  {
+    "name": "Junk Food - Almond Joy Snack Size 1 bar (0.6 oz / 17 g, assorted)",
+    "protein": 1,
+    "carbs": 10,
+    "fats": 4,
+    "micros": {
+      "sodium": 20,
+      "calcium": 0,
+      "fiber": 1
+    },
+    "longevity": {
+      "saturatedFat": 3,
+      "transFat": 0,
+      "cholesterol": 0
+    },
+    "carbQuality": {
+      "refinedCarbs": 10,
+      "netCarbs": 9
+    },
+    "source": "Assorted-bag size. Almond Joy snack size is one 0.6 oz (17 g) bar, the piece sold in snack-size mixes: 80 calories, 4 g fat, 3 g saturated fat, 0 g trans fat, 0 mg cholesterol, 20 mg sodium, 10 g carbohydrate, 1 g fiber, 8 g total sugar, 1 g protein. Added sugar is not on that panel. The 1.61 oz bar lists 18 g added sugar."
+  },
+  {
+    "name": "Junk Food - Almond Joy 1 bar (1.61 oz / 45 g, vending)",
+    "protein": 2,
+    "carbs": 27,
+    "fats": 13,
+    "micros": {
+      "sodium": 60
+    },
+    "longevity": {
+      "saturatedFat": 9,
+      "cholesterol": 0
+    },
+    "carbQuality": {
+      "addedSugar": 18,
+      "refinedCarbs": 27,
+      "netCarbs": 27
+    },
+    "source": "Vending-machine single. Hershey ALMOND JOY, 1 package (45 g), 230 calories, 20 g total sugar. The product page does not list fiber or trans fat."
+  },
+  {
+    "name": "Junk Food - Butterfinger Fun Size 1 bar (18.5 g, assorted)",
+    "protein": 1.5,
+    "carbs": 12.5,
+    "fats": 3.5,
+    "micros": {
+      "sodium": 55,
+      "potassium": 50,
+      "calcium": 10,
+      "iron": 0.3,
+      "vitaminD": 0,
+      "fiber": 0.5
+    },
+    "longevity": {
+      "saturatedFat": 1.75,
+      "transFat": 0,
+      "cholesterol": 0
+    },
+    "carbQuality": {
+      "addedSugar": 7,
+      "refinedCarbs": 12.5,
+      "netCarbs": 12
+    },
+    "source": "Assorted-bag size. Ferrara Butterfinger Fun Size label serving is 2 bars (37 g): 170 calories, 7 g fat, 3.5 g saturated fat, 0 g trans fat, 0 mg cholesterol, 110 mg sodium, 25 g carbohydrate, 1 g fiber, 15 g total sugar, 14 g added sugar, 3 g protein, 0 mcg vitamin D, 20 mg calcium, 0.6 mg iron, 100 mg potassium. This entry is one bar, half of that serving (18.5 g)."
+  },
+  {
+    "name": "Junk Food - Butterfinger 1 bar (1.9 oz / 54 g, vending)",
+    "protein": 5,
+    "carbs": 36,
+    "fats": 10,
+    "micros": {
+      "sodium": 160,
+      "potassium": 140,
+      "calcium": 40,
+      "iron": 0.9,
+      "vitaminD": 0,
+      "fiber": 1
+    },
+    "longevity": {
+      "saturatedFat": 5,
+      "transFat": 0,
+      "cholesterol": 0
+    },
+    "carbQuality": {
+      "addedSugar": 20,
+      "refinedCarbs": 36,
+      "netCarbs": 35
+    },
+    "source": "Vending-machine single. Ferrara Butterfinger bar, 1 bar (54 g), 250 calories, 21 g total sugar. Matches the brand highlights (250 calories, 10 g fat, 21 g sugar, 5 g protein) and the current 1.9 oz retail panel."
   },
   {
     "name": "Energy Drink - Alani",
