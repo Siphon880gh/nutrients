@@ -1977,7 +1977,15 @@
     <div class="modal__panel modal__panel--wide longevity-analysis-modal__panel" role="dialog" aria-modal="true" aria-labelledby="longevity-analysis-modal-title">
       <header class="modal__header">
         <h3 id="longevity-analysis-modal-title" class="modal__title">Longevity analysis</h3>
-        <p id="longevity-analysis-subtitle" class="modal__subtitle"></p>
+        <div id="analysis-period-nav" class="analysis-period-nav" role="group" aria-label="Analysis period">
+          <button type="button" id="analysis-period-prev" class="analysis-period-nav__btn" hidden aria-label="Previous week">
+            <span aria-hidden="true">‹</span>
+          </button>
+          <p id="longevity-analysis-subtitle" class="modal__subtitle analysis-period-nav__label"></p>
+          <button type="button" id="analysis-period-next" class="analysis-period-nav__btn" hidden aria-label="Next week">
+            <span aria-hidden="true">›</span>
+          </button>
+        </div>
         <div id="analysis-ai-actions" class="longevity-analysis-modal__ai" hidden>
           <button type="button" id="analysis-micro-gaps-ai-open" class="dashboard__micro-hint-action-btn dashboard__micro-hint-ai" aria-label="Ask AI to help fill in the gaps"><span class="dashboard__micro-hint-action-icon" aria-hidden="true">✨</span><span data-ai-action-label>Ask AI to help fill gaps</span></button>
           <button type="button" id="analysis-health-timeline-ai-open" class="dashboard__micro-hint-action-btn dashboard__micro-hint-ai" aria-label="Ask AI for a health prognosis if you keep eating like this weekly"><span class="dashboard__micro-hint-action-icon" aria-hidden="true">✨</span><span data-ai-action-label>Ask AI: health prognosis</span></button>

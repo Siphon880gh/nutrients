@@ -5892,6 +5892,216 @@ button.dashboard__micro-day-name:focus-visible {
   color: #5c6b7a;
 }
 
+.analysis-nutrient-board__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.65rem;
+  margin: 0 0 0.35rem;
+}
+
+.analysis-nutrient-board__head .analysis-nutrient-board__label {
+  margin: 0;
+  min-width: 0;
+}
+
+.analysis-nutrient-board__tools {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-left: auto;
+  flex: 0 0 auto;
+}
+
+.analysis-nutrient-board__sep {
+  width: 1px;
+  align-self: stretch;
+  margin: 0.15rem 0.05rem;
+  background: #d0d0cc;
+}
+
+.analysis-fat-soluble-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.12rem 0.5rem 0.12rem 0.28rem;
+  border: 1px solid #d4d4d0;
+  border-radius: 999px;
+  background: #fff;
+  color: #5c6b7a;
+  font: inherit;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  line-height: 1.2;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.analysis-fat-soluble-toggle__switch {
+  position: relative;
+  width: 1.45rem;
+  height: 0.85rem;
+  border-radius: 999px;
+  background: #d5d5d0;
+}
+
+.analysis-fat-soluble-toggle__switch::after {
+  content: "";
+  position: absolute;
+  top: 0.1rem;
+  left: 0.1rem;
+  width: 0.65rem;
+  height: 0.65rem;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.18);
+}
+
+.analysis-fat-soluble-toggle[aria-pressed="true"] {
+  border-color: #a8d4b4;
+  background: #f3faf5;
+  color: #14632c;
+}
+
+.analysis-fat-soluble-toggle[aria-pressed="true"] .analysis-fat-soluble-toggle__switch {
+  background: #1f8a4c;
+}
+
+.analysis-fat-soluble-toggle[aria-pressed="true"] .analysis-fat-soluble-toggle__switch::after {
+  left: 0.7rem;
+}
+
+.analysis-fat-soluble-toggle:hover,
+.analysis-fat-soluble-toggle:focus-visible {
+  border-color: #9eb0c2;
+}
+
+.analysis-fat-soluble-toggle:focus-visible,
+.analysis-fat-soluble-help__btn:focus-visible,
+.analysis-period-nav__btn:focus-visible {
+  outline: 2px solid #3d6b9e;
+  outline-offset: 2px;
+}
+
+.analysis-fat-soluble-help {
+  position: relative;
+  display: inline-flex;
+}
+
+.analysis-fat-soluble-help__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.7rem;
+  height: 1.7rem;
+  padding: 0;
+  border: 0;
+  border-radius: 4px;
+  background: transparent;
+  color: #5c6b7a;
+  cursor: pointer;
+}
+
+.analysis-fat-soluble-help__btn:hover,
+.analysis-fat-soluble-help__btn:focus-visible,
+.analysis-fat-soluble-help__btn[aria-expanded="true"] {
+  background: #f4f4f2;
+  color: #1f3a58;
+}
+
+.analysis-fat-soluble-help__chevron {
+  width: 0.45rem;
+  height: 0.45rem;
+  margin-top: -0.15rem;
+  border-right: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor;
+  transform: rotate(45deg);
+}
+
+.analysis-fat-soluble-help__popup {
+  display: none;
+  position: absolute;
+  top: calc(100% + 0.28rem);
+  right: 0;
+  z-index: 5;
+  width: min(17rem, 70vw);
+  margin: 0;
+  padding: 0.55rem 0.65rem;
+  border: 1px solid #d7e0ea;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 8px 24px rgba(31, 58, 88, 0.12);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0;
+  text-transform: none;
+  line-height: 1.4;
+  color: #243444;
+}
+
+.analysis-fat-soluble-help__popup::before {
+  content: "";
+  position: absolute;
+  right: 0;
+  bottom: 100%;
+  width: 1.7rem;
+  height: 0.4rem;
+}
+
+.analysis-fat-soluble-help:hover .analysis-fat-soluble-help__popup,
+.analysis-fat-soluble-help:focus-within .analysis-fat-soluble-help__popup,
+.analysis-fat-soluble-help__btn[aria-expanded="true"] + .analysis-fat-soluble-help__popup {
+  display: block;
+}
+
+.analysis-period-nav {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.4rem;
+  width: fit-content;
+  max-width: 100%;
+  margin-top: 0.35rem;
+}
+
+.analysis-period-nav .modal__subtitle {
+  margin: 0;
+  flex: 0 1 auto;
+  min-width: 0;
+}
+
+.analysis-period-nav__btn {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.8rem;
+  height: 1.8rem;
+  padding: 0;
+  border: 1px solid #c8c8c4;
+  border-radius: 4px;
+  background: #fafaf8;
+  color: #333;
+  font: inherit;
+  font-size: 1.15rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.analysis-period-nav__btn:hover:not(:disabled) {
+  background: rgba(0, 0, 0, 0.04);
+}
+
+.analysis-period-nav__btn:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.analysis-period-nav__btn[hidden] {
+  display: none;
+}
+
 .analysis-nutrient-board__pills {
   display: flex;
   flex-wrap: wrap;
@@ -16251,6 +16461,8 @@ button.longevity-form__label-link:focus-visible {
   body.print-longevity-analysis .longevity-analysis-report__filters-wrap,
   body.print-longevity-analysis .longevity-analysis-report__filters,
   body.print-longevity-analysis .longevity-analysis-report__goto-hint,
+  body.print-longevity-analysis .analysis-nutrient-board__tools,
+  body.print-longevity-analysis .analysis-period-nav__btn,
   .longevity-analysis-return {
     display: none !important;
   }

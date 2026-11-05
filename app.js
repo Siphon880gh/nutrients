@@ -269,6 +269,9 @@
   var longevityAnalysisSubtitleEl = document.getElementById(
     "longevity-analysis-subtitle"
   );
+  var analysisPeriodNavEl = document.getElementById("analysis-period-nav");
+  var analysisPeriodPrevBtn = document.getElementById("analysis-period-prev");
+  var analysisPeriodNextBtn = document.getElementById("analysis-period-next");
   var longevityAnalysisReportEl = document.getElementById("longevity-analysis-report");
   var longevityAnalysisPrintBtn = document.getElementById("longevity-analysis-print");
   var longevityAnalysisDoneBtn = document.getElementById("longevity-analysis-done");
@@ -293,6 +296,7 @@
   var longevityAnalysisReturnPending = false;
   var analysisActiveKind = null;
   var analysisActiveDayId = null;
+  var analysisShowFatSoluble = true;
   // Want more: low % = sad → high % = happy. Want less: high % = sad → low % = happy.
   var LONGEVITY_ANALYSIS_AVG_BANDS = [
     { id: "0-20", label: "0–20%", min: 0, max: 20, maxInclusive: false, color: "red", emoji: "😢" },
@@ -20578,8 +20582,71 @@
     });
   }
 
+  function closeAnalysisFatSolubleNote() {
+    if (!longevityAnalysisReportEl) return;
+    var helpBtn = longevityAnalysisReportEl.querySelector(
+      "[data-analysis-fat-soluble-help]"
+    );
+    if (helpBtn) helpBtn.setAttribute("aria-expanded", "false");
+  }
+
+  function syncAnalysisFatSolubleToggle() {
+    if (!longevityAnalysisReportEl) return;
+    var btn = longevityAnalysisReportEl.querySelector(
+      "[data-analysis-fat-soluble-toggle]"
+    );
+    if (!btn) return;
+    btn.setAttribute("aria-pressed", analysisShowFatSoluble ? "true" : "false");
+    btn.setAttribute(
+      "aria-label",
+      analysisShowFatSoluble
+        ? "Fat soluble shown. Hide fat-soluble vitamins."
+        : "Fat soluble hidden. Show fat-soluble vitamins."
+    );
+  }
+
+  function syncAnalysisAimBandCountsForFatSoluble() {
+    if (!longevityAnalysisReportEl) return;
+    if (!longevityAnalysisReportEl.querySelector("[data-analysis-fat-soluble-toggle]")) {
+      return;
+    }
+    var counts = {};
+    var pills = longevityAnalysisReportEl.querySelectorAll("[data-analysis-nutrient]");
+    Array.prototype.forEach.call(pills, function (pill) {
+      if (pill.getAttribute("data-analysis-pill-kind") !== "aim") return;
+      if (!analysisShowFatSoluble && pill.getAttribute("data-fat-soluble") === "true") {
+        return;
+      }
+      var bandId = pill.getAttribute("data-analysis-pill-band") || "";
+      counts[bandId] = (counts[bandId] || 0) + 1;
+    });
+    var activeGone = false;
+    var btns = longevityAnalysisReportEl.querySelectorAll(
+      '[data-longevity-analysis-band-kind="aim"]'
+    );
+    Array.prototype.forEach.call(btns, function (btn) {
+      var id = btn.getAttribute("data-longevity-analysis-band");
+      var count = counts[id] || 0;
+      var countEl = btn.querySelector(".longevity-analysis-report__filter-count");
+      if (countEl) countEl.textContent = String(count);
+      btn.hidden = count <= 0;
+      if (count <= 0 && longevityAnalysisActiveAimBand === id) activeGone = true;
+    });
+    if (activeGone) longevityAnalysisActiveAimBand = null;
+    var aimRow = longevityAnalysisReportEl.querySelector(
+      ".longevity-analysis-report__filters--aim"
+    );
+    if (aimRow) {
+      aimRow.hidden = !aimRow.querySelector(
+        "[data-longevity-analysis-band]:not([hidden])"
+      );
+    }
+  }
+
   function syncLongevityAnalysisBandFilter() {
     if (!longevityAnalysisReportEl) return;
+    syncAnalysisFatSolubleToggle();
+    syncAnalysisAimBandCountsForFatSoluble();
     var aimActive = !!longevityAnalysisActiveAimBand;
     var limitActive = !!longevityAnalysisActiveLimitBand;
     var filterBtns = longevityAnalysisReportEl.querySelectorAll(
@@ -20613,10 +20680,13 @@
     Array.prototype.forEach.call(pills, function (pill) {
       var kind = pill.getAttribute("data-analysis-pill-kind");
       var bandId = pill.getAttribute("data-analysis-pill-band") || "";
+      var fatSolubleHidden =
+        !analysisShowFatSoluble && pill.getAttribute("data-fat-soluble") === "true";
       var show =
-        kind === "limit"
+        !fatSolubleHidden &&
+        (kind === "limit"
           ? !limitActive || bandId === longevityAnalysisActiveLimitBand
-          : !aimActive || bandId === longevityAnalysisActiveAimBand;
+          : !aimActive || bandId === longevityAnalysisActiveAimBand);
       pill.hidden = !show;
       if (!show && pill.getAttribute("aria-pressed") === "true") {
         pill.setAttribute("aria-pressed", "false");
@@ -20631,6 +20701,10 @@
       ".analysis-nutrient-board__group"
     );
     Array.prototype.forEach.call(groups, function (group) {
+      if (group.querySelector("[data-analysis-fat-soluble-toggle]")) {
+        group.hidden = false;
+        return;
+      }
       var visible = group.querySelector("[data-analysis-nutrient]:not([hidden])");
       group.hidden = !visible;
     });
@@ -21447,6 +21521,19 @@
     lysine: true,
   };
 
+  function analysisNutrientIsFatSoluble(key) {
+    if (!key) return false;
+    var focus = MICRO_CONDITION_FOCUS.fatSolubleVitamins;
+    var nutrients = focus && focus.nutrients;
+    if (nutrients && nutrients.indexOf(key) !== -1) return true;
+    return (
+      key === "vitaminK1" ||
+      key === "vitaminK2" ||
+      key === "vitaminK2MK4" ||
+      key === "vitaminK2MK7"
+    );
+  }
+
   function analysisNutrientPillSkipped(key) {
     if (!key || ANALYSIS_NUTRIENT_PILL_SKIP[key]) return true;
     if (MICRO_AMINO_SHORTFALL_KEYS[key]) return true;
@@ -21499,10 +21586,16 @@
         var feel =
           !limiting && entry.pct < 85 ? microShortfallFeelForKey(entry.key) : null;
         if (feel && feel.early) meta += " · " + feel.early;
+        var fatSolubleAttr =
+          !limiting && analysisNutrientIsFatSoluble(entry.key)
+            ? ' data-fat-soluble="true"'
+            : "";
         return (
           '<button type="button" class="analysis-nutrient-pill analysis-nutrient-pill--' +
           escapeAttr(color) +
-          '" data-analysis-nutrient="' +
+          '"' +
+          fatSolubleAttr +
+          ' data-analysis-nutrient="' +
           escapeAttr(entry.key) +
           '" data-analysis-nutrient-label="' +
           escapeAttr(full) +
@@ -21526,6 +21619,26 @@
       .join("");
   }
 
+  function analysisFatSolubleToolsHtml() {
+    return (
+      '<div class="analysis-nutrient-board__tools">' +
+      '<button type="button" class="analysis-fat-soluble-toggle" data-analysis-fat-soluble-toggle aria-pressed="' +
+      (analysisShowFatSoluble ? "true" : "false") +
+      '">' +
+      '<span class="analysis-fat-soluble-toggle__switch" aria-hidden="true"></span>' +
+      '<span class="analysis-fat-soluble-toggle__label">Fat soluble</span>' +
+      "</button>" +
+      '<span class="analysis-nutrient-board__sep" aria-hidden="true"></span>' +
+      '<span class="analysis-fat-soluble-help">' +
+      '<button type="button" class="analysis-fat-soluble-help__btn" data-analysis-fat-soluble-help aria-expanded="false" aria-controls="analysis-fat-soluble-note" aria-label="About fat-soluble vitamins">' +
+      '<span class="analysis-fat-soluble-help__chevron" aria-hidden="true"></span>' +
+      "</button>" +
+      '<p id="analysis-fat-soluble-note" class="analysis-fat-soluble-help__popup" role="note">' +
+      "Fat-soluble vitamins tend to store longer, so being acutely short is less of a problem. See previous weeks/days." +
+      "</p></span></div>"
+    );
+  }
+
   function microAnalysisNutrientBoardHtml(bySection) {
     var aim = analysisNutrientPillEntries(bySection, false);
     var limit = analysisNutrientPillEntries(bySection, true);
@@ -21534,9 +21647,12 @@
       if (!entries.length) return "";
       return (
         '<div class="analysis-nutrient-board__group">' +
+        '<div class="analysis-nutrient-board__head">' +
         '<p class="analysis-nutrient-board__label">' +
         escapeHtml(label) +
         "</p>" +
+        (limiting ? "" : analysisFatSolubleToolsHtml()) +
+        "</div>" +
         '<div class="analysis-nutrient-board__pills">' +
         analysisNutrientPillsHtml(entries, limiting) +
         "</div></div>"
@@ -21907,19 +22023,9 @@
     }
   }
 
-  function openAnalysisModal(kind, dayId) {
+  function renderAnalysisModal() {
     if (!longevityAnalysisModalEl || !longevityAnalysisReportEl) return;
-    if (kind !== "longevity" && kind !== "micro-week" && kind !== "micro-day") {
-      return;
-    }
-    if (kind === "micro-day" && !dayMetaById(dayId)) return;
-
-    closeOtherModalsForAnalysis();
-    dismissLongevityAnalysisReturnWidget();
-    longevityAnalysisClearBandFilters();
-
-    analysisActiveKind = kind;
-    analysisActiveDayId = kind === "micro-day" ? dayId : null;
+    var kind = analysisActiveKind;
     var requirementsAnalysis = kind === "micro-week" || kind === "micro-day";
     longevityAnalysisModalEl.classList.toggle(
       "longevity-analysis-modal--requirements",
@@ -21937,9 +22043,6 @@
     var sexLabel = demographic === "female" ? "Female" : "Male";
 
     if (kind === "longevity") {
-      if (!longevityPanelOpen) {
-        setLongevityPanelOpen(true);
-      }
       if (longevityAnalysisTitleEl) {
         longevityAnalysisTitleEl.textContent = "Longevity analysis";
       }
@@ -21957,9 +22060,6 @@
         collectLongevityAnalysisEntriesBySection()
       );
     } else if (kind === "micro-week") {
-      if (!microRequirementsOpen) {
-        setMicroRequirementsOpen(true);
-      }
       if (longevityAnalysisTitleEl) {
         longevityAnalysisTitleEl.textContent = "Requirements analysis";
       }
@@ -21994,15 +22094,11 @@
             "Grouped like your micro requirements. “Want more” averages treat values over 100% as 100%. “Want less” shows % of the daily max with no cap (over 100% = over the ceiling).",
         }
       );
-    } else {
+    } else if (kind === "micro-day") {
+      var dayId = analysisActiveDayId;
       var dayMeta = dayMetaById(dayId);
+      if (!dayMeta) return;
       var dayDateLabel = dateLabelForDayId(dayId);
-      if (!microRequirementsOpen) {
-        setMicroRequirementsOpen(true);
-      }
-      if (!microViewDaily) {
-        setMicroViewDaily(true);
-      }
       if (longevityAnalysisTitleEl) {
         longevityAnalysisTitleEl.textContent =
           "Requirements analysis — " + dayMeta.label;
@@ -22031,7 +22127,104 @@
       );
     }
 
+    syncAnalysisPeriodNav();
     syncLongevityAnalysisBandFilter();
+  }
+
+  function analysisCanStepPeriod(delta) {
+    if (delta !== -1 && delta !== 1) return false;
+    if (analysisActiveKind === "micro-week") {
+      return delta > 0 || !isEarliestViewedWeek();
+    }
+    if (analysisActiveKind === "micro-day") {
+      var idx = dayIndexById(analysisActiveDayId);
+      if (idx < 0) return false;
+      if (delta < 0 && idx === 0 && isEarliestViewedWeek()) return false;
+      return true;
+    }
+    return false;
+  }
+
+  function syncAnalysisPeriodNav() {
+    var requirements =
+      analysisActiveKind === "micro-week" || analysisActiveKind === "micro-day";
+    var dayMode = analysisActiveKind === "micro-day";
+    if (analysisPeriodNavEl) {
+      analysisPeriodNavEl.setAttribute(
+        "aria-label",
+        dayMode ? "Day" : analysisActiveKind === "micro-week" ? "Week" : "Analysis period"
+      );
+    }
+    if (analysisPeriodPrevBtn) {
+      analysisPeriodPrevBtn.hidden = !requirements;
+      analysisPeriodPrevBtn.disabled = !analysisCanStepPeriod(-1);
+      var prevLabel = dayMode ? "Previous day" : "Previous week";
+      analysisPeriodPrevBtn.setAttribute("aria-label", prevLabel);
+      analysisPeriodPrevBtn.title = prevLabel;
+      if (requirements) {
+        analysisPeriodPrevBtn.setAttribute("aria-keyshortcuts", "ArrowLeft");
+      } else {
+        analysisPeriodPrevBtn.removeAttribute("aria-keyshortcuts");
+      }
+    }
+    if (analysisPeriodNextBtn) {
+      analysisPeriodNextBtn.hidden = !requirements;
+      analysisPeriodNextBtn.disabled = !analysisCanStepPeriod(1);
+      var nextLabel = dayMode ? "Next day" : "Next week";
+      analysisPeriodNextBtn.setAttribute("aria-label", nextLabel);
+      analysisPeriodNextBtn.title = nextLabel;
+      if (requirements) {
+        analysisPeriodNextBtn.setAttribute("aria-keyshortcuts", "ArrowRight");
+      } else {
+        analysisPeriodNextBtn.removeAttribute("aria-keyshortcuts");
+      }
+    }
+  }
+
+  function stepAnalysisPeriod(delta) {
+    if (!analysisCanStepPeriod(delta)) return;
+    if (analysisActiveKind === "micro-week") {
+      stepViewedWeek(delta);
+    } else if (analysisActiveKind === "micro-day") {
+      var idx = dayIndexById(analysisActiveDayId);
+      var nextIdx = idx + delta;
+      if (nextIdx >= 0 && nextIdx < DAYS.length) {
+        analysisActiveDayId = DAYS[nextIdx].id;
+      } else if (delta < 0) {
+        stepViewedWeek(-1);
+        analysisActiveDayId = DAYS[DAYS.length - 1].id;
+      } else {
+        stepViewedWeek(1);
+        analysisActiveDayId = DAYS[0].id;
+      }
+    } else {
+      return;
+    }
+    longevityAnalysisClearBandFilters();
+    renderAnalysisModal();
+    if (longevityAnalysisReportEl) longevityAnalysisReportEl.scrollTop = 0;
+  }
+
+  function openAnalysisModal(kind, dayId) {
+    if (!longevityAnalysisModalEl || !longevityAnalysisReportEl) return;
+    if (kind !== "longevity" && kind !== "micro-week" && kind !== "micro-day") {
+      return;
+    }
+    if (kind === "micro-day" && !dayMetaById(dayId)) return;
+
+    closeOtherModalsForAnalysis();
+    dismissLongevityAnalysisReturnWidget();
+    longevityAnalysisClearBandFilters();
+
+    analysisActiveKind = kind;
+    analysisActiveDayId = kind === "micro-day" ? dayId : null;
+    if (kind === "longevity" && !longevityPanelOpen) {
+      setLongevityPanelOpen(true);
+    } else if (kind === "micro-week" || kind === "micro-day") {
+      if (!microRequirementsOpen) setMicroRequirementsOpen(true);
+      if (kind === "micro-day" && !microViewDaily) setMicroViewDaily(true);
+    }
+    renderAnalysisModal();
     longevityAnalysisModalEl.hidden = false;
     updateBodyModalOpen();
     if (longevityAnalysisDoneBtn) longevityAnalysisDoneBtn.focus();
@@ -37148,8 +37341,33 @@
 
   if (longevityAnalysisModalEl) {
     longevityAnalysisModalEl.addEventListener("click", function (e) {
+      if (!e.target.closest(".analysis-fat-soluble-help")) {
+        closeAnalysisFatSolubleNote();
+      }
       if (e.target.closest('[data-action="close-longevity-analysis-modal"]')) {
         closeLongevityAnalysisModal();
+        return;
+      }
+      var fatSolubleToggle = e.target.closest("[data-analysis-fat-soluble-toggle]");
+      if (
+        fatSolubleToggle &&
+        longevityAnalysisReportEl &&
+        longevityAnalysisReportEl.contains(fatSolubleToggle)
+      ) {
+        e.preventDefault();
+        analysisShowFatSoluble = !analysisShowFatSoluble;
+        syncLongevityAnalysisBandFilter();
+        return;
+      }
+      var fatSolubleHelp = e.target.closest("[data-analysis-fat-soluble-help]");
+      if (
+        fatSolubleHelp &&
+        longevityAnalysisReportEl &&
+        longevityAnalysisReportEl.contains(fatSolubleHelp)
+      ) {
+        e.preventDefault();
+        var expanded = fatSolubleHelp.getAttribute("aria-expanded") === "true";
+        fatSolubleHelp.setAttribute("aria-expanded", expanded ? "false" : "true");
         return;
       }
       var longevitySourcesBtn = e.target.closest("[data-longevity-sources]");
@@ -37268,6 +37486,17 @@
       jumpFromLongevityAnalysisToSection(
         gotoSection.getAttribute("data-longevity-analysis-goto")
       );
+    });
+  }
+
+  if (analysisPeriodPrevBtn) {
+    analysisPeriodPrevBtn.addEventListener("click", function () {
+      stepAnalysisPeriod(-1);
+    });
+  }
+  if (analysisPeriodNextBtn) {
+    analysisPeriodNextBtn.addEventListener("click", function () {
+      stepAnalysisPeriod(1);
     });
   }
 
@@ -37519,6 +37748,15 @@
       return;
     }
     if (longevityAnalysisModalEl && !longevityAnalysisModalEl.hidden) {
+      var fatSolubleHelpOpen =
+        longevityAnalysisReportEl &&
+        longevityAnalysisReportEl.querySelector(
+          '[data-analysis-fat-soluble-help][aria-expanded="true"]'
+        );
+      if (fatSolubleHelpOpen) {
+        fatSolubleHelpOpen.setAttribute("aria-expanded", "false");
+        return;
+      }
       closeLongevityAnalysisModal();
       return;
     }
@@ -38878,8 +39116,31 @@
     syncAppNavShortcutHintVisibility();
   }
 
+  function handleRequirementsAnalysisArrow(e) {
+    if (e.key !== "ArrowLeft" && e.key !== "ArrowRight") return false;
+    if (anyAppNavModifierDown(e)) return false;
+    if (!longevityAnalysisModalEl || longevityAnalysisModalEl.hidden) return false;
+    if (analysisActiveKind !== "micro-week" && analysisActiveKind !== "micro-day") {
+      return false;
+    }
+    var focusEl = document.activeElement;
+    if (
+      focusEl &&
+      longevityAnalysisModalEl.contains(focusEl) &&
+      (focusEl.tagName === "INPUT" ||
+        focusEl.tagName === "TEXTAREA" ||
+        focusEl.tagName === "SELECT")
+    ) {
+      return true;
+    }
+    e.preventDefault();
+    stepAnalysisPeriod(e.key === "ArrowLeft" ? -1 : 1);
+    return true;
+  }
+
   function handleAppNavShortcutKey(e) {
     if (e.defaultPrevented || e.repeat) return;
+    if (handleRequirementsAnalysisArrow(e)) return;
     if (isAppNavShortcutBlockedTarget(document.activeElement)) return;
     if (handleAnalysisPickerShortcut(e)) return;
     // + / = expand more micros; allow Shift so Shift+= matches the "+" hint.
