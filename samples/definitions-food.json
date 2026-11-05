@@ -47019,6 +47019,23 @@
     "notes": "Organico Organic Harvest Bowl, one bowl with Wild-Caught & Paleo Tuna Salad as the protein. The menu lists sweet potatoes, kale, lentils, roasted cauliflower, grilled corn, and carrot, with your choice of protein and sauce (organic, no seed oils). Organico publishes no total for this bowl, so it is built from the per-component values in Organico's Nutrition Guide (organico.co/ingredients.html): sweet potato half base 4 oz (102 kcal, 2.3 g protein, 23.5 g carbohydrate, 0.15 g fat, 3.75 g fiber), kale half base 1.5 oz (21 kcal, 1.4 g protein, 4.25 g carbohydrate, 0.3 g fat), and 1 oz each of organic lentils (66 kcal, 5.1 g protein, 11.4 g carbohydrate, 4.5 g fiber), lemon roasted cauliflower (13 kcal), grilled corn (54 kcal, 11.9 g carbohydrate), and shredded carrot (23 kcal). The protein is tuna salad 4 oz (145 kcal, 26.8 g protein, 0 g carbohydrate, 3.4 g fat, 48 mg cholesterol, 428 mg sodium). The sauce is assumed to be Simple Lemon Vinaigrette 1.75 oz (18 g fat, 212 mg sodium). The guide lists it at 240 kcal, but its 18 g fat is about 160 kcal. The half-base and 1 oz topping amounts are assumptions, chosen so the total of about 15 oz matches Organico's other bowls. Total from macros is about 600 kcal (39 g protein, 58.8 g carbohydrate, 23.3 g fat); summing the guide's calorie column gives about 664 kcal. Sugars are about 16.6 g, mostly from the sweet potato. Saturated fat and the other micronutrients are omitted."
   },
   {
+    "name": "Organico - Organic Harvest Bowl, Substituting Tuna, Adding Bell Pepper, Extra Carrot, Garbanzos & Pickled Coleslaw 1 bowl (about 19.25 oz, with Simple Lemon Vinaigrette)",
+    "protein": 43.9,
+    "carbs": 80.6,
+    "fats": 25,
+    "micros": {
+      "sodium": 935,
+      "fiber": 19.4
+    },
+    "longevity": {
+      "cholesterol": 48
+    },
+    "carbQuality": {
+      "netCarbs": 61.2
+    },
+    "notes": "Organico Organic Harvest Bowl with Wild-Caught & Paleo Tuna Salad, Simple Lemon Vinaigrette, and four extra toppings: grilled bell pepper, a second portion of shredded carrot, Mediterranean garbanzos, and pickled coleslaw. The bowl itself is the tuna harvest bowl already logged at about 15 oz (39 g protein, 58.8 g carbohydrate, 23.3 g fat, 13.6 g fiber, 751 mg sodium, 48 mg cholesterol). That bowl already includes 1 oz shredded carrot, so the carrot here is an additional 1 oz. Each add-on is the 1 oz topping scoop from Organico's Nutrition Guide (organico.co/ingredients.html), the same size as the toppings on a custom bowl: grilled bell pepper (10 kcal, 0 g protein, 2 g carbohydrate, 0 g fat, 1 mg sodium, 0 g fiber, 1 g sugar), shredded carrot (23 kcal, 0.5 g protein, 5.4 g carbohydrate, 0.1 g fat, 39 mg sodium, 1.6 g fiber, 2.6 g sugar), and Mediterranean garbanzos (79 kcal, 4 g protein, 12.8 g carbohydrate, 1.6 g fat, 139 mg sodium, 3.6 g fiber, 2.3 g sugar). Pickled coleslaw is on the custom-bowl topping list and is sold as its own side, but the guide has no row for it. The 1 oz scoop is estimated from the guide's Cabbage & Carrot full base (3 oz: 20 kcal, 1.2 g protein, 4.7 g carbohydrate, 0.1 g fat, 15 mg sodium, 1.7 g fiber, 3 g sugar), which is one-third of that row. The menu describes it as cabbage and carrots with herbs and pickling juice, so brine sodium and sugar may be a little higher than this and are not added. These are topping scoops, not the 7 oz Mediterranean Garbanzos side (553 kcal). Total from macros is about 723 kcal (43.9 g protein, 80.6 g carbohydrate, 25 g fat). Adding the guide's calorie column for the three published toppings, plus about 7 kcal for the slaw, to the tuna bowl's 664 kcal column gives about 783 kcal. Sugars are about 23.5 g. Saturated fat and the other micronutrients are omitted."
+  },
+  {
     "name": "Organico - Wild-Caught Paleo Tuna Salad, Adding Scrambled Eggs 1 salad (about 15.75 oz, with ranch, plus 2 scrambled eggs)",
     "protein": 48.1,
     "carbs": 34.8,
