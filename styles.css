@@ -3973,6 +3973,34 @@ body.highlight-adverse-effects .dashboard__micro-acute-btn--adverse .dashboard__
   color: #333;
 }
 
+.micro-sources-modal__pct-btn {
+  padding: 0.35rem 0.55rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  border: 1px solid #d0d0cc;
+  border-radius: 4px;
+  background: #fff;
+  color: #333;
+  cursor: pointer;
+}
+
+.micro-sources-modal__pct-btn:hover,
+.micro-sources-modal__pct-btn:focus-visible {
+  border-color: #8aafd4;
+  color: #1f4e86;
+}
+
+.micro-sources-modal__pct-btn:focus-visible {
+  outline: 2px solid #4a7fd4;
+  outline-offset: 1px;
+}
+
+.micro-sources-modal__pct-btn[aria-pressed="true"] {
+  background: #e8f0fa;
+  border-color: #8aafd4;
+  color: #1f4e86;
+}
+
 .micro-sources-modal__filter {
   flex: 1 1 10rem;
   min-width: 8rem;

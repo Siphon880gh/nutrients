@@ -935,14 +935,20 @@
   var activeMicroSourcesScope = "week";
   var activeMicroSourcesSort = { key: "amount", dir: "desc" };
   var activeMicroSourcesFilter = "";
+  var activeMicroSourcesValueMode = "amount";
   var activeLongevitySourcesKey = null;
   var activeLongevitySourcesKind = null;
   var activeLongevitySourcesScope = "week";
   var activeLongevitySourcesSort = { key: "amount", dir: "desc" };
   var activeLongevitySourcesFilter = "";
+  var activeLongevitySourcesValueMode = "amount";
   var microSourcesModalEl = document.getElementById("micro-sources-modal");
   var microSourcesModalTitleEl = document.getElementById("micro-sources-modal-title");
   var microSourcesScopeEl = document.getElementById("micro-sources-scope");
+  var microSourcesPctToggleBtn = document.getElementById("micro-sources-pct-toggle");
+  var microSourcesModalSubtitleEl = document.getElementById(
+    "micro-sources-modal-subtitle"
+  );
   var microSourcesFilterEl = document.getElementById("micro-sources-filter");
   var microSourcesBodyEl = document.getElementById("micro-sources-body");
   var microSourcesModalDoneBtn = document.getElementById("micro-sources-modal-done");
@@ -953,6 +959,10 @@
   var longevitySourcesModalTitleEl = document.getElementById("longevity-sources-modal-title");
   var longevitySourcesModalSubtitleEl = document.getElementById(
     "longevity-sources-modal-subtitle"
+  );
+  var longevitySourcesScopeEl = document.getElementById("longevity-sources-scope");
+  var longevitySourcesPctToggleBtn = document.getElementById(
+    "longevity-sources-pct-toggle"
   );
   var longevitySourcesFilterEl = document.getElementById("longevity-sources-filter");
   var longevitySourcesBodyEl = document.getElementById("longevity-sources-body");
@@ -7026,8 +7036,10 @@
     return defaultSourcesSortForKey(key);
   }
 
-  function sourcesListSortHeaderHtml(sort) {
+  function sourcesListSortHeaderHtml(sort, amountLabel) {
     var sortKey = normalizeSourcesSortKey(sort && sort.key);
+    var amountHeading = amountLabel || "Amount";
+    var amountIsPct = amountHeading === "% DV";
     var sortDir =
       sortKey === "amount"
         ? sort && sort.dir === "asc"
@@ -7048,11 +7060,12 @@
             : "Sorted Z–A — click for A–Z"
           : "Sort by food name";
       } else if (key === "amount") {
+        var valueName = amountIsPct ? "percent of daily value" : "amount";
         title = active
           ? sortDir === "desc"
             ? "Sorted high→low — click for low→high"
             : "Sorted low→high — click for high→low"
-          : "Sort by amount";
+          : "Sort by " + valueName + ". Click again to reverse.";
       } else {
         title = active
           ? sortDir === "asc"
@@ -7084,19 +7097,32 @@
       '<div class="micro-sources-modal__list-head">' +
       sortBtn("rank", "#", "micro-sources-modal__sort-btn--rank") +
       sortBtn("name", "Food", "micro-sources-modal__sort-btn--name") +
-      sortBtn("amount", "Amount", "micro-sources-modal__sort-btn--amount") +
+      sortBtn("amount", amountHeading, "micro-sources-modal__sort-btn--amount") +
       "</div>"
     );
   }
 
-  function nutrientSourcesListHtml(list, unit, sort) {
+  function sourcesPctOfDailyText(amount, dailyDv) {
+    if (!dailyDv) return "—";
+    return formatTargetPctNumber((amount / dailyDv) * 100);
+  }
+
+  function nutrientSourcesListHtml(list, unit, sort, display) {
+    display = display || {};
+    var showPct = display.mode === "pct";
+    var dailyDv = display.dailyDv || 0;
     var total = 0;
     var html =
-      sourcesListSortHeaderHtml(sort) + '<ol class="micro-sources-modal__list">';
+      sourcesListSortHeaderHtml(sort, showPct ? "% DV" : "Amount") +
+      '<ol class="micro-sources-modal__list">';
     list.forEach(function (item, idx) {
       total += item.amount;
-      var perText = fmtNum(item.perServing) + " " + unit;
-      var rowTotalText = fmtNum(item.amount) + " " + unit;
+      var perText = showPct
+        ? sourcesPctOfDailyText(item.perServing, dailyDv)
+        : fmtNum(item.perServing) + " " + unit;
+      var rowTotalText = showPct
+        ? sourcesPctOfDailyText(item.amount, dailyDv)
+        : fmtNum(item.amount) + " " + unit;
       var calcHtml;
       if (item.hits > 1) {
         calcHtml =
@@ -7130,9 +7156,14 @@
         "</li>";
     });
     html += "</ol>";
+    var totalText = showPct
+      ? dailyDv
+        ? sourcesPctOfDailyText(total, dailyDv) + " of daily value"
+        : "No daily value is set for this nutrient"
+      : fmtNum(total) + " " + unit;
     html +=
       '<p class="micro-sources-modal__total">Total: ' +
-      escapeHtml(fmtNum(total) + " " + unit) +
+      escapeHtml(totalText) +
       "</p>";
     return html;
   }
@@ -7514,18 +7545,12 @@
   }
 
   function longevityContributionsForScope(nutrientKey, kind, scope) {
-    var daysToScan =
-      scope && scope !== "week"
-        ? DAYS.filter(function (day) {
-            return day.id === scope;
-          })
-        : DAYS.filter(function (day) {
-            return !isDayIgnoredForWeekTotals(day.id);
-          });
+    var dateKeys = sourcesScopeDateKeys(scope);
+    var skipIgnored = sourcesScopeSkipsIgnored(scope);
     var merged = {};
-    daysToScan.forEach(function (day) {
-      var el = document.getElementById(day.id);
-      var text = el ? el.value : "";
+    dateKeys.forEach(function (dateKey) {
+      if (skipIgnored && ignoredDaysByDate[dateKey]) return;
+      var text = mealTextForDateKey(dateKey);
       var hitCounts = keywordHitCounts(text);
       var seen = {};
       keywords.forEach(function (kw) {
@@ -7575,13 +7600,7 @@
   }
 
   function longevitySourcesScopeSubtitle(kind, scope) {
-    var periodLabel = weekTotalsScopeLabel();
-    if (scope && scope !== "week") {
-      var dayMeta = dayMetaById(scope);
-      periodLabel = dayMeta
-        ? dayMeta.label + (dateLabelForDayId(scope) ? " · " + dateLabelForDayId(scope) : "")
-        : scope;
-    }
+    var periodLabel = sourcesScopeRangeLabel(scope);
     if (kind === "glycemicLoad") {
       return periodLabel + " — ranked by GL per serving; color by GI tier";
     }
@@ -7712,6 +7731,16 @@
 
   function renderLongevitySourcesBody() {
     if (!longevitySourcesBodyEl || !activeLongevitySourcesKey) return;
+    if (
+      longevitySourcesModalSubtitleEl &&
+      activeLongevitySourcesKind !== "glycemicLoad"
+    ) {
+      longevitySourcesModalSubtitleEl.textContent =
+        sourcesScopeRangeLabel(activeLongevitySourcesScope) +
+        (activeLongevitySourcesValueMode === "pct"
+          ? " — matched foods ranked by percent of daily value"
+          : " — matched foods ranked by amount");
+    }
     var label;
     var unit;
     if (activeLongevitySourcesKind === "micro") {
@@ -7748,9 +7777,13 @@
     }
 
     var emptyPeriod =
-      activeLongevitySourcesScope && activeLongevitySourcesScope !== "week"
-        ? "this day"
-        : "this week";
+      activeLongevitySourcesScope === "weeks-2"
+        ? "these 2 weeks"
+        : activeLongevitySourcesScope === "weeks-3"
+          ? "these 3 weeks"
+          : activeLongevitySourcesScope && activeLongevitySourcesScope !== "week"
+            ? "this day"
+            : "this week";
     if (!list.length) {
       html +=
         '<p class="micro-sources-modal__empty">No matched foods with ' +
@@ -7776,13 +7809,31 @@
     if (activeLongevitySourcesKind === "glycemicLoad") {
       html += glycemicLoadSourcesListHtml(displayList, activeLongevitySourcesSort);
     } else {
-      html += nutrientSourcesListHtml(displayList, unit, activeLongevitySourcesSort);
+      html += nutrientSourcesListHtml(
+        displayList,
+        unit,
+        activeLongevitySourcesSort,
+        {
+          mode: activeLongevitySourcesValueMode,
+          dailyDv: sourcesDailyReference(
+            activeLongevitySourcesKind,
+            activeLongevitySourcesKey
+          ),
+        }
+      );
     }
     longevitySourcesBodyEl.innerHTML = html;
   }
 
   function syncLongevitySourcesControls() {
     if (longevitySourcesFilterEl) longevitySourcesFilterEl.value = activeLongevitySourcesFilter;
+    var lockSpan = activeLongevitySourcesKind === "glycemicLoad";
+    if (longevitySourcesScopeEl) longevitySourcesScopeEl.disabled = lockSpan;
+    if (longevitySourcesPctToggleBtn) longevitySourcesPctToggleBtn.disabled = lockSpan;
+    syncSourcesPctToggle(
+      longevitySourcesPctToggleBtn,
+      activeLongevitySourcesValueMode
+    );
   }
 
   function longevitySourcesDisplayLabel(nutrientKey, kind) {
@@ -7812,6 +7863,8 @@
       kind === "glycemicLoad" ? "week" : scope || "week";
     activeLongevitySourcesSort = defaultSourcesSortForKey("amount");
     activeLongevitySourcesFilter = "";
+    activeLongevitySourcesValueMode = "amount";
+    populateSourcesScopeSelect(longevitySourcesScopeEl, activeLongevitySourcesScope);
     syncLongevitySourcesControls();
     setLongevitySourcesFullscreen(false);
     if (longevitySourcesModalTitleEl) {
@@ -7843,6 +7896,7 @@
     activeLongevitySourcesScope = "week";
     activeLongevitySourcesSort = defaultSourcesSortForKey("amount");
     activeLongevitySourcesFilter = "";
+    activeLongevitySourcesValueMode = "amount";
     syncLongevitySourcesControls();
     setLongevitySourcesFullscreen(false);
     longevitySourcesModalEl.hidden = true;
@@ -9237,31 +9291,46 @@
     );
   }
 
-  function populateMicroSourcesScopeSelect(selectedScope) {
-    if (!microSourcesScopeEl) return;
-    var html =
-      '<option value="week"' +
-      (selectedScope === "week" ? " selected" : "") +
-      ">" +
-      escapeHtml(weekTotalsScopeLabel()) +
-      "</option>";
+  function populateSourcesScopeSelect(selectEl, selectedScope) {
+    if (!selectEl) return;
+    var choices = [
+      { value: "week", label: weekTotalsScopeLabel() },
+      { value: "weeks-2", label: "2 weeks" },
+      { value: "weeks-3", label: "3 weeks" },
+    ];
     DAYS.forEach(function (day) {
-      html +=
-        '<option value="' +
-        escapeAttr(day.id) +
-        '"' +
-        (selectedScope === day.id ? " selected" : "") +
-        ">" +
-        escapeHtml(day.label) +
-        "</option>";
+      choices.push({ value: day.id, label: day.label });
     });
-    microSourcesScopeEl.innerHTML = html;
+    selectEl.innerHTML = choices
+      .map(function (choice) {
+        return (
+          '<option value="' +
+          escapeAttr(choice.value) +
+          '"' +
+          (selectedScope === choice.value ? " selected" : "") +
+          ">" +
+          escapeHtml(choice.label) +
+          "</option>"
+        );
+      })
+      .join("");
+  }
+
+  function populateMicroSourcesScopeSelect(selectedScope) {
+    populateSourcesScopeSelect(microSourcesScopeEl, selectedScope);
   }
 
   function renderMicroSourcesBody() {
     if (!microSourcesBodyEl || !activeMicroSourcesKey) return;
     var field = microFieldByKey(activeMicroSourcesKey);
     if (!field) return;
+    if (microSourcesModalSubtitleEl) {
+      microSourcesModalSubtitleEl.textContent =
+        sourcesScopeRangeLabel(activeMicroSourcesScope) +
+        (activeMicroSourcesValueMode === "pct"
+          ? " — matched foods ranked by percent of daily value"
+          : " — matched foods ranked by amount");
+    }
 
     var html = microSourcesRequirementsHtml(field);
     var list = microContributionsForScope(activeMicroSourcesKey, activeMicroSourcesScope);
@@ -9286,12 +9355,16 @@
       return;
     }
 
-    html += nutrientSourcesListHtml(displayList, field.unit, activeMicroSourcesSort);
+    html += nutrientSourcesListHtml(displayList, field.unit, activeMicroSourcesSort, {
+      mode: activeMicroSourcesValueMode,
+      dailyDv: sourcesDailyReference("micro", activeMicroSourcesKey),
+    });
     microSourcesBodyEl.innerHTML = html;
   }
 
   function syncMicroSourcesControls() {
     if (microSourcesFilterEl) microSourcesFilterEl.value = activeMicroSourcesFilter;
+    syncSourcesPctToggle(microSourcesPctToggleBtn, activeMicroSourcesValueMode);
   }
 
   function openMicroSourcesModal(microKey, scope, stackOnDef) {
@@ -9307,6 +9380,7 @@
     activeMicroSourcesScope = scope || "week";
     activeMicroSourcesSort = defaultSourcesSortForKey("amount");
     activeMicroSourcesFilter = "";
+    activeMicroSourcesValueMode = "amount";
     setMicroSourcesFullscreen(false);
     populateMicroSourcesScopeSelect(activeMicroSourcesScope);
     syncMicroSourcesControls();
@@ -9332,6 +9406,7 @@
     activeMicroSourcesScope = "week";
     activeMicroSourcesSort = defaultSourcesSortForKey("amount");
     activeMicroSourcesFilter = "";
+    activeMicroSourcesValueMode = "amount";
     syncMicroSourcesControls();
     setMicroSourcesFullscreen(false);
     microSourcesModalEl.hidden = true;
@@ -12667,14 +12742,97 @@
     setMacroRankScopeTipOpen(!open);
   }
 
+  function sourcesScopeDateKeys(scope) {
+    if (scope === "weeks-2" || scope === "weeks-3") {
+      var weeks = scope === "weeks-2" ? 2 : 3;
+      var endMonday = parseDateKey(viewedWeekStart || currentWeekMondayKey());
+      if (!endMonday) return [];
+      var cursor = addDays(endMonday, -7 * (weeks - 1));
+      var lastKey = toDateKey(addDays(endMonday, 6));
+      var keys = [];
+      var guard = 0;
+      while (cursor && toDateKey(cursor) <= lastKey && guard < 28) {
+        keys.push(toDateKey(cursor));
+        cursor = addDays(cursor, 1);
+        guard++;
+      }
+      return keys;
+    }
+    if (!scope || scope === "week") {
+      return weekDateKeys(viewedWeekStart || currentWeekMondayKey());
+    }
+    var one = dateKeyForDayId(scope);
+    return one ? [one] : [];
+  }
+
+  function mealTextForDateKey(dateKey) {
+    var viewed = weekDateKeys(viewedWeekStart || currentWeekMondayKey());
+    var idx = viewed.indexOf(dateKey);
+    if (idx >= 0 && DAYS[idx]) {
+      var el = document.getElementById(DAYS[idx].id);
+      if (el) return el.value || "";
+    }
+    return dayMealsByDate[dateKey] || "";
+  }
+
+  function sourcesScopeSkipsIgnored(scope) {
+    return !scope || scope === "week" || scope === "weeks-2" || scope === "weeks-3";
+  }
+
+  function sourcesScopeRangeLabel(scope) {
+    if (scope === "weeks-2" || scope === "weeks-3") {
+      var weeks = scope === "weeks-2" ? 2 : 3;
+      var endMonday = parseDateKey(viewedWeekStart || currentWeekMondayKey());
+      if (!endMonday) return weeks + " weeks";
+      var start = addDays(endMonday, -7 * (weeks - 1));
+      var end = addDays(endMonday, 6);
+      return (
+        weeks +
+        " weeks · " +
+        WEEK_RANGE_MONTHS[start.getMonth()] +
+        " " +
+        start.getDate() +
+        " – " +
+        WEEK_RANGE_MONTHS[end.getMonth()] +
+        " " +
+        end.getDate()
+      );
+    }
+    if (scope && scope !== "week") {
+      var dayMeta = dayMetaById(scope);
+      return dayMeta
+        ? dayMeta.label +
+            (dateLabelForDayId(scope) ? " · " + dateLabelForDayId(scope) : "")
+        : scope;
+    }
+    return weekTotalsScopeLabel();
+  }
+
+  function sourcesDailyReference(kind, key) {
+    if (kind === "micro") return dailyDv(key) || iomBwMinDaily(key) || 0;
+    if (kind === "macro" && key === "protein") return dailyProteinTargetG() || 0;
+    if (kind === "longevity") return dailyLongevityDv(key) || 0;
+    return 0;
+  }
+
+  function syncSourcesPctToggle(btn, mode) {
+    if (!btn) return;
+    var showingPct = mode === "pct";
+    btn.setAttribute("aria-pressed", showingPct ? "true" : "false");
+    btn.textContent = showingPct ? "Amount" : "% DV";
+    btn.title = showingPct
+      ? "Show the amount column"
+      : "Show percent of daily value";
+  }
+
   function microContributionsForScope(microKey, scope) {
-    if (scope === "week") {
-      var merged = {};
-      DAYS.forEach(function (day) {
-        if (isDayIgnoredForWeekTotals(day.id)) return;
-        var el = document.getElementById(day.id);
-        var text = el ? el.value : "";
-        microContributionsFromText(text, microKey).forEach(function (item) {
+    var dateKeys = sourcesScopeDateKeys(scope);
+    var skipIgnored = sourcesScopeSkipsIgnored(scope);
+    var merged = {};
+    dateKeys.forEach(function (dateKey) {
+      if (skipIgnored && ignoredDaysByDate[dateKey]) return;
+      microContributionsFromText(mealTextForDateKey(dateKey), microKey).forEach(
+        function (item) {
           var k = item.name.toLowerCase();
           if (merged[k]) {
             merged[k].amount += item.amount;
@@ -12687,25 +12845,16 @@
               perServing: item.perServing,
             };
           }
-        });
-      });
-      return Object.keys(merged)
-        .map(function (k) {
-          return merged[k];
-        })
-        .sort(function (a, b) {
-          return b.amount - a.amount;
-        });
-    }
-
-    var text = "";
-    DAYS.forEach(function (day) {
-      if (day.id === scope) {
-        var el = document.getElementById(day.id);
-        text = el ? el.value : "";
-      }
+        }
+      );
     });
-    return microContributionsFromText(text, microKey);
+    return Object.keys(merged)
+      .map(function (k) {
+        return merged[k];
+      })
+      .sort(function (a, b) {
+        return b.amount - a.amount;
+      });
   }
 
   function addMicroTotals(a, b) {
@@ -40184,6 +40333,34 @@
     microSourcesScopeEl.addEventListener("change", function () {
       activeMicroSourcesScope = microSourcesScopeEl.value || "week";
       renderMicroSourcesBody();
+    });
+  }
+
+  if (microSourcesPctToggleBtn) {
+    microSourcesPctToggleBtn.addEventListener("click", function () {
+      activeMicroSourcesValueMode =
+        activeMicroSourcesValueMode === "pct" ? "amount" : "pct";
+      syncSourcesPctToggle(microSourcesPctToggleBtn, activeMicroSourcesValueMode);
+      renderMicroSourcesBody();
+    });
+  }
+
+  if (longevitySourcesScopeEl) {
+    longevitySourcesScopeEl.addEventListener("change", function () {
+      activeLongevitySourcesScope = longevitySourcesScopeEl.value || "week";
+      renderLongevitySourcesBody();
+    });
+  }
+
+  if (longevitySourcesPctToggleBtn) {
+    longevitySourcesPctToggleBtn.addEventListener("click", function () {
+      activeLongevitySourcesValueMode =
+        activeLongevitySourcesValueMode === "pct" ? "amount" : "pct";
+      syncSourcesPctToggle(
+        longevitySourcesPctToggleBtn,
+        activeLongevitySourcesValueMode
+      );
+      renderLongevitySourcesBody();
     });
   }
 
