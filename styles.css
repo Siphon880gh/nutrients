@@ -3974,6 +3974,11 @@ body.highlight-adverse-effects .dashboard__micro-acute-btn--adverse .dashboard__
 }
 
 .micro-sources-modal__pct-btn {
+  /* Fixed width so "Column: Amount" / "Column: % DV" don't resize the modal */
+  box-sizing: border-box;
+  min-width: 10em;
+  text-align: center;
+  white-space: nowrap;
   padding: 0.35rem 0.55rem;
   font-size: 0.75rem;
   font-weight: 700;

@@ -7738,7 +7738,7 @@
       longevitySourcesModalSubtitleEl.textContent =
         sourcesScopeRangeLabel(activeLongevitySourcesScope) +
         (activeLongevitySourcesValueMode === "pct"
-          ? " — matched foods ranked by percent of daily value"
+          ? " — matched foods ranked by % DV"
           : " — matched foods ranked by amount");
     }
     var label;
@@ -9328,7 +9328,7 @@
       microSourcesModalSubtitleEl.textContent =
         sourcesScopeRangeLabel(activeMicroSourcesScope) +
         (activeMicroSourcesValueMode === "pct"
-          ? " — matched foods ranked by percent of daily value"
+          ? " — matched foods ranked by % DV"
           : " — matched foods ranked by amount");
     }
 
@@ -12819,10 +12819,10 @@
     if (!btn) return;
     var showingPct = mode === "pct";
     btn.setAttribute("aria-pressed", showingPct ? "true" : "false");
-    btn.textContent = showingPct ? "Amount" : "% DV";
+    btn.textContent = showingPct ? "Column: % DV" : "Column: Amount";
     btn.title = showingPct
-      ? "Show the amount column"
-      : "Show percent of daily value";
+      ? "Showing percent of daily value. Click to show the amount column"
+      : "Showing amount. Click to show percent of daily value";
   }
 
   function microContributionsForScope(microKey, scope) {
