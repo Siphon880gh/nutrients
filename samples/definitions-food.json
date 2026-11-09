@@ -44331,6 +44331,120 @@
     "notes": "Denny's nutrition guide (Oct 2022 edition), Moons Over My Hammy served with hash browns, 18 oz: 1040 kcal, 54 g fat, 18 g saturated fat, 1 g trans fat, 560 mg cholesterol, 2960 mg sodium, 90 g carbohydrate, 3 g fiber, 4 g sugars, 47 g protein. Logged as a 17 oz sandwich."
   },
   {
+    "name": "Denny's - Ultimate Omelette with Hash Browns & White Toast 1 plate (21 oz)",
+    "protein": 46,
+    "carbs": 63,
+    "fats": 77,
+    "micros": {
+      "sodium": 2190,
+      "fiber": 3
+    },
+    "longevity": {
+      "saturatedFat": 23,
+      "transFat": 0.5,
+      "cholesterol": 785
+    },
+    "carbQuality": {
+      "netCarbs": 60
+    },
+    "notes": "Denny's Core Menu Nutrition Guide (October 2025 edition, dennys.com/nutrition), Ultimate Omelette® w/ hash browns & white toast, 21 oz: 1150 kcal, 77 g fat, 23 g saturated fat, 0.5 g trans fat, 785 mg cholesterol, 2190 mg sodium, 63 g carbohydrate, 3 g fiber, 7 g sugars, 46 g protein. The guide lists this omelette only as the plate with hash browns and white toast; it does not say whether the toast includes margarine. Denny's does not publish vitamins or minerals, so none are stored."
+  },
+  {
+    "name": "Denny's - Loaded Veggie Omelette with Hash Browns & White Toast 1 plate (19 oz)",
+    "protein": 36,
+    "carbs": 63,
+    "fats": 56,
+    "micros": {
+      "sodium": 1540,
+      "fiber": 3
+    },
+    "longevity": {
+      "saturatedFat": 16,
+      "transFat": 0.5,
+      "cholesterol": 740
+    },
+    "carbQuality": {
+      "netCarbs": 60
+    },
+    "notes": "Denny's Core Menu Nutrition Guide (October 2025 edition, dennys.com/nutrition), Loaded Veggie Omelette w/ hash browns & white toast, 19 oz: 920 kcal, 56 g fat, 16 g saturated fat, 0.5 g trans fat, 740 mg cholesterol, 1540 mg sodium, 63 g carbohydrate, 3 g fiber, 6 g sugars, 36 g protein. The guide lists this omelette only as the plate with hash browns and white toast; it does not say whether the toast includes margarine. Denny's does not publish vitamins or minerals, so none are stored."
+  },
+  {
+    "name": "Denny's - Mile High Denver Omelette with Hash Browns & White Toast 1 plate (19 oz)",
+    "protein": 51,
+    "carbs": 69,
+    "fats": 67,
+    "micros": {
+      "sodium": 3130,
+      "fiber": 2
+    },
+    "longevity": {
+      "saturatedFat": 21,
+      "transFat": 1,
+      "cholesterol": 800
+    },
+    "carbQuality": {
+      "netCarbs": 67
+    },
+    "notes": "Denny's Core Menu Nutrition Guide (October 2025 edition, dennys.com/nutrition), Mile High Denver Omelette w/ hash browns & white toast, 19 oz: 1090 kcal, 67 g fat, 21 g saturated fat, 1 g trans fat, 800 mg cholesterol, 3130 mg sodium, 69 g carbohydrate, 2 g fiber, 12 g sugars, 51 g protein. The guide lists this omelette only as the plate with hash browns and white toast; it does not say whether the toast includes margarine. Denny's does not publish vitamins or minerals, so none are stored."
+  },
+  {
+    "name": "Denny's - Moons Over My Hammy Omelette with Hash Browns & White Toast 1 plate (19 oz)",
+    "protein": 52,
+    "carbs": 64,
+    "fats": 67,
+    "micros": {
+      "sodium": 2760,
+      "fiber": 1
+    },
+    "longevity": {
+      "saturatedFat": 21,
+      "transFat": 1,
+      "cholesterol": 800
+    },
+    "carbQuality": {
+      "netCarbs": 63
+    },
+    "notes": "Denny's Core Menu Nutrition Guide (October 2025 edition, dennys.com/nutrition), Moons Over My Hammy® Omelette w/ hash browns & white toast, 19 oz: 1080 kcal, 67 g fat, 21 g saturated fat, 1 g trans fat, 800 mg cholesterol, 2760 mg sodium, 64 g carbohydrate, 1 g fiber, 9 g sugars, 52 g protein. The guide lists this omelette only as the plate with hash browns and white toast; it does not say whether the toast includes margarine. Denny's does not publish vitamins or minerals, so none are stored."
+  },
+  {
+    "name": "Denny's - Philly Cheesesteak Omelette with Hash Browns & White Toast 1 plate (21 oz)",
+    "protein": 54,
+    "carbs": 63,
+    "fats": 71,
+    "micros": {
+      "sodium": 2010,
+      "fiber": 2
+    },
+    "longevity": {
+      "saturatedFat": 21,
+      "transFat": 1,
+      "cholesterol": 785
+    },
+    "carbQuality": {
+      "netCarbs": 61
+    },
+    "notes": "Denny's Core Menu Nutrition Guide (October 2025 edition, dennys.com/nutrition), Philly Cheesesteak Omelette w/ hash browns & white toast, 21 oz: 1130 kcal, 71 g fat, 21 g saturated fat, 1 g trans fat, 785 mg cholesterol, 2010 mg sodium, 63 g carbohydrate, 2 g fiber, 5 g sugars, 54 g protein. The guide lists this omelette only as the plate with hash browns and white toast; it does not say whether the toast includes margarine. Denny's does not publish vitamins or minerals, so none are stored."
+  },
+  {
+    "name": "Denny's - 55+ Omelette with Hash Browns & White Toast 1 plate (16 oz)",
+    "protein": 39,
+    "carbs": 61,
+    "fats": 57,
+    "micros": {
+      "sodium": 2080,
+      "fiber": 2
+    },
+    "longevity": {
+      "saturatedFat": 16,
+      "transFat": 0.5,
+      "cholesterol": 530
+    },
+    "carbQuality": {
+      "netCarbs": 59
+    },
+    "notes": "Denny's Core Menu Nutrition Guide (October 2025 edition, dennys.com/nutrition), 55+ Omelette w/ hash browns & white toast, 16 oz: 930 kcal, 57 g fat, 16 g saturated fat, 0.5 g trans fat, 530 mg cholesterol, 2080 mg sodium, 61 g carbohydrate, 2 g fiber, 6 g sugars, 39 g protein. The guide lists this omelette only as the plate with hash browns and white toast; it does not say whether the toast includes margarine. Denny's does not publish vitamins or minerals, so none are stored."
+  },
+  {
     "name": "Baja Fresh - Baja Burrito Chicken 1 burrito (425 g)",
     "protein": 43,
     "carbs": 59,
