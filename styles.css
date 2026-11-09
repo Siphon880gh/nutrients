@@ -5862,6 +5862,294 @@ button.dashboard__micro-day-name:focus-visible {
   max-width: min(72rem, calc(100vw - 2rem));
 }
 
+/* Requirements analysis — daily non-stored week-by-day columns */
+.longevity-analysis-modal--daily-nonstored .longevity-analysis-modal__panel {
+  width: min(1400px, 96vw);
+  max-width: min(1400px, 96vw);
+  height: 92vh;
+  max-height: 92vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.longevity-analysis-modal--daily-nonstored .longevity-analysis-modal__body,
+.longevity-analysis-report--daily-nonstored {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: auto;
+}
+
+.analysis-daily-nonstored__legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem 0.65rem;
+  margin: 0.2rem 0 0.55rem;
+  font-size: 0.7rem;
+  color: #5c5c58;
+  flex: 0 0 auto;
+}
+
+.analysis-daily-nonstored__legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.28rem;
+}
+
+.analysis-daily-nonstored__legend-swatch {
+  width: 0.75rem;
+  height: 0.75rem;
+  border-radius: 3px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  background: #fafaf8;
+}
+
+.analysis-daily-nonstored__legend-item--red .analysis-daily-nonstored__legend-swatch {
+  background: #fdecea;
+  border-color: #f0c4c0;
+}
+
+.analysis-daily-nonstored__legend-item--orange .analysis-daily-nonstored__legend-swatch {
+  background: #fff1e6;
+  border-color: #f0d0b0;
+}
+
+.analysis-daily-nonstored__legend-item--yellow .analysis-daily-nonstored__legend-swatch {
+  background: #fff8e1;
+  border-color: #ead89a;
+}
+
+.analysis-daily-nonstored__legend-item--lime .analysis-daily-nonstored__legend-swatch {
+  background: #eef7e8;
+  border-color: #c5dfb8;
+}
+
+.analysis-daily-nonstored__legend-item--green .analysis-daily-nonstored__legend-swatch {
+  background: #e6f4ea;
+  border-color: #b7d8c0;
+}
+
+.analysis-daily-nonstored__columns {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(10.25rem, 1fr));
+  gap: 0.4rem;
+  align-items: start;
+  overflow-x: auto;
+  padding-bottom: 0.25rem;
+}
+
+.analysis-daily-nonstored__col {
+  min-width: 10.25rem;
+  border: 1px solid #e4e8ee;
+  border-radius: 6px;
+  background: #fafbfc;
+  padding: 0.35rem 0.3rem 0.4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.analysis-daily-nonstored__col--today {
+  border-color: #9db7d4;
+  background: #f4f8fc;
+}
+
+.analysis-daily-nonstored__col--skeleton {
+  background: #f3f3f1;
+  border-color: #e0e0dc;
+}
+
+.analysis-daily-nonstored__col-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.25rem;
+  padding: 0.1rem 0.2rem 0.25rem;
+  border-bottom: 1px solid #ecece8;
+}
+
+.analysis-daily-nonstored__col-title {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #333;
+  white-space: nowrap;
+}
+
+.analysis-daily-nonstored__col-today {
+  font-size: 0.62rem;
+  font-weight: 650;
+  color: #2a5f9e;
+  white-space: nowrap;
+}
+
+.analysis-daily-nonstored__not-yet {
+  margin: 0.15rem 0.2rem 0;
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: #8a8a86;
+}
+
+.analysis-daily-nonstored__empty {
+  margin: 0.35rem 0.2rem;
+  font-size: 0.68rem;
+  color: #8a8a86;
+  font-style: italic;
+}
+
+.analysis-daily-nonstored__skeleton {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  padding: 0.35rem 0.25rem 0.2rem;
+}
+
+.analysis-daily-nonstored__skeleton-bar {
+  height: 0.72rem;
+  border-radius: 3px;
+  background: #e4e4e0;
+}
+
+.analysis-daily-nonstored__list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  max-width: none;
+}
+
+.analysis-daily-nonstored__row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-rows: auto auto;
+  gap: 0.02rem 0.35rem;
+  padding: 0.22rem 0.3rem;
+  border: 1px solid transparent;
+  border-left-width: 2px;
+  border-radius: 0;
+  margin: 0;
+  font-size: 0.68rem;
+  line-height: 1.25;
+  background: #fafaf8;
+}
+
+.analysis-daily-nonstored__row + .analysis-daily-nonstored__row {
+  border-top: none;
+}
+
+.analysis-daily-nonstored__row:first-child {
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+}
+
+.analysis-daily-nonstored__row:last-child {
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+}
+
+.analysis-daily-nonstored__name {
+  grid-column: 1 / -1;
+  grid-row: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: 600;
+  color: #333;
+  text-align: left;
+}
+
+button.analysis-daily-nonstored__name {
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-weight: 600;
+  color: #333;
+  cursor: pointer;
+}
+
+button.analysis-daily-nonstored__name:hover {
+  color: #1f3a58;
+  text-decoration: underline;
+}
+
+button.analysis-daily-nonstored__name:focus-visible {
+  outline: 2px solid #3d6b9e;
+  outline-offset: 1px;
+  border-radius: 2px;
+}
+
+.analysis-daily-nonstored__pct {
+  grid-column: 1;
+  grid-row: 2;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: inherit;
+}
+
+.analysis-daily-nonstored__amt {
+  grid-column: 2;
+  grid-row: 2;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  color: #6a6a66;
+  font-size: 0.62rem;
+  white-space: nowrap;
+}
+
+.analysis-daily-nonstored__row--red {
+  background: #fdecea;
+  border-color: #f0c4c0;
+  border-left-color: #b42318;
+  color: #b42318;
+}
+
+.analysis-daily-nonstored__row--orange {
+  background: #fff1e6;
+  border-color: #f0d0b0;
+  border-left-color: #c45c00;
+  color: #c45c00;
+}
+
+.analysis-daily-nonstored__row--yellow {
+  background: #fff8e1;
+  border-color: #ead89a;
+  border-left-color: #9a6700;
+  color: #9a6700;
+}
+
+.analysis-daily-nonstored__row--lime {
+  background: #eef7e8;
+  border-color: #c5dfb8;
+  border-left-color: #4d7c3a;
+  color: #3f6b30;
+}
+
+.analysis-daily-nonstored__row--green {
+  background: #e6f4ea;
+  border-color: #b7d8c0;
+  border-left-color: #1a7a36;
+  color: #1a7a36;
+}
+
+.analysis-daily-nonstored__row--red + .analysis-daily-nonstored__row--red,
+.analysis-daily-nonstored__row--orange + .analysis-daily-nonstored__row--orange,
+.analysis-daily-nonstored__row--yellow + .analysis-daily-nonstored__row--yellow,
+.analysis-daily-nonstored__row--lime + .analysis-daily-nonstored__row--lime,
+.analysis-daily-nonstored__row--green + .analysis-daily-nonstored__row--green {
+  border-top-color: transparent;
+}
+
+@media (max-width: 1100px) {
+  .longevity-analysis-modal--daily-nonstored .longevity-analysis-modal__panel {
+    width: min(96vw, 1400px);
+    height: 92vh;
+  }
+
+  .analysis-daily-nonstored__columns {
+    grid-template-columns: repeat(7, minmax(9.5rem, 1fr));
+  }
+}
+
+
 .longevity-analysis-report--requirements {
   --analysis-feel-columns: minmax(8.5rem, 1.15fr) 3.5rem minmax(9.5rem, 1fr) minmax(9.5rem, 1fr);
 }
@@ -16518,6 +16806,38 @@ button.longevity-form__label-link:focus-visible {
     max-height: none;
     overflow: visible;
   }
+  body.print-longevity-analysis .longevity-analysis-modal--daily-nonstored .longevity-analysis-modal__panel {
+    width: auto;
+    max-width: none;
+    height: auto;
+    max-height: none;
+  }
+
+  body.print-longevity-analysis .analysis-daily-nonstored__columns {
+    display: grid;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    gap: 0.25rem;
+    overflow: visible;
+  }
+
+  body.print-longevity-analysis .analysis-daily-nonstored__col {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  body.print-longevity-analysis .analysis-daily-nonstored__skeleton,
+  body.print-longevity-analysis .analysis-daily-nonstored__not-yet {
+    display: none !important;
+  }
+
+  body.print-longevity-analysis .analysis-daily-nonstored__col--skeleton::after {
+    content: "Not yet";
+    display: block;
+    font-size: 0.7rem;
+    color: #8a8a86;
+    padding: 0.25rem;
+  }
+
 
   body.print-longevity-analysis .longevity-analysis-report__section {
     background: #fff;

@@ -312,6 +312,14 @@
     { id: "limit-20-50", label: "20–50%", min: 20, max: 50, maxInclusive: false, color: "green", emoji: "🙂" },
     { id: "limit-0-20", label: "0–20%", min: 0, max: 20, maxInclusive: false, color: "green", emoji: "😄" },
   ];
+  /** % DV bands for Requirements — daily non-stored ranked shortfall list. */
+  var ANALYSIS_DAILY_NONSTORED_BANDS = [
+    { id: "0-25", label: "0–24%", min: 0, max: 25, maxInclusive: false, color: "red" },
+    { id: "25-50", label: "25–49%", min: 25, max: 50, maxInclusive: false, color: "orange" },
+    { id: "50-75", label: "50–74%", min: 50, max: 75, maxInclusive: false, color: "yellow" },
+    { id: "75-100", label: "75–99%", min: 75, max: 100, maxInclusive: false, color: "lime" },
+    { id: "100-plus", label: "100%+", min: 100, max: Infinity, maxInclusive: true, color: "green" },
+  ];
   var microDefModalEl = document.getElementById("micro-def-modal");
   var microDefModalTitleEl = document.getElementById("micro-def-modal-title");
   var microDefTargetsEl = document.getElementById("micro-def-targets");
@@ -21073,6 +21081,14 @@
     longevityAnalysisReturnPending = false;
     analysisActiveKind = null;
     analysisActiveDayId = null;
+    longevityAnalysisModalEl.classList.remove(
+      "longevity-analysis-modal--daily-nonstored"
+    );
+    if (longevityAnalysisReportEl) {
+      longevityAnalysisReportEl.classList.remove(
+        "longevity-analysis-report--daily-nonstored"
+      );
+    }
     hideLongevityAnalysisReturnWidget();
     document.body.classList.remove("print-longevity-analysis");
     updateBodyModalOpen();
@@ -21097,10 +21113,7 @@
     if (analysisActiveKind === "longevity" && !longevityPanelOpen) {
       setLongevityPanelOpen(true);
     }
-    if (
-      (analysisActiveKind === "micro-week" || analysisActiveKind === "micro-day") &&
-      !microRequirementsOpen
-    ) {
+    if (analysisIsRequirementsKind() && !microRequirementsOpen) {
       setMicroRequirementsOpen(true);
     }
     longevityAnalysisModalEl.hidden = false;
@@ -21133,6 +21146,34 @@
       if (DAYS[i].id === dayId) return DAYS[i];
     }
     return null;
+  }
+
+  function analysisIsRequirementsKind(kind) {
+    kind = kind == null ? analysisActiveKind : kind;
+    return (
+      kind === "micro-week" ||
+      kind === "micro-day" ||
+      kind === "micro-daily-nonstored"
+    );
+  }
+
+  function analysisIsDayScopedKind(kind) {
+    kind = kind == null ? analysisActiveKind : kind;
+    return kind === "micro-day";
+  }
+
+  /** True when the day's calendar date is after today (not yet reached). */
+  function analysisDayIsFuture(dayId) {
+    var key = dateKeyForDayId(dayId);
+    if (!key) return false;
+    return key > todayDateKey();
+  }
+
+  /** True when the day editor has non-whitespace meal text. */
+  function analysisDayHasEntries(dayId) {
+    var el = document.getElementById(dayId);
+    var dayText = el ? el.value : "";
+    return !!(dayText && String(dayText).trim());
   }
 
   var MICRO_ANALYSIS_SECTIONS = [
@@ -21858,7 +21899,7 @@
   }
 
   function analysisNutrientChoiceScope() {
-    return analysisActiveKind === "micro-day" && analysisActiveDayId
+    return analysisIsDayScopedKind() && analysisActiveDayId
       ? analysisActiveDayId
       : "week";
   }
@@ -22145,6 +22186,225 @@
     );
   }
 
+  function analysisDailyNonstoredBandForPct(pct) {
+    return longevityAnalysisBandForPct(pct, ANALYSIS_DAILY_NONSTORED_BANDS);
+  }
+
+  function collectMicroDailyNonstoredEntries(dayId) {
+    var el = document.getElementById(dayId);
+    var text = el ? el.value : "";
+    var microTotals = microTotalsFromText(text);
+    var longevityTotals = longevityTotalsFromText(text);
+
+    var restoreMore = microMoreExpanded;
+    microMoreExpanded = true;
+    var fields = microBaseDisplayFields();
+    microMoreExpanded = restoreMore;
+
+    var seen = {};
+    var list = [];
+    fields.forEach(function (entry) {
+      var key = entry && entry.field && entry.field.key;
+      if (!key || seen[key]) return;
+      if (!microRequiresDailyIntake(key)) return;
+      var snap = microEntryStatusSnapshot(
+        entry,
+        microTotals,
+        longevityTotals,
+        true
+      );
+      var targetDisplay = snap.targetDisplay;
+      var pct = targetDisplay && targetDisplay.pct;
+      if (pct == null || isNaN(pct)) return;
+      if (
+        (targetDisplay && targetDisplay.kind === "studyMax") ||
+        studyMaxMicroRef(key)
+      ) {
+        return;
+      }
+      // Shortfall ranking: skip ceilings (e.g. sodium).
+      if (microAnalysisEntryIsLimit(entry, targetDisplay)) return;
+      seen[key] = true;
+      var amtText =
+        entry.source === "derived"
+          ? microDerivedAmtText(key, microTotals, true)
+          : microConditionAmtText(entry, snap.total, true);
+      list.push({
+        label: (entry.field && entry.field.label) || "Untitled",
+        pct: pct,
+        key: key,
+        source: entry.source || "micro",
+        entry: entry,
+        targetDisplay: targetDisplay,
+        amtText: amtText,
+      });
+    });
+
+    list.sort(function (a, b) {
+      if (a.pct !== b.pct) return a.pct - b.pct;
+      return String(a.label || "").localeCompare(String(b.label || ""));
+    });
+    return list;
+  }
+
+  function microDailyNonstoredLegendHtml() {
+    return (
+      '<div class="analysis-daily-nonstored__legend" role="list" aria-label="% DV color bands">' +
+      ANALYSIS_DAILY_NONSTORED_BANDS.map(function (band) {
+        return (
+          '<span class="analysis-daily-nonstored__legend-item analysis-daily-nonstored__legend-item--' +
+          escapeAttr(band.color) +
+          '" role="listitem">' +
+          '<span class="analysis-daily-nonstored__legend-swatch" aria-hidden="true"></span>' +
+          escapeHtml(band.label) +
+          "</span>"
+        );
+      }).join("") +
+      "</div>"
+    );
+  }
+
+  function microDailyNonstoredColHeaderLabel(day) {
+    var key = dateKeyForDayId(day.id);
+    var d = key ? parseDateKey(key) : null;
+    var shortDate = d ? d.getMonth() + 1 + "/" + d.getDate() : "";
+    return day.label + (shortDate ? " " + shortDate : "");
+  }
+
+  function formatDailyNonstoredPct(pct) {
+    if (pct == null || !isFinite(pct)) return "—";
+    return formatTargetPctNumber(pct);
+  }
+
+  function microDailyNonstoredRowHtml(item) {
+    var band = analysisDailyNonstoredBandForPct(item.pct);
+    var bandColor = band && band.color ? band.color : "yellow";
+    var bandId = band && band.id ? band.id : "";
+    var field = item.entry && item.entry.field;
+    var isLongevity = item.source === "longevity";
+    var defAttr = isLongevity ? "data-longevity-def" : "data-micro-def";
+    var nameHtml;
+    if (field) {
+      nameHtml =
+        '<button type="button" class="analysis-daily-nonstored__name" ' +
+        defAttr +
+        '="' +
+        escapeAttr(field.key) +
+        '" aria-haspopup="dialog" title="' +
+        escapeAttr(field.label || item.label || "") +
+        '">' +
+        escapeHtml(field.label || item.label || "Untitled") +
+        "</button>";
+    } else {
+      nameHtml =
+        '<span class="analysis-daily-nonstored__name">' +
+        escapeHtml(item.label || "Untitled") +
+        "</span>";
+    }
+    return (
+      '<div class="analysis-daily-nonstored__row analysis-daily-nonstored__row--' +
+      escapeAttr(bandColor) +
+      '"' +
+      (bandId ? ' data-pct-band="' + escapeAttr(bandId) + '"' : "") +
+      ' data-analysis-daily-pct="' +
+      escapeAttr(String(item.pct)) +
+      '" role="listitem">' +
+      nameHtml +
+      '<span class="analysis-daily-nonstored__pct">' +
+      escapeHtml(formatDailyNonstoredPct(item.pct)) +
+      "</span>" +
+      '<span class="analysis-daily-nonstored__amt">' +
+      escapeHtml(item.amtText || "—") +
+      "</span></div>"
+    );
+  }
+
+  function microDailyNonstoredSkeletonHtml() {
+    var bars = "";
+    var i;
+    for (i = 0; i < 8; i++) {
+      bars +=
+        '<div class="analysis-daily-nonstored__skeleton-bar" style="width:' +
+        String(58 + ((i * 17) % 34)) +
+        '%"></div>';
+    }
+    return (
+      '<p class="analysis-daily-nonstored__not-yet">Not yet</p>' +
+      '<div class="analysis-daily-nonstored__skeleton" aria-hidden="true">' +
+      bars +
+      "</div>"
+    );
+  }
+
+  function microDailyNonstoredColumnHtml(day) {
+    var header = microDailyNonstoredColHeaderLabel(day);
+    var isToday = !!(activeTodayDayId() && day.id === activeTodayDayId());
+    var isFuture = analysisDayIsFuture(day.id);
+    var colCls =
+      "analysis-daily-nonstored__col" +
+      (isToday ? " analysis-daily-nonstored__col--today" : "") +
+      (isFuture ? " analysis-daily-nonstored__col--skeleton" : "");
+    var html =
+      '<section class="' +
+      colCls +
+      '" data-analysis-day="' +
+      escapeAttr(day.id) +
+      '">' +
+      '<header class="analysis-daily-nonstored__col-head">' +
+      '<span class="analysis-daily-nonstored__col-title">' +
+      escapeHtml(header) +
+      "</span>" +
+      (isToday
+        ? '<span class="analysis-daily-nonstored__col-today">Today</span>'
+        : "") +
+      "</header>";
+    if (isFuture) {
+      html += microDailyNonstoredSkeletonHtml();
+    } else if (!analysisDayHasEntries(day.id)) {
+      html +=
+        '<p class="analysis-daily-nonstored__empty">No entries</p>';
+    } else {
+      var entries = collectMicroDailyNonstoredEntries(day.id);
+      if (!entries.length) {
+        html +=
+          '<p class="analysis-daily-nonstored__empty">No scored daily non-stored nutrients.</p>';
+      } else {
+        html +=
+          '<div class="analysis-daily-nonstored__list" role="list">' +
+          entries
+            .map(function (item) {
+              return microDailyNonstoredRowHtml(item);
+            })
+            .join("") +
+          "</div>";
+      }
+    }
+    html += "</section>";
+    return html;
+  }
+
+  function microDailyNonstoredReportHtml(options) {
+    options = options || {};
+    var columns = DAYS.map(function (day) {
+      return microDailyNonstoredColumnHtml(day);
+    }).join("");
+    return (
+      '<p class="longevity-analysis-report__meta">' +
+      escapeHtml(options.metaHtml || "") +
+      "</p>" +
+      '<p class="longevity-analysis-report__note">' +
+      escapeHtml(
+        options.note ||
+          "One column per day for nutrients with poor body storage. Each day is ranked by its own largest shortfall. Future days show a placeholder."
+      ) +
+      "</p>" +
+      microDailyNonstoredLegendHtml() +
+      '<div class="analysis-daily-nonstored__columns">' +
+      columns +
+      "</div>"
+    );
+  }
+
   function closeOtherModalsForAnalysis() {
     if (analysisPickerModalEl && !analysisPickerModalEl.hidden) {
       analysisPickerModalEl.hidden = true;
@@ -22175,14 +22435,22 @@
   function renderAnalysisModal() {
     if (!longevityAnalysisModalEl || !longevityAnalysisReportEl) return;
     var kind = analysisActiveKind;
-    var requirementsAnalysis = kind === "micro-week" || kind === "micro-day";
+    var requirementsAnalysis = analysisIsRequirementsKind(kind);
     longevityAnalysisModalEl.classList.toggle(
       "longevity-analysis-modal--requirements",
       requirementsAnalysis
     );
+    longevityAnalysisModalEl.classList.toggle(
+      "longevity-analysis-modal--daily-nonstored",
+      kind === "micro-daily-nonstored"
+    );
     longevityAnalysisReportEl.classList.toggle(
       "longevity-analysis-report--requirements",
       requirementsAnalysis
+    );
+    longevityAnalysisReportEl.classList.toggle(
+      "longevity-analysis-report--daily-nonstored",
+      kind === "micro-daily-nonstored"
     );
     if (analysisAiActionsEl) analysisAiActionsEl.hidden = false;
     syncAnalysisAiActionLabels();
@@ -22274,6 +22542,25 @@
             "Day totals vs your demographic daily values (not week-averaged). Grouped like your micro requirements. “Want more” averages treat values over 100% as 100%. “Want less” shows % of the daily max with no cap (over 100% = over the ceiling).",
         }
       );
+    } else if (kind === "micro-daily-nonstored") {
+      if (longevityAnalysisTitleEl) {
+        longevityAnalysisTitleEl.textContent =
+          "Requirements analysis — daily non-stored";
+      }
+      if (longevityAnalysisSubtitleEl) {
+        longevityAnalysisSubtitleEl.textContent =
+          "Week by day · " + weekLabel;
+      }
+      longevityAnalysisReportEl.innerHTML = microDailyNonstoredReportHtml({
+        metaHtml:
+          "Week: " +
+          weekLabel +
+          " · Sex profile: " +
+          sexLabel +
+          " · Daily non-stored only · Mon–Sun columns",
+        note:
+          "Seven day columns for nutrients your body stores poorly (B vitamins except B12, vitamin C, electrolytes, magnesium, zinc, choline, fiber, essential amino acids, ALA, MK-4). Each column ranks that day's largest shortfall (% DV) first; 100%+ at the bottom. Matching row colors mark consecutive nutrients in the same % DV band. Future days show a gray placeholder.",
+      });
     }
 
     syncAnalysisPeriodNav();
@@ -22282,10 +22569,13 @@
 
   function analysisCanStepPeriod(delta) {
     if (delta !== -1 && delta !== 1) return false;
-    if (analysisActiveKind === "micro-week") {
+    if (
+      analysisActiveKind === "micro-week" ||
+      analysisActiveKind === "micro-daily-nonstored"
+    ) {
       return delta > 0 || !isEarliestViewedWeek();
     }
-    if (analysisActiveKind === "micro-day") {
+    if (analysisIsDayScopedKind()) {
       var idx = dayIndexById(analysisActiveDayId);
       if (idx < 0) return false;
       if (delta < 0 && idx === 0 && isEarliestViewedWeek()) return false;
@@ -22295,13 +22585,17 @@
   }
 
   function syncAnalysisPeriodNav() {
-    var requirements =
-      analysisActiveKind === "micro-week" || analysisActiveKind === "micro-day";
-    var dayMode = analysisActiveKind === "micro-day";
+    var requirements = analysisIsRequirementsKind();
+    var dayMode = analysisIsDayScopedKind();
     if (analysisPeriodNavEl) {
       analysisPeriodNavEl.setAttribute(
         "aria-label",
-        dayMode ? "Day" : analysisActiveKind === "micro-week" ? "Week" : "Analysis period"
+        dayMode
+          ? "Day"
+          : analysisActiveKind === "micro-week" ||
+              analysisActiveKind === "micro-daily-nonstored"
+            ? "Week"
+            : "Analysis period"
       );
     }
     if (analysisPeriodPrevBtn) {
@@ -22332,9 +22626,12 @@
 
   function stepAnalysisPeriod(delta) {
     if (!analysisCanStepPeriod(delta)) return;
-    if (analysisActiveKind === "micro-week") {
+    if (
+      analysisActiveKind === "micro-week" ||
+      analysisActiveKind === "micro-daily-nonstored"
+    ) {
       stepViewedWeek(delta);
-    } else if (analysisActiveKind === "micro-day") {
+    } else if (analysisIsDayScopedKind()) {
       var idx = dayIndexById(analysisActiveDayId);
       var nextIdx = idx + delta;
       if (nextIdx >= 0 && nextIdx < DAYS.length) {
@@ -22356,7 +22653,12 @@
 
   function openAnalysisModal(kind, dayId) {
     if (!longevityAnalysisModalEl || !longevityAnalysisReportEl) return;
-    if (kind !== "longevity" && kind !== "micro-week" && kind !== "micro-day") {
+    if (
+      kind !== "longevity" &&
+      kind !== "micro-week" &&
+      kind !== "micro-day" &&
+      kind !== "micro-daily-nonstored"
+    ) {
       return;
     }
     if (kind === "micro-day" && !dayMetaById(dayId)) return;
@@ -22366,10 +22668,10 @@
     longevityAnalysisClearBandFilters();
 
     analysisActiveKind = kind;
-    analysisActiveDayId = kind === "micro-day" ? dayId : null;
+    analysisActiveDayId = analysisIsDayScopedKind(kind) ? dayId : null;
     if (kind === "longevity" && !longevityPanelOpen) {
       setLongevityPanelOpen(true);
-    } else if (kind === "micro-week" || kind === "micro-day") {
+    } else if (analysisIsRequirementsKind(kind)) {
       if (!microRequirementsOpen) setMicroRequirementsOpen(true);
       if (kind === "micro-day" && !microViewDaily) setMicroViewDaily(true);
     }
@@ -22414,6 +22716,10 @@
 
   function openMicroDayAnalysisModal(dayId) {
     openAnalysisModal("micro-day", dayId);
+  }
+
+  function openMicroDailyNonstoredAnalysisModal() {
+    openAnalysisModal("micro-daily-nonstored");
   }
 
   function analysisPickerShortcutLabel(text, key) {
@@ -22477,6 +22783,14 @@
     });
     html +=
       "</div></details>" +
+      '<button type="button" class="analysis-picker__btn" data-analysis-pick="micro-daily-nonstored" aria-keyshortcuts="N">' +
+      '<span class="analysis-picker__btn-title-row">' +
+      '<span class="analysis-picker__btn-title">Requirements — daily ' +
+      analysisPickerShortcutLabel("non-stored", "N") +
+      " (week by day)</span></span>" +
+      '<span class="analysis-picker__btn-meta">Mon–Sun columns for poorly stored nutrients, each ranked by that day’s shortfall · ' +
+      escapeHtml(weekLabel) +
+      "</span></button>" +
       '<button type="button" class="analysis-picker__btn" data-analysis-pick="longevity" aria-keyshortcuts="L">' +
       '<span class="analysis-picker__btn-title-row">' +
       '<span class="analysis-picker__btn-title">' +
@@ -22515,6 +22829,11 @@
     if (key === "d") {
       e.preventDefault();
       openAnalysisPickerDays(true);
+      return true;
+    }
+    if (key === "n") {
+      e.preventDefault();
+      pickAnalysisFromPicker("micro-daily-nonstored");
       return true;
     }
     return false;
@@ -23140,15 +23459,12 @@
       hideIgnoredDaysPopoverFor(dashboardMicroPanelEl);
       setMicroConditionExpanded(false);
       if (
-        (analysisActiveKind === "micro-week" || analysisActiveKind === "micro-day") &&
+        analysisIsRequirementsKind() &&
         longevityAnalysisModalEl &&
         !longevityAnalysisModalEl.hidden
       ) {
         closeLongevityAnalysisModal();
-      } else if (
-        analysisActiveKind === "micro-week" ||
-        analysisActiveKind === "micro-day"
-      ) {
+      } else if (analysisIsRequirementsKind()) {
         dismissLongevityAnalysisReturnWidget();
       }
     }
@@ -39277,7 +39593,7 @@
     if (e.key !== "ArrowLeft" && e.key !== "ArrowRight") return false;
     if (anyAppNavModifierDown(e)) return false;
     if (!longevityAnalysisModalEl || longevityAnalysisModalEl.hidden) return false;
-    if (analysisActiveKind !== "micro-week" && analysisActiveKind !== "micro-day") {
+    if (!analysisIsRequirementsKind()) {
       return false;
     }
     var focusEl = document.activeElement;
