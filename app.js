@@ -28384,7 +28384,15 @@
     var query = keywordsFilterNormalized();
     if (!query) return true;
     var name = kw && kw.name ? String(kw.name).trim().toLowerCase() : "";
-    return name.indexOf(query) !== -1;
+    if (name.indexOf(query) !== -1) return true;
+    // Match every typed word independently (any order), so "denny's ome"
+    // finds "Denny's - Ultimate Omelette ...". Curly apostrophes count as '.
+    var normName = name.replace(/[\u2018\u2019]/g, "'");
+    var words = query.replace(/[\u2018\u2019]/g, "'").split(/\s+/);
+    for (var i = 0; i < words.length; i++) {
+      if (words[i] && normName.indexOf(words[i]) === -1) return false;
+    }
+    return true;
   }
 
   function keywordsFilteredIndices() {
