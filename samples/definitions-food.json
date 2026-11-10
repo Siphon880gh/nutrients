@@ -262,7 +262,10 @@
       "vitaminK1": 0,
       "vitaminK2": 0,
       "vitaminK2MK4": 0,
-      "vitaminK2MK7": 0
+      "vitaminK2MK7": 0,
+      "vitaminARetinol": 0,
+      "vitaminABetaCarotene": 0,
+      "quercetin": 0
     },
     "longevity": {
       "saturatedFat": 10.2,
@@ -301,14 +304,18 @@
       "vitaminK2MK4": true,
       "vitaminK2MK7": true,
       "plantSterols": 0.28,
-      "betaine": 0.5
+      "betaine": 0.5,
+      "quercetin": true,
+      "taurine": true,
+      "creatine": 0
     },
     "carbQuality": {
       "glycemicIndex": 14,
       "addedSugar": 0,
       "refinedCarbs": 0,
       "netCarbs": 11.1
-    }
+    },
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 172430 (Peanuts, all types, raw), scaled to about 146 g, the weight implied by this entry's own values. From that record: retinol, beta-carotene. Quercetin from the USDA Flavonoid Values for Survey Foods 2017-2018, food code 42111040 (Peanuts, unroasted). Set to 0 because the nutrient is absent from this kind of food: creatine."
   },
   {
     "name": "Peanuts 1/2 cup",
@@ -367,7 +374,10 @@
       "vitaminK1": 0,
       "vitaminK2": 0,
       "vitaminK2MK4": 0,
-      "vitaminK2MK7": 0
+      "vitaminK2MK7": 0,
+      "vitaminARetinol": 0,
+      "vitaminABetaCarotene": 0,
+      "quercetin": 0
     },
     "longevity": {
       "saturatedFat": 5.1,
@@ -406,14 +416,18 @@
       "vitaminK2MK4": true,
       "vitaminK2MK7": true,
       "plantSterols": 0.14,
-      "betaine": 0.25
+      "betaine": 0.25,
+      "quercetin": true,
+      "taurine": true,
+      "creatine": 0
     },
     "carbQuality": {
       "glycemicIndex": 14,
       "addedSugar": 0,
       "refinedCarbs": 0,
       "netCarbs": 5.55
-    }
+    },
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 172430 (Peanuts, all types, raw), scaled to about 73 g, the weight implied by this entry's own values. From that record: retinol, beta-carotene. Quercetin from the USDA Flavonoid Values for Survey Foods 2017-2018, food code 42111040 (Peanuts, unroasted). Set to 0 because the nutrient is absent from this kind of food: creatine."
   },
   {
     "name": "Peanuts 1 oz (small handful)",
@@ -472,7 +486,10 @@
       "vitaminK1": 0,
       "vitaminK2": 0,
       "vitaminK2MK4": 0,
-      "vitaminK2MK7": 0
+      "vitaminK2MK7": 0,
+      "vitaminARetinol": 0,
+      "vitaminABetaCarotene": 0,
+      "quercetin": 0
     },
     "longevity": {
       "saturatedFat": 1.98,
@@ -511,14 +528,18 @@
       "vitaminK2MK4": true,
       "vitaminK2MK7": true,
       "plantSterols": 0.054,
-      "betaine": 0.097
+      "betaine": 0.097,
+      "quercetin": true,
+      "taurine": true,
+      "creatine": 0
     },
     "carbQuality": {
       "glycemicIndex": 14,
       "addedSugar": 0,
       "refinedCarbs": 0,
       "netCarbs": 2.16
-    }
+    },
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 172430 (Peanuts, all types, raw), scaled to about 28 g, the weight implied by this entry's own values. From that record: retinol, beta-carotene. Quercetin from the USDA Flavonoid Values for Survey Foods 2017-2018, food code 42111040 (Peanuts, unroasted). Set to 0 because the nutrient is absent from this kind of food: creatine."
   },
   {
     "name": "Peanuts 2 oz (palm size)",
@@ -577,7 +598,10 @@
       "vitaminK1": 0,
       "vitaminK2": 0,
       "vitaminK2MK4": 0,
-      "vitaminK2MK7": 0
+      "vitaminK2MK7": 0,
+      "vitaminARetinol": 0,
+      "vitaminABetaCarotene": 0,
+      "quercetin": 0
     },
     "longevity": {
       "saturatedFat": 3.96,
@@ -616,14 +640,18 @@
       "vitaminK2MK4": true,
       "vitaminK2MK7": true,
       "plantSterols": 0.11,
-      "betaine": 0.19
+      "betaine": 0.19,
+      "quercetin": true,
+      "taurine": true,
+      "creatine": 0
     },
     "carbQuality": {
       "glycemicIndex": 14,
       "addedSugar": 0,
       "refinedCarbs": 0,
       "netCarbs": 4.31
-    }
+    },
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 172430 (Peanuts, all types, raw), scaled to about 57 g, the weight implied by this entry's own values. From that record: retinol, beta-carotene. Quercetin from the USDA Flavonoid Values for Survey Foods 2017-2018, food code 42111040 (Peanuts, unroasted). Set to 0 because the nutrient is absent from this kind of food: creatine."
   },
   {
     "name": "Peanuts 3 oz (palmful)",
@@ -682,7 +710,10 @@
       "vitaminK1": 0,
       "vitaminK2": 0,
       "vitaminK2MK4": 0,
-      "vitaminK2MK7": 0
+      "vitaminK2MK7": 0,
+      "vitaminARetinol": 0,
+      "vitaminABetaCarotene": 0,
+      "quercetin": 0
     },
     "longevity": {
       "saturatedFat": 5.94,
@@ -721,14 +752,18 @@
       "vitaminK2MK4": true,
       "vitaminK2MK7": true,
       "plantSterols": 0.16,
-      "betaine": 0.29
+      "betaine": 0.29,
+      "quercetin": true,
+      "taurine": true,
+      "creatine": 0
     },
     "carbQuality": {
       "glycemicIndex": 14,
       "addedSugar": 0,
       "refinedCarbs": 0,
       "netCarbs": 6.47
-    }
+    },
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 172430 (Peanuts, all types, raw), scaled to about 85 g, the weight implied by this entry's own values. From that record: retinol, beta-carotene. Quercetin from the USDA Flavonoid Values for Survey Foods 2017-2018, food code 42111040 (Peanuts, unroasted). Set to 0 because the nutrient is absent from this kind of food: creatine."
   },
   {
     "name": "Table Salt Iodized 2 sm pinches (1.5ml)",
@@ -787,7 +822,9 @@
       "vitaminK1": 0,
       "vitaminK2": 0,
       "vitaminK2MK4": 0,
-      "vitaminK2MK7": 0
+      "vitaminK2MK7": 0,
+      "vitaminARetinol": 0,
+      "vitaminABetaCarotene": 0
     },
     "longevity": {
       "saturatedFat": 0,
@@ -824,14 +861,18 @@
       "lutein": 0,
       "vitaminK2MK4": true,
       "vitaminK2MK7": true,
-      "plantSterols": 0
+      "plantSterols": 0,
+      "methionine": true,
+      "taurine": true,
+      "creatine": 0
     },
     "carbQuality": {
       "glycemicIndex": 0,
       "addedSugar": 0,
       "refinedCarbs": 0,
       "netCarbs": 0
-    }
+    },
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 173468 (Salt, table), scaled to about 1.8 g, the weight implied by this entry's own values. From that record: retinol, beta-carotene. Set to 0 because the nutrient is absent from this kind of food: creatine."
   },
   {
     "name": "Table Salt Iodized 3 sm pinches (2.25ml)",
@@ -890,7 +931,9 @@
       "vitaminK1": 0,
       "vitaminK2": 0,
       "vitaminK2MK4": 0,
-      "vitaminK2MK7": 0
+      "vitaminK2MK7": 0,
+      "vitaminARetinol": 0,
+      "vitaminABetaCarotene": 0
     },
     "longevity": {
       "saturatedFat": 0,
@@ -927,14 +970,18 @@
       "lutein": 0,
       "vitaminK2MK4": true,
       "vitaminK2MK7": true,
-      "plantSterols": 0
+      "plantSterols": 0,
+      "methionine": true,
+      "taurine": true,
+      "creatine": 0
     },
     "carbQuality": {
       "glycemicIndex": 0,
       "addedSugar": 0,
       "refinedCarbs": 0,
       "netCarbs": 0
-    }
+    },
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 173468 (Salt, table), scaled to about 2.7 g, the weight implied by this entry's own values. From that record: retinol, beta-carotene. Set to 0 because the nutrient is absent from this kind of food: creatine."
   },
   {
     "name": "Table Salt Iodized 4 sm pinches (3ml)",
@@ -993,7 +1040,9 @@
       "vitaminK1": 0,
       "vitaminK2": 0,
       "vitaminK2MK4": 0,
-      "vitaminK2MK7": 0
+      "vitaminK2MK7": 0,
+      "vitaminARetinol": 0,
+      "vitaminABetaCarotene": 0
     },
     "longevity": {
       "saturatedFat": 0,
@@ -1030,14 +1079,18 @@
       "lutein": 0,
       "vitaminK2MK4": true,
       "vitaminK2MK7": true,
-      "plantSterols": 0
+      "plantSterols": 0,
+      "methionine": true,
+      "taurine": true,
+      "creatine": 0
     },
     "carbQuality": {
       "glycemicIndex": 0,
       "addedSugar": 0,
       "refinedCarbs": 0,
       "netCarbs": 0
-    }
+    },
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 173468 (Salt, table), scaled to about 3.6 g, the weight implied by this entry's own values. From that record: retinol, beta-carotene. Set to 0 because the nutrient is absent from this kind of food: creatine."
   },
   {
     "name": "Table Salt Iodized 6 sm pinches (4.5ml)",
@@ -1096,7 +1149,9 @@
       "vitaminK1": 0,
       "vitaminK2": 0,
       "vitaminK2MK4": 0,
-      "vitaminK2MK7": 0
+      "vitaminK2MK7": 0,
+      "vitaminARetinol": 0,
+      "vitaminABetaCarotene": 0
     },
     "longevity": {
       "saturatedFat": 0,
@@ -1133,14 +1188,18 @@
       "lutein": 0,
       "vitaminK2MK4": true,
       "vitaminK2MK7": true,
-      "plantSterols": 0
+      "plantSterols": 0,
+      "methionine": true,
+      "taurine": true,
+      "creatine": 0
     },
     "carbQuality": {
       "glycemicIndex": 0,
       "addedSugar": 0,
       "refinedCarbs": 0,
       "netCarbs": 0
-    }
+    },
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 173468 (Salt, table), scaled to about 5.4 g, the weight implied by this entry's own values. From that record: retinol, beta-carotene. Set to 0 because the nutrient is absent from this kind of food: creatine."
   },
   {
     "name": "Table Salt Iodized 8 sm pinches (6ml)",
@@ -1199,7 +1258,9 @@
       "vitaminK1": 0,
       "vitaminK2": 0,
       "vitaminK2MK4": 0,
-      "vitaminK2MK7": 0
+      "vitaminK2MK7": 0,
+      "vitaminARetinol": 0,
+      "vitaminABetaCarotene": 0
     },
     "longevity": {
       "saturatedFat": 0,
@@ -1236,14 +1297,18 @@
       "lutein": 0,
       "vitaminK2MK4": true,
       "vitaminK2MK7": true,
-      "plantSterols": 0
+      "plantSterols": 0,
+      "methionine": true,
+      "taurine": true,
+      "creatine": 0
     },
     "carbQuality": {
       "glycemicIndex": 0,
       "addedSugar": 0,
       "refinedCarbs": 0,
       "netCarbs": 0
-    }
+    },
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 173468 (Salt, table), scaled to about 7.2 g, the weight implied by this entry's own values. From that record: retinol, beta-carotene. Set to 0 because the nutrient is absent from this kind of food: creatine."
   },
   {
     "name": "Tajin 2 sm pinches (1.5ml)",
@@ -3391,7 +3456,10 @@
       "vitaminK1": 0.1,
       "vitaminK2": 4,
       "vitaminK2MK4": 4,
-      "vitaminK2MK7": 0
+      "vitaminK2MK7": 0,
+      "vitaminARetinol": 71.0,
+      "vitaminABetaCarotene": 0,
+      "quercetin": 0
     },
     "longevity": {
       "saturatedFat": 1.3,
@@ -3431,14 +3499,17 @@
       "vitaminK2MK7": true,
       "plantSterols": 0,
       "creatine": 0.02,
-      "betaine": 0.3
+      "betaine": 0.3,
+      "quercetin": true,
+      "taurine": true
     },
     "carbQuality": {
       "glycemicIndex": 0,
       "addedSugar": 0,
       "refinedCarbs": 0,
       "netCarbs": 0.3
-    }
+    },
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 171287 (Egg, whole, raw, fresh), scaled to about 44 g, the weight implied by this entry's own values. From that record: retinol, beta-carotene. Set to 0 because the nutrient is absent from this kind of food: quercetin."
   },
   {
     "name": "Egg md x2",
@@ -3497,7 +3568,10 @@
       "vitaminK1": 0.2,
       "vitaminK2": 8,
       "vitaminK2MK4": 8,
-      "vitaminK2MK7": 0
+      "vitaminK2MK7": 0,
+      "vitaminARetinol": 142,
+      "vitaminABetaCarotene": 0,
+      "quercetin": 0
     },
     "longevity": {
       "saturatedFat": 2.6,
@@ -3536,14 +3610,18 @@
       "vitaminK2MK4": true,
       "vitaminK2MK7": true,
       "plantSterols": 0,
-      "creatine": 0.04
+      "creatine": 0.04,
+      "quercetin": true,
+      "taurine": true,
+      "betaine": 0.266
     },
     "carbQuality": {
       "glycemicIndex": 0,
       "addedSugar": 0,
       "refinedCarbs": 0,
       "netCarbs": 0.6
-    }
+    },
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 171287 (Egg, whole, raw, fresh), scaled to about 89 g, the weight implied by this entry's own values. From that record: retinol, beta-carotene, betaine. Set to 0 because the nutrient is absent from this kind of food: quercetin."
   },
   {
     "name": "Egg md x4",
@@ -3602,7 +3680,10 @@
       "vitaminK1": 0.4,
       "vitaminK2": 16,
       "vitaminK2MK4": 16,
-      "vitaminK2MK7": 0
+      "vitaminK2MK7": 0,
+      "vitaminARetinol": 284,
+      "vitaminABetaCarotene": 0,
+      "quercetin": 0
     },
     "longevity": {
       "saturatedFat": 5.2,
@@ -3641,14 +3722,18 @@
       "vitaminK2MK4": true,
       "vitaminK2MK7": true,
       "plantSterols": 0,
-      "creatine": 0.08
+      "creatine": 0.08,
+      "quercetin": true,
+      "taurine": true,
+      "betaine": 0.533
     },
     "carbQuality": {
       "glycemicIndex": 0,
       "addedSugar": 0,
       "refinedCarbs": 0,
       "netCarbs": 1.2
-    }
+    },
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 171287 (Egg, whole, raw, fresh), scaled to about 178 g, the weight implied by this entry's own values. From that record: retinol, beta-carotene, betaine. Set to 0 because the nutrient is absent from this kind of food: quercetin."
   },
   {
     "name": "Egg md x3",
@@ -3707,7 +3792,10 @@
       "vitaminK1": 0.3,
       "vitaminK2": 12,
       "vitaminK2MK4": 12,
-      "vitaminK2MK7": 0
+      "vitaminK2MK7": 0,
+      "vitaminARetinol": 213,
+      "vitaminABetaCarotene": 0,
+      "quercetin": 0
     },
     "longevity": {
       "saturatedFat": 3.9,
@@ -3746,14 +3834,18 @@
       "vitaminK2MK4": true,
       "vitaminK2MK7": true,
       "plantSterols": 0,
-      "creatine": 0.06
+      "creatine": 0.06,
+      "quercetin": true,
+      "taurine": true,
+      "betaine": 0.4
     },
     "carbQuality": {
       "glycemicIndex": 0,
       "addedSugar": 0,
       "refinedCarbs": 0,
       "netCarbs": 0.9
-    }
+    },
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 171287 (Egg, whole, raw, fresh), scaled to about 133 g, the weight implied by this entry's own values. From that record: retinol, beta-carotene, betaine. Set to 0 because the nutrient is absent from this kind of food: quercetin."
   },
   {
     "name": "Fruit - Longan (Dragon eye) 1 pc",
@@ -6750,7 +6842,19 @@
       "cysteine": 147,
       "glycine": 522,
       "proline": 2764,
-      "tyrosine": 1358
+      "tyrosine": 1358,
+      "vitaminARetinol": 154,
+      "vitaminABetaCarotene": 13.6,
+      "iodine": 16.6,
+      "biotin": 3.4,
+      "chromium": 0.317,
+      "dha": 0,
+      "vitaminK1": 0,
+      "vitaminK2": 0,
+      "vitaminK2MK4": 0,
+      "vitaminK2MK7": 0,
+      "chloride": 1.34,
+      "quercetin": 0
     },
     "longevity": {
       "saturatedFat": 3.29,
@@ -6776,13 +6880,28 @@
       "choline": true,
       "coq10": 0.14,
       "creatine": 0.016,
-      "pqq": 0
+      "pqq": 0,
+      "dha": true,
+      "vitaminK1": true,
+      "vitaminK2": true,
+      "vitaminK2MK4": true,
+      "vitaminK2MK7": true,
+      "quercetin": true,
+      "plantSterols": 0,
+      "flavonoids": 0,
+      "carotenoids": 0.014,
+      "lutein": 0,
+      "betaine": 1.36,
+      "curcumin": 0,
+      "resveratrol": 0,
+      "sulforaphane": 0
     },
     "carbQuality": {
       "glycemicIndex": 10,
       "addedSugar": 0,
       "refinedCarbs": 0
-    }
+    },
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 172182 (Cheese, cottage, lowfat, 2% milkfat), scaled to about 226 g, the weight given in this entry's name. From that record: retinol, beta-carotene, DHA, K1, MK-4, carotenoids, lutein, betaine. From Frida 5.5, DTU National Food Institute, Denmark, food 1679 (Cheese, cottage, 5 % fidm.), adjusted for water content: iodine, biotin, chromium, chloride. Set to 0 because the nutrient is absent from this kind of food: MK-7, quercetin, plant sterols, total flavonoids, curcumin, resveratrol, sulforaphane. K2 is MK-4 plus MK-7."
   },
   {
     "name": "Kimchi 1/2 cup (75 g)",
@@ -6812,7 +6931,18 @@
       "vitaminB6": 0.16,
       "folate": 39,
       "phosphorus": 18,
-      "choline": 11.63
+      "choline": 11.63,
+      "vitaminARetinol": 0,
+      "vitaminD": 0,
+      "vitaminB12": 0,
+      "vitaminC": 0,
+      "epa": 0,
+      "dha": 0,
+      "vitaminK2": 0,
+      "vitaminK2MK4": 0,
+      "vitaminK2MK7": 0,
+      "taurine": 0,
+      "quercetin": 1.75
     },
     "longevity": {
       "saturatedFat": 0.05,
@@ -6833,13 +6963,28 @@
       "carotenoids": 0.08,
       "lutein": 0.04,
       "phosphorus": true,
-      "choline": true
+      "choline": true,
+      "epa": true,
+      "dha": true,
+      "vitaminK2": true,
+      "vitaminK2MK4": true,
+      "vitaminK2MK7": true,
+      "taurine": true,
+      "quercetin": true,
+      "omega9": 0.028,
+      "arachidonicAcid": 0,
+      "palmitoleicAcid": 0,
+      "flavonoids": 4.55,
+      "curcumin": 0,
+      "sulforaphane": 0,
+      "creatine": 0
     },
     "carbQuality": {
       "glycemicIndex": 15,
       "addedSugar": 0,
       "refinedCarbs": 0
-    }
+    },
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 170392 (Cabbage, kimchi), scaled to about 75 g, the weight given in this entry's name. From that record: retinol, vitamin D, B12, vitamin C, EPA, DHA, omega-9, arachidonic acid, palmitoleic acid. Quercetin, total flavonoids from the USDA Flavonoid Values for Survey Foods 2017-2018, food code 75502520 (Kimchi). Set to 0 because the nutrient is absent from this kind of food: K2, MK-4, MK-7, taurine, curcumin, sulforaphane, creatine."
   },
   {
     "name": "Kimchi 1 cup (150 g)",
@@ -6869,7 +7014,18 @@
       "vitaminB6": 0.32,
       "folate": 78,
       "phosphorus": 36,
-      "choline": 23.25
+      "choline": 23.25,
+      "vitaminARetinol": 0,
+      "vitaminD": 0,
+      "vitaminB12": 0,
+      "vitaminC": 0,
+      "epa": 0,
+      "dha": 0,
+      "vitaminK2": 0,
+      "vitaminK2MK4": 0,
+      "vitaminK2MK7": 0,
+      "taurine": 0,
+      "quercetin": 3.5
     },
     "longevity": {
       "saturatedFat": 0.11,
@@ -6890,13 +7046,28 @@
       "carotenoids": 0.16,
       "lutein": 0.07,
       "phosphorus": true,
-      "choline": true
+      "choline": true,
+      "epa": true,
+      "dha": true,
+      "vitaminK2": true,
+      "vitaminK2MK4": true,
+      "vitaminK2MK7": true,
+      "taurine": true,
+      "quercetin": true,
+      "omega9": 0.056,
+      "arachidonicAcid": 0,
+      "palmitoleicAcid": 0,
+      "flavonoids": 9.11,
+      "curcumin": 0,
+      "sulforaphane": 0,
+      "creatine": 0
     },
     "carbQuality": {
       "glycemicIndex": 15,
       "addedSugar": 0,
       "refinedCarbs": 0
-    }
+    },
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 170392 (Cabbage, kimchi), scaled to about 150 g, the weight given in this entry's name. From that record: retinol, vitamin D, B12, vitamin C, EPA, DHA, omega-9, arachidonic acid, palmitoleic acid. Quercetin, total flavonoids from the USDA Flavonoid Values for Survey Foods 2017-2018, food code 75502520 (Kimchi). Set to 0 because the nutrient is absent from this kind of food: K2, MK-4, MK-7, taurine, curcumin, sulforaphane, creatine."
   },
   {
     "name": "Greek Yogurt, Plain 1 container (6 oz)",
@@ -6955,7 +7126,10 @@
       "vitaminK1": 0,
       "vitaminK2": 1,
       "vitaminK2MK4": 1,
-      "vitaminK2MK7": 0
+      "vitaminK2MK7": 0,
+      "vitaminARetinol": 1.67,
+      "vitaminABetaCarotene": 0,
+      "quercetin": 0
     },
     "longevity": {
       "saturatedFat": 0.3,
@@ -6994,14 +7168,18 @@
       "methionine": true,
       "vitaminK2MK4": true,
       "vitaminK2MK7": true,
-      "plantSterols": 0
+      "plantSterols": 0,
+      "quercetin": true,
+      "taurine": true,
+      "betaine": 1.33
     },
     "carbQuality": {
       "glycemicIndex": 11,
       "addedSugar": 0,
       "refinedCarbs": 0,
       "netCarbs": 6
-    }
+    },
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 170894 (Yogurt, Greek, plain, nonfat (Includes foods for USDA's Food Distribution Program)), scaled to about 167 g, the weight implied by this entry's own values. From that record: retinol, beta-carotene, betaine. Set to 0 because the nutrient is absent from this kind of food: quercetin."
   },
   {
     "name": "Greek Yogurt - Chobani Plain 1 container (6 oz)",
@@ -9077,7 +9255,10 @@
       "vitaminK1": 0,
       "vitaminK2": 2,
       "vitaminK2MK4": 2,
-      "vitaminK2MK7": 0
+      "vitaminK2MK7": 0,
+      "vitaminARetinol": 134,
+      "vitaminABetaCarotene": 9.77,
+      "quercetin": 0
     },
     "longevity": {
       "saturatedFat": 3.1,
@@ -9117,14 +9298,18 @@
       "methionine": true,
       "vitaminK2MK4": true,
       "vitaminK2MK7": true,
-      "plantSterols": 0
+      "plantSterols": 0,
+      "quercetin": true,
+      "taurine": true,
+      "betaine": 2.2
     },
     "carbQuality": {
       "glycemicIndex": 31,
       "addedSugar": 0,
       "refinedCarbs": 0,
       "netCarbs": 12.2
-    }
+    },
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 171267 (Milk, reduced fat, fluid, 2% milkfat, with added vitamin A and vitamin D), scaled to about 244 g, the weight implied by this entry's own values. From that record: retinol, beta-carotene, betaine. Set to 0 because the nutrient is absent from this kind of food: quercetin."
   },
   {
     "name": "Milk reduced 2 cups",
@@ -9183,7 +9368,10 @@
       "vitaminK1": 0,
       "vitaminK2": 4,
       "vitaminK2MK4": 4,
-      "vitaminK2MK7": 0
+      "vitaminK2MK7": 0,
+      "vitaminARetinol": 269,
+      "vitaminABetaCarotene": 19.5,
+      "quercetin": 0
     },
     "longevity": {
       "saturatedFat": 6.2,
@@ -9223,14 +9411,18 @@
       "methionine": true,
       "vitaminK2MK4": true,
       "vitaminK2MK7": true,
-      "plantSterols": 0
+      "plantSterols": 0,
+      "quercetin": true,
+      "taurine": true,
+      "betaine": 4.4
     },
     "carbQuality": {
       "glycemicIndex": 31,
       "addedSugar": 0,
       "refinedCarbs": 0,
       "netCarbs": 24.4
-    }
+    },
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 171267 (Milk, reduced fat, fluid, 2% milkfat, with added vitamin A and vitamin D), scaled to about 488 g, the weight implied by this entry's own values. From that record: retinol, beta-carotene, betaine. Set to 0 because the nutrient is absent from this kind of food: quercetin."
   },
   {
     "name": "Milk reduced ¾ cup**",
@@ -9289,7 +9481,10 @@
       "vitaminK1": 0,
       "vitaminK2": 1.5,
       "vitaminK2MK4": 1.5,
-      "vitaminK2MK7": 0
+      "vitaminK2MK7": 0,
+      "vitaminARetinol": 102,
+      "vitaminABetaCarotene": 7.38,
+      "quercetin": 0
     },
     "longevity": {
       "saturatedFat": 2.3,
@@ -9329,14 +9524,18 @@
       "methionine": true,
       "vitaminK2MK4": true,
       "vitaminK2MK7": true,
-      "plantSterols": 0
+      "plantSterols": 0,
+      "quercetin": true,
+      "taurine": true,
+      "betaine": 1.66
     },
     "carbQuality": {
       "glycemicIndex": 31,
       "addedSugar": 0,
       "refinedCarbs": 0,
       "netCarbs": 9.1
-    }
+    },
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 171267 (Milk, reduced fat, fluid, 2% milkfat, with added vitamin A and vitamin D), scaled to about 185 g, the weight implied by this entry's own values. From that record: retinol, beta-carotene, betaine. Set to 0 because the nutrient is absent from this kind of food: quercetin."
   },
   {
     "name": "Milk reduced ½ cup",
@@ -9395,7 +9594,10 @@
       "vitaminK1": 0,
       "vitaminK2": 1,
       "vitaminK2MK4": 1,
-      "vitaminK2MK7": 0
+      "vitaminK2MK7": 0,
+      "vitaminARetinol": 67.1,
+      "vitaminABetaCarotene": 4.88,
+      "quercetin": 0
     },
     "longevity": {
       "saturatedFat": 1.6,
@@ -9435,14 +9637,18 @@
       "methionine": true,
       "vitaminK2MK4": true,
       "vitaminK2MK7": true,
-      "plantSterols": 0
+      "plantSterols": 0,
+      "quercetin": true,
+      "taurine": true,
+      "betaine": 1.1
     },
     "carbQuality": {
       "glycemicIndex": 31,
       "addedSugar": 0,
       "refinedCarbs": 0,
       "netCarbs": 6.1
-    }
+    },
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 171267 (Milk, reduced fat, fluid, 2% milkfat, with added vitamin A and vitamin D), scaled to about 122 g, the weight implied by this entry's own values. From that record: retinol, beta-carotene, betaine. Set to 0 because the nutrient is absent from this kind of food: quercetin."
   },
   {
     "name": "Milk reduced ⅜ cup*",
@@ -9501,7 +9707,10 @@
       "vitaminK1": 0,
       "vitaminK2": 0.8,
       "vitaminK2MK4": 0.8,
-      "vitaminK2MK7": 0
+      "vitaminK2MK7": 0,
+      "vitaminARetinol": 50.4,
+      "vitaminABetaCarotene": 3.67,
+      "quercetin": 0
     },
     "longevity": {
       "saturatedFat": 1.2,
@@ -9541,14 +9750,18 @@
       "methionine": true,
       "vitaminK2MK4": true,
       "vitaminK2MK7": true,
-      "plantSterols": 0
+      "plantSterols": 0,
+      "quercetin": true,
+      "taurine": true,
+      "betaine": 0.825
     },
     "carbQuality": {
       "glycemicIndex": 31,
       "addedSugar": 0,
       "refinedCarbs": 0,
       "netCarbs": 4.6
-    }
+    },
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 171267 (Milk, reduced fat, fluid, 2% milkfat, with added vitamin A and vitamin D), scaled to about 92 g, the weight implied by this entry's own values. From that record: retinol, beta-carotene, betaine. Set to 0 because the nutrient is absent from this kind of food: quercetin."
   },
   {
     "name": "Hong Kong Milk Tea 1 cup",
@@ -16343,7 +16556,10 @@
       "vitaminK1": 0,
       "vitaminK2": 0,
       "vitaminK2MK4": 0,
-      "vitaminK2MK7": 0
+      "vitaminK2MK7": 0,
+      "vitaminARetinol": 0,
+      "vitaminABetaCarotene": 0,
+      "quercetin": 0
     },
     "longevity": {
       "saturatedFat": 1.5,
@@ -16381,14 +16597,19 @@
       "methionine": true,
       "vitaminK2MK4": true,
       "vitaminK2MK7": true,
-      "plantSterols": 0.04
+      "plantSterols": 0.04,
+      "quercetin": true,
+      "taurine": true,
+      "betaine": 0.128,
+      "creatine": 0
     },
     "carbQuality": {
       "glycemicIndex": 14,
       "addedSugar": 0,
       "refinedCarbs": 0,
       "netCarbs": 2
-    }
+    },
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 174266 (Peanut butter, smooth style, with salt (Includes foods for USDA's Food Distribution Program)), scaled to about 16 g, a standard weight for this portion. From that record: retinol, beta-carotene, betaine. Quercetin from the USDA Flavonoid Values for Survey Foods 2017-2018, food code 42202000 (Peanut butter). Set to 0 because the nutrient is absent from this kind of food: creatine."
   },
   {
     "name": "Peanut Butter 2 tablespoons",
@@ -16447,7 +16668,10 @@
       "vitaminK1": 0,
       "vitaminK2": 0,
       "vitaminK2MK4": 0,
-      "vitaminK2MK7": 0
+      "vitaminK2MK7": 0,
+      "vitaminARetinol": 0,
+      "vitaminABetaCarotene": 0,
+      "quercetin": 0
     },
     "longevity": {
       "saturatedFat": 3,
@@ -16485,14 +16709,19 @@
       "methionine": true,
       "vitaminK2MK4": true,
       "vitaminK2MK7": true,
-      "plantSterols": 0.08
+      "plantSterols": 0.08,
+      "quercetin": true,
+      "taurine": true,
+      "betaine": 0.256,
+      "creatine": 0
     },
     "carbQuality": {
       "glycemicIndex": 14,
       "addedSugar": 0,
       "refinedCarbs": 0,
       "netCarbs": 4
-    }
+    },
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 174266 (Peanut butter, smooth style, with salt (Includes foods for USDA's Food Distribution Program)), scaled to about 32 g, a standard weight for this portion. From that record: retinol, beta-carotene, betaine. Quercetin from the USDA Flavonoid Values for Survey Foods 2017-2018, food code 42202000 (Peanut butter). Set to 0 because the nutrient is absent from this kind of food: creatine."
   },
   {
     "name": "Leaf Wrapped Sticky Rice - Zongzi - Cantonese Styled Pork and Duck Egg sm",
@@ -16968,7 +17197,13 @@
       "vitaminK1": 1,
       "vitaminK2": 0,
       "vitaminK2MK4": 0,
-      "vitaminK2MK7": 0
+      "vitaminK2MK7": 0,
+      "vitaminARetinol": 0,
+      "vitaminABetaCarotene": 0,
+      "omega3": 0.021,
+      "dha": 0,
+      "omega6": 0.098,
+      "quercetin": 0
     },
     "longevity": {
       "saturatedFat": 0.12,
@@ -16987,14 +17222,35 @@
       "vitaminK2MK7": true,
       "plantSterols": 0.02,
       "pqq": 0,
-      "epa": 0
+      "epa": 0,
+      "omega3": true,
+      "dha": true,
+      "omega6": true,
+      "quercetin": true,
+      "vitaminE": true,
+      "taurine": true,
+      "monounsaturatedFat": 0.139,
+      "polyunsaturatedFat": 0.12,
+      "omega9": 0.137,
+      "ala": 0.021,
+      "linoleicAcid": 0.098,
+      "arachidonicAcid": 0,
+      "oleicAcid": 0.137,
+      "palmitoleicAcid": 0.0016,
+      "flavonoids": 0,
+      "carotenoids": 0,
+      "betaine": 0.474,
+      "curcumin": 0,
+      "sulforaphane": 0,
+      "creatine": 0
     },
     "carbQuality": {
       "glycemicIndex": 73,
       "addedSugar": 0,
       "refinedCarbs": 43.9,
       "netCarbs": 43.9
-    }
+    },
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 168878 (Rice, white, long-grain, regular, enriched, cooked), scaled to about 158 g, the weight implied by this entry's own values. From that record: retinol, beta-carotene, omega-3, DHA, omega-6, MUFA, PUFA, omega-9, ALA, linoleic acid, arachidonic acid, oleic acid, palmitoleic acid, carotenoids, betaine. Quercetin, total flavonoids from the USDA Flavonoid Values for Survey Foods 2017-2018, food code 56205001 (Rice, white, cooked, NS as to fat). Set to 0 because the nutrient is absent from this kind of food: curcumin, sulforaphane, creatine."
   },
   {
     "name": "Rice - Brown 1 cup cooked",
@@ -17053,7 +17309,13 @@
       "vitaminK1": 1,
       "vitaminK2": 0,
       "vitaminK2MK4": 0,
-      "vitaminK2MK7": 0
+      "vitaminK2MK7": 0,
+      "vitaminARetinol": 0,
+      "vitaminABetaCarotene": 0,
+      "omega3": 0.022,
+      "dha": 0,
+      "omega6": 0.717,
+      "quercetin": 0
     },
     "longevity": {
       "saturatedFat": 0.53,
@@ -17072,14 +17334,35 @@
       "vitaminK2MK7": true,
       "plantSterols": 0.04,
       "pqq": 0,
-      "epa": 0
+      "epa": 0,
+      "omega3": true,
+      "dha": true,
+      "omega6": true,
+      "quercetin": true,
+      "vitaminE": true,
+      "taurine": true,
+      "monounsaturatedFat": 0.745,
+      "polyunsaturatedFat": 0.739,
+      "omega9": 0.737,
+      "ala": 0.022,
+      "linoleicAcid": 0.717,
+      "arachidonicAcid": 0,
+      "oleicAcid": 0.737,
+      "palmitoleicAcid": 0.002,
+      "flavonoids": 0,
+      "carotenoids": 0,
+      "betaine": 1.01,
+      "curcumin": 0,
+      "sulforaphane": 0,
+      "creatine": 0
     },
     "carbQuality": {
       "glycemicIndex": 68,
       "addedSugar": 0,
       "refinedCarbs": 0,
       "netCarbs": 48.4
-    }
+    },
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 169704 (Rice, brown, long-grain, cooked (Includes foods for USDA's Food Distribution Program)), scaled to about 202 g, the weight implied by this entry's own values. From that record: retinol, beta-carotene, omega-3, DHA, omega-6, MUFA, PUFA, omega-9, ALA, linoleic acid, arachidonic acid, oleic acid, palmitoleic acid, carotenoids, betaine. Quercetin, total flavonoids from the USDA Flavonoid Values for Survey Foods 2017-2018, food code 56205018 (Rice, brown, cooked, no added fat). Set to 0 because the nutrient is absent from this kind of food: curcumin, sulforaphane, creatine."
   },
   {
     "name": "Quinoa 1 cup",
@@ -23368,7 +23651,10 @@
       "vitaminK1": 0,
       "vitaminK2": 2,
       "vitaminK2MK4": 2,
-      "vitaminK2MK7": 0
+      "vitaminK2MK7": 0,
+      "vitaminARetinol": 109,
+      "vitaminABetaCarotene": 17.0,
+      "quercetin": 0
     },
     "longevity": {
       "saturatedFat": 4.6,
@@ -23408,14 +23694,18 @@
       "methionine": true,
       "vitaminK2MK4": true,
       "vitaminK2MK7": true,
-      "plantSterols": 0
+      "plantSterols": 0,
+      "quercetin": true,
+      "taurine": true,
+      "betaine": 1.46
     },
     "carbQuality": {
       "glycemicIndex": 31,
       "addedSugar": 0,
       "refinedCarbs": 0,
       "netCarbs": 11.7
-    }
+    },
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 171265 (Milk, whole, 3.25% milkfat, with added vitamin D), scaled to about 243 g, the weight implied by this entry's own values. From that record: retinol, beta-carotene, betaine. Set to 0 because the nutrient is absent from this kind of food: quercetin."
   },
   {
     "name": "Milk whole 2 cups",
@@ -23474,7 +23764,10 @@
       "vitaminK1": 0,
       "vitaminK2": 4,
       "vitaminK2MK4": 4,
-      "vitaminK2MK7": 0
+      "vitaminK2MK7": 0,
+      "vitaminARetinol": 219,
+      "vitaminABetaCarotene": 34.1,
+      "quercetin": 0
     },
     "longevity": {
       "saturatedFat": 9.2,
@@ -23514,14 +23807,18 @@
       "methionine": true,
       "vitaminK2MK4": true,
       "vitaminK2MK7": true,
-      "plantSterols": 0
+      "plantSterols": 0,
+      "quercetin": true,
+      "taurine": true,
+      "betaine": 2.92
     },
     "carbQuality": {
       "glycemicIndex": 31,
       "addedSugar": 0,
       "refinedCarbs": 0,
       "netCarbs": 23.4
-    }
+    },
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 171265 (Milk, whole, 3.25% milkfat, with added vitamin D), scaled to about 486 g, the weight implied by this entry's own values. From that record: retinol, beta-carotene, betaine. Set to 0 because the nutrient is absent from this kind of food: quercetin."
   },
   {
     "name": "Milk whole ¾ cup**",
@@ -23580,7 +23877,10 @@
       "vitaminK1": 0,
       "vitaminK2": 1.5,
       "vitaminK2MK4": 1.5,
-      "vitaminK2MK7": 0
+      "vitaminK2MK7": 0,
+      "vitaminARetinol": 82.5,
+      "vitaminABetaCarotene": 12.8,
+      "quercetin": 0
     },
     "longevity": {
       "saturatedFat": 3.5,
@@ -23620,14 +23920,18 @@
       "methionine": true,
       "vitaminK2MK4": true,
       "vitaminK2MK7": true,
-      "plantSterols": 0
+      "plantSterols": 0,
+      "quercetin": true,
+      "taurine": true,
+      "betaine": 1.1
     },
     "carbQuality": {
       "glycemicIndex": 31,
       "addedSugar": 0,
       "refinedCarbs": 0,
       "netCarbs": 8.8
-    }
+    },
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 171265 (Milk, whole, 3.25% milkfat, with added vitamin D), scaled to about 183 g, the weight implied by this entry's own values. From that record: retinol, beta-carotene, betaine. Set to 0 because the nutrient is absent from this kind of food: quercetin."
   },
   {
     "name": "Milk whole ½ cup",
@@ -23686,7 +23990,10 @@
       "vitaminK1": 0,
       "vitaminK2": 1,
       "vitaminK2MK4": 1,
-      "vitaminK2MK7": 0
+      "vitaminK2MK7": 0,
+      "vitaminARetinol": 54.9,
+      "vitaminABetaCarotene": 8.55,
+      "quercetin": 0
     },
     "longevity": {
       "saturatedFat": 2.3,
@@ -23726,14 +24033,18 @@
       "methionine": true,
       "vitaminK2MK4": true,
       "vitaminK2MK7": true,
-      "plantSterols": 0
+      "plantSterols": 0,
+      "quercetin": true,
+      "taurine": true,
+      "betaine": 0.733
     },
     "carbQuality": {
       "glycemicIndex": 31,
       "addedSugar": 0,
       "refinedCarbs": 0,
       "netCarbs": 5.9
-    }
+    },
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 171265 (Milk, whole, 3.25% milkfat, with added vitamin D), scaled to about 122 g, the weight implied by this entry's own values. From that record: retinol, beta-carotene, betaine. Set to 0 because the nutrient is absent from this kind of food: quercetin."
   },
   {
     "name": "Milk whole ⅜ cup*",
@@ -23792,7 +24103,10 @@
       "vitaminK1": 0,
       "vitaminK2": 0.8,
       "vitaminK2MK4": 0.8,
-      "vitaminK2MK7": 0
+      "vitaminK2MK7": 0,
+      "vitaminARetinol": 41.2,
+      "vitaminABetaCarotene": 6.42,
+      "quercetin": 0
     },
     "longevity": {
       "saturatedFat": 1.7,
@@ -23832,14 +24146,18 @@
       "methionine": true,
       "vitaminK2MK4": true,
       "vitaminK2MK7": true,
-      "plantSterols": 0
+      "plantSterols": 0,
+      "quercetin": true,
+      "taurine": true,
+      "betaine": 0.55
     },
     "carbQuality": {
       "glycemicIndex": 31,
       "addedSugar": 0,
       "refinedCarbs": 0,
       "netCarbs": 4.4
-    }
+    },
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 171265 (Milk, whole, 3.25% milkfat, with added vitamin D), scaled to about 92 g, the weight implied by this entry's own values. From that record: retinol, beta-carotene, betaine. Set to 0 because the nutrient is absent from this kind of food: quercetin."
   },
   {
     "name": "Apple cider vinegar 1 tablespoon",
@@ -25067,7 +25385,10 @@
       "vitaminK1": 0,
       "vitaminK2": 0,
       "vitaminK2MK4": 0,
-      "vitaminK2MK7": 0
+      "vitaminK2MK7": 0,
+      "vitaminARetinol": 0,
+      "vitaminABetaCarotene": 0,
+      "quercetin": 0
     },
     "longevity": {
       "saturatedFat": 0.81,
@@ -25109,13 +25430,16 @@
       "taurine": true,
       "vitaminK2MK4": true,
       "vitaminK2MK7": true,
-      "plantSterols": 0.01
+      "plantSterols": 0.01,
+      "quercetin": true,
+      "creatine": 0
     },
     "carbQuality": {
       "glycemicIndex": 10,
       "addedSugar": 0,
       "refinedCarbs": 0
-    }
+    },
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 170569 (Nuts, brazilnuts, dried, unblanched), scaled to about 5 g, the weight implied by this entry's own values. From that record: retinol, beta-carotene. Quercetin from the USDA Flavonoid Values for Survey Foods 2017-2018, food code 42102000 (Brazil nuts). Set to 0 because the nutrient is absent from this kind of food: creatine."
   },
   {
     "name": "Jamba Juice - Orange Carrot Karma Smoothie sm",
@@ -28210,7 +28534,10 @@
       "vitaminK1": 0,
       "vitaminK2": 0,
       "vitaminK2MK4": 0,
-      "vitaminK2MK7": 0
+      "vitaminK2MK7": 0,
+      "vitaminARetinol": 0,
+      "vitaminABetaCarotene": 0,
+      "quercetin": 0
     },
     "longevity": {
       "saturatedFat": 3.4,
@@ -28248,14 +28575,18 @@
       "methionine": true,
       "vitaminK2MK4": true,
       "vitaminK2MK7": true,
-      "plantSterols": 0.09
+      "plantSterols": 0.09,
+      "quercetin": true,
+      "taurine": true,
+      "creatine": 0
     },
     "carbQuality": {
       "glycemicIndex": 10,
       "addedSugar": 0,
       "refinedCarbs": 0,
       "netCarbs": 1.5
-    }
+    },
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 170178 (Nuts, macadamia nuts, raw), scaled to about 28 g, the weight given in this entry's name. From that record: retinol. From CoFID 2021 (UK) food 14-891 (Macadamia nuts, salted), adjusted for water content: beta-carotene. Quercetin from the USDA Flavonoid Values for Survey Foods 2017-2018, food code 42109100 (Macadamia nuts). Set to 0 because the nutrient is absent from this kind of food: creatine."
   },
   {
     "name": "Multivitamin - Centrum, Men 1 tablet (Adjusted)",
@@ -28919,7 +29250,10 @@
       "vitaminK1": 1,
       "vitaminK2": 0,
       "vitaminK2MK4": 0,
-      "vitaminK2MK7": 0
+      "vitaminK2MK7": 0,
+      "vitaminARetinol": 95.3,
+      "vitaminABetaCarotene": 22.4,
+      "quercetin": 0
     },
     "longevity": {
       "saturatedFat": 7.3,
@@ -28957,14 +29291,18 @@
       "methionine": true,
       "vitaminK2MK4": true,
       "vitaminK2MK7": true,
-      "plantSterols": 0.02
+      "plantSterols": 0.02,
+      "quercetin": true,
+      "taurine": true,
+      "betaine": 0.043
     },
     "carbQuality": {
       "glycemicIndex": 0,
       "addedSugar": 0,
       "refinedCarbs": 0,
       "netCarbs": 0
-    }
+    },
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 173410 (Butter, salted), scaled to about 14.2 g, the weight given in this entry's name. From that record: retinol, beta-carotene, betaine. Set to 0 because the nutrient is absent from this kind of food: quercetin."
   },
   {
     "name": "Cheese provolone 1 slice (28g)",
@@ -29023,7 +29361,12 @@
       "vitaminK2MK4": 0,
       "vitaminK2MK7": 0,
       "biotin": 0,
-      "taurine": 58
+      "taurine": 58,
+      "vitaminARetinol": 64.4,
+      "vitaminABetaCarotene": 19.0,
+      "epa": 0,
+      "dha": 0,
+      "quercetin": 0
     },
     "longevity": {
       "saturatedFat": 4.9,
@@ -29058,14 +29401,20 @@
       "methionine": true,
       "vitaminK2MK4": true,
       "vitaminK2MK7": true,
-      "plantSterols": 0.01
+      "plantSterols": 0.01,
+      "epa": true,
+      "dha": true,
+      "quercetin": true,
+      "taurine": true,
+      "ala": 0.077
     },
     "carbQuality": {
       "glycemicIndex": 0,
       "addedSugar": 0,
       "refinedCarbs": 0,
       "netCarbs": 0.6
-    }
+    },
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 170850 (Cheese, provolone), scaled to about 28 g, the weight given in this entry's name. From that record: retinol, beta-carotene, EPA, DHA, ALA. Set to 0 because the nutrient is absent from this kind of food: quercetin."
   },
   {
     "name": "Cheese American 1 slice (21g)",
@@ -29124,7 +29473,10 @@
       "vitaminK2MK4": 1.05,
       "vitaminK2MK7": 1.95,
       "biotin": 0,
-      "taurine": 30
+      "taurine": 30,
+      "vitaminARetinol": 51.0,
+      "vitaminABetaCarotene": 16.8,
+      "quercetin": 0
     },
     "longevity": {
       "saturatedFat": 3.8,
@@ -29162,14 +29514,17 @@
       "methionine": true,
       "vitaminK2MK4": true,
       "vitaminK2MK7": true,
-      "plantSterols": 0.01
+      "plantSterols": 0.01,
+      "quercetin": true,
+      "taurine": true
     },
     "carbQuality": {
       "glycemicIndex": 0,
       "addedSugar": 0,
       "refinedCarbs": 0,
       "netCarbs": 1.1
-    }
+    },
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 171290 (Cheese, pasteurized process, American, without added vitamin D), scaled to about 21 g, the weight given in this entry's name. From that record: retinol, beta-carotene. Set to 0 because the nutrient is absent from this kind of food: quercetin."
   },
   {
     "name": "Cheese cheddar 1 slice (28g)",
@@ -29228,7 +29583,10 @@
       "vitaminK2MK4": 0.84,
       "vitaminK2MK7": 1.56,
       "biotin": 0,
-      "taurine": 52
+      "taurine": 52,
+      "vitaminARetinol": 92.4,
+      "vitaminABetaCarotene": 23.8,
+      "quercetin": 0
     },
     "longevity": {
       "saturatedFat": 5.4,
@@ -29266,14 +29624,18 @@
       "methionine": true,
       "vitaminK2MK4": true,
       "vitaminK2MK7": true,
-      "plantSterols": 0.01
+      "plantSterols": 0.01,
+      "quercetin": true,
+      "taurine": true,
+      "betaine": 0.196
     },
     "carbQuality": {
       "glycemicIndex": 0,
       "addedSugar": 0,
       "refinedCarbs": 0,
       "netCarbs": 1
-    }
+    },
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 173414 (Cheese, cheddar (Includes foods for USDA's Food Distribution Program)), scaled to about 28 g, the weight given in this entry's name. From that record: retinol, beta-carotene, betaine. Set to 0 because the nutrient is absent from this kind of food: quercetin."
   },
   {
     "name": "Ham slice 1 slice (28g)",
@@ -29331,7 +29693,12 @@
       "biotin": 0,
       "molybdenum": 5,
       "chloride": 25,
-      "taurine": 40
+      "taurine": 40,
+      "vitaminARetinol": 0,
+      "vitaminABetaCarotene": 0,
+      "epa": 0.0003,
+      "dha": 0.0006,
+      "quercetin": 0
     },
     "longevity": {
       "saturatedFat": 0.2,
@@ -29366,14 +29733,21 @@
       "methionine": true,
       "vitaminK2MK4": true,
       "vitaminK2MK7": true,
-      "plantSterols": 0
+      "plantSterols": 0,
+      "epa": true,
+      "dha": true,
+      "quercetin": true,
+      "taurine": true,
+      "ala": 0.0042,
+      "betaine": 0.784
     },
     "carbQuality": {
       "glycemicIndex": 0,
       "addedSugar": 0.5,
       "refinedCarbs": 0,
       "netCarbs": 1
-    }
+    },
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 173863 (Ham, sliced, pre-packaged, deli meat (96%fat free, water added)), scaled to about 28 g, the weight given in this entry's name. From that record: retinol, beta-carotene, EPA, DHA, ALA, betaine. Set to 0 because the nutrient is absent from this kind of food: quercetin."
   },
   {
     "name": "Cheese grated mozzarella 2 sm pinches (2g)",
@@ -29432,7 +29806,12 @@
       "vitaminK2MK4": 0,
       "vitaminK2MK7": 0,
       "biotin": 0,
-      "taurine": 4
+      "taurine": 4,
+      "vitaminARetinol": 3.48,
+      "vitaminABetaCarotene": 1.14,
+      "epa": 0,
+      "dha": 0,
+      "quercetin": 0
     },
     "longevity": {
       "saturatedFat": 0.2,
@@ -29467,14 +29846,20 @@
       "methionine": true,
       "vitaminK2MK4": true,
       "vitaminK2MK7": true,
-      "plantSterols": 0.01
+      "plantSterols": 0.01,
+      "epa": true,
+      "dha": true,
+      "quercetin": true,
+      "taurine": true,
+      "ala": 0.0074
     },
     "carbQuality": {
       "glycemicIndex": 0,
       "addedSugar": 0,
       "refinedCarbs": 0,
       "netCarbs": 0
-    }
+    },
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 170845 (Cheese, mozzarella, whole milk), scaled to about 2 g, the weight given in this entry's name. From that record: retinol, beta-carotene, EPA, DHA, ALA. Set to 0 because the nutrient is absent from this kind of food: quercetin."
   },
   {
     "name": "Cheese grated mozzarella 1 tablespoon (7g)",
@@ -29533,7 +29918,12 @@
       "vitaminK2MK4": 0,
       "vitaminK2MK7": 0,
       "biotin": 0,
-      "taurine": 14
+      "taurine": 14,
+      "vitaminARetinol": 12.2,
+      "vitaminABetaCarotene": 3.99,
+      "epa": 0,
+      "dha": 0,
+      "quercetin": 0
     },
     "longevity": {
       "saturatedFat": 0.7,
@@ -29568,14 +29958,20 @@
       "methionine": true,
       "vitaminK2MK4": true,
       "vitaminK2MK7": true,
-      "plantSterols": 0.01
+      "plantSterols": 0.01,
+      "epa": true,
+      "dha": true,
+      "quercetin": true,
+      "taurine": true,
+      "ala": 0.026
     },
     "carbQuality": {
       "glycemicIndex": 0,
       "addedSugar": 0,
       "refinedCarbs": 0,
       "netCarbs": 0.2
-    }
+    },
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 170845 (Cheese, mozzarella, whole milk), scaled to about 7 g, the weight given in this entry's name. From that record: retinol, beta-carotene, EPA, DHA, ALA. Set to 0 because the nutrient is absent from this kind of food: quercetin."
   },
   {
     "name": "Cheese grated cheddar 2 sm pinches (2g)",
@@ -29634,7 +30030,12 @@
       "vitaminK2MK4": 0,
       "vitaminK2MK7": 0,
       "biotin": 0,
-      "taurine": 4
+      "taurine": 4,
+      "vitaminARetinol": 6.6,
+      "vitaminABetaCarotene": 1.7,
+      "epa": 0.0002,
+      "dha": 0,
+      "quercetin": 0
     },
     "longevity": {
       "saturatedFat": 0.4,
@@ -29669,14 +30070,21 @@
       "methionine": true,
       "vitaminK2MK4": true,
       "vitaminK2MK7": true,
-      "plantSterols": 0.01
+      "plantSterols": 0.01,
+      "epa": true,
+      "dha": true,
+      "quercetin": true,
+      "taurine": true,
+      "ala": 0.0022,
+      "betaine": 0.014
     },
     "carbQuality": {
       "glycemicIndex": 0,
       "addedSugar": 0,
       "refinedCarbs": 0,
       "netCarbs": 0
-    }
+    },
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 173414 (Cheese, cheddar (Includes foods for USDA's Food Distribution Program)), scaled to about 2 g, the weight given in this entry's name. From that record: retinol, beta-carotene, EPA, DHA, ALA, betaine. Set to 0 because the nutrient is absent from this kind of food: quercetin."
   },
   {
     "name": "Cheese grated cheddar 1 tablespoon (7g)",
@@ -29735,7 +30143,12 @@
       "vitaminK2MK4": 0,
       "vitaminK2MK7": 0,
       "biotin": 0,
-      "taurine": 14
+      "taurine": 14,
+      "vitaminARetinol": 23.1,
+      "vitaminABetaCarotene": 5.95,
+      "epa": 0.0007,
+      "dha": 0,
+      "quercetin": 0
     },
     "longevity": {
       "saturatedFat": 1.5,
@@ -29770,14 +30183,21 @@
       "methionine": true,
       "vitaminK2MK4": true,
       "vitaminK2MK7": true,
-      "plantSterols": 0.01
+      "plantSterols": 0.01,
+      "epa": true,
+      "dha": true,
+      "quercetin": true,
+      "taurine": true,
+      "ala": 0.0076,
+      "betaine": 0.049
     },
     "carbQuality": {
       "glycemicIndex": 0,
       "addedSugar": 0,
       "refinedCarbs": 0,
       "netCarbs": 0.1
-    }
+    },
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 173414 (Cheese, cheddar (Includes foods for USDA's Food Distribution Program)), scaled to about 7 g, the weight given in this entry's name. From that record: retinol, beta-carotene, EPA, DHA, ALA, betaine. Set to 0 because the nutrient is absent from this kind of food: quercetin."
   },
   {
     "name": "Parsley 1 cup chopped",
@@ -34951,7 +35371,31 @@
       "valine": 214,
       "arginine": 646,
       "cysteine": 59,
-      "tyrosine": 122
+      "tyrosine": 122,
+      "vitaminARetinol": 0,
+      "vitaminABetaCarotene": 3.41,
+      "vitaminD": 0,
+      "vitaminB12": 0,
+      "iodine": 0,
+      "biotin": 5.03,
+      "thiamin": 0.097,
+      "riboflavin": 0.043,
+      "niacin": 0.32,
+      "pantothenicAcid": 0.162,
+      "chromium": 0,
+      "selenium": 1.39,
+      "vitaminK": 0.767,
+      "vitaminK1": 0.767,
+      "vitaminK2": 0,
+      "vitaminK2MK4": 0,
+      "vitaminK2MK7": 0,
+      "choline": 11.1,
+      "molybdenum": 5.44,
+      "chloride": 6.73,
+      "glycine": 232,
+      "proline": 201,
+      "taurine": 0,
+      "quercetin": 0
     },
     "longevity": {
       "saturatedFat": 1.7,
@@ -34974,14 +35418,32 @@
       "carotenoids": 0,
       "lutein": 0,
       "plantSterols": 0.02,
-      "pqq": 0
+      "pqq": 0,
+      "selenium": true,
+      "vitaminK": true,
+      "vitaminK1": true,
+      "vitaminK2": true,
+      "vitaminK2MK4": true,
+      "vitaminK2MK7": true,
+      "choline": true,
+      "taurine": true,
+      "quercetin": true,
+      "vitaminE": true,
+      "phosphorus": true,
+      "methionine": true,
+      "palmitoleicAcid": 0,
+      "betaine": 0.085,
+      "curcumin": 0,
+      "sulforaphane": 0,
+      "creatine": 0
     },
     "carbQuality": {
       "glycemicIndex": 15,
       "addedSugar": 0,
       "refinedCarbs": 0,
       "netCarbs": 2
-    }
+    },
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 170187 (Nuts, walnuts, english), scaled to about 28 g, the weight implied by this entry's own values. From that record: retinol, beta-carotene, vitamin D, B12, thiamin, riboflavin, niacin, pantothenic acid, selenium, K1, choline, glycine, proline, palmitoleic acid, betaine. From Frida 5.5, DTU National Food Institute, Denmark, food 647 (Walnuts, dried), adjusted for water content: iodine, biotin, chromium, molybdenum. From CoFID 2021 (UK) food 14-879 (Walnuts, kernel only), adjusted for water content: chloride. Quercetin from the USDA Flavonoid Values for Survey Foods 2017-2018, food code 42116000 (Walnuts, excluding honey roasted). Set to 0 because the nutrient is absent from this kind of food: K2, MK-4, MK-7, taurine, curcumin, sulforaphane, creatine. Vitamin K total is set to the phylloquinone (K1) amount, the form USDA reports as vitamin K."
   },
   {
     "name": "Walnuts 2 oz (palm size)",
@@ -35017,7 +35479,31 @@
       "valine": 428,
       "arginine": 1292,
       "cysteine": 118,
-      "tyrosine": 244
+      "tyrosine": 244,
+      "vitaminARetinol": 0,
+      "vitaminABetaCarotene": 6.82,
+      "vitaminD": 0,
+      "vitaminB12": 0,
+      "iodine": 0,
+      "biotin": 10.1,
+      "thiamin": 0.194,
+      "riboflavin": 0.085,
+      "niacin": 0.639,
+      "pantothenicAcid": 0.324,
+      "chromium": 0,
+      "selenium": 2.78,
+      "vitaminK": 1.53,
+      "vitaminK1": 1.53,
+      "vitaminK2": 0,
+      "vitaminK2MK4": 0,
+      "vitaminK2MK7": 0,
+      "choline": 22.3,
+      "molybdenum": 10.9,
+      "chloride": 13.5,
+      "glycine": 464,
+      "proline": 401,
+      "taurine": 0,
+      "quercetin": 0
     },
     "longevity": {
       "saturatedFat": 3.4,
@@ -35040,14 +35526,32 @@
       "carotenoids": 0,
       "lutein": 0,
       "plantSterols": 0.04,
-      "pqq": 0
+      "pqq": 0,
+      "selenium": true,
+      "vitaminK": true,
+      "vitaminK1": true,
+      "vitaminK2": true,
+      "vitaminK2MK4": true,
+      "vitaminK2MK7": true,
+      "choline": true,
+      "taurine": true,
+      "quercetin": true,
+      "vitaminE": true,
+      "phosphorus": true,
+      "methionine": true,
+      "palmitoleicAcid": 0,
+      "betaine": 0.17,
+      "curcumin": 0,
+      "sulforaphane": 0,
+      "creatine": 0
     },
     "carbQuality": {
       "glycemicIndex": 15,
       "addedSugar": 0,
       "refinedCarbs": 0,
       "netCarbs": 4
-    }
+    },
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 170187 (Nuts, walnuts, english), scaled to about 57 g, the weight implied by this entry's own values. From that record: retinol, beta-carotene, vitamin D, B12, thiamin, riboflavin, niacin, pantothenic acid, selenium, K1, choline, glycine, proline, palmitoleic acid, betaine. From Frida 5.5, DTU National Food Institute, Denmark, food 647 (Walnuts, dried), adjusted for water content: iodine, biotin, chromium, molybdenum. From CoFID 2021 (UK) food 14-879 (Walnuts, kernel only), adjusted for water content: chloride. Quercetin from the USDA Flavonoid Values for Survey Foods 2017-2018, food code 42116000 (Walnuts, excluding honey roasted). Set to 0 because the nutrient is absent from this kind of food: K2, MK-4, MK-7, taurine, curcumin, sulforaphane, creatine. Vitamin K total is set to the phylloquinone (K1) amount, the form USDA reports as vitamin K."
   },
   {
     "name": "Walnuts 3 oz (palmful)",
@@ -35083,7 +35587,31 @@
       "valine": 642,
       "arginine": 1938,
       "cysteine": 177,
-      "tyrosine": 366
+      "tyrosine": 366,
+      "vitaminARetinol": 0,
+      "vitaminABetaCarotene": 10.2,
+      "vitaminD": 0,
+      "vitaminB12": 0,
+      "iodine": 0,
+      "biotin": 15.1,
+      "thiamin": 0.291,
+      "riboflavin": 0.128,
+      "niacin": 0.959,
+      "pantothenicAcid": 0.486,
+      "chromium": 0,
+      "selenium": 4.18,
+      "vitaminK": 2.3,
+      "vitaminK1": 2.3,
+      "vitaminK2": 0,
+      "vitaminK2MK4": 0,
+      "vitaminK2MK7": 0,
+      "choline": 33.4,
+      "molybdenum": 16.3,
+      "chloride": 20.2,
+      "glycine": 695,
+      "proline": 602,
+      "taurine": 0,
+      "quercetin": 0
     },
     "longevity": {
       "saturatedFat": 5.1,
@@ -35106,14 +35634,32 @@
       "carotenoids": 0,
       "lutein": 0,
       "plantSterols": 0.06,
-      "pqq": 0
+      "pqq": 0,
+      "selenium": true,
+      "vitaminK": true,
+      "vitaminK1": true,
+      "vitaminK2": true,
+      "vitaminK2MK4": true,
+      "vitaminK2MK7": true,
+      "choline": true,
+      "taurine": true,
+      "quercetin": true,
+      "vitaminE": true,
+      "phosphorus": true,
+      "methionine": true,
+      "palmitoleicAcid": 0,
+      "betaine": 0.256,
+      "curcumin": 0,
+      "sulforaphane": 0,
+      "creatine": 0
     },
     "carbQuality": {
       "glycemicIndex": 15,
       "addedSugar": 0,
       "refinedCarbs": 0,
       "netCarbs": 6
-    }
+    },
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 170187 (Nuts, walnuts, english), scaled to about 85 g, the weight implied by this entry's own values. From that record: retinol, beta-carotene, vitamin D, B12, thiamin, riboflavin, niacin, pantothenic acid, selenium, K1, choline, glycine, proline, palmitoleic acid, betaine. From Frida 5.5, DTU National Food Institute, Denmark, food 647 (Walnuts, dried), adjusted for water content: iodine, biotin, chromium, molybdenum. From CoFID 2021 (UK) food 14-879 (Walnuts, kernel only), adjusted for water content: chloride. Quercetin from the USDA Flavonoid Values for Survey Foods 2017-2018, food code 42116000 (Walnuts, excluding honey roasted). Set to 0 because the nutrient is absent from this kind of food: K2, MK-4, MK-7, taurine, curcumin, sulforaphane, creatine. Vitamin K total is set to the phylloquinone (K1) amount, the form USDA reports as vitamin K."
   },
   {
     "name": "Walnuts 1/2 cup",
@@ -35149,7 +35695,31 @@
       "valine": 441.6,
       "arginine": 1333,
       "cysteine": 121.7,
-      "tyrosine": 251.7
+      "tyrosine": 251.7,
+      "vitaminARetinol": 0,
+      "vitaminABetaCarotene": 7.04,
+      "vitaminD": 0,
+      "vitaminB12": 0,
+      "iodine": 0,
+      "biotin": 10.4,
+      "thiamin": 0.2,
+      "riboflavin": 0.088,
+      "niacin": 0.66,
+      "pantothenicAcid": 0.334,
+      "chromium": 0,
+      "selenium": 2.87,
+      "vitaminK": 1.58,
+      "vitaminK1": 1.58,
+      "vitaminK2": 0,
+      "vitaminK2MK4": 0,
+      "vitaminK2MK7": 0,
+      "choline": 23.0,
+      "molybdenum": 11.2,
+      "chloride": 13.9,
+      "glycine": 479,
+      "proline": 414,
+      "taurine": 0,
+      "quercetin": 0
     },
     "longevity": {
       "saturatedFat": 3.51,
@@ -35172,14 +35742,32 @@
       "carotenoids": 0,
       "lutein": 0,
       "plantSterols": 0.041,
-      "pqq": 0
+      "pqq": 0,
+      "selenium": true,
+      "vitaminK": true,
+      "vitaminK1": true,
+      "vitaminK2": true,
+      "vitaminK2MK4": true,
+      "vitaminK2MK7": true,
+      "choline": true,
+      "taurine": true,
+      "quercetin": true,
+      "vitaminE": true,
+      "phosphorus": true,
+      "methionine": true,
+      "palmitoleicAcid": 0,
+      "betaine": 0.176,
+      "curcumin": 0,
+      "sulforaphane": 0,
+      "creatine": 0
     },
     "carbQuality": {
       "glycemicIndex": 15,
       "addedSugar": 0,
       "refinedCarbs": 0,
       "netCarbs": 4.13
-    }
+    },
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 170187 (Nuts, walnuts, english), scaled to about 59 g, the weight implied by this entry's own values. From that record: retinol, beta-carotene, vitamin D, B12, thiamin, riboflavin, niacin, pantothenic acid, selenium, K1, choline, glycine, proline, palmitoleic acid, betaine. From Frida 5.5, DTU National Food Institute, Denmark, food 647 (Walnuts, dried), adjusted for water content: iodine, biotin, chromium, molybdenum. From CoFID 2021 (UK) food 14-879 (Walnuts, kernel only), adjusted for water content: chloride. Quercetin from the USDA Flavonoid Values for Survey Foods 2017-2018, food code 42116000 (Walnuts, excluding honey roasted). Set to 0 because the nutrient is absent from this kind of food: K2, MK-4, MK-7, taurine, curcumin, sulforaphane, creatine. Vitamin K total is set to the phylloquinone (K1) amount, the form USDA reports as vitamin K."
   },
   {
     "name": "Walnuts 1 cup",
@@ -35215,7 +35803,31 @@
       "valine": 883.2,
       "arginine": 2666,
       "cysteine": 243.5,
-      "tyrosine": 503.5
+      "tyrosine": 503.5,
+      "vitaminARetinol": 0,
+      "vitaminABetaCarotene": 14.1,
+      "vitaminD": 0,
+      "vitaminB12": 0,
+      "iodine": 0,
+      "biotin": 20.7,
+      "thiamin": 0.4,
+      "riboflavin": 0.176,
+      "niacin": 1.32,
+      "pantothenicAcid": 0.668,
+      "chromium": 0,
+      "selenium": 5.74,
+      "vitaminK": 3.17,
+      "vitaminK1": 3.17,
+      "vitaminK2": 0,
+      "vitaminK2MK4": 0,
+      "vitaminK2MK7": 0,
+      "choline": 46.0,
+      "molybdenum": 22.5,
+      "chloride": 27.8,
+      "glycine": 957,
+      "proline": 828,
+      "taurine": 0,
+      "quercetin": 0
     },
     "longevity": {
       "saturatedFat": 7.02,
@@ -35238,14 +35850,32 @@
       "carotenoids": 0,
       "lutein": 0,
       "plantSterols": 0.083,
-      "pqq": 0
+      "pqq": 0,
+      "selenium": true,
+      "vitaminK": true,
+      "vitaminK1": true,
+      "vitaminK2": true,
+      "vitaminK2MK4": true,
+      "vitaminK2MK7": true,
+      "choline": true,
+      "taurine": true,
+      "quercetin": true,
+      "vitaminE": true,
+      "phosphorus": true,
+      "methionine": true,
+      "palmitoleicAcid": 0,
+      "betaine": 0.352,
+      "curcumin": 0,
+      "sulforaphane": 0,
+      "creatine": 0
     },
     "carbQuality": {
       "glycemicIndex": 15,
       "addedSugar": 0,
       "refinedCarbs": 0,
       "netCarbs": 8.25
-    }
+    },
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 170187 (Nuts, walnuts, english), scaled to about 117 g, the weight implied by this entry's own values. From that record: retinol, beta-carotene, vitamin D, B12, thiamin, riboflavin, niacin, pantothenic acid, selenium, K1, choline, glycine, proline, palmitoleic acid, betaine. From Frida 5.5, DTU National Food Institute, Denmark, food 647 (Walnuts, dried), adjusted for water content: iodine, biotin, chromium, molybdenum. From CoFID 2021 (UK) food 14-879 (Walnuts, kernel only), adjusted for water content: chloride. Quercetin from the USDA Flavonoid Values for Survey Foods 2017-2018, food code 42116000 (Walnuts, excluding honey roasted). Set to 0 because the nutrient is absent from this kind of food: K2, MK-4, MK-7, taurine, curcumin, sulforaphane, creatine. Vitamin K total is set to the phylloquinone (K1) amount, the form USDA reports as vitamin K."
   },
   {
     "name": "Flaxseed 1 tablespoon",
@@ -35279,7 +35909,30 @@
       "valine": 80,
       "arginine": 134,
       "cysteine": 24,
-      "tyrosine": 34
+      "tyrosine": 34,
+      "vitaminA": 0,
+      "vitaminARetinol": 0,
+      "vitaminABetaCarotene": 0,
+      "vitaminD": 0,
+      "vitaminB12": 0,
+      "iodine": 0.034,
+      "vitaminB6": 0.033,
+      "folate": 6.05,
+      "riboflavin": 0.011,
+      "niacin": 0.214,
+      "pantothenicAcid": 0.069,
+      "chromium": 0.157,
+      "selenium": 1.77,
+      "vitaminK": 0.299,
+      "vitaminK1": 0.299,
+      "vitaminK2": 0,
+      "vitaminK2MK4": 0,
+      "vitaminK2MK7": 0,
+      "choline": 5.48,
+      "glycine": 87,
+      "proline": 56,
+      "taurine": 0,
+      "quercetin": 0
     },
     "longevity": {
       "saturatedFat": 0.25,
@@ -35301,14 +35954,33 @@
       "lutein": 0,
       "plantSterols": 0.01,
       "copper": true,
-      "pqq": 0
+      "pqq": 0,
+      "selenium": true,
+      "vitaminK": true,
+      "vitaminK1": true,
+      "vitaminK2": true,
+      "vitaminK2MK4": true,
+      "vitaminK2MK7": true,
+      "choline": true,
+      "taurine": true,
+      "quercetin": true,
+      "vitaminE": true,
+      "phosphorus": true,
+      "methionine": true,
+      "palmitoleicAcid": 0.0017,
+      "flavonoids": 0.0084,
+      "betaine": 0.216,
+      "curcumin": 0,
+      "sulforaphane": 0,
+      "creatine": 0
     },
     "carbQuality": {
       "glycemicIndex": 35,
       "addedSugar": 0,
       "refinedCarbs": 0,
       "netCarbs": 0.1
-    }
+    },
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 169414 (Seeds, flaxseed), scaled to about 7 g, the weight implied by this entry's own values. From that record: vitamin A, retinol, beta-carotene, vitamin D, B12, B6, folate, riboflavin, niacin, pantothenic acid, selenium, K1, choline, glycine, proline, palmitoleic acid, betaine. From Frida 5.5, DTU National Food Institute, Denmark, food 149 (Linseeds, raw), adjusted for water content: iodine, chromium. Quercetin, total flavonoids from the USDA Flavonoid Values for Survey Foods 2017-2018, food code 43104000 (Flax seeds). Set to 0 because the nutrient is absent from this kind of food: K2, MK-4, MK-7, taurine, curcumin, sulforaphane, creatine. Vitamin K total is set to the phylloquinone (K1) amount, the form USDA reports as vitamin K."
   },
   {
     "name": "Chia seeds 1 oz",
@@ -35341,7 +36013,33 @@
       "valine": 270,
       "arginine": 608,
       "cysteine": 115,
-      "tyrosine": 160
+      "tyrosine": 160,
+      "vitaminA": 0,
+      "vitaminARetinol": 0,
+      "vitaminABetaCarotene": 0,
+      "vitaminD": 0,
+      "vitaminB12": 0,
+      "iodine": 0,
+      "vitaminB6": 0.039,
+      "folate": 13.9,
+      "biotin": 6.97,
+      "thiamin": 0.176,
+      "riboflavin": 0.048,
+      "niacin": 2.51,
+      "pantothenicAcid": 0.097,
+      "chromium": 2.42,
+      "selenium": 15.7,
+      "vitaminK": 0,
+      "vitaminK1": 0,
+      "vitaminK2": 0,
+      "vitaminK2MK4": 0,
+      "vitaminK2MK7": 0,
+      "choline": 22.4,
+      "molybdenum": 10.1,
+      "glycine": 268,
+      "proline": 221,
+      "taurine": 0,
+      "quercetin": 0
     },
     "longevity": {
       "saturatedFat": 0.9,
@@ -35363,14 +36061,32 @@
       "lutein": 0,
       "plantSterols": 0,
       "copper": true,
-      "pqq": 0
+      "pqq": 0,
+      "selenium": true,
+      "vitaminK": true,
+      "vitaminK1": true,
+      "vitaminK2": true,
+      "vitaminK2MK4": true,
+      "vitaminK2MK7": true,
+      "choline": true,
+      "taurine": true,
+      "quercetin": true,
+      "vitaminE": true,
+      "phosphorus": true,
+      "methionine": true,
+      "palmitoleicAcid": 0.0082,
+      "flavonoids": 0.034,
+      "curcumin": 0,
+      "sulforaphane": 0,
+      "creatine": 0
     },
     "carbQuality": {
       "glycemicIndex": 30,
       "addedSugar": 0,
       "refinedCarbs": 0,
       "netCarbs": 2.5
-    }
+    },
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 170554 (Seeds, chia seeds, dried), scaled to about 28 g, the weight implied by this entry's own values. From that record: B12, folate, thiamin, riboflavin, niacin, selenium, glycine, proline, palmitoleic acid. From Frida 5.5, DTU National Food Institute, Denmark, food 1728 (Chia seeds), adjusted for water content: vitamin A, retinol, beta-carotene, vitamin D, iodine, B6, biotin, pantothenic acid, chromium, K1, choline, molybdenum. Quercetin, total flavonoids from the USDA Flavonoid Values for Survey Foods 2017-2018, food code 43108010 (Chia seeds). Set to 0 because the nutrient is absent from this kind of food: K2, MK-4, MK-7, taurine, curcumin, sulforaphane, creatine. Vitamin K total is set to the phylloquinone (K1) amount, the form USDA reports as vitamin K."
   },
   {
     "name": "Canola oil 1 tablespoon",
@@ -35391,7 +36107,41 @@
       "vitaminK": 10,
       "fiber": 0,
       "solubleFiber": 0,
-      "insolubleFiber": 0
+      "insolubleFiber": 0,
+      "vitaminARetinol": 0,
+      "vitaminABetaCarotene": 0,
+      "vitaminB12": 0,
+      "vitaminB6": 0,
+      "folate": 0,
+      "thiamin": 0,
+      "riboflavin": 0,
+      "niacin": 0,
+      "pantothenicAcid": 0,
+      "selenium": 0,
+      "copper": 0,
+      "manganese": 0,
+      "vitaminK1": 9.98,
+      "vitaminK2": 0,
+      "vitaminK2MK4": 0,
+      "vitaminK2MK7": 0,
+      "phosphorus": 0,
+      "choline": 0.028,
+      "histidine": 0,
+      "isoleucine": 0,
+      "leucine": 0,
+      "lysine": 0,
+      "methionine": 0,
+      "phenylalanine": 0,
+      "threonine": 0,
+      "tryptophan": 0,
+      "valine": 0,
+      "arginine": 0,
+      "cysteine": 0,
+      "glycine": 0,
+      "proline": 0,
+      "tyrosine": 0,
+      "taurine": 0,
+      "quercetin": 0
     },
     "longevity": {
       "saturatedFat": 1,
@@ -35412,14 +36162,33 @@
       "carotenoids": 0,
       "lutein": 0,
       "plantSterols": 0,
-      "pqq": 0
+      "pqq": 0,
+      "selenium": true,
+      "copper": true,
+      "vitaminK1": true,
+      "vitaminK2": true,
+      "vitaminK2MK4": true,
+      "vitaminK2MK7": true,
+      "phosphorus": true,
+      "choline": true,
+      "methionine": true,
+      "taurine": true,
+      "quercetin": true,
+      "vitaminK": true,
+      "palmitoleicAcid": 0.03,
+      "flavonoids": 0,
+      "betaine": 0,
+      "curcumin": 0,
+      "sulforaphane": 0,
+      "creatine": 0
     },
     "carbQuality": {
       "glycemicIndex": 0,
       "addedSugar": 0,
       "refinedCarbs": 0,
       "netCarbs": 0
-    }
+    },
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 172336 (Oil, canola), scaled to about 14 g, the weight implied by this entry's own values. From that record: retinol, beta-carotene, B12, B6, folate, thiamin, riboflavin, niacin, pantothenic acid, selenium, copper, manganese, K1, MK-4, phosphorus, choline, palmitoleic acid, betaine. Quercetin, total flavonoids from the USDA Flavonoid Values for Survey Foods 2017-2018, food code 82105500 (Canola oil). Set to 0 because the nutrient is absent from this kind of food: K2, MK-7, histidine, isoleucine, leucine, lysine, methionine, phenylalanine, threonine, tryptophan, valine, arginine, cysteine, glycine, proline, tyrosine, taurine, curcumin, sulforaphane, creatine."
   },
   {
     "name": "Corn oil 1 tablespoon",
@@ -35440,7 +36209,44 @@
       "vitaminK": 3,
       "fiber": 0,
       "solubleFiber": 0,
-      "insolubleFiber": 0
+      "insolubleFiber": 0,
+      "vitaminARetinol": 0,
+      "vitaminABetaCarotene": 0,
+      "vitaminB12": 0,
+      "iodine": 0.109,
+      "vitaminB6": 0,
+      "folate": 0,
+      "biotin": 0,
+      "thiamin": 0,
+      "riboflavin": 0,
+      "niacin": 0,
+      "pantothenicAcid": 0,
+      "chromium": 0.925,
+      "selenium": 0,
+      "copper": 0,
+      "manganese": 0,
+      "vitaminK1": 0.258,
+      "vitaminK2": 0,
+      "vitaminK2MK4": 0,
+      "vitaminK2MK7": 0,
+      "phosphorus": 0,
+      "choline": 0.027,
+      "histidine": 0,
+      "isoleucine": 0,
+      "leucine": 0,
+      "lysine": 0,
+      "methionine": 0,
+      "phenylalanine": 0,
+      "threonine": 0,
+      "tryptophan": 0,
+      "valine": 0,
+      "arginine": 0,
+      "cysteine": 0,
+      "glycine": 0,
+      "proline": 0,
+      "tyrosine": 0,
+      "taurine": 0,
+      "quercetin": 0
     },
     "longevity": {
       "saturatedFat": 1.8,
@@ -35461,14 +36267,32 @@
       "carotenoids": 0,
       "lutein": 0,
       "plantSterols": 0,
-      "pqq": 0
+      "pqq": 0,
+      "selenium": true,
+      "copper": true,
+      "vitaminK1": true,
+      "vitaminK2": true,
+      "vitaminK2MK4": true,
+      "vitaminK2MK7": true,
+      "phosphorus": true,
+      "choline": true,
+      "methionine": true,
+      "taurine": true,
+      "quercetin": true,
+      "vitaminK": true,
+      "palmitoleicAcid": 0.016,
+      "flavonoids": 0.0068,
+      "curcumin": 0,
+      "sulforaphane": 0,
+      "creatine": 0
     },
     "carbQuality": {
       "glycemicIndex": 0,
       "addedSugar": 0,
       "refinedCarbs": 0,
       "netCarbs": 0
-    }
+    },
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 171029 (Oil, corn, industrial and retail, all purpose salad or cooking), scaled to about 13.6 g, the weight implied by this entry's own values. From that record: retinol, beta-carotene, B12, B6, folate, thiamin, riboflavin, niacin, pantothenic acid, selenium, copper, K1, phosphorus, choline, histidine, isoleucine, leucine, lysine, methionine, phenylalanine, threonine, tryptophan, valine, arginine, cysteine, glycine, proline, tyrosine, palmitoleic acid. From Frida 5.5, DTU National Food Institute, Denmark, food 1415 (Corn oil), adjusted for water content: iodine, biotin, chromium, manganese. Quercetin, total flavonoids from the USDA Flavonoid Values for Survey Foods 2017-2018, food code 82101000 (Vegetable oil, NFS). Set to 0 because the nutrient is absent from this kind of food: K2, MK-4, MK-7, taurine, curcumin, sulforaphane, creatine."
   },
   {
     "name": "Safflower oil 1 tablespoon",
@@ -35489,7 +36313,43 @@
       "vitaminK": 1,
       "fiber": 0,
       "solubleFiber": 0,
-      "insolubleFiber": 0
+      "insolubleFiber": 0,
+      "vitaminARetinol": 0,
+      "vitaminABetaCarotene": 0,
+      "vitaminB12": 0,
+      "iodine": 0,
+      "vitaminB6": 0,
+      "folate": 0,
+      "biotin": 0,
+      "thiamin": 0,
+      "riboflavin": 0,
+      "niacin": 0,
+      "pantothenicAcid": 0,
+      "selenium": 0,
+      "copper": 0,
+      "manganese": 0,
+      "vitaminK1": 0.966,
+      "vitaminK2": 0,
+      "vitaminK2MK4": 0,
+      "vitaminK2MK7": 0,
+      "phosphorus": 0,
+      "chloride": 0,
+      "histidine": 0,
+      "isoleucine": 0,
+      "leucine": 0,
+      "lysine": 0,
+      "methionine": 0,
+      "phenylalanine": 0,
+      "threonine": 0,
+      "tryptophan": 0,
+      "valine": 0,
+      "arginine": 0,
+      "cysteine": 0,
+      "glycine": 0,
+      "proline": 0,
+      "tyrosine": 0,
+      "taurine": 0,
+      "quercetin": 0
     },
     "longevity": {
       "saturatedFat": 1,
@@ -35510,14 +36370,31 @@
       "carotenoids": 0,
       "lutein": 0,
       "plantSterols": 0,
-      "pqq": 0
+      "pqq": 0,
+      "selenium": true,
+      "copper": true,
+      "vitaminK1": true,
+      "vitaminK2": true,
+      "vitaminK2MK4": true,
+      "vitaminK2MK7": true,
+      "phosphorus": true,
+      "methionine": true,
+      "taurine": true,
+      "quercetin": true,
+      "vitaminK": true,
+      "palmitoleicAcid": 0,
+      "flavonoids": 0,
+      "curcumin": 0,
+      "sulforaphane": 0,
+      "creatine": 0
     },
     "carbQuality": {
       "glycemicIndex": 0,
       "addedSugar": 0,
       "refinedCarbs": 0,
       "netCarbs": 0
-    }
+    },
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 171026 (Oil, safflower, salad or cooking, linoleic, (over 70%)), scaled to about 13.6 g, the weight implied by this entry's own values. From that record: retinol, beta-carotene, B12, B6, folate, thiamin, riboflavin, niacin, pantothenic acid, selenium, copper, K1, phosphorus, histidine, isoleucine, leucine, lysine, methionine, phenylalanine, threonine, tryptophan, valine, arginine, cysteine, glycine, proline, tyrosine, palmitoleic acid. From CoFID 2021 (UK) food 17-042 (Oil, safflower), adjusted for water content: iodine, biotin, manganese, chloride. Quercetin, total flavonoids from the USDA Flavonoid Values for Survey Foods 2017-2018, food code 82106000 (Safflower oil). Set to 0 because the nutrient is absent from this kind of food: K2, MK-4, MK-7, taurine, curcumin, sulforaphane, creatine."
   },
   {
     "name": "Sunflower oil 1 tablespoon",
@@ -35538,7 +36415,43 @@
       "vitaminK": 1,
       "fiber": 0,
       "solubleFiber": 0,
-      "insolubleFiber": 0
+      "insolubleFiber": 0,
+      "vitaminARetinol": 0,
+      "vitaminABetaCarotene": 0,
+      "vitaminB12": 0,
+      "iodine": 0,
+      "vitaminB6": 0,
+      "folate": 0,
+      "biotin": 0,
+      "thiamin": 0,
+      "riboflavin": 0,
+      "niacin": 0,
+      "pantothenicAcid": 0,
+      "chromium": 0.517,
+      "selenium": 0,
+      "copper": 0,
+      "vitaminK1": 0.734,
+      "vitaminK2": 0,
+      "vitaminK2MK4": 0,
+      "vitaminK2MK7": 0,
+      "phosphorus": 0,
+      "choline": 0.027,
+      "histidine": 0,
+      "isoleucine": 0,
+      "leucine": 0,
+      "lysine": 0,
+      "methionine": 0,
+      "phenylalanine": 0,
+      "threonine": 0,
+      "tryptophan": 0,
+      "valine": 0,
+      "arginine": 0,
+      "cysteine": 0,
+      "glycine": 0,
+      "proline": 0,
+      "tyrosine": 0,
+      "taurine": 0,
+      "quercetin": 0
     },
     "longevity": {
       "saturatedFat": 1.4,
@@ -35559,14 +36472,32 @@
       "carotenoids": 0,
       "lutein": 0,
       "plantSterols": 0,
-      "pqq": 0
+      "pqq": 0,
+      "selenium": true,
+      "copper": true,
+      "vitaminK1": true,
+      "vitaminK2": true,
+      "vitaminK2MK4": true,
+      "vitaminK2MK7": true,
+      "phosphorus": true,
+      "choline": true,
+      "methionine": true,
+      "taurine": true,
+      "quercetin": true,
+      "vitaminK": true,
+      "palmitoleicAcid": 0,
+      "flavonoids": 0.0068,
+      "curcumin": 0,
+      "sulforaphane": 0,
+      "creatine": 0
     },
     "carbQuality": {
       "glycemicIndex": 0,
       "addedSugar": 0,
       "refinedCarbs": 0,
       "netCarbs": 0
-    }
+    },
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 171025 (Oil, sunflower, linoleic, (approx. 65%)), scaled to about 13.6 g, the weight implied by this entry's own values. From that record: retinol, beta-carotene, B12, B6, folate, thiamin, riboflavin, niacin, pantothenic acid, selenium, copper, K1, phosphorus, choline, histidine, isoleucine, leucine, lysine, methionine, phenylalanine, threonine, tryptophan, valine, arginine, cysteine, glycine, proline, tyrosine, palmitoleic acid. From Frida 5.5, DTU National Food Institute, Denmark, food 1382 (Sunflower oil), adjusted for water content: iodine, biotin, chromium. Quercetin, total flavonoids from the USDA Flavonoid Values for Survey Foods 2017-2018, food code 82101000 (Vegetable oil, NFS). Set to 0 because the nutrient is absent from this kind of food: K2, MK-4, MK-7, taurine, curcumin, sulforaphane, creatine."
   },
   {
     "name": "Soybean oil 1 tablespoon",
@@ -35587,7 +36518,44 @@
       "vitaminK": 25,
       "fiber": 0,
       "solubleFiber": 0,
-      "insolubleFiber": 0
+      "insolubleFiber": 0,
+      "vitaminARetinol": 0,
+      "vitaminABetaCarotene": 0,
+      "vitaminB12": 0,
+      "iodine": 0,
+      "vitaminB6": 0,
+      "folate": 0,
+      "biotin": 0,
+      "thiamin": 0,
+      "riboflavin": 0,
+      "niacin": 0,
+      "pantothenicAcid": 0,
+      "chromium": 0.925,
+      "selenium": 0,
+      "copper": 0,
+      "manganese": 0,
+      "vitaminK1": 25.0,
+      "vitaminK2": 0,
+      "vitaminK2MK4": 0,
+      "vitaminK2MK7": 0,
+      "phosphorus": 0,
+      "choline": 0.027,
+      "histidine": 0,
+      "isoleucine": 0,
+      "leucine": 0,
+      "lysine": 0,
+      "methionine": 0,
+      "phenylalanine": 0,
+      "threonine": 0,
+      "tryptophan": 0,
+      "valine": 0,
+      "arginine": 0,
+      "cysteine": 0,
+      "glycine": 0,
+      "proline": 0,
+      "tyrosine": 0,
+      "taurine": 0,
+      "quercetin": 0
     },
     "longevity": {
       "saturatedFat": 2.1,
@@ -35608,14 +36576,33 @@
       "carotenoids": 0,
       "lutein": 0,
       "plantSterols": 0,
-      "pqq": 0
+      "pqq": 0,
+      "selenium": true,
+      "copper": true,
+      "vitaminK1": true,
+      "vitaminK2": true,
+      "vitaminK2MK4": true,
+      "vitaminK2MK7": true,
+      "phosphorus": true,
+      "choline": true,
+      "methionine": true,
+      "taurine": true,
+      "quercetin": true,
+      "vitaminK": true,
+      "palmitoleicAcid": 0,
+      "flavonoids": 0,
+      "betaine": 0,
+      "curcumin": 0,
+      "sulforaphane": 0,
+      "creatine": 0
     },
     "carbQuality": {
       "glycemicIndex": 0,
       "addedSugar": 0,
       "refinedCarbs": 0,
       "netCarbs": 0
-    }
+    },
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 171411 (Oil, soybean, salad or cooking), scaled to about 13.6 g, the weight implied by this entry's own values. From that record: retinol, beta-carotene, B12, B6, folate, thiamin, riboflavin, niacin, pantothenic acid, selenium, copper, manganese, K1, MK-4, phosphorus, choline, histidine, isoleucine, leucine, lysine, methionine, phenylalanine, threonine, tryptophan, valine, arginine, cysteine, glycine, proline, tyrosine, palmitoleic acid, betaine. From Frida 5.5, DTU National Food Institute, Denmark, food 1461 (Soyabean oil, refined), adjusted for water content: iodine, biotin, chromium. Quercetin, total flavonoids from the USDA Flavonoid Values for Survey Foods 2017-2018, food code 82108000 (Soybean oil). Set to 0 because the nutrient is absent from this kind of food: K2, MK-7, taurine, curcumin, sulforaphane, creatine."
   },
   {
     "name": "Flax oil 1 tablespoon",
@@ -35636,7 +36623,28 @@
       "vitaminK": 0,
       "fiber": 0,
       "solubleFiber": 0,
-      "insolubleFiber": 0
+      "insolubleFiber": 0,
+      "vitaminARetinol": 0,
+      "vitaminABetaCarotene": 0,
+      "vitaminB12": 0,
+      "iodine": 0,
+      "vitaminB6": 0,
+      "folate": 0,
+      "thiamin": 0,
+      "riboflavin": 0,
+      "niacin": 0,
+      "pantothenicAcid": 0,
+      "selenium": 0,
+      "copper": 0,
+      "manganese": 0,
+      "vitaminK1": 1.27,
+      "vitaminK2": 0,
+      "vitaminK2MK4": 0,
+      "vitaminK2MK7": 0,
+      "phosphorus": 0.136,
+      "choline": 0.027,
+      "taurine": 0,
+      "quercetin": 0
     },
     "longevity": {
       "saturatedFat": 1.2,
@@ -35657,14 +36665,31 @@
       "carotenoids": 0,
       "lutein": 0,
       "plantSterols": 0,
-      "pqq": 0
+      "pqq": 0,
+      "selenium": true,
+      "copper": true,
+      "vitaminK1": true,
+      "vitaminK2": true,
+      "vitaminK2MK4": true,
+      "vitaminK2MK7": true,
+      "phosphorus": true,
+      "choline": true,
+      "taurine": true,
+      "quercetin": true,
+      "vitaminK": true,
+      "palmitoleicAcid": 0.0082,
+      "flavonoids": 0,
+      "curcumin": 0,
+      "sulforaphane": 0,
+      "creatine": 0
     },
     "carbQuality": {
       "glycemicIndex": 0,
       "addedSugar": 0,
       "refinedCarbs": 0,
       "netCarbs": 0
-    }
+    },
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 167702 (Oil, flaxseed, cold pressed), scaled to about 13.6 g, the weight implied by this entry's own values. From that record: retinol, beta-carotene, B12, B6, folate, thiamin, riboflavin, niacin, selenium, copper, manganese, K1, MK-4, phosphorus, choline, palmitoleic acid. From Frida 5.5, DTU National Food Institute, Denmark, food 1418 (Linseed oil), adjusted for water content: iodine, pantothenic acid. Quercetin, total flavonoids from the USDA Flavonoid Values for Survey Foods 2017-2018, food code 82103500 (Flaxseed oil). Set to 0 because the nutrient is absent from this kind of food: K2, MK-7, taurine, curcumin, sulforaphane, creatine."
   },
   {
     "name": "Broccoli 1 cup",
@@ -39119,7 +40144,35 @@
       "threonine": 195,
       "tryptophan": 81,
       "valine": 311,
-      "tyrosine": 144
+      "tyrosine": 144,
+      "vitaminA": 0,
+      "vitaminARetinol": 0,
+      "vitaminABetaCarotene": 0,
+      "vitaminD": 0,
+      "vitaminB12": 0,
+      "vitaminC": 0.14,
+      "iodine": 3.06,
+      "vitaminB6": 0.117,
+      "folate": 7.0,
+      "biotin": 3.53,
+      "thiamin": 0.118,
+      "riboflavin": 0.016,
+      "niacin": 0.297,
+      "pantothenicAcid": 0.242,
+      "selenium": 5.57,
+      "manganese": 0.464,
+      "vitaminE": 0.252,
+      "vitaminK": 9.55,
+      "vitaminK1": 9.55,
+      "vitaminK2": 0,
+      "vitaminK2MK4": 0,
+      "vitaminK2MK7": 0,
+      "phosphorus": 166,
+      "chloride": 4.72,
+      "glycine": 262,
+      "proline": 227,
+      "taurine": 0,
+      "quercetin": 0
     },
     "longevity": {
       "saturatedFat": 2.2,
@@ -39136,14 +40189,35 @@
       "arachidonicAcid": 0,
       "copper": true,
       "choline": true,
-      "pqq": 0
+      "pqq": 0,
+      "selenium": true,
+      "vitaminE": true,
+      "vitaminK": true,
+      "vitaminK1": true,
+      "vitaminK2": true,
+      "vitaminK2MK4": true,
+      "vitaminK2MK7": true,
+      "phosphorus": true,
+      "taurine": true,
+      "quercetin": true,
+      "methionine": true,
+      "omega9": 6.59,
+      "oleicAcid": 6.59,
+      "palmitoleicAcid": 0.038,
+      "flavonoids": 0.569,
+      "carotenoids": 0.0062,
+      "lutein": 0.0062,
+      "curcumin": 0,
+      "sulforaphane": 0,
+      "creatine": 0
     },
     "carbQuality": {
       "glycemicIndex": 25,
       "addedSugar": 0,
       "refinedCarbs": 0,
       "netCarbs": 8
-    }
+    },
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 170162 (Nuts, cashew nuts, raw), scaled to about 28 g, the weight implied by this entry's own values. From that record: vitamin A, retinol, beta-carotene, vitamin D, B12, vitamin C, B6, folate, thiamin, riboflavin, niacin, pantothenic acid, selenium, manganese, vitamin E, K1, phosphorus, glycine, proline, omega-9, oleic acid, palmitoleic acid, carotenoids, lutein. From CoFID 2021 (UK) food 14-811 (Cashew nuts, kernel only, plain), adjusted for water content: iodine, biotin, chloride. Quercetin, total flavonoids from the USDA Flavonoid Values for Survey Foods 2017-2018, food code 42104050 (Cashews, unroasted). Set to 0 because the nutrient is absent from this kind of food: K2, MK-4, MK-7, taurine, curcumin, sulforaphane, creatine. Vitamin K total is set to the phylloquinone (K1) amount, the form USDA reports as vitamin K."
   },
   {
     "name": "Dark chocolate 70% 1 oz",
@@ -39508,7 +40582,20 @@
       "threonine": 360,
       "tryptophan": 105,
       "valine": 505,
-      "tyrosine": 359
+      "tyrosine": 359,
+      "vitaminARetinol": 0,
+      "vitaminABetaCarotene": 1.96,
+      "vitaminB12": 0,
+      "vitaminC": 0.14,
+      "vitaminB6": 0.168,
+      "riboflavin": 0.08,
+      "niacin": 2.58,
+      "vitaminK2": 0,
+      "vitaminK2MK4": 0,
+      "vitaminK2MK7": 0,
+      "glycine": 451,
+      "proline": 447,
+      "taurine": 0
     },
     "longevity": {
       "saturatedFat": 1.3,
@@ -39529,14 +40616,24 @@
       "choline": true,
       "vitaminE": true,
       "plantSterols": 0.05,
-      "pqq": 0
+      "pqq": 0,
+      "vitaminK2": true,
+      "vitaminK2MK4": true,
+      "vitaminK2MK7": true,
+      "taurine": true,
+      "phosphorus": true,
+      "methionine": true,
+      "curcumin": 0,
+      "sulforaphane": 0,
+      "creatine": 0
     },
     "carbQuality": {
       "glycemicIndex": 15,
       "addedSugar": 0,
       "refinedCarbs": 0,
       "netCarbs": 1.3
-    }
+    },
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 170148 (Seeds, hemp seed, hulled), scaled to about 28 g, the weight implied by this entry's own values. From that record: beta-carotene, vitamin C, B6, riboflavin, niacin, glycine, proline. Set to 0 because the nutrient is absent from this kind of food: retinol, B12, K2, MK-4, MK-7, taurine, curcumin, sulforaphane, creatine."
   },
   {
     "name": "Perilla oil 1 tablespoon",
@@ -39551,7 +40648,28 @@
       "magnesium": 0,
       "zinc": 0,
       "vitaminE": 2,
-      "vitaminK": 0
+      "vitaminK": 0,
+      "fiber": 0,
+      "solubleFiber": 0,
+      "insolubleFiber": 0,
+      "vitaminA": 0,
+      "vitaminARetinol": 0,
+      "vitaminABetaCarotene": 0,
+      "vitaminD": 0,
+      "vitaminB12": 0,
+      "vitaminC": 0,
+      "vitaminB6": 0,
+      "folate": 0,
+      "thiamin": 0,
+      "riboflavin": 0,
+      "niacin": 0,
+      "selenium": 0,
+      "copper": 0,
+      "manganese": 0,
+      "vitaminK2": 0,
+      "vitaminK2MK4": 0,
+      "vitaminK2MK7": 0,
+      "taurine": 0
     },
     "longevity": {
       "saturatedFat": 1.1,
@@ -39570,14 +40688,25 @@
       "oleicAcid": 1.8,
       "vitaminE": true,
       "plantSterols": 0,
-      "pqq": 0
+      "pqq": 0,
+      "selenium": true,
+      "copper": true,
+      "vitaminK2": true,
+      "vitaminK2MK4": true,
+      "vitaminK2MK7": true,
+      "taurine": true,
+      "vitaminK": true,
+      "curcumin": 0,
+      "sulforaphane": 0,
+      "creatine": 0
     },
     "carbQuality": {
       "glycemicIndex": 0,
       "addedSugar": 0,
       "refinedCarbs": 0,
       "netCarbs": 0
-    }
+    },
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 167702 (Oil, flaxseed, cold pressed), scaled to about 14 g, the weight implied by this entry's own values. From that record: fiber, vitamin A, retinol, beta-carotene, vitamin D, B12, vitamin C, B6, folate, thiamin, riboflavin, niacin, selenium, copper, manganese, MK-4. Set to 0 because the nutrient is absent from this kind of food: K2, MK-7, taurine, curcumin, sulforaphane, creatine. Soluble and insoluble fiber split this entry's total fiber using the soluble share Frida reports. USDA does not list perilla oil, so the cold-pressed flaxseed oil record is a stand-in here only for nutrients that refined seed oils do not contain (zeros); vitamin E, vitamin K and fatty-acid fields were not filled from it."
   },
   {
     "name": "Nutritional yeast 2 tablespoons (16g)",
@@ -40332,7 +41461,36 @@
       "vitaminK1": 0.1,
       "vitaminK2": 4,
       "vitaminK2MK4": 4,
-      "vitaminK2MK7": 0
+      "vitaminK2MK7": 0,
+      "fiber": 0,
+      "solubleFiber": 0,
+      "insolubleFiber": 0,
+      "vitaminARetinol": 63.2,
+      "vitaminABetaCarotene": 15.0,
+      "vitaminC": 0,
+      "iodine": 12.4,
+      "biotin": 8.13,
+      "niacin": 0.0041,
+      "chromium": 0.072,
+      "manganese": 0.0094,
+      "epa": 0.0019,
+      "molybdenum": 2.93,
+      "chloride": 32.7,
+      "histidine": 71,
+      "isoleucine": 148,
+      "leucine": 238,
+      "lysine": 207,
+      "methionine": 64,
+      "phenylalanine": 116,
+      "threonine": 117,
+      "tryptophan": 30,
+      "valine": 162,
+      "arginine": 187,
+      "cysteine": 45,
+      "glycine": 83,
+      "proline": 110,
+      "tyrosine": 116,
+      "quercetin": 0
     },
     "longevity": {
       "saturatedFat": 1.6,
@@ -40353,14 +41511,31 @@
       "copper": true,
       "phosphorus": true,
       "choline": true,
-      "lutein": 0.19
+      "lutein": 0.19,
+      "epa": true,
+      "methionine": true,
+      "quercetin": true,
+      "vitaminK2MK7": true,
+      "plantSterols": 0,
+      "omega9": 1.82,
+      "linoleicAcid": 0.603,
+      "arachidonicAcid": 0.075,
+      "oleicAcid": 1.82,
+      "palmitoleicAcid": 0.156,
+      "flavonoids": 0,
+      "carotenoids": 0.214,
+      "betaine": 0.153,
+      "curcumin": 0,
+      "resveratrol": 0,
+      "sulforaphane": 0
     },
     "carbQuality": {
       "glycemicIndex": 0,
       "addedSugar": 0,
       "refinedCarbs": 0,
       "netCarbs": 0.6
-    }
+    },
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 172184 (Egg, yolk, raw, fresh), scaled to about 17 g, the weight implied by this entry's own values. From that record: fiber, retinol, beta-carotene, vitamin C, niacin, manganese, EPA, histidine, isoleucine, leucine, lysine, methionine, phenylalanine, threonine, tryptophan, valine, arginine, cysteine, glycine, proline, tyrosine, omega-9, linoleic acid, arachidonic acid, oleic acid, palmitoleic acid, carotenoids, betaine. From Frida 5.5, DTU National Food Institute, Denmark, food 1230 (Egg, chicken, yolk, raw), adjusted for water content: iodine, biotin, chromium, molybdenum, chloride. Set to 0 because the nutrient is absent from this kind of food: soluble fiber, insoluble fiber, quercetin, plant sterols, total flavonoids, curcumin, resveratrol, sulforaphane."
   },
   {
     "name": "Fortified milk 1 cup",
@@ -40392,7 +41567,36 @@
       "choline": 43,
       "vitaminK2": 2,
       "vitaminK2MK4": 2,
-      "vitaminK2MK7": 0
+      "vitaminK2MK7": 0,
+      "fiber": 0,
+      "solubleFiber": 0,
+      "insolubleFiber": 0,
+      "vitaminARetinol": 134,
+      "vitaminABetaCarotene": 9.77,
+      "vitaminC": 0.488,
+      "biotin": 5.18,
+      "chromium": 0.304,
+      "manganese": 0.034,
+      "epa": 0,
+      "dha": 0,
+      "vitaminK1": 0.488,
+      "molybdenum": 12.3,
+      "chloride": 236,
+      "histidine": 244,
+      "isoleucine": 418,
+      "leucine": 764,
+      "lysine": 674,
+      "methionine": 212,
+      "phenylalanine": 418,
+      "threonine": 344,
+      "tryptophan": 103,
+      "valine": 527,
+      "arginine": 230,
+      "cysteine": 49,
+      "glycine": 159,
+      "proline": 796,
+      "tyrosine": 408,
+      "quercetin": 0
     },
     "longevity": {
       "saturatedFat": 3.1,
@@ -40410,14 +41614,34 @@
       "selenium": true,
       "copper": true,
       "phosphorus": true,
-      "choline": true
+      "choline": true,
+      "epa": true,
+      "dha": true,
+      "vitaminK1": true,
+      "methionine": true,
+      "quercetin": true,
+      "vitaminK2MK7": true,
+      "plantSterols": 0,
+      "omega9": 1.05,
+      "linoleicAcid": 0.134,
+      "arachidonicAcid": 0,
+      "oleicAcid": 1.05,
+      "palmitoleicAcid": 0.066,
+      "flavonoids": 0,
+      "carotenoids": 0.0098,
+      "lutein": 0,
+      "betaine": 2.2,
+      "curcumin": 0,
+      "resveratrol": 0,
+      "sulforaphane": 0
     },
     "carbQuality": {
       "glycemicIndex": 31,
       "addedSugar": 0,
       "refinedCarbs": 0,
       "netCarbs": 12.2
-    }
+    },
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 171267 (Milk, reduced fat, fluid, 2% milkfat, with added vitamin A and vitamin D), scaled to about 244 g, the weight implied by this entry's own values. From that record: fiber, retinol, beta-carotene, vitamin C, manganese, EPA, DHA, K1, histidine, isoleucine, leucine, lysine, methionine, phenylalanine, threonine, tryptophan, valine, arginine, cysteine, glycine, proline, tyrosine, omega-9, linoleic acid, arachidonic acid, oleic acid, palmitoleic acid, carotenoids, lutein, betaine. From Frida 5.5, DTU National Food Institute, Denmark, food 33 (Milk, partly skimmed, konventional (not organic), 1.5 % fat), adjusted for water content: biotin, chromium, molybdenum, chloride. Set to 0 because the nutrient is absent from this kind of food: soluble fiber, insoluble fiber, quercetin, plant sterols, total flavonoids, curcumin, resveratrol, sulforaphane."
   },
   {
     "name": "Orange juice (fortified) 1 cup",
@@ -40439,7 +41663,45 @@
       "niacin": 0.5,
       "vitaminB6": 0.1,
       "copper": 60,
-      "phosphorus": 42
+      "phosphorus": 42,
+      "fiber": 0.736,
+      "zinc": 0.172,
+      "vitaminARetinol": 0,
+      "vitaminABetaCarotene": 19.6,
+      "vitaminB12": 0,
+      "iodine": 2.55,
+      "biotin": 1.79,
+      "pantothenicAcid": 0.479,
+      "selenium": 0.245,
+      "manganese": 0.056,
+      "vitaminE": 0.491,
+      "omega3": 0.017,
+      "epa": 0,
+      "dha": 0,
+      "omega6": 0.056,
+      "vitaminK": 0,
+      "vitaminK1": 0,
+      "vitaminK2": 0,
+      "vitaminK2MK4": 0,
+      "vitaminK2MK7": 0,
+      "choline": 15.2,
+      "chloride": 166,
+      "histidine": 7,
+      "isoleucine": 10,
+      "leucine": 37,
+      "lysine": 49,
+      "methionine": 5,
+      "phenylalanine": 27,
+      "threonine": 22,
+      "tryptophan": 5,
+      "valine": 32,
+      "arginine": 196,
+      "cysteine": 5,
+      "glycine": 29,
+      "proline": 194,
+      "tyrosine": 10,
+      "taurine": 0,
+      "quercetin": 0.982
     },
     "longevity": {
       "saturatedFat": 0.1,
@@ -40450,14 +41712,42 @@
       "flavonoids": 40,
       "polyphenols": 70,
       "copper": true,
-      "phosphorus": true
+      "phosphorus": true,
+      "selenium": true,
+      "vitaminE": true,
+      "omega3": true,
+      "epa": true,
+      "dha": true,
+      "omega6": true,
+      "vitaminK": true,
+      "vitaminK1": true,
+      "vitaminK2": true,
+      "vitaminK2MK4": true,
+      "vitaminK2MK7": true,
+      "choline": true,
+      "methionine": true,
+      "taurine": true,
+      "quercetin": true,
+      "omega9": 0.044,
+      "ala": 0.017,
+      "linoleicAcid": 0.056,
+      "arachidonicAcid": 0,
+      "oleicAcid": 0.044,
+      "palmitoleicAcid": 0.0074,
+      "carotenoids": 0.172,
+      "lutein": 0.066,
+      "betaine": 0.491,
+      "curcumin": 0,
+      "sulforaphane": 0,
+      "creatine": 0
     },
     "carbQuality": {
       "glycemicIndex": 50,
       "addedSugar": 0,
       "refinedCarbs": 0,
       "netCarbs": 26
-    }
+    },
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 169101 (Orange juice, chilled, includes from concentrate, with added calcium and vitamin D), scaled to about 245 g, the weight implied by this entry's own values. From that record: fiber, zinc, retinol, beta-carotene, B12, pantothenic acid, selenium, manganese, vitamin E, omega-3, EPA, DHA, omega-6, K1, choline, histidine, isoleucine, leucine, lysine, methionine, phenylalanine, threonine, tryptophan, valine, arginine, cysteine, glycine, proline, tyrosine, omega-9, ALA, linoleic acid, arachidonic acid, oleic acid, palmitoleic acid, carotenoids, lutein, betaine. From CoFID 2021 (UK) food 14-329 (Orange juice, chilled), adjusted for water content: iodine, biotin, chloride. Quercetin from the USDA Flavonoid Values for Survey Foods 2017-2018, food code 61210220 (Orange juice, 100%, canned, bottled or in a carton). Set to 0 because the nutrient is absent from this kind of food: K2, MK-4, MK-7, taurine, curcumin, sulforaphane, creatine. Vitamin K total is set to the phylloquinone (K1) amount, the form USDA reports as vitamin K."
   },
   {
     "name": "Fortified cereals 1 serving",
@@ -40613,7 +41903,52 @@
     "micros": {
       "vitaminA": 4080,
       "vitaminD": 34,
-      "vitaminE": 0
+      "vitaminE": 0,
+      "fiber": 0,
+      "solubleFiber": 0,
+      "insolubleFiber": 0,
+      "sodium": 0,
+      "potassium": 0,
+      "calcium": 0,
+      "iron": 0,
+      "magnesium": 0,
+      "zinc": 0,
+      "vitaminARetinol": 4080,
+      "vitaminABetaCarotene": 0,
+      "vitaminB12": 0,
+      "vitaminC": 0,
+      "iodine": 54.4,
+      "vitaminB6": 0,
+      "folate": 0,
+      "biotin": 0,
+      "thiamin": 0,
+      "riboflavin": 0,
+      "niacin": 0,
+      "pantothenicAcid": 0,
+      "selenium": 0,
+      "copper": 0,
+      "manganese": 0,
+      "vitaminK": 0,
+      "vitaminK1": 0,
+      "vitaminK2MK7": 0,
+      "phosphorus": 0,
+      "chloride": 0,
+      "histidine": 0,
+      "isoleucine": 0,
+      "leucine": 0,
+      "lysine": 0,
+      "methionine": 0,
+      "phenylalanine": 0,
+      "threonine": 0,
+      "tryptophan": 0,
+      "valine": 0,
+      "arginine": 0,
+      "cysteine": 0,
+      "glycine": 0,
+      "proline": 0,
+      "tyrosine": 0,
+      "taurine": 0,
+      "quercetin": 0
     },
     "longevity": {
       "saturatedFat": 3.1,
@@ -40628,14 +41963,32 @@
       "dha": 1.5,
       "linoleicAcid": 0.13,
       "arachidonicAcid": 0.13,
-      "oleicAcid": 2.8
+      "oleicAcid": 2.8,
+      "selenium": true,
+      "copper": true,
+      "vitaminK": true,
+      "vitaminK1": true,
+      "vitaminK2MK7": true,
+      "phosphorus": true,
+      "methionine": true,
+      "taurine": true,
+      "quercetin": true,
+      "vitaminE": true,
+      "plantSterols": 0,
+      "omega9": 2.81,
+      "palmitoleicAcid": 1.13,
+      "flavonoids": 0,
+      "curcumin": 0,
+      "resveratrol": 0,
+      "sulforaphane": 0
     },
     "carbQuality": {
       "glycemicIndex": 0,
       "addedSugar": 0,
       "refinedCarbs": 0,
       "netCarbs": 0
-    }
+    },
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 173577 (Fish oil, cod liver), scaled to about 13.6 g, the weight implied by this entry's own values. From that record: fiber, sodium, potassium, calcium, iron, magnesium, zinc, retinol, B12, vitamin C, B6, folate, riboflavin, niacin, pantothenic acid, selenium, copper, manganese, phosphorus, omega-9, palmitoleic acid. From Frida 5.5, DTU National Food Institute, Denmark, food 1396 (Cod liver oil), adjusted for water content: beta-carotene, iodine, biotin, K1. From CoFID 2021 (UK) food 17-488 (Oil, cod liver), adjusted for water content: thiamin, chloride. Set to 0 because the nutrient is absent from this kind of food: soluble fiber, insoluble fiber, MK-7, histidine, isoleucine, leucine, lysine, methionine, phenylalanine, threonine, tryptophan, valine, arginine, cysteine, glycine, proline, tyrosine, taurine, quercetin, plant sterols, total flavonoids, curcumin, resveratrol, sulforaphane. Vitamin K total is set to the phylloquinone (K1) amount, the form USDA reports as vitamin K."
   },
   {
     "name": "Sprouts Alfalfa, Broccoli & Kale Nutritional Blend 1 cup (33 g)",
@@ -43545,7 +44898,41 @@
       "choline": 4,
       "omega3": 0.024,
       "epa": 0.002,
-      "omega6": 0.11
+      "omega6": 0.11,
+      "fiber": 0,
+      "solubleFiber": 0,
+      "insolubleFiber": 0,
+      "iron": 0.017,
+      "vitaminABetaCarotene": 8.85,
+      "vitaminD": 0,
+      "vitaminB12": 0.033,
+      "vitaminC": 0,
+      "iodine": 2.05,
+      "biotin": 0.401,
+      "pantothenicAcid": 0.078,
+      "chromium": 0.122,
+      "copper": 2.7,
+      "manganese": 0.0016,
+      "dha": 0,
+      "vitaminK2": 1.3,
+      "vitaminK2MK4": 1.3,
+      "vitaminK2MK7": 0,
+      "chloride": 135,
+      "histidine": 26,
+      "isoleucine": 49,
+      "leucine": 99,
+      "lysine": 85,
+      "methionine": 29,
+      "phenylalanine": 44,
+      "threonine": 35,
+      "tryptophan": 10,
+      "valine": 59,
+      "arginine": 35,
+      "cysteine": 6,
+      "glycine": 21,
+      "proline": 100,
+      "tyrosine": 45,
+      "quercetin": 0
     },
     "longevity": {
       "saturatedFat": 3,
@@ -43564,13 +44951,32 @@
       "vitaminK1": true,
       "selenium": true,
       "phosphorus": true,
-      "choline": true
+      "choline": true,
+      "copper": true,
+      "dha": true,
+      "vitaminK2": true,
+      "vitaminK2MK4": true,
+      "vitaminK2MK7": true,
+      "methionine": true,
+      "quercetin": true,
+      "transFat": 0.176,
+      "plantSterols": 0,
+      "omega9": 1.04,
+      "oleicAcid": 1.04,
+      "flavonoids": 0,
+      "carotenoids": 0.01,
+      "lutein": 0.001,
+      "betaine": 0.075,
+      "curcumin": 0,
+      "resveratrol": 0,
+      "sulforaphane": 0
     },
     "carbQuality": {
       "addedSugar": 0,
       "refinedCarbs": 0,
       "netCarbs": 0.7
-    }
+    },
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 173418 (Cheese, cream), scaled to about 15 g, the weight given in this entry's name. From that record: fiber, iron, beta-carotene, vitamin D, B12, vitamin C, pantothenic acid, copper, manganese, DHA, MK-4, histidine, isoleucine, leucine, lysine, methionine, phenylalanine, threonine, tryptophan, valine, arginine, cysteine, glycine, proline, tyrosine, trans fat, omega-9, oleic acid, carotenoids, lutein, betaine. From Frida 5.5, DTU National Food Institute, Denmark, food 1773 (Cheese, Cream, 45-55 % fidm.), adjusted for water content: iodine, biotin, chromium, chloride. Set to 0 because the nutrient is absent from this kind of food: soluble fiber, insoluble fiber, MK-7, quercetin, plant sterols, total flavonoids, curcumin, resveratrol, sulforaphane. K2 is MK-4 plus MK-7."
   },
   {
     "name": "Cream cheese 2 tablespoons (30 g)",
@@ -43598,7 +45004,41 @@
       "choline": 8,
       "omega3": 0.048,
       "epa": 0.003,
-      "omega6": 0.23
+      "omega6": 0.23,
+      "fiber": 0,
+      "solubleFiber": 0,
+      "insolubleFiber": 0,
+      "iron": 0.033,
+      "vitaminABetaCarotene": 17.7,
+      "vitaminD": 0,
+      "vitaminB12": 0.066,
+      "vitaminC": 0,
+      "iodine": 4.11,
+      "biotin": 0.803,
+      "pantothenicAcid": 0.155,
+      "chromium": 0.244,
+      "copper": 5.4,
+      "manganese": 0.0033,
+      "dha": 0,
+      "vitaminK2": 2.61,
+      "vitaminK2MK4": 2.61,
+      "vitaminK2MK7": 0,
+      "chloride": 270,
+      "histidine": 52,
+      "isoleucine": 97,
+      "leucine": 197,
+      "lysine": 170,
+      "methionine": 57,
+      "phenylalanine": 87,
+      "threonine": 70,
+      "tryptophan": 21,
+      "valine": 118,
+      "arginine": 70,
+      "cysteine": 13,
+      "glycine": 43,
+      "proline": 200,
+      "tyrosine": 91,
+      "quercetin": 0
     },
     "longevity": {
       "saturatedFat": 5.9,
@@ -43617,13 +45057,32 @@
       "vitaminK1": true,
       "selenium": true,
       "phosphorus": true,
-      "choline": true
+      "choline": true,
+      "copper": true,
+      "dha": true,
+      "vitaminK2": true,
+      "vitaminK2MK4": true,
+      "vitaminK2MK7": true,
+      "methionine": true,
+      "quercetin": true,
+      "transFat": 0.352,
+      "plantSterols": 0,
+      "omega9": 2.08,
+      "oleicAcid": 2.08,
+      "flavonoids": 0,
+      "carotenoids": 0.021,
+      "lutein": 0.0021,
+      "betaine": 0.15,
+      "curcumin": 0,
+      "resveratrol": 0,
+      "sulforaphane": 0
     },
     "carbQuality": {
       "addedSugar": 0,
       "refinedCarbs": 0,
       "netCarbs": 1.4
-    }
+    },
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 173418 (Cheese, cream), scaled to about 30 g, the weight given in this entry's name. From that record: fiber, iron, beta-carotene, vitamin D, B12, vitamin C, pantothenic acid, copper, manganese, DHA, MK-4, histidine, isoleucine, leucine, lysine, methionine, phenylalanine, threonine, tryptophan, valine, arginine, cysteine, glycine, proline, tyrosine, trans fat, omega-9, oleic acid, carotenoids, lutein, betaine. From Frida 5.5, DTU National Food Institute, Denmark, food 1773 (Cheese, Cream, 45-55 % fidm.), adjusted for water content: iodine, biotin, chromium, chloride. Set to 0 because the nutrient is absent from this kind of food: soluble fiber, insoluble fiber, MK-7, quercetin, plant sterols, total flavonoids, curcumin, resveratrol, sulforaphane. K2 is MK-4 plus MK-7."
   },
   {
     "name": "Cream cheese 1 oz (28 g)",
@@ -43651,7 +45110,41 @@
       "choline": 7.5,
       "omega3": 0.045,
       "epa": 0.003,
-      "omega6": 0.21
+      "omega6": 0.21,
+      "fiber": 0,
+      "solubleFiber": 0,
+      "insolubleFiber": 0,
+      "iron": 0.031,
+      "vitaminABetaCarotene": 16.5,
+      "vitaminD": 0,
+      "vitaminB12": 0.062,
+      "vitaminC": 0,
+      "iodine": 3.83,
+      "biotin": 0.749,
+      "pantothenicAcid": 0.145,
+      "chromium": 0.227,
+      "copper": 5.04,
+      "manganese": 0.0031,
+      "dha": 0,
+      "vitaminK2": 2.44,
+      "vitaminK2MK4": 2.44,
+      "vitaminK2MK7": 0,
+      "chloride": 252,
+      "histidine": 49,
+      "isoleucine": 91,
+      "leucine": 184,
+      "lysine": 159,
+      "methionine": 53,
+      "phenylalanine": 81,
+      "threonine": 65,
+      "tryptophan": 19,
+      "valine": 111,
+      "arginine": 66,
+      "cysteine": 12,
+      "glycine": 40,
+      "proline": 186,
+      "tyrosine": 85,
+      "quercetin": 0
     },
     "longevity": {
       "saturatedFat": 5.5,
@@ -43670,13 +45163,32 @@
       "vitaminK1": true,
       "selenium": true,
       "phosphorus": true,
-      "choline": true
+      "choline": true,
+      "copper": true,
+      "dha": true,
+      "vitaminK2": true,
+      "vitaminK2MK4": true,
+      "vitaminK2MK7": true,
+      "methionine": true,
+      "quercetin": true,
+      "transFat": 0.328,
+      "plantSterols": 0,
+      "omega9": 1.94,
+      "oleicAcid": 1.94,
+      "flavonoids": 0,
+      "carotenoids": 0.019,
+      "lutein": 0.002,
+      "betaine": 0.14,
+      "curcumin": 0,
+      "resveratrol": 0,
+      "sulforaphane": 0
     },
     "carbQuality": {
       "addedSugar": 0,
       "refinedCarbs": 0,
       "netCarbs": 1.3
-    }
+    },
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 173418 (Cheese, cream), scaled to about 28 g, the weight given in this entry's name. From that record: fiber, iron, beta-carotene, vitamin D, B12, vitamin C, pantothenic acid, copper, manganese, DHA, MK-4, histidine, isoleucine, leucine, lysine, methionine, phenylalanine, threonine, tryptophan, valine, arginine, cysteine, glycine, proline, tyrosine, trans fat, omega-9, oleic acid, carotenoids, lutein, betaine. From Frida 5.5, DTU National Food Institute, Denmark, food 1773 (Cheese, Cream, 45-55 % fidm.), adjusted for water content: iodine, biotin, chromium, chloride. Set to 0 because the nutrient is absent from this kind of food: soluble fiber, insoluble fiber, MK-7, quercetin, plant sterols, total flavonoids, curcumin, resveratrol, sulforaphane. K2 is MK-4 plus MK-7."
   },
   {
     "name": "Cream cheese bagel spread - half bagel (1 tablespoon on one cut half, 15 g)",
@@ -43704,7 +45216,41 @@
       "choline": 4,
       "omega3": 0.024,
       "epa": 0.002,
-      "omega6": 0.11
+      "omega6": 0.11,
+      "fiber": 0,
+      "solubleFiber": 0,
+      "insolubleFiber": 0,
+      "iron": 0.017,
+      "vitaminABetaCarotene": 8.85,
+      "vitaminD": 0,
+      "vitaminB12": 0.033,
+      "vitaminC": 0,
+      "iodine": 2.05,
+      "biotin": 0.401,
+      "pantothenicAcid": 0.078,
+      "chromium": 0.122,
+      "copper": 2.7,
+      "manganese": 0.0016,
+      "dha": 0,
+      "vitaminK2": 1.3,
+      "vitaminK2MK4": 1.3,
+      "vitaminK2MK7": 0,
+      "chloride": 135,
+      "histidine": 26,
+      "isoleucine": 49,
+      "leucine": 99,
+      "lysine": 85,
+      "methionine": 29,
+      "phenylalanine": 44,
+      "threonine": 35,
+      "tryptophan": 10,
+      "valine": 59,
+      "arginine": 35,
+      "cysteine": 6,
+      "glycine": 21,
+      "proline": 100,
+      "tyrosine": 45,
+      "quercetin": 0
     },
     "longevity": {
       "saturatedFat": 3,
@@ -43723,13 +45269,32 @@
       "vitaminK1": true,
       "selenium": true,
       "phosphorus": true,
-      "choline": true
+      "choline": true,
+      "copper": true,
+      "dha": true,
+      "vitaminK2": true,
+      "vitaminK2MK4": true,
+      "vitaminK2MK7": true,
+      "methionine": true,
+      "quercetin": true,
+      "transFat": 0.176,
+      "plantSterols": 0,
+      "omega9": 1.04,
+      "oleicAcid": 1.04,
+      "flavonoids": 0,
+      "carotenoids": 0.01,
+      "lutein": 0.001,
+      "betaine": 0.075,
+      "curcumin": 0,
+      "resveratrol": 0,
+      "sulforaphane": 0
     },
     "carbQuality": {
       "addedSugar": 0,
       "refinedCarbs": 0,
       "netCarbs": 0.7
-    }
+    },
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 173418 (Cheese, cream), scaled to about 15 g, the weight given in this entry's name. From that record: fiber, iron, beta-carotene, vitamin D, B12, vitamin C, pantothenic acid, copper, manganese, DHA, MK-4, histidine, isoleucine, leucine, lysine, methionine, phenylalanine, threonine, tryptophan, valine, arginine, cysteine, glycine, proline, tyrosine, trans fat, omega-9, oleic acid, carotenoids, lutein, betaine. From Frida 5.5, DTU National Food Institute, Denmark, food 1773 (Cheese, Cream, 45-55 % fidm.), adjusted for water content: iodine, biotin, chromium, chloride. Set to 0 because the nutrient is absent from this kind of food: soluble fiber, insoluble fiber, MK-7, quercetin, plant sterols, total flavonoids, curcumin, resveratrol, sulforaphane. K2 is MK-4 plus MK-7."
   },
   {
     "name": "Ralphs' Kroger Mustard Potato Salad 2/3 cup (140g)",
