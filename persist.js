@@ -292,6 +292,7 @@ var NutrientsPersist = (function () {
       keywordsReorderOpen: false,
       keywordsCaloriesOpen: false,
       keywordsPageSize: 25,
+      experimentalWeek: null,
     };
   }
 

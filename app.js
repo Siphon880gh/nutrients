@@ -102,6 +102,16 @@
   var dashboardMealsJumpEl = document.getElementById("dashboard-meals-jump");
   var weekSavedMealsOpenEl = document.getElementById("week-saved-meals-open");
   var mealsPanelEl = document.getElementById("meals-panel");
+  var dashboardExperimentalJumpEl = document.getElementById(
+    "dashboard-experimental-jump"
+  );
+  var experimentalPanelEl = document.getElementById("experimental-panel");
+  var xptRootEl = document.getElementById("xpt-root");
+  var xptFoodGridEl = document.getElementById("xpt-food-grid");
+  var xptWeekBoardEl = document.getElementById("xpt-week-board");
+  var xptNoteEl = document.getElementById("xpt-note");
+  var xptLegendEl = document.getElementById("xpt-legend");
+  var xptNonStoredBtn = document.getElementById("xpt-nonstored");
   var mealsCloseEl = document.getElementById("meals-close");
   var mealsListViewEl = document.getElementById("meals-list-view");
   var mealsDetailViewEl = document.getElementById("meals-detail-view");
@@ -834,6 +844,18 @@
   var diaryFavorites = [];
   var savedMeals = [];
   var mealsPanelOpen = false;
+  var experimentalPanelOpen = false;
+  var experimentalWeekView = "day";
+  var experimentalNonStored = true;
+  var experimentalWeekTexts = {
+    mon: "",
+    tue: "",
+    wed: "",
+    thu: "",
+    fri: "",
+    sat: "",
+    sun: "",
+  };
   var activeMealId = null;
   var mealNameEditId = null;
   var activeFavoriteDayKey = null;
@@ -11829,6 +11851,7 @@
       (keywordPositionModalEl && !keywordPositionModalEl.hidden) ||
       foodDefinitionsOpen ||
       mealsPanelOpen ||
+      experimentalPanelOpen ||
       microRequirementsOpen ||
       longevityPanelOpen ||
       !!activeImportId ||
@@ -11845,7 +11868,7 @@
     var root = document.documentElement.style;
     if (
       !nav ||
-      !(foodDefinitionsOpen || mealsPanelOpen || microRequirementsOpen || longevityPanelOpen)
+      !(foodDefinitionsOpen || mealsPanelOpen || experimentalPanelOpen || microRequirementsOpen || longevityPanelOpen)
     ) {
       root.removeProperty("--app-sheet-top");
       root.removeProperty("--app-sheet-bottom");
@@ -11882,6 +11905,7 @@
     var overlayOpen = !!(
       foodDefinitionsOpen ||
       mealsPanelOpen ||
+      experimentalPanelOpen ||
       microRequirementsOpen ||
       longevityPanelOpen
     );
@@ -11908,6 +11932,7 @@
   function closeExclusiveOverlays() {
     if (foodDefinitionsOpen) setFoodDefinitionsOpen(false);
     if (mealsPanelOpen) setMealsPanelOpen(false);
+    if (experimentalPanelOpen) setExperimentalPanelOpen(false);
     if (microRequirementsOpen) setMicroRequirementsOpen(false);
     if (longevityPanelOpen) setLongevityPanelOpen(false);
   }
@@ -23339,6 +23364,7 @@
       setMicroRequirementsOpen(false);
       setFoodDefinitionsOpen(false);
       setMealsPanelOpen(false);
+      setExperimentalPanelOpen(false);
       renderLongevityPanel();
       initStickyFiltersCarousel();
       resetAppSheetScroll(dashboardLongevityPanelEl);
@@ -23386,6 +23412,7 @@
       setFoodDefinitionsOpen(false);
       setMicroRequirementsOpen(false);
       setLongevityPanelOpen(false);
+      setExperimentalPanelOpen(false);
       renderMealsPanel();
       resetAppSheetScroll(mealsPanelEl);
     }
@@ -23433,6 +23460,7 @@
       setMicroRequirementsOpen(false);
       setLongevityPanelOpen(false);
       setMealsPanelOpen(false);
+      setExperimentalPanelOpen(false);
       resetAppSheetScroll(foodDefinitionsPanelEl);
     }
     syncExclusiveOverlayUi();
@@ -23451,6 +23479,7 @@
       setLongevityPanelOpen(false);
       setFoodDefinitionsOpen(false);
       setMealsPanelOpen(false);
+      setExperimentalPanelOpen(false);
       maybeApplyMicroFirstOpenPreset();
       renderMicroRequirements();
       initStickyFiltersCarousel();
@@ -24694,6 +24723,7 @@
     loadMacroSplit();
     loadBodyWeight();
     loadWeightTrend();
+    loadExperimentalWeek();
   }
 
   function applyLoadedAppStateToUi() {
@@ -27728,6 +27758,7 @@
       ensureAllDayGuidedEls();
       renderAllDayGuidedLists();
     }
+    if (experimentalPanelOpen) renderExperimentalPanel();
   }
 
   function allDayMealsText() {
@@ -33283,13 +33314,19 @@
     resetCopyDateConflictMode();
     if (copyDateModalTitleEl) {
       copyDateModalTitleEl.textContent =
-        mode === "week" ? "Copy to custom week" : "Copy to custom day";
+        mode === "week"
+          ? "Copy to custom week"
+          : mode === "experimental"
+            ? "Copy experimental day"
+            : "Copy to custom day";
     }
     if (copyDateModalHintEl) {
       copyDateModalHintEl.textContent =
         mode === "week"
           ? "Pick any date in the destination week (Mon–Sun). Meals copy Mon→Mon … Sun→Sun. Choose append or replace when the destination already has food."
-          : "Pick the destination calendar day for this date’s meals. Choose append or replace when that day already has food.";
+          : mode === "experimental"
+            ? "Pick any day in your real weeks. Append adds this experimental day below food already there. Replace overwrites that day."
+            : "Pick the destination calendar day for this date’s meals. Choose append or replace when that day already has food.";
     }
     showCopyDateError("");
     copyDateModalEl.hidden = false;
@@ -33322,6 +33359,13 @@
       ok = copyWeekToMondayKey(
         toDateKey(mondayOf(d)),
         formatWeekRangeLabel(toDateKey(mondayOf(d))),
+        copyOpts
+      );
+    } else if (pending.mode === "experimental") {
+      ok = copyExperimentalTextToDateKey(
+        pending.dayId,
+        key,
+        formatDayDateLabel(d),
         copyOpts
       );
     } else {
@@ -37199,11 +37243,17 @@
     showAddFoodError("");
     if (addFoodSearchEl) addFoodSearchEl.value = "";
     var meal = addFoodPendingMealId ? mealById(addFoodPendingMealId) : null;
-    var day = dayId ? dayById(dayId) : null;
-    var dateLabel = dayId ? dateLabelForDayId(dayId) : "";
+    var experimentalDay = isExperimentalDayId(dayId)
+      ? dayById(experimentalWeekdayId(dayId))
+      : null;
+    var day = experimentalDay || (dayId ? dayById(dayId) : null);
+    var dateLabel = dayId && !experimentalDay ? dateLabelForDayId(dayId) : "";
     if (addFoodModalTitleEl) {
       if (meal) {
         addFoodModalTitleEl.textContent = "Add food — " + meal.name;
+      } else if (experimentalDay) {
+        addFoodModalTitleEl.textContent =
+          "Add food — " + experimentalDay.label + " (experimental)";
       } else {
         addFoodModalTitleEl.textContent =
           "Add food" + (day ? " — " + day.label : "");
@@ -37213,6 +37263,11 @@
       if (meal) {
         addFoodModalHintEl.textContent =
           "Pick foods from your definitions to add to this meal";
+      } else if (experimentalDay) {
+        addFoodModalHintEl.textContent =
+          "Pick foods or a saved meal for experimental " +
+          experimentalDay.label +
+          ". It stays off your diary until you copy the day.";
       } else if (dateLabel) {
         addFoodModalHintEl.textContent =
           "Pick foods or a saved meal for " + dateLabel;
@@ -37221,7 +37276,7 @@
           "Pick one or more foods or a saved meal";
       }
     }
-    if (dayId) {
+    if (dayId && !experimentalDay) {
       var dayPanel = document.getElementById(dayId);
       var dayEl = dayPanel && dayPanel.closest ? dayPanel.closest(".day") : null;
       if (dayEl) focusWeekDayColumn(dayEl);
@@ -37340,7 +37395,535 @@
     );
   }
 
+  function isExperimentalDayId(id) {
+    return typeof id === "string" && id.indexOf("xpt-") === 0;
+  }
+
+  function experimentalWeekdayId(id) {
+    return isExperimentalDayId(id) ? id.slice(4) : id;
+  }
+
+  function loadExperimentalWeek() {
+    DAYS.forEach(function (day) {
+      experimentalWeekTexts[day.id] = "";
+    });
+    experimentalWeekView = "day";
+    experimentalNonStored = true;
+    if (!persist) return;
+    var raw = persist.getSetting("experimentalWeek");
+    if (!raw || typeof raw !== "object") return;
+    DAYS.forEach(function (day) {
+      var text = raw.days && raw.days[day.id];
+      experimentalWeekTexts[day.id] = typeof text === "string" ? text : "";
+    });
+    experimentalWeekView = raw.view === "week" ? "week" : "day";
+    experimentalNonStored = raw.nonStored !== false;
+  }
+
+  function saveExperimentalWeekSetting() {
+    if (!persist || !isLoggedIn()) return;
+    persist.setSetting("experimentalWeek", {
+      days: {
+        mon: experimentalWeekTexts.mon || "",
+        tue: experimentalWeekTexts.tue || "",
+        wed: experimentalWeekTexts.wed || "",
+        thu: experimentalWeekTexts.thu || "",
+        fri: experimentalWeekTexts.fri || "",
+        sat: experimentalWeekTexts.sat || "",
+        sun: experimentalWeekTexts.sun || "",
+      },
+      view: experimentalWeekView === "week" ? "week" : "day",
+      nonStored: !!experimentalNonStored,
+    });
+  }
+
+  function experimentalNoteText() {
+    var storedLine = experimentalNonStored
+      ? "Non-stored nutrients are on. They leave the body after the day (peed out), so a weekly average can overstate them."
+      : "Non-stored nutrients are off. Nutrients that are peed out after the day are hidden.";
+    if (experimentalWeekView === "week") {
+      return (
+        "Entire week is the average of experimental days that have food. " +
+        storedLine
+      );
+    }
+    return (
+      "Each day lists its lowest nutrients first, in the same color bands as the daily non-stored analysis. " +
+      storedLine
+    );
+  }
+
+  function syncExperimentalChrome() {
+    if (xptRootEl) {
+      xptRootEl.classList.toggle("xpt--week", experimentalWeekView === "week");
+    }
+    if (experimentalPanelEl) {
+      experimentalPanelEl.querySelectorAll("[data-xpt-tab]").forEach(function (btn) {
+        var on = btn.getAttribute("data-xpt-tab") === experimentalWeekView;
+        btn.setAttribute("aria-selected", on ? "true" : "false");
+      });
+    }
+    if (xptNonStoredBtn) {
+      xptNonStoredBtn.setAttribute(
+        "aria-pressed",
+        experimentalNonStored ? "true" : "false"
+      );
+    }
+    if (xptNoteEl) xptNoteEl.textContent = experimentalNoteText();
+    if (xptLegendEl) xptLegendEl.innerHTML = microDailyNonstoredLegendHtml();
+  }
+
+  function experimentalLines(dayId) {
+    return normalizeDayMealsText(experimentalWeekTexts[dayId] || "").split("\n");
+  }
+
+  function writeExperimentalDayText(dayId, text) {
+    var next = String(text || "").replace(/\n+$/, "");
+    experimentalWeekTexts[dayId] = next;
+    var ta = document.getElementById("xpt-" + dayId);
+    if (ta && ta.value !== next) ta.value = next;
+    saveExperimentalWeekSetting();
+    renderExperimentalLists();
+    renderExperimentalAnalysis();
+  }
+
+  function experimentalFoodItemHtml(dayId, entry) {
+    var removeBtn =
+      '<button type="button" class="xpt-remove" data-action="xpt-remove" data-xpt-day="' +
+      escapeAttr(dayId) +
+      '" data-line-index="' +
+      entry.lineIndex +
+      '" aria-label="Remove ' +
+      escapeAttr(entry.kind === "food" ? entry.name : "line") +
+      '">×</button>';
+    if (entry.kind === "food") {
+      return (
+        '<li class="day__food-item day__food-item--food">' +
+        '<span class="day__food-item-name" title="' +
+        escapeAttr(entry.name) +
+        '">' +
+        escapeHtml(entry.name) +
+        "</span>" +
+        '<div class="day__food-item-servings">' +
+        '<input type="number" class="day__food-item-servings-input" min="0.25" step="0.25" value="' +
+        escapeAttr(formatGuidedServingsValue(entry.servings)) +
+        '" data-action="xpt-servings" data-xpt-day="' +
+        escapeAttr(dayId) +
+        '" data-line-index="' +
+        entry.lineIndex +
+        '" aria-label="Servings for ' +
+        escapeAttr(entry.name) +
+        '">' +
+        "</div>" +
+        removeBtn +
+        "</li>"
+      );
+    }
+    return (
+      '<li class="day__food-item">' +
+      '<span class="day__food-item-name">' +
+      escapeHtml(entry.text || "") +
+      "</span>" +
+      removeBtn +
+      "</li>"
+    );
+  }
+
+  function experimentalColumnHtml(day) {
+    return (
+      '<section class="xpt-day">' +
+      '<div class="xpt-day__head">' +
+      '<span class="xpt-day__label">' +
+      escapeHtml(day.label) +
+      "</span>" +
+      '<div class="xpt-day__tools">' +
+      '<button type="button" data-action="xpt-copy" data-xpt-day="' +
+      escapeAttr(day.id) +
+      '" title="Copy this day into your diary">Copy</button>' +
+      '<button type="button" data-action="xpt-clear-day" data-xpt-day="' +
+      escapeAttr(day.id) +
+      '">Clear</button>' +
+      "</div></div>" +
+      '<textarea id="xpt-' +
+      escapeAttr(day.id) +
+      '" class="xpt-day__store" hidden aria-hidden="true"></textarea>' +
+      '<div class="xpt-day__list">' +
+      '<ul class="day__food-list" data-xpt-list="' +
+      escapeAttr(day.id) +
+      '"></ul></div>' +
+      '<div class="xpt-day__footer">' +
+      '<button type="button" class="day__add-food" data-action="xpt-add" data-xpt-day="' +
+      escapeAttr(day.id) +
+      '">Add food</button></div>' +
+      '<div class="xpt-day__analysis" data-xpt-analysis="' +
+      escapeAttr(day.id) +
+      '"></div>' +
+      "</section>"
+    );
+  }
+
+  function ensureExperimentalColumns() {
+    if (!xptFoodGridEl || xptFoodGridEl.childElementCount) return;
+    xptFoodGridEl.innerHTML = DAYS.map(experimentalColumnHtml).join("");
+  }
+
+  function syncExperimentalTextareas() {
+    DAYS.forEach(function (day) {
+      var el = document.getElementById("xpt-" + day.id);
+      if (!el) return;
+      var text = experimentalWeekTexts[day.id] || "";
+      if (el.value !== text) el.value = text;
+    });
+  }
+
+  function renderExperimentalLists() {
+    if (!xptFoodGridEl) return;
+    DAYS.forEach(function (day) {
+      var list = xptFoodGridEl.querySelector(
+        '[data-xpt-list="' + day.id + '"]'
+      );
+      if (!list) return;
+      var entries = parseDayGuidedLines(experimentalWeekTexts[day.id] || "");
+      if (!entries.length) {
+        list.innerHTML =
+          '<li class="xpt-empty">No foods yet. Tap Add food.</li>';
+        return;
+      }
+      list.innerHTML = entries
+        .map(function (entry) {
+          return experimentalFoodItemHtml(day.id, entry);
+        })
+        .join("");
+    });
+  }
+
+  function experimentalShortfallEntries(microTotals, longevityTotals) {
+    var restoreMore = microMoreExpanded;
+    microMoreExpanded = true;
+    var fields = microBaseDisplayFields();
+    microMoreExpanded = restoreMore;
+    var seen = {};
+    var list = [];
+    fields.forEach(function (entry) {
+      var key = entry && entry.field && entry.field.key;
+      if (!key || seen[key]) return;
+      var nonStored = !!microRequiresDailyIntake(key);
+      if (!experimentalNonStored && nonStored) return;
+      var snap = microEntryStatusSnapshot(
+        entry,
+        microTotals,
+        longevityTotals,
+        true
+      );
+      var targetDisplay = snap.targetDisplay;
+      var pct = targetDisplay && targetDisplay.pct;
+      if (pct == null || isNaN(pct)) return;
+      if (
+        (targetDisplay && targetDisplay.kind === "studyMax") ||
+        studyMaxMicroRef(key)
+      ) {
+        return;
+      }
+      if (microAnalysisEntryIsLimit(entry, targetDisplay)) return;
+      seen[key] = true;
+      var amtText =
+        entry.source === "derived"
+          ? microDerivedAmtText(key, microTotals, true)
+          : microConditionAmtText(entry, snap.total, true);
+      list.push({
+        label: (entry.field && entry.field.label) || "Untitled",
+        pct: pct,
+        key: key,
+        source: entry.source || "micro",
+        entry: entry,
+        targetDisplay: targetDisplay,
+        amtText: amtText,
+        nonStored: nonStored,
+      });
+    });
+    list.sort(function (a, b) {
+      if (a.pct !== b.pct) return a.pct - b.pct;
+      return String(a.label || "").localeCompare(String(b.label || ""));
+    });
+    return list;
+  }
+
+  function experimentalGroupedRowsHtml(entries) {
+    if (!entries.length) {
+      return '<p class="xpt-empty">No scored nutrients for this view.</p>';
+    }
+    var html = "";
+    var current = "";
+    entries.forEach(function (item) {
+      var band = analysisDailyNonstoredBandForPct(item.pct);
+      var id = band && band.id ? band.id : "";
+      if (id !== current) {
+        if (current) html += "</div>";
+        current = id;
+        html +=
+          '<div class="xpt-band">' +
+          '<p class="xpt-band__label xpt-band__label--' +
+          escapeAttr((band && band.color) || "yellow") +
+          '">' +
+          escapeHtml((band && band.label) || "") +
+          "</p>";
+      }
+      html += microDailyNonstoredRowHtml(item);
+    });
+    if (current) html += "</div>";
+    return html;
+  }
+
+  function experimentalAverageTotals() {
+    var micro = emptyMicroTotals();
+    var longevity = emptyLongevityTotals();
+    var count = 0;
+    DAYS.forEach(function (day) {
+      var text = experimentalWeekTexts[day.id] || "";
+      if (!String(text).trim()) return;
+      count += 1;
+      micro = addMicroTotals(micro, microTotalsFromText(text));
+      longevity = addLongevityTotals(longevity, longevityTotalsFromText(text));
+    });
+    if (!count) {
+      return { micro: micro, longevity: longevity, dayCount: 0 };
+    }
+    var factor = 1 / count;
+    var avgMicro = emptyMicroTotals();
+    MICRO_ALL_FIELDS.forEach(function (field) {
+      avgMicro[field.key] = (micro[field.key] || 0) * factor;
+    });
+    avgMicro.fiber = (micro.fiber || 0) * factor;
+    avgMicro = applyFiberTotalToMicroTotals(avgMicro);
+    var avgLong = emptyLongevityTotals();
+    LONGEVITY_FIELDS.forEach(function (field) {
+      avgLong[field.key] = (longevity[field.key] || 0) * factor;
+    });
+    return { micro: avgMicro, longevity: avgLong, dayCount: count };
+  }
+
+  function experimentalDayAnalysisHtml(day) {
+    var text = experimentalWeekTexts[day.id] || "";
+    var body = !String(text).trim()
+      ? '<p class="xpt-empty">Add food to see the lowest nutrients.</p>'
+      : experimentalGroupedRowsHtml(
+          experimentalShortfallEntries(
+            microTotalsFromText(text),
+            longevityTotalsFromText(text)
+          )
+        );
+    return (
+      '<p class="xpt-day__analysis-label">Lowest nutrients</p>' + body
+    );
+  }
+
+  function experimentalWeekBoardHtml() {
+    var avg = experimentalAverageTotals();
+    if (!avg.dayCount) {
+      return (
+        '<p class="xpt-week-board__title">Entire week · lowest nutrients</p>' +
+        '<p class="xpt-empty">Add food to a day to see the week.</p>'
+      );
+    }
+    return (
+      '<p class="xpt-week-board__title">Entire week · lowest nutrients</p>' +
+      '<p class="xpt-empty">Average of ' +
+      avg.dayCount +
+      " day" +
+      (avg.dayCount === 1 ? "" : "s") +
+      " with food.</p>" +
+      experimentalGroupedRowsHtml(
+        experimentalShortfallEntries(avg.micro, avg.longevity)
+      )
+    );
+  }
+
+  function renderExperimentalAnalysis() {
+    if (experimentalWeekView === "week") {
+      if (xptWeekBoardEl) {
+        xptWeekBoardEl.hidden = false;
+        xptWeekBoardEl.innerHTML = experimentalWeekBoardHtml();
+      }
+      return;
+    }
+    if (xptWeekBoardEl) {
+      xptWeekBoardEl.hidden = true;
+      xptWeekBoardEl.innerHTML = "";
+    }
+    DAYS.forEach(function (day) {
+      var slot = xptFoodGridEl
+        ? xptFoodGridEl.querySelector('[data-xpt-analysis="' + day.id + '"]')
+        : null;
+      if (slot) slot.innerHTML = experimentalDayAnalysisHtml(day);
+    });
+  }
+
+  function renderExperimentalPanel() {
+    if (!experimentalPanelOpen) return;
+    ensureExperimentalColumns();
+    syncExperimentalTextareas();
+    renderExperimentalLists();
+    renderExperimentalAnalysis();
+    syncExperimentalChrome();
+  }
+
+  function setExperimentalPanelOpen(open) {
+    experimentalPanelOpen = !!open;
+    if (dashboardExperimentalJumpEl) {
+      dashboardExperimentalJumpEl.setAttribute(
+        "aria-expanded",
+        experimentalPanelOpen ? "true" : "false"
+      );
+      dashboardExperimentalJumpEl.classList.toggle(
+        "app-nav__btn--open",
+        experimentalPanelOpen
+      );
+    }
+    if (experimentalPanelEl) {
+      experimentalPanelEl.hidden = !experimentalPanelOpen;
+    }
+    if (experimentalPanelOpen) {
+      setFoodDefinitionsOpen(false);
+      setMealsPanelOpen(false);
+      setMicroRequirementsOpen(false);
+      setLongevityPanelOpen(false);
+      renderExperimentalPanel();
+      resetAppSheetScroll(experimentalPanelEl);
+    }
+    syncExclusiveOverlayUi();
+  }
+
+  function copyExperimentalTextToDateKey(dayId, destKey, confirmLabel, options) {
+    options = options || {};
+    var mode = options.mode === "append" ? "append" : "replace";
+    if (!dayId || !destKey) return false;
+    if (destKey < earliestWeekMondayKey()) {
+      window.alert(
+        "Dates before " +
+          formatDayDateLabel(parseDateKey(EARLIEST_DIARY_DATE)) +
+          " are outside the diary range."
+      );
+      return false;
+    }
+    var srcText = experimentalWeekTexts[dayId] || "";
+    if (!String(srcText).trim()) {
+      showAppAlert({
+        title: "Nothing to copy",
+        message: "Add food to this experimental day first.",
+      });
+      return false;
+    }
+    var text =
+      mode === "append"
+        ? appendMealTexts(dayMealsByDate[destKey] || "", srcText)
+        : srcText;
+    writeDateMeal(destKey, text);
+    var destMon = toDateKey(mondayOf(parseDateKey(destKey)));
+    if (viewedWeekStart === destMon) {
+      applyCopiedDayToEditorsIfNeeded(destKey, text);
+      saveDayNotes();
+      refreshAll();
+      updateDayClearButtons();
+    } else {
+      saveDayNotes();
+      jumpToDateKey(destKey);
+    }
+    return true;
+  }
+
+  function openExperimentalCopy(dayId) {
+    if (!String(experimentalWeekTexts[dayId] || "").trim()) {
+      showAppAlert({
+        title: "Nothing to copy",
+        message: "Add food to this experimental day first.",
+      });
+      return;
+    }
+    requireLoggedInForPersist("copying this day into your diary").then(function (
+      ok
+    ) {
+      if (ok) openCopyDateModal("experimental", dayId);
+    });
+  }
+
+  function clearExperimentalDay(dayId) {
+    if (!String(experimentalWeekTexts[dayId] || "").trim()) return;
+    var day = dayById(dayId);
+    showAppConfirm({
+      title: "Clear experimental day",
+      message:
+        "Clear all food on experimental " + (day ? day.label : "day") + "?",
+      confirmLabel: "Clear",
+      cancelLabel: "Cancel",
+    }).then(function (ok) {
+      if (!ok) return;
+      writeExperimentalDayText(dayId, "");
+    });
+  }
+
+  function clearExperimentalWeek() {
+    var any = DAYS.some(function (day) {
+      return !!String(experimentalWeekTexts[day.id] || "").trim();
+    });
+    if (!any) return;
+    showAppConfirm({
+      title: "Clear experimental week",
+      message: "Clear food on every experimental day? Your diary is not changed.",
+      confirmLabel: "Clear week",
+      cancelLabel: "Cancel",
+    }).then(function (ok) {
+      if (!ok) return;
+      DAYS.forEach(function (day) {
+        experimentalWeekTexts[day.id] = "";
+        var ta = document.getElementById("xpt-" + day.id);
+        if (ta) ta.value = "";
+      });
+      saveExperimentalWeekSetting();
+      renderExperimentalLists();
+      renderExperimentalAnalysis();
+    });
+  }
+
+  function setExperimentalLine(dayId, lineIndex, nextLine) {
+    var lines = experimentalLines(dayId);
+    if (lineIndex < 0 || lineIndex >= lines.length) return;
+    lines[lineIndex] = nextLine;
+    writeExperimentalDayText(dayId, lines.join("\n"));
+  }
+
+  function removeExperimentalLine(dayId, lineIndex) {
+    if (!dayId || isNaN(lineIndex)) return;
+    var lines = experimentalLines(dayId);
+    if (lineIndex < 0 || lineIndex >= lines.length) return;
+    lines.splice(lineIndex, 1);
+    writeExperimentalDayText(dayId, lines.join("\n"));
+  }
+
+  function onExperimentalServingsChange(input) {
+    var dayId = input.getAttribute("data-xpt-day");
+    var lineIndex = parseInt(input.getAttribute("data-line-index"), 10);
+    if (!dayId || isNaN(lineIndex)) return;
+    var lines = experimentalLines(dayId);
+    if (lineIndex < 0 || lineIndex >= lines.length) return;
+    var entry = parseDayGuidedLine(lines[lineIndex], lineIndex);
+    if (entry.kind !== "food") return;
+    var n = parseFloat(input.value);
+    if (!isFinite(n) || n <= 0) n = 1;
+    setExperimentalLine(dayId, lineIndex, formatDayFoodLine(entry.name, n));
+  }
+
   function applyDayNoteChange(textarea) {
+    if (textarea && isExperimentalDayId(textarea.id)) {
+      var weekday = experimentalWeekdayId(textarea.id);
+      experimentalWeekTexts[weekday] = String(textarea.value || "").replace(
+        /\n+$/,
+        ""
+      );
+      saveExperimentalWeekSetting();
+      renderExperimentalLists();
+      renderExperimentalAnalysis();
+      return;
+    }
     if (textarea && textarea.id) syncDayMealFromEditor(textarea.id);
     updateDayHighlights(textarea);
     renderDashboard();
@@ -38276,6 +38859,10 @@
         return;
       }
       setMealsPanelOpen(false);
+      return;
+    }
+    if (experimentalPanelOpen) {
+      setExperimentalPanelOpen(false);
       return;
     }
     if (longevityNavCanGoBack()) {
@@ -39681,6 +40268,12 @@
       dashboardFoodEntryJumpEl.click();
       return;
     }
+    if (e.key === "x" || e.key === "X") {
+      if (!dashboardExperimentalJumpEl) return;
+      e.preventDefault();
+      dashboardExperimentalJumpEl.click();
+      return;
+    }
     if (e.key === "m" || e.key === "M") {
       if (!dashboardMacrosJumpEl) return;
       e.preventDefault();
@@ -39822,6 +40415,70 @@
   if (dashboardMealsJumpEl) {
     dashboardMealsJumpEl.addEventListener("click", function () {
       setMealsPanelOpen(!mealsPanelOpen);
+    });
+  }
+
+  if (dashboardExperimentalJumpEl) {
+    dashboardExperimentalJumpEl.addEventListener("click", function () {
+      setExperimentalPanelOpen(!experimentalPanelOpen);
+    });
+  }
+  if (experimentalPanelEl) {
+    experimentalPanelEl.addEventListener("click", function (e) {
+      if (e.target.closest('[data-action="close-experimental-panel"]')) {
+        setExperimentalPanelOpen(false);
+        return;
+      }
+      var tab = e.target.closest("[data-xpt-tab]");
+      if (tab) {
+        experimentalWeekView =
+          tab.getAttribute("data-xpt-tab") === "week" ? "week" : "day";
+        saveExperimentalWeekSetting();
+        renderExperimentalAnalysis();
+        syncExperimentalChrome();
+        return;
+      }
+      if (e.target.closest("#xpt-nonstored")) {
+        experimentalNonStored = !experimentalNonStored;
+        saveExperimentalWeekSetting();
+        renderExperimentalAnalysis();
+        syncExperimentalChrome();
+        return;
+      }
+      if (e.target.closest("#xpt-clear-week")) {
+        clearExperimentalWeek();
+        return;
+      }
+      var addBtn = e.target.closest('[data-action="xpt-add"]');
+      if (addBtn) {
+        var addDay = addBtn.getAttribute("data-xpt-day");
+        if (addDay) openAddFoodModal("xpt-" + addDay);
+        return;
+      }
+      var copyBtn = e.target.closest('[data-action="xpt-copy"]');
+      if (copyBtn) {
+        var copyDay = copyBtn.getAttribute("data-xpt-day");
+        if (copyDay) openExperimentalCopy(copyDay);
+        return;
+      }
+      var clearBtn = e.target.closest('[data-action="xpt-clear-day"]');
+      if (clearBtn) {
+        var clearDay = clearBtn.getAttribute("data-xpt-day");
+        if (clearDay) clearExperimentalDay(clearDay);
+        return;
+      }
+      var removeBtn = e.target.closest('[data-action="xpt-remove"]');
+      if (removeBtn) {
+        removeExperimentalLine(
+          removeBtn.getAttribute("data-xpt-day"),
+          parseInt(removeBtn.getAttribute("data-line-index"), 10)
+        );
+      }
+    });
+    experimentalPanelEl.addEventListener("change", function (e) {
+      var input = e.target.closest('[data-action="xpt-servings"]');
+      if (!input || !experimentalPanelEl.contains(input)) return;
+      onExperimentalServingsChange(input);
     });
   }
   if (weekSavedMealsOpenEl) {

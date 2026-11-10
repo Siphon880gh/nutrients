@@ -241,7 +241,12 @@ One settings document per user:
   highlightAdverseEffects: boolean,
   keywordsReorderOpen: boolean,
   keywordsCaloriesOpen: boolean,
-  keywordsPageSize: 0 | 10 | 25 | 50 | 100  // 0 = All; default 25
+  keywordsPageSize: 0 | 10 | 25 | 50 | 100,  // 0 = All; default 25
+  experimentalWeek: null | {        // temporary Mon–Sun sandbox; not part of the diary until a day is copied
+    days: { mon: string, tue: string, wed: string, thu: string, fri: string, sat: string, sun: string },
+    view: "day" | "week",
+    nonStored: boolean               // include nutrients the body does not store (cleared after the day)
+  }
 }
 ```
 
