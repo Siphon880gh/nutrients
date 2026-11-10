@@ -59944,5 +59944,30 @@
       "netCarbs": 1.77
     },
     "notes": "Haribo Goldbears US product page (haribo.com/en-us/products/goldbears), checked 7 Nov 2026, serving 13 pieces (30 g): 100 kcal, 0 g fat, 0.1 g saturates, 23 g carbohydrate, 14 g sugars, 2 g protein, 5 mg sodium. One piece is 30/13 g, about 2.3 g, and every amount here is that serving divided by 13. The US Nutrition Facts panel for the same 13-piece serving reports 0 g trans fat, 0 mg cholesterol, 0 g fiber, 14 g added sugars, and 0 mcg vitamin D, 0 mg calcium, 0 mg iron, and 0 mg potassium. That panel rounds saturated fat to 0 g; this entry keeps the product page's 0.1 g (0.008 g per piece). The 14 g sugars are added (glucose syrup, sugar, and dextrose). Carbohydrate above the sugar figure is still refined syrup, so refined carbs follow total carbohydrate. Sunflower oil and beeswax are listed at under 2% and are not broken out. Glycemic index 78 is the mean of two jelly-bean tests in the Atkinson international tables (80 and 76), not a measured value for this gummy."
+  },
+  {
+    "name": "Apple Pommes 5.5 oz (154 g, one apple)",
+    "protein": 0,
+    "carbs": 22,
+    "fats": 0,
+    "micros": {
+      "sodium": 0,
+      "potassium": 169,
+      "calcium": 0,
+      "iron": 0.354,
+      "vitaminC": 4.8,
+      "fiber": 4.93
+    },
+    "longevity": {
+      "saturatedFat": 0,
+      "cholesterol": 0
+    },
+    "carbQuality": {
+      "glycemicIndex": 36,
+      "addedSugar": 0,
+      "refinedCarbs": 0,
+      "netCarbs": 17.07
+    },
+    "notes": "Produce Marketing Association Apple Pommes, brand Grower Chile, UPC 033383027616, ingredients Royal Gala apples. USDA FoodData Central Branded FDC 2083494 (published 28 Oct 2021; the label values date from 15 Aug 2018). The household serving is 5.5 oz (154 g), one apple. Label nutrients for that serving: 80.1 kcal, 0 g fat, 0 g saturated fat, 0 mg cholesterol, 0 mg sodium, 22 g carbohydrate, 4.93 g fiber, 16 g sugars, 0 g protein, 0 mg calcium, 0.354 mg iron, 169 mg potassium. Vitamin C is stored as 3.1 mg per 100 g and scaled here to 4.8 mg. Vitamin A is reported only as 65 IU per 100 g (about 100 IU per serving) and is omitted because the record does not give mcg RAE or a retinol versus beta-carotene split. The 16 g sugars are the fruit's own sugars. Added sugar is 0 because the only ingredient is apples, and refined carbs are 0. Glycemic index 36 is the raw-apple mean from the Atkinson international tables, not a measurement of this Royal Gala lot. This serving is lighter than Fruit - Apple md with skin, which follows the USDA 182 g medium."
   }
 ]
