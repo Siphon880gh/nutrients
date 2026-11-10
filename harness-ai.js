@@ -132,14 +132,15 @@
     // data-role="primary|complete|supplementary" + data-input="<what to enter>": says plainly what this panel feeds the app
     var ROLES = { primary: 'Primary', complete: 'Complete \u00b7 add more', supplementary: 'Supplementary' };
     var role = ROLES.hasOwnProperty(cfg.role) ? cfg.role : '';
-    var roleText = role === 'primary' ? 'This is where the app\u2019s main content comes from: ' + rich(cfg.input || '') + '.'
-      : role === 'complete' ? 'This app\u2019s main content is complete: ' + rich(cfg.input || '') + '. You can still generate more if you want.'
-      : 'Optional extra: ' + rich(cfg.input || '') + ' the app can use to do more.';
-    var roleHtml = role && cfg.input ? '<p class="hai-role"><span class="hai-badge hai-badge--' + role + '">' + ROLES[role] + '</span> ' + roleText + '</p>' : '';
     var pid = 'hai-panel-' + appId.replace(/[^a-z0-9_-]/gi, '-');
     // data-chat-steps: a second AI method (in-app prompt builder + ChatGPT/Claude) gets its own tab, explanation only
     var chatSteps = (cfg.chatSteps || '').split(' | ').map(function (t) { return t.trim(); }).filter(Boolean);
     var tabs = chatSteps.length > 0;
+    var roleText = role === 'primary' ? 'This is where the app\u2019s main content comes from: ' + rich(cfg.input || '') + '.'
+      : role === 'complete' ? 'This app\u2019s main content is complete: ' + rich(cfg.input || '') + '. You can still generate more if you want.'
+      : 'Optional extra: ' + rich(cfg.input || '') + ' the app can use to do more.'
+        + (tabs ? ' There are two ways to do it: a harness, or through an external chat.' : '');
+    var roleHtml = role && cfg.input ? '<p class="hai-role"><span class="hai-badge hai-badge--' + role + '">' + ROLES[role] + '</span> ' + roleText + '</p>' : '';
     var tabsHtml = tabs ? '<div class="hai-tabs" role="tablist" aria-label="Ways to add or edit with AI">' +
       [['harness', cfg.harnessLabel || 'Harness'], ['chat', cfg.chatLabel || 'Chat']].map(function (t) {
         return '<button type="button" class="hai-tab" role="tab" id="' + pid + '-tab-' + t[0] + '" aria-selected="false" aria-controls="' + pid + '-tp-' + t[0] + '" tabindex="-1" data-hai-tab="' + t[0] + '">' + esc(t[1]) + '</button>';
