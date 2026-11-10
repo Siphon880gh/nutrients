@@ -13,7 +13,11 @@
  *   data-position    br (default) or bl for the floating button   data-offset-bottom   extra CSS length above the bottom edge
  *   data-theme       light (default) or dark                      data-accent   button colour
  *   data-parent      optional parent folder name, shown as a hint when the folder name is generic
- *   data-avoid       CSS selector(s) of fixed bottom bars; the floating button sits above whichever is showing */
+ *   data-avoid       CSS selector(s) of fixed bottom bars; the floating button sits above whichever is showing
+ * Two AI methods for the same data (e.g. a harness and an in-app prompt builder): set data-chat-steps and the panel shows
+ * tabs, Harness (the two accordion tiles above) and Chat (explanation only, no folder path). The last tab is remembered (:tab).
+ *   data-chat-steps  Chat tab steps separated by " | "; `backticks` render as code
+ *   data-harness-label / data-chat-label   tab labels (default Harness / Chat) */
 (function () {
   'use strict';
   var script = document.currentScript;
@@ -61,7 +65,7 @@
     '.hai-btn-short{display:none;}',
     '.hai :focus-visible,.hai-mounted:focus-visible{outline:3px solid #2563eb;outline-offset:2px;}',
     '.hai-panel{box-sizing:border-box;width:min(380px,calc(100vw - 24px));max-height:min(75vh,600px);overflow:auto;padding:14px 16px;border:1px solid var(--hai-line);border-radius:10px;background:var(--hai-bg);color:var(--hai-ink);font-size:14px;line-height:1.5;text-align:left;box-shadow:0 12px 32px rgba(0,0,0,.28);}',
-    '.hai-panel[hidden],.hai-acc__body[hidden],.hai-hint[hidden]{display:none!important;}',
+    '.hai-panel[hidden],.hai-acc__body[hidden],.hai-hint[hidden],.hai-tabpanel[hidden]{display:none!important;}',
     '.hai-panel--fixed{position:fixed;z-index:2147483001;}',
     '.hai-head{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;}',
     '.hai-title{margin:0 0 6px;font-size:16px;font-weight:700;line-height:1.3;color:var(--hai-ink);}',
@@ -104,6 +108,10 @@
     '.hai-badge--primary{background:var(--hai-accent);color:var(--hai-accent-ink);}',
     '.hai-badge--complete{border:1.5px solid var(--hai-accent);color:var(--hai-ink);background:var(--hai-bg);}',
     '.hai-badge--supplementary{border:1px dashed var(--hai-muted);color:var(--hai-ink);}',
+    '.hai-tabs{display:flex;gap:4px;margin:0 0 10px;padding:3px;border:1px solid var(--hai-line);border-radius:999px;background:var(--hai-soft);}',
+    '.hai-tab{flex:1 1 0;min-height:32px;padding:4px 12px;border:0;border-radius:999px;background:transparent;color:var(--hai-muted);font:inherit;font-size:13px;font-weight:600;cursor:pointer;}',
+    '.hai-tab:hover{color:var(--hai-ink);}',
+    '.hai-tab[aria-selected="true"]{background:var(--hai-accent);color:var(--hai-accent-ink);}',
     '.hai-hint{display:block;margin-top:4px;font-size:12px;color:var(--hai-muted);}',
     '.hai-status{margin:6px 0 0!important;font-size:12px;color:var(--hai-muted)!important;}',
     '.hai-status:empty{display:none;}',
@@ -129,6 +137,16 @@
       : 'Optional extra: ' + rich(cfg.input || '') + ' the app can use to do more.';
     var roleHtml = role && cfg.input ? '<p class="hai-role"><span class="hai-badge hai-badge--' + role + '">' + ROLES[role] + '</span> ' + roleText + '</p>' : '';
     var pid = 'hai-panel-' + appId.replace(/[^a-z0-9_-]/gi, '-');
+    // data-chat-steps: a second AI method (in-app prompt builder + ChatGPT/Claude) gets its own tab, explanation only
+    var chatSteps = (cfg.chatSteps || '').split(' | ').map(function (t) { return t.trim(); }).filter(Boolean);
+    var tabs = chatSteps.length > 0;
+    var tabsHtml = tabs ? '<div class="hai-tabs" role="tablist" aria-label="Ways to add or edit with AI">' +
+      [['harness', cfg.harnessLabel || 'Harness'], ['chat', cfg.chatLabel || 'Chat']].map(function (t) {
+        return '<button type="button" class="hai-tab" role="tab" id="' + pid + '-tab-' + t[0] + '" aria-selected="false" aria-controls="' + pid + '-tp-' + t[0] + '" tabindex="-1" data-hai-tab="' + t[0] + '">' + esc(t[1]) + '</button>';
+      }).join('') + '</div>' : '';
+    var chatHtml = tabs ? '<div class="hai-tabpanel" role="tabpanel" id="' + pid + '-tp-chat" aria-labelledby="' + pid + '-tab-chat" data-hai-tabpanel="chat" hidden>' +
+      '<p>' + esc(appName) + ' has no built-in AI, which keeps it free. Its prompt builder writes the prompt, and you run it in the AI chat you already have (ChatGPT or Claude) with your own tokens. No folder needed:</p>' +
+      '<ol>' + chatSteps.map(function (t) { return '<li>' + rich(t) + '</li>'; }).join('') + '</ol></div>' : '';
     var chev = '<svg class="hai-acc__chev" width="12" height="12" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 
     var panel = document.createElement('section');
@@ -141,10 +159,11 @@
     panel.innerHTML =
       '<div class="hai-head"><h2 class="hai-title" id="' + pid + '-title">' + esc(title) + '</h2>' +
       '<button type="button" class="hai-close" data-hai-close aria-label="Close">&times;</button></div>' +
+      (tabs ? roleHtml + tabsHtml + '<div class="hai-tabpanel" role="tabpanel" id="' + pid + '-tp-harness" aria-labelledby="' + pid + '-tab-harness" data-hai-tabpanel="harness">' : '') +
       '<div class="hai-acc">' +
       '<h3 class="hai-acc__h"><button type="button" class="hai-acc__btn" id="' + pid + '-t-about" aria-expanded="false" aria-controls="' + pid + '-p-about" data-hai-tile="about">' +
       '<span>How to add or edit with AI</span>' + chev + '</button></h3>' +
-      '<div class="hai-acc__body" id="' + pid + '-p-about" role="region" aria-labelledby="' + pid + '-t-about" data-hai-body="about" hidden>' + roleHtml +
+      '<div class="hai-acc__body" id="' + pid + '-p-about" role="region" aria-labelledby="' + pid + '-t-about" data-hai-body="about" hidden>' + (tabs ? '' : roleHtml) +
       '<p>' + esc(appName) + ' has no built-in AI, which keeps it free. Use the AI tool you already have, with your own tokens:</p>' +
       '<ol><li>Open system search (<kbd>&#8984;</kbd>&nbsp;<kbd>Space</kbd> for Spotlight on a Mac, or the Windows search box) and find the folder named:' +
       '<span class="hai-row"><code class="hai-dir">' + esc(folder) + '</code>' +
@@ -167,7 +186,7 @@
       '<span class="hai-row"><code class="hai-out" data-hai-out aria-live="polite"></code>' +
       '<button type="button" class="hai-copy" data-hai-out-copy>' + ICON_COPY + '<span>Copy</span></button></span>' +
       '<p class="hai-hint" data-hai-out-hint>Paste the command into a terminal, or the path into your AI tool\u2019s Open Folder.</p></div>' +
-      '</div>' +
+      '</div>' + (tabs ? '</div>' + chatHtml : '') +
       '<p class="hai-status" data-hai-status role="status" aria-live="polite"></p>';
 
     var btn = document.createElement('button');
@@ -230,6 +249,26 @@
       });
       if (remember && name) save('openTile', name);
     }
+    /* ---- tabs (only with data-chat-steps): Harness | Chat; remember the last one picked ---- */
+    var tabBtns = panel.querySelectorAll('[data-hai-tab]');
+    function setTab(name, remember) {
+      Array.prototype.forEach.call(tabBtns, function (b) {
+        var on = b.getAttribute('data-hai-tab') === name;
+        b.setAttribute('aria-selected', on ? 'true' : 'false');
+        b.tabIndex = on ? 0 : -1;
+        panel.querySelector('[data-hai-tabpanel="' + b.getAttribute('data-hai-tab') + '"]').hidden = !on;
+      });
+      if (remember) save('tab', name);
+    }
+    function storedTab() { return load('tab') === 'chat' ? 'chat' : 'harness'; }
+    Array.prototype.forEach.call(tabBtns, function (b, i) {
+      b.addEventListener('click', function () { setTab(b.getAttribute('data-hai-tab'), true); });
+      b.addEventListener('keydown', function (e) {
+        var n = tabBtns.length, j = e.key === 'ArrowRight' ? (i + 1) % n : e.key === 'ArrowLeft' ? (i + n - 1) % n : e.key === 'Home' ? 0 : e.key === 'End' ? n - 1 : -1;
+        if (j < 0) return;
+        e.preventDefault(); setTab(tabBtns[j].getAttribute('data-hai-tab'), true); tabBtns[j].focus();
+      });
+    });
     function storedTile() { var t = load('openTile'); return t === 'path' ? 'path' : 'about'; }
     Array.prototype.forEach.call(panel.querySelectorAll('[data-hai-tile]'), function (b) {
       b.addEventListener('click', function () {
@@ -272,9 +311,9 @@
     }
     function isOpen() { return !panel.hidden; }
     function open() {
-      place(); setTile(storedTile(), false); render();
+      place(); if (tabs) setTab(storedTab(), false); setTile(storedTile(), false); render();
       panel.hidden = false; btn.setAttribute('aria-expanded', 'true');
-      var first = storedTile() === 'path' ? input : panel.querySelector('[data-hai-copy]');
+      var first = tabs && storedTab() === 'chat' ? panel.querySelector('[data-hai-tab="chat"]') : storedTile() === 'path' ? input : panel.querySelector('[data-hai-copy]');
       if (first) first.focus();
     }
     function close(restore) { if (!isOpen()) return; panel.hidden = true; btn.setAttribute('aria-expanded', 'false'); if (status) status.textContent = ''; if (restore) btn.focus(); }
