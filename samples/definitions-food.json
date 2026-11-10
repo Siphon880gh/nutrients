@@ -11816,7 +11816,7 @@
       "refinedCarbs": 0,
       "netCarbs": 1
     },
-    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central FNDDS 2021-2023 FDC 2709307 (Guacamole, NFS), scaled to about 99 g, the weight implied by this entry's own values. From that record: retinol, omega-3, EPA, DHA, omega-6, omega-9, ALA, linoleic acid, arachidonic acid, oleic acid, palmitoleic acid. From Frida 5.5, DTU National Food Institute, Denmark, food 616 (Avocado, raw), adjusted for water content: beta-carotene. Quercetin, total flavonoids from the USDA Flavonoid Values for Survey Foods 2017-2018, food code 63409010 (Guacamole, NFS). Set to 0 because the nutrient is absent from this kind of food: curcumin, sulforaphane, creatine."
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central FNDDS 2021-2023 FDC 2709307 (Guacamole, NFS), scaled to about 99 g, a standard weight for this portion. From that record: retinol, omega-3, EPA, DHA, omega-6, omega-9, ALA, linoleic acid, arachidonic acid, oleic acid, palmitoleic acid. From Frida 5.5, DTU National Food Institute, Denmark, food 616 (Avocado, raw), adjusted for water content: beta-carotene. Quercetin, total flavonoids from the USDA Flavonoid Values for Survey Foods 2017-2018, food code 63409010 (Guacamole, NFS). Set to 0 because the nutrient is absent from this kind of food: curcumin, sulforaphane, creatine."
   },
   {
     "name": "Beet md",
@@ -14458,7 +14458,7 @@
       "addedSugar": 0,
       "refinedCarbs": 0
     },
-    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 168486 (Taro, cooked, without salt), scaled to about 50 g, the weight implied by this entry's own values. From that record: retinol, beta-carotene, omega-3, EPA, DHA, omega-6, K1, histidine, isoleucine, leucine, lysine, methionine, phenylalanine, threonine, tryptophan, valine, arginine, cysteine, glycine, proline, tyrosine, omega-9, ALA, linoleic acid, arachidonic acid, oleic acid, palmitoleic acid, carotenoids, lutein. From CoFID 2021 (UK) food 13-378 (Taro, boiled in unsalted water), adjusted for water content: chloride. Quercetin, total flavonoids from the USDA Flavonoid Values for Survey Foods 2017-2018, food code 71962040 (Taro, cooked). Set to 0 because the nutrient is absent from this kind of food: K2, MK-4, MK-7, taurine, curcumin, sulforaphane, creatine."
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 168486 (Taro, cooked, without salt), scaled to about 50 g, the weight given in this entry's name. From that record: retinol, beta-carotene, omega-3, EPA, DHA, omega-6, K1, histidine, isoleucine, leucine, lysine, methionine, phenylalanine, threonine, tryptophan, valine, arginine, cysteine, glycine, proline, tyrosine, omega-9, ALA, linoleic acid, arachidonic acid, oleic acid, palmitoleic acid, carotenoids, lutein. From CoFID 2021 (UK) food 13-378 (Taro, boiled in unsalted water), adjusted for water content: chloride. Quercetin, total flavonoids from the USDA Flavonoid Values for Survey Foods 2017-2018, food code 71962040 (Taro, cooked). Set to 0 because the nutrient is absent from this kind of food: K2, MK-4, MK-7, taurine, curcumin, sulforaphane, creatine."
   },
   {
     "name": "Vegetable - Taro with skin - md (1 medium, boiled without salt; estimated 100 g edible flesh after discarding skin)",
@@ -14558,7 +14558,7 @@
       "addedSugar": 0,
       "refinedCarbs": 0
     },
-    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 168486 (Taro, cooked, without salt), scaled to about 100 g, the weight implied by this entry's own values. From that record: retinol, beta-carotene, omega-3, EPA, DHA, omega-6, K1, histidine, isoleucine, leucine, lysine, methionine, phenylalanine, threonine, tryptophan, valine, arginine, cysteine, glycine, proline, tyrosine, omega-9, ALA, linoleic acid, arachidonic acid, oleic acid, palmitoleic acid, carotenoids, lutein. From CoFID 2021 (UK) food 13-378 (Taro, boiled in unsalted water), adjusted for water content: chloride. Quercetin, total flavonoids from the USDA Flavonoid Values for Survey Foods 2017-2018, food code 71962040 (Taro, cooked). Set to 0 because the nutrient is absent from this kind of food: K2, MK-4, MK-7, taurine, curcumin, sulforaphane, creatine."
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 168486 (Taro, cooked, without salt), scaled to about 100 g, the weight given in this entry's name. From that record: retinol, beta-carotene, omega-3, EPA, DHA, omega-6, K1, histidine, isoleucine, leucine, lysine, methionine, phenylalanine, threonine, tryptophan, valine, arginine, cysteine, glycine, proline, tyrosine, omega-9, ALA, linoleic acid, arachidonic acid, oleic acid, palmitoleic acid, carotenoids, lutein. From CoFID 2021 (UK) food 13-378 (Taro, boiled in unsalted water), adjusted for water content: chloride. Quercetin, total flavonoids from the USDA Flavonoid Values for Survey Foods 2017-2018, food code 71962040 (Taro, cooked). Set to 0 because the nutrient is absent from this kind of food: K2, MK-4, MK-7, taurine, curcumin, sulforaphane, creatine."
   },
   {
     "name": "Vegetable - Taro with skin - lg (1 large, boiled without salt; estimated 150 g edible flesh after discarding skin)",
@@ -14658,7 +14658,7 @@
       "addedSugar": 0,
       "refinedCarbs": 0
     },
-    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 168486 (Taro, cooked, without salt), scaled to about 150 g, the weight implied by this entry's own values. From that record: retinol, beta-carotene, omega-3, EPA, DHA, omega-6, K1, histidine, isoleucine, leucine, lysine, methionine, phenylalanine, threonine, tryptophan, valine, arginine, cysteine, glycine, proline, tyrosine, omega-9, ALA, linoleic acid, arachidonic acid, oleic acid, palmitoleic acid, carotenoids, lutein. From CoFID 2021 (UK) food 13-378 (Taro, boiled in unsalted water), adjusted for water content: chloride. Quercetin, total flavonoids from the USDA Flavonoid Values for Survey Foods 2017-2018, food code 71962040 (Taro, cooked). Set to 0 because the nutrient is absent from this kind of food: K2, MK-4, MK-7, taurine, curcumin, sulforaphane, creatine."
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 168486 (Taro, cooked, without salt), scaled to about 150 g, the weight given in this entry's name. From that record: retinol, beta-carotene, omega-3, EPA, DHA, omega-6, K1, histidine, isoleucine, leucine, lysine, methionine, phenylalanine, threonine, tryptophan, valine, arginine, cysteine, glycine, proline, tyrosine, omega-9, ALA, linoleic acid, arachidonic acid, oleic acid, palmitoleic acid, carotenoids, lutein. From CoFID 2021 (UK) food 13-378 (Taro, boiled in unsalted water), adjusted for water content: chloride. Quercetin, total flavonoids from the USDA Flavonoid Values for Survey Foods 2017-2018, food code 71962040 (Taro, cooked). Set to 0 because the nutrient is absent from this kind of food: K2, MK-4, MK-7, taurine, curcumin, sulforaphane, creatine."
   },
   {
     "name": "Vegetable - Taro without skin - sm (1 small, boiled without salt; estimated 50 g edible portion)",
@@ -14758,7 +14758,7 @@
       "addedSugar": 0,
       "refinedCarbs": 0
     },
-    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 168486 (Taro, cooked, without salt), scaled to about 50 g, the weight implied by this entry's own values. From that record: retinol, beta-carotene, omega-3, EPA, DHA, omega-6, K1, histidine, isoleucine, leucine, lysine, methionine, phenylalanine, threonine, tryptophan, valine, arginine, cysteine, glycine, proline, tyrosine, omega-9, ALA, linoleic acid, arachidonic acid, oleic acid, palmitoleic acid, carotenoids, lutein. From CoFID 2021 (UK) food 13-378 (Taro, boiled in unsalted water), adjusted for water content: chloride. Quercetin, total flavonoids from the USDA Flavonoid Values for Survey Foods 2017-2018, food code 71962040 (Taro, cooked). Set to 0 because the nutrient is absent from this kind of food: K2, MK-4, MK-7, taurine, curcumin, sulforaphane, creatine."
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 168486 (Taro, cooked, without salt), scaled to about 50 g, the weight given in this entry's name. From that record: retinol, beta-carotene, omega-3, EPA, DHA, omega-6, K1, histidine, isoleucine, leucine, lysine, methionine, phenylalanine, threonine, tryptophan, valine, arginine, cysteine, glycine, proline, tyrosine, omega-9, ALA, linoleic acid, arachidonic acid, oleic acid, palmitoleic acid, carotenoids, lutein. From CoFID 2021 (UK) food 13-378 (Taro, boiled in unsalted water), adjusted for water content: chloride. Quercetin, total flavonoids from the USDA Flavonoid Values for Survey Foods 2017-2018, food code 71962040 (Taro, cooked). Set to 0 because the nutrient is absent from this kind of food: K2, MK-4, MK-7, taurine, curcumin, sulforaphane, creatine."
   },
   {
     "name": "Vegetable - Taro without skin - md (1 medium, boiled without salt; estimated 100 g edible portion)",
@@ -14858,7 +14858,7 @@
       "addedSugar": 0,
       "refinedCarbs": 0
     },
-    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 168486 (Taro, cooked, without salt), scaled to about 100 g, the weight implied by this entry's own values. From that record: retinol, beta-carotene, omega-3, EPA, DHA, omega-6, K1, histidine, isoleucine, leucine, lysine, methionine, phenylalanine, threonine, tryptophan, valine, arginine, cysteine, glycine, proline, tyrosine, omega-9, ALA, linoleic acid, arachidonic acid, oleic acid, palmitoleic acid, carotenoids, lutein. From CoFID 2021 (UK) food 13-378 (Taro, boiled in unsalted water), adjusted for water content: chloride. Quercetin, total flavonoids from the USDA Flavonoid Values for Survey Foods 2017-2018, food code 71962040 (Taro, cooked). Set to 0 because the nutrient is absent from this kind of food: K2, MK-4, MK-7, taurine, curcumin, sulforaphane, creatine."
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 168486 (Taro, cooked, without salt), scaled to about 100 g, the weight given in this entry's name. From that record: retinol, beta-carotene, omega-3, EPA, DHA, omega-6, K1, histidine, isoleucine, leucine, lysine, methionine, phenylalanine, threonine, tryptophan, valine, arginine, cysteine, glycine, proline, tyrosine, omega-9, ALA, linoleic acid, arachidonic acid, oleic acid, palmitoleic acid, carotenoids, lutein. From CoFID 2021 (UK) food 13-378 (Taro, boiled in unsalted water), adjusted for water content: chloride. Quercetin, total flavonoids from the USDA Flavonoid Values for Survey Foods 2017-2018, food code 71962040 (Taro, cooked). Set to 0 because the nutrient is absent from this kind of food: K2, MK-4, MK-7, taurine, curcumin, sulforaphane, creatine."
   },
   {
     "name": "Vegetable - Taro without skin - lg (1 large, boiled without salt; estimated 150 g edible portion)",
@@ -14958,7 +14958,7 @@
       "addedSugar": 0,
       "refinedCarbs": 0
     },
-    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 168486 (Taro, cooked, without salt), scaled to about 150 g, the weight implied by this entry's own values. From that record: retinol, beta-carotene, omega-3, EPA, DHA, omega-6, K1, histidine, isoleucine, leucine, lysine, methionine, phenylalanine, threonine, tryptophan, valine, arginine, cysteine, glycine, proline, tyrosine, omega-9, ALA, linoleic acid, arachidonic acid, oleic acid, palmitoleic acid, carotenoids, lutein. From CoFID 2021 (UK) food 13-378 (Taro, boiled in unsalted water), adjusted for water content: chloride. Quercetin, total flavonoids from the USDA Flavonoid Values for Survey Foods 2017-2018, food code 71962040 (Taro, cooked). Set to 0 because the nutrient is absent from this kind of food: K2, MK-4, MK-7, taurine, curcumin, sulforaphane, creatine."
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 168486 (Taro, cooked, without salt), scaled to about 150 g, the weight given in this entry's name. From that record: retinol, beta-carotene, omega-3, EPA, DHA, omega-6, K1, histidine, isoleucine, leucine, lysine, methionine, phenylalanine, threonine, tryptophan, valine, arginine, cysteine, glycine, proline, tyrosine, omega-9, ALA, linoleic acid, arachidonic acid, oleic acid, palmitoleic acid, carotenoids, lutein. From CoFID 2021 (UK) food 13-378 (Taro, boiled in unsalted water), adjusted for water content: chloride. Quercetin, total flavonoids from the USDA Flavonoid Values for Survey Foods 2017-2018, food code 71962040 (Taro, cooked). Set to 0 because the nutrient is absent from this kind of food: K2, MK-4, MK-7, taurine, curcumin, sulforaphane, creatine."
   },
   {
     "name": "Smashed Potatoes (estimated with milk and butter) 1/2 cup",
@@ -15061,7 +15061,7 @@
       "addedSugar": 0,
       "refinedCarbs": 0
     },
-    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 168555 (Potatoes, mashed, home-prepared, whole milk and butter added), scaled to about 105 g, the weight implied by this entry's own values. From that record: magnesium, retinol, beta-carotene, B12, thiamin, riboflavin, niacin, pantothenic acid, selenium, copper, manganese, vitamin E, omega-3, EPA, DHA, omega-6, K1, phosphorus, choline, histidine, isoleucine, leucine, lysine, methionine, phenylalanine, threonine, tryptophan, valine, arginine, cysteine, glycine, proline, tyrosine, MUFA, PUFA, omega-9, ALA, linoleic acid, arachidonic acid, oleic acid, palmitoleic acid, carotenoids, lutein, betaine. From CoFID 2021 (UK) food 13-553 (Potatoes, old, mashed with butter), adjusted for water content: iodine, biotin, chloride. Quercetin, total flavonoids from the USDA Flavonoid Values for Survey Foods 2017-2018, food code 71501010 (Potato, mashed, from fresh, made with milk). Set to 0 because the nutrient is absent from this kind of food: K2, MK-4, MK-7, taurine, curcumin, sulforaphane, creatine. Vitamin K total is set to the phylloquinone (K1) amount, the form USDA reports as vitamin K."
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 168555 (Potatoes, mashed, home-prepared, whole milk and butter added), scaled to about 105 g, a standard weight for this portion. From that record: magnesium, retinol, beta-carotene, B12, thiamin, riboflavin, niacin, pantothenic acid, selenium, copper, manganese, vitamin E, omega-3, EPA, DHA, omega-6, K1, phosphorus, choline, histidine, isoleucine, leucine, lysine, methionine, phenylalanine, threonine, tryptophan, valine, arginine, cysteine, glycine, proline, tyrosine, MUFA, PUFA, omega-9, ALA, linoleic acid, arachidonic acid, oleic acid, palmitoleic acid, carotenoids, lutein, betaine. From CoFID 2021 (UK) food 13-553 (Potatoes, old, mashed with butter), adjusted for water content: iodine, biotin, chloride. Quercetin, total flavonoids from the USDA Flavonoid Values for Survey Foods 2017-2018, food code 71501010 (Potato, mashed, from fresh, made with milk). Set to 0 because the nutrient is absent from this kind of food: K2, MK-4, MK-7, taurine, curcumin, sulforaphane, creatine. Vitamin K total is set to the phylloquinone (K1) amount, the form USDA reports as vitamin K."
   },
   {
     "name": "Smashed Potatoes (estimated with milk and butter) 1 cup",
@@ -15164,7 +15164,7 @@
       "addedSugar": 0,
       "refinedCarbs": 0
     },
-    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 168555 (Potatoes, mashed, home-prepared, whole milk and butter added), scaled to about 210 g, the weight implied by this entry's own values. From that record: magnesium, retinol, beta-carotene, B12, thiamin, riboflavin, niacin, pantothenic acid, selenium, copper, manganese, vitamin E, omega-3, EPA, DHA, omega-6, K1, phosphorus, choline, histidine, isoleucine, leucine, lysine, methionine, phenylalanine, threonine, tryptophan, valine, arginine, cysteine, glycine, proline, tyrosine, MUFA, PUFA, omega-9, ALA, linoleic acid, arachidonic acid, oleic acid, palmitoleic acid, carotenoids, lutein, betaine. From CoFID 2021 (UK) food 13-553 (Potatoes, old, mashed with butter), adjusted for water content: iodine, biotin, chloride. Quercetin, total flavonoids from the USDA Flavonoid Values for Survey Foods 2017-2018, food code 71501010 (Potato, mashed, from fresh, made with milk). Set to 0 because the nutrient is absent from this kind of food: K2, MK-4, MK-7, taurine, curcumin, sulforaphane, creatine. Vitamin K total is set to the phylloquinone (K1) amount, the form USDA reports as vitamin K."
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 168555 (Potatoes, mashed, home-prepared, whole milk and butter added), scaled to about 210 g, a standard weight for this portion. From that record: magnesium, retinol, beta-carotene, B12, thiamin, riboflavin, niacin, pantothenic acid, selenium, copper, manganese, vitamin E, omega-3, EPA, DHA, omega-6, K1, phosphorus, choline, histidine, isoleucine, leucine, lysine, methionine, phenylalanine, threonine, tryptophan, valine, arginine, cysteine, glycine, proline, tyrosine, MUFA, PUFA, omega-9, ALA, linoleic acid, arachidonic acid, oleic acid, palmitoleic acid, carotenoids, lutein, betaine. From CoFID 2021 (UK) food 13-553 (Potatoes, old, mashed with butter), adjusted for water content: iodine, biotin, chloride. Quercetin, total flavonoids from the USDA Flavonoid Values for Survey Foods 2017-2018, food code 71501010 (Potato, mashed, from fresh, made with milk). Set to 0 because the nutrient is absent from this kind of food: K2, MK-4, MK-7, taurine, curcumin, sulforaphane, creatine. Vitamin K total is set to the phylloquinone (K1) amount, the form USDA reports as vitamin K."
   },
   {
     "name": "Potatoes - Small White Potatoes x1",
@@ -15385,7 +15385,7 @@
       "refinedCarbs": 0,
       "netCarbs": 32
     },
-    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 168555 (Potatoes, mashed, home-prepared, whole milk and butter added), scaled to about 210 g, the weight implied by this entry's own values. From that record: retinol, beta-carotene, omega-3, EPA, DHA, omega-6, omega-9, ALA, linoleic acid, arachidonic acid, oleic acid, palmitoleic acid, carotenoids, betaine. Quercetin, total flavonoids from the USDA Flavonoid Values for Survey Foods 2017-2018, food code 71501010 (Potato, mashed, from fresh, made with milk). Set to 0 because the nutrient is absent from this kind of food: curcumin, sulforaphane, creatine."
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 168555 (Potatoes, mashed, home-prepared, whole milk and butter added), scaled to about 210 g, a standard weight for this portion. From that record: retinol, beta-carotene, omega-3, EPA, DHA, omega-6, omega-9, ALA, linoleic acid, arachidonic acid, oleic acid, palmitoleic acid, carotenoids, betaine. Quercetin, total flavonoids from the USDA Flavonoid Values for Survey Foods 2017-2018, food code 71501010 (Potato, mashed, from fresh, made with milk). Set to 0 because the nutrient is absent from this kind of food: curcumin, sulforaphane, creatine."
   },
   {
     "name": "Smashed Potatoes Yukon Gold without Skin - 1 cup",
@@ -15498,7 +15498,7 @@
       "refinedCarbs": 0,
       "netCarbs": 31
     },
-    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 168555 (Potatoes, mashed, home-prepared, whole milk and butter added), scaled to about 210 g, the weight implied by this entry's own values. From that record: retinol, beta-carotene, omega-3, EPA, DHA, omega-6, omega-9, ALA, linoleic acid, arachidonic acid, oleic acid, palmitoleic acid, carotenoids, betaine. Quercetin, total flavonoids from the USDA Flavonoid Values for Survey Foods 2017-2018, food code 71501010 (Potato, mashed, from fresh, made with milk). Set to 0 because the nutrient is absent from this kind of food: curcumin, sulforaphane, creatine."
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 168555 (Potatoes, mashed, home-prepared, whole milk and butter added), scaled to about 210 g, a standard weight for this portion. From that record: retinol, beta-carotene, omega-3, EPA, DHA, omega-6, omega-9, ALA, linoleic acid, arachidonic acid, oleic acid, palmitoleic acid, carotenoids, betaine. Quercetin, total flavonoids from the USDA Flavonoid Values for Survey Foods 2017-2018, food code 71501010 (Potato, mashed, from fresh, made with milk). Set to 0 because the nutrient is absent from this kind of food: curcumin, sulforaphane, creatine."
   },
   {
     "name": "Smashed Potatoes Red with Skin - 1 cup",
@@ -15611,7 +15611,7 @@
       "refinedCarbs": 0,
       "netCarbs": 30.8
     },
-    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 168555 (Potatoes, mashed, home-prepared, whole milk and butter added), scaled to about 210 g, the weight implied by this entry's own values. From that record: retinol, beta-carotene, omega-3, EPA, DHA, omega-6, omega-9, ALA, linoleic acid, arachidonic acid, oleic acid, palmitoleic acid, carotenoids, betaine. Quercetin, total flavonoids from the USDA Flavonoid Values for Survey Foods 2017-2018, food code 71501010 (Potato, mashed, from fresh, made with milk). Set to 0 because the nutrient is absent from this kind of food: curcumin, sulforaphane, creatine."
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 168555 (Potatoes, mashed, home-prepared, whole milk and butter added), scaled to about 210 g, a standard weight for this portion. From that record: retinol, beta-carotene, omega-3, EPA, DHA, omega-6, omega-9, ALA, linoleic acid, arachidonic acid, oleic acid, palmitoleic acid, carotenoids, betaine. Quercetin, total flavonoids from the USDA Flavonoid Values for Survey Foods 2017-2018, food code 71501010 (Potato, mashed, from fresh, made with milk). Set to 0 because the nutrient is absent from this kind of food: curcumin, sulforaphane, creatine."
   },
   {
     "name": "Smashed Potatoes Red without Skin - 1 cup",
@@ -15724,7 +15724,7 @@
       "refinedCarbs": 0,
       "netCarbs": 29.8
     },
-    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 168555 (Potatoes, mashed, home-prepared, whole milk and butter added), scaled to about 210 g, the weight implied by this entry's own values. From that record: retinol, beta-carotene, omega-3, EPA, DHA, omega-6, omega-9, ALA, linoleic acid, arachidonic acid, oleic acid, palmitoleic acid, carotenoids, betaine. Quercetin, total flavonoids from the USDA Flavonoid Values for Survey Foods 2017-2018, food code 71501010 (Potato, mashed, from fresh, made with milk). Set to 0 because the nutrient is absent from this kind of food: curcumin, sulforaphane, creatine."
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 168555 (Potatoes, mashed, home-prepared, whole milk and butter added), scaled to about 210 g, a standard weight for this portion. From that record: retinol, beta-carotene, omega-3, EPA, DHA, omega-6, omega-9, ALA, linoleic acid, arachidonic acid, oleic acid, palmitoleic acid, carotenoids, betaine. Quercetin, total flavonoids from the USDA Flavonoid Values for Survey Foods 2017-2018, food code 71501010 (Potato, mashed, from fresh, made with milk). Set to 0 because the nutrient is absent from this kind of food: curcumin, sulforaphane, creatine."
   },
   {
     "name": "Pure Protein Bar",
@@ -24063,7 +24063,7 @@
       "addedSugar": 0,
       "refinedCarbs": 0
     },
-    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 172237 (Vinegar, distilled), scaled to about 15 g, the weight implied by this entry's own values. From that record: retinol, beta-carotene. Quercetin from the USDA Flavonoid Values for Survey Foods 2017-2018, food code 64401000 (Vinegar). Set to 0 because the nutrient is absent from this kind of food: creatine."
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 172237 (Vinegar, distilled), scaled to about 15 g, a standard weight for this portion. From that record: retinol, beta-carotene. Quercetin from the USDA Flavonoid Values for Survey Foods 2017-2018, food code 64401000 (Vinegar). Set to 0 because the nutrient is absent from this kind of food: creatine."
   },
   {
     "name": "Extra Virgin Olive Oil 1 tablespoon",
@@ -24175,7 +24175,7 @@
       "refinedCarbs": 0,
       "netCarbs": 0
     },
-    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 171413 (Oil, olive, salad or cooking), scaled to about 13.5 g, the weight implied by this entry's own values. From that record: retinol, beta-carotene, palmitoleic acid, betaine. Quercetin from the USDA Flavonoid Values for Survey Foods 2017-2018, food code 82104000 (Olive oil). Set to 0 because the nutrient is absent from this kind of food: creatine."
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 171413 (Oil, olive, salad or cooking), scaled to about 13.5 g, a standard weight for this portion. From that record: retinol, beta-carotene, palmitoleic acid, betaine. Quercetin from the USDA Flavonoid Values for Survey Foods 2017-2018, food code 82104000 (Olive oil). Set to 0 because the nutrient is absent from this kind of food: creatine."
   },
   {
     "name": "Canned Cod Liver 1 Serving",
@@ -28151,7 +28151,7 @@
       "refinedCarbs": 0,
       "netCarbs": 12.2
     },
-    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 170017 (Peas, green, frozen, cooked, boiled, drained, without salt), scaled to about 134 g, the weight implied by this entry's own values. From that record: retinol, beta-carotene, betaine. Quercetin from the USDA Flavonoid Values for Survey Foods 2017-2018, food code 75224022 (Green peas, frozen, cooked, no added fat). Set to 0 because the nutrient is absent from this kind of food: creatine."
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 170017 (Peas, green, frozen, cooked, boiled, drained, without salt), scaled to about 134 g, the weight given in this entry's name. From that record: retinol, beta-carotene, betaine. Quercetin from the USDA Flavonoid Values for Survey Foods 2017-2018, food code 75224022 (Green peas, frozen, cooked, no added fat). Set to 0 because the nutrient is absent from this kind of food: creatine."
   },
   {
     "name": "Macadamia nuts 1 oz (28g, about 10-12 nuts)",
@@ -35940,8 +35940,8 @@
       "vitaminK2MK7": 0,
       "phosphorus": 60.7,
       "molybdenum": 5.47,
-      "glycine": 113,
-      "proline": 590,
+      "glycine": 95,
+      "proline": 495,
       "taurine": 0,
       "quercetin": 1.69
     },
@@ -35991,7 +35991,7 @@
       "refinedCarbs": 0,
       "netCarbs": 4.7
     },
-    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 170383 (Brussels sprouts, raw), scaled to about 88 g, the weight implied by this entry's own values. From that record: retinol, beta-carotene, vitamin D, B12, B6, thiamin, riboflavin, niacin, pantothenic acid, selenium, manganese, vitamin E, K1, phosphorus, omega-9, arachidonic acid, oleic acid, palmitoleic acid, betaine. From Frida 5.5, DTU National Food Institute, Denmark, food 41 (Brussels sprouts, raw), adjusted for water content: iodine, biotin, molybdenum, glycine, proline. Quercetin, total flavonoids from the USDA Flavonoid Values for Survey Foods 2017-2018, food code 75102750 (Brussels sprouts, raw). Set to 0 because the nutrient is absent from this kind of food: K2, MK-4, MK-7, taurine, curcumin, creatine."
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 170383 (Brussels sprouts, raw), scaled to about 88 g, the weight implied by this entry's own values. From that record: retinol, beta-carotene, vitamin D, B12, B6, thiamin, riboflavin, niacin, pantothenic acid, selenium, manganese, vitamin E, K1, phosphorus, omega-9, arachidonic acid, oleic acid, palmitoleic acid, betaine. From Frida 5.5, DTU National Food Institute, Denmark, food 41 (Brussels sprouts, raw), adjusted for water content, amino acids for protein content: iodine, biotin, molybdenum, glycine, proline. Quercetin, total flavonoids from the USDA Flavonoid Values for Survey Foods 2017-2018, food code 75102750 (Brussels sprouts, raw). Set to 0 because the nutrient is absent from this kind of food: K2, MK-4, MK-7, taurine, curcumin, creatine."
   },
   {
     "name": "Tomato md",
@@ -39702,7 +39702,7 @@
       "choline": 3.73,
       "chloride": 10.2,
       "glycine": 10,
-      "proline": 24,
+      "proline": 25,
       "taurine": 0
     },
     "longevity": {
@@ -39741,7 +39741,7 @@
       "sulforaphane": 0,
       "creatine": 0
     },
-    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 169992 (Chicory greens, raw), scaled to about 29 g, the weight implied by this entry's own values. From that record: sodium, iron, zinc, retinol, beta-carotene, vitamin D, B12, B6, thiamin, riboflavin, niacin, pantothenic acid, selenium, copper, vitamin E, omega-3, EPA, DHA, omega-6, K1, phosphorus, choline, saturated fat, MUFA, PUFA, trans fat, cholesterol, omega-9, ALA, linoleic acid, arachidonic acid, oleic acid, palmitoleic acid, carotenoids, lutein. From Frida 5.5, DTU National Food Institute, Denmark, food 544 (Chicory, raw), adjusted for water content: iodine, biotin, chromium, glycine, proline. From CoFID 2021 (UK) food 13-225 (Chicory, pale variety, raw), adjusted for water content: chloride. Set to 0 because the nutrient is absent from this kind of food: K2, MK-4, MK-7, taurine, curcumin, sulforaphane, creatine."
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 169992 (Chicory greens, raw), scaled to about 29 g, the weight implied by this entry's own values. From that record: sodium, iron, zinc, retinol, beta-carotene, vitamin D, B12, B6, thiamin, riboflavin, niacin, pantothenic acid, selenium, copper, vitamin E, omega-3, EPA, DHA, omega-6, K1, phosphorus, choline, saturated fat, MUFA, PUFA, trans fat, cholesterol, omega-9, ALA, linoleic acid, arachidonic acid, oleic acid, palmitoleic acid, carotenoids, lutein. From Frida 5.5, DTU National Food Institute, Denmark, food 544 (Chicory, raw), adjusted for water content, amino acids for protein content: iodine, biotin, chromium, glycine, proline. From CoFID 2021 (UK) food 13-225 (Chicory, pale variety, raw), adjusted for water content: chloride. Set to 0 because the nutrient is absent from this kind of food: K2, MK-4, MK-7, taurine, curcumin, sulforaphane, creatine."
   },
   {
     "name": "Onion Red md (raw, about 110 g)",
@@ -39850,7 +39850,7 @@
       "refinedCarbs": 0,
       "netCarbs": 8.3
     },
-    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 170000 (Onions, raw), scaled to about 110 g, the weight implied by this entry's own values. From that record: vitamin A, retinol, beta-carotene, vitamin D, B12, vitamin E, EPA, DHA, K1, glycine, proline, plant sterols, omega-9, ALA, linoleic acid, arachidonic acid, oleic acid, palmitoleic acid, carotenoids, lutein, betaine. From Frida 5.5, DTU National Food Institute, Denmark, food 716 (Onion, raw), adjusted for water content: iodine, biotin, chromium, molybdenum. From CoFID 2021 (UK) food 13-499 (Onions, raw), adjusted for water content: chloride. Set to 0 because the nutrient is absent from this kind of food: K2, MK-4, MK-7, taurine, curcumin, sulforaphane, creatine."
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 170000 (Onions, raw), scaled to about 110 g, the weight given in this entry's name. From that record: vitamin A, retinol, beta-carotene, vitamin D, B12, vitamin E, EPA, DHA, K1, glycine, proline, plant sterols, omega-9, ALA, linoleic acid, arachidonic acid, oleic acid, palmitoleic acid, carotenoids, lutein, betaine. From Frida 5.5, DTU National Food Institute, Denmark, food 716 (Onion, raw), adjusted for water content: iodine, biotin, chromium, molybdenum. From CoFID 2021 (UK) food 13-499 (Onions, raw), adjusted for water content: chloride. Set to 0 because the nutrient is absent from this kind of food: K2, MK-4, MK-7, taurine, curcumin, sulforaphane, creatine."
   },
   {
     "name": "Capers 1 tablespoon (drained, about 9 g)",
@@ -39952,7 +39952,7 @@
       "refinedCarbs": 0,
       "netCarbs": 0.1
     },
-    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 172238 (Capers, canned), scaled to about 9 g, the weight implied by this entry's own values. From that record: retinol, beta-carotene, vitamin D, B12, B6, thiamin, riboflavin, niacin, pantothenic acid, selenium, vitamin E, omega-3, EPA, DHA, omega-6, K1, choline, plant sterols, omega-9, ALA, linoleic acid, arachidonic acid, oleic acid, palmitoleic acid, carotenoids, lutein. Set to 0 because the nutrient is absent from this kind of food: K2, MK-4, MK-7, taurine, curcumin, sulforaphane, creatine."
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 172238 (Capers, canned), scaled to about 9 g, the weight given in this entry's name. From that record: retinol, beta-carotene, vitamin D, B12, B6, thiamin, riboflavin, niacin, pantothenic acid, selenium, vitamin E, omega-3, EPA, DHA, omega-6, K1, choline, plant sterols, omega-9, ALA, linoleic acid, arachidonic acid, oleic acid, palmitoleic acid, carotenoids, lutein. Set to 0 because the nutrient is absent from this kind of food: K2, MK-4, MK-7, taurine, curcumin, sulforaphane, creatine."
   },
   {
     "name": "Fruit - Blueberries 1 cup (148 g)",
@@ -40061,7 +40061,7 @@
       "refinedCarbs": 0,
       "netCarbs": 17.8
     },
-    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 171711 (Blueberries, raw), scaled to about 148 g, the weight implied by this entry's own values. From that record: retinol, beta-carotene, vitamin D, B12, EPA, DHA, glycine, proline, omega-9, linoleic acid, arachidonic acid, oleic acid, palmitoleic acid, betaine. From Frida 5.5, DTU National Food Institute, Denmark, food 1848 (Blueberries, raw), adjusted for water content: iodine, biotin, chromium, molybdenum. From CoFID 2021 (UK) food 14-325 (Blueberries), adjusted for water content: chloride. Set to 0 because the nutrient is absent from this kind of food: K2, MK-4, MK-7, taurine, curcumin, sulforaphane, creatine."
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 171711 (Blueberries, raw), scaled to about 148 g, the weight given in this entry's name. From that record: retinol, beta-carotene, vitamin D, B12, EPA, DHA, glycine, proline, omega-9, linoleic acid, arachidonic acid, oleic acid, palmitoleic acid, betaine. From Frida 5.5, DTU National Food Institute, Denmark, food 1848 (Blueberries, raw), adjusted for water content: iodine, biotin, chromium, molybdenum. From CoFID 2021 (UK) food 14-325 (Blueberries), adjusted for water content: chloride. Set to 0 because the nutrient is absent from this kind of food: K2, MK-4, MK-7, taurine, curcumin, sulforaphane, creatine."
   },
   {
     "name": "Fruit - Dragon Fruit sm (about 150 g edible flesh)",
@@ -40141,7 +40141,7 @@
       "addedSugar": 0,
       "refinedCarbs": 0
     },
-    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central FNDDS 2021-2023 FDC 2709234 (Dragon fruit), scaled to about 150 g, the weight implied by this entry's own values. From that record: retinol, vitamin D, B12, EPA, DHA, arachidonic acid, palmitoleic acid. Set to 0 because the nutrient is absent from this kind of food: K2, MK-4, MK-7, taurine, curcumin, sulforaphane, creatine."
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central FNDDS 2021-2023 FDC 2709234 (Dragon fruit), scaled to about 150 g, the weight given in this entry's name. From that record: retinol, vitamin D, B12, EPA, DHA, arachidonic acid, palmitoleic acid. Set to 0 because the nutrient is absent from this kind of food: K2, MK-4, MK-7, taurine, curcumin, sulforaphane, creatine."
   },
   {
     "name": "Fruit - Dragon Fruit md (about 225 g edible flesh)",
@@ -40221,7 +40221,7 @@
       "addedSugar": 0,
       "refinedCarbs": 0
     },
-    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central FNDDS 2021-2023 FDC 2709234 (Dragon fruit), scaled to about 225 g, the weight implied by this entry's own values. From that record: retinol, vitamin D, B12, EPA, DHA, arachidonic acid, palmitoleic acid. Set to 0 because the nutrient is absent from this kind of food: K2, MK-4, MK-7, taurine, curcumin, sulforaphane, creatine."
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central FNDDS 2021-2023 FDC 2709234 (Dragon fruit), scaled to about 225 g, the weight given in this entry's name. From that record: retinol, vitamin D, B12, EPA, DHA, arachidonic acid, palmitoleic acid. Set to 0 because the nutrient is absent from this kind of food: K2, MK-4, MK-7, taurine, curcumin, sulforaphane, creatine."
   },
   {
     "name": "Fruit - Dragon Fruit lg (about 300 g edible flesh)",
@@ -40301,7 +40301,7 @@
       "addedSugar": 0,
       "refinedCarbs": 0
     },
-    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central FNDDS 2021-2023 FDC 2709234 (Dragon fruit), scaled to about 300 g, the weight implied by this entry's own values. From that record: retinol, vitamin D, B12, EPA, DHA, arachidonic acid, palmitoleic acid. Set to 0 because the nutrient is absent from this kind of food: K2, MK-4, MK-7, taurine, curcumin, sulforaphane, creatine."
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central FNDDS 2021-2023 FDC 2709234 (Dragon fruit), scaled to about 300 g, the weight given in this entry's name. From that record: retinol, vitamin D, B12, EPA, DHA, arachidonic acid, palmitoleic acid. Set to 0 because the nutrient is absent from this kind of food: K2, MK-4, MK-7, taurine, curcumin, sulforaphane, creatine."
   },
   {
     "name": "Egg yolks 1 medium",
@@ -40603,7 +40603,7 @@
       "refinedCarbs": 0,
       "netCarbs": 1.5
     },
-    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 169376 (Mushroom, white, exposed to ultraviolet light, raw), scaled to about 64 g, the weight implied by this entry's own values. From that record: retinol, B12, vitamin C, thiamin, manganese, vitamin E, omega-3, EPA, DHA, omega-6, K1, MK-4, omega-9, ALA, linoleic acid, arachidonic acid, oleic acid, palmitoleic acid, betaine. From USDA FoodData Central SR Legacy FDC 169251 (Mushrooms, white, raw), adjusted for water content: vitamin A, beta-carotene, histidine, isoleucine, leucine, lysine, methionine, phenylalanine, threonine, tryptophan, valine, arginine, cysteine, glycine, proline, tyrosine, carotenoids, lutein. From Frida 5.5, DTU National Food Institute, Denmark, food 961 (Mushroom, raw), adjusted for water content: iodine, biotin, chromium, molybdenum. From CoFID 2021 (UK) food 13-505 (Mushrooms, white, raw), adjusted for water content: chloride. Quercetin, total flavonoids from the USDA Flavonoid Values for Survey Foods 2017-2018, food code 75115000 (Mushrooms, raw). Set to 0 because the nutrient is absent from this kind of food: K2, MK-7, taurine, curcumin, sulforaphane, creatine. Vitamin K total is set to the phylloquinone (K1) amount, the form USDA reports as vitamin K."
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 169376 (Mushroom, white, exposed to ultraviolet light, raw), scaled to about 64 g, the weight implied by this entry's own values. From that record: retinol, B12, vitamin C, thiamin, manganese, vitamin E, omega-3, EPA, DHA, omega-6, K1, MK-4, omega-9, ALA, linoleic acid, arachidonic acid, oleic acid, palmitoleic acid, betaine. From USDA FoodData Central SR Legacy FDC 169251 (Mushrooms, white, raw), adjusted for water content, amino acids for protein content: vitamin A, beta-carotene, histidine, isoleucine, leucine, lysine, methionine, phenylalanine, threonine, tryptophan, valine, arginine, cysteine, glycine, proline, tyrosine, carotenoids, lutein. From Frida 5.5, DTU National Food Institute, Denmark, food 961 (Mushroom, raw), adjusted for water content: iodine, biotin, chromium, molybdenum. From CoFID 2021 (UK) food 13-505 (Mushrooms, white, raw), adjusted for water content: chloride. Quercetin, total flavonoids from the USDA Flavonoid Values for Survey Foods 2017-2018, food code 75115000 (Mushrooms, raw). Set to 0 because the nutrient is absent from this kind of food: K2, MK-7, taurine, curcumin, sulforaphane, creatine. Vitamin K total is set to the phylloquinone (K1) amount, the form USDA reports as vitamin K."
   },
   {
     "name": "Cod liver oil 1 tablespoon",
@@ -40723,7 +40723,7 @@
       "refinedCarbs": 0,
       "netCarbs": 0.1
     },
-    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 168384 (Alfalfa seeds, sprouted, raw), scaled to about 33 g, the weight implied by this entry's own values. From that record: retinol, beta-carotene, vitamin D, B12, K1, omega-9, arachidonic acid, palmitoleic acid, lutein. From Frida 5.5, DTU National Food Institute, Denmark, food 1111 (Alfalfa seeds, sprouted, raw), adjusted for water content: iodine. Quercetin, total flavonoids from the USDA Flavonoid Values for Survey Foods 2017-2018, food code 75100500 (Alfalfa sprouts, raw). Set to 0 because the nutrient is absent from this kind of food: K2, MK-4, MK-7, taurine, curcumin, creatine."
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 168384 (Alfalfa seeds, sprouted, raw), scaled to about 33 g, the weight given in this entry's name. From that record: retinol, beta-carotene, vitamin D, B12, K1, omega-9, arachidonic acid, palmitoleic acid, lutein. From Frida 5.5, DTU National Food Institute, Denmark, food 1111 (Alfalfa seeds, sprouted, raw), adjusted for water content: iodine. Quercetin, total flavonoids from the USDA Flavonoid Values for Survey Foods 2017-2018, food code 75100500 (Alfalfa sprouts, raw). Set to 0 because the nutrient is absent from this kind of food: K2, MK-4, MK-7, taurine, curcumin, creatine."
   },
   {
     "name": "Sprouts Alfalfa, Broccoli & Kale Nutritional Blend ½ cup",
@@ -40899,7 +40899,7 @@
       "refinedCarbs": 0,
       "netCarbs": 0.1
     },
-    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 168384 (Alfalfa seeds, sprouted, raw), scaled to about 28 g, the weight implied by this entry's own values. From that record: retinol, beta-carotene, vitamin D, B12, K1, omega-9, arachidonic acid, palmitoleic acid, lutein. From Frida 5.5, DTU National Food Institute, Denmark, food 1111 (Alfalfa seeds, sprouted, raw), adjusted for water content: iodine. Quercetin, total flavonoids from the USDA Flavonoid Values for Survey Foods 2017-2018, food code 75100500 (Alfalfa sprouts, raw). Set to 0 because the nutrient is absent from this kind of food: K2, MK-4, MK-7, taurine, curcumin, creatine."
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 168384 (Alfalfa seeds, sprouted, raw), scaled to about 28 g, the weight given in this entry's name. From that record: retinol, beta-carotene, vitamin D, B12, K1, omega-9, arachidonic acid, palmitoleic acid, lutein. From Frida 5.5, DTU National Food Institute, Denmark, food 1111 (Alfalfa seeds, sprouted, raw), adjusted for water content: iodine. Quercetin, total flavonoids from the USDA Flavonoid Values for Survey Foods 2017-2018, food code 75100500 (Alfalfa sprouts, raw). Set to 0 because the nutrient is absent from this kind of food: K2, MK-4, MK-7, taurine, curcumin, creatine."
   },
   {
     "name": "Sprouts Alfalfa, Broccoli & Kale Nutritional Blend 1 package (3 oz / 85 g)",
@@ -40987,7 +40987,7 @@
       "refinedCarbs": 0,
       "netCarbs": 0.2
     },
-    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 168384 (Alfalfa seeds, sprouted, raw), scaled to about 85 g, the weight implied by this entry's own values. From that record: retinol, beta-carotene, vitamin D, B12, K1, omega-9, arachidonic acid, palmitoleic acid, lutein. From Frida 5.5, DTU National Food Institute, Denmark, food 1111 (Alfalfa seeds, sprouted, raw), adjusted for water content: iodine. Quercetin, total flavonoids from the USDA Flavonoid Values for Survey Foods 2017-2018, food code 75100500 (Alfalfa sprouts, raw). Set to 0 because the nutrient is absent from this kind of food: K2, MK-4, MK-7, taurine, curcumin, creatine."
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 168384 (Alfalfa seeds, sprouted, raw), scaled to about 85 g, the weight given in this entry's name. From that record: retinol, beta-carotene, vitamin D, B12, K1, omega-9, arachidonic acid, palmitoleic acid, lutein. From Frida 5.5, DTU National Food Institute, Denmark, food 1111 (Alfalfa seeds, sprouted, raw), adjusted for water content: iodine. Quercetin, total flavonoids from the USDA Flavonoid Values for Survey Foods 2017-2018, food code 75100500 (Alfalfa sprouts, raw). Set to 0 because the nutrient is absent from this kind of food: K2, MK-4, MK-7, taurine, curcumin, creatine."
   },
   {
     "name": "Dim Sum - Char Siu Bao 1 steamed bun",
@@ -44326,7 +44326,7 @@
       "refinedCarbs": 0,
       "netCarbs": 4.9
     },
-    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 173044 (Guavas, common, raw), scaled to about 55 g, the weight implied by this entry's own values. From CoFID 2021 (UK) food 14-118 (Guava, flesh only, raw), adjusted for water content: chloride. Set to 0 because the nutrient is absent from this kind of food: sulforaphane, creatine."
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 173044 (Guavas, common, raw), scaled to about 55 g, the weight given in this entry's name. From CoFID 2021 (UK) food 14-118 (Guava, flesh only, raw), adjusted for water content: chloride. Set to 0 because the nutrient is absent from this kind of food: sulforaphane, creatine."
   },
   {
     "name": "Dim Sum Dumpling - Gaau ji 1 piece (about 30 g; boiled pork and cabbage; estimated, no sauce)",
@@ -44593,7 +44593,7 @@
       "refinedCarbs": 0,
       "netCarbs": 8.9
     },
-    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 173044 (Guavas, common, raw), scaled to about 100 g, the weight implied by this entry's own values. From CoFID 2021 (UK) food 14-118 (Guava, flesh only, raw), adjusted for water content: chloride. Set to 0 because the nutrient is absent from this kind of food: sulforaphane, creatine."
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 173044 (Guavas, common, raw), scaled to about 100 g, the weight given in this entry's name. From CoFID 2021 (UK) food 14-118 (Guava, flesh only, raw), adjusted for water content: chloride. Set to 0 because the nutrient is absent from this kind of food: sulforaphane, creatine."
   },
   {
     "name": "Noodles - Wonton Noodles (Not including dumplings) 1 cup cooked (about 140 g; plain, drained, without broth or sauce; estimated)",
@@ -44736,7 +44736,7 @@
       "refinedCarbs": 0,
       "netCarbs": 14.7
     },
-    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 173044 (Guavas, common, raw), scaled to about 165 g, the weight implied by this entry's own values. From CoFID 2021 (UK) food 14-118 (Guava, flesh only, raw), adjusted for water content: chloride. Set to 0 because the nutrient is absent from this kind of food: sulforaphane, creatine."
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 173044 (Guavas, common, raw), scaled to about 165 g, the weight given in this entry's name. From CoFID 2021 (UK) food 14-118 (Guava, flesh only, raw), adjusted for water content: chloride. Set to 0 because the nutrient is absent from this kind of food: sulforaphane, creatine."
   },
   {
     "name": "Fruit - Pomegranate sm (about 87 g arils)",
@@ -44827,7 +44827,7 @@
       "refinedCarbs": 0,
       "netCarbs": 12.8
     },
-    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 169134 (Pomegranates, raw), scaled to about 87 g, the weight implied by this entry's own values. From Frida 5.5, DTU National Food Institute, Denmark, food 632 (Pomegranate, raw), adjusted for water content: iodine. From CoFID 2021 (UK) food 14-226 (Pomegranate, flesh and pips), adjusted for water content: chloride. Quercetin from the USDA Flavonoid Values for Survey Foods 2017-2018, food code 63145010 (Pomegranate, raw). Set to 0 because the nutrient is absent from this kind of food: taurine, sulforaphane, creatine."
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 169134 (Pomegranates, raw), scaled to about 87 g, the weight given in this entry's name. From Frida 5.5, DTU National Food Institute, Denmark, food 632 (Pomegranate, raw), adjusted for water content: iodine. From CoFID 2021 (UK) food 14-226 (Pomegranate, flesh and pips), adjusted for water content: chloride. Quercetin from the USDA Flavonoid Values for Survey Foods 2017-2018, food code 63145010 (Pomegranate, raw). Set to 0 because the nutrient is absent from this kind of food: taurine, sulforaphane, creatine."
   },
   {
     "name": "Fruit - Pomegranate md (about 174 g arils)",
@@ -44918,7 +44918,7 @@
       "refinedCarbs": 0,
       "netCarbs": 25.6
     },
-    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 169134 (Pomegranates, raw), scaled to about 174 g, the weight implied by this entry's own values. From Frida 5.5, DTU National Food Institute, Denmark, food 632 (Pomegranate, raw), adjusted for water content: iodine. From CoFID 2021 (UK) food 14-226 (Pomegranate, flesh and pips), adjusted for water content: chloride. Quercetin from the USDA Flavonoid Values for Survey Foods 2017-2018, food code 63145010 (Pomegranate, raw). Set to 0 because the nutrient is absent from this kind of food: taurine, sulforaphane, creatine."
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 169134 (Pomegranates, raw), scaled to about 174 g, the weight given in this entry's name. From Frida 5.5, DTU National Food Institute, Denmark, food 632 (Pomegranate, raw), adjusted for water content: iodine. From CoFID 2021 (UK) food 14-226 (Pomegranate, flesh and pips), adjusted for water content: chloride. Quercetin from the USDA Flavonoid Values for Survey Foods 2017-2018, food code 63145010 (Pomegranate, raw). Set to 0 because the nutrient is absent from this kind of food: taurine, sulforaphane, creatine."
   },
   {
     "name": "Fruit - Pomegranate lg (about 282 g arils)",
@@ -45009,7 +45009,7 @@
       "refinedCarbs": 0,
       "netCarbs": 41.5
     },
-    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 169134 (Pomegranates, raw), scaled to about 282 g, the weight implied by this entry's own values. From Frida 5.5, DTU National Food Institute, Denmark, food 632 (Pomegranate, raw), adjusted for water content: iodine. From CoFID 2021 (UK) food 14-226 (Pomegranate, flesh and pips), adjusted for water content: chloride. Quercetin from the USDA Flavonoid Values for Survey Foods 2017-2018, food code 63145010 (Pomegranate, raw). Set to 0 because the nutrient is absent from this kind of food: taurine, sulforaphane, creatine."
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 169134 (Pomegranates, raw), scaled to about 282 g, the weight given in this entry's name. From Frida 5.5, DTU National Food Institute, Denmark, food 632 (Pomegranate, raw), adjusted for water content: iodine. From CoFID 2021 (UK) food 14-226 (Pomegranate, flesh and pips), adjusted for water content: chloride. Quercetin from the USDA Flavonoid Values for Survey Foods 2017-2018, food code 63145010 (Pomegranate, raw). Set to 0 because the nutrient is absent from this kind of food: taurine, sulforaphane, creatine."
   },
   {
     "name": "Fruit - Star Fruit 1 fruit (91 g)",
@@ -45109,7 +45109,7 @@
       "refinedCarbs": 0,
       "netCarbs": 3.6
     },
-    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 171715 (Carambola, (starfruit), raw), scaled to about 91 g, the weight implied by this entry's own values. From that record: EPA, DHA, arachidonic acid, palmitoleic acid. From Frida 5.5, DTU National Food Institute, Denmark, food 579 (Carambola, raw), adjusted for water content: iodine. Quercetin, total flavonoids from the USDA Flavonoid Values for Survey Foods 2017-2018, food code 63109700 (Starfruit, raw). Set to 0 because the nutrient is absent from this kind of food: K2, MK-4, MK-7, taurine, curcumin, sulforaphane, creatine."
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 171715 (Carambola, (starfruit), raw), scaled to about 91 g, the weight given in this entry's name. From that record: EPA, DHA, arachidonic acid, palmitoleic acid. From Frida 5.5, DTU National Food Institute, Denmark, food 579 (Carambola, raw), adjusted for water content: iodine. Quercetin, total flavonoids from the USDA Flavonoid Values for Survey Foods 2017-2018, food code 63109700 (Starfruit, raw). Set to 0 because the nutrient is absent from this kind of food: K2, MK-4, MK-7, taurine, curcumin, sulforaphane, creatine."
   },
   {
     "name": "Junk Food - Carl's Jr. Western Bacon Cheeseburger 1 burger (248 g)",
@@ -45785,7 +45785,7 @@
       "refinedCarbs": 0,
       "netCarbs": 0.168
     },
-    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 171711 (Blueberries, raw), scaled to about 1.4 g, the weight implied by this entry's own values. From that record: retinol, beta-carotene, vitamin D, B12, EPA, DHA, glycine, proline, omega-9, linoleic acid, arachidonic acid, oleic acid, palmitoleic acid, betaine. From Frida 5.5, DTU National Food Institute, Denmark, food 1848 (Blueberries, raw), adjusted for water content: iodine, biotin, chromium, molybdenum. From CoFID 2021 (UK) food 14-325 (Blueberries), adjusted for water content: chloride. Set to 0 because the nutrient is absent from this kind of food: K2, MK-4, MK-7, taurine, curcumin, sulforaphane, creatine."
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 171711 (Blueberries, raw), scaled to about 1.4 g, the weight given in this entry's name. From that record: retinol, beta-carotene, vitamin D, B12, EPA, DHA, glycine, proline, omega-9, linoleic acid, arachidonic acid, oleic acid, palmitoleic acid, betaine. From Frida 5.5, DTU National Food Institute, Denmark, food 1848 (Blueberries, raw), adjusted for water content: iodine, biotin, chromium, molybdenum. From CoFID 2021 (UK) food 14-325 (Blueberries), adjusted for water content: chloride. Set to 0 because the nutrient is absent from this kind of food: K2, MK-4, MK-7, taurine, curcumin, sulforaphane, creatine."
   },
   {
     "name": "Pizza slice - Pepperoni 1 slice (111 g)",
@@ -48756,7 +48756,7 @@
     "carbQuality": {
       "netCarbs": 3
     },
-    "notes": "USDA SR Legacy FDC 168390: Asparagus, cooked, boiled, drained. Scaled to 142 g (5 oz). Used for the logged 'Urban Plates - Asparagus, 5 oz'; Urban Plates' current nutrition guide no longer lists asparagus, so the restaurant's added oil and salt are not included. Vitamin K is phylloquinone only; omega-3 is 18:3 plus EPA, DHA and DPA, omega-6 is 18:2 plus 20:4, all undifferentiated. Folate is DFE. Cystine is stored as cysteine. Keys USDA does not report are omitted. Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 168390 (Asparagus, cooked, boiled, drained), scaled to about 142 g, the weight implied by this entry's own values. From that record: omega-9, carotenoids. From Frida 5.5, DTU National Food Institute, Denmark, food 753 (Asparagus, all types, raw), adjusted for water content: iodine, biotin. From CoFID 2021 (UK) food 13-638 (Asparagus, steamed), adjusted for water content: chloride. Quercetin, total flavonoids from the USDA Flavonoid Values for Survey Foods 2017-2018, food code 75202011 (Asparagus, fresh, cooked, no added fat). Set to 0 because the nutrient is absent from this kind of food: K2, MK-4, MK-7, taurine, curcumin, sulforaphane, creatine."
+    "notes": "USDA SR Legacy FDC 168390: Asparagus, cooked, boiled, drained. Scaled to 142 g (5 oz). Used for the logged 'Urban Plates - Asparagus, 5 oz'; Urban Plates' current nutrition guide no longer lists asparagus, so the restaurant's added oil and salt are not included. Vitamin K is phylloquinone only; omega-3 is 18:3 plus EPA, DHA and DPA, omega-6 is 18:2 plus 20:4, all undifferentiated. Folate is DFE. Cystine is stored as cysteine. Keys USDA does not report are omitted. Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 168390 (Asparagus, cooked, boiled, drained), scaled to about 142 g, the weight given in this entry's name. From that record: omega-9, carotenoids. From Frida 5.5, DTU National Food Institute, Denmark, food 753 (Asparagus, all types, raw), adjusted for water content: iodine, biotin. From CoFID 2021 (UK) food 13-638 (Asparagus, steamed), adjusted for water content: chloride. Quercetin, total flavonoids from the USDA Flavonoid Values for Survey Foods 2017-2018, food code 75202011 (Asparagus, fresh, cooked, no added fat). Set to 0 because the nutrient is absent from this kind of food: K2, MK-4, MK-7, taurine, curcumin, sulforaphane, creatine."
   },
   {
     "name": "Fruit Salad, fresh (no dressing) 5 oz (142 g)",
@@ -54148,7 +54148,7 @@
       "refinedCarbs": 0,
       "netCarbs": 2.1
     },
-    "notes": "Raw shiitake. USDA SR Legacy FDC 169242 has a household weight only for one whole mushroom (19 g), not for a cup. Half a cup sliced is 48.5 g, half of the 97 g sliced cup on stir-fried shiitake (FDC 168435), used here only as the volume weight. Nutrient amounts are the raw record. Vitamin K, vitamin A, vitamin C, choline, and the fat classes are not reported on that raw record. Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 169242 (Mushrooms, shiitake, raw), scaled to about 49 g, the weight implied by this entry's own values. From that record: histidine, isoleucine, leucine, lysine, methionine, phenylalanine, threonine, tryptophan, valine, arginine, cysteine, glycine, proline, tyrosine. From CoFID 2021 (UK) food 13-295 (Mushrooms, shiitake, cooked), adjusted for water content: vitamin A, retinol, beta-carotene, B12, vitamin C, cholesterol. Quercetin, total flavonoids from the USDA Flavonoid Values for Survey Foods 2017-2018, food code 75115000 (Mushrooms, raw). Set to 0 because the nutrient is absent from this kind of food: EPA, DHA, K2, MK-4, MK-7, taurine, arachidonic acid, curcumin, sulforaphane, creatine."
+    "notes": "Raw shiitake. USDA SR Legacy FDC 169242 has a household weight only for one whole mushroom (19 g), not for a cup. Half a cup sliced is 48.5 g, half of the 97 g sliced cup on stir-fried shiitake (FDC 168435), used here only as the volume weight. Nutrient amounts are the raw record. Vitamin K, vitamin A, vitamin C, choline, and the fat classes are not reported on that raw record. Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 169242 (Mushrooms, shiitake, raw), scaled to about 49 g, the weight given in this entry's name. From that record: histidine, isoleucine, leucine, lysine, methionine, phenylalanine, threonine, tryptophan, valine, arginine, cysteine, glycine, proline, tyrosine. From CoFID 2021 (UK) food 13-295 (Mushrooms, shiitake, cooked), adjusted for water content: vitamin A, retinol, beta-carotene, B12, vitamin C, cholesterol. Quercetin, total flavonoids from the USDA Flavonoid Values for Survey Foods 2017-2018, food code 75115000 (Mushrooms, raw). Set to 0 because the nutrient is absent from this kind of food: EPA, DHA, K2, MK-4, MK-7, taurine, arachidonic acid, curcumin, sulforaphane, creatine."
   },
   {
     "name": "Shiitake mushrooms, raw, 1 piece (19 g, one whole mushroom)",
@@ -54227,7 +54227,7 @@
       "refinedCarbs": 0,
       "netCarbs": 0.83
     },
-    "notes": "One whole raw shiitake, the USDA household weight on SR Legacy FDC 169242. Vitamin K, vitamin A, vitamin C, choline, and the fat classes are not reported. Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 169242 (Mushrooms, shiitake, raw), scaled to about 19 g, the weight implied by this entry's own values. From that record: calcium, histidine, isoleucine, leucine, lysine, methionine, phenylalanine, threonine, tryptophan, valine, arginine, cysteine, glycine, proline, tyrosine. From CoFID 2021 (UK) food 13-295 (Mushrooms, shiitake, cooked), adjusted for water content: vitamin A, retinol, beta-carotene, B12, vitamin C, cholesterol. Quercetin, total flavonoids from the USDA Flavonoid Values for Survey Foods 2017-2018, food code 75115000 (Mushrooms, raw). Set to 0 because the nutrient is absent from this kind of food: EPA, DHA, K2, MK-4, MK-7, taurine, arachidonic acid, curcumin, sulforaphane, creatine."
+    "notes": "One whole raw shiitake, the USDA household weight on SR Legacy FDC 169242. Vitamin K, vitamin A, vitamin C, choline, and the fat classes are not reported. Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 169242 (Mushrooms, shiitake, raw), scaled to about 19 g, the weight given in this entry's name. From that record: calcium, histidine, isoleucine, leucine, lysine, methionine, phenylalanine, threonine, tryptophan, valine, arginine, cysteine, glycine, proline, tyrosine. From CoFID 2021 (UK) food 13-295 (Mushrooms, shiitake, cooked), adjusted for water content: vitamin A, retinol, beta-carotene, B12, vitamin C, cholesterol. Quercetin, total flavonoids from the USDA Flavonoid Values for Survey Foods 2017-2018, food code 75115000 (Mushrooms, raw). Set to 0 because the nutrient is absent from this kind of food: EPA, DHA, K2, MK-4, MK-7, taurine, arachidonic acid, curcumin, sulforaphane, creatine."
   },
   {
     "name": "King oyster mushroom, raw, ½ cup sliced (43 g)",
@@ -54329,7 +54329,7 @@
       "refinedCarbs": 0,
       "netCarbs": 1.61
     },
-    "notes": "King oyster (Pleurotus eryngii) has no separate SR Legacy record. Amounts are USDA oyster mushroom, raw, FDC 168580. Half a cup is half of that record's 86 g sliced cup. Vitamin K and vitamin C are reported as 0. Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 168580 (Mushrooms, oyster, raw), scaled to about 43 g, the weight implied by this entry's own values. From that record: retinol, B12, vitamin E, omega-3, EPA, DHA, MK-4, histidine, isoleucine, leucine, lysine, methionine, phenylalanine, threonine, tryptophan, valine, arginine, cysteine, glycine, proline, tyrosine, omega-9, ALA, arachidonic acid, palmitoleic acid, carotenoids, lutein. Quercetin, total flavonoids from the USDA Flavonoid Values for Survey Foods 2017-2018, food code 75115000 (Mushrooms, raw). Set to 0 because the nutrient is absent from this kind of food: K2, MK-7, taurine, curcumin, sulforaphane, creatine."
+    "notes": "King oyster (Pleurotus eryngii) has no separate SR Legacy record. Amounts are USDA oyster mushroom, raw, FDC 168580. Half a cup is half of that record's 86 g sliced cup. Vitamin K and vitamin C are reported as 0. Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 168580 (Mushrooms, oyster, raw), scaled to about 43 g, the weight given in this entry's name. From that record: retinol, B12, vitamin E, omega-3, EPA, DHA, MK-4, histidine, isoleucine, leucine, lysine, methionine, phenylalanine, threonine, tryptophan, valine, arginine, cysteine, glycine, proline, tyrosine, omega-9, ALA, arachidonic acid, palmitoleic acid, carotenoids, lutein. Quercetin, total flavonoids from the USDA Flavonoid Values for Survey Foods 2017-2018, food code 75115000 (Mushrooms, raw). Set to 0 because the nutrient is absent from this kind of food: K2, MK-7, taurine, curcumin, sulforaphane, creatine."
   },
   {
     "name": "King oyster mushroom, raw, 1 piece (148 g, one large)",
@@ -54431,7 +54431,7 @@
       "refinedCarbs": 0,
       "netCarbs": 5.6
     },
-    "notes": "One large raw oyster mushroom, the USDA household weight on SR Legacy FDC 168580. King oyster is not a separate record, so this uses the oyster mushroom values. A grocery king oyster stem is often smaller than 148 g; scale from this piece if yours weighs less. Vitamin K and vitamin C are reported as 0. Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 168580 (Mushrooms, oyster, raw), scaled to about 148 g, the weight implied by this entry's own values. From that record: retinol, B12, vitamin E, omega-3, EPA, DHA, MK-4, histidine, isoleucine, leucine, lysine, methionine, phenylalanine, threonine, tryptophan, valine, arginine, cysteine, glycine, proline, tyrosine, omega-9, ALA, arachidonic acid, palmitoleic acid, carotenoids, lutein. Quercetin, total flavonoids from the USDA Flavonoid Values for Survey Foods 2017-2018, food code 75115000 (Mushrooms, raw). Set to 0 because the nutrient is absent from this kind of food: K2, MK-7, taurine, curcumin, sulforaphane, creatine."
+    "notes": "One large raw oyster mushroom, the USDA household weight on SR Legacy FDC 168580. King oyster is not a separate record, so this uses the oyster mushroom values. A grocery king oyster stem is often smaller than 148 g; scale from this piece if yours weighs less. Vitamin K and vitamin C are reported as 0. Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 168580 (Mushrooms, oyster, raw), scaled to about 148 g, the weight given in this entry's name. From that record: retinol, B12, vitamin E, omega-3, EPA, DHA, MK-4, histidine, isoleucine, leucine, lysine, methionine, phenylalanine, threonine, tryptophan, valine, arginine, cysteine, glycine, proline, tyrosine, omega-9, ALA, arachidonic acid, palmitoleic acid, carotenoids, lutein. Quercetin, total flavonoids from the USDA Flavonoid Values for Survey Foods 2017-2018, food code 75115000 (Mushrooms, raw). Set to 0 because the nutrient is absent from this kind of food: K2, MK-7, taurine, curcumin, sulforaphane, creatine."
   },
   {
     "name": "White beech (white beach) mushrooms, raw, ½ cup (about 42 g)",
@@ -54480,20 +54480,20 @@
       "choline": 9.77,
       "molybdenum": 0.787,
       "chloride": 75.1,
-      "histidine": 32,
-      "isoleucine": 43,
-      "leucine": 68,
-      "lysine": 60,
-      "methionine": 18,
-      "phenylalanine": 48,
-      "threonine": 60,
-      "tryptophan": 20,
-      "valine": 131,
-      "arginine": 44,
-      "cysteine": 7,
-      "glycine": 52,
-      "proline": 43,
-      "tyrosine": 25,
+      "histidine": 17,
+      "isoleucine": 23,
+      "leucine": 36,
+      "lysine": 32,
+      "methionine": 9,
+      "phenylalanine": 25,
+      "threonine": 32,
+      "tryptophan": 10,
+      "valine": 69,
+      "arginine": 23,
+      "cysteine": 4,
+      "glycine": 27,
+      "proline": 23,
+      "tyrosine": 13,
       "taurine": 0,
       "quercetin": 0
     },
@@ -54541,7 +54541,7 @@
       "refinedCarbs": 0,
       "netCarbs": 1.6
     },
-    "notes": "White beech mushrooms, also sold as white beach mushrooms, bunapi, or white shimeji (Hypsizygus tessellatus). USDA Foundation Foods FDC 2003603 is Mushroom, beech, and does not separate white from brown. Its only published amount is the 85 g reference amount, so half a cup is taken as half of that, 42.5 g. The amino acids on that record add up to more than the protein, so they are omitted. Vitamin K, vitamin C, folate, and choline are not reported. Glutathione is 9.8 mg per 100 g on the record. Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central Foundation FDC 2003603 (Mushroom, beech), scaled to about 42 g, the weight implied by this entry's own values. From that record: sodium, selenium. From USDA FoodData Central SR Legacy FDC 169251 (Mushrooms, white, raw), adjusted for water content: vitamin A, retinol, beta-carotene, B12, vitamin C, folate, pantothenic acid, vitamin E, omega-3, EPA, DHA, omega-6, K1, MK-4, choline, histidine, isoleucine, leucine, lysine, methionine, phenylalanine, threonine, tryptophan, valine, arginine, cysteine, glycine, proline, tyrosine, saturated fat, MUFA, PUFA, trans fat, cholesterol, omega-9, ALA, linoleic acid, arachidonic acid, oleic acid, palmitoleic acid, carotenoids, lutein, betaine. From Frida 5.5, DTU National Food Institute, Denmark, food 961 (Mushroom, raw), adjusted for water content: iodine, chromium, molybdenum. From CoFID 2021 (UK) food 13-505 (Mushrooms, white, raw), adjusted for water content: chloride. Quercetin, total flavonoids from the USDA Flavonoid Values for Survey Foods 2017-2018, food code 75115000 (Mushrooms, raw). Set to 0 because the nutrient is absent from this kind of food: K2, MK-7, taurine, curcumin, sulforaphane, creatine. Soluble and insoluble fiber split this entry's total fiber using the soluble share Frida reports. Vitamin K total is set to the phylloquinone (K1) amount, the form USDA reports as vitamin K."
+    "notes": "White beech mushrooms, also sold as white beach mushrooms, bunapi, or white shimeji (Hypsizygus tessellatus). USDA Foundation Foods FDC 2003603 is Mushroom, beech, and does not separate white from brown. Its only published amount is the 85 g reference amount, so half a cup is taken as half of that, 42.5 g. The amino acids on that record add up to more than the protein, so they are omitted. Vitamin K, vitamin C, folate, and choline are not reported. Glutathione is 9.8 mg per 100 g on the record. Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central Foundation FDC 2003603 (Mushroom, beech), scaled to about 42 g, the weight given in this entry's name. From that record: sodium, selenium. From USDA FoodData Central SR Legacy FDC 169251 (Mushrooms, white, raw), adjusted for water content, amino acids for protein content: vitamin A, retinol, beta-carotene, B12, vitamin C, folate, pantothenic acid, vitamin E, omega-3, EPA, DHA, omega-6, K1, MK-4, choline, histidine, isoleucine, leucine, lysine, methionine, phenylalanine, threonine, tryptophan, valine, arginine, cysteine, glycine, proline, tyrosine, saturated fat, MUFA, PUFA, trans fat, cholesterol, omega-9, ALA, linoleic acid, arachidonic acid, oleic acid, palmitoleic acid, carotenoids, lutein, betaine. From Frida 5.5, DTU National Food Institute, Denmark, food 961 (Mushroom, raw), adjusted for water content: iodine, chromium, molybdenum. From CoFID 2021 (UK) food 13-505 (Mushrooms, white, raw), adjusted for water content: chloride. Quercetin, total flavonoids from the USDA Flavonoid Values for Survey Foods 2017-2018, food code 75115000 (Mushrooms, raw). Set to 0 because the nutrient is absent from this kind of food: K2, MK-7, taurine, curcumin, sulforaphane, creatine. Soluble and insoluble fiber split this entry's total fiber using the soluble share Frida reports. Vitamin K total is set to the phylloquinone (K1) amount, the form USDA reports as vitamin K."
   },
   {
     "name": "White beech (white beach) mushrooms, raw, 1 piece (about 8 g, one small mushroom)",
@@ -54590,20 +54590,20 @@
       "choline": 1.86,
       "molybdenum": 0.15,
       "chloride": 14.3,
-      "histidine": 6,
-      "isoleucine": 8,
-      "leucine": 13,
-      "lysine": 12,
-      "methionine": 3,
-      "phenylalanine": 9,
-      "threonine": 12,
-      "tryptophan": 4,
-      "valine": 25,
-      "arginine": 8,
-      "cysteine": 1,
-      "glycine": 10,
-      "proline": 8,
-      "tyrosine": 5,
+      "histidine": 3,
+      "isoleucine": 4,
+      "leucine": 7,
+      "lysine": 6,
+      "methionine": 2,
+      "phenylalanine": 5,
+      "threonine": 6,
+      "tryptophan": 2,
+      "valine": 13,
+      "arginine": 4,
+      "cysteine": 0.7,
+      "glycine": 5,
+      "proline": 4,
+      "tyrosine": 2,
       "taurine": 0,
       "quercetin": 0
     },
@@ -54651,7 +54651,7 @@
       "refinedCarbs": 0,
       "netCarbs": 0.29
     },
-    "notes": "One small white beech mushroom broken from the cluster, about 8 g. USDA FDC 2003603 does not publish a piece weight; 8 g is an estimate of one mushroom, not a weighed household measure. The same beech record as the half-cup entry. Amino acids are omitted because they add up to more than the protein. Vitamin K is not reported. Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central Foundation FDC 2003603 (Mushroom, beech), scaled to about 8 g, the weight implied by this entry's own values. From that record: sodium, calcium, selenium. From USDA FoodData Central SR Legacy FDC 169251 (Mushrooms, white, raw), adjusted for water content: vitamin A, retinol, beta-carotene, B12, vitamin C, folate, pantothenic acid, vitamin E, omega-3, EPA, DHA, omega-6, K1, MK-4, choline, histidine, isoleucine, leucine, lysine, methionine, phenylalanine, threonine, tryptophan, valine, arginine, cysteine, glycine, proline, tyrosine, saturated fat, MUFA, PUFA, trans fat, cholesterol, omega-9, ALA, linoleic acid, arachidonic acid, oleic acid, palmitoleic acid, carotenoids, lutein, betaine. From Frida 5.5, DTU National Food Institute, Denmark, food 961 (Mushroom, raw), adjusted for water content: iodine, chromium, molybdenum. From CoFID 2021 (UK) food 13-505 (Mushrooms, white, raw), adjusted for water content: chloride. Quercetin, total flavonoids from the USDA Flavonoid Values for Survey Foods 2017-2018, food code 75115000 (Mushrooms, raw). Set to 0 because the nutrient is absent from this kind of food: K2, MK-7, taurine, curcumin, sulforaphane, creatine. Soluble and insoluble fiber split this entry's total fiber using the soluble share Frida reports. Vitamin K total is set to the phylloquinone (K1) amount, the form USDA reports as vitamin K."
+    "notes": "One small white beech mushroom broken from the cluster, about 8 g. USDA FDC 2003603 does not publish a piece weight; 8 g is an estimate of one mushroom, not a weighed household measure. The same beech record as the half-cup entry. Amino acids are omitted because they add up to more than the protein. Vitamin K is not reported. Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central Foundation FDC 2003603 (Mushroom, beech), scaled to about 8 g, the weight given in this entry's name. From that record: sodium, calcium, selenium. From USDA FoodData Central SR Legacy FDC 169251 (Mushrooms, white, raw), adjusted for water content, amino acids for protein content: vitamin A, retinol, beta-carotene, B12, vitamin C, folate, pantothenic acid, vitamin E, omega-3, EPA, DHA, omega-6, K1, MK-4, choline, histidine, isoleucine, leucine, lysine, methionine, phenylalanine, threonine, tryptophan, valine, arginine, cysteine, glycine, proline, tyrosine, saturated fat, MUFA, PUFA, trans fat, cholesterol, omega-9, ALA, linoleic acid, arachidonic acid, oleic acid, palmitoleic acid, carotenoids, lutein, betaine. From Frida 5.5, DTU National Food Institute, Denmark, food 961 (Mushroom, raw), adjusted for water content: iodine, chromium, molybdenum. From CoFID 2021 (UK) food 13-505 (Mushrooms, white, raw), adjusted for water content: chloride. Quercetin, total flavonoids from the USDA Flavonoid Values for Survey Foods 2017-2018, food code 75115000 (Mushrooms, raw). Set to 0 because the nutrient is absent from this kind of food: K2, MK-7, taurine, curcumin, sulforaphane, creatine. Soluble and insoluble fiber split this entry's total fiber using the soluble share Frida reports. Vitamin K total is set to the phylloquinone (K1) amount, the form USDA reports as vitamin K."
   },
   {
     "name": "Enoki mushrooms, raw, ½ cup sliced (32.5 g)",
@@ -54758,7 +54758,7 @@
       "refinedCarbs": 0,
       "netCarbs": 1.62
     },
-    "notes": "Half of the USDA sliced cup. SR Legacy FDC 169382, Mushrooms, enoki, raw: 1 cup sliced is 65 g, so half a cup is 32.5 g. A cup of whole enoki is 64 g. Vitamin K and vitamin C are reported as 0. One medium stem is a separate entry. Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 169382 (Mushrooms, enoki, raw), scaled to about 32 g, the weight implied by this entry's own values. From that record: retinol, B12, EPA, DHA, MK-4, histidine, isoleucine, leucine, lysine, methionine, phenylalanine, threonine, tryptophan, valine, arginine, cysteine, glycine, proline, tyrosine, MUFA, omega-9, arachidonic acid, oleic acid, palmitoleic acid, betaine. From Frida 5.5, DTU National Food Institute, Denmark, food 961 (Mushroom, raw), adjusted for water content: vitamin A, beta-carotene, iodine, biotin, chromium, molybdenum. From CoFID 2021 (UK) food 13-505 (Mushrooms, white, raw), adjusted for water content: chloride. Quercetin, total flavonoids from the USDA Flavonoid Values for Survey Foods 2017-2018, food code 75115000 (Mushrooms, raw). Set to 0 because the nutrient is absent from this kind of food: K2, MK-7, taurine, curcumin, sulforaphane, creatine. Soluble and insoluble fiber split this entry's total fiber using the soluble share Frida reports."
+    "notes": "Half of the USDA sliced cup. SR Legacy FDC 169382, Mushrooms, enoki, raw: 1 cup sliced is 65 g, so half a cup is 32.5 g. A cup of whole enoki is 64 g. Vitamin K and vitamin C are reported as 0. One medium stem is a separate entry. Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 169382 (Mushrooms, enoki, raw), scaled to about 32 g, the weight given in this entry's name. From that record: retinol, B12, EPA, DHA, MK-4, histidine, isoleucine, leucine, lysine, methionine, phenylalanine, threonine, tryptophan, valine, arginine, cysteine, glycine, proline, tyrosine, MUFA, omega-9, arachidonic acid, oleic acid, palmitoleic acid, betaine. From Frida 5.5, DTU National Food Institute, Denmark, food 961 (Mushroom, raw), adjusted for water content: vitamin A, beta-carotene, iodine, biotin, chromium, molybdenum. From CoFID 2021 (UK) food 13-505 (Mushrooms, white, raw), adjusted for water content: chloride. Quercetin, total flavonoids from the USDA Flavonoid Values for Survey Foods 2017-2018, food code 75115000 (Mushrooms, raw). Set to 0 because the nutrient is absent from this kind of food: K2, MK-7, taurine, curcumin, sulforaphane, creatine. Soluble and insoluble fiber split this entry's total fiber using the soluble share Frida reports."
   },
   {
     "name": "Enoki mushrooms, raw, 1 piece (3 g, one medium stem)",
@@ -54865,7 +54865,7 @@
       "refinedCarbs": 0,
       "netCarbs": 0.15
     },
-    "notes": "One medium raw enoki stem, the USDA household weight on SR Legacy FDC 169382. A large stem on that record is 5 g. Vitamin K and vitamin C are reported as 0 per 100 g. Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 169382 (Mushrooms, enoki, raw), scaled to about 3 g, the weight implied by this entry's own values. From that record: sodium, calcium, magnesium, retinol, vitamin D, B12, selenium, vitamin E, EPA, DHA, MK-4, histidine, isoleucine, leucine, lysine, methionine, phenylalanine, threonine, tryptophan, valine, arginine, cysteine, glycine, proline, tyrosine, saturated fat, MUFA, PUFA, omega-9, arachidonic acid, oleic acid, palmitoleic acid, betaine. From Frida 5.5, DTU National Food Institute, Denmark, food 961 (Mushroom, raw), adjusted for water content: vitamin A, beta-carotene, iodine, biotin, chromium, molybdenum. From CoFID 2021 (UK) food 13-505 (Mushrooms, white, raw), adjusted for water content: chloride. Quercetin, total flavonoids from the USDA Flavonoid Values for Survey Foods 2017-2018, food code 75115000 (Mushrooms, raw). Set to 0 because the nutrient is absent from this kind of food: K2, MK-7, taurine, curcumin, sulforaphane, creatine. Soluble and insoluble fiber split this entry's total fiber using the soluble share Frida reports."
+    "notes": "One medium raw enoki stem, the USDA household weight on SR Legacy FDC 169382. A large stem on that record is 5 g. Vitamin K and vitamin C are reported as 0 per 100 g. Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 169382 (Mushrooms, enoki, raw), scaled to about 3 g, the weight given in this entry's name. From that record: sodium, calcium, magnesium, retinol, vitamin D, B12, selenium, vitamin E, EPA, DHA, MK-4, histidine, isoleucine, leucine, lysine, methionine, phenylalanine, threonine, tryptophan, valine, arginine, cysteine, glycine, proline, tyrosine, saturated fat, MUFA, PUFA, omega-9, arachidonic acid, oleic acid, palmitoleic acid, betaine. From Frida 5.5, DTU National Food Institute, Denmark, food 961 (Mushroom, raw), adjusted for water content: vitamin A, beta-carotene, iodine, biotin, chromium, molybdenum. From CoFID 2021 (UK) food 13-505 (Mushrooms, white, raw), adjusted for water content: chloride. Quercetin, total flavonoids from the USDA Flavonoid Values for Survey Foods 2017-2018, food code 75115000 (Mushrooms, raw). Set to 0 because the nutrient is absent from this kind of food: K2, MK-7, taurine, curcumin, sulforaphane, creatine. Soluble and insoluble fiber split this entry's total fiber using the soluble share Frida reports."
   },
   {
     "name": "Starbucks - Venti Tiramisu Velvet Cold Brew (Christmas, 24 fl oz)",
