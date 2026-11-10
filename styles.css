@@ -1230,6 +1230,21 @@ body.app-nav-shortcuts-visible [data-app-shortcut] > .app-nav__shortcut {
   display: inline-flex !important;
 }
 
+/* Navbar: highlight the shortcut letter in the label instead of the badge. */
+body.app-nav-shortcuts-visible .app-nav__key {
+  border-radius: 2px;
+  background: #fde68a;
+  color: #1a1a1a;
+  box-shadow: 0 0 0 1px #d4a017;
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 2px;
+}
+
+body.app-nav-shortcuts-visible .app-nav__btn--key-full > .app-nav__shortcut {
+  display: none !important;
+}
+
 .dashboard__micro-toggle-label[data-app-shortcut] {
   position: relative;
 }
@@ -16695,6 +16710,14 @@ button.longevity-form__label-link:focus-visible {
 
   .app-nav__label--short {
     display: inline;
+  }
+
+  body.app-nav-shortcuts-visible .app-nav__btn--key-full:not(.app-nav__btn--key-short) > .app-nav__shortcut {
+    display: inline-flex !important;
+  }
+
+  body.app-nav-shortcuts-visible .app-nav__btn--key-short > .app-nav__shortcut {
+    display: none !important;
   }
 
   .app-nav__divider {

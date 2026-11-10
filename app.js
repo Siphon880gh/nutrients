@@ -40215,6 +40215,63 @@
     );
   }
 
+  // Navbar items highlight their shortcut letter inside the label instead of a
+  // corner badge. Labels without the letter (e.g. "Try" for X) keep the badge.
+  function wrapAppNavLabelShortcutChar(labelEl, letter) {
+    if (!labelEl) return false;
+    if (labelEl.querySelector(".app-nav__key")) return true;
+    var text = labelEl.textContent || "";
+    var idx = text.toLowerCase().indexOf(letter.toLowerCase());
+    if (idx < 0) return false;
+    var keyEl = document.createElement("span");
+    keyEl.className = "app-nav__key";
+    keyEl.textContent = text.charAt(idx);
+    labelEl.textContent = "";
+    if (idx > 0) labelEl.appendChild(document.createTextNode(text.slice(0, idx)));
+    labelEl.appendChild(keyEl);
+    if (idx + 1 < text.length) {
+      labelEl.appendChild(document.createTextNode(text.slice(idx + 1)));
+    }
+    return true;
+  }
+
+  function initAppNavInlineShortcutKeys() {
+    var nav = document.getElementById("app-nav");
+    var btns = nav
+      ? Array.prototype.slice.call(nav.querySelectorAll("[data-app-shortcut]"))
+      : [];
+    if (dashboardExperimentalJumpEl && btns.indexOf(dashboardExperimentalJumpEl) < 0) {
+      btns.push(dashboardExperimentalJumpEl);
+    }
+    btns.forEach(function (btn) {
+      var letter = String(btn.getAttribute("data-app-shortcut") || "");
+      if (letter.length !== 1 || !/[a-z0-9]/i.test(letter)) return;
+      var labels = btn.querySelectorAll(".app-nav__label");
+      if (!labels.length) return;
+      var sawFull = false;
+      var sawShort = false;
+      var fullOk = true;
+      var shortOk = true;
+      Array.prototype.forEach.call(labels, function (labelEl) {
+        var ok = wrapAppNavLabelShortcutChar(labelEl, letter);
+        var isFull = labelEl.classList.contains("app-nav__label--full");
+        var isShort = labelEl.classList.contains("app-nav__label--short");
+        if (!isShort) {
+          sawFull = true;
+          if (!ok) fullOk = false;
+        }
+        if (!isFull) {
+          sawShort = true;
+          if (!ok) shortOk = false;
+        }
+      });
+      btn.classList.toggle("app-nav__btn--key-full", sawFull && fullOk);
+      btn.classList.toggle("app-nav__btn--key-short", sawShort && shortOk);
+    });
+  }
+
+  initAppNavInlineShortcutKeys();
+
   function clearAppNavShortcutHints() {
     if (!appNavModifiersHeld) return;
     appNavModifiersHeld = false;
