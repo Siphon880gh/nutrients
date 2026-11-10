@@ -10127,7 +10127,15 @@
       "cysteine": 370,
       "glycine": 1868,
       "proline": 1484,
-      "tyrosine": 1179
+      "tyrosine": 1179,
+      "solubleFiber": 0,
+      "insolubleFiber": 0,
+      "iodine": 2.7,
+      "biotin": 4.45,
+      "chromium": 2.89,
+      "vitaminK2MK7": 0,
+      "chloride": 104,
+      "quercetin": 0
     },
     "longevity": {
       "saturatedFat": 5.83,
@@ -10154,7 +10162,15 @@
       "phosphorus": true,
       "choline": true,
       "copper": true,
-      "methionine": true
+      "methionine": true,
+      "vitaminK2MK7": true,
+      "quercetin": true,
+      "plantSterols": 0,
+      "flavonoids": 0,
+      "lutein": 0.024,
+      "curcumin": 0,
+      "resveratrol": 0,
+      "sulforaphane": 0
     },
     "carbQuality": {
       "glycemicIndex": 0,
@@ -10162,7 +10178,7 @@
       "refinedCarbs": 0,
       "netCarbs": 0
     },
-    "notes": "1 piece about 5 oz cooked = 141.7 g. USDA SR Legacy FDC 173625, chicken broilers or fryers, thigh, meat and skin, cooked, roasted, scaled from per 100 g. Mushroom sauce is a separate food. Soy-sugar marinade and extra pan-fry oil are not in this record. USDA cystine is stored as cysteine. Glutamic acid is omitted (no glutamine key). Vitamin K is phylloquinone only, so K2 is omitted. Lutein + zeaxanthin (17 mcg/100 g) is stored as carotenoids and is not split into lutein. Biotin, iodine, chromium, molybdenum, chloride, taurine, and creatine are not reported."
+    "notes": "1 piece about 5 oz cooked = 141.7 g. USDA SR Legacy FDC 173625, chicken broilers or fryers, thigh, meat and skin, cooked, roasted, scaled from per 100 g. Mushroom sauce is a separate food. Soy-sugar marinade and extra pan-fry oil are not in this record. USDA cystine is stored as cysteine. Glutamic acid is omitted (no glutamine key). Vitamin K is phylloquinone only, so K2 is omitted. Lutein + zeaxanthin (17 mcg/100 g) is stored as carotenoids and is not split into lutein. Biotin, iodine, chromium, molybdenum, chloride, taurine, and creatine are not reported. Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 173625 (Chicken, broilers or fryers, thigh, meat and skin, cooked, roasted), scaled to about 142 g, the weight implied by this entry's own values. From that record: lutein. From Frida 5.5, DTU National Food Institute, Denmark, food 882 (Chicken, leg, flesh and skin, raw), adjusted for water content: iodine, chromium. From CoFID 2021 (UK) food 18-314 (Chicken, leg quarter, casseroled, meat and skin), adjusted for water content: biotin, chloride. Set to 0 because the nutrient is absent from this kind of food: soluble fiber, insoluble fiber, MK-7, quercetin, plant sterols, total flavonoids, curcumin, resveratrol, sulforaphane."
   },
   {
     "name": "Hong Kong Cafe Style - Chicken Steak 1 piece without skin (about 5 oz cooked, palm-sized)",
@@ -10214,7 +10230,16 @@
       "cysteine": 410,
       "glycine": 1609,
       "proline": 1416,
-      "tyrosine": 1320
+      "tyrosine": 1320,
+      "solubleFiber": 0,
+      "insolubleFiber": 0,
+      "iodine": 0.721,
+      "biotin": 3.61,
+      "chromium": 1.62,
+      "vitaminK2MK7": 0,
+      "molybdenum": 9.02,
+      "chloride": 98.9,
+      "quercetin": 0
     },
     "longevity": {
       "saturatedFat": 3.28,
@@ -10241,7 +10266,15 @@
       "phosphorus": true,
       "choline": true,
       "copper": true,
-      "methionine": true
+      "methionine": true,
+      "vitaminK2MK7": true,
+      "quercetin": true,
+      "plantSterols": 0,
+      "flavonoids": 0,
+      "lutein": 0,
+      "curcumin": 0,
+      "resveratrol": 0,
+      "sulforaphane": 0
     },
     "carbQuality": {
       "glycemicIndex": 0,
@@ -10249,7 +10282,7 @@
       "refinedCarbs": 0,
       "netCarbs": 0
     },
-    "notes": "1 piece about 5 oz cooked = 141.7 g. USDA SR Legacy FDC 172388, chicken broilers or fryers, thigh, meat only, cooked, roasted, scaled from per 100 g. Same cooked weight as the with-skin piece, so this one is more meat and less fat. Mushroom sauce is a separate food. Soy-sugar marinade and extra pan-fry oil are not in this record. USDA cystine is stored as cysteine. Glutamic acid is omitted (no glutamine key). Vitamin K is phylloquinone only, so K2 is omitted. Lutein + zeaxanthin is reported as 0. Biotin, iodine, chromium, molybdenum, chloride, taurine, and creatine are not reported."
+    "notes": "1 piece about 5 oz cooked = 141.7 g. USDA SR Legacy FDC 172388, chicken broilers or fryers, thigh, meat only, cooked, roasted, scaled from per 100 g. Same cooked weight as the with-skin piece, so this one is more meat and less fat. Mushroom sauce is a separate food. Soy-sugar marinade and extra pan-fry oil are not in this record. USDA cystine is stored as cysteine. Glutamic acid is omitted (no glutamine key). Vitamin K is phylloquinone only, so K2 is omitted. Lutein + zeaxanthin is reported as 0. Biotin, iodine, chromium, molybdenum, chloride, taurine, and creatine are not reported. Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 172388 (Chicken, broilers or fryers, thigh, meat only, cooked, roasted), scaled to about 142 g, the weight implied by this entry's own values. From that record: lutein. From Frida 5.5, DTU National Food Institute, Denmark, food 795 (Chicken, flesh only, raw), adjusted for water content: iodine, biotin, chromium, molybdenum. From CoFID 2021 (UK) food 18-313 (Chicken, leg quarter, casseroled, meat only), adjusted for water content: chloride. Set to 0 because the nutrient is absent from this kind of food: soluble fiber, insoluble fiber, MK-7, quercetin, plant sterols, total flavonoids, curcumin, resveratrol, sulforaphane."
   },
   {
     "name": "Hong Kong Cafe Style - Pork Steak 1 piece (about 5 oz cooked, palm-sized)",
@@ -10465,7 +10498,10 @@
       "vitaminK1": 0.125,
       "vitaminK2": 0.125,
       "vitaminK2MK4": 0.125,
-      "vitaminK2MK7": 0
+      "vitaminK2MK7": 0,
+      "vitaminARetinol": 1.65,
+      "vitaminABetaCarotene": 0,
+      "quercetin": 0
     },
     "longevity": {
       "saturatedFat": 0.275,
@@ -10504,14 +10540,18 @@
       "vitaminK2MK4": true,
       "vitaminK2MK7": true,
       "plantSterols": 0,
-      "creatine": 0.07
+      "creatine": 0.07,
+      "quercetin": true,
+      "taurine": true,
+      "betaine": 1.71
     },
     "carbQuality": {
       "glycemicIndex": 0,
       "addedSugar": 0,
       "refinedCarbs": 0,
       "netCarbs": 0
-    }
+    },
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 171477 (Chicken, broilers or fryers, breast, meat only, cooked, roasted), scaled to about 28 g, the weight implied by this entry's own values. From that record: retinol, beta-carotene, betaine. Set to 0 because the nutrient is absent from this kind of food: quercetin."
   },
   {
     "name": "Chicken 4 oz (palm-sized)",
@@ -10570,7 +10610,10 @@
       "vitaminK1": 0.5,
       "vitaminK2": 0.5,
       "vitaminK2MK4": 0.5,
-      "vitaminK2MK7": 0
+      "vitaminK2MK7": 0,
+      "vitaminARetinol": 6.61,
+      "vitaminABetaCarotene": 0,
+      "quercetin": 0
     },
     "longevity": {
       "saturatedFat": 1.1,
@@ -10609,14 +10652,18 @@
       "vitaminK2MK4": true,
       "vitaminK2MK7": true,
       "plantSterols": 0,
-      "creatine": 0.28
+      "creatine": 0.28,
+      "quercetin": true,
+      "taurine": true,
+      "betaine": 6.83
     },
     "carbQuality": {
       "glycemicIndex": 0,
       "addedSugar": 0,
       "refinedCarbs": 0,
       "netCarbs": 0
-    }
+    },
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 171477 (Chicken, broilers or fryers, breast, meat only, cooked, roasted), scaled to about 110 g, the weight implied by this entry's own values. From that record: retinol, beta-carotene, betaine. Set to 0 because the nutrient is absent from this kind of food: quercetin."
   },
   {
     "name": "Chicken 1/2 cup (70 g, all meat / chops, no bones)",
@@ -10670,7 +10717,13 @@
       "tyrosine": 684,
       "solubleFiber": 0,
       "insolubleFiber": 0,
-      "fiber": 0
+      "fiber": 0,
+      "iodine": 0.391,
+      "biotin": 1.95,
+      "chromium": 0.88,
+      "vitaminK2MK7": 0,
+      "molybdenum": 4.89,
+      "quercetin": 0
     },
     "longevity": {
       "saturatedFat": 1.43,
@@ -10697,7 +10750,15 @@
       "copper": true,
       "methionine": true,
       "betaine": 4,
-      "plantSterols": 0
+      "plantSterols": 0,
+      "vitaminK2MK7": true,
+      "quercetin": true,
+      "flavonoids": 0,
+      "carotenoids": 0,
+      "lutein": 0,
+      "curcumin": 0,
+      "resveratrol": 0,
+      "sulforaphane": 0
     },
     "carbQuality": {
       "glycemicIndex": 0,
@@ -10705,7 +10766,7 @@
       "refinedCarbs": 0,
       "netCarbs": 0
     },
-    "notes": "1/2 cup chopped or diced = 70 g. USDA SR Legacy FDC 171054, chicken broilers or fryers, meat only, cooked, roasted: light and dark meat together, skin and bone removed."
+    "notes": "1/2 cup chopped or diced = 70 g. USDA SR Legacy FDC 171054, chicken broilers or fryers, meat only, cooked, roasted: light and dark meat together, skin and bone removed. Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 171054 (Chicken, broilers or fryers, meat only, cooked, roasted), scaled to about 70 g, the weight given in this entry's name. From that record: carotenoids, lutein. From Frida 5.5, DTU National Food Institute, Denmark, food 795 (Chicken, flesh only, raw), adjusted for water content: iodine, biotin, chromium, molybdenum. Set to 0 because the nutrient is absent from this kind of food: MK-7, quercetin, total flavonoids, curcumin, resveratrol, sulforaphane."
   },
   {
     "name": "Chicken - Chinese Chopped 1 chop with skin",
@@ -10761,7 +10822,12 @@
       "solubleFiber": 0.03,
       "insolubleFiber": 0.07,
       "fiber": 0.1,
-      "vitaminK1": 0.33
+      "vitaminK1": 0.33,
+      "vitaminARetinol": 12.2,
+      "vitaminABetaCarotene": 0,
+      "dha": 0.01,
+      "vitaminK2MK7": 0,
+      "quercetin": 0
     },
     "longevity": {
       "saturatedFat": 0.47,
@@ -10796,14 +10862,20 @@
       "lutein": 0,
       "methionine": true,
       "plantSterols": 0,
-      "creatine": 0.07
+      "creatine": 0.07,
+      "dha": true,
+      "vitaminK2MK7": true,
+      "quercetin": true,
+      "taurine": true,
+      "betaine": 1.42
     },
     "carbQuality": {
       "glycemicIndex": 0,
       "addedSugar": 0.08,
       "refinedCarbs": 0,
       "netCarbs": 0.4
-    }
+    },
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 171450 (Chicken, broilers or fryers, meat and skin, cooked, roasted), scaled to about 25 g, the weight implied by this entry's own values. From that record: retinol, beta-carotene, DHA, betaine. Set to 0 because the nutrient is absent from this kind of food: MK-7, quercetin."
   },
   {
     "name": "Chicken - Chinese Chopped 6 chops with skin",
@@ -10859,7 +10931,12 @@
       "solubleFiber": 0.2,
       "insolubleFiber": 0.4,
       "fiber": 0.6,
-      "vitaminK1": 2
+      "vitaminK1": 2,
+      "vitaminARetinol": 73.0,
+      "vitaminABetaCarotene": 0,
+      "dha": 0.061,
+      "vitaminK2MK7": 0,
+      "quercetin": 0
     },
     "longevity": {
       "saturatedFat": 2.8,
@@ -10894,14 +10971,20 @@
       "lutein": 0,
       "methionine": true,
       "plantSterols": 0,
-      "creatine": 0.42
+      "creatine": 0.42,
+      "dha": true,
+      "vitaminK2MK7": true,
+      "quercetin": true,
+      "taurine": true,
+      "betaine": 8.51
     },
     "carbQuality": {
       "glycemicIndex": 0,
       "addedSugar": 0.5,
       "refinedCarbs": 0,
       "netCarbs": 2.4
-    }
+    },
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 171450 (Chicken, broilers or fryers, meat and skin, cooked, roasted), scaled to about 152 g, the weight implied by this entry's own values. From that record: retinol, beta-carotene, DHA, betaine. Set to 0 because the nutrient is absent from this kind of food: MK-7, quercetin."
   },
   {
     "name": "Chicken - Chinese Chopped 1 chop without skin",
@@ -10957,7 +11040,12 @@
       "solubleFiber": 0.03,
       "insolubleFiber": 0.07,
       "fiber": 0.1,
-      "vitaminK1": 0.25
+      "vitaminK1": 0.25,
+      "vitaminARetinol": 3.99,
+      "vitaminABetaCarotene": 0,
+      "dha": 0.01,
+      "vitaminK2MK7": 0,
+      "quercetin": 0
     },
     "longevity": {
       "saturatedFat": 0.26,
@@ -10992,14 +11080,20 @@
       "lutein": 0,
       "methionine": true,
       "plantSterols": 0,
-      "creatine": 0.07
+      "creatine": 0.07,
+      "dha": true,
+      "vitaminK2MK7": true,
+      "quercetin": true,
+      "taurine": true,
+      "betaine": 1.42
     },
     "carbQuality": {
       "glycemicIndex": 0,
       "addedSugar": 0.08,
       "refinedCarbs": 0,
       "netCarbs": 0.4
-    }
+    },
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 171054 (Chicken, broilers or fryers, meat only, cooked, roasted), scaled to about 25 g, the weight implied by this entry's own values. From that record: retinol, beta-carotene, DHA, betaine. Set to 0 because the nutrient is absent from this kind of food: MK-7, quercetin."
   },
   {
     "name": "Chicken - Chinese Chopped 6 chops without skin",
@@ -11055,7 +11149,12 @@
       "solubleFiber": 0.2,
       "insolubleFiber": 0.4,
       "fiber": 0.6,
-      "vitaminK1": 1.5
+      "vitaminK1": 1.5,
+      "vitaminARetinol": 24.0,
+      "vitaminABetaCarotene": 0,
+      "dha": 0.06,
+      "vitaminK2MK7": 0,
+      "quercetin": 0
     },
     "longevity": {
       "saturatedFat": 1.54,
@@ -11090,14 +11189,20 @@
       "lutein": 0,
       "methionine": true,
       "plantSterols": 0,
-      "creatine": 0.44
+      "creatine": 0.44,
+      "dha": true,
+      "vitaminK2MK7": true,
+      "quercetin": true,
+      "taurine": true,
+      "betaine": 8.53
     },
     "carbQuality": {
       "glycemicIndex": 0,
       "addedSugar": 0.5,
       "refinedCarbs": 0,
       "netCarbs": 2.4
-    }
+    },
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 171054 (Chicken, broilers or fryers, meat only, cooked, roasted), scaled to about 150 g, the weight implied by this entry's own values. From that record: retinol, beta-carotene, DHA, betaine. Set to 0 because the nutrient is absent from this kind of food: MK-7, quercetin."
   },
   {
     "name": "Duck - Chinese Chopped 1 chop with skin",
@@ -11153,7 +11258,12 @@
       "solubleFiber": 0.03,
       "insolubleFiber": 0.07,
       "fiber": 0.1,
-      "vitaminK1": 0.5
+      "vitaminK1": 0.5,
+      "vitaminARetinol": 16.0,
+      "vitaminABetaCarotene": 0,
+      "dha": 0,
+      "vitaminK2MK7": 0,
+      "quercetin": 0
     },
     "longevity": {
       "saturatedFat": 2.42,
@@ -11188,14 +11298,20 @@
       "lutein": 0,
       "methionine": true,
       "plantSterols": 0,
-      "creatine": 0.06
+      "creatine": 0.06,
+      "dha": true,
+      "vitaminK2MK7": true,
+      "quercetin": true,
+      "taurine": true,
+      "betaine": 1.78
     },
     "carbQuality": {
       "glycemicIndex": 0,
       "addedSugar": 0.08,
       "refinedCarbs": 0,
       "netCarbs": 0.4
-    }
+    },
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 172409 (Duck, domesticated, meat and skin, cooked, roasted), scaled to about 25 g, the weight implied by this entry's own values. From that record: retinol, beta-carotene, DHA, betaine. Set to 0 because the nutrient is absent from this kind of food: MK-7, quercetin."
   },
   {
     "name": "Duck - Chinese Chopped 6 chops with skin",
@@ -11251,7 +11367,12 @@
       "solubleFiber": 0.2,
       "insolubleFiber": 0.4,
       "fiber": 0.6,
-      "vitaminK1": 3
+      "vitaminK1": 3,
+      "vitaminARetinol": 95.7,
+      "vitaminABetaCarotene": 0,
+      "dha": 0,
+      "vitaminK2MK7": 0,
+      "quercetin": 0
     },
     "longevity": {
       "saturatedFat": 14.5,
@@ -11286,14 +11407,20 @@
       "lutein": 0,
       "methionine": true,
       "plantSterols": 0,
-      "creatine": 0.35
+      "creatine": 0.35,
+      "dha": true,
+      "vitaminK2MK7": true,
+      "quercetin": true,
+      "taurine": true,
+      "betaine": 10.6
     },
     "carbQuality": {
       "glycemicIndex": 0,
       "addedSugar": 0.5,
       "refinedCarbs": 0,
       "netCarbs": 2.4
-    }
+    },
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 172409 (Duck, domesticated, meat and skin, cooked, roasted), scaled to about 152 g, the weight implied by this entry's own values. From that record: retinol, beta-carotene, DHA, betaine. Set to 0 because the nutrient is absent from this kind of food: MK-7, quercetin."
   },
   {
     "name": "Duck - Chinese Chopped 1 chop without skin",
@@ -11349,7 +11476,12 @@
       "solubleFiber": 0.03,
       "insolubleFiber": 0.07,
       "fiber": 0.1,
-      "vitaminK1": 0.25
+      "vitaminK1": 0.25,
+      "vitaminARetinol": 5.73,
+      "vitaminABetaCarotene": 0,
+      "dha": 0,
+      "vitaminK2MK7": 0,
+      "quercetin": 0
     },
     "longevity": {
       "saturatedFat": 1.05,
@@ -11384,14 +11516,20 @@
       "lutein": 0,
       "methionine": true,
       "plantSterols": 0,
-      "creatine": 0.07
+      "creatine": 0.07,
+      "dha": true,
+      "vitaminK2MK7": true,
+      "quercetin": true,
+      "taurine": true,
+      "betaine": 2.09
     },
     "carbQuality": {
       "glycemicIndex": 0,
       "addedSugar": 0.08,
       "refinedCarbs": 0,
       "netCarbs": 0.4
-    }
+    },
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 172411 (Duck, domesticated, meat only, cooked, roasted), scaled to about 25 g, the weight implied by this entry's own values. From that record: retinol, beta-carotene, DHA, betaine. Set to 0 because the nutrient is absent from this kind of food: MK-7, quercetin."
   },
   {
     "name": "Duck - Chinese Chopped 6 chops without skin",
@@ -11447,7 +11585,12 @@
       "solubleFiber": 0.2,
       "insolubleFiber": 0.4,
       "fiber": 0.6,
-      "vitaminK1": 1.5
+      "vitaminK1": 1.5,
+      "vitaminARetinol": 34.4,
+      "vitaminABetaCarotene": 0,
+      "dha": 0,
+      "vitaminK2MK7": 0,
+      "quercetin": 0
     },
     "longevity": {
       "saturatedFat": 6.3,
@@ -11482,14 +11625,20 @@
       "lutein": 0,
       "methionine": true,
       "plantSterols": 0,
-      "creatine": 0.4
+      "creatine": 0.4,
+      "dha": true,
+      "vitaminK2MK7": true,
+      "quercetin": true,
+      "taurine": true,
+      "betaine": 12.6
     },
     "carbQuality": {
       "glycemicIndex": 0,
       "addedSugar": 0.5,
       "refinedCarbs": 0,
       "netCarbs": 2.4
-    }
+    },
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 172411 (Duck, domesticated, meat only, cooked, roasted), scaled to about 150 g, the weight implied by this entry's own values. From that record: retinol, beta-carotene, DHA, betaine. Set to 0 because the nutrient is absent from this kind of food: MK-7, quercetin."
   },
   {
     "name": "Shrimp Fried - 3pc",
@@ -24552,7 +24701,10 @@
       "vitaminK1": 0,
       "vitaminK2": 0,
       "vitaminK2MK4": 0,
-      "vitaminK2MK7": 0
+      "vitaminK2MK7": 0,
+      "vitaminARetinol": 5100,
+      "vitaminABetaCarotene": 0,
+      "quercetin": 0
     },
     "longevity": {
       "saturatedFat": 11.6,
@@ -24578,13 +24730,21 @@
       "plantSterols": 0,
       "alphaLipoicAcid": 0.4,
       "arachidonicAcid": 0.2,
-      "pqq": 0
+      "pqq": 0,
+      "quercetin": true,
+      "taurine": true,
+      "cholesterol": 323,
+      "flavonoids": 0,
+      "curcumin": 0,
+      "resveratrol": 0,
+      "sulforaphane": 0
     },
     "carbQuality": {
       "glycemicIndex": 0,
       "addedSugar": 0,
       "refinedCarbs": 0
-    }
+    },
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from Frida 5.5, DTU National Food Institute, Denmark, food 335 (Cod, liver, canned), scaled to about 100 g, the weight implied by this entry's own values. From that record: retinol, beta-carotene, cholesterol. Set to 0 because the nutrient is absent from this kind of food: quercetin, total flavonoids, curcumin, resveratrol, sulforaphane."
   },
   {
     "name": "Cod Liver 1 oz (sm)",
@@ -24642,7 +24802,10 @@
       "vitaminK1": 0,
       "vitaminK2": 0,
       "vitaminK2MK4": 0,
-      "vitaminK2MK7": 0
+      "vitaminK2MK7": 0,
+      "vitaminARetinol": 1076,
+      "vitaminABetaCarotene": 0,
+      "quercetin": 0
     },
     "longevity": {
       "saturatedFat": 2.7,
@@ -24668,13 +24831,20 @@
       "plantSterols": 0,
       "alphaLipoicAcid": 0.17,
       "arachidonicAcid": 0.15,
-      "pqq": 0
+      "pqq": 0,
+      "quercetin": true,
+      "taurine": true,
+      "flavonoids": 0,
+      "curcumin": 0,
+      "resveratrol": 0,
+      "sulforaphane": 0
     },
     "carbQuality": {
       "glycemicIndex": 0,
       "addedSugar": 0,
       "refinedCarbs": 0
-    }
+    },
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from Frida 5.5, DTU National Food Institute, Denmark, food 608 (Cod, liver, raw), scaled to about 21 g, the weight implied by this entry's own values. From that record: retinol, beta-carotene. Set to 0 because the nutrient is absent from this kind of food: quercetin, total flavonoids, curcumin, resveratrol, sulforaphane."
   },
   {
     "name": "Cod Liver 3 oz (palm-sized)",
@@ -24732,7 +24902,10 @@
       "vitaminK1": 0,
       "vitaminK2": 0,
       "vitaminK2MK4": 0,
-      "vitaminK2MK7": 0
+      "vitaminK2MK7": 0,
+      "vitaminARetinol": 3227,
+      "vitaminABetaCarotene": 0,
+      "quercetin": 0
     },
     "longevity": {
       "saturatedFat": 8.1,
@@ -24758,13 +24931,20 @@
       "plantSterols": 0,
       "alphaLipoicAcid": 0.5,
       "arachidonicAcid": 0.15,
-      "pqq": 0
+      "pqq": 0,
+      "quercetin": true,
+      "taurine": true,
+      "flavonoids": 0,
+      "curcumin": 0,
+      "resveratrol": 0,
+      "sulforaphane": 0
     },
     "carbQuality": {
       "glycemicIndex": 0,
       "addedSugar": 0,
       "refinedCarbs": 0
-    }
+    },
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from Frida 5.5, DTU National Food Institute, Denmark, food 608 (Cod, liver, raw), scaled to about 63 g, the weight implied by this entry's own values. From that record: retinol, beta-carotene. Set to 0 because the nutrient is absent from this kind of food: quercetin, total flavonoids, curcumin, resveratrol, sulforaphane."
   },
   {
     "name": "Beef Liver 1 oz (sm)",
@@ -24822,7 +25002,12 @@
       "vitaminK1": 0.44,
       "vitaminK2": 17.6,
       "vitaminK2MK4": 17.6,
-      "vitaminK2MK7": 0
+      "vitaminK2MK7": 0,
+      "vitaminARetinol": 2063,
+      "vitaminABetaCarotene": 35.5,
+      "epa": 0,
+      "dha": 0,
+      "quercetin": 0
     },
     "longevity": {
       "saturatedFat": 0.33,
@@ -24854,13 +25039,24 @@
       "vitaminK2MK7": true,
       "plantSterols": 0,
       "alphaLipoicAcid": 0.23,
-      "betaine": 1.7
+      "betaine": 1.7,
+      "epa": true,
+      "dha": true,
+      "quercetin": true,
+      "ala": 0.0037,
+      "flavonoids": 0,
+      "carotenoids": 0.04,
+      "lutein": 0,
+      "curcumin": 0,
+      "resveratrol": 0,
+      "sulforaphane": 0
     },
     "carbQuality": {
       "glycemicIndex": 0,
       "addedSugar": 0,
       "refinedCarbs": 0
-    }
+    },
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 168626 (Beef, variety meats and by-products, liver, cooked, braised), scaled to about 22 g, the weight implied by this entry's own values. From that record: retinol, beta-carotene, EPA, DHA, ALA, carotenoids, lutein. Set to 0 because the nutrient is absent from this kind of food: quercetin, total flavonoids, curcumin, resveratrol, sulforaphane."
   },
   {
     "name": "Beef Liver 3 oz (palm-sized)",
@@ -24918,7 +25114,11 @@
       "vitaminK1": 1.32,
       "vitaminK2": 52.8,
       "vitaminK2MK4": 52.8,
-      "vitaminK2MK7": 0
+      "vitaminK2MK7": 0,
+      "vitaminARetinol": 6190,
+      "vitaminABetaCarotene": 106,
+      "epa": 0,
+      "quercetin": 0
     },
     "longevity": {
       "saturatedFat": 0.99,
@@ -24951,13 +25151,23 @@
       "plantSterols": 0,
       "alphaLipoicAcid": 0.7,
       "betaine": 5,
-      "dha": 0.05
+      "dha": 0.05,
+      "epa": true,
+      "quercetin": true,
+      "ala": 0.011,
+      "flavonoids": 0,
+      "carotenoids": 0.121,
+      "lutein": 0,
+      "curcumin": 0,
+      "resveratrol": 0,
+      "sulforaphane": 0
     },
     "carbQuality": {
       "glycemicIndex": 0,
       "addedSugar": 0,
       "refinedCarbs": 0
-    }
+    },
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 168626 (Beef, variety meats and by-products, liver, cooked, braised), scaled to about 66 g, the weight implied by this entry's own values. From that record: retinol, beta-carotene, EPA, ALA, carotenoids, lutein. Set to 0 because the nutrient is absent from this kind of food: quercetin, total flavonoids, curcumin, resveratrol, sulforaphane."
   },
   {
     "name": "Lamb Liver 1 oz (sm)",
@@ -25015,7 +25225,9 @@
       "vitaminK1": 0,
       "vitaminK2": 0,
       "vitaminK2MK4": 0,
-      "vitaminK2MK7": 0
+      "vitaminK2MK7": 0,
+      "vitaminARetinol": 2770,
+      "quercetin": 0
     },
     "longevity": {
       "saturatedFat": 1.4,
@@ -25041,13 +25253,24 @@
       "vitaminK2MK7": true,
       "plantSterols": 0,
       "alphaLipoicAcid": 0.22,
-      "pqq": 0
+      "pqq": 0,
+      "quercetin": true,
+      "vitaminE": true,
+      "choline": true,
+      "taurine": true,
+      "omega9": 0.599,
+      "ala": 0.044,
+      "flavonoids": 0,
+      "curcumin": 0,
+      "resveratrol": 0,
+      "sulforaphane": 0
     },
     "carbQuality": {
       "glycemicIndex": 0,
       "addedSugar": 0,
       "refinedCarbs": 0
-    }
+    },
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 172532 (Lamb, variety meats and by-products, liver, cooked, braised), scaled to about 37 g, the weight implied by this entry's own values. From that record: retinol, omega-9, ALA. Set to 0 because the nutrient is absent from this kind of food: quercetin, total flavonoids, curcumin, resveratrol, sulforaphane."
   },
   {
     "name": "Lamb Liver 3 oz (palm-sized)",
@@ -25105,7 +25328,9 @@
       "vitaminK1": 0,
       "vitaminK2": 0,
       "vitaminK2MK4": 0,
-      "vitaminK2MK7": 0
+      "vitaminK2MK7": 0,
+      "vitaminARetinol": 8310,
+      "quercetin": 0
     },
     "longevity": {
       "saturatedFat": 4.2,
@@ -25131,13 +25356,24 @@
       "vitaminK2MK7": true,
       "plantSterols": 0,
       "alphaLipoicAcid": 0.65,
-      "pqq": 0
+      "pqq": 0,
+      "quercetin": true,
+      "vitaminE": true,
+      "choline": true,
+      "taurine": true,
+      "omega9": 1.8,
+      "ala": 0.133,
+      "flavonoids": 0,
+      "curcumin": 0,
+      "resveratrol": 0,
+      "sulforaphane": 0
     },
     "carbQuality": {
       "glycemicIndex": 0,
       "addedSugar": 0,
       "refinedCarbs": 0
-    }
+    },
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 172532 (Lamb, variety meats and by-products, liver, cooked, braised), scaled to about 111 g, the weight implied by this entry's own values. From that record: retinol, omega-9, ALA. Set to 0 because the nutrient is absent from this kind of food: quercetin, total flavonoids, curcumin, resveratrol, sulforaphane."
   },
   {
     "name": "Chicken Liver 1 oz (sm)",
@@ -25195,7 +25431,10 @@
       "vitaminK1": 1,
       "vitaminK2": 40,
       "vitaminK2MK4": 40,
-      "vitaminK2MK7": 0
+      "vitaminK2MK7": 0,
+      "vitaminARetinol": 1217,
+      "vitaminABetaCarotene": 9.18,
+      "quercetin": 0
     },
     "longevity": {
       "saturatedFat": 0.567,
@@ -25226,13 +25465,23 @@
       "vitaminK2MK7": true,
       "plantSterols": 0,
       "alphaLipoicAcid": 0.18,
-      "pqq": 0
+      "pqq": 0,
+      "quercetin": true,
+      "taurine": true,
+      "omega9": 0.39,
+      "flavonoids": 0,
+      "carotenoids": 0.048,
+      "lutein": 0.025,
+      "curcumin": 0,
+      "resveratrol": 0,
+      "sulforaphane": 0
     },
     "carbQuality": {
       "glycemicIndex": 0,
       "addedSugar": 0,
       "refinedCarbs": 0
-    }
+    },
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 171061 (Chicken, liver, all classes, cooked, simmered), scaled to about 31 g, the weight implied by this entry's own values. From that record: retinol, beta-carotene, omega-9, carotenoids, lutein. Set to 0 because the nutrient is absent from this kind of food: quercetin, total flavonoids, curcumin, resveratrol, sulforaphane."
   },
   {
     "name": "Chicken Liver 3 oz (palm-sized)",
@@ -25290,7 +25539,10 @@
       "vitaminK1": 1,
       "vitaminK2": 40,
       "vitaminK2MK4": 40,
-      "vitaminK2MK7": 0
+      "vitaminK2MK7": 0,
+      "vitaminARetinol": 3652,
+      "vitaminABetaCarotene": 27.5,
+      "quercetin": 0
     },
     "longevity": {
       "saturatedFat": 1.7,
@@ -25321,13 +25573,23 @@
       "vitaminK2MK7": true,
       "plantSterols": 0,
       "alphaLipoicAcid": 0.55,
-      "pqq": 0
+      "pqq": 0,
+      "quercetin": true,
+      "taurine": true,
+      "omega9": 1.17,
+      "flavonoids": 0,
+      "carotenoids": 0.143,
+      "lutein": 0.076,
+      "curcumin": 0,
+      "resveratrol": 0,
+      "sulforaphane": 0
     },
     "carbQuality": {
       "glycemicIndex": 0,
       "addedSugar": 0,
       "refinedCarbs": 0
-    }
+    },
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 171061 (Chicken, liver, all classes, cooked, simmered), scaled to about 92 g, the weight implied by this entry's own values. From that record: retinol, beta-carotene, omega-9, carotenoids, lutein. Set to 0 because the nutrient is absent from this kind of food: quercetin, total flavonoids, curcumin, resveratrol, sulforaphane."
   },
   {
     "name": "Brazil Nut 1 piece",
@@ -38126,7 +38388,30 @@
       "threonine": 731,
       "tryptophan": 189,
       "valine": 869,
-      "tyrosine": 570
+      "tyrosine": 570,
+      "fiber": 0,
+      "solubleFiber": 0,
+      "insolubleFiber": 0,
+      "vitaminARetinol": 53.9,
+      "vitaminABetaCarotene": 0,
+      "vitaminC": 2.89,
+      "iodine": 25.8,
+      "folate": 26.6,
+      "biotin": 4.3,
+      "thiamin": 0.266,
+      "riboflavin": 0.105,
+      "niacin": 6.29,
+      "pantothenicAcid": 1.15,
+      "chromium": 1.33,
+      "manganese": 0.013,
+      "vitaminE": 0.891,
+      "vitaminK": 0.078,
+      "vitaminK1": 0.078,
+      "vitaminK2MK7": 0,
+      "molybdenum": 0,
+      "glycine": 829,
+      "proline": 610,
+      "quercetin": 0
     },
     "longevity": {
       "saturatedFat": 1.5,
@@ -38147,14 +38432,31 @@
       "choline": true,
       "selenium": true,
       "copper": true,
-      "betaine": 2
+      "betaine": 2,
+      "vitaminE": true,
+      "vitaminK": true,
+      "vitaminK1": true,
+      "vitaminK2MK7": true,
+      "quercetin": true,
+      "phosphorus": true,
+      "methionine": true,
+      "plantSterols": 0,
+      "omega9": 1.6,
+      "palmitoleicAcid": 0.599,
+      "flavonoids": 0,
+      "carotenoids": 0,
+      "lutein": 0,
+      "curcumin": 0,
+      "resveratrol": 0,
+      "sulforaphane": 0
     },
     "carbQuality": {
       "glycemicIndex": 0,
       "addedSugar": 0,
       "refinedCarbs": 0,
       "netCarbs": 0
-    }
+    },
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 175168 (Fish, salmon, Atlantic, farmed, cooked, dry heat), scaled to about 78 g, the weight implied by this entry's own values. From that record: fiber, retinol, beta-carotene, vitamin C, folate, thiamin, riboflavin, niacin, pantothenic acid, manganese, vitamin E, K1, glycine, proline, omega-9, palmitoleic acid, carotenoids, lutein. From Frida 5.5, DTU National Food Institute, Denmark, food 30 (Salmon, Atlantic, wild, raw), adjusted for water content: iodine, biotin, chromium, molybdenum. Set to 0 because the nutrient is absent from this kind of food: soluble fiber, insoluble fiber, MK-7, quercetin, plant sterols, total flavonoids, curcumin, resveratrol, sulforaphane. Vitamin K total is set to the phylloquinone (K1) amount, the form USDA reports as vitamin K."
   },
   {
     "name": "Salmon 1x1 inch of the fillet (~0.6 oz / 17 g)",
@@ -38188,7 +38490,30 @@
       "threonine": 146.2,
       "tryptophan": 37.8,
       "valine": 173.8,
-      "tyrosine": 114
+      "tyrosine": 114,
+      "fiber": 0,
+      "solubleFiber": 0,
+      "insolubleFiber": 0,
+      "vitaminARetinol": 11.7,
+      "vitaminABetaCarotene": 0,
+      "vitaminC": 0.629,
+      "iodine": 5.62,
+      "folate": 5.78,
+      "biotin": 0.936,
+      "thiamin": 0.058,
+      "riboflavin": 0.023,
+      "niacin": 1.37,
+      "pantothenicAcid": 0.251,
+      "chromium": 0.289,
+      "manganese": 0.0027,
+      "vitaminE": 0.194,
+      "vitaminK": 0.017,
+      "vitaminK1": 0.017,
+      "vitaminK2MK7": 0,
+      "molybdenum": 0,
+      "glycine": 180,
+      "proline": 133,
+      "quercetin": 0
     },
     "longevity": {
       "saturatedFat": 0.3,
@@ -38209,14 +38534,31 @@
       "choline": true,
       "selenium": true,
       "copper": true,
-      "betaine": 0.4
+      "betaine": 0.4,
+      "vitaminE": true,
+      "vitaminK": true,
+      "vitaminK1": true,
+      "vitaminK2MK7": true,
+      "quercetin": true,
+      "phosphorus": true,
+      "methionine": true,
+      "plantSterols": 0,
+      "omega9": 0.348,
+      "palmitoleicAcid": 0.13,
+      "flavonoids": 0,
+      "carotenoids": 0,
+      "lutein": 0,
+      "curcumin": 0,
+      "resveratrol": 0,
+      "sulforaphane": 0
     },
     "carbQuality": {
       "glycemicIndex": 0,
       "addedSugar": 0,
       "refinedCarbs": 0,
       "netCarbs": 0
-    }
+    },
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 175168 (Fish, salmon, Atlantic, farmed, cooked, dry heat), scaled to about 17 g, the weight given in this entry's name. From that record: fiber, retinol, beta-carotene, vitamin C, folate, thiamin, riboflavin, niacin, pantothenic acid, manganese, vitamin E, K1, glycine, proline, omega-9, palmitoleic acid, carotenoids, lutein. From Frida 5.5, DTU National Food Institute, Denmark, food 30 (Salmon, Atlantic, wild, raw), adjusted for water content: iodine, biotin, chromium, molybdenum. Set to 0 because the nutrient is absent from this kind of food: soluble fiber, insoluble fiber, MK-7, quercetin, plant sterols, total flavonoids, curcumin, resveratrol, sulforaphane. Vitamin K total is set to the phylloquinone (K1) amount, the form USDA reports as vitamin K."
   },
   {
     "name": "Salmon 1 fillet (~6 oz)",
@@ -38250,7 +38592,30 @@
       "threonine": 1462,
       "tryptophan": 378,
       "valine": 1738,
-      "tyrosine": 1140
+      "tyrosine": 1140,
+      "fiber": 0,
+      "solubleFiber": 0,
+      "insolubleFiber": 0,
+      "vitaminARetinol": 108,
+      "vitaminABetaCarotene": 0,
+      "vitaminC": 5.78,
+      "iodine": 51.6,
+      "folate": 53.1,
+      "biotin": 8.61,
+      "thiamin": 0.531,
+      "riboflavin": 0.211,
+      "niacin": 12.6,
+      "pantothenicAcid": 2.3,
+      "chromium": 2.65,
+      "manganese": 0.025,
+      "vitaminE": 1.78,
+      "vitaminK": 0.156,
+      "vitaminK1": 0.156,
+      "vitaminK2MK7": 0,
+      "molybdenum": 0,
+      "glycine": 1658,
+      "proline": 1220,
+      "quercetin": 0
     },
     "longevity": {
       "saturatedFat": 3,
@@ -38271,14 +38636,31 @@
       "choline": true,
       "selenium": true,
       "copper": true,
-      "betaine": 4
+      "betaine": 4,
+      "vitaminE": true,
+      "vitaminK": true,
+      "vitaminK1": true,
+      "vitaminK2MK7": true,
+      "quercetin": true,
+      "phosphorus": true,
+      "methionine": true,
+      "plantSterols": 0,
+      "omega9": 3.2,
+      "palmitoleicAcid": 1.2,
+      "flavonoids": 0,
+      "carotenoids": 0,
+      "lutein": 0,
+      "curcumin": 0,
+      "resveratrol": 0,
+      "sulforaphane": 0
     },
     "carbQuality": {
       "glycemicIndex": 0,
       "addedSugar": 0,
       "refinedCarbs": 0,
       "netCarbs": 0
-    }
+    },
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 175168 (Fish, salmon, Atlantic, farmed, cooked, dry heat), scaled to about 156 g, the weight implied by this entry's own values. From that record: fiber, retinol, beta-carotene, vitamin C, folate, thiamin, riboflavin, niacin, pantothenic acid, manganese, vitamin E, K1, glycine, proline, omega-9, palmitoleic acid, carotenoids, lutein. From Frida 5.5, DTU National Food Institute, Denmark, food 30 (Salmon, Atlantic, wild, raw), adjusted for water content: iodine, biotin, chromium, molybdenum. Set to 0 because the nutrient is absent from this kind of food: soluble fiber, insoluble fiber, MK-7, quercetin, plant sterols, total flavonoids, curcumin, resveratrol, sulforaphane. Vitamin K total is set to the phylloquinone (K1) amount, the form USDA reports as vitamin K."
   },
   {
     "name": "Salmon 2 fillets (~12 oz)",
@@ -38312,7 +38694,30 @@
       "threonine": 2924,
       "tryptophan": 756,
       "valine": 3476,
-      "tyrosine": 2280
+      "tyrosine": 2280,
+      "fiber": 0,
+      "solubleFiber": 0,
+      "insolubleFiber": 0,
+      "vitaminARetinol": 216,
+      "vitaminABetaCarotene": 0,
+      "vitaminC": 11.6,
+      "iodine": 103,
+      "folate": 106,
+      "biotin": 17.2,
+      "thiamin": 1.06,
+      "riboflavin": 0.422,
+      "niacin": 25.1,
+      "pantothenicAcid": 4.61,
+      "chromium": 5.31,
+      "manganese": 0.05,
+      "vitaminE": 3.56,
+      "vitaminK": 0.312,
+      "vitaminK1": 0.312,
+      "vitaminK2MK7": 0,
+      "molybdenum": 0,
+      "glycine": 3316,
+      "proline": 2441,
+      "quercetin": 0
     },
     "longevity": {
       "saturatedFat": 6,
@@ -38333,14 +38738,31 @@
       "choline": true,
       "selenium": true,
       "copper": true,
-      "betaine": 8
+      "betaine": 8,
+      "vitaminE": true,
+      "vitaminK": true,
+      "vitaminK1": true,
+      "vitaminK2MK7": true,
+      "quercetin": true,
+      "phosphorus": true,
+      "methionine": true,
+      "plantSterols": 0,
+      "omega9": 6.39,
+      "palmitoleicAcid": 2.4,
+      "flavonoids": 0,
+      "carotenoids": 0,
+      "lutein": 0,
+      "curcumin": 0,
+      "resveratrol": 0,
+      "sulforaphane": 0
     },
     "carbQuality": {
       "glycemicIndex": 0,
       "addedSugar": 0,
       "refinedCarbs": 0,
       "netCarbs": 0
-    }
+    },
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 175168 (Fish, salmon, Atlantic, farmed, cooked, dry heat), scaled to about 312 g, the weight implied by this entry's own values. From that record: fiber, retinol, beta-carotene, vitamin C, folate, thiamin, riboflavin, niacin, pantothenic acid, manganese, vitamin E, K1, glycine, proline, omega-9, palmitoleic acid, carotenoids, lutein. From Frida 5.5, DTU National Food Institute, Denmark, food 30 (Salmon, Atlantic, wild, raw), adjusted for water content: iodine, biotin, chromium, molybdenum. Set to 0 because the nutrient is absent from this kind of food: soluble fiber, insoluble fiber, MK-7, quercetin, plant sterols, total flavonoids, curcumin, resveratrol, sulforaphane. Vitamin K total is set to the phylloquinone (K1) amount, the form USDA reports as vitamin K."
   },
   {
     "name": "Sardines canned 3 oz (palm-sized)",
@@ -38373,7 +38795,31 @@
       "threonine": 917,
       "tryptophan": 235,
       "valine": 1078,
-      "tyrosine": 706
+      "tyrosine": 706,
+      "fiber": 0,
+      "solubleFiber": 0,
+      "insolubleFiber": 0,
+      "vitaminARetinol": 27.4,
+      "vitaminABetaCarotene": 0,
+      "vitaminC": 0,
+      "iodine": 21.4,
+      "vitaminB6": 0.143,
+      "folate": 8.57,
+      "biotin": 3.43,
+      "thiamin": 0.069,
+      "riboflavin": 0.195,
+      "niacin": 4.5,
+      "pantothenicAcid": 0.55,
+      "chromium": 3.43,
+      "manganese": 0.093,
+      "vitaminE": 1.75,
+      "vitaminK": 2.23,
+      "vitaminK1": 2.23,
+      "vitaminK2MK7": 0,
+      "molybdenum": 0,
+      "glycine": 1012,
+      "proline": 746,
+      "quercetin": 0
     },
     "longevity": {
       "saturatedFat": 2,
@@ -38393,14 +38839,31 @@
       "pqq": 0,
       "choline": true,
       "selenium": true,
-      "copper": true
+      "copper": true,
+      "vitaminE": true,
+      "vitaminK": true,
+      "vitaminK1": true,
+      "vitaminK2MK7": true,
+      "quercetin": true,
+      "phosphorus": true,
+      "methionine": true,
+      "plantSterols": 0,
+      "omega9": 1.84,
+      "palmitoleicAcid": 0.189,
+      "flavonoids": 0,
+      "carotenoids": 0,
+      "lutein": 0,
+      "curcumin": 0,
+      "resveratrol": 0,
+      "sulforaphane": 0
     },
     "carbQuality": {
       "glycemicIndex": 0,
       "addedSugar": 0,
       "refinedCarbs": 0,
       "netCarbs": 0
-    }
+    },
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 175139 (Fish, sardine, Atlantic, canned in oil, drained solids with bone), scaled to about 86 g, the weight implied by this entry's own values. From that record: fiber, retinol, beta-carotene, vitamin C, B6, folate, thiamin, riboflavin, niacin, pantothenic acid, manganese, vitamin E, K1, glycine, proline, omega-9, palmitoleic acid, carotenoids, lutein. From Frida 5.5, DTU National Food Institute, Denmark, food 1121 (Sardine, in oil, canned), adjusted for water content: iodine, biotin, chromium, molybdenum. Set to 0 because the nutrient is absent from this kind of food: soluble fiber, insoluble fiber, MK-7, quercetin, plant sterols, total flavonoids, curcumin, resveratrol, sulforaphane. Vitamin K total is set to the phylloquinone (K1) amount, the form USDA reports as vitamin K."
   },
   {
     "name": "Sardines canned 1 fillet (~6 oz)",
@@ -38433,7 +38896,31 @@
       "threonine": 1834,
       "tryptophan": 470,
       "valine": 2156,
-      "tyrosine": 1412
+      "tyrosine": 1412,
+      "fiber": 0,
+      "solubleFiber": 0,
+      "insolubleFiber": 0,
+      "vitaminARetinol": 54.9,
+      "vitaminABetaCarotene": 0,
+      "vitaminC": 0,
+      "iodine": 42.8,
+      "vitaminB6": 0.286,
+      "folate": 17.1,
+      "biotin": 6.86,
+      "thiamin": 0.137,
+      "riboflavin": 0.389,
+      "niacin": 8.99,
+      "pantothenicAcid": 1.1,
+      "chromium": 6.86,
+      "manganese": 0.185,
+      "vitaminE": 3.5,
+      "vitaminK": 4.46,
+      "vitaminK1": 4.46,
+      "vitaminK2MK7": 0,
+      "molybdenum": 0,
+      "glycine": 2025,
+      "proline": 1491,
+      "quercetin": 0
     },
     "longevity": {
       "saturatedFat": 4,
@@ -38453,14 +38940,31 @@
       "pqq": 0,
       "choline": true,
       "selenium": true,
-      "copper": true
+      "copper": true,
+      "vitaminE": true,
+      "vitaminK": true,
+      "vitaminK1": true,
+      "vitaminK2MK7": true,
+      "quercetin": true,
+      "phosphorus": true,
+      "methionine": true,
+      "plantSterols": 0,
+      "omega9": 3.68,
+      "palmitoleicAcid": 0.377,
+      "flavonoids": 0,
+      "carotenoids": 0,
+      "lutein": 0,
+      "curcumin": 0,
+      "resveratrol": 0,
+      "sulforaphane": 0
     },
     "carbQuality": {
       "glycemicIndex": 0,
       "addedSugar": 0,
       "refinedCarbs": 0,
       "netCarbs": 0
-    }
+    },
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 175139 (Fish, sardine, Atlantic, canned in oil, drained solids with bone), scaled to about 171 g, the weight implied by this entry's own values. From that record: fiber, retinol, beta-carotene, vitamin C, B6, folate, thiamin, riboflavin, niacin, pantothenic acid, manganese, vitamin E, K1, glycine, proline, omega-9, palmitoleic acid, carotenoids, lutein. From Frida 5.5, DTU National Food Institute, Denmark, food 1121 (Sardine, in oil, canned), adjusted for water content: iodine, biotin, chromium, molybdenum. Set to 0 because the nutrient is absent from this kind of food: soluble fiber, insoluble fiber, MK-7, quercetin, plant sterols, total flavonoids, curcumin, resveratrol, sulforaphane. Vitamin K total is set to the phylloquinone (K1) amount, the form USDA reports as vitamin K."
   },
   {
     "name": "Sardines canned 2 fillets (~12 oz)",
@@ -38493,7 +38997,31 @@
       "threonine": 3668,
       "tryptophan": 940,
       "valine": 4312,
-      "tyrosine": 2824
+      "tyrosine": 2824,
+      "fiber": 0,
+      "solubleFiber": 0,
+      "insolubleFiber": 0,
+      "vitaminARetinol": 110,
+      "vitaminABetaCarotene": 0,
+      "vitaminC": 0,
+      "iodine": 85.7,
+      "vitaminB6": 0.573,
+      "folate": 34.3,
+      "biotin": 13.7,
+      "thiamin": 0.274,
+      "riboflavin": 0.778,
+      "niacin": 18.0,
+      "pantothenicAcid": 2.2,
+      "chromium": 13.7,
+      "manganese": 0.37,
+      "vitaminE": 6.99,
+      "vitaminK": 8.91,
+      "vitaminK1": 8.91,
+      "vitaminK2MK7": 0,
+      "molybdenum": 0,
+      "glycine": 4049,
+      "proline": 2983,
+      "quercetin": 0
     },
     "longevity": {
       "saturatedFat": 8,
@@ -38513,14 +39041,31 @@
       "pqq": 0,
       "choline": true,
       "selenium": true,
-      "copper": true
+      "copper": true,
+      "vitaminE": true,
+      "vitaminK": true,
+      "vitaminK1": true,
+      "vitaminK2MK7": true,
+      "quercetin": true,
+      "phosphorus": true,
+      "methionine": true,
+      "plantSterols": 0,
+      "omega9": 7.35,
+      "palmitoleicAcid": 0.754,
+      "flavonoids": 0,
+      "carotenoids": 0,
+      "lutein": 0,
+      "curcumin": 0,
+      "resveratrol": 0,
+      "sulforaphane": 0
     },
     "carbQuality": {
       "glycemicIndex": 0,
       "addedSugar": 0,
       "refinedCarbs": 0,
       "netCarbs": 0
-    }
+    },
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 175139 (Fish, sardine, Atlantic, canned in oil, drained solids with bone), scaled to about 343 g, the weight implied by this entry's own values. From that record: fiber, retinol, beta-carotene, vitamin C, B6, folate, thiamin, riboflavin, niacin, pantothenic acid, manganese, vitamin E, K1, glycine, proline, omega-9, palmitoleic acid, carotenoids, lutein. From Frida 5.5, DTU National Food Institute, Denmark, food 1121 (Sardine, in oil, canned), adjusted for water content: iodine, biotin, chromium, molybdenum. Set to 0 because the nutrient is absent from this kind of food: soluble fiber, insoluble fiber, MK-7, quercetin, plant sterols, total flavonoids, curcumin, resveratrol, sulforaphane. Vitamin K total is set to the phylloquinone (K1) amount, the form USDA reports as vitamin K."
   },
   {
     "name": "Pumpkin seeds 1 oz",
@@ -38553,7 +39098,34 @@
       "threonine": 280,
       "tryptophan": 162,
       "valine": 443,
-      "tyrosine": 306
+      "tyrosine": 306,
+      "vitaminA": 0.283,
+      "vitaminARetinol": 0,
+      "vitaminABetaCarotene": 2.54,
+      "vitaminD": 0,
+      "vitaminB12": 0,
+      "vitaminC": 0.537,
+      "iodine": 0,
+      "vitaminB6": 0.04,
+      "folate": 16.4,
+      "biotin": 3.86,
+      "thiamin": 0.077,
+      "riboflavin": 0.043,
+      "niacin": 1.41,
+      "pantothenicAcid": 0.212,
+      "selenium": 2.66,
+      "vitaminE": 0.616,
+      "vitaminK": 2.06,
+      "vitaminK1": 2.06,
+      "vitaminK2": 0,
+      "vitaminK2MK4": 0,
+      "vitaminK2MK7": 0,
+      "phosphorus": 348,
+      "molybdenum": 45.0,
+      "glycine": 521,
+      "proline": 372,
+      "taurine": 0,
+      "quercetin": 0
     },
     "longevity": {
       "saturatedFat": 2.3,
@@ -38572,14 +39144,34 @@
       "copper": true,
       "choline": true,
       "plantSterols": 0.05,
-      "pqq": 0
+      "pqq": 0,
+      "selenium": true,
+      "vitaminE": true,
+      "vitaminK": true,
+      "vitaminK1": true,
+      "vitaminK2": true,
+      "vitaminK2MK4": true,
+      "vitaminK2MK7": true,
+      "phosphorus": true,
+      "taurine": true,
+      "quercetin": true,
+      "methionine": true,
+      "omega9": 4.55,
+      "palmitoleicAcid": 0.014,
+      "flavonoids": 0.0028,
+      "carotenoids": 0.024,
+      "lutein": 0.021,
+      "curcumin": 0,
+      "sulforaphane": 0,
+      "creatine": 0
     },
     "carbQuality": {
       "glycemicIndex": 25,
       "addedSugar": 0,
       "refinedCarbs": 0,
       "netCarbs": 3.1
-    }
+    },
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 170556 (Seeds, pumpkin and squash seed kernels, dried), scaled to about 28 g, the weight implied by this entry's own values. From that record: vitamin A, retinol, beta-carotene, vitamin D, B12, vitamin C, B6, folate, thiamin, riboflavin, niacin, pantothenic acid, selenium, vitamin E, K1, MK-4, phosphorus, glycine, proline, omega-9, palmitoleic acid, carotenoids, lutein. From Frida 5.5, DTU National Food Institute, Denmark, food 1507 (Pumpkin seed, dried), adjusted for water content: iodine, biotin, molybdenum. Quercetin, total flavonoids from the USDA Flavonoid Values for Survey Foods 2017-2018, food code 43101150 (Pumpkin seeds, unsalted). Set to 0 because the nutrient is absent from this kind of food: K2, MK-7, taurine, curcumin, sulforaphane, creatine. Vitamin K total is set to the phylloquinone (K1) amount, the form USDA reports as vitamin K."
   },
   {
     "name": "Soybeans cooked 1 cup",
@@ -38612,7 +39204,33 @@
       "threonine": 1244,
       "tryptophan": 416,
       "valine": 1429,
-      "tyrosine": 1084
+      "tyrosine": 1084,
+      "vitaminA": 0,
+      "vitaminARetinol": 0,
+      "vitaminABetaCarotene": 8.59,
+      "vitaminD": 0,
+      "vitaminB12": 0,
+      "vitaminC": 2.92,
+      "iodine": 3.6,
+      "vitaminB6": 0.402,
+      "biotin": 45.1,
+      "thiamin": 0.266,
+      "riboflavin": 0.49,
+      "niacin": 0.685,
+      "pantothenicAcid": 0.308,
+      "selenium": 12.5,
+      "manganese": 1.42,
+      "vitaminE": 0.601,
+      "vitaminK": 33.0,
+      "vitaminK1": 33.0,
+      "vitaminK2": 0,
+      "vitaminK2MK4": 0,
+      "vitaminK2MK7": 0,
+      "phosphorus": 421,
+      "glycine": 1323,
+      "proline": 1673,
+      "taurine": 0,
+      "quercetin": 0
     },
     "longevity": {
       "saturatedFat": 2.2,
@@ -38631,14 +39249,34 @@
       "choline": true,
       "copper": true,
       "plantSterols": 0.15,
-      "pqq": 2
+      "pqq": 2,
+      "selenium": true,
+      "vitaminE": true,
+      "vitaminK": true,
+      "vitaminK1": true,
+      "vitaminK2": true,
+      "vitaminK2MK4": true,
+      "vitaminK2MK7": true,
+      "phosphorus": true,
+      "taurine": true,
+      "quercetin": true,
+      "methionine": true,
+      "omega9": 3.36,
+      "palmitoleicAcid": 0.043,
+      "flavonoids": 129,
+      "carotenoids": 0.0086,
+      "lutein": 0,
+      "curcumin": 0,
+      "sulforaphane": 0,
+      "creatine": 0
     },
     "carbQuality": {
       "glycemicIndex": 16,
       "addedSugar": 0,
       "refinedCarbs": 0,
       "netCarbs": 7
-    }
+    },
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 174271 (Soybeans, mature cooked, boiled, without salt), scaled to about 172 g, the weight implied by this entry's own values. From that record: vitamin A, retinol, beta-carotene, vitamin D, B12, vitamin C, B6, thiamin, riboflavin, niacin, pantothenic acid, selenium, manganese, vitamin E, K1, phosphorus, glycine, proline, omega-9, palmitoleic acid, carotenoids, lutein. From CoFID 2021 (UK) food 13-116 (Beans, soya, dried, boiled in unsalted water), adjusted for water content: iodine, biotin. Quercetin, total flavonoids from the USDA Flavonoid Values for Survey Foods 2017-2018, food code 41107010 (Soybeans, cooked). Set to 0 because the nutrient is absent from this kind of food: K2, MK-4, MK-7, taurine, curcumin, sulforaphane, creatine. Vitamin K total is set to the phylloquinone (K1) amount, the form USDA reports as vitamin K."
   },
   {
     "name": "Pistachios 1 oz (small handful)",
@@ -38670,7 +39308,35 @@
       "threonine": 194,
       "tryptophan": 71,
       "valine": 355,
-      "tyrosine": 145
+      "tyrosine": 145,
+      "vitaminARetinol": 0,
+      "vitaminABetaCarotene": 45.1,
+      "vitaminD": 0,
+      "vitaminB12": 0,
+      "vitaminC": 0.851,
+      "iodine": 0,
+      "vitaminB6": 0.318,
+      "folate": 14.5,
+      "biotin": 13.2,
+      "thiamin": 0.197,
+      "riboflavin": 0.066,
+      "niacin": 0.39,
+      "pantothenicAcid": 0.146,
+      "selenium": 2.84,
+      "manganese": 0.353,
+      "vitaminE": 0.616,
+      "vitaminK": 3.75,
+      "vitaminK1": 3.75,
+      "vitaminK2": 0,
+      "vitaminK2MK4": 0,
+      "vitaminK2MK7": 0,
+      "phosphorus": 133,
+      "molybdenum": 4.79,
+      "chloride": 230,
+      "glycine": 299,
+      "proline": 278,
+      "taurine": 0,
+      "quercetin": 0.423
     },
     "longevity": {
       "saturatedFat": 1.5,
@@ -38689,14 +39355,35 @@
       "coq10": 0.6,
       "pqq": 0,
       "copper": true,
-      "choline": true
+      "choline": true,
+      "selenium": true,
+      "vitaminE": true,
+      "vitaminK": true,
+      "vitaminK1": true,
+      "vitaminK2": true,
+      "vitaminK2MK4": true,
+      "vitaminK2MK7": true,
+      "phosphorus": true,
+      "taurine": true,
+      "quercetin": true,
+      "methionine": true,
+      "omega9": 6.79,
+      "palmitoleicAcid": 0.132,
+      "flavonoids": 4.54,
+      "carotenoids": 0.374,
+      "lutein": 0.329,
+      "betaine": 0.227,
+      "curcumin": 0,
+      "sulforaphane": 0,
+      "creatine": 0
     },
     "carbQuality": {
       "glycemicIndex": 15,
       "addedSugar": 0,
       "refinedCarbs": 0,
       "netCarbs": 5
-    }
+    },
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 170185 (Nuts, pistachio nuts, dry roasted, without salt added), scaled to about 28 g, the weight implied by this entry's own values. From that record: retinol, beta-carotene, vitamin D, B12, vitamin C, B6, folate, thiamin, riboflavin, niacin, pantothenic acid, selenium, manganese, vitamin E, K1, phosphorus, glycine, proline, omega-9, palmitoleic acid, carotenoids, lutein, betaine. From Frida 5.5, DTU National Food Institute, Denmark, food 328 (Pistachio nuts, dried), adjusted for water content: iodine, biotin, molybdenum. From CoFID 2021 (UK) food 14-840 (Pistachio nuts, kernel only, roasted and salted), adjusted for water content: chloride. Quercetin, total flavonoids from the USDA Flavonoid Values for Survey Foods 2017-2018, food code 42114130 (Pistachio nuts, NFS). Set to 0 because the nutrient is absent from this kind of food: K2, MK-4, MK-7, taurine, curcumin, sulforaphane, creatine. Vitamin K total is set to the phylloquinone (K1) amount, the form USDA reports as vitamin K."
   },
   {
     "name": "Pistachios 2 oz (palm size)",
@@ -38728,7 +39415,35 @@
       "threonine": 388,
       "tryptophan": 142,
       "valine": 710,
-      "tyrosine": 290
+      "tyrosine": 290,
+      "vitaminARetinol": 0,
+      "vitaminABetaCarotene": 90.2,
+      "vitaminD": 0,
+      "vitaminB12": 0,
+      "vitaminC": 1.7,
+      "iodine": 0,
+      "vitaminB6": 0.637,
+      "folate": 28.9,
+      "biotin": 26.4,
+      "thiamin": 0.394,
+      "riboflavin": 0.133,
+      "niacin": 0.779,
+      "pantothenicAcid": 0.291,
+      "selenium": 5.67,
+      "manganese": 0.705,
+      "vitaminE": 1.23,
+      "vitaminK": 7.49,
+      "vitaminK1": 7.49,
+      "vitaminK2": 0,
+      "vitaminK2MK4": 0,
+      "vitaminK2MK7": 0,
+      "phosphorus": 266,
+      "molybdenum": 9.58,
+      "chloride": 461,
+      "glycine": 598,
+      "proline": 556,
+      "taurine": 0,
+      "quercetin": 0.845
     },
     "longevity": {
       "saturatedFat": 3,
@@ -38747,14 +39462,35 @@
       "coq10": 1.2,
       "pqq": 0,
       "copper": true,
-      "choline": true
+      "choline": true,
+      "selenium": true,
+      "vitaminE": true,
+      "vitaminK": true,
+      "vitaminK1": true,
+      "vitaminK2": true,
+      "vitaminK2MK4": true,
+      "vitaminK2MK7": true,
+      "phosphorus": true,
+      "taurine": true,
+      "quercetin": true,
+      "methionine": true,
+      "omega9": 13.6,
+      "palmitoleicAcid": 0.263,
+      "flavonoids": 9.07,
+      "carotenoids": 0.748,
+      "lutein": 0.658,
+      "betaine": 0.454,
+      "curcumin": 0,
+      "sulforaphane": 0,
+      "creatine": 0
     },
     "carbQuality": {
       "glycemicIndex": 15,
       "addedSugar": 0,
       "refinedCarbs": 0,
       "netCarbs": 10
-    }
+    },
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 170185 (Nuts, pistachio nuts, dry roasted, without salt added), scaled to about 57 g, the weight implied by this entry's own values. From that record: retinol, beta-carotene, vitamin D, B12, vitamin C, B6, folate, thiamin, riboflavin, niacin, pantothenic acid, selenium, manganese, vitamin E, K1, phosphorus, glycine, proline, omega-9, palmitoleic acid, carotenoids, lutein, betaine. From Frida 5.5, DTU National Food Institute, Denmark, food 328 (Pistachio nuts, dried), adjusted for water content: iodine, biotin, molybdenum. From CoFID 2021 (UK) food 14-840 (Pistachio nuts, kernel only, roasted and salted), adjusted for water content: chloride. Quercetin, total flavonoids from the USDA Flavonoid Values for Survey Foods 2017-2018, food code 42114130 (Pistachio nuts, NFS). Set to 0 because the nutrient is absent from this kind of food: K2, MK-4, MK-7, taurine, curcumin, sulforaphane, creatine. Vitamin K total is set to the phylloquinone (K1) amount, the form USDA reports as vitamin K."
   },
   {
     "name": "Pistachios 3 oz (palmful)",
@@ -38786,7 +39522,35 @@
       "threonine": 582,
       "tryptophan": 213,
       "valine": 1065,
-      "tyrosine": 435
+      "tyrosine": 435,
+      "vitaminARetinol": 0,
+      "vitaminABetaCarotene": 135,
+      "vitaminD": 0,
+      "vitaminB12": 0,
+      "vitaminC": 2.55,
+      "iodine": 0,
+      "vitaminB6": 0.955,
+      "folate": 43.4,
+      "biotin": 39.6,
+      "thiamin": 0.592,
+      "riboflavin": 0.199,
+      "niacin": 1.17,
+      "pantothenicAcid": 0.437,
+      "selenium": 8.51,
+      "manganese": 1.06,
+      "vitaminE": 1.85,
+      "vitaminK": 11.2,
+      "vitaminK1": 11.2,
+      "vitaminK2": 0,
+      "vitaminK2MK4": 0,
+      "vitaminK2MK7": 0,
+      "phosphorus": 399,
+      "molybdenum": 14.4,
+      "chloride": 691,
+      "glycine": 897,
+      "proline": 834,
+      "taurine": 0,
+      "quercetin": 1.27
     },
     "longevity": {
       "saturatedFat": 4.5,
@@ -38805,14 +39569,35 @@
       "coq10": 1.8,
       "pqq": 0,
       "copper": true,
-      "choline": true
+      "choline": true,
+      "selenium": true,
+      "vitaminE": true,
+      "vitaminK": true,
+      "vitaminK1": true,
+      "vitaminK2": true,
+      "vitaminK2MK4": true,
+      "vitaminK2MK7": true,
+      "phosphorus": true,
+      "taurine": true,
+      "quercetin": true,
+      "methionine": true,
+      "omega9": 20.4,
+      "palmitoleicAcid": 0.395,
+      "flavonoids": 13.6,
+      "carotenoids": 1.12,
+      "lutein": 0.987,
+      "betaine": 0.681,
+      "curcumin": 0,
+      "sulforaphane": 0,
+      "creatine": 0
     },
     "carbQuality": {
       "glycemicIndex": 15,
       "addedSugar": 0,
       "refinedCarbs": 0,
       "netCarbs": 15
-    }
+    },
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 170185 (Nuts, pistachio nuts, dry roasted, without salt added), scaled to about 85 g, the weight implied by this entry's own values. From that record: retinol, beta-carotene, vitamin D, B12, vitamin C, B6, folate, thiamin, riboflavin, niacin, pantothenic acid, selenium, manganese, vitamin E, K1, phosphorus, glycine, proline, omega-9, palmitoleic acid, carotenoids, lutein, betaine. From Frida 5.5, DTU National Food Institute, Denmark, food 328 (Pistachio nuts, dried), adjusted for water content: iodine, biotin, molybdenum. From CoFID 2021 (UK) food 14-840 (Pistachio nuts, kernel only, roasted and salted), adjusted for water content: chloride. Quercetin, total flavonoids from the USDA Flavonoid Values for Survey Foods 2017-2018, food code 42114130 (Pistachio nuts, NFS). Set to 0 because the nutrient is absent from this kind of food: K2, MK-4, MK-7, taurine, curcumin, sulforaphane, creatine. Vitamin K total is set to the phylloquinone (K1) amount, the form USDA reports as vitamin K."
   },
   {
     "name": "Pistachios 1/2 cup",
@@ -38844,7 +39629,35 @@
       "threonine": 420.8,
       "tryptophan": 154,
       "valine": 770.1,
-      "tyrosine": 314.6
+      "tyrosine": 314.6,
+      "vitaminARetinol": 0,
+      "vitaminABetaCarotene": 97.9,
+      "vitaminD": 0,
+      "vitaminB12": 0,
+      "vitaminC": 1.85,
+      "iodine": 0,
+      "vitaminB6": 0.691,
+      "folate": 31.4,
+      "biotin": 28.7,
+      "thiamin": 0.428,
+      "riboflavin": 0.144,
+      "niacin": 0.845,
+      "pantothenicAcid": 0.316,
+      "selenium": 6.15,
+      "manganese": 0.765,
+      "vitaminE": 1.34,
+      "vitaminK": 8.12,
+      "vitaminK1": 8.12,
+      "vitaminK2": 0,
+      "vitaminK2MK4": 0,
+      "vitaminK2MK7": 0,
+      "phosphorus": 289,
+      "molybdenum": 10.4,
+      "chloride": 500,
+      "glycine": 649,
+      "proline": 603,
+      "taurine": 0,
+      "quercetin": 0.917
     },
     "longevity": {
       "saturatedFat": 3.25,
@@ -38863,14 +39676,35 @@
       "coq10": 1.3,
       "pqq": 0,
       "copper": true,
-      "choline": true
+      "choline": true,
+      "selenium": true,
+      "vitaminE": true,
+      "vitaminK": true,
+      "vitaminK1": true,
+      "vitaminK2": true,
+      "vitaminK2MK4": true,
+      "vitaminK2MK7": true,
+      "phosphorus": true,
+      "taurine": true,
+      "quercetin": true,
+      "methionine": true,
+      "omega9": 14.7,
+      "palmitoleicAcid": 0.286,
+      "flavonoids": 9.84,
+      "carotenoids": 0.812,
+      "lutein": 0.714,
+      "betaine": 0.492,
+      "curcumin": 0,
+      "sulforaphane": 0,
+      "creatine": 0
     },
     "carbQuality": {
       "glycemicIndex": 15,
       "addedSugar": 0,
       "refinedCarbs": 0,
       "netCarbs": 10.8
-    }
+    },
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 170185 (Nuts, pistachio nuts, dry roasted, without salt added), scaled to about 62 g, the weight implied by this entry's own values. From that record: retinol, beta-carotene, vitamin D, B12, vitamin C, B6, folate, thiamin, riboflavin, niacin, pantothenic acid, selenium, manganese, vitamin E, K1, phosphorus, glycine, proline, omega-9, palmitoleic acid, carotenoids, lutein, betaine. From Frida 5.5, DTU National Food Institute, Denmark, food 328 (Pistachio nuts, dried), adjusted for water content: iodine, biotin, molybdenum. From CoFID 2021 (UK) food 14-840 (Pistachio nuts, kernel only, roasted and salted), adjusted for water content: chloride. Quercetin, total flavonoids from the USDA Flavonoid Values for Survey Foods 2017-2018, food code 42114130 (Pistachio nuts, NFS). Set to 0 because the nutrient is absent from this kind of food: K2, MK-4, MK-7, taurine, curcumin, sulforaphane, creatine. Vitamin K total is set to the phylloquinone (K1) amount, the form USDA reports as vitamin K."
   },
   {
     "name": "Pistachios 1 cup",
@@ -38902,7 +39736,35 @@
       "threonine": 841.7,
       "tryptophan": 308,
       "valine": 1540.2,
-      "tyrosine": 629.1
+      "tyrosine": 629.1,
+      "vitaminARetinol": 0,
+      "vitaminABetaCarotene": 196,
+      "vitaminD": 0,
+      "vitaminB12": 0,
+      "vitaminC": 3.69,
+      "iodine": 0,
+      "vitaminB6": 1.38,
+      "folate": 62.8,
+      "biotin": 57.3,
+      "thiamin": 0.855,
+      "riboflavin": 0.288,
+      "niacin": 1.69,
+      "pantothenicAcid": 0.631,
+      "selenium": 12.3,
+      "manganese": 1.53,
+      "vitaminE": 2.67,
+      "vitaminK": 16.2,
+      "vitaminK1": 16.2,
+      "vitaminK2": 0,
+      "vitaminK2MK4": 0,
+      "vitaminK2MK7": 0,
+      "phosphorus": 577,
+      "molybdenum": 20.8,
+      "chloride": 1000,
+      "glycine": 1297,
+      "proline": 1206,
+      "taurine": 0,
+      "quercetin": 1.83
     },
     "longevity": {
       "saturatedFat": 6.51,
@@ -38921,14 +39783,35 @@
       "coq10": 2.6,
       "pqq": 0,
       "copper": true,
-      "choline": true
+      "choline": true,
+      "selenium": true,
+      "vitaminE": true,
+      "vitaminK": true,
+      "vitaminK1": true,
+      "vitaminK2": true,
+      "vitaminK2MK4": true,
+      "vitaminK2MK7": true,
+      "phosphorus": true,
+      "taurine": true,
+      "quercetin": true,
+      "methionine": true,
+      "omega9": 29.5,
+      "palmitoleicAcid": 0.571,
+      "flavonoids": 19.7,
+      "carotenoids": 1.62,
+      "lutein": 1.43,
+      "betaine": 0.985,
+      "curcumin": 0,
+      "sulforaphane": 0,
+      "creatine": 0
     },
     "carbQuality": {
       "glycemicIndex": 15,
       "addedSugar": 0,
       "refinedCarbs": 0,
       "netCarbs": 21.7
-    }
+    },
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 170185 (Nuts, pistachio nuts, dry roasted, without salt added), scaled to about 123 g, the weight implied by this entry's own values. From that record: retinol, beta-carotene, vitamin D, B12, vitamin C, B6, folate, thiamin, riboflavin, niacin, pantothenic acid, selenium, manganese, vitamin E, K1, phosphorus, glycine, proline, omega-9, palmitoleic acid, carotenoids, lutein, betaine. From Frida 5.5, DTU National Food Institute, Denmark, food 328 (Pistachio nuts, dried), adjusted for water content: iodine, biotin, molybdenum. From CoFID 2021 (UK) food 14-840 (Pistachio nuts, kernel only, roasted and salted), adjusted for water content: chloride. Quercetin, total flavonoids from the USDA Flavonoid Values for Survey Foods 2017-2018, food code 42114130 (Pistachio nuts, NFS). Set to 0 because the nutrient is absent from this kind of food: K2, MK-4, MK-7, taurine, curcumin, sulforaphane, creatine. Vitamin K total is set to the phylloquinone (K1) amount, the form USDA reports as vitamin K."
   },
   {
     "name": "Chicken breast 3 oz (palm-sized)",
@@ -38962,7 +39845,30 @@
       "threonine": 1114,
       "tryptophan": 308,
       "valine": 1308,
-      "tyrosine": 890
+      "tyrosine": 890,
+      "fiber": 0,
+      "solubleFiber": 0,
+      "insolubleFiber": 0,
+      "vitaminARetinol": 5.03,
+      "vitaminABetaCarotene": 0,
+      "vitaminD": 0.084,
+      "vitaminC": 0,
+      "iodine": 0.449,
+      "folate": 3.35,
+      "biotin": 2.25,
+      "thiamin": 0.059,
+      "riboflavin": 0.096,
+      "niacin": 11.5,
+      "pantothenicAcid": 0.809,
+      "manganese": 0.014,
+      "vitaminE": 0.226,
+      "vitaminK": 0.251,
+      "vitaminK1": 0.251,
+      "vitaminK2MK7": 0,
+      "molybdenum": 5.61,
+      "glycine": 1277,
+      "proline": 1069,
+      "quercetin": 0
     },
     "longevity": {
       "saturatedFat": 0.8,
@@ -38982,14 +39888,32 @@
       "pqq": 0,
       "choline": true,
       "selenium": true,
-      "copper": true
+      "copper": true,
+      "vitaminE": true,
+      "vitaminK": true,
+      "vitaminK1": true,
+      "vitaminK2MK7": true,
+      "quercetin": true,
+      "phosphorus": true,
+      "methionine": true,
+      "plantSterols": 0,
+      "omega9": 0.872,
+      "palmitoleicAcid": 0.126,
+      "flavonoids": 0,
+      "carotenoids": 0,
+      "lutein": 0,
+      "betaine": 5.2,
+      "curcumin": 0,
+      "resveratrol": 0,
+      "sulforaphane": 0
     },
     "carbQuality": {
       "glycemicIndex": 0,
       "addedSugar": 0,
       "refinedCarbs": 0,
       "netCarbs": 0
-    }
+    },
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 171477 (Chicken, broilers or fryers, breast, meat only, cooked, roasted), scaled to about 84 g, the weight implied by this entry's own values. From that record: fiber, retinol, beta-carotene, vitamin D, vitamin C, folate, thiamin, riboflavin, niacin, pantothenic acid, manganese, vitamin E, K1, glycine, proline, omega-9, palmitoleic acid, carotenoids, lutein, betaine. From Frida 5.5, DTU National Food Institute, Denmark, food 795 (Chicken, flesh only, raw), adjusted for water content: iodine, biotin, molybdenum. Set to 0 because the nutrient is absent from this kind of food: soluble fiber, insoluble fiber, MK-7, quercetin, plant sterols, total flavonoids, curcumin, resveratrol, sulforaphane. Vitamin K total is set to the phylloquinone (K1) amount, the form USDA reports as vitamin K."
   },
   {
     "name": "Chicken broth Simple Truth (Ralphs) 1 cup",
@@ -39127,7 +40051,31 @@
       "threonine": 832,
       "tryptophan": 244,
       "valine": 733,
-      "tyrosine": 681
+      "tyrosine": 681,
+      "fiber": 0,
+      "solubleFiber": 0,
+      "insolubleFiber": 0,
+      "vitaminARetinol": 2.61,
+      "vitaminABetaCarotene": 0,
+      "vitaminD": 0.261,
+      "vitaminC": 0,
+      "iodine": 1.71,
+      "folate": 7.83,
+      "biotin": 2.28,
+      "thiamin": 0.03,
+      "riboflavin": 0.178,
+      "niacin": 10.2,
+      "pantothenicAcid": 0.783,
+      "chromium": 2.85,
+      "manganese": 0.0096,
+      "vitaminE": 0.052,
+      "vitaminK": 0,
+      "vitaminK1": 0,
+      "vitaminK2MK7": 0,
+      "molybdenum": 0,
+      "glycine": 1001,
+      "proline": 1267,
+      "quercetin": 0
     },
     "longevity": {
       "saturatedFat": 0.5,
@@ -39147,14 +40095,32 @@
       "pqq": 0,
       "choline": true,
       "selenium": true,
-      "copper": true
+      "copper": true,
+      "vitaminE": true,
+      "vitaminK": true,
+      "vitaminK1": true,
+      "vitaminK2MK7": true,
+      "quercetin": true,
+      "phosphorus": true,
+      "methionine": true,
+      "plantSterols": 0,
+      "omega9": 0.466,
+      "palmitoleicAcid": 0.048,
+      "flavonoids": 0,
+      "carotenoids": 0,
+      "lutein": 0,
+      "betaine": 5.3,
+      "curcumin": 0,
+      "resveratrol": 0,
+      "sulforaphane": 0
     },
     "carbQuality": {
       "glycemicIndex": 0,
       "addedSugar": 0,
       "refinedCarbs": 0,
       "netCarbs": 0
-    }
+    },
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 171496 (Turkey, whole, breast, meat only, cooked, roasted), scaled to about 87 g, the weight implied by this entry's own values. From that record: fiber, retinol, beta-carotene, vitamin D, vitamin C, folate, thiamin, riboflavin, niacin, pantothenic acid, manganese, vitamin E, K1, glycine, proline, omega-9, palmitoleic acid, carotenoids, lutein, betaine. From Frida 5.5, DTU National Food Institute, Denmark, food 732 (Turkey, flesh only, raw), adjusted for water content: iodine, biotin, chromium, molybdenum. Set to 0 because the nutrient is absent from this kind of food: soluble fiber, insoluble fiber, MK-7, quercetin, plant sterols, total flavonoids, curcumin, resveratrol, sulforaphane. Vitamin K total is set to the phylloquinone (K1) amount, the form USDA reports as vitamin K."
   },
   {
     "name": "Beef 3 oz (palm-sized)",
@@ -39186,7 +40152,32 @@
       "threonine": 996,
       "tryptophan": 164,
       "valine": 1237,
-      "tyrosine": 795
+      "tyrosine": 795,
+      "fiber": 0,
+      "solubleFiber": 0,
+      "insolubleFiber": 0,
+      "vitaminA": 3.1,
+      "vitaminARetinol": 3.1,
+      "vitaminABetaCarotene": 0,
+      "vitaminD": 0.207,
+      "vitaminC": 0,
+      "iodine": 1.24,
+      "folate": 7.23,
+      "biotin": 3.13,
+      "thiamin": 0.07,
+      "riboflavin": 0.195,
+      "niacin": 5.64,
+      "pantothenicAcid": 0.478,
+      "chromium": 2.27,
+      "manganese": 0.029,
+      "vitaminE": 0.32,
+      "vitaminK": 1.45,
+      "vitaminK1": 1.45,
+      "vitaminK2MK7": 0,
+      "molybdenum": 0,
+      "glycine": 1524,
+      "proline": 1264,
+      "quercetin": 0
     },
     "longevity": {
       "saturatedFat": 3.2,
@@ -39206,14 +40197,32 @@
       "pqq": 0,
       "choline": true,
       "selenium": true,
-      "copper": true
+      "copper": true,
+      "vitaminE": true,
+      "vitaminK": true,
+      "vitaminK1": true,
+      "vitaminK2MK7": true,
+      "quercetin": true,
+      "phosphorus": true,
+      "methionine": true,
+      "plantSterols": 0,
+      "omega9": 3.39,
+      "palmitoleicAcid": 0.28,
+      "flavonoids": 0,
+      "carotenoids": 0,
+      "lutein": 0,
+      "betaine": 12.9,
+      "curcumin": 0,
+      "resveratrol": 0,
+      "sulforaphane": 0
     },
     "carbQuality": {
       "glycemicIndex": 0,
       "addedSugar": 0,
       "refinedCarbs": 0,
       "netCarbs": 0
-    }
+    },
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 169484 (Beef, composite of trimmed retail cuts, separable lean and fat, trimmed to 1/8\" fat, all grades, cooked), scaled to about 103 g, the weight implied by this entry's own values. From that record: fiber, vitamin A, retinol, beta-carotene, vitamin D, vitamin C, folate, thiamin, riboflavin, niacin, pantothenic acid, manganese, vitamin E, K1, glycine, proline, omega-9, palmitoleic acid, carotenoids, lutein, betaine. From Frida 5.5, DTU National Food Institute, Denmark, food 1082 (Beef, sirloin, raw), adjusted for water content: iodine, biotin, chromium, molybdenum. Set to 0 because the nutrient is absent from this kind of food: soluble fiber, insoluble fiber, MK-7, quercetin, plant sterols, total flavonoids, curcumin, resveratrol, sulforaphane. Vitamin K total is set to the phylloquinone (K1) amount, the form USDA reports as vitamin K."
   },
   {
     "name": "Beef 1 cup (4.7 oz, cooked, diced)",
@@ -39245,7 +40254,32 @@
       "threonine": 1570,
       "tryptophan": 259,
       "valine": 1950,
-      "tyrosine": 1253
+      "tyrosine": 1253,
+      "fiber": 0,
+      "solubleFiber": 0,
+      "insolubleFiber": 0,
+      "vitaminA": 4.88,
+      "vitaminARetinol": 4.88,
+      "vitaminABetaCarotene": 0,
+      "vitaminD": 0.325,
+      "vitaminC": 0,
+      "iodine": 1.95,
+      "folate": 11.4,
+      "biotin": 4.94,
+      "thiamin": 0.111,
+      "riboflavin": 0.308,
+      "niacin": 8.88,
+      "pantothenicAcid": 0.753,
+      "chromium": 3.58,
+      "manganese": 0.046,
+      "vitaminE": 0.504,
+      "vitaminK": 2.28,
+      "vitaminK1": 2.28,
+      "vitaminK2MK7": 0,
+      "molybdenum": 0,
+      "glycine": 2400,
+      "proline": 1990,
+      "quercetin": 0
     },
     "longevity": {
       "saturatedFat": 5,
@@ -39265,14 +40299,32 @@
       "pqq": 0,
       "choline": true,
       "selenium": true,
-      "copper": true
+      "copper": true,
+      "vitaminE": true,
+      "vitaminK": true,
+      "vitaminK1": true,
+      "vitaminK2MK7": true,
+      "quercetin": true,
+      "phosphorus": true,
+      "methionine": true,
+      "plantSterols": 0,
+      "omega9": 5.33,
+      "palmitoleicAcid": 0.441,
+      "flavonoids": 0,
+      "carotenoids": 0,
+      "lutein": 0,
+      "betaine": 20.3,
+      "curcumin": 0,
+      "resveratrol": 0,
+      "sulforaphane": 0
     },
     "carbQuality": {
       "glycemicIndex": 0,
       "addedSugar": 0,
       "refinedCarbs": 0,
       "netCarbs": 0
-    }
+    },
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 169484 (Beef, composite of trimmed retail cuts, separable lean and fat, trimmed to 1/8\" fat, all grades, cooked), scaled to about 163 g, the weight implied by this entry's own values. From that record: fiber, vitamin A, retinol, beta-carotene, vitamin D, vitamin C, folate, thiamin, riboflavin, niacin, pantothenic acid, manganese, vitamin E, K1, glycine, proline, omega-9, palmitoleic acid, carotenoids, lutein, betaine. From Frida 5.5, DTU National Food Institute, Denmark, food 1082 (Beef, sirloin, raw), adjusted for water content: iodine, biotin, chromium, molybdenum. Set to 0 because the nutrient is absent from this kind of food: soluble fiber, insoluble fiber, MK-7, quercetin, plant sterols, total flavonoids, curcumin, resveratrol, sulforaphane. Vitamin K total is set to the phylloquinone (K1) amount, the form USDA reports as vitamin K."
   },
   {
     "name": "Beef 1/2 cup (2.4 oz, cooked, diced)",
@@ -39304,7 +40356,32 @@
       "threonine": 785,
       "tryptophan": 129,
       "valine": 975,
-      "tyrosine": 627
+      "tyrosine": 627,
+      "fiber": 0,
+      "solubleFiber": 0,
+      "insolubleFiber": 0,
+      "vitaminA": 2.45,
+      "vitaminARetinol": 2.45,
+      "vitaminABetaCarotene": 0,
+      "vitaminD": 0.163,
+      "vitaminC": 0,
+      "iodine": 0.979,
+      "folate": 5.71,
+      "biotin": 2.47,
+      "thiamin": 0.055,
+      "riboflavin": 0.154,
+      "niacin": 4.45,
+      "pantothenicAcid": 0.378,
+      "chromium": 1.8,
+      "manganese": 0.023,
+      "vitaminE": 0.253,
+      "vitaminK": 1.14,
+      "vitaminK1": 1.14,
+      "vitaminK2MK7": 0,
+      "molybdenum": 0,
+      "glycine": 1203,
+      "proline": 997,
+      "quercetin": 0
     },
     "longevity": {
       "saturatedFat": 2.5,
@@ -39324,14 +40401,32 @@
       "pqq": 0,
       "choline": true,
       "selenium": true,
-      "copper": true
+      "copper": true,
+      "vitaminE": true,
+      "vitaminK": true,
+      "vitaminK1": true,
+      "vitaminK2MK7": true,
+      "quercetin": true,
+      "phosphorus": true,
+      "methionine": true,
+      "plantSterols": 0,
+      "omega9": 2.67,
+      "palmitoleicAcid": 0.221,
+      "flavonoids": 0,
+      "carotenoids": 0,
+      "lutein": 0,
+      "betaine": 10.2,
+      "curcumin": 0,
+      "resveratrol": 0,
+      "sulforaphane": 0
     },
     "carbQuality": {
       "glycemicIndex": 0,
       "addedSugar": 0,
       "refinedCarbs": 0,
       "netCarbs": 0
-    }
+    },
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 169484 (Beef, composite of trimmed retail cuts, separable lean and fat, trimmed to 1/8\" fat, all grades, cooked), scaled to about 82 g, the weight implied by this entry's own values. From that record: fiber, vitamin A, retinol, beta-carotene, vitamin D, vitamin C, folate, thiamin, riboflavin, niacin, pantothenic acid, manganese, vitamin E, K1, glycine, proline, omega-9, palmitoleic acid, carotenoids, lutein, betaine. From Frida 5.5, DTU National Food Institute, Denmark, food 1082 (Beef, sirloin, raw), adjusted for water content: iodine, biotin, chromium, molybdenum. Set to 0 because the nutrient is absent from this kind of food: soluble fiber, insoluble fiber, MK-7, quercetin, plant sterols, total flavonoids, curcumin, resveratrol, sulforaphane. Vitamin K total is set to the phylloquinone (K1) amount, the form USDA reports as vitamin K."
   },
   {
     "name": "Lamb 1 cup (4.7 oz, cooked, diced)",
@@ -39368,7 +40463,30 @@
       "valine": 2436,
       "arginine": 2683,
       "cysteine": 539,
-      "tyrosine": 1517
+      "tyrosine": 1517,
+      "fiber": 0,
+      "solubleFiber": 0,
+      "insolubleFiber": 0,
+      "vitaminA": 0,
+      "vitaminARetinol": 0,
+      "vitaminABetaCarotene": 0,
+      "vitaminD": 0.657,
+      "vitaminC": 0,
+      "iodine": 1.15,
+      "folate": 30.7,
+      "biotin": 1.64,
+      "thiamin": 0.133,
+      "riboflavin": 0.373,
+      "niacin": 8.43,
+      "pantothenicAcid": 0.92,
+      "chromium": 13.3,
+      "manganese": 0.037,
+      "vitaminK1": 0,
+      "vitaminK2MK7": 0,
+      "molybdenum": 0,
+      "glycine": 1837,
+      "proline": 1579,
+      "quercetin": 0
     },
     "longevity": {
       "saturatedFat": 4.3,
@@ -39391,14 +40509,24 @@
       "copper": true,
       "methionine": true,
       "phosphorus": true,
-      "betaine": 22
+      "betaine": 22,
+      "vitaminK1": true,
+      "vitaminK2MK7": true,
+      "quercetin": true,
+      "plantSterols": 0,
+      "omega9": 5.15,
+      "flavonoids": 0,
+      "curcumin": 0,
+      "resveratrol": 0,
+      "sulforaphane": 0
     },
     "carbQuality": {
       "glycemicIndex": 0,
       "addedSugar": 0,
       "refinedCarbs": 0,
       "netCarbs": 0
-    }
+    },
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 174308 (Lamb, composite of trimmed retail cuts, separable lean only, trimmed to 1/4\" fat, choice, cooked), scaled to about 133 g, the weight implied by this entry's own values. From that record: fiber, vitamin A, retinol, vitamin C, folate, thiamin, riboflavin, niacin, pantothenic acid, manganese, glycine, proline, omega-9. From Frida 5.5, DTU National Food Institute, Denmark, food 71 (Lamb, leg, unspecified , raw), adjusted for water content: beta-carotene, vitamin D, iodine, biotin, chromium, K1, molybdenum. Set to 0 because the nutrient is absent from this kind of food: soluble fiber, insoluble fiber, MK-7, quercetin, plant sterols, total flavonoids, curcumin, resveratrol, sulforaphane."
   },
   {
     "name": "Lamb 1/2 cup (2.4 oz, cooked, diced)",
@@ -39435,7 +40563,30 @@
       "valine": 1218,
       "arginine": 1342,
       "cysteine": 270,
-      "tyrosine": 758
+      "tyrosine": 758,
+      "fiber": 0,
+      "solubleFiber": 0,
+      "insolubleFiber": 0,
+      "vitaminA": 0,
+      "vitaminARetinol": 0,
+      "vitaminABetaCarotene": 0,
+      "vitaminD": 0.332,
+      "vitaminC": 0,
+      "iodine": 0.58,
+      "folate": 15.5,
+      "biotin": 0.829,
+      "thiamin": 0.067,
+      "riboflavin": 0.189,
+      "niacin": 4.26,
+      "pantothenicAcid": 0.465,
+      "chromium": 6.71,
+      "manganese": 0.019,
+      "vitaminK1": 0,
+      "vitaminK2MK7": 0,
+      "molybdenum": 0,
+      "glycine": 928,
+      "proline": 797,
+      "quercetin": 0
     },
     "longevity": {
       "saturatedFat": 2.1,
@@ -39458,14 +40609,24 @@
       "copper": true,
       "methionine": true,
       "phosphorus": true,
-      "betaine": 11
+      "betaine": 11,
+      "vitaminK1": true,
+      "vitaminK2MK7": true,
+      "quercetin": true,
+      "plantSterols": 0,
+      "omega9": 2.6,
+      "flavonoids": 0,
+      "curcumin": 0,
+      "resveratrol": 0,
+      "sulforaphane": 0
     },
     "carbQuality": {
       "glycemicIndex": 0,
       "addedSugar": 0,
       "refinedCarbs": 0,
       "netCarbs": 0
-    }
+    },
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 174308 (Lamb, composite of trimmed retail cuts, separable lean only, trimmed to 1/4\" fat, choice, cooked), scaled to about 67 g, the weight implied by this entry's own values. From that record: fiber, vitamin A, retinol, vitamin C, folate, thiamin, riboflavin, niacin, pantothenic acid, manganese, glycine, proline, omega-9. From Frida 5.5, DTU National Food Institute, Denmark, food 71 (Lamb, leg, unspecified , raw), adjusted for water content: beta-carotene, vitamin D, iodine, biotin, chromium, K1, molybdenum. Set to 0 because the nutrient is absent from this kind of food: soluble fiber, insoluble fiber, MK-7, quercetin, plant sterols, total flavonoids, curcumin, resveratrol, sulforaphane."
   },
   {
     "name": "Pork loin 3 oz (palm-sized)",
@@ -39499,7 +40660,30 @@
       "threonine": 1109,
       "tryptophan": 309,
       "valine": 1318,
-      "tyrosine": 846
+      "tyrosine": 846,
+      "fiber": 0,
+      "solubleFiber": 0,
+      "insolubleFiber": 0,
+      "vitaminARetinol": 1.6,
+      "vitaminABetaCarotene": 0,
+      "vitaminD": 1.04,
+      "vitaminC": 0.481,
+      "iodine": 1.47,
+      "folate": 4.01,
+      "biotin": 3.47,
+      "riboflavin": 0.258,
+      "niacin": 4.04,
+      "pantothenicAcid": 0.56,
+      "chromium": 7.08,
+      "manganese": 0.0072,
+      "vitaminE": 0.233,
+      "vitaminK": 0,
+      "vitaminK1": 0,
+      "vitaminK2MK7": 0,
+      "molybdenum": 0,
+      "glycine": 1130,
+      "proline": 929,
+      "quercetin": 0
     },
     "longevity": {
       "saturatedFat": 2.1,
@@ -39519,14 +40703,32 @@
       "pqq": 0,
       "choline": true,
       "selenium": true,
-      "copper": true
+      "copper": true,
+      "vitaminE": true,
+      "vitaminK": true,
+      "vitaminK1": true,
+      "vitaminK2MK7": true,
+      "quercetin": true,
+      "phosphorus": true,
+      "methionine": true,
+      "plantSterols": 0,
+      "omega9": 4.49,
+      "palmitoleicAcid": 0.337,
+      "flavonoids": 0,
+      "carotenoids": 0,
+      "lutein": 0,
+      "betaine": 2.89,
+      "curcumin": 0,
+      "resveratrol": 0,
+      "sulforaphane": 0
     },
     "carbQuality": {
       "glycemicIndex": 0,
       "addedSugar": 0,
       "refinedCarbs": 0,
       "netCarbs": 0
-    }
+    },
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 167820 (Pork, fresh, loin, whole, separable lean and fat, cooked, broiled), scaled to about 80 g, the weight implied by this entry's own values. From that record: fiber, retinol, beta-carotene, vitamin D, vitamin C, folate, riboflavin, niacin, pantothenic acid, manganese, vitamin E, K1, glycine, proline, omega-9, palmitoleic acid, carotenoids, lutein, betaine. From Frida 5.5, DTU National Food Institute, Denmark, food 739 (Pork, loin, lean, raw), adjusted for water content: iodine, biotin, chromium, molybdenum. Set to 0 because the nutrient is absent from this kind of food: soluble fiber, insoluble fiber, MK-7, quercetin, plant sterols, total flavonoids, curcumin, resveratrol, sulforaphane. Vitamin K total is set to the phylloquinone (K1) amount, the form USDA reports as vitamin K."
   },
   {
     "name": "Shrimp md 3 oz (palm-sized or ~10 shrimps)",
@@ -39560,7 +40762,32 @@
       "threonine": 768,
       "tryptophan": 221,
       "valine": 907,
-      "tyrosine": 733
+      "tyrosine": 733,
+      "fiber": 0,
+      "solubleFiber": 0,
+      "insolubleFiber": 0,
+      "vitaminARetinol": 0,
+      "vitaminABetaCarotene": 0,
+      "vitaminD": 0,
+      "vitaminC": 0,
+      "folate": 24.2,
+      "biotin": 0.864,
+      "thiamin": 0.0058,
+      "riboflavin": 0.016,
+      "niacin": 0.592,
+      "pantothenicAcid": 0.054,
+      "chromium": 2.53,
+      "manganese": 0.028,
+      "vitaminE": 4.84,
+      "vitaminK": 0,
+      "vitaminK1": 0,
+      "vitaminK2": 0,
+      "vitaminK2MK4": 0,
+      "vitaminK2MK7": 0,
+      "molybdenum": 0,
+      "glycine": 1217,
+      "proline": 845,
+      "quercetin": 0
     },
     "longevity": {
       "saturatedFat": 0.2,
@@ -39580,14 +40807,31 @@
       "pqq": 0,
       "choline": true,
       "selenium": true,
-      "copper": true
+      "copper": true,
+      "vitaminE": true,
+      "vitaminK": true,
+      "vitaminK1": true,
+      "vitaminK2": true,
+      "vitaminK2MK4": true,
+      "vitaminK2MK7": true,
+      "quercetin": true,
+      "phosphorus": true,
+      "methionine": true,
+      "plantSterols": 0,
+      "omega9": 0.017,
+      "palmitoleicAcid": 0.0017,
+      "flavonoids": 0,
+      "curcumin": 0,
+      "resveratrol": 0,
+      "sulforaphane": 0
     },
     "carbQuality": {
       "glycemicIndex": 0,
       "addedSugar": 0,
       "refinedCarbs": 0,
       "netCarbs": 0
-    }
+    },
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 175180 (Crustaceans, shrimp, cooked), scaled to about 85 g, the weight implied by this entry's own values. From that record: manganese, omega-9, palmitoleic acid. From Frida 5.5, DTU National Food Institute, Denmark, food 518 (Shrimp, boiled, shell removed), adjusted for water content, amino acids for protein content: fiber, retinol, beta-carotene, vitamin D, vitamin C, folate, biotin, riboflavin, niacin, pantothenic acid, chromium, vitamin E, K1, MK-4, MK-7, molybdenum, glycine, proline. From CoFID 2021 (UK) food 16-245 (Shrimps, boiled), adjusted for water content: thiamin. Set to 0 because the nutrient is absent from this kind of food: soluble fiber, insoluble fiber, quercetin, plant sterols, total flavonoids, curcumin, resveratrol, sulforaphane. Vitamin K total is set to the phylloquinone (K1) amount, the form USDA reports as vitamin K. K2 is MK-4 plus MK-7."
   },
   {
     "name": "Shrimp sm x 1",
@@ -39621,7 +40865,32 @@
       "threonine": 43,
       "tryptophan": 12,
       "valine": 50,
-      "tyrosine": 41
+      "tyrosine": 41,
+      "fiber": 0,
+      "solubleFiber": 0,
+      "insolubleFiber": 0,
+      "vitaminARetinol": 0,
+      "vitaminABetaCarotene": 0,
+      "vitaminD": 0,
+      "vitaminC": 0,
+      "folate": 1.35,
+      "biotin": 0.048,
+      "thiamin": 0.0003,
+      "riboflavin": 0.0009,
+      "niacin": 0.033,
+      "pantothenicAcid": 0.003,
+      "chromium": 0.141,
+      "manganese": 0.0016,
+      "vitaminE": 0.27,
+      "vitaminK": 0,
+      "vitaminK1": 0,
+      "vitaminK2": 0,
+      "vitaminK2MK4": 0,
+      "vitaminK2MK7": 0,
+      "molybdenum": 0,
+      "glycine": 68,
+      "proline": 47,
+      "quercetin": 0
     },
     "longevity": {
       "saturatedFat": 0.01,
@@ -39641,14 +40910,31 @@
       "pqq": 0,
       "choline": true,
       "selenium": true,
-      "copper": true
+      "copper": true,
+      "vitaminE": true,
+      "vitaminK": true,
+      "vitaminK1": true,
+      "vitaminK2": true,
+      "vitaminK2MK4": true,
+      "vitaminK2MK7": true,
+      "quercetin": true,
+      "phosphorus": true,
+      "methionine": true,
+      "plantSterols": 0,
+      "omega9": 0.001,
+      "palmitoleicAcid": 0,
+      "flavonoids": 0,
+      "curcumin": 0,
+      "resveratrol": 0,
+      "sulforaphane": 0
     },
     "carbQuality": {
       "glycemicIndex": 0,
       "addedSugar": 0,
       "refinedCarbs": 0,
       "netCarbs": 0
-    }
+    },
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 175180 (Crustaceans, shrimp, cooked), scaled to about 4.8 g, the weight implied by this entry's own values. From that record: manganese, omega-9, palmitoleic acid. From Frida 5.5, DTU National Food Institute, Denmark, food 518 (Shrimp, boiled, shell removed), adjusted for water content, amino acids for protein content: fiber, retinol, beta-carotene, vitamin D, vitamin C, folate, biotin, riboflavin, niacin, pantothenic acid, chromium, vitamin E, K1, MK-4, MK-7, molybdenum, glycine, proline. From CoFID 2021 (UK) food 16-245 (Shrimps, boiled), adjusted for water content: thiamin. Set to 0 because the nutrient is absent from this kind of food: soluble fiber, insoluble fiber, quercetin, plant sterols, total flavonoids, curcumin, resveratrol, sulforaphane. Vitamin K total is set to the phylloquinone (K1) amount, the form USDA reports as vitamin K. K2 is MK-4 plus MK-7."
   },
   {
     "name": "Shrimp sm x 7",
@@ -39682,7 +40968,32 @@
       "threonine": 299,
       "tryptophan": 86,
       "valine": 353,
-      "tyrosine": 285
+      "tyrosine": 285,
+      "fiber": 0,
+      "solubleFiber": 0,
+      "insolubleFiber": 0,
+      "vitaminARetinol": 0,
+      "vitaminABetaCarotene": 0,
+      "vitaminD": 0,
+      "vitaminC": 0,
+      "folate": 9.81,
+      "biotin": 0.351,
+      "thiamin": 0.0024,
+      "riboflavin": 0.0064,
+      "niacin": 0.24,
+      "pantothenicAcid": 0.022,
+      "chromium": 1.03,
+      "manganese": 0.011,
+      "vitaminE": 1.96,
+      "vitaminK": 0,
+      "vitaminK1": 0,
+      "vitaminK2": 0,
+      "vitaminK2MK4": 0,
+      "vitaminK2MK7": 0,
+      "molybdenum": 0,
+      "glycine": 494,
+      "proline": 343,
+      "quercetin": 0
     },
     "longevity": {
       "saturatedFat": 0.08,
@@ -39702,14 +41013,31 @@
       "pqq": 0,
       "choline": true,
       "selenium": true,
-      "copper": true
+      "copper": true,
+      "vitaminE": true,
+      "vitaminK": true,
+      "vitaminK1": true,
+      "vitaminK2": true,
+      "vitaminK2MK4": true,
+      "vitaminK2MK7": true,
+      "quercetin": true,
+      "phosphorus": true,
+      "methionine": true,
+      "plantSterols": 0,
+      "omega9": 0.0069,
+      "palmitoleicAcid": 0.0007,
+      "flavonoids": 0,
+      "curcumin": 0,
+      "resveratrol": 0,
+      "sulforaphane": 0
     },
     "carbQuality": {
       "glycemicIndex": 0,
       "addedSugar": 0,
       "refinedCarbs": 0,
       "netCarbs": 0
-    }
+    },
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 175180 (Crustaceans, shrimp, cooked), scaled to about 35 g, the weight implied by this entry's own values. From that record: manganese, omega-9, palmitoleic acid. From Frida 5.5, DTU National Food Institute, Denmark, food 518 (Shrimp, boiled, shell removed), adjusted for water content, amino acids for protein content: fiber, retinol, beta-carotene, vitamin D, vitamin C, folate, biotin, riboflavin, niacin, pantothenic acid, chromium, vitamin E, K1, MK-4, MK-7, molybdenum, glycine, proline. From CoFID 2021 (UK) food 16-245 (Shrimps, boiled), adjusted for water content: thiamin. Set to 0 because the nutrient is absent from this kind of food: soluble fiber, insoluble fiber, quercetin, plant sterols, total flavonoids, curcumin, resveratrol, sulforaphane. Vitamin K total is set to the phylloquinone (K1) amount, the form USDA reports as vitamin K. K2 is MK-4 plus MK-7."
   },
   {
     "name": "Shrimp md x 1",
@@ -39743,7 +41071,32 @@
       "threonine": 77,
       "tryptophan": 22,
       "valine": 91,
-      "tyrosine": 73
+      "tyrosine": 73,
+      "fiber": 0,
+      "solubleFiber": 0,
+      "insolubleFiber": 0,
+      "vitaminARetinol": 0,
+      "vitaminABetaCarotene": 0,
+      "vitaminD": 0,
+      "vitaminC": 0,
+      "folate": 2.4,
+      "biotin": 0.086,
+      "thiamin": 0.0006,
+      "riboflavin": 0.0016,
+      "niacin": 0.059,
+      "pantothenicAcid": 0.0054,
+      "chromium": 0.252,
+      "manganese": 0.0028,
+      "vitaminE": 0.481,
+      "vitaminK": 0,
+      "vitaminK1": 0,
+      "vitaminK2": 0,
+      "vitaminK2MK4": 0,
+      "vitaminK2MK7": 0,
+      "molybdenum": 0,
+      "glycine": 121,
+      "proline": 84,
+      "quercetin": 0
     },
     "longevity": {
       "saturatedFat": 0.02,
@@ -39763,14 +41116,31 @@
       "pqq": 0,
       "choline": true,
       "selenium": true,
-      "copper": true
+      "copper": true,
+      "vitaminE": true,
+      "vitaminK": true,
+      "vitaminK1": true,
+      "vitaminK2": true,
+      "vitaminK2MK4": true,
+      "vitaminK2MK7": true,
+      "quercetin": true,
+      "phosphorus": true,
+      "methionine": true,
+      "plantSterols": 0,
+      "omega9": 0.0017,
+      "palmitoleicAcid": 0.0002,
+      "flavonoids": 0,
+      "curcumin": 0,
+      "resveratrol": 0,
+      "sulforaphane": 0
     },
     "carbQuality": {
       "glycemicIndex": 0,
       "addedSugar": 0,
       "refinedCarbs": 0,
       "netCarbs": 0
-    }
+    },
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 175180 (Crustaceans, shrimp, cooked), scaled to about 8.5 g, the weight implied by this entry's own values. From that record: manganese, omega-9, palmitoleic acid. From Frida 5.5, DTU National Food Institute, Denmark, food 518 (Shrimp, boiled, shell removed), adjusted for water content, amino acids for protein content: fiber, retinol, beta-carotene, vitamin D, vitamin C, folate, biotin, riboflavin, niacin, pantothenic acid, chromium, vitamin E, K1, MK-4, MK-7, molybdenum, glycine, proline. From CoFID 2021 (UK) food 16-245 (Shrimps, boiled), adjusted for water content: thiamin. Set to 0 because the nutrient is absent from this kind of food: soluble fiber, insoluble fiber, quercetin, plant sterols, total flavonoids, curcumin, resveratrol, sulforaphane. Vitamin K total is set to the phylloquinone (K1) amount, the form USDA reports as vitamin K. K2 is MK-4 plus MK-7."
   },
   {
     "name": "Shrimp md x 7",
@@ -39804,7 +41174,32 @@
       "threonine": 538,
       "tryptophan": 155,
       "valine": 635,
-      "tyrosine": 513
+      "tyrosine": 513,
+      "fiber": 0,
+      "solubleFiber": 0,
+      "insolubleFiber": 0,
+      "vitaminARetinol": 0,
+      "vitaminABetaCarotene": 0,
+      "vitaminD": 0,
+      "vitaminC": 0,
+      "folate": 17.1,
+      "biotin": 0.611,
+      "thiamin": 0.0041,
+      "riboflavin": 0.011,
+      "niacin": 0.419,
+      "pantothenicAcid": 0.038,
+      "chromium": 1.79,
+      "manganese": 0.02,
+      "vitaminE": 3.42,
+      "vitaminK": 0,
+      "vitaminK1": 0,
+      "vitaminK2": 0,
+      "vitaminK2MK4": 0,
+      "vitaminK2MK7": 0,
+      "molybdenum": 0,
+      "glycine": 861,
+      "proline": 598,
+      "quercetin": 0
     },
     "longevity": {
       "saturatedFat": 0.14,
@@ -39824,14 +41219,31 @@
       "pqq": 0,
       "choline": true,
       "selenium": true,
-      "copper": true
+      "copper": true,
+      "vitaminE": true,
+      "vitaminK": true,
+      "vitaminK1": true,
+      "vitaminK2": true,
+      "vitaminK2MK4": true,
+      "vitaminK2MK7": true,
+      "quercetin": true,
+      "phosphorus": true,
+      "methionine": true,
+      "plantSterols": 0,
+      "omega9": 0.012,
+      "palmitoleicAcid": 0.0012,
+      "flavonoids": 0,
+      "curcumin": 0,
+      "resveratrol": 0,
+      "sulforaphane": 0
     },
     "carbQuality": {
       "glycemicIndex": 0,
       "addedSugar": 0,
       "refinedCarbs": 0,
       "netCarbs": 0
-    }
+    },
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 175180 (Crustaceans, shrimp, cooked), scaled to about 60 g, the weight implied by this entry's own values. From that record: manganese, omega-9, palmitoleic acid. From Frida 5.5, DTU National Food Institute, Denmark, food 518 (Shrimp, boiled, shell removed), adjusted for water content, amino acids for protein content: fiber, retinol, beta-carotene, vitamin D, vitamin C, folate, biotin, riboflavin, niacin, pantothenic acid, chromium, vitamin E, K1, MK-4, MK-7, molybdenum, glycine, proline. From CoFID 2021 (UK) food 16-245 (Shrimps, boiled), adjusted for water content: thiamin. Set to 0 because the nutrient is absent from this kind of food: soluble fiber, insoluble fiber, quercetin, plant sterols, total flavonoids, curcumin, resveratrol, sulforaphane. Vitamin K total is set to the phylloquinone (K1) amount, the form USDA reports as vitamin K. K2 is MK-4 plus MK-7."
   },
   {
     "name": "Shrimp lg x 1",
@@ -39865,7 +41277,32 @@
       "threonine": 96,
       "tryptophan": 28,
       "valine": 113,
-      "tyrosine": 92
+      "tyrosine": 92,
+      "fiber": 0,
+      "solubleFiber": 0,
+      "insolubleFiber": 0,
+      "vitaminARetinol": 0,
+      "vitaminABetaCarotene": 0,
+      "vitaminD": 0,
+      "vitaminC": 0,
+      "folate": 3.14,
+      "biotin": 0.112,
+      "thiamin": 0.0008,
+      "riboflavin": 0.002,
+      "niacin": 0.077,
+      "pantothenicAcid": 0.0071,
+      "chromium": 0.328,
+      "manganese": 0.0036,
+      "vitaminE": 0.627,
+      "vitaminK": 0,
+      "vitaminK1": 0,
+      "vitaminK2": 0,
+      "vitaminK2MK4": 0,
+      "vitaminK2MK7": 0,
+      "molybdenum": 0,
+      "glycine": 158,
+      "proline": 110,
+      "quercetin": 0
     },
     "longevity": {
       "saturatedFat": 0.03,
@@ -39885,14 +41322,31 @@
       "pqq": 0,
       "choline": true,
       "selenium": true,
-      "copper": true
+      "copper": true,
+      "vitaminE": true,
+      "vitaminK": true,
+      "vitaminK1": true,
+      "vitaminK2": true,
+      "vitaminK2MK4": true,
+      "vitaminK2MK7": true,
+      "quercetin": true,
+      "phosphorus": true,
+      "methionine": true,
+      "plantSterols": 0,
+      "omega9": 0.0022,
+      "palmitoleicAcid": 0.0002,
+      "flavonoids": 0,
+      "curcumin": 0,
+      "resveratrol": 0,
+      "sulforaphane": 0
     },
     "carbQuality": {
       "glycemicIndex": 0,
       "addedSugar": 0,
       "refinedCarbs": 0,
       "netCarbs": 0
-    }
+    },
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 175180 (Crustaceans, shrimp, cooked), scaled to about 11 g, the weight implied by this entry's own values. From that record: manganese, omega-9, palmitoleic acid. From Frida 5.5, DTU National Food Institute, Denmark, food 518 (Shrimp, boiled, shell removed), adjusted for water content, amino acids for protein content: fiber, retinol, beta-carotene, vitamin D, vitamin C, folate, biotin, riboflavin, niacin, pantothenic acid, chromium, vitamin E, K1, MK-4, MK-7, molybdenum, glycine, proline. From CoFID 2021 (UK) food 16-245 (Shrimps, boiled), adjusted for water content: thiamin. Set to 0 because the nutrient is absent from this kind of food: soluble fiber, insoluble fiber, quercetin, plant sterols, total flavonoids, curcumin, resveratrol, sulforaphane. Vitamin K total is set to the phylloquinone (K1) amount, the form USDA reports as vitamin K. K2 is MK-4 plus MK-7."
   },
   {
     "name": "Shrimp lg x 7",
@@ -39926,7 +41380,32 @@
       "threonine": 672,
       "tryptophan": 193,
       "valine": 794,
-      "tyrosine": 641
+      "tyrosine": 641,
+      "fiber": 0,
+      "solubleFiber": 0,
+      "insolubleFiber": 0,
+      "vitaminARetinol": 0,
+      "vitaminABetaCarotene": 0,
+      "vitaminD": 0,
+      "vitaminC": 0,
+      "folate": 21.7,
+      "biotin": 0.776,
+      "thiamin": 0.0052,
+      "riboflavin": 0.014,
+      "niacin": 0.532,
+      "pantothenicAcid": 0.049,
+      "chromium": 2.27,
+      "manganese": 0.025,
+      "vitaminE": 4.34,
+      "vitaminK": 0,
+      "vitaminK1": 0,
+      "vitaminK2": 0,
+      "vitaminK2MK4": 0,
+      "vitaminK2MK7": 0,
+      "molybdenum": 0,
+      "glycine": 1093,
+      "proline": 759,
+      "quercetin": 0
     },
     "longevity": {
       "saturatedFat": 0.18,
@@ -39946,14 +41425,31 @@
       "pqq": 0,
       "choline": true,
       "selenium": true,
-      "copper": true
+      "copper": true,
+      "vitaminE": true,
+      "vitaminK": true,
+      "vitaminK1": true,
+      "vitaminK2": true,
+      "vitaminK2MK4": true,
+      "vitaminK2MK7": true,
+      "quercetin": true,
+      "phosphorus": true,
+      "methionine": true,
+      "plantSterols": 0,
+      "omega9": 0.015,
+      "palmitoleicAcid": 0.0015,
+      "flavonoids": 0,
+      "curcumin": 0,
+      "resveratrol": 0,
+      "sulforaphane": 0
     },
     "carbQuality": {
       "glycemicIndex": 0,
       "addedSugar": 0,
       "refinedCarbs": 0,
       "netCarbs": 0
-    }
+    },
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 175180 (Crustaceans, shrimp, cooked), scaled to about 76 g, the weight implied by this entry's own values. From that record: manganese, omega-9, palmitoleic acid. From Frida 5.5, DTU National Food Institute, Denmark, food 518 (Shrimp, boiled, shell removed), adjusted for water content, amino acids for protein content: fiber, retinol, beta-carotene, vitamin D, vitamin C, folate, biotin, riboflavin, niacin, pantothenic acid, chromium, vitamin E, K1, MK-4, MK-7, molybdenum, glycine, proline. From CoFID 2021 (UK) food 16-245 (Shrimps, boiled), adjusted for water content: thiamin. Set to 0 because the nutrient is absent from this kind of food: soluble fiber, insoluble fiber, quercetin, plant sterols, total flavonoids, curcumin, resveratrol, sulforaphane. Vitamin K total is set to the phylloquinone (K1) amount, the form USDA reports as vitamin K. K2 is MK-4 plus MK-7."
   },
   {
     "name": "Lentils cooked 1 cup",
@@ -45498,7 +46994,20 @@
       "cysteine": 215,
       "glycine": 960,
       "proline": 710,
-      "tyrosine": 670
+      "tyrosine": 670,
+      "fiber": 0,
+      "solubleFiber": 0,
+      "insolubleFiber": 0,
+      "vitaminABetaCarotene": 0,
+      "vitaminC": 0.876,
+      "iodine": 305,
+      "biotin": 0.822,
+      "manganese": 0.018,
+      "vitaminK": 0.088,
+      "vitaminK1": 0.088,
+      "vitaminK2MK7": 0,
+      "chloride": 119,
+      "quercetin": 0
     },
     "longevity": {
       "saturatedFat": 0.2,
@@ -45523,13 +47032,26 @@
       "phosphorus": true,
       "choline": true,
       "carnitine": 3,
-      "creatine": 0.3
+      "creatine": 0.3,
+      "vitaminK": true,
+      "vitaminK1": true,
+      "vitaminK2MK7": true,
+      "quercetin": true,
+      "plantSterols": 0,
+      "flavonoids": 0,
+      "carotenoids": 0,
+      "lutein": 0,
+      "betaine": 8.5,
+      "curcumin": 0,
+      "resveratrol": 0,
+      "sulforaphane": 0
     },
     "carbQuality": {
       "glycemicIndex": 0,
       "addedSugar": 0,
       "refinedCarbs": 0
-    }
+    },
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 171956 (Fish, cod, Atlantic, cooked, dry heat), scaled to about 88 g, the weight implied by this entry's own values. From that record: fiber, beta-carotene, vitamin C, manganese, K1, carotenoids, lutein, betaine. From Frida 5.5, DTU National Food Institute, Denmark, food 562 (Cod, fillet, boiled), adjusted for water content: iodine. From CoFID 2021 (UK) food 16-373 (Cod, flesh only, baked), adjusted for water content: biotin, chloride. Set to 0 because the nutrient is absent from this kind of food: soluble fiber, insoluble fiber, MK-7, quercetin, plant sterols, total flavonoids, curcumin, resveratrol, sulforaphane. Vitamin K total is set to the phylloquinone (K1) amount, the form USDA reports as vitamin K."
   },
   {
     "name": "Fish fillet 6 oz (1 medium fillet, cooked)",
@@ -45575,7 +47097,20 @@
       "cysteine": 430,
       "glycine": 1920,
       "proline": 1420,
-      "tyrosine": 1340
+      "tyrosine": 1340,
+      "fiber": 0,
+      "solubleFiber": 0,
+      "insolubleFiber": 0,
+      "vitaminABetaCarotene": 0,
+      "vitaminC": 1.75,
+      "iodine": 610,
+      "biotin": 1.64,
+      "manganese": 0.035,
+      "vitaminK": 0.175,
+      "vitaminK1": 0.175,
+      "vitaminK2MK7": 0,
+      "chloride": 237,
+      "quercetin": 0
     },
     "longevity": {
       "saturatedFat": 0.4,
@@ -45600,13 +47135,26 @@
       "phosphorus": true,
       "choline": true,
       "carnitine": 6,
-      "creatine": 0.6
+      "creatine": 0.6,
+      "vitaminK": true,
+      "vitaminK1": true,
+      "vitaminK2MK7": true,
+      "quercetin": true,
+      "plantSterols": 0,
+      "flavonoids": 0,
+      "carotenoids": 0,
+      "lutein": 0,
+      "betaine": 17.0,
+      "curcumin": 0,
+      "resveratrol": 0,
+      "sulforaphane": 0
     },
     "carbQuality": {
       "glycemicIndex": 0,
       "addedSugar": 0,
       "refinedCarbs": 0
-    }
+    },
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 171956 (Fish, cod, Atlantic, cooked, dry heat), scaled to about 175 g, the weight implied by this entry's own values. From that record: fiber, beta-carotene, vitamin C, manganese, K1, carotenoids, lutein, betaine. From Frida 5.5, DTU National Food Institute, Denmark, food 562 (Cod, fillet, boiled), adjusted for water content: iodine. From CoFID 2021 (UK) food 16-373 (Cod, flesh only, baked), adjusted for water content: biotin, chloride. Set to 0 because the nutrient is absent from this kind of food: soluble fiber, insoluble fiber, MK-7, quercetin, plant sterols, total flavonoids, curcumin, resveratrol, sulforaphane. Vitamin K total is set to the phylloquinone (K1) amount, the form USDA reports as vitamin K."
   },
   {
     "name": "Fish 1\" x 1\" (0.6 oz, cooked)",
@@ -45652,7 +47200,20 @@
       "cysteine": 43,
       "glycine": 192,
       "proline": 142,
-      "tyrosine": 134
+      "tyrosine": 134,
+      "fiber": 0,
+      "solubleFiber": 0,
+      "insolubleFiber": 0,
+      "vitaminABetaCarotene": 0,
+      "vitaminC": 0.175,
+      "iodine": 61.0,
+      "biotin": 0.164,
+      "manganese": 0.0035,
+      "vitaminK": 0.018,
+      "vitaminK1": 0.018,
+      "vitaminK2MK7": 0,
+      "chloride": 23.7,
+      "quercetin": 0
     },
     "longevity": {
       "saturatedFat": 0.04,
@@ -45677,13 +47238,26 @@
       "phosphorus": true,
       "choline": true,
       "carnitine": 0.6,
-      "creatine": 0.06
+      "creatine": 0.06,
+      "vitaminK": true,
+      "vitaminK1": true,
+      "vitaminK2MK7": true,
+      "quercetin": true,
+      "plantSterols": 0,
+      "flavonoids": 0,
+      "carotenoids": 0,
+      "lutein": 0,
+      "betaine": 1.7,
+      "curcumin": 0,
+      "resveratrol": 0,
+      "sulforaphane": 0
     },
     "carbQuality": {
       "glycemicIndex": 0,
       "addedSugar": 0,
       "refinedCarbs": 0
-    }
+    },
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 171956 (Fish, cod, Atlantic, cooked, dry heat), scaled to about 17.5 g, the weight implied by this entry's own values. From that record: fiber, beta-carotene, vitamin C, manganese, K1, carotenoids, lutein, betaine. From Frida 5.5, DTU National Food Institute, Denmark, food 562 (Cod, fillet, boiled), adjusted for water content: iodine. From CoFID 2021 (UK) food 16-373 (Cod, flesh only, baked), adjusted for water content: biotin, chloride. Set to 0 because the nutrient is absent from this kind of food: soluble fiber, insoluble fiber, MK-7, quercetin, plant sterols, total flavonoids, curcumin, resveratrol, sulforaphane. Vitamin K total is set to the phylloquinone (K1) amount, the form USDA reports as vitamin K."
   },
   {
     "name": "Dim Sum - Chicken Feet x4",
@@ -47211,7 +48785,27 @@
       "omega3": 0.052,
       "omega6": 0.231,
       "epa": 0,
-      "dha": 0
+      "dha": 0,
+      "vitaminA": 0,
+      "vitaminARetinol": 0,
+      "vitaminABetaCarotene": 0,
+      "vitaminC": 0,
+      "vitaminK2MK7": 0,
+      "histidine": 320,
+      "isoleucine": 430,
+      "leucine": 770,
+      "lysine": 834,
+      "methionine": 247,
+      "phenylalanine": 372,
+      "threonine": 401,
+      "tryptophan": 79,
+      "valine": 466,
+      "arginine": 618,
+      "cysteine": 110,
+      "glycine": 525,
+      "proline": 435,
+      "tyrosine": 319,
+      "quercetin": 0
     },
     "longevity": {
       "saturatedFat": 3.04,
@@ -47233,13 +48827,27 @@
       "omega3": true,
       "omega6": true,
       "epa": true,
-      "dha": true
+      "dha": true,
+      "vitaminK2MK7": true,
+      "methionine": true,
+      "quercetin": true,
+      "transFat": 0.295,
+      "plantSterols": 0,
+      "omega9": 2.83,
+      "flavonoids": 0,
+      "carotenoids": 0,
+      "lutein": 0,
+      "betaine": 6.23,
+      "curcumin": 0,
+      "resveratrol": 0,
+      "sulforaphane": 0
     },
     "carbQuality": {
       "addedSugar": 2.5,
       "refinedCarbs": 2.6,
       "netCarbs": 2.6
-    }
+    },
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 167536 (Snacks, beef jerky, chopped and formed), scaled to about 28 g, the weight given in this entry's name. From that record: vitamin A, retinol, beta-carotene, vitamin C, omega-9, carotenoids, lutein. From USDA FoodData Central SR Legacy FDC 169484 (Beef, composite of trimmed retail cuts, separable lean and fat, trimmed to 1/8\" fat, all grades, cooked), adjusted for water content, amino acids for protein content: histidine, isoleucine, leucine, lysine, methionine, phenylalanine, threonine, tryptophan, valine, arginine, cysteine, glycine, proline, tyrosine, trans fat, betaine. Set to 0 because the nutrient is absent from this kind of food: MK-7, quercetin, plant sterols, total flavonoids, curcumin, resveratrol, sulforaphane."
   },
   {
     "name": "Fruit - Blueberries 1pc (about 1.4 g)",
@@ -47834,7 +49442,18 @@
       "cysteine": 304,
       "glycine": 1245,
       "proline": 1069,
-      "tyrosine": 857
+      "tyrosine": 857,
+      "fiber": 0,
+      "solubleFiber": 0,
+      "insolubleFiber": 0,
+      "vitaminARetinol": 0,
+      "vitaminABetaCarotene": 0,
+      "iodine": 0.751,
+      "biotin": 1.07,
+      "chromium": 8.69,
+      "vitaminK2MK7": 0,
+      "molybdenum": 0,
+      "quercetin": 0
     },
     "longevity": {
       "saturatedFat": 2.96,
@@ -47856,7 +49475,19 @@
       "copper": true,
       "methionine": true,
       "phosphorus": true,
-      "choline": true
+      "choline": true,
+      "vitaminK2MK7": true,
+      "quercetin": true,
+      "plantSterols": 0,
+      "omega9": 3.36,
+      "ala": 0.051,
+      "linoleicAcid": 0.442,
+      "flavonoids": 0,
+      "carotenoids": 0,
+      "lutein": 0,
+      "curcumin": 0,
+      "resveratrol": 0,
+      "sulforaphane": 0
     },
     "carbQuality": {
       "glycemicIndex": 0,
@@ -47864,7 +49495,7 @@
       "refinedCarbs": 0,
       "netCarbs": 0
     },
-    "notes": "USDA SR Legacy FDC 172492: lamb, domestic, loin, separable lean only, trimmed to 1/4 inch fat, choice, cooked, broiled. Scaled to 3 oz (85 g), the common palm-sized meat portion. Oleic acid is USDA 18:1 undifferentiated and palmitoleic acid is 16:1 undifferentiated. Omega-6 is 18:2 plus 20:4 undifferentiated. Omega-3 is 18:3 undifferentiated; EPA and DHA are reported as 0. Cystine is stored as cysteine. Glutamic acid is not stored as glutamine. Vitamin K is phylloquinone only."
+    "notes": "USDA SR Legacy FDC 172492: lamb, domestic, loin, separable lean only, trimmed to 1/4 inch fat, choice, cooked, broiled. Scaled to 3 oz (85 g), the common palm-sized meat portion. Oleic acid is USDA 18:1 undifferentiated and palmitoleic acid is 16:1 undifferentiated. Omega-6 is 18:2 plus 20:4 undifferentiated. Omega-3 is 18:3 undifferentiated; EPA and DHA are reported as 0. Cystine is stored as cysteine. Glutamic acid is not stored as glutamine. Vitamin K is phylloquinone only. Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 172492 (Lamb, loin, separable lean only, trimmed to 1/4\" fat, choice, cooked, broiled), scaled to about 85 g, the weight implied by this entry's own values. From that record: fiber, retinol, beta-carotene, omega-9, ALA, linoleic acid, carotenoids, lutein. From Frida 5.5, DTU National Food Institute, Denmark, food 71 (Lamb, leg, unspecified , raw), adjusted for water content: iodine, biotin, chromium, molybdenum. Set to 0 because the nutrient is absent from this kind of food: soluble fiber, insoluble fiber, MK-7, quercetin, plant sterols, total flavonoids, curcumin, resveratrol, sulforaphane."
   },
   {
     "name": "Junk Food - Slim Jim Original 1 oz (28 g)",
@@ -50357,7 +51988,12 @@
       "omega3": 0.021,
       "epa": 0,
       "dha": 0,
-      "omega6": 0.047
+      "omega6": 0.047,
+      "vitaminK2": 0,
+      "vitaminK2MK4": 0,
+      "vitaminK2MK7": 0,
+      "taurine": 0,
+      "quercetin": 1.65
     },
     "longevity": {
       "saturatedFat": 0.064,
@@ -50380,12 +52016,22 @@
       "selenium": true,
       "copper": true,
       "phosphorus": true,
-      "choline": true
+      "choline": true,
+      "vitaminK2": true,
+      "vitaminK2MK4": true,
+      "vitaminK2MK7": true,
+      "taurine": true,
+      "quercetin": true,
+      "omega9": 0.017,
+      "flavonoids": 22.8,
+      "curcumin": 0,
+      "sulforaphane": 0,
+      "creatine": 0
     },
     "carbQuality": {
       "netCarbs": 17.66
     },
-    "notes": "USDA FNDDS 2021-2023 (FoodData Central survey foods, Oct 2024 release) FDC 2709287: Fruit salad, fresh or raw, excluding citrus fruits, no dressing. Scaled to 142 g (5 oz; FNDDS 1 cup = 150 g). Used for the logged 'Urban Plates - Fruit Salad, 5 oz'; Urban Plates' current guide does not list it. Vitamin K is phylloquinone only; omega-3 is 18:3 plus EPA, DHA and DPA, omega-6 is 18:2 plus 20:4, all undifferentiated. Folate is DFE. Cystine is stored as cysteine. Keys USDA does not report are omitted."
+    "notes": "USDA FNDDS 2021-2023 (FoodData Central survey foods, Oct 2024 release) FDC 2709287: Fruit salad, fresh or raw, excluding citrus fruits, no dressing. Scaled to 142 g (5 oz; FNDDS 1 cup = 150 g). Used for the logged 'Urban Plates - Fruit Salad, 5 oz'; Urban Plates' current guide does not list it. Vitamin K is phylloquinone only; omega-3 is 18:3 plus EPA, DHA and DPA, omega-6 is 18:2 plus 20:4, all undifferentiated. Folate is DFE. Cystine is stored as cysteine. Keys USDA does not report are omitted. Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central FNDDS 2021-2023 FDC 2709287 (Fruit salad, fresh or raw, excluding citrus fruits, no dressing), scaled to about 142 g, the weight given in this entry's name. From that record: omega-9. Quercetin, total flavonoids from the USDA Flavonoid Values for Survey Foods 2017-2018, food code 63311000 (Fruit salad, fresh or raw,  excluding citrus fruits, no dressing). Set to 0 because the nutrient is absent from this kind of food: K2, MK-4, MK-7, taurine, curcumin, sulforaphane, creatine."
   },
   {
     "name": "Tuna, Yellowfin (Ahi), grilled 4 oz (113 g)",
@@ -50437,7 +52083,14 @@
       "cysteine": 339,
       "glycine": 3232,
       "proline": 1514,
-      "tyrosine": 1066
+      "tyrosine": 1066,
+      "solubleFiber": 0,
+      "insolubleFiber": 0,
+      "iodine": 15.7,
+      "biotin": 1.2,
+      "chromium": 5.76,
+      "vitaminK2MK7": 0,
+      "quercetin": 0
     },
     "longevity": {
       "saturatedFat": 0.232,
@@ -50462,12 +52115,21 @@
       "copper": true,
       "methionine": true,
       "phosphorus": true,
-      "choline": true
+      "choline": true,
+      "vitaminK2MK7": true,
+      "quercetin": true,
+      "plantSterols": 0,
+      "omega9": 0.112,
+      "flavonoids": 0,
+      "carotenoids": 0,
+      "curcumin": 0,
+      "resveratrol": 0,
+      "sulforaphane": 0
     },
     "carbQuality": {
       "netCarbs": 0
     },
-    "notes": "USDA SR Legacy FDC 172006: Fish, tuna, yellowfin, fresh, cooked, dry heat. Scaled to 113 g (4 oz). Used for the logged 'Urban Plates - Grilled Wild Ahi Tuna, 4 oz'; seasoning and oil not included. Vitamin K is phylloquinone only; omega-3 is 18:3 plus EPA, DHA and DPA, omega-6 is 18:2 plus 20:4, all undifferentiated. Folate is DFE. Cystine is stored as cysteine. Keys USDA does not report are omitted."
+    "notes": "USDA SR Legacy FDC 172006: Fish, tuna, yellowfin, fresh, cooked, dry heat. Scaled to 113 g (4 oz). Used for the logged 'Urban Plates - Grilled Wild Ahi Tuna, 4 oz'; seasoning and oil not included. Vitamin K is phylloquinone only; omega-3 is 18:3 plus EPA, DHA and DPA, omega-6 is 18:2 plus 20:4, all undifferentiated. Folate is DFE. Cystine is stored as cysteine. Keys USDA does not report are omitted. Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 172006 (Fish, tuna, yellowfin, fresh, cooked, dry heat), scaled to about 113 g, the weight given in this entry's name. From that record: omega-9, carotenoids. From Frida 5.5, DTU National Food Institute, Denmark, food 1653 (Tuna, yellowfin, raw), adjusted for water content: iodine, biotin, chromium. Set to 0 because the nutrient is absent from this kind of food: soluble fiber, insoluble fiber, MK-7, quercetin, plant sterols, total flavonoids, curcumin, resveratrol, sulforaphane."
   },
   {
     "name": "Pinto Beans, cooked 1 cup (171 g)",
@@ -50519,7 +52181,12 @@
       "cysteine": 144,
       "glycine": 1929,
       "proline": 624,
-      "tyrosine": 364
+      "tyrosine": 364,
+      "vitaminK2": 0,
+      "vitaminK2MK4": 0,
+      "vitaminK2MK7": 0,
+      "taurine": 0,
+      "quercetin": 0.171
     },
     "longevity": {
       "saturatedFat": 0.233,
@@ -50545,13 +52212,24 @@
       "copper": true,
       "methionine": true,
       "phosphorus": true,
-      "choline": true
+      "choline": true,
+      "vitaminK2": true,
+      "vitaminK2MK4": true,
+      "vitaminK2MK7": true,
+      "taurine": true,
+      "quercetin": true,
+      "omega9": 0.227,
+      "flavonoids": 8.7,
+      "carotenoids": 0,
+      "curcumin": 0,
+      "sulforaphane": 0,
+      "creatine": 0
     },
     "carbQuality": {
       "glycemicIndex": 39,
       "netCarbs": 29.44
     },
-    "notes": "USDA SR Legacy FDC 175200: Beans, pinto, mature seeds, cooked, boiled, without salt. Scaled to 171 g (SR 1 cup = 171 g). Boiled without salt. Glycemic index 39 for boiled pinto beans (International Tables of Glycemic Index, Atkinson et al. 2008). Vitamin K is phylloquinone only; omega-3 is 18:3 plus EPA, DHA and DPA, omega-6 is 18:2 plus 20:4, all undifferentiated. Folate is DFE. Cystine is stored as cysteine. Keys USDA does not report are omitted."
+    "notes": "USDA SR Legacy FDC 175200: Beans, pinto, mature seeds, cooked, boiled, without salt. Scaled to 171 g (SR 1 cup = 171 g). Boiled without salt. Glycemic index 39 for boiled pinto beans (International Tables of Glycemic Index, Atkinson et al. 2008). Vitamin K is phylloquinone only; omega-3 is 18:3 plus EPA, DHA and DPA, omega-6 is 18:2 plus 20:4, all undifferentiated. Folate is DFE. Cystine is stored as cysteine. Keys USDA does not report are omitted. Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 175200 (Beans, pinto, mature seeds, cooked, boiled, without salt), scaled to about 171 g, the weight given in this entry's name. From that record: omega-9, carotenoids. Quercetin, total flavonoids from the USDA Flavonoid Values for Survey Foods 2017-2018, food code 41104020 (Pinto beans, from dried, no added fat). Set to 0 because the nutrient is absent from this kind of food: K2, MK-4, MK-7, taurine, curcumin, sulforaphane, creatine."
   },
   {
     "name": "Scallops, steamed 4 oz (113 g)",
@@ -50587,7 +52265,32 @@
       "omega3": 0.156,
       "epa": 0.06,
       "dha": 0.087,
-      "omega6": 0.018
+      "omega6": 0.018,
+      "solubleFiber": 0,
+      "insolubleFiber": 0,
+      "iodine": 18.8,
+      "biotin": 1.88,
+      "pantothenicAcid": 0.31,
+      "manganese": 0.025,
+      "vitaminK2": 0,
+      "vitaminK2MK4": 0,
+      "vitaminK2MK7": 0,
+      "chloride": 384,
+      "histidine": 263,
+      "isoleucine": 580,
+      "leucine": 1028,
+      "lysine": 1055,
+      "methionine": 408,
+      "phenylalanine": 501,
+      "threonine": 527,
+      "tryptophan": 145,
+      "valine": 541,
+      "arginine": 923,
+      "cysteine": 171,
+      "glycine": 1476,
+      "proline": 408,
+      "tyrosine": 422,
+      "quercetin": 0
     },
     "longevity": {
       "saturatedFat": 0.183,
@@ -50610,12 +52313,25 @@
       "selenium": true,
       "copper": true,
       "phosphorus": true,
-      "choline": true
+      "choline": true,
+      "vitaminK2": true,
+      "vitaminK2MK4": true,
+      "vitaminK2MK7": true,
+      "methionine": true,
+      "quercetin": true,
+      "transFat": 0.0076,
+      "plantSterols": 0,
+      "omega9": 0.044,
+      "flavonoids": 0,
+      "carotenoids": 0,
+      "curcumin": 0,
+      "resveratrol": 0,
+      "sulforaphane": 0
     },
     "carbQuality": {
       "netCarbs": 4.54
     },
-    "notes": "USDA FNDDS 2021-2023 (FoodData Central survey foods, Oct 2024 release) FDC 2706358: Scallops, steamed or boiled. Scaled to 113 g (4 oz). Used for the logged 'Fishbowl Poke - Regular - Scallop Protein, 4 oz'; the poke shop's own marinade is not included. Vitamin K is phylloquinone only; omega-3 is 18:3 plus EPA, DHA and DPA, omega-6 is 18:2 plus 20:4, all undifferentiated. Folate is DFE. Cystine is stored as cysteine. Keys USDA does not report are omitted."
+    "notes": "USDA FNDDS 2021-2023 (FoodData Central survey foods, Oct 2024 release) FDC 2706358: Scallops, steamed or boiled. Scaled to 113 g (4 oz). Used for the logged 'Fishbowl Poke - Regular - Scallop Protein, 4 oz'; the poke shop's own marinade is not included. Vitamin K is phylloquinone only; omega-3 is 18:3 plus EPA, DHA and DPA, omega-6 is 18:2 plus 20:4, all undifferentiated. Folate is DFE. Cystine is stored as cysteine. Keys USDA does not report are omitted. Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central FNDDS 2021-2023 FDC 2706358 (Scallops, steamed or boiled), scaled to about 113 g, the weight given in this entry's name. From that record: omega-9. From USDA FoodData Central SR Legacy FDC 167742 (Mollusks, scallop, (bay and sea), cooked, steamed), adjusted for water content, amino acids for protein content: pantothenic acid, manganese, MK-4, histidine, isoleucine, leucine, lysine, methionine, phenylalanine, threonine, tryptophan, valine, arginine, cysteine, glycine, proline, tyrosine, trans fat, carotenoids. From CoFID 2021 (UK) food 16-262 (Scallops, steamed), adjusted for water content: iodine, biotin, chloride. Quercetin, total flavonoids from the USDA Flavonoid Values for Survey Foods 2017-2018, food code 26317130 (Scallops, steamed or boiled). Set to 0 because the nutrient is absent from this kind of food: soluble fiber, insoluble fiber, MK-7, plant sterols, curcumin, resveratrol, sulforaphane. K2 is MK-4 plus MK-7."
   },
   {
     "name": "Pork Belly, cooked 4 oz (113 g)",
@@ -50651,7 +52367,29 @@
       "omega3": 0.277,
       "epa": 0,
       "dha": 0.003,
-      "omega6": 5.56
+      "omega6": 5.56,
+      "solubleFiber": 0,
+      "insolubleFiber": 0,
+      "biotin": 6.19,
+      "pantothenicAcid": 0.277,
+      "manganese": 0.0065,
+      "vitaminK2MK7": 0,
+      "chloride": 144,
+      "histidine": 1173,
+      "isoleucine": 1385,
+      "leucine": 2393,
+      "lysine": 2689,
+      "methionine": 783,
+      "phenylalanine": 1194,
+      "threonine": 1357,
+      "tryptophan": 372,
+      "valine": 1619,
+      "arginine": 1894,
+      "cysteine": 378,
+      "glycine": 1549,
+      "proline": 1273,
+      "tyrosine": 1029,
+      "quercetin": 0
     },
     "longevity": {
       "saturatedFat": 13.2,
@@ -50674,12 +52412,23 @@
       "selenium": true,
       "copper": true,
       "phosphorus": true,
-      "choline": true
+      "choline": true,
+      "vitaminK2MK7": true,
+      "methionine": true,
+      "quercetin": true,
+      "plantSterols": 0,
+      "omega9": 14.8,
+      "flavonoids": 0,
+      "carotenoids": 0,
+      "betaine": 5.84,
+      "curcumin": 0,
+      "resveratrol": 0,
+      "sulforaphane": 0
     },
     "carbQuality": {
       "netCarbs": 0
     },
-    "notes": "USDA FNDDS 2021-2023 (FoodData Central survey foods, Oct 2024 release) FDC 2705901: Pork, belly. Scaled to 113 g (4 oz). Used for the logged 'Restaurant - Braised Pork Belly, 4 oz'; braising liquid and sauce sugars are not included. Vitamin K is phylloquinone only; omega-3 is 18:3 plus EPA, DHA and DPA, omega-6 is 18:2 plus 20:4, all undifferentiated. Folate is DFE. Cystine is stored as cysteine. Keys USDA does not report are omitted."
+    "notes": "USDA FNDDS 2021-2023 (FoodData Central survey foods, Oct 2024 release) FDC 2705901: Pork, belly. Scaled to 113 g (4 oz). Used for the logged 'Restaurant - Braised Pork Belly, 4 oz'; braising liquid and sauce sugars are not included. Vitamin K is phylloquinone only; omega-3 is 18:3 plus EPA, DHA and DPA, omega-6 is 18:2 plus 20:4, all undifferentiated. Folate is DFE. Cystine is stored as cysteine. Keys USDA does not report are omitted. Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central FNDDS 2021-2023 FDC 2705901 (Pork, belly), scaled to about 113 g, the weight given in this entry's name. From that record: omega-9. From USDA FoodData Central SR Legacy FDC 167812 (Pork, fresh, belly, raw), adjusted for water content: pantothenic acid, manganese, carotenoids. From USDA FoodData Central SR Legacy FDC 167820 (Pork, fresh, loin, whole, separable lean and fat, cooked, broiled), adjusted for water content, amino acids for protein content: histidine, isoleucine, leucine, lysine, methionine, phenylalanine, threonine, tryptophan, valine, arginine, cysteine, glycine, proline, tyrosine, betaine. From CoFID 2021 (UK) food 18-555 (Pork, belly joint, roasted, lean and fat), adjusted for water content: biotin, chloride. Set to 0 because the nutrient is absent from this kind of food: soluble fiber, insoluble fiber, MK-7, quercetin, plant sterols, total flavonoids, curcumin, resveratrol, sulforaphane."
   },
   {
     "name": "Ice Cream Scoop - Baskin-Robbins Triple Mango 2.5 oz scoop (71 g)",
@@ -55604,7 +57353,15 @@
       "vitaminB12": 0.99,
       "vitaminC": 1.7,
       "phosphorus": 103,
-      "fiber": 0.3
+      "fiber": 0.3,
+      "vitaminABetaCarotene": 0,
+      "vitaminD": 0,
+      "biotin": 3.72,
+      "copper": 0,
+      "vitaminK2MK7": 0,
+      "choline": 361,
+      "chloride": 29.7,
+      "quercetin": 0
     },
     "longevity": {
       "saturatedFat": 2.44,
@@ -55627,14 +57384,24 @@
       "vitaminK": true,
       "vitaminK1": true,
       "selenium": true,
-      "phosphorus": true
+      "phosphorus": true,
+      "copper": true,
+      "vitaminK2MK7": true,
+      "choline": true,
+      "quercetin": true,
+      "flavonoids": 0,
+      "carotenoids": 0,
+      "lutein": 0,
+      "curcumin": 0,
+      "resveratrol": 0,
+      "sulforaphane": 0
     },
     "carbQuality": {
       "addedSugar": 1,
       "refinedCarbs": 1.9,
       "netCarbs": 5.9
     },
-    "notes": "One dim sum plate, about 160 g, the pack weight printed for frozen 堂叔燒賣 薑蔥牛柏葉. That pack has no nutrition panel. Values are a USDA FoodData Central composite scaled to 160 g: 137 g beef tripe, cooked, simmered (FDC 174769); 8 g raw scallions (FDC 170005); 4 g raw ginger root (FDC 169231); 4 g sesame oil (FDC 171016); 5 g soy sauce made from soy and wheat (FDC 174277); 1 g granulated sugar (FDC 169655); 1 g cornstarch (FDC 169698). Book tripe is omasum; USDA tripe is the closest published cut and is not identified as omasum. Tripe carbohydrate is carbohydrate by difference. Sesame-oil 18:3 is counted as ALA. Vitamin K is phylloquinone from the scallion and sesame oil. EPA and DHA are reported as 0. Copper is omitted because cooked tripe is stored as 0 mg while raw tripe (FDC 170599) reports 0.07 mg per 100 g. Choline and amino acids are omitted because cooked tripe does not report them; raw tripe reports 195 mg choline per 100 g. The soy, oil, sugar, and starch amounts are a light dressing, not a weighed restaurant recipe, so sodium and fat change if the plate uses more sauce."
+    "notes": "One dim sum plate, about 160 g, the pack weight printed for frozen 堂叔燒賣 薑蔥牛柏葉. That pack has no nutrition panel. Values are a USDA FoodData Central composite scaled to 160 g: 137 g beef tripe, cooked, simmered (FDC 174769); 8 g raw scallions (FDC 170005); 4 g raw ginger root (FDC 169231); 4 g sesame oil (FDC 171016); 5 g soy sauce made from soy and wheat (FDC 174277); 1 g granulated sugar (FDC 169655); 1 g cornstarch (FDC 169698). Book tripe is omasum; USDA tripe is the closest published cut and is not identified as omasum. Tripe carbohydrate is carbohydrate by difference. Sesame-oil 18:3 is counted as ALA. Vitamin K is phylloquinone from the scallion and sesame oil. EPA and DHA are reported as 0. Copper is omitted because cooked tripe is stored as 0 mg while raw tripe (FDC 170599) reports 0.07 mg per 100 g. Choline and amino acids are omitted because cooked tripe does not report them; raw tripe reports 195 mg choline per 100 g. The soy, oil, sugar, and starch amounts are a light dressing, not a weighed restaurant recipe, so sodium and fat change if the plate uses more sauce. Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 174769 (Beef, variety meats and by-products, tripe, cooked, simmered), scaled to about 160 g, the weight given in this entry's name. From that record: beta-carotene, copper, carotenoids, lutein. From USDA FoodData Central SR Legacy FDC 170599 (Beef, variety meats and by-products, tripe, raw), adjusted for water content: vitamin D, choline. From CoFID 2021 (UK) food 18-428 (Tripe, dressed, raw), adjusted for water content: biotin, chloride. Set to 0 because the nutrient is absent from this kind of food: MK-7, quercetin, total flavonoids, curcumin, resveratrol, sulforaphane."
   },
   {
     "name": "Shiitake mushrooms, raw, ½ cup sliced (about 49 g)",
