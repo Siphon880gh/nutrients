@@ -129,7 +129,8 @@
     var title = cfg.title || 'Add or edit with AI';
     var label = cfg.label || 'Add / edit with AI';
     var ask = cfg.ask || 'Ask it to add, read, or edit this app\u2019s data.';
-    // data-role="primary|complete|supplementary" + data-input="<what to enter>": says plainly what this panel feeds the app
+    // data-role="primary|complete|supplementary" + data-input: says plainly what this panel feeds the app.
+    // primary and complete wrap a noun phrase. supplementary is the sentence itself.
     var ROLES = { primary: 'Primary', complete: 'Complete \u00b7 add more', supplementary: 'Supplementary' };
     var role = ROLES.hasOwnProperty(cfg.role) ? cfg.role : '';
     var pid = 'hai-panel-' + appId.replace(/[^a-z0-9_-]/gi, '-');
@@ -138,7 +139,7 @@
     var tabs = chatSteps.length > 0;
     var roleText = role === 'primary' ? 'This is where the app\u2019s main content comes from: ' + rich(cfg.input || '') + '.'
       : role === 'complete' ? 'This app\u2019s main content is complete: ' + rich(cfg.input || '') + '. You can still generate more if you want.'
-      : 'Optional extra: ' + rich(cfg.input || '') + ' the app can use to do more.'
+      : rich(cfg.input || '')
         + (tabs ? ' There are two ways to do it: a harness, or through an external chat.' : '');
     var roleHtml = role && cfg.input ? '<p class="hai-role"><span class="hai-badge hai-badge--' + role + '">' + ROLES[role] + '</span> ' + roleText + '</p>' : '';
     var tabsHtml = tabs ? '<div class="hai-tabs" role="tablist" aria-label="Ways to add or edit with AI">' +
