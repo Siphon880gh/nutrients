@@ -469,6 +469,27 @@ body {
   color: #1f5c53;
 }
 
+.week__days-favorite-week-divider {
+  align-self: stretch;
+  margin: 0.1rem 0.2rem;
+}
+
+.week__days-experimental-btn {
+  position: relative;
+  gap: 0.3rem;
+}
+
+.week__days-experimental-btn .app-nav__icon {
+  width: 0.85rem;
+  height: 0.85rem;
+}
+
+.week__days-experimental-btn.app-nav__btn--open {
+  border-color: #3d6b9e;
+  background: #e8eef4;
+  color: #2a4a6e;
+}
+
 .favorites-sidebar {
   position: fixed;
   inset: 0;
@@ -18128,7 +18149,40 @@ body.print-preview .day__backdrop {
   flex-wrap: wrap;
   align-items: center;
   gap: 0.45rem;
+  margin: 0;
+}
+
+/* Food / Nutrients halves: full-width header bands; the nutrients band is the strong separator. */
+.xpt__half-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.45rem 0.75rem;
   margin: 0 0 0.55rem;
+  padding: 0.4rem 0.6rem;
+  border-radius: 7px;
+  border-left: 4px solid #8a7a5c;
+  background: #f5f2ea;
+}
+
+.xpt__half-head--nutrients {
+  position: relative;
+  margin-top: 1.4rem;
+  border-left-color: #2a4a6e;
+  background: #eaf0f7;
+}
+
+.xpt__half-head--nutrients::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(-0.7rem - 1.5px);
+  height: 3px;
+  border-radius: 2px;
+  background: #2a4a6e;
+  opacity: 0.85;
 }
 
 .xpt__tabs {
@@ -18194,12 +18248,16 @@ body.print-preview .day__backdrop {
 }
 
 .xpt__half-label {
-  margin: 0 0 0.3rem;
-  font-size: 0.68rem;
-  font-weight: 750;
-  letter-spacing: 0.04em;
+  margin: 0;
+  font-size: 0.92rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: #5c6570;
+  color: #5a4a2e;
+}
+
+.xpt__half-head--nutrients .xpt__half-label {
+  color: #2a4a6e;
 }
 
 .xpt__grid {
@@ -18289,8 +18347,16 @@ body.print-preview .day__backdrop {
   padding: 0.35rem 0.3rem 0.45rem;
 }
 
-.xpt--week .xpt-day__analysis {
+.xpt--week .xpt__grid--analysis {
   display: none;
+}
+
+.xpt-day--analysis {
+  background: #fafbfc;
+}
+
+.xpt-day--analysis .xpt-day__analysis {
+  border-top: 0;
 }
 
 .xpt-day__analysis-label,
@@ -18329,7 +18395,7 @@ body.print-preview .day__backdrop {
 .xpt-band__label--green { color: #1a7a36; }
 
 .xpt-week-board {
-  margin-top: 0.75rem;
+  margin-top: 0;
   padding: 0.55rem 0.6rem 0.7rem;
   border: 1px solid #e4e8ee;
   border-radius: 8px;

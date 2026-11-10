@@ -108,6 +108,7 @@
   var experimentalPanelEl = document.getElementById("experimental-panel");
   var xptRootEl = document.getElementById("xpt-root");
   var xptFoodGridEl = document.getElementById("xpt-food-grid");
+  var xptAnalysisGridEl = document.getElementById("xpt-analysis-grid");
   var xptWeekBoardEl = document.getElementById("xpt-week-board");
   var xptNoteEl = document.getElementById("xpt-note");
   var xptLegendEl = document.getElementById("xpt-legend");
@@ -37555,6 +37556,17 @@
       '<button type="button" class="day__add-food" data-action="xpt-add" data-xpt-day="' +
       escapeAttr(day.id) +
       '">Add food</button></div>' +
+      "</section>"
+    );
+  }
+
+  function experimentalAnalysisColumnHtml(day) {
+    return (
+      '<section class="xpt-day xpt-day--analysis">' +
+      '<div class="xpt-day__head">' +
+      '<span class="xpt-day__label">' +
+      escapeHtml(day.label) +
+      "</span></div>" +
       '<div class="xpt-day__analysis" data-xpt-analysis="' +
       escapeAttr(day.id) +
       '"></div>' +
@@ -37562,9 +37574,40 @@
     );
   }
 
+  var experimentalGridScrollSyncing = false;
+
+  function syncExperimentalGridScroll(fromEl, toEl) {
+    if (!fromEl || !toEl || experimentalGridScrollSyncing) return;
+    if (toEl.scrollLeft === fromEl.scrollLeft) return;
+    experimentalGridScrollSyncing = true;
+    toEl.scrollLeft = fromEl.scrollLeft;
+    window.requestAnimationFrame(function () {
+      experimentalGridScrollSyncing = false;
+    });
+  }
+
   function ensureExperimentalColumns() {
-    if (!xptFoodGridEl || xptFoodGridEl.childElementCount) return;
-    xptFoodGridEl.innerHTML = DAYS.map(experimentalColumnHtml).join("");
+    if (xptFoodGridEl && !xptFoodGridEl.childElementCount) {
+      xptFoodGridEl.innerHTML = DAYS.map(experimentalColumnHtml).join("");
+    }
+    if (xptAnalysisGridEl && !xptAnalysisGridEl.childElementCount) {
+      xptAnalysisGridEl.innerHTML = DAYS.map(experimentalAnalysisColumnHtml).join(
+        ""
+      );
+    }
+    if (
+      xptFoodGridEl &&
+      xptAnalysisGridEl &&
+      !xptAnalysisGridEl.hasAttribute("data-xpt-scroll-sync")
+    ) {
+      xptAnalysisGridEl.setAttribute("data-xpt-scroll-sync", "1");
+      xptFoodGridEl.addEventListener("scroll", function () {
+        syncExperimentalGridScroll(xptFoodGridEl, xptAnalysisGridEl);
+      });
+      xptAnalysisGridEl.addEventListener("scroll", function () {
+        syncExperimentalGridScroll(xptAnalysisGridEl, xptFoodGridEl);
+      });
+    }
   }
 
   function syncExperimentalTextareas() {
@@ -37751,8 +37794,10 @@
       xptWeekBoardEl.innerHTML = "";
     }
     DAYS.forEach(function (day) {
-      var slot = xptFoodGridEl
-        ? xptFoodGridEl.querySelector('[data-xpt-analysis="' + day.id + '"]')
+      var slot = xptAnalysisGridEl
+        ? xptAnalysisGridEl.querySelector(
+            '[data-xpt-analysis="' + day.id + '"]'
+          )
         : null;
       if (slot) slot.innerHTML = experimentalDayAnalysisHtml(day);
     });
