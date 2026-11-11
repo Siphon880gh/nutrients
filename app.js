@@ -28307,14 +28307,14 @@
       return !isBuiltinKeyword(kw);
     });
     var restored = builtinFoodKeywords();
-    var idByName = {};
-    Object.keys(builtinFoodNameById).forEach(function (id) {
-      idByName[builtinFoodNameById[id].toLowerCase()] = id;
-    });
-    restored.forEach(function (kw) {
-      var id = idByName[kw.name.toLowerCase()];
-      if (id) kw.id = id;
-    });
+    // builtinFoodNameById keys follow built-in file order (see merge), so
+    // position keeps each built-in's id (incl. ids adopted from older imports).
+    var builtinIds = Object.keys(builtinFoodNameById);
+    if (builtinIds.length === restored.length) {
+      restored.forEach(function (kw, i) {
+        kw.id = builtinIds[i];
+      });
+    }
     keywords = restored.concat(own);
     syncNextIdFromKeywords();
     saveFoodDefinitions();
