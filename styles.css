@@ -18760,6 +18760,24 @@ body.print-preview .day__backdrop {
   vertical-align: top;
 }
 
+.dashboard__row--exercise .dashboard__val {
+  color: #1e5a37;
+}
+
+.dashboard__row--net {
+  font-weight: 750;
+}
+
+.dashboard__macros-condensed-ex {
+  font-size: 0.62rem;
+  color: #1e5a37;
+  font-weight: 600;
+}
+
+.week-summary__exercise {
+  color: #1e5a37;
+}
+
 .exercise-defs__builtin {
   font-size: 0.7rem;
   color: #5b6573;

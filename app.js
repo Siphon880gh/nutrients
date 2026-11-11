@@ -26239,9 +26239,44 @@
       '<span class="dashboard__val">' +
       fmtNum(totals.totalCal) +
       " cal</span></div>" +
+      dashboardExerciseRowsHtml(totals) +
       "</article>" +
       dashboardMacroNeedBlockHtml(totals, isToday) +
       "</div>"
+    );
+  }
+
+  /** Food total − exercise = net, for a day or week totals object. */
+  function exerciseNetText(foodCal, exerciseCal) {
+    return (
+      "Food " +
+      fmtNumGrouped(Math.round(foodCal)) +
+      " − Exercise " +
+      fmtNumGrouped(Math.round(exerciseCal)) +
+      " = Net " +
+      fmtNumGrouped(Math.round(foodCal - exerciseCal))
+    );
+  }
+
+  function dashboardExerciseRowsHtml(totals) {
+    var ex = totals && totals.exerciseCal;
+    if (!ex) return "";
+    var title = escapeAttr(exerciseNetText(totals.totalCal, ex) + " cal");
+    return (
+      '<div class="dashboard__row dashboard__row--exercise" title="' +
+      title +
+      '">' +
+      dashboardMacroLabelHtml("Exercise", "E") +
+      '<span class="dashboard__val">−' +
+      fmtNum(Math.round(ex)) +
+      " cal</span></div>" +
+      '<div class="dashboard__row dashboard__row--net" title="' +
+      title +
+      '">' +
+      dashboardMacroLabelHtml("Net", "N") +
+      '<span class="dashboard__val">' +
+      fmtNum(Math.round(totals.totalCal - ex)) +
+      " cal</span></div>"
     );
   }
 
@@ -26258,8 +26293,18 @@
       );
     };
     var macrosLine;
-    var calHtml =
-      escapeHtml(String(Math.round(totals.totalCal || 0))) + unit(" cals");
+    var exCal = totals.exerciseCal || 0;
+    var calHtml = exCal
+      ? escapeHtml(String(Math.round((totals.totalCal || 0) - exCal))) +
+        unit(" net") +
+        ' <span class="dashboard__macros-condensed-ex" title="' +
+        escapeAttr(exerciseNetText(totals.totalCal || 0, exCal) + " cal") +
+        '">' +
+        escapeHtml(String(Math.round(totals.totalCal || 0))) +
+        "−" +
+        escapeHtml(String(Math.round(exCal))) +
+        "</span>"
+      : escapeHtml(String(Math.round(totals.totalCal || 0))) + unit(" cals");
 
     if (isPct) {
       macrosLine =
@@ -27239,7 +27284,10 @@
     if (!weekSummaryEl) return;
 
     var dayCount = weekAverageDayCount();
-    var dayAvgCal = week.totalCal / dayCount;
+    var weekExerciseCal = week.exerciseCal || 0;
+    // Exercise calories come off the week: everything below uses net calories.
+    var weekNetCal = week.totalCal - weekExerciseCal;
+    var dayAvgCal = weekNetCal / dayCount;
     var tdee = getTdee();
     // Current week before Sunday: TDEE × days elapsed (Mon–today); otherwise
     // TDEE × included days. Ignored days are already omitted from dayCount.
@@ -27252,7 +27300,7 @@
 
     if (tdee) {
       weekCalHtml =
-        fmtNumGrouped(week.totalCal) +
+        fmtNumGrouped(weekNetCal) +
         ' <span class="week-summary__tdee-denom">/ ' +
         fmtNumGrouped(periodTdee) +
         "</span>";
@@ -27261,7 +27309,7 @@
         ' <span class="week-summary__tdee-denom">/ ' +
         fmtNumGrouped(tdee) +
         "</span>";
-      var periodDelta = week.totalCal - periodTdee;
+      var periodDelta = weekNetCal - periodTdee;
       var dailyDelta = dayCount ? periodDelta / dayCount : 0;
       // ~lb/week matches the calorie gap (3,500 kcal ≈ 1 lb). Ignored days
       // drop out of that gap and are not filled back in at the daily average.
@@ -27306,7 +27354,7 @@
         weekSummaryCardLinksHtml() +
         "</div>";
     } else {
-      weekCalHtml = fmtNumGrouped(week.totalCal) + " cal";
+      weekCalHtml = fmtNumGrouped(weekNetCal) + " cal";
       dayAvgCalHtml = fmtNumGrouped(dayAvgCal) + " cal";
       thirdStatHtml =
         '<div class="week-summary__card">' +
@@ -27357,6 +27405,11 @@
       '<span class="week-summary__calories">' +
       weekCalHtml +
       "</span>" +
+      (weekExerciseCal
+        ? '<span class="week-summary__projection week-summary__exercise">' +
+          escapeHtml(exerciseNetText(week.totalCal, weekExerciseCal)) +
+          " cal</span>"
+        : "") +
       "</div>" +
       '<div class="week-summary__card">' +
       '<span class="week-summary__label">' +
@@ -27375,13 +27428,22 @@
 
   function renderWeekSummaryPreview(week) {
     if (!weekSummaryPreviewEl || !week) return;
-    weekSummaryPreviewEl.textContent = fmtNumGrouped(week.totalCal) + " cal";
+    var ex = week.exerciseCal || 0;
+    weekSummaryPreviewEl.textContent = ex
+      ? fmtNumGrouped(week.totalCal - ex) +
+        " cal net (" +
+        fmtNumGrouped(week.totalCal) +
+        " − " +
+        fmtNumGrouped(Math.round(ex)) +
+        " exercise)"
+      : fmtNumGrouped(week.totalCal) + " cal";
   }
 
   function renderDashboard() {
     if (!dashboardGridEl) return;
 
     var week = emptyTotals();
+    var weekExerciseCal = 0;
     var html = "";
     var dayTotals = [];
 
@@ -27389,13 +27451,16 @@
       var el = document.getElementById(day.id);
       var text = el ? el.value : "";
       var totals = totalsFromText(text);
+      totals.exerciseCal = exerciseKcalForDayId(day.id);
       dayTotals.push(totals);
       if (!isDayIgnoredForWeekTotals(day.id)) {
         week = addTotals(week, totals);
+        weekExerciseCal += totals.exerciseCal;
       }
       html += dashboardCardHtml(day.label, totals, day.id, dateLabelForDayId(day.id));
     });
 
+    week.exerciseCal = weekExerciseCal;
     dashboardGridEl.innerHTML = html;
     lastWeekTotals = week;
     syncDashboardCarouselAfterRender();
@@ -39274,9 +39339,46 @@
     return fmtNumGrouped(Math.round(n)) + " lb";
   }
 
+  /** Exercise-layer entries in the same shape as parsed // workout lines. */
+  function workoutEntriesFromDayExercises(dayId) {
+    return dayExerciseEntries(dayId).map(function (e) {
+      var def = exerciseDefForEntry(e) || { name: e.name, category: e.category };
+      var c = exerciseEntryCalories(e);
+      var sets = positiveNum(e.sets);
+      var out = {
+        text: e.name + (sets ? " " + sets + "×" + (positiveNum(e.reps) || "?") + (positiveNum(e.weightLb) ? " @ " + e.weightLb + " lb" : "") : "") + (c.minutes ? " · " + fmtNum(c.minutes) + " min" : "") + " (exercise entry)",
+        ex: def,
+        category: c.category,
+        compoundSets: 0,
+        isoSets: 0,
+        compoundVolume: 0,
+        isoVolume: 0,
+        minutes: 0,
+        metMinutes: 0,
+      };
+      if (c.category === "session") {
+        out.compoundSets = (def.compoundExercises || 0) * (def.setsPerExercise || 0);
+        out.isoSets = (def.isolationMachineExercises || 0) * (def.setsPerExercise || 0);
+        var per = (def.setsPerExercise || 0) * (def.repsPerSet || 0);
+        out.compoundVolume = per * (def.compoundExercises || 0) * (def.compoundWeightLb || 0);
+        out.isoVolume = per * (def.isolationMachineExercises || 0) * (def.isolationMachineWeightLb || 0);
+      } else if (c.category === "cardio") {
+        out.minutes = c.minutes;
+        out.metMinutes = c.minutes * c.met;
+      } else if (c.category === "compound") {
+        out.compoundSets = sets;
+        out.compoundVolume = c.volume;
+      } else {
+        out.isoSets = sets;
+        out.isoVolume = c.volume;
+      }
+      return out;
+    });
+  }
+
   function workoutWeekHtml() {
     var days = workoutDayTexts().map(function (d) {
-      var entries = workoutEntriesFromText(d.text);
+      var entries = workoutEntriesFromText(d.text).concat(workoutEntriesFromDayExercises(d.day.id));
       return { day: d.day, entries: entries, sum: workoutSum(entries) };
     });
     var all = [];
@@ -39285,7 +39387,7 @@
     });
     var t = workoutSum(all);
     var hint =
-      '<p class="workout__hint">Log workouts in a day as comment lines so they never count as food: ' +
+      '<p class="workout__hint">Add workouts with <strong>Exercise entry</strong> (the Exercise tab on each day; those calories come off the day), or as comment lines so they never count as food: ' +
       "<code>// Squat 3x10 @ 135 lb</code>, <code>// Bench 10x135 lb, 8x145 lb</code>, " +
       "<code>// Lateral raise 3x12 @ 20 lb pair</code>, <code>// Running 30 min</code>, " +
       "<code>// Bodybuilding 70% compound 30% iso-machines</code>. " +
@@ -39789,7 +39891,7 @@
     dayExerciseEntries(dayId).forEach(function (e) {
       sum += exerciseEntryCalories(e).kcal;
     });
-    return sum;
+    return Math.round(sum);
   }
 
   function exerciseCaloriesTitle(entry) {
