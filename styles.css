@@ -18345,6 +18345,132 @@ body.print-preview .day__backdrop {
   cursor: pointer;
 }
 
+.workout [hidden] {
+  display: none !important;
+}
+
+.workout__body {
+  font-size: 0.82rem;
+}
+
+.workout__hint {
+  margin: 0 0 0.6rem;
+  color: #4b5563;
+  line-height: 1.45;
+}
+
+.workout__hint code,
+.workout__def-kw {
+  padding: 0 0.25rem;
+  border-radius: 3px;
+  background: #f1f3f5;
+  font-size: 0.76rem;
+}
+
+.workout__cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+  gap: 0.5rem;
+  margin: 0 0 0.75rem;
+}
+
+.workout__card {
+  padding: 0.55rem 0.65rem;
+  border: 1px solid #e4e8ee;
+  border-radius: 8px;
+  background: #fafbfc;
+}
+
+.workout__card-label {
+  margin: 0 0 0.15rem;
+  color: #5c6570;
+  font-size: 0.66rem;
+  font-weight: 750;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.workout__card-value {
+  margin: 0;
+  color: #1a1a1a;
+  font-size: 1.05rem;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+.workout__card-sub {
+  margin: 0.15rem 0 0;
+  color: #6a6a66;
+  font-size: 0.72rem;
+}
+
+.workout__split-bar {
+  display: flex;
+  height: 0.45rem;
+  margin-top: 0.35rem;
+  overflow: hidden;
+  border-radius: 999px;
+  background: #e8e2d4;
+}
+
+.workout__split-bar span {
+  background: #2a4a6e;
+}
+
+.workout__table {
+  width: 100%;
+  border-collapse: collapse;
+  font-variant-numeric: tabular-nums;
+}
+
+.workout__table th,
+.workout__table td {
+  padding: 0.35rem 0.4rem;
+  border-bottom: 1px solid #efefec;
+  text-align: left;
+  vertical-align: top;
+}
+
+.workout__table th {
+  color: #5c6570;
+  font-size: 0.7rem;
+  font-weight: 750;
+  text-transform: uppercase;
+}
+
+.workout__table td.workout__num,
+.workout__table th.workout__num {
+  text-align: right;
+}
+
+.workout__cat {
+  display: inline-block;
+  padding: 0 0.4rem;
+  border-radius: 999px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.workout__cat--compound { background: #e3ecf6; color: #2a4a6e; }
+.workout__cat--isolation_machine { background: #f4ecdc; color: #6b4f1d; }
+.workout__cat--cardio { background: #e5f3e8; color: #1a6a32; }
+.workout__cat--session { background: #efe7f6; color: #5b3a7a; }
+
+.workout__section-title {
+  margin: 0.9rem 0 0.35rem;
+  color: #2a4a6e;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.workout__empty {
+  margin: 0.4rem 0;
+  color: #6a6a66;
+}
+
 .xpt-toggle[aria-pressed="true"] {
   background: #eef4fa;
   border-color: #3d6b9e;

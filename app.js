@@ -11835,6 +11835,7 @@
       (copyDateModalEl && !copyDateModalEl.hidden) ||
       isExperimentalCopyFromOpen() ||
       isExperimentalNutrientOpen() ||
+      isWorkoutModalOpen() ||
       (copyConflictModalEl && !copyConflictModalEl.hidden) ||
       (favoriteEditModalEl && !favoriteEditModalEl.hidden) ||
       (mealNameModalEl && !mealNameModalEl.hidden) ||
@@ -38728,6 +38729,516 @@
     });
   })();
 
+  // ---- Workout: exercise definitions + weekly bodybuilding split and volume ----
+  // Workouts are logged as comment lines (// or #) in the diary so they never
+  // count as food. Tonnage = sum of reps × weight per set; "pair"/"each" counts
+  // both dumbbells.
+  var EXERCISE_DEFINITIONS_URL = "definitions-exercise.json";
+  var exerciseDefinitions = [];
+  var exerciseCategoryLabels = {
+    cardio: "Cardio",
+    compound: "Compound",
+    isolation_machine: "Isolation / machine",
+    session: "Session preset",
+  };
+  var exerciseKeywordIndex = [];
+  var workoutTab = "week";
+  var workoutFilter = "";
+  var exerciseDefinitionsRequested = false;
+  var LB_PER_KG = 2.20462;
+
+  function workoutNormalizeText(text) {
+    return String(text || "")
+      .toLowerCase()
+      .replace(/[×*]/g, "x")
+      .replace(/(\d),(\d{3})\b/g, "$1$2")
+      .replace(/[-_]/g, " ")
+      .replace(/\s+/g, " ")
+      .trim();
+  }
+
+  function buildExerciseKeywordIndex() {
+    exerciseKeywordIndex = [];
+    exerciseDefinitions.forEach(function (ex) {
+      (ex.keywords || []).concat([ex.name]).forEach(function (kw) {
+        var norm = workoutNormalizeText(kw);
+        if (!norm) return;
+        exerciseKeywordIndex.push({
+          kw: norm,
+          ex: ex,
+          re: new RegExp("(^|[^a-z0-9])" + escapeRegex(norm) + "(?=$|[^a-z0-9])"),
+        });
+      });
+    });
+    exerciseKeywordIndex.sort(function (a, b) {
+      return b.kw.length - a.kw.length;
+    });
+  }
+
+  function loadExerciseDefinitions(done) {
+    exerciseDefinitionsRequested = true;
+    fetch(EXERCISE_DEFINITIONS_URL, { cache: "no-store" })
+      .then(function (res) {
+        if (!res.ok) throw new Error("exercise definitions fetch failed");
+        return res.json();
+      })
+      .then(function (data) {
+        var list = data && Array.isArray(data.exercises) ? data.exercises : [];
+        exerciseDefinitions = list.filter(function (ex) {
+          return ex && ex.name && exerciseCategoryLabels[ex.category];
+        });
+        buildExerciseKeywordIndex();
+        if (done) done();
+      })
+      .catch(function () {
+        exerciseDefinitions = [];
+        exerciseKeywordIndex = [];
+        if (done) done();
+      });
+  }
+
+  function workoutMatchExercise(norm) {
+    for (var i = 0; i < exerciseKeywordIndex.length; i++) {
+      var m = exerciseKeywordIndex[i].re.exec(norm);
+      if (m) {
+        return {
+          ex: exerciseKeywordIndex[i].ex,
+          rest: norm.slice(0, m.index) + " " + norm.slice(m.index + m[0].length),
+        };
+      }
+    }
+    return null;
+  }
+
+  function workoutWeightLb(value, unit) {
+    var w = parseFloat(value);
+    if (!isFinite(w) || w <= 0) return 0;
+    return unit && unit.indexOf("kg") === 0 ? w * LB_PER_KG : w;
+  }
+
+  function workoutParseSets(rest) {
+    var sets = 0;
+    var volume = 0;
+    var m;
+    var reA = /(\d+)\s*x\s*(\d+)\s*(?:x|@|at)\s*(\d+(?:\.\d+)?)\s*(lbs?|kgs?)?/g;
+    while ((m = reA.exec(rest)) !== null) {
+      var s = parseInt(m[1], 10);
+      sets += s;
+      volume += s * parseInt(m[2], 10) * workoutWeightLb(m[3], m[4]);
+    }
+    if (!sets) {
+      var reS = /(\d+)\s*sets?\s*(?:of\s*)?(?:x\s*)?(\d+)\s*(?:reps?)?\s*(?:(?:@|at|x|with)\s*(\d+(?:\.\d+)?)\s*(lbs?|kgs?)?)?/g;
+      while ((m = reS.exec(rest)) !== null) {
+        var s2 = parseInt(m[1], 10);
+        sets += s2;
+        if (m[3]) volume += s2 * parseInt(m[2], 10) * workoutWeightLb(m[3], m[4]);
+      }
+    }
+    if (!sets) {
+      var reB = /(\d+)\s*(?:reps?\s*)?(?:x|@|at)\s*(\d+(?:\.\d+)?)\s*(lbs?|kgs?)\b/g;
+      while ((m = reB.exec(rest)) !== null) {
+        sets += 1;
+        volume += parseInt(m[1], 10) * workoutWeightLb(m[2], m[3]);
+      }
+    }
+    if (!sets) {
+      var reC = /(\d+)\s*x\s*(\d+)\b/.exec(rest);
+      if (reC) sets = parseInt(reC[1], 10);
+    }
+    if (
+      volume &&
+      /\b(?:pair|each|per hand|both|two dumbbells|2 dumbbells|two dbs|2 dbs)\b/.test(rest)
+    ) {
+      volume *= 2;
+    }
+    return { sets: sets, volume: volume };
+  }
+
+  function workoutParseMinutes(rest) {
+    var minutes = 0;
+    var m;
+    var reH = /(\d+(?:\.\d+)?)\s*(?:h|hr|hrs|hour|hours)\b/g;
+    while ((m = reH.exec(rest)) !== null) minutes += parseFloat(m[1]) * 60;
+    var reM = /(\d+(?:\.\d+)?)\s*(?:m|min|mins|minute|minutes)\b/g;
+    while ((m = reM.exec(rest)) !== null) minutes += parseFloat(m[1]);
+    return minutes;
+  }
+
+  function workoutEntriesFromText(text) {
+    var out = [];
+    normalizeDayMealsText(text)
+      .split("\n")
+      .forEach(function (line) {
+        if (!isCommentDayMealLine(line)) return;
+        var raw = visibleDayLineText(line).replace(/^\s*(?:\/\/+|#+)\s*/, "");
+        var norm = workoutNormalizeText(raw);
+        if (!norm) return;
+        var hit = workoutMatchExercise(norm);
+        if (!hit) return;
+        var ex = hit.ex;
+        var entry = {
+          text: raw,
+          ex: ex,
+          category: ex.category,
+          compoundSets: 0,
+          isoSets: 0,
+          compoundVolume: 0,
+          isoVolume: 0,
+          minutes: 0,
+          metMinutes: 0,
+        };
+        if (ex.category === "session") {
+          var per = (ex.setsPerExercise || 0) * (ex.repsPerSet || 0);
+          entry.compoundSets = (ex.compoundExercises || 0) * (ex.setsPerExercise || 0);
+          entry.isoSets = (ex.isolationMachineExercises || 0) * (ex.setsPerExercise || 0);
+          entry.compoundVolume = per * (ex.compoundExercises || 0) * (ex.compoundWeightLb || 0);
+          entry.isoVolume =
+            per * (ex.isolationMachineExercises || 0) * (ex.isolationMachineWeightLb || 0);
+        } else if (ex.category === "cardio") {
+          entry.minutes = workoutParseMinutes(hit.rest);
+          entry.metMinutes = entry.minutes * (parseFloat(ex.met) || 0);
+        } else {
+          var parsed = workoutParseSets(hit.rest);
+          if (ex.category === "compound") {
+            entry.compoundSets = parsed.sets;
+            entry.compoundVolume = parsed.volume;
+          } else {
+            entry.isoSets = parsed.sets;
+            entry.isoVolume = parsed.volume;
+          }
+        }
+        out.push(entry);
+      });
+    return out;
+  }
+
+  function workoutSum(entries) {
+    var t = {
+      compoundSets: 0,
+      isoSets: 0,
+      compoundVolume: 0,
+      isoVolume: 0,
+      minutes: 0,
+      metMinutes: 0,
+      count: entries.length,
+    };
+    entries.forEach(function (e) {
+      t.compoundSets += e.compoundSets;
+      t.isoSets += e.isoSets;
+      t.compoundVolume += e.compoundVolume;
+      t.isoVolume += e.isoVolume;
+      t.minutes += e.minutes;
+      t.metMinutes += e.metMinutes;
+    });
+    return t;
+  }
+
+  function workoutSplitText(compound, iso) {
+    var total = compound + iso;
+    if (!total) return "—";
+    var c = Math.round((compound / total) * 100);
+    return c + "% compound · " + (100 - c) + "% iso/machine";
+  }
+
+  function workoutDayTexts() {
+    return DAYS.map(function (day) {
+      var el = document.getElementById(day.id);
+      return { day: day, text: el ? el.value : "" };
+    });
+  }
+
+  function workoutCatHtml(category) {
+    return (
+      '<span class="workout__cat workout__cat--' +
+      escapeAttr(category) +
+      '">' +
+      escapeHtml(exerciseCategoryLabels[category] || category) +
+      "</span>"
+    );
+  }
+
+  function workoutLb(n) {
+    return fmtNumGrouped(Math.round(n)) + " lb";
+  }
+
+  function workoutWeekHtml() {
+    var days = workoutDayTexts().map(function (d) {
+      var entries = workoutEntriesFromText(d.text);
+      return { day: d.day, entries: entries, sum: workoutSum(entries) };
+    });
+    var all = [];
+    days.forEach(function (d) {
+      all = all.concat(d.entries);
+    });
+    var t = workoutSum(all);
+    var hint =
+      '<p class="workout__hint">Log workouts in a day as comment lines so they never count as food: ' +
+      "<code>// Squat 3x10 @ 135 lb</code>, <code>// Bench 10x135 lb, 8x145 lb</code>, " +
+      "<code>// Lateral raise 3x12 @ 20 lb pair</code>, <code>// Running 30 min</code>, " +
+      "<code>// Bodybuilding 70% compound 30% iso-machines</code>. " +
+      "Volume adds reps × weight for every set; pair or each counts both dumbbells.</p>";
+    if (!all.length) {
+      return (
+        hint +
+        '<p class="workout__empty">No workout lines this week yet.</p>'
+      );
+    }
+    var volTotal = t.compoundVolume + t.isoVolume;
+    var pctVol = volTotal ? Math.round((t.compoundVolume / volTotal) * 100) : 0;
+    var weightKg = getBodyWeightKg();
+    var kcal = weightKg ? (t.metMinutes * 3.5 * weightKg) / 200 : 0;
+    var html =
+      hint +
+      '<div class="workout__cards">' +
+      '<div class="workout__card"><p class="workout__card-label">Total volume</p><p class="workout__card-value">' +
+      escapeHtml(workoutLb(volTotal)) +
+      '</p><p class="workout__card-sub">Compound ' +
+      escapeHtml(workoutLb(t.compoundVolume)) +
+      " · Iso/machine " +
+      escapeHtml(workoutLb(t.isoVolume)) +
+      "</p></div>" +
+      '<div class="workout__card"><p class="workout__card-label">Split by sets</p><p class="workout__card-value">' +
+      escapeHtml(workoutSplitText(t.compoundSets, t.isoSets)) +
+      '</p><p class="workout__card-sub">' +
+      t.compoundSets +
+      " compound sets · " +
+      t.isoSets +
+      " iso/machine sets</p></div>" +
+      '<div class="workout__card"><p class="workout__card-label">Split by volume</p><p class="workout__card-value">' +
+      escapeHtml(workoutSplitText(t.compoundVolume, t.isoVolume)) +
+      '</p><div class="workout__split-bar" aria-hidden="true"><span style="width:' +
+      pctVol +
+      '%"></span></div></div>' +
+      '<div class="workout__card"><p class="workout__card-label">Cardio</p><p class="workout__card-value">' +
+      escapeHtml(fmtNum(t.minutes) + " min") +
+      '</p><p class="workout__card-sub">' +
+      escapeHtml(
+        t.metMinutes
+          ? kcal
+            ? "≈ " + fmtNumGrouped(Math.round(kcal)) + " kcal (MET × 3.5 × " + fmtNum(weightKg) + " kg ÷ 200 × min)"
+            : fmtNumGrouped(Math.round(t.metMinutes)) + " MET-min · set body weight in Settings for kcal"
+          : "No cardio minutes logged"
+      ) +
+      "</p></div></div>";
+    html +=
+      '<p class="workout__section-title">By day</p><table class="workout__table"><thead><tr>' +
+      '<th>Day</th><th class="workout__num">Compound sets</th><th class="workout__num">Iso/machine sets</th>' +
+      '<th class="workout__num">Volume</th><th>Split (sets)</th><th class="workout__num">Cardio</th></tr></thead><tbody>';
+    days.forEach(function (d) {
+      if (!d.entries.length) return;
+      html +=
+        "<tr><td>" +
+        escapeHtml(d.day.label) +
+        '</td><td class="workout__num">' +
+        d.sum.compoundSets +
+        '</td><td class="workout__num">' +
+        d.sum.isoSets +
+        '</td><td class="workout__num">' +
+        escapeHtml(workoutLb(d.sum.compoundVolume + d.sum.isoVolume)) +
+        "</td><td>" +
+        escapeHtml(workoutSplitText(d.sum.compoundSets, d.sum.isoSets)) +
+        '</td><td class="workout__num">' +
+        escapeHtml(d.sum.minutes ? fmtNum(d.sum.minutes) + " min" : "—") +
+        "</td></tr>";
+    });
+    html += "</tbody></table>";
+    html +=
+      '<p class="workout__section-title">Logged lines</p><table class="workout__table"><thead><tr>' +
+      '<th>Day</th><th>Line</th><th>Exercise</th><th class="workout__num">Sets</th><th class="workout__num">Volume / time</th></tr></thead><tbody>';
+    days.forEach(function (d) {
+      d.entries.forEach(function (e) {
+        var vol = e.compoundVolume + e.isoVolume;
+        html +=
+          "<tr><td>" +
+          escapeHtml(d.day.label) +
+          "</td><td>" +
+          escapeHtml(e.text) +
+          "</td><td>" +
+          escapeHtml(e.ex.name) +
+          " " +
+          workoutCatHtml(e.category) +
+          '</td><td class="workout__num">' +
+          (e.category === "cardio" ? "—" : e.compoundSets + e.isoSets) +
+          '</td><td class="workout__num">' +
+          escapeHtml(
+            e.category === "cardio"
+              ? e.minutes
+                ? fmtNum(e.minutes) + " min"
+                : "add minutes"
+              : vol
+                ? workoutLb(vol)
+                : "add weight"
+          ) +
+          "</td></tr>";
+      });
+    });
+    html += "</tbody></table>";
+    return html;
+  }
+
+  function workoutDefsHtml() {
+    if (!exerciseDefinitions.length) {
+      return '<p class="workout__empty">Exercise definitions are not loaded.</p>';
+    }
+    var q = workoutNormalizeText(workoutFilter);
+    var words = q ? q.split(" ") : [];
+    var html = "";
+    ["compound", "isolation_machine", "cardio", "session"].forEach(function (cat) {
+      var rows = exerciseDefinitions.filter(function (ex) {
+        if (ex.category !== cat) return false;
+        if (!words.length) return true;
+        var hay = workoutNormalizeText(
+          [ex.name].concat(ex.keywords || [], ex.muscles || [], ex.equipment || []).join(" ")
+        );
+        return words.every(function (w) {
+          return hay.indexOf(w) !== -1;
+        });
+      });
+      if (!rows.length) return;
+      html +=
+        '<p class="workout__section-title">' +
+        escapeHtml(exerciseCategoryLabels[cat]) +
+        " (" +
+        rows.length +
+        ")</p>" +
+        '<table class="workout__table"><thead><tr><th>Exercise</th><th>' +
+        (cat === "session" ? "Volume" : "Muscles") +
+        "</th><th>" +
+        (cat === "cardio" ? "MET" : cat === "session" ? "Assumes" : "Equipment") +
+        "</th><th>Log as</th></tr></thead><tbody>";
+      rows.forEach(function (ex) {
+        var second =
+          cat === "session"
+            ? workoutLb(ex.volumeLb || 0)
+            : (ex.muscles || []).join(", ");
+        var third =
+          cat === "cardio"
+            ? fmtNum(parseFloat(ex.met) || 0)
+            : cat === "session"
+              ? ex.exerciseCount +
+                " exercises × " +
+                ex.setsPerExercise +
+                " × " +
+                ex.repsPerSet +
+                "; " +
+                ex.compoundExercises +
+                " compound @ " +
+                ex.compoundWeightLb +
+                " lb, " +
+                ex.isolationMachineExercises +
+                " iso/machine @ " +
+                ex.isolationMachineWeightLb +
+                " lb"
+              : (ex.equipment || []).join(", ");
+        html +=
+          "<tr><td>" +
+          escapeHtml(ex.name) +
+          (ex.note && cat !== "session"
+            ? '<br><span class="workout__card-sub">' + escapeHtml(ex.note) + "</span>"
+            : "") +
+          "</td><td>" +
+          escapeHtml(second) +
+          "</td><td>" +
+          escapeHtml(third) +
+          "</td><td>" +
+          (ex.keywords || [])
+            .slice(0, 3)
+            .map(function (kw) {
+              return '<span class="workout__def-kw">' + escapeHtml(kw) + "</span>";
+            })
+            .join(" ") +
+          "</td></tr>";
+      });
+      html += "</tbody></table>";
+    });
+    return html || sourcesFilterEmptyHtml(workoutFilter);
+  }
+
+  function renderWorkoutModal() {
+    var modal = document.getElementById("workout-modal");
+    var body = document.getElementById("workout-body");
+    if (!modal || !body) return;
+    modal.querySelectorAll("[data-workout-tab]").forEach(function (btn) {
+      btn.setAttribute(
+        "aria-selected",
+        btn.getAttribute("data-workout-tab") === workoutTab ? "true" : "false"
+      );
+    });
+    modal.querySelectorAll("[data-workout-defs-only]").forEach(function (el) {
+      el.hidden = workoutTab !== "defs";
+    });
+    var sub = document.getElementById("workout-subtitle");
+    if (sub) {
+      sub.textContent =
+        workoutTab === "week"
+          ? formatWeekRangeLabel(viewedWeekStart || currentWeekMondayKey()) +
+            " — compound vs iso/machine split and total volume"
+          : exerciseDefinitions.length + " exercises and session presets";
+    }
+    body.innerHTML = workoutTab === "week" ? workoutWeekHtml() : workoutDefsHtml();
+  }
+
+  function isWorkoutModalOpen() {
+    var modal = document.getElementById("workout-modal");
+    return !!(modal && !modal.hidden);
+  }
+
+  function openWorkoutModal() {
+    var modal = document.getElementById("workout-modal");
+    if (!modal) return;
+    function show() {
+      renderWorkoutModal();
+      modal.hidden = false;
+      updateBodyModalOpen();
+      var tab = modal.querySelector('[data-workout-tab][aria-selected="true"]');
+      if (tab) tab.focus();
+    }
+    if (!exerciseDefinitionsRequested) loadExerciseDefinitions(show);
+    else show();
+  }
+
+  function closeWorkoutModal() {
+    var modal = document.getElementById("workout-modal");
+    if (!modal || modal.hidden) return;
+    modal.hidden = true;
+    updateBodyModalOpen();
+    var back = document.getElementById("workout-open");
+    if (back) back.focus();
+  }
+
+  (function initWorkoutModal() {
+    var openBtn = document.getElementById("workout-open");
+    if (openBtn) openBtn.addEventListener("click", openWorkoutModal);
+    var modal = document.getElementById("workout-modal");
+    if (!modal) return;
+    modal.addEventListener("click", function (e) {
+      if (e.target.closest('[data-action="close-workout"]')) {
+        closeWorkoutModal();
+        return;
+      }
+      var tab = e.target.closest("[data-workout-tab]");
+      if (tab) {
+        workoutTab = tab.getAttribute("data-workout-tab") === "defs" ? "defs" : "week";
+        renderWorkoutModal();
+      }
+    });
+    modal.addEventListener("input", function (e) {
+      if (e.target.id !== "workout-filter") return;
+      workoutFilter = e.target.value;
+      renderWorkoutModal();
+    });
+    modal.addEventListener("keydown", function (e) {
+      var tab = e.target.closest("[data-workout-tab]");
+      if (!tab || (e.key !== "ArrowLeft" && e.key !== "ArrowRight")) return;
+      e.preventDefault();
+      e.stopPropagation();
+      workoutTab = workoutTab === "week" ? "defs" : "week";
+      renderWorkoutModal();
+      var next = modal.querySelector('[data-workout-tab="' + workoutTab + '"]');
+      if (next) next.focus();
+    });
+  })();
+
   function setExperimentalLine(dayId, lineIndex, nextLine) {
     var lines = experimentalLines(dayId);
     if (lineIndex < 0 || lineIndex >= lines.length) return;
@@ -39556,6 +40067,10 @@
     }
     if (isExperimentalNutrientOpen()) {
       closeExperimentalNutrientModal();
+      return;
+    }
+    if (isWorkoutModalOpen()) {
+      closeWorkoutModal();
       return;
     }
     if (isExperimentalCopyFromOpen()) {
