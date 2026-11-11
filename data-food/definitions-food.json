@@ -49063,11 +49063,15 @@
       "vitaminK2MK4": 0,
       "vitaminK2MK7": 0,
       "taurine": 0,
+      "vitaminE": 0.008,
+      "vitaminK": 0,
       "biotin": 0,
       "iodine": 0,
+      "selenium": 0.1,
       "chromium": 0.1,
       "molybdenum": 0.4,
-      "chloride": 1.5
+      "chloride": 1.5,
+      "choline": 0.8
     },
     "longevity": {
       "saturatedFat": 0,
@@ -49094,7 +49098,7 @@
       "refinedCarbs": 0,
       "netCarbs": 2.4
     },
-    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from CoFID 2021 (UK) food 14-243 (Rambutan, flesh only), scaled to about 10 g, the weight implied by this entry's own values. From that record: vitamin A, retinol, beta-carotene, vitamin D, B12. Set to 0 because the nutrient is absent from this kind of food: EPA, DHA, K2, MK-4, MK-7, taurine, arachidonic acid, curcumin, sulforaphane, creatine. Label-gap check on 11 Nov 2026: Nutrition Facts labels don't have to list these nutrients, so keys that were missing or 0 were checked against composition data; only those keys changed, as estimates, and other values were kept. Scaled to about 12 g, the weight implied by this entry's own protein, carbs and fat. Composition: USDA FoodData Central SR Legacy FDC 168167 (Rambutan, canned, syrup pack). From typical amounts per 100 g for fruit (NIH ODS fact-sheet tables, Anderson chromium data, USDA/FDA/ODS Iodine Database; salt in processed or restaurant food assumed noniodized): chromium, molybdenum. Chloride: from the natural sodium and chloride of the ingredients. Verified zero on 11 Nov 2026 (composition data, not the label): vitamin A, B12, iodine. Set to 0 because the amount rounds to 0 at this portion size: biotin. Not reported in the composition data, so left as is: vitamin E, vitamin K, selenium, choline."
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from CoFID 2021 (UK) food 14-243 (Rambutan, flesh only), scaled to about 10 g, the weight implied by this entry's own values. From that record: vitamin A, retinol, beta-carotene, vitamin D, B12. Set to 0 because the nutrient is absent from this kind of food: EPA, DHA, K2, MK-4, MK-7, taurine, arachidonic acid, curcumin, sulforaphane, creatine. Label-gap check on 11 Nov 2026: Nutrition Facts labels don't have to list these nutrients, so keys that were missing or 0 were checked against composition data; only those keys changed, as estimates, and other values were kept. Scaled to about 12 g, the weight implied by this entry's own protein, carbs and fat. Composition: USDA FoodData Central SR Legacy FDC 168167 (Rambutan, canned, syrup pack), with SR Legacy FDC 169086 (Litchis, raw) for keys it lacks. From those records: vitamin E, selenium, choline. From typical amounts per 100 g for fruit (NIH ODS fact-sheet tables, Anderson chromium data, USDA/FDA/ODS Iodine Database; salt in processed or restaurant food assumed noniodized): chromium, molybdenum. Chloride: from the natural sodium and chloride of the ingredients. Verified zero on 11 Nov 2026 (composition data, not the label): vitamin A, B12, iodine. Set to 0 because the amount rounds to 0 at this portion size: vitamin K, biotin."
   },
   {
     "name": "Bagel, Lox - entire bagel (thin salmon, capers, red onion, cream cheese)",
@@ -53891,6 +53895,8 @@
       "vitaminA": 3.6,
       "vitaminC": 1.9,
       "vitaminD": 0,
+      "vitaminE": 0.137,
+      "vitaminK": 0.6,
       "thiamin": 0.039,
       "riboflavin": 0.122,
       "niacin": 1.27,
@@ -53903,11 +53909,13 @@
       "iodine": 1,
       "magnesium": 5.9,
       "zinc": 0.678,
+      "selenium": 3,
       "copper": 36.4,
       "manganese": 0.024,
       "chromium": 1.1,
       "molybdenum": 2.2,
-      "chloride": 660
+      "chloride": 660,
+      "choline": 30.5
     },
     "longevity": {
       "saturatedFat": 3.56,
@@ -53920,7 +53928,7 @@
       "addedSugar": 1.01,
       "netCarbs": 4.07
     },
-    "notes": "Original Giant stick label, one stick 0.97 oz (27.5 g), scaled to 1 oz (28 g). USDA Branded FDC 2775154 (published 2026-08-20) and the Conagra quality sheet for UPC 00026200117003. Per stick: 6 g protein, 5 g carbohydrate, 10 g fat, 3.5 g saturated fat, 0 g trans fat, 1 g polyunsaturated fat, 30 mg cholesterol, 450 mg sodium, 150 mg potassium, 40 mg calcium, 0.7 mg iron, 1 g fiber, 0 mcg vitamin D, 0 mcg vitamin A RAE, 0 mg vitamin C. Monounsaturated fat is 4.5 g per stick, from 16.36 g/100 g on that FDC record; the quality sheet rounds it to 4 g. Added sugar is 0.99 g per stick (FDC added sugars 3.6 g/100 g); the sheet prints it as less than 1 g. No glycemic index is published for this stick. Label-gap check on 11 Nov 2026: Nutrition Facts labels don't have to list these nutrients, so keys that were missing or 0 were checked against composition data; only those keys changed, as estimates, and other values were kept. Scaled to about 28 g, the weight in the name. Composition: USDA FoodData Central SR Legacy FDC 168850 (Snacks, beef sticks, smoked). From that record: vitamin A, vitamin C, thiamin, riboflavin, niacin, pantothenic acid, B6, B12, phosphorus, magnesium, zinc, copper, manganese. From typical amounts per 100 g for cured meat (NIH ODS fact-sheet tables, Anderson chromium data, USDA/FDA/ODS Iodine Database; salt in processed or restaurant food assumed noniodized): biotin, iodine, chromium, molybdenum. Chloride: from the natural sodium and chloride of the ingredients. Verified zero on 11 Nov 2026 (composition data, not the label): folate. Not reported in the composition data, so left as is: vitamin E, vitamin K, selenium, choline."
+    "notes": "Original Giant stick label, one stick 0.97 oz (27.5 g), scaled to 1 oz (28 g). USDA Branded FDC 2775154 (published 2026-08-20) and the Conagra quality sheet for UPC 00026200117003. Per stick: 6 g protein, 5 g carbohydrate, 10 g fat, 3.5 g saturated fat, 0 g trans fat, 1 g polyunsaturated fat, 30 mg cholesterol, 450 mg sodium, 150 mg potassium, 40 mg calcium, 0.7 mg iron, 1 g fiber, 0 mcg vitamin D, 0 mcg vitamin A RAE, 0 mg vitamin C. Monounsaturated fat is 4.5 g per stick, from 16.36 g/100 g on that FDC record; the quality sheet rounds it to 4 g. Added sugar is 0.99 g per stick (FDC added sugars 3.6 g/100 g); the sheet prints it as less than 1 g. No glycemic index is published for this stick. Label-gap check on 11 Nov 2026: Nutrition Facts labels don't have to list these nutrients, so keys that were missing or 0 were checked against composition data; only those keys changed, as estimates, and other values were kept. Scaled to about 28 g, the weight in the name. Composition: USDA FoodData Central SR Legacy FDC 168850 (Snacks, beef sticks, smoked), with SR Legacy FDC 167536 (Snacks, beef jerky, chopped and formed) for keys it lacks. From those records: vitamin A, vitamin C, vitamin E, vitamin K, thiamin, riboflavin, niacin, pantothenic acid, B6, B12, phosphorus, magnesium, zinc, selenium, copper, manganese, choline. From typical amounts per 100 g for cured meat (NIH ODS fact-sheet tables, Anderson chromium data, USDA/FDA/ODS Iodine Database; salt in processed or restaurant food assumed noniodized): biotin, iodine, chromium, molybdenum. Chloride: from the natural sodium and chloride of the ingredients. Verified zero on 11 Nov 2026 (composition data, not the label): folate."
   },
   {
     "name": "Arby's - Double Roast Beef Sandwich 1 sandwich (239 g)",
@@ -54820,6 +54828,7 @@
     "micros": {
       "sodium": 2960,
       "fiber": 3,
+      "vitaminA": 410,
       "vitaminC": 0.281,
       "vitaminE": 3.4,
       "vitaminK": 80.8,
@@ -54829,16 +54838,19 @@
       "pantothenicAcid": 3.35,
       "vitaminB6": 0.887,
       "biotin": 21.5,
-      "folate": 210,
+      "folate": 185,
+      "vitaminB12": 1.9,
       "phosphorus": 783,
       "iodine": 77.4,
       "magnesium": 107,
       "zinc": 4.68,
+      "selenium": 51.2,
       "copper": 385,
       "manganese": 0.793,
       "chromium": 5.4,
       "molybdenum": 67.1,
-      "chloride": 4465
+      "chloride": 4465,
+      "choline": 336
     },
     "longevity": {
       "saturatedFat": 18,
@@ -54848,7 +54860,7 @@
     "carbQuality": {
       "netCarbs": 87
     },
-    "notes": "Denny's nutrition guide (Oct 2022 edition), Moons Over My Hammy served with hash browns, 18 oz: 1040 kcal, 54 g fat, 18 g saturated fat, 1 g trans fat, 560 mg cholesterol, 2960 mg sodium, 90 g carbohydrate, 3 g fiber, 4 g sugars, 47 g protein. Logged as a 17 oz sandwich. Label-gap check on 11 Nov 2026: Nutrition Facts labels don't have to list these nutrients, so keys that were missing or 0 were checked against composition data; only those keys changed, as estimates, and other values were kept. Scaled to about 510 g, the weight in the name. Composition, split by weight: USDA FoodData Central SR Legacy FDC 173270 (Fast foods, croissant, with egg, cheese, and ham) 55%; USDA FoodData Central SR Legacy FDC 169025 (DENNY'S, hash browns) 45%. From those records: vitamin C, vitamin E, vitamin K, thiamin, riboflavin, niacin, pantothenic acid, B6, folate, phosphorus, magnesium, zinc, copper, manganese. From typical amounts per 100 g for egg, cured meat, refined-grain foods, cheese, potato (NIH ODS fact-sheet tables, Anderson chromium data, USDA/FDA/ODS Iodine Database; salt in processed or restaurant food assumed noniodized): biotin, iodine, chromium, molybdenum. Chloride: from the natural sodium and chloride of the ingredients. Not reported in the composition data, so left as is: vitamin A, B12, selenium, choline."
+    "notes": "Denny's nutrition guide (Oct 2022 edition), Moons Over My Hammy served with hash browns, 18 oz: 1040 kcal, 54 g fat, 18 g saturated fat, 1 g trans fat, 560 mg cholesterol, 2960 mg sodium, 90 g carbohydrate, 3 g fiber, 4 g sugars, 47 g protein. Logged as a 17 oz sandwich. Label-gap check on 11 Nov 2026: Nutrition Facts labels don't have to list these nutrients, so keys that were missing or 0 were checked against composition data; only those keys changed, as estimates, and other values were kept. Scaled to about 510 g, the weight in the name. Composition, split by weight: USDA FoodData Central SR Legacy FDC 173270 (Fast foods, croissant, with egg, cheese, and ham) 55%; USDA FoodData Central SR Legacy FDC 169025 (DENNY'S, hash browns), with FNDDS 2021-2023 FDC 2709480 (Potato, hash brown, from restaurant) for keys it lacks 45%. From those records: vitamin A, vitamin C, vitamin E, vitamin K, thiamin, riboflavin, niacin, pantothenic acid, B6, folate, B12, phosphorus, magnesium, zinc, selenium, copper, manganese, choline. From typical amounts per 100 g for egg, cured meat, refined-grain foods, cheese, potato (NIH ODS fact-sheet tables, Anderson chromium data, USDA/FDA/ODS Iodine Database; salt in processed or restaurant food assumed noniodized): biotin, iodine, chromium, molybdenum. Chloride: from the natural sodium and chloride of the ingredients."
   },
   {
     "name": "Denny's - Ultimate Omelette with Hash Browns & White Toast 1 plate (21 oz)",
@@ -54858,6 +54870,7 @@
     "micros": {
       "sodium": 2190,
       "fiber": 3,
+      "vitaminA": 555,
       "vitaminC": 1.19,
       "vitaminE": 4.9,
       "vitaminK": 74,
@@ -54867,16 +54880,19 @@
       "pantothenicAcid": 4.77,
       "vitaminB6": 0.92,
       "biotin": 56.2,
-      "folate": 297,
+      "folate": 277,
+      "vitaminB12": 2.5,
       "phosphorus": 848,
       "iodine": 184,
       "magnesium": 114,
       "zinc": 5.54,
+      "selenium": 112,
       "copper": 446,
       "manganese": 0.915,
       "chromium": 4.5,
       "molybdenum": 90.8,
-      "chloride": 3155
+      "chloride": 3155,
+      "choline": 740
     },
     "longevity": {
       "saturatedFat": 23,
@@ -54886,7 +54902,7 @@
     "carbQuality": {
       "netCarbs": 60
     },
-    "notes": "Denny's Core Menu Nutrition Guide (October 2025 edition, dennys.com/nutrition), Ultimate Omelette® w/ hash browns & white toast, 21 oz: 1150 kcal, 77 g fat, 23 g saturated fat, 0.5 g trans fat, 785 mg cholesterol, 2190 mg sodium, 63 g carbohydrate, 3 g fiber, 7 g sugars, 46 g protein. The guide lists this omelette only as the plate with hash browns and white toast; it does not say whether the toast includes margarine. Denny's does not publish vitamins or minerals, so none are stored. Label-gap check on 11 Nov 2026: Nutrition Facts labels don't have to list these nutrients, so keys that were missing or 0 were checked against composition data; only those keys changed, as estimates, and other values were kept. Scaled to about 595 g, the weight in the name. Composition, split by weight: USDA FoodData Central SR Legacy FDC 172185 (Egg, whole, cooked, omelet) 45%; USDA FoodData Central SR Legacy FDC 169025 (DENNY'S, hash browns) 30%; USDA FoodData Central SR Legacy FDC 174925 (Bread, white, commercially prepared, toasted) 15%; USDA FoodData Central SR Legacy FDC 173864 (Ham, sliced, regular (approximately 11% fat)) 5%; USDA FoodData Central FNDDS 2021-2023 FDC 2705709 (Cheese, Cheddar) 5%. From those records: vitamin C, vitamin E, vitamin K, thiamin, riboflavin, niacin, B6, folate, phosphorus, magnesium, zinc, copper. From typical amounts per 100 g for egg, potato, refined-grain foods, cured meat, cheese (NIH ODS fact-sheet tables, Anderson chromium data, USDA/FDA/ODS Iodine Database; salt in processed or restaurant food assumed noniodized): pantothenic acid, biotin, iodine, manganese, chromium, molybdenum. Chloride: from the natural sodium and chloride of the ingredients. Not reported in the composition data, so left as is: vitamin A, B12, selenium, choline."
+    "notes": "Denny's Core Menu Nutrition Guide (October 2025 edition, dennys.com/nutrition), Ultimate Omelette® w/ hash browns & white toast, 21 oz: 1150 kcal, 77 g fat, 23 g saturated fat, 0.5 g trans fat, 785 mg cholesterol, 2190 mg sodium, 63 g carbohydrate, 3 g fiber, 7 g sugars, 46 g protein. The guide lists this omelette only as the plate with hash browns and white toast; it does not say whether the toast includes margarine. Denny's does not publish vitamins or minerals, so none are stored. Label-gap check on 11 Nov 2026: Nutrition Facts labels don't have to list these nutrients, so keys that were missing or 0 were checked against composition data; only those keys changed, as estimates, and other values were kept. Scaled to about 595 g, the weight in the name. Composition, split by weight: USDA FoodData Central SR Legacy FDC 172185 (Egg, whole, cooked, omelet) 45%; USDA FoodData Central SR Legacy FDC 169025 (DENNY'S, hash browns), with FNDDS 2021-2023 FDC 2709480 (Potato, hash brown, from restaurant) for keys it lacks 30%; USDA FoodData Central SR Legacy FDC 174925 (Bread, white, commercially prepared, toasted) 15%; USDA FoodData Central SR Legacy FDC 173864 (Ham, sliced, regular (approximately 11% fat)) 5%; USDA FoodData Central FNDDS 2021-2023 FDC 2705709 (Cheese, Cheddar) 5%. From those records: vitamin A, vitamin C, vitamin E, vitamin K, thiamin, riboflavin, niacin, B6, folate, B12, phosphorus, magnesium, zinc, selenium, copper, choline. From typical amounts per 100 g for egg, potato, refined-grain foods, cured meat, cheese (NIH ODS fact-sheet tables, Anderson chromium data, USDA/FDA/ODS Iodine Database; salt in processed or restaurant food assumed noniodized): pantothenic acid, biotin, iodine, manganese, chromium, molybdenum. Chloride: from the natural sodium and chloride of the ingredients."
   },
   {
     "name": "Denny's - Loaded Veggie Omelette with Hash Browns & White Toast 1 plate (19 oz)",
@@ -54896,6 +54912,7 @@
     "micros": {
       "sodium": 1540,
       "fiber": 3,
+      "vitaminA": 502,
       "vitaminC": 1.08,
       "vitaminE": 4.43,
       "vitaminK": 67,
@@ -54905,16 +54922,19 @@
       "pantothenicAcid": 4.31,
       "vitaminB6": 0.833,
       "biotin": 50.9,
-      "folate": 269,
+      "folate": 251,
+      "vitaminB12": 2.3,
       "phosphorus": 767,
       "iodine": 166,
       "magnesium": 103,
       "zinc": 5.01,
+      "selenium": 101,
       "copper": 404,
       "manganese": 0.828,
       "chromium": 4,
       "molybdenum": 82.1,
-      "chloride": 2242
+      "chloride": 2242,
+      "choline": 669
     },
     "longevity": {
       "saturatedFat": 16,
@@ -54924,7 +54944,7 @@
     "carbQuality": {
       "netCarbs": 60
     },
-    "notes": "Denny's Core Menu Nutrition Guide (October 2025 edition, dennys.com/nutrition), Loaded Veggie Omelette w/ hash browns & white toast, 19 oz: 920 kcal, 56 g fat, 16 g saturated fat, 0.5 g trans fat, 740 mg cholesterol, 1540 mg sodium, 63 g carbohydrate, 3 g fiber, 6 g sugars, 36 g protein. The guide lists this omelette only as the plate with hash browns and white toast; it does not say whether the toast includes margarine. Denny's does not publish vitamins or minerals, so none are stored. Label-gap check on 11 Nov 2026: Nutrition Facts labels don't have to list these nutrients, so keys that were missing or 0 were checked against composition data; only those keys changed, as estimates, and other values were kept. Scaled to about 539 g, the weight in the name. Composition, split by weight: USDA FoodData Central SR Legacy FDC 172185 (Egg, whole, cooked, omelet) 45%; USDA FoodData Central SR Legacy FDC 169025 (DENNY'S, hash browns) 30%; USDA FoodData Central SR Legacy FDC 174925 (Bread, white, commercially prepared, toasted) 15%; USDA FoodData Central SR Legacy FDC 173864 (Ham, sliced, regular (approximately 11% fat)) 5%; USDA FoodData Central FNDDS 2021-2023 FDC 2705709 (Cheese, Cheddar) 5%. From those records: vitamin C, vitamin E, vitamin K, thiamin, riboflavin, niacin, B6, folate, phosphorus, magnesium, zinc, copper. From typical amounts per 100 g for egg, potato, refined-grain foods, cured meat, cheese (NIH ODS fact-sheet tables, Anderson chromium data, USDA/FDA/ODS Iodine Database; salt in processed or restaurant food assumed noniodized): pantothenic acid, biotin, iodine, manganese, chromium, molybdenum. Chloride: from the natural sodium and chloride of the ingredients. Not reported in the composition data, so left as is: vitamin A, B12, selenium, choline."
+    "notes": "Denny's Core Menu Nutrition Guide (October 2025 edition, dennys.com/nutrition), Loaded Veggie Omelette w/ hash browns & white toast, 19 oz: 920 kcal, 56 g fat, 16 g saturated fat, 0.5 g trans fat, 740 mg cholesterol, 1540 mg sodium, 63 g carbohydrate, 3 g fiber, 6 g sugars, 36 g protein. The guide lists this omelette only as the plate with hash browns and white toast; it does not say whether the toast includes margarine. Denny's does not publish vitamins or minerals, so none are stored. Label-gap check on 11 Nov 2026: Nutrition Facts labels don't have to list these nutrients, so keys that were missing or 0 were checked against composition data; only those keys changed, as estimates, and other values were kept. Scaled to about 539 g, the weight in the name. Composition, split by weight: USDA FoodData Central SR Legacy FDC 172185 (Egg, whole, cooked, omelet) 45%; USDA FoodData Central SR Legacy FDC 169025 (DENNY'S, hash browns), with FNDDS 2021-2023 FDC 2709480 (Potato, hash brown, from restaurant) for keys it lacks 30%; USDA FoodData Central SR Legacy FDC 174925 (Bread, white, commercially prepared, toasted) 15%; USDA FoodData Central SR Legacy FDC 173864 (Ham, sliced, regular (approximately 11% fat)) 5%; USDA FoodData Central FNDDS 2021-2023 FDC 2705709 (Cheese, Cheddar) 5%. From those records: vitamin A, vitamin C, vitamin E, vitamin K, thiamin, riboflavin, niacin, B6, folate, B12, phosphorus, magnesium, zinc, selenium, copper, choline. From typical amounts per 100 g for egg, potato, refined-grain foods, cured meat, cheese (NIH ODS fact-sheet tables, Anderson chromium data, USDA/FDA/ODS Iodine Database; salt in processed or restaurant food assumed noniodized): pantothenic acid, biotin, iodine, manganese, chromium, molybdenum. Chloride: from the natural sodium and chloride of the ingredients."
   },
   {
     "name": "Denny's - Mile High Denver Omelette with Hash Browns & White Toast 1 plate (19 oz)",
@@ -54934,6 +54954,7 @@
     "micros": {
       "sodium": 3130,
       "fiber": 2,
+      "vitaminA": 502,
       "vitaminC": 1.08,
       "vitaminE": 4.43,
       "vitaminK": 67,
@@ -54943,16 +54964,19 @@
       "pantothenicAcid": 4.31,
       "vitaminB6": 0.833,
       "biotin": 50.9,
-      "folate": 269,
+      "folate": 251,
+      "vitaminB12": 2.3,
       "phosphorus": 767,
       "iodine": 166,
       "magnesium": 103,
       "zinc": 5.01,
+      "selenium": 101,
       "copper": 404,
       "manganese": 0.828,
       "chromium": 4,
       "molybdenum": 82.1,
-      "chloride": 4655
+      "chloride": 4655,
+      "choline": 669
     },
     "longevity": {
       "saturatedFat": 21,
@@ -54962,7 +54986,7 @@
     "carbQuality": {
       "netCarbs": 67
     },
-    "notes": "Denny's Core Menu Nutrition Guide (October 2025 edition, dennys.com/nutrition), Mile High Denver Omelette w/ hash browns & white toast, 19 oz: 1090 kcal, 67 g fat, 21 g saturated fat, 1 g trans fat, 800 mg cholesterol, 3130 mg sodium, 69 g carbohydrate, 2 g fiber, 12 g sugars, 51 g protein. The guide lists this omelette only as the plate with hash browns and white toast; it does not say whether the toast includes margarine. Denny's does not publish vitamins or minerals, so none are stored. Label-gap check on 11 Nov 2026: Nutrition Facts labels don't have to list these nutrients, so keys that were missing or 0 were checked against composition data; only those keys changed, as estimates, and other values were kept. Scaled to about 539 g, the weight in the name. Composition, split by weight: USDA FoodData Central SR Legacy FDC 172185 (Egg, whole, cooked, omelet) 45%; USDA FoodData Central SR Legacy FDC 169025 (DENNY'S, hash browns) 30%; USDA FoodData Central SR Legacy FDC 174925 (Bread, white, commercially prepared, toasted) 15%; USDA FoodData Central SR Legacy FDC 173864 (Ham, sliced, regular (approximately 11% fat)) 5%; USDA FoodData Central FNDDS 2021-2023 FDC 2705709 (Cheese, Cheddar) 5%. From those records: vitamin C, vitamin E, vitamin K, thiamin, riboflavin, niacin, B6, folate, phosphorus, magnesium, zinc, copper. From typical amounts per 100 g for egg, potato, refined-grain foods, cured meat, cheese (NIH ODS fact-sheet tables, Anderson chromium data, USDA/FDA/ODS Iodine Database; salt in processed or restaurant food assumed noniodized): pantothenic acid, biotin, iodine, manganese, chromium, molybdenum. Chloride: natural chloride of the ingredients plus 1.54 times the sodium above what they contain, since the added sodium is from salt. Not reported in the composition data, so left as is: vitamin A, B12, selenium, choline."
+    "notes": "Denny's Core Menu Nutrition Guide (October 2025 edition, dennys.com/nutrition), Mile High Denver Omelette w/ hash browns & white toast, 19 oz: 1090 kcal, 67 g fat, 21 g saturated fat, 1 g trans fat, 800 mg cholesterol, 3130 mg sodium, 69 g carbohydrate, 2 g fiber, 12 g sugars, 51 g protein. The guide lists this omelette only as the plate with hash browns and white toast; it does not say whether the toast includes margarine. Denny's does not publish vitamins or minerals, so none are stored. Label-gap check on 11 Nov 2026: Nutrition Facts labels don't have to list these nutrients, so keys that were missing or 0 were checked against composition data; only those keys changed, as estimates, and other values were kept. Scaled to about 539 g, the weight in the name. Composition, split by weight: USDA FoodData Central SR Legacy FDC 172185 (Egg, whole, cooked, omelet) 45%; USDA FoodData Central SR Legacy FDC 169025 (DENNY'S, hash browns), with FNDDS 2021-2023 FDC 2709480 (Potato, hash brown, from restaurant) for keys it lacks 30%; USDA FoodData Central SR Legacy FDC 174925 (Bread, white, commercially prepared, toasted) 15%; USDA FoodData Central SR Legacy FDC 173864 (Ham, sliced, regular (approximately 11% fat)) 5%; USDA FoodData Central FNDDS 2021-2023 FDC 2705709 (Cheese, Cheddar) 5%. From those records: vitamin A, vitamin C, vitamin E, vitamin K, thiamin, riboflavin, niacin, B6, folate, B12, phosphorus, magnesium, zinc, selenium, copper, choline. From typical amounts per 100 g for egg, potato, refined-grain foods, cured meat, cheese (NIH ODS fact-sheet tables, Anderson chromium data, USDA/FDA/ODS Iodine Database; salt in processed or restaurant food assumed noniodized): pantothenic acid, biotin, iodine, manganese, chromium, molybdenum. Chloride: natural chloride of the ingredients plus 1.54 times the sodium above what they contain, since the added sodium is from salt."
   },
   {
     "name": "Denny's - Moons Over My Hammy Omelette with Hash Browns & White Toast 1 plate (19 oz)",
@@ -54972,6 +54996,7 @@
     "micros": {
       "sodium": 2760,
       "fiber": 1,
+      "vitaminA": 502,
       "vitaminC": 1.08,
       "vitaminE": 4.43,
       "vitaminK": 67,
@@ -54981,16 +55006,19 @@
       "pantothenicAcid": 4.31,
       "vitaminB6": 0.833,
       "biotin": 50.9,
-      "folate": 269,
+      "folate": 251,
+      "vitaminB12": 2.3,
       "phosphorus": 767,
       "iodine": 166,
       "magnesium": 103,
       "zinc": 5.01,
+      "selenium": 101,
       "copper": 404,
       "manganese": 0.828,
       "chromium": 4,
       "molybdenum": 82.1,
-      "chloride": 4085
+      "chloride": 4085,
+      "choline": 669
     },
     "longevity": {
       "saturatedFat": 21,
@@ -55000,7 +55028,7 @@
     "carbQuality": {
       "netCarbs": 63
     },
-    "notes": "Denny's Core Menu Nutrition Guide (October 2025 edition, dennys.com/nutrition), Moons Over My Hammy® Omelette w/ hash browns & white toast, 19 oz: 1080 kcal, 67 g fat, 21 g saturated fat, 1 g trans fat, 800 mg cholesterol, 2760 mg sodium, 64 g carbohydrate, 1 g fiber, 9 g sugars, 52 g protein. The guide lists this omelette only as the plate with hash browns and white toast; it does not say whether the toast includes margarine. Denny's does not publish vitamins or minerals, so none are stored. Label-gap check on 11 Nov 2026: Nutrition Facts labels don't have to list these nutrients, so keys that were missing or 0 were checked against composition data; only those keys changed, as estimates, and other values were kept. Scaled to about 539 g, the weight in the name. Composition, split by weight: USDA FoodData Central SR Legacy FDC 172185 (Egg, whole, cooked, omelet) 45%; USDA FoodData Central SR Legacy FDC 169025 (DENNY'S, hash browns) 30%; USDA FoodData Central SR Legacy FDC 174925 (Bread, white, commercially prepared, toasted) 15%; USDA FoodData Central SR Legacy FDC 173864 (Ham, sliced, regular (approximately 11% fat)) 5%; USDA FoodData Central FNDDS 2021-2023 FDC 2705709 (Cheese, Cheddar) 5%. From those records: vitamin C, vitamin E, vitamin K, thiamin, riboflavin, niacin, B6, folate, phosphorus, magnesium, zinc, copper. From typical amounts per 100 g for egg, potato, refined-grain foods, cured meat, cheese (NIH ODS fact-sheet tables, Anderson chromium data, USDA/FDA/ODS Iodine Database; salt in processed or restaurant food assumed noniodized): pantothenic acid, biotin, iodine, manganese, chromium, molybdenum. Chloride: natural chloride of the ingredients plus 1.54 times the sodium above what they contain, since the added sodium is from salt. Not reported in the composition data, so left as is: vitamin A, B12, selenium, choline."
+    "notes": "Denny's Core Menu Nutrition Guide (October 2025 edition, dennys.com/nutrition), Moons Over My Hammy® Omelette w/ hash browns & white toast, 19 oz: 1080 kcal, 67 g fat, 21 g saturated fat, 1 g trans fat, 800 mg cholesterol, 2760 mg sodium, 64 g carbohydrate, 1 g fiber, 9 g sugars, 52 g protein. The guide lists this omelette only as the plate with hash browns and white toast; it does not say whether the toast includes margarine. Denny's does not publish vitamins or minerals, so none are stored. Label-gap check on 11 Nov 2026: Nutrition Facts labels don't have to list these nutrients, so keys that were missing or 0 were checked against composition data; only those keys changed, as estimates, and other values were kept. Scaled to about 539 g, the weight in the name. Composition, split by weight: USDA FoodData Central SR Legacy FDC 172185 (Egg, whole, cooked, omelet) 45%; USDA FoodData Central SR Legacy FDC 169025 (DENNY'S, hash browns), with FNDDS 2021-2023 FDC 2709480 (Potato, hash brown, from restaurant) for keys it lacks 30%; USDA FoodData Central SR Legacy FDC 174925 (Bread, white, commercially prepared, toasted) 15%; USDA FoodData Central SR Legacy FDC 173864 (Ham, sliced, regular (approximately 11% fat)) 5%; USDA FoodData Central FNDDS 2021-2023 FDC 2705709 (Cheese, Cheddar) 5%. From those records: vitamin A, vitamin C, vitamin E, vitamin K, thiamin, riboflavin, niacin, B6, folate, B12, phosphorus, magnesium, zinc, selenium, copper, choline. From typical amounts per 100 g for egg, potato, refined-grain foods, cured meat, cheese (NIH ODS fact-sheet tables, Anderson chromium data, USDA/FDA/ODS Iodine Database; salt in processed or restaurant food assumed noniodized): pantothenic acid, biotin, iodine, manganese, chromium, molybdenum. Chloride: natural chloride of the ingredients plus 1.54 times the sodium above what they contain, since the added sodium is from salt."
   },
   {
     "name": "Denny's - Philly Cheesesteak Omelette with Hash Browns & White Toast 1 plate (21 oz)",
@@ -55010,6 +55038,7 @@
     "micros": {
       "sodium": 2010,
       "fiber": 2,
+      "vitaminA": 555,
       "vitaminC": 1.19,
       "vitaminE": 4.9,
       "vitaminK": 74,
@@ -55019,16 +55048,19 @@
       "pantothenicAcid": 4.77,
       "vitaminB6": 0.92,
       "biotin": 56.2,
-      "folate": 297,
+      "folate": 277,
+      "vitaminB12": 2.5,
       "phosphorus": 848,
       "iodine": 184,
       "magnesium": 114,
       "zinc": 5.54,
+      "selenium": 112,
       "copper": 446,
       "manganese": 0.915,
       "chromium": 4.5,
       "molybdenum": 90.8,
-      "chloride": 3155
+      "chloride": 3155,
+      "choline": 740
     },
     "longevity": {
       "saturatedFat": 21,
@@ -55038,7 +55070,7 @@
     "carbQuality": {
       "netCarbs": 61
     },
-    "notes": "Denny's Core Menu Nutrition Guide (October 2025 edition, dennys.com/nutrition), Philly Cheesesteak Omelette w/ hash browns & white toast, 21 oz: 1130 kcal, 71 g fat, 21 g saturated fat, 1 g trans fat, 785 mg cholesterol, 2010 mg sodium, 63 g carbohydrate, 2 g fiber, 5 g sugars, 54 g protein. The guide lists this omelette only as the plate with hash browns and white toast; it does not say whether the toast includes margarine. Denny's does not publish vitamins or minerals, so none are stored. Label-gap check on 11 Nov 2026: Nutrition Facts labels don't have to list these nutrients, so keys that were missing or 0 were checked against composition data; only those keys changed, as estimates, and other values were kept. Scaled to about 595 g, the weight in the name. Composition, split by weight: USDA FoodData Central SR Legacy FDC 172185 (Egg, whole, cooked, omelet) 45%; USDA FoodData Central SR Legacy FDC 169025 (DENNY'S, hash browns) 30%; USDA FoodData Central SR Legacy FDC 174925 (Bread, white, commercially prepared, toasted) 15%; USDA FoodData Central SR Legacy FDC 173864 (Ham, sliced, regular (approximately 11% fat)) 5%; USDA FoodData Central FNDDS 2021-2023 FDC 2705709 (Cheese, Cheddar) 5%. From those records: vitamin C, vitamin E, vitamin K, thiamin, riboflavin, niacin, B6, folate, phosphorus, magnesium, zinc, copper. From typical amounts per 100 g for egg, potato, refined-grain foods, cured meat, cheese (NIH ODS fact-sheet tables, Anderson chromium data, USDA/FDA/ODS Iodine Database; salt in processed or restaurant food assumed noniodized): pantothenic acid, biotin, iodine, manganese, chromium, molybdenum. Chloride: from the natural sodium and chloride of the ingredients. Not reported in the composition data, so left as is: vitamin A, B12, selenium, choline."
+    "notes": "Denny's Core Menu Nutrition Guide (October 2025 edition, dennys.com/nutrition), Philly Cheesesteak Omelette w/ hash browns & white toast, 21 oz: 1130 kcal, 71 g fat, 21 g saturated fat, 1 g trans fat, 785 mg cholesterol, 2010 mg sodium, 63 g carbohydrate, 2 g fiber, 5 g sugars, 54 g protein. The guide lists this omelette only as the plate with hash browns and white toast; it does not say whether the toast includes margarine. Denny's does not publish vitamins or minerals, so none are stored. Label-gap check on 11 Nov 2026: Nutrition Facts labels don't have to list these nutrients, so keys that were missing or 0 were checked against composition data; only those keys changed, as estimates, and other values were kept. Scaled to about 595 g, the weight in the name. Composition, split by weight: USDA FoodData Central SR Legacy FDC 172185 (Egg, whole, cooked, omelet) 45%; USDA FoodData Central SR Legacy FDC 169025 (DENNY'S, hash browns), with FNDDS 2021-2023 FDC 2709480 (Potato, hash brown, from restaurant) for keys it lacks 30%; USDA FoodData Central SR Legacy FDC 174925 (Bread, white, commercially prepared, toasted) 15%; USDA FoodData Central SR Legacy FDC 173864 (Ham, sliced, regular (approximately 11% fat)) 5%; USDA FoodData Central FNDDS 2021-2023 FDC 2705709 (Cheese, Cheddar) 5%. From those records: vitamin A, vitamin C, vitamin E, vitamin K, thiamin, riboflavin, niacin, B6, folate, B12, phosphorus, magnesium, zinc, selenium, copper, choline. From typical amounts per 100 g for egg, potato, refined-grain foods, cured meat, cheese (NIH ODS fact-sheet tables, Anderson chromium data, USDA/FDA/ODS Iodine Database; salt in processed or restaurant food assumed noniodized): pantothenic acid, biotin, iodine, manganese, chromium, molybdenum. Chloride: from the natural sodium and chloride of the ingredients."
   },
   {
     "name": "Denny's - 55+ Omelette with Hash Browns & White Toast 1 plate (16 oz)",
@@ -55048,6 +55080,7 @@
     "micros": {
       "sodium": 2080,
       "fiber": 2,
+      "vitaminA": 423,
       "vitaminC": 0.907,
       "vitaminE": 3.73,
       "vitaminK": 56.4,
@@ -55057,16 +55090,19 @@
       "pantothenicAcid": 3.63,
       "vitaminB6": 0.701,
       "biotin": 42.8,
-      "folate": 226,
+      "folate": 211,
+      "vitaminB12": 1.9,
       "phosphorus": 646,
       "iodine": 140,
       "magnesium": 86.6,
       "zinc": 4.22,
+      "selenium": 85.4,
       "copper": 340,
       "manganese": 0.697,
       "chromium": 3.4,
       "molybdenum": 69.2,
-      "chloride": 3064
+      "chloride": 3064,
+      "choline": 564
     },
     "longevity": {
       "saturatedFat": 16,
@@ -55076,7 +55112,7 @@
     "carbQuality": {
       "netCarbs": 59
     },
-    "notes": "Denny's Core Menu Nutrition Guide (October 2025 edition, dennys.com/nutrition), 55+ Omelette w/ hash browns & white toast, 16 oz: 930 kcal, 57 g fat, 16 g saturated fat, 0.5 g trans fat, 530 mg cholesterol, 2080 mg sodium, 61 g carbohydrate, 2 g fiber, 6 g sugars, 39 g protein. The guide lists this omelette only as the plate with hash browns and white toast; it does not say whether the toast includes margarine. Denny's does not publish vitamins or minerals, so none are stored. Label-gap check on 11 Nov 2026: Nutrition Facts labels don't have to list these nutrients, so keys that were missing or 0 were checked against composition data; only those keys changed, as estimates, and other values were kept. Scaled to about 454 g, the weight in the name. Composition, split by weight: USDA FoodData Central SR Legacy FDC 172185 (Egg, whole, cooked, omelet) 45%; USDA FoodData Central SR Legacy FDC 169025 (DENNY'S, hash browns) 30%; USDA FoodData Central SR Legacy FDC 174925 (Bread, white, commercially prepared, toasted) 15%; USDA FoodData Central SR Legacy FDC 173864 (Ham, sliced, regular (approximately 11% fat)) 5%; USDA FoodData Central FNDDS 2021-2023 FDC 2705709 (Cheese, Cheddar) 5%. From those records: vitamin C, vitamin E, vitamin K, thiamin, riboflavin, niacin, B6, folate, phosphorus, magnesium, zinc, copper. From typical amounts per 100 g for egg, potato, refined-grain foods, cured meat, cheese (NIH ODS fact-sheet tables, Anderson chromium data, USDA/FDA/ODS Iodine Database; salt in processed or restaurant food assumed noniodized): pantothenic acid, biotin, iodine, manganese, chromium, molybdenum. Chloride: natural chloride of the ingredients plus 1.54 times the sodium above what they contain, since the added sodium is from salt. Not reported in the composition data, so left as is: vitamin A, B12, selenium, choline."
+    "notes": "Denny's Core Menu Nutrition Guide (October 2025 edition, dennys.com/nutrition), 55+ Omelette w/ hash browns & white toast, 16 oz: 930 kcal, 57 g fat, 16 g saturated fat, 0.5 g trans fat, 530 mg cholesterol, 2080 mg sodium, 61 g carbohydrate, 2 g fiber, 6 g sugars, 39 g protein. The guide lists this omelette only as the plate with hash browns and white toast; it does not say whether the toast includes margarine. Denny's does not publish vitamins or minerals, so none are stored. Label-gap check on 11 Nov 2026: Nutrition Facts labels don't have to list these nutrients, so keys that were missing or 0 were checked against composition data; only those keys changed, as estimates, and other values were kept. Scaled to about 454 g, the weight in the name. Composition, split by weight: USDA FoodData Central SR Legacy FDC 172185 (Egg, whole, cooked, omelet) 45%; USDA FoodData Central SR Legacy FDC 169025 (DENNY'S, hash browns), with FNDDS 2021-2023 FDC 2709480 (Potato, hash brown, from restaurant) for keys it lacks 30%; USDA FoodData Central SR Legacy FDC 174925 (Bread, white, commercially prepared, toasted) 15%; USDA FoodData Central SR Legacy FDC 173864 (Ham, sliced, regular (approximately 11% fat)) 5%; USDA FoodData Central FNDDS 2021-2023 FDC 2705709 (Cheese, Cheddar) 5%. From those records: vitamin A, vitamin C, vitamin E, vitamin K, thiamin, riboflavin, niacin, B6, folate, B12, phosphorus, magnesium, zinc, selenium, copper, choline. From typical amounts per 100 g for egg, potato, refined-grain foods, cured meat, cheese (NIH ODS fact-sheet tables, Anderson chromium data, USDA/FDA/ODS Iodine Database; salt in processed or restaurant food assumed noniodized): pantothenic acid, biotin, iodine, manganese, chromium, molybdenum. Chloride: natural chloride of the ingredients plus 1.54 times the sodium above what they contain, since the added sodium is from salt."
   },
   {
     "name": "Baja Fresh - Baja Burrito Chicken 1 burrito (425 g)",
@@ -63876,14 +63912,29 @@
       "calcium": 10,
       "iron": 0,
       "vitaminD": 0,
+      "vitaminA": 5.9,
       "vitaminC": 0.05,
-      "pantothenicAcid": 0.05,
+      "vitaminE": 0.051,
+      "vitaminK": 0.6,
+      "thiamin": 0.011,
+      "riboflavin": 0.03,
+      "niacin": 0.039,
+      "pantothenicAcid": 0.047,
+      "vitaminB6": 0,
       "biotin": 0.2,
+      "folate": 1.1,
+      "vitaminB12": 0.1,
+      "phosphorus": 20.8,
       "iodine": 1.5,
-      "manganese": 0.05,
+      "magnesium": 6.3,
+      "zinc": 0.23,
+      "selenium": 0.5,
+      "copper": 49.1,
+      "manganese": 0.047,
       "chromium": 0.1,
       "molybdenum": 1,
-      "chloride": 23.1
+      "chloride": 23.1,
+      "choline": 4.6
     },
     "longevity": {
       "saturatedFat": 1.67,
@@ -63894,7 +63945,7 @@
       "addedSugar": 5,
       "refinedCarbs": 6.67
     },
-    "notes": "Assorted-bag size. One mini is one third of the Giant Food Crunch Minis label, 3 bars: 150 kcal, 8 g fat, 5 g saturated fat, 0 g trans fat, 0 mg cholesterol, 45 mg sodium, 20 g carbohydrate, 17 g total sugar, 15 g added sugar, 2 g protein, 0 mcg vitamin D, 30 mg calcium, 0 mg iron, 70 mg potassium. crunchbar.com lists the minis serving as 30 g, so one piece is 10 g and 50 kcal. Fiber is printed only as 2% daily value for the 3 bars, so it is omitted. Contains milk and soy; may contain peanut, tree nuts, and wheat. Label-gap check on 11 Nov 2026: Nutrition Facts labels don't have to list these nutrients, so keys that were missing or 0 were checked against composition data; only those keys changed, as estimates, and other values were kept. Scaled to about 10 g, the weight in the name. Composition: USDA FoodData Central SR Legacy FDC 168762 (Candies, NESTLE, CRUNCH Bar and Dessert Topping). From that record: vitamin C. From typical amounts per 100 g for milk chocolate (NIH ODS fact-sheet tables, Anderson chromium data, USDA/FDA/ODS Iodine Database; salt in processed or restaurant food assumed noniodized): pantothenic acid, biotin, iodine, manganese, chromium, molybdenum. Chloride: from the natural sodium and chloride of the ingredients. Not reported in the composition data, so left as is: vitamin A, vitamin E, vitamin K, thiamin, riboflavin, niacin, B6, folate, B12, phosphorus, magnesium, zinc, selenium, copper, choline."
+    "notes": "Assorted-bag size. One mini is one third of the Giant Food Crunch Minis label, 3 bars: 150 kcal, 8 g fat, 5 g saturated fat, 0 g trans fat, 0 mg cholesterol, 45 mg sodium, 20 g carbohydrate, 17 g total sugar, 15 g added sugar, 2 g protein, 0 mcg vitamin D, 30 mg calcium, 0 mg iron, 70 mg potassium. crunchbar.com lists the minis serving as 30 g, so one piece is 10 g and 50 kcal. Fiber is printed only as 2% daily value for the 3 bars, so it is omitted. Contains milk and soy; may contain peanut, tree nuts, and wheat. Label-gap check on 11 Nov 2026: Nutrition Facts labels don't have to list these nutrients, so keys that were missing or 0 were checked against composition data; only those keys changed, as estimates, and other values were kept. Scaled to about 10 g, the weight in the name. Composition: USDA FoodData Central SR Legacy FDC 168762 (Candies, NESTLE, CRUNCH Bar and Dessert Topping), with SR Legacy FDC 167587 (Candies, milk chocolate) for keys it lacks. From those records: vitamin A, vitamin C, vitamin E, vitamin K, thiamin, riboflavin, niacin, pantothenic acid, folate, B12, phosphorus, magnesium, zinc, selenium, copper, manganese, choline. From typical amounts per 100 g for milk chocolate (NIH ODS fact-sheet tables, Anderson chromium data, USDA/FDA/ODS Iodine Database; salt in processed or restaurant food assumed noniodized): biotin, iodine, chromium, molybdenum. Chloride: from the natural sodium and chloride of the ingredients. Set to 0 because the amount rounds to 0 at this portion size: B6."
   },
   {
     "name": "Junk Food - Crunch Fun Size 1 bar (13 g, assorted)",
@@ -63908,14 +63959,29 @@
       "iron": 0.05,
       "vitaminD": 0,
       "fiber": 0,
+      "vitaminA": 7.7,
       "vitaminC": 0.065,
-      "pantothenicAcid": 0.065,
+      "vitaminE": 0.066,
+      "vitaminK": 0.7,
+      "thiamin": 0.015,
+      "riboflavin": 0.039,
+      "niacin": 0.05,
+      "pantothenicAcid": 0.061,
+      "vitaminB6": 0,
       "biotin": 0.3,
+      "folate": 1.4,
+      "vitaminB12": 0.1,
+      "phosphorus": 27,
       "iodine": 1.9,
-      "manganese": 0.065,
+      "magnesium": 8.2,
+      "zinc": 0.299,
+      "selenium": 0.6,
+      "copper": 63.8,
+      "manganese": 0.061,
       "chromium": 0.1,
       "molybdenum": 1.3,
-      "chloride": 30
+      "chloride": 30,
+      "choline": 6
     },
     "longevity": {
       "saturatedFat": 2.25,
@@ -63927,7 +63993,7 @@
       "refinedCarbs": 8.5,
       "netCarbs": 8.5
     },
-    "notes": "Assorted-bag size. One fun-size bar is half of the Kroger 10 oz Crunch Fun Size label, 2 bars (26 g): 130 kcal, 7 g fat, 4.5 g saturated fat, 0 g trans fat, 5 mg cholesterol, 40 mg sodium, 17 g carbohydrate, 0 g fiber, 15 g total sugar, 14 g added sugar, 1 g protein, 0 mcg vitamin D, 30 mg calcium, 0.1 mg iron, 70 mg potassium. This entry is 13 g and 65 kcal. Hannaford prints 0 mg cholesterol and 0 mg iron for the same 2 bars. The 1.8 oz and 19 oz bags print 1 g fiber for those 2 bars. Contains milk and soy; may contain peanut, tree nuts, and wheat. Label-gap check on 11 Nov 2026: Nutrition Facts labels don't have to list these nutrients, so keys that were missing or 0 were checked against composition data; only those keys changed, as estimates, and other values were kept. Scaled to about 13 g, the weight in the name. Composition: USDA FoodData Central SR Legacy FDC 168762 (Candies, NESTLE, CRUNCH Bar and Dessert Topping). From that record: vitamin C. From typical amounts per 100 g for milk chocolate (NIH ODS fact-sheet tables, Anderson chromium data, USDA/FDA/ODS Iodine Database; salt in processed or restaurant food assumed noniodized): pantothenic acid, biotin, iodine, manganese, chromium, molybdenum. Chloride: from the natural sodium and chloride of the ingredients. Not reported in the composition data, so left as is: vitamin A, vitamin E, vitamin K, thiamin, riboflavin, niacin, B6, folate, B12, phosphorus, magnesium, zinc, selenium, copper, choline."
+    "notes": "Assorted-bag size. One fun-size bar is half of the Kroger 10 oz Crunch Fun Size label, 2 bars (26 g): 130 kcal, 7 g fat, 4.5 g saturated fat, 0 g trans fat, 5 mg cholesterol, 40 mg sodium, 17 g carbohydrate, 0 g fiber, 15 g total sugar, 14 g added sugar, 1 g protein, 0 mcg vitamin D, 30 mg calcium, 0.1 mg iron, 70 mg potassium. This entry is 13 g and 65 kcal. Hannaford prints 0 mg cholesterol and 0 mg iron for the same 2 bars. The 1.8 oz and 19 oz bags print 1 g fiber for those 2 bars. Contains milk and soy; may contain peanut, tree nuts, and wheat. Label-gap check on 11 Nov 2026: Nutrition Facts labels don't have to list these nutrients, so keys that were missing or 0 were checked against composition data; only those keys changed, as estimates, and other values were kept. Scaled to about 13 g, the weight in the name. Composition: USDA FoodData Central SR Legacy FDC 168762 (Candies, NESTLE, CRUNCH Bar and Dessert Topping), with SR Legacy FDC 167587 (Candies, milk chocolate) for keys it lacks. From those records: vitamin A, vitamin C, vitamin E, vitamin K, thiamin, riboflavin, niacin, pantothenic acid, folate, B12, phosphorus, magnesium, zinc, selenium, copper, manganese, choline. From typical amounts per 100 g for milk chocolate (NIH ODS fact-sheet tables, Anderson chromium data, USDA/FDA/ODS Iodine Database; salt in processed or restaurant food assumed noniodized): biotin, iodine, chromium, molybdenum. Chloride: from the natural sodium and chloride of the ingredients. Set to 0 because the amount rounds to 0 at this portion size: B6."
   },
   {
     "name": "Junk Food - Crunch 1 bar (1.55 oz / 44 g, vending)",
@@ -63941,14 +64007,29 @@
       "iron": 1,
       "vitaminD": 0,
       "fiber": 1,
+      "vitaminA": 26,
       "vitaminC": 0.22,
-      "pantothenicAcid": 0.22,
+      "vitaminE": 0.224,
+      "vitaminK": 2.5,
+      "thiamin": 0.049,
+      "riboflavin": 0.131,
+      "niacin": 0.17,
+      "pantothenicAcid": 0.208,
+      "vitaminB6": 0.016,
       "biotin": 0.9,
+      "folate": 4.8,
+      "vitaminB12": 0.3,
+      "phosphorus": 91.5,
       "iodine": 6.6,
-      "manganese": 0.22,
+      "magnesium": 27.7,
+      "zinc": 1.01,
+      "selenium": 2,
+      "copper": 216,
+      "manganese": 0.207,
       "chromium": 0.4,
       "molybdenum": 4.4,
-      "chloride": 102
+      "chloride": 102,
+      "choline": 20.3
     },
     "longevity": {
       "saturatedFat": 7,
@@ -63960,7 +64041,7 @@
       "refinedCarbs": 28,
       "netCarbs": 28
     },
-    "notes": "Vending-machine single. Ferrero Crunch full-size bar (Food Lion and crunchbar.com): 1 bar (44 g / 1.55 oz), 230 kcal, 12 g fat, 7 g saturated fat, 0 g trans fat, 5 mg cholesterol, 60 mg sodium, 29 g carbohydrate, 1 g fiber, 24 g total sugar, 22 g added sugar, 2 g protein, 0 mcg vitamin D, 40 mg calcium, 1 mg iron, 120 mg potassium. Contains milk and soy; may contain peanut, tree nuts, and wheat. Label-gap check on 11 Nov 2026: Nutrition Facts labels don't have to list these nutrients, so keys that were missing or 0 were checked against composition data; only those keys changed, as estimates, and other values were kept. Scaled to about 44 g, the weight in the name. Composition: USDA FoodData Central SR Legacy FDC 168762 (Candies, NESTLE, CRUNCH Bar and Dessert Topping). From that record: vitamin C. From typical amounts per 100 g for milk chocolate (NIH ODS fact-sheet tables, Anderson chromium data, USDA/FDA/ODS Iodine Database; salt in processed or restaurant food assumed noniodized): pantothenic acid, biotin, iodine, manganese, chromium, molybdenum. Chloride: from the natural sodium and chloride of the ingredients. Not reported in the composition data, so left as is: vitamin A, vitamin E, vitamin K, thiamin, riboflavin, niacin, B6, folate, B12, phosphorus, magnesium, zinc, selenium, copper, choline."
+    "notes": "Vending-machine single. Ferrero Crunch full-size bar (Food Lion and crunchbar.com): 1 bar (44 g / 1.55 oz), 230 kcal, 12 g fat, 7 g saturated fat, 0 g trans fat, 5 mg cholesterol, 60 mg sodium, 29 g carbohydrate, 1 g fiber, 24 g total sugar, 22 g added sugar, 2 g protein, 0 mcg vitamin D, 40 mg calcium, 1 mg iron, 120 mg potassium. Contains milk and soy; may contain peanut, tree nuts, and wheat. Label-gap check on 11 Nov 2026: Nutrition Facts labels don't have to list these nutrients, so keys that were missing or 0 were checked against composition data; only those keys changed, as estimates, and other values were kept. Scaled to about 44 g, the weight in the name. Composition: USDA FoodData Central SR Legacy FDC 168762 (Candies, NESTLE, CRUNCH Bar and Dessert Topping), with SR Legacy FDC 167587 (Candies, milk chocolate) for keys it lacks. From those records: vitamin A, vitamin C, vitamin E, vitamin K, thiamin, riboflavin, niacin, pantothenic acid, B6, folate, B12, phosphorus, magnesium, zinc, selenium, copper, manganese, choline. From typical amounts per 100 g for milk chocolate (NIH ODS fact-sheet tables, Anderson chromium data, USDA/FDA/ODS Iodine Database; salt in processed or restaurant food assumed noniodized): biotin, iodine, chromium, molybdenum. Chloride: from the natural sodium and chloride of the ingredients."
   },
   {
     "name": "Junk Food - Crunch Share Pack 1 pack (2.75 oz)",
@@ -63973,14 +64054,29 @@
       "calcium": 80,
       "iron": 1.6,
       "fiber": 2,
+      "vitaminA": 46,
       "vitaminC": 0.39,
-      "pantothenicAcid": 0.39,
+      "vitaminE": 0.398,
+      "vitaminK": 4.4,
+      "thiamin": 0.087,
+      "riboflavin": 0.232,
+      "niacin": 0.301,
+      "pantothenicAcid": 0.368,
+      "vitaminB6": 0.028,
       "biotin": 1.6,
+      "folate": 8.6,
+      "vitaminB12": 0.6,
+      "phosphorus": 162,
       "iodine": 11.7,
-      "manganese": 0.39,
+      "magnesium": 49.1,
+      "zinc": 1.79,
+      "selenium": 3.5,
+      "copper": 383,
+      "manganese": 0.367,
       "chromium": 0.8,
       "molybdenum": 7.8,
-      "chloride": 180
+      "chloride": 180,
+      "choline": 35.9
     },
     "longevity": {
       "saturatedFat": 12,
@@ -63992,7 +64088,7 @@
       "refinedCarbs": 50,
       "netCarbs": 50
     },
-    "notes": "Whole 2.75 oz share pack, 4 pieces. crunchbar.com and Instacart list 2 servings of 39 g: 200 kcal, 11 g fat, 6 g saturated fat, 0 g trans fat, 5 mg cholesterol, 50 mg sodium, 26 g carbohydrate, 1 g fiber, 21 g total sugar, 2 g protein. Ferrero's wholesale panel for this pack adds 19 g added sugar, 40 mg calcium, 0.8 mg iron, and 100 mg potassium per serving. This entry is both servings, 400 kcal. Vitamin D is not on those panels. Contains milk and soy; may contain peanut, tree nuts, and wheat. Label-gap check on 11 Nov 2026: Nutrition Facts labels don't have to list these nutrients, so keys that were missing or 0 were checked against composition data; only those keys changed, as estimates, and other values were kept. Scaled to about 78 g, the weight in the name. Composition: USDA FoodData Central SR Legacy FDC 168762 (Candies, NESTLE, CRUNCH Bar and Dessert Topping). From that record: vitamin C. From typical amounts per 100 g for milk chocolate (NIH ODS fact-sheet tables, Anderson chromium data, USDA/FDA/ODS Iodine Database; salt in processed or restaurant food assumed noniodized): pantothenic acid, biotin, iodine, manganese, chromium, molybdenum. Chloride: from the natural sodium and chloride of the ingredients. Not reported in the composition data, so left as is: vitamin A, vitamin E, vitamin K, thiamin, riboflavin, niacin, B6, folate, B12, phosphorus, magnesium, zinc, selenium, copper, choline."
+    "notes": "Whole 2.75 oz share pack, 4 pieces. crunchbar.com and Instacart list 2 servings of 39 g: 200 kcal, 11 g fat, 6 g saturated fat, 0 g trans fat, 5 mg cholesterol, 50 mg sodium, 26 g carbohydrate, 1 g fiber, 21 g total sugar, 2 g protein. Ferrero's wholesale panel for this pack adds 19 g added sugar, 40 mg calcium, 0.8 mg iron, and 100 mg potassium per serving. This entry is both servings, 400 kcal. Vitamin D is not on those panels. Contains milk and soy; may contain peanut, tree nuts, and wheat. Label-gap check on 11 Nov 2026: Nutrition Facts labels don't have to list these nutrients, so keys that were missing or 0 were checked against composition data; only those keys changed, as estimates, and other values were kept. Scaled to about 78 g, the weight in the name. Composition: USDA FoodData Central SR Legacy FDC 168762 (Candies, NESTLE, CRUNCH Bar and Dessert Topping), with SR Legacy FDC 167587 (Candies, milk chocolate) for keys it lacks. From those records: vitamin A, vitamin C, vitamin E, vitamin K, thiamin, riboflavin, niacin, pantothenic acid, B6, folate, B12, phosphorus, magnesium, zinc, selenium, copper, manganese, choline. From typical amounts per 100 g for milk chocolate (NIH ODS fact-sheet tables, Anderson chromium data, USDA/FDA/ODS Iodine Database; salt in processed or restaurant food assumed noniodized): biotin, iodine, chromium, molybdenum. Chloride: from the natural sodium and chloride of the ingredients."
   },
   {
     "name": "Junk Food - Crunch Giant 1 bar (4.4 oz)",
@@ -64005,14 +64101,29 @@
       "calcium": 120,
       "iron": 2.4,
       "vitaminD": 0,
+      "vitaminA": 73.6,
       "vitaminC": 0.624,
-      "pantothenicAcid": 0.624,
+      "vitaminE": 0.636,
+      "vitaminK": 7.1,
+      "thiamin": 0.14,
+      "riboflavin": 0.372,
+      "niacin": 0.481,
+      "pantothenicAcid": 0.589,
+      "vitaminB6": 0.045,
       "biotin": 2.5,
+      "folate": 13.7,
+      "vitaminB12": 0.9,
+      "phosphorus": 259,
       "iodine": 18.7,
-      "manganese": 0.624,
+      "magnesium": 78.6,
+      "zinc": 2.87,
+      "selenium": 5.6,
+      "copper": 612,
+      "manganese": 0.588,
       "chromium": 1.2,
       "molybdenum": 12.5,
-      "chloride": 288
+      "chloride": 288,
+      "choline": 57.5
     },
     "longevity": {
       "saturatedFat": 20,
@@ -64023,7 +64134,7 @@
       "addedSugar": 60,
       "refinedCarbs": 80
     },
-    "notes": "Whole 4.4 oz (124 g) giant bar. StockUpExpress lists 4 servings: 160 kcal, 8 g fat, 5 g saturated fat, 0 g trans fat, 5 mg cholesterol, 45 mg sodium, 20 g carbohydrate, less than 1 g fiber, 17 g total sugar, 15 g added sugar, 2 g protein, 0 mcg vitamin D, 30 mg calcium, 0.6 mg iron, 80 mg potassium. crunchbar.com lists the same 160 kcal serving as 31 g, and 4 of those servings are 124 g. This entry is all 4 servings, 640 kcal. Fiber is omitted because each serving is under 1 g. Contains milk and soy; may contain peanut, tree nuts, and wheat. Label-gap check on 11 Nov 2026: Nutrition Facts labels don't have to list these nutrients, so keys that were missing or 0 were checked against composition data; only those keys changed, as estimates, and other values were kept. Scaled to about 125 g, the weight in the name. Composition: USDA FoodData Central SR Legacy FDC 168762 (Candies, NESTLE, CRUNCH Bar and Dessert Topping). From that record: vitamin C. From typical amounts per 100 g for milk chocolate (NIH ODS fact-sheet tables, Anderson chromium data, USDA/FDA/ODS Iodine Database; salt in processed or restaurant food assumed noniodized): pantothenic acid, biotin, iodine, manganese, chromium, molybdenum. Chloride: from the natural sodium and chloride of the ingredients. Not reported in the composition data, so left as is: vitamin A, vitamin E, vitamin K, thiamin, riboflavin, niacin, B6, folate, B12, phosphorus, magnesium, zinc, selenium, copper, choline."
+    "notes": "Whole 4.4 oz (124 g) giant bar. StockUpExpress lists 4 servings: 160 kcal, 8 g fat, 5 g saturated fat, 0 g trans fat, 5 mg cholesterol, 45 mg sodium, 20 g carbohydrate, less than 1 g fiber, 17 g total sugar, 15 g added sugar, 2 g protein, 0 mcg vitamin D, 30 mg calcium, 0.6 mg iron, 80 mg potassium. crunchbar.com lists the same 160 kcal serving as 31 g, and 4 of those servings are 124 g. This entry is all 4 servings, 640 kcal. Fiber is omitted because each serving is under 1 g. Contains milk and soy; may contain peanut, tree nuts, and wheat. Label-gap check on 11 Nov 2026: Nutrition Facts labels don't have to list these nutrients, so keys that were missing or 0 were checked against composition data; only those keys changed, as estimates, and other values were kept. Scaled to about 125 g, the weight in the name. Composition: USDA FoodData Central SR Legacy FDC 168762 (Candies, NESTLE, CRUNCH Bar and Dessert Topping), with SR Legacy FDC 167587 (Candies, milk chocolate) for keys it lacks. From those records: vitamin A, vitamin C, vitamin E, vitamin K, thiamin, riboflavin, niacin, pantothenic acid, B6, folate, B12, phosphorus, magnesium, zinc, selenium, copper, manganese, choline. From typical amounts per 100 g for milk chocolate (NIH ODS fact-sheet tables, Anderson chromium data, USDA/FDA/ODS Iodine Database; salt in processed or restaurant food assumed noniodized): biotin, iodine, chromium, molybdenum. Chloride: from the natural sodium and chloride of the ingredients."
   },
   {
     "name": "Bread, Nature's Own Honey Wheat - 1 slice (26 g)",
