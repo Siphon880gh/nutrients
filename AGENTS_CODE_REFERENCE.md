@@ -34,7 +34,7 @@ When context is tight: read **this file** first, then open the one feature file 
 | Data files | `config.json` (% DV tiers), `definitions-micronutrients.json`, `definitions-longevity.json`, `definitions-food-notes.json`, `definitions-food-categories.json`, `definitions-food-sources.json` (precomputed Food Sources modal rows), `data-food/definitions-food.json`, `data-food/day-meals.json` (all `fetch`ed at boot / on demand) |
 | Reference values | `demographic-dv.js` (micro DV, IOM amino-acid bw minimums, fiber component ratio), `longevity-dv.js` (longevity DV) — globals, loaded before `app.js` |
 | Persistence | `persist.js` (`NutrientsAuth` + `NutrientsPersist`) → localStorage tables: **users**, **session**, **food definitions**, **day meals**, **favorites**, **settings** (rows keyed by `userId`). Header Sign up / Log in / Log out. See [AGENTS-data-persistence.md](./AGENTS-data-persistence.md) / [specs-data-persistence.md](./specs-data-persistence.md) |
-| Guides / QA | `GUIDE_ADDING_FOOD.md`, `GUIDE_IMPROVING_FOOD.md`, `GUIDE_ADDING_MULTIVITAMIN.md`; `scripts/run-micro-qa.js`, `scripts/run-plant-sterols-qa.js`, `scripts/list-uncategorized-foods.js`; `.agents/skills/qa-definitions-food.json`, `.agents/skills/categorize-food-definitions.json` |
+| Guides / QA | `GUIDE_ADDING_FOOD.md`, `GUIDE_IMPROVING_FOOD.md`, `GUIDE_ADDING_MULTIVITAMIN.md`; `scripts/run-micro-qa.js`, `scripts/run-label-gap-qa.js`, `scripts/run-plant-sterols-qa.js`, `scripts/list-uncategorized-foods.js`; `.agents/skills/qa-definitions-food.json`, `.agents/skills/qa-definitions-food-label-gaps.json`, `.agents/skills/categorize-food-definitions.json` |
 | Run | Open `index.html` via a static file server (boot `fetch`es JSON, so `file://` will fall back to defaults) |
 
 ## Architecture (high level)
@@ -108,11 +108,13 @@ nutrients/
 │   └── definitions-food-qa-checked.json  QA working copy for micro fill scripts
 ├── scripts/
 │   ├── run-micro-qa.js             Fill missing micros in sample foods
+│   ├── run-label-gap-qa.js         List label-gap nutrients still missing or 0 without a verified-zero note
 │   ├── run-plant-sterols-qa.js     Plant-sterols QA helper
 │   ├── list-uncategorized-foods.js Category-map gap helper
 │   └── build-food-sources.js       Regenerate definitions-food-sources.json
 ├── .agents/skills/
 │   ├── qa-definitions-food.json           Skill workflow for food nutrient QA
+│   ├── qa-definitions-food-label-gaps.json Second pass: nutrients labels don't list, checked against composition data
 │   └── categorize-food-definitions.json   Skill workflow for food category map gaps
 └── AGENTS_CODE_REFERENCE*.md        AI docs (this set)
 ```

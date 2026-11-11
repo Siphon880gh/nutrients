@@ -126,6 +126,8 @@ Use `.agents/skills/qa-definitions-food.json` to audit food definition nutrients
 
 The tool explains its purpose when invoked, asks which sample file to QA, asks whether to use the default nutrient set or a custom list, then rotates through nutrient-food pairs that still need review.
 
+Then use `.agents/skills/qa-definitions-food-label-gaps.json` for a second pass. Nutrition Facts labels don't have to list most vitamins and minerals (vitamins A, C, E, K, the B vitamins, biotin, folate, phosphorus, iodine, magnesium, zinc, selenium, copper, manganese, chromium, molybdenum, chloride, choline), so a branded or restaurant food copied from its label is checked against USDA FoodData Central and NIH ODS data instead. Run `node scripts/run-label-gap-qa.js` to list what is still missing or 0 without a verified-zero note.
+
 Example prompt to invoke tool: "Let's QA the food definitions at data-food/" 
 
 Default audit nutrients:

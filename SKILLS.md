@@ -43,6 +43,13 @@ Project skills
 
 If a directory is missing, skip it silently (do not error).
 
+## Food data QA skills (this repo)
+
+Run these in order when auditing `data-food/definitions-food.json`:
+
+1. `.agents/skills/qa-definitions-food.json`: first pass. AI checks foods with 0 or missing values for chosen nutrients and records verdicts in `data-food/definitions-food-qa-checked.json`.
+2. `.agents/skills/qa-definitions-food-label-gaps.json`: second pass. Nutrition Facts labels don't have to list 23 vitamins and minerals, so this checks every food, branded and restaurant food included, against USDA FoodData Central, NIH ODS, chromium and iodine data instead of the label, and documents verified zeros in the notes. `node scripts/run-label-gap-qa.js` lists what is still pending.
+
 ## After the local summary
 
 Ask the user whether they also want a **global** inventory. Example prompt:

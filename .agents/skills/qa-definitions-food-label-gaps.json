@@ -1,0 +1,93 @@
+{
+  "name": "qa-definitions-food-label-gaps",
+  "description": "Second-pass QA for data-food/definitions-food.json. Use after qa-definitions-food, when adding or auditing any food (especially branded or restaurant food copied from a Nutrition Facts label), or when the user asks to double-check nutrients labels don't have to list. Checks the 23 label-gap nutrients against composition data, not the label.",
+  "purpose": "Nutrition Facts labels are not complete. US labels only have to show sodium, potassium, calcium, iron, vitamin D and the macros, so a branded or restaurant food copied from its label usually has the other vitamins and minerals missing or 0 even though the food contains them. This pass checks every food, including branded and restaurant food, for the 23 nutrients below wherever the value is missing or 0, using composition data instead of the label, and records an estimate or a documented verified zero in the food's notes.",
+  "whyLabelsAreNotEnough": [
+    "The FDA Nutrition Facts panel only requires vitamin D, calcium, iron and potassium among micronutrients. Every other vitamin and mineral is voluntary unless the food is fortified with it or makes a claim about it.",
+    "Restaurant nutrition pages usually copy the same short list, so a missing value on a chain dish almost never means zero.",
+    "A 0 typed from a label row like 'Vitamin C 0%' only means less than 2% DV, not none.",
+    "Supplements are the exception: a Supplement Facts label must list every dietary ingredient, so a nutrient a supplement doesn't list can be recorded as 0."
+  ],
+  "labelGapNutrients": [
+    { "label": "Vitamin A", "key": "vitaminA", "unit": "mcg RAE" },
+    { "label": "Vitamin C", "key": "vitaminC", "unit": "mg" },
+    { "label": "Vitamin E", "key": "vitaminE", "unit": "mg" },
+    { "label": "Vitamin K", "key": "vitaminK", "unit": "mcg" },
+    { "label": "Thiamin (B1)", "key": "thiamin", "unit": "mg" },
+    { "label": "Riboflavin (B2)", "key": "riboflavin", "unit": "mg" },
+    { "label": "Niacin (B3)", "key": "niacin", "unit": "mg" },
+    { "label": "Pantothenic Acid (B5)", "key": "pantothenicAcid", "unit": "mg" },
+    { "label": "Vitamin B6", "key": "vitaminB6", "unit": "mg" },
+    { "label": "Biotin (B7)", "key": "biotin", "unit": "mcg" },
+    { "label": "Folate (B9)", "key": "folate", "unit": "mcg DFE" },
+    { "label": "Vitamin B12", "key": "vitaminB12", "unit": "mcg" },
+    { "label": "Phosphorus", "key": "phosphorus", "unit": "mg" },
+    { "label": "Iodine", "key": "iodine", "unit": "mcg" },
+    { "label": "Magnesium", "key": "magnesium", "unit": "mg" },
+    { "label": "Zinc", "key": "zinc", "unit": "mg" },
+    { "label": "Selenium", "key": "selenium", "unit": "mcg" },
+    { "label": "Copper", "key": "copper", "unit": "mcg", "note": "USDA reports mg; multiply by 1000" },
+    { "label": "Manganese", "key": "manganese", "unit": "mg" },
+    { "label": "Chromium", "key": "chromium", "unit": "mcg" },
+    { "label": "Molybdenum", "key": "molybdenum", "unit": "mcg" },
+    { "label": "Chloride", "key": "chloride", "unit": "mg" },
+    { "label": "Choline", "key": "choline", "unit": "mg" }
+  ],
+  "onInvoke": [
+    "Explain the purpose in one or two sentences: labels don't have to list these 23 nutrients, so missing or 0 values get checked against composition data, for branded and restaurant food too.",
+    "Run `node scripts/run-label-gap-qa.js` and show the summary table and the number of pending pairs and foods.",
+    "If the user named a food, a nutrient or a group (branded, restaurant, whole foods), narrow with --food or --nutrient. Otherwise work through every pending food.",
+    "Then follow the workflow."
+  ],
+  "needsCheckRule": {
+    "scope": "food.micros[key] for each labelGapNutrients key, for every food in the file (whole, generic, branded, restaurant, supplement)",
+    "condition": "value is null, undefined, missing, or exactly 0, and the food's notes don't already document it for that key (see notesConventions)",
+    "skipCondition": "value is non-zero, or the notes list the key under Verified zero, the Supplement Facts rule, rounds to 0, or Not reported (the last one goes to the 'check another source' list instead of the pending list)"
+  },
+  "sources": [
+    "USDA FoodData Central: SR Legacy first, FNDDS 2021-2023 for mixed dishes and branded-style generics (cereals, fast food), Foundation Foods when SR lacks the food. Use the fdcId in the note. Folate as DFE when the record has it.",
+    "NIH Office of Dietary Supplements fact sheets (food-source tables) for biotin, chromium, molybdenum, iodine, choline, manganese and pantothenic acid when the USDA record doesn't report them.",
+    "Anderson et al. chromium content of foods (J Food Compos Anal 1992) for chromium per 100 g by food type.",
+    "USDA/FDA/ODS Iodine Database and the FDA Total Diet Study for iodine and molybdenum. Fruit, vegetables, legumes and grains are about 0 iodine in that database; dairy, eggs, seafood and seaweed are not.",
+    "Chloride: natural chloride of the ingredients, plus 1.54 x the sodium beyond what the ingredients contain when that extra sodium comes from salt (processed, branded, restaurant food). Assume salt in processed or restaurant food is noniodized unless the label says iodized."
+  ],
+  "workflow": [
+    "Run `node scripts/run-label-gap-qa.js` (add --food or --nutrient to narrow). Pending = missing, or 0 without a documented reason.",
+    "Work in batches of 10 to 50 foods, grouped by type (whole/generic, branded packaged, restaurant, supplements).",
+    "For each food, find the portion weight: grams in the name first, then the weight a previous note used, then the serving size, then a fit to the food's calories and macros. Write which one was used.",
+    "Pick composition data: one matching USDA FDC record, or for a dish, split it into ingredient records by weight (for example bun, patty, cheese, sauce). If a record lacks some keys, add a second close record only for those keys and name it in the note.",
+    "Scale per-100 g values to the portion. Use category data from `sources` only for keys the USDA records don't report (usually chromium, molybdenum, biotin, iodine, sometimes manganese and pantothenic acid).",
+    "Change only keys that are missing or 0. Never overwrite an existing non-zero value. The exception is a clear unit error, such as vitamin A in IU stored as mcg; fix it and say so in the note and the commit message.",
+    "Verified zero pass: when the composition data shows the nutrient is absent (B12 in plant foods, vitamin C in oils and meat, minerals in pure oil or sugar, iodine in fruit/veg/grains), set or keep 0 and list the key under 'Verified zero on <date> (composition data, not the label)'. A value that is above 0 but rounds to 0 at the portion goes under 'Set to 0 because the amount rounds to 0 at this portion size'. A label's '0%' is not a verified zero.",
+    "Supplements: a nutrient the Supplement Facts label doesn't list is 0 under the Supplement Facts rule, unless an ingredient clearly supplies it (for example krill oil phospholipids supply choline); then estimate it and explain.",
+    "Heavily fortified products (meal replacements, protein shakes with an added vitamin premix): don't estimate from base ingredients, because that would understate them. Read the full product label or the maker's site; if it can't be found, leave the values and report the food as skipped.",
+    "If no composition source reports the nutrient for that food, leave the value as is and list the key under 'Not reported in the composition data, so left as is'. The script lists these separately so a later pass can try another source.",
+    "Append the note to the food's existing notes (never replace them), using notesConventions. Validate the JSON (2-space indent, UTF-8 without escaping, trailing newline).",
+    "Re-run `node scripts/run-label-gap-qa.js` and `node test/food-text-migrations.mjs`. Commit each batch separately with a message that says which group and what changed. Regenerate definitions-food-sources.json with `node scripts/build-food-sources.js` after the last batch and commit it if it changed.",
+    "Optional: `node scripts/run-label-gap-qa.js --write-checked` rebuilds data-food/definitions-food-label-gap-checked.json ({ checked: { 'key|food name': verdict } }) from the notes, for long multi-session passes. The notes stay the source of truth."
+  ],
+  "notesConventions": {
+    "opening": "Label-gap check on <D Mon YYYY>: Nutrition Facts labels don't have to list these nutrients, so keys that were missing or 0 were checked against composition data; only those keys changed, as estimates, and other values were kept.",
+    "portion": "Scaled to about <N> g, <the weight in the name | the weight used by an earlier note | fit to the label's calories and macros>.",
+    "composition": "Composition: USDA FoodData Central <SR Legacy|FNDDS 2021-2023|Foundation> FDC <id> (<description>)[, with <dataset> FDC <id> (<description>) for keys it lacks]. For dishes: 'Composition, split by weight: ... <pct>%; ...'.",
+    "estimatedFromRecords": "From that record: <labels>. | From those records: <labels>.",
+    "estimatedFromCategory": "From typical amounts per 100 g for <food types> (NIH ODS fact-sheet tables, Anderson chromium data, USDA/FDA/ODS Iodine Database; salt in processed or restaurant food assumed noniodized): <labels>.",
+    "chloride": "Chloride: natural chloride of the ingredients plus 1.54 times the sodium above what they contain, since the added sodium is from salt. | Chloride: from the natural sodium and chloride of the ingredients.",
+    "verifiedZero": "Verified zero on <D Mon YYYY> (composition data, not the label): <labels>.",
+    "traceZero": "Set to 0 because the amount rounds to 0 at this portion size: <labels>.",
+    "notReported": "Not reported in the composition data, so left as is: <labels>.",
+    "supplement": "... a Supplement Facts label must list every dietary ingredient it contains, so nutrients it doesn't list were set to 0. Verified zero on <D Mon YYYY> (Supplement Facts rule, not a measured value): <labels>.",
+    "labels": "vitamin A, vitamin C, vitamin E, vitamin K, thiamin, riboflavin, niacin, pantothenic acid, B6, biotin, folate, B12, phosphorus, iodine, magnesium, zinc, selenium, copper, manganese, chromium, molybdenum, chloride, choline (comma-separated; scripts/run-label-gap-qa.js parses these exact words)"
+  },
+  "rounding": "3 significant figures. mcg keys and phosphorus, magnesium, chloride, choline to 0.1; other mg keys to 0.001. Below 0.05 of the last shown digit counts as rounding to 0.",
+  "relationshipToOtherSkills": [
+    "qa-definitions-food is the first pass (AI estimates per nutrient, tracked in definitions-food-qa-checked.json). Its confirmed_zero verdicts can come from label reading, so they don't count as verified zeros here.",
+    "add-food-definition: when a new branded or restaurant food is added from its label, run this pass on that food before committing."
+  ],
+  "notes": [
+    "Every food is in scope, including branded and restaurant food. Don't skip a food just because it has a label.",
+    "Mark every changed value as an estimate in the notes, and name the FDC ids.",
+    "Never stage or revert someone else's uncommitted edits to definitions-food.json. If the working tree has foreign changes, stage only your changes (build the staged blob from HEAD plus your edits).",
+    "Fluoride isn't one of the 23 nutrients; only report how many foods leave it undefined."
+  ]
+}
