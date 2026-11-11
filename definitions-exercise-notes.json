@@ -1,0 +1,24 @@
+{
+  "notes": [
+    {
+      "label": "Total volume (bodybuilding)",
+      "pattern": "\\b(?:volume|tonnage|bodybuilding|lifting|weights|squats?|deadlifts?|rdls?|hip thrusts?|(?:bench|overhead|shoulder|military|leg|chest|incline|dumbbell|db|push|arnold) press|(?:barbell|dumbbell|db|cable|seated|t ?bar|bent over|machine) rows?|pull ?ups?|chin ?ups?|dips|lunges?|curls?|pushdowns?|(?:triceps?|leg) extensions?|skull ?crushers?|(?:lateral|front|calf) raises?|flyes?|flys|pec deck|pulldowns?|shrugs?|face pulls?)\\b|\\b\\d+\\s*[x×*]\\s*\\d+\\s*(?:[x×*@]\\s*\\d+|(?:lb|lbs|kg)\\b)",
+      "note": "<p>Yes. Total workout volume (tonnage) = add up reps × weight for each set.</p><ul><li>Same weight and reps each set: 3 sets × 10 reps × 100 lb = 3,000 lb</li><li>Weight or reps change: (10 × 100 lb) + (8 × 110 lb) + (6 × 120 lb) = 2,600 lb</li></ul><p>For your whole workout, add the totals for each exercise. With two dumbbells lifted together, count both. For example, 10 reps with two 25-lb dumbbells is 500 lb of volume.</p>"
+    },
+    {
+      "label": "Cardio calories (MET)",
+      "pattern": "\\b(?:cardio|run|running|jog|jogging|cycling|biking|bike ride|stationary bike|spin class|rowing|rower|swim|swimming|walking|brisk walk|hike|hiking|elliptical|stair ?(?:climber|master|stepper)|stepmill|jump(?:ing)? rope|hiit|tabata|treadmill|zumba|kickboxing)\\b",
+      "note": "<p><strong>Estimate cardio calories with METs.</strong> kcal ≈ MET × 3.5 × body weight (kg) ÷ 200 × minutes.</p><p>Example: running at 6 mph (MET 9.8) for 30 minutes at 70 kg ≈ 9.8 × 3.5 × 70 ÷ 200 × 30 ≈ 360 kcal. MET values are averages from the Adult Compendium of Physical Activities; your real burn varies with fitness, terrain and effort. The MET for each cardio exercise is in Exercise definitions.</p>"
+    },
+    {
+      "label": "Compound vs iso/machine split",
+      "pattern": "\\b(?:bodybuilding|compound|isolation|iso ?machines?|machines?)\\b",
+      "note": "<p><strong>Compound vs isolation/machine split.</strong> Compound lifts (squat, deadlift, bench, overhead press, rows, pull-ups, dips, lunges, hip thrusts) move several joints and let you load more weight, so they drive most of your total volume. Isolation and machine work (curls, extensions, raises, flyes, leg press, pulldowns, cables) targets one muscle with less load.</p><p>A common bodybuilding mix is about 70% compound and 30% iso/machine exercises. Over a standard session of 6 exercises × 3 sets × 10 reps, that is 4 compound + 2 iso/machine exercises.</p>"
+    },
+    {
+      "label": "Log a workout",
+      "pattern": "\\b(?:workout|gym|lift(?:ed|ing)?|training)\\b",
+      "note": "<p><strong>Log workouts as comment lines</strong> so they do not count as food: start the line with <code>//</code> or <code>#</code>.</p><ul><li><code>// Squat 3x10 @ 135 lb</code> (sets × reps @ weight)</li><li><code>// Bench 10x135 lb, 8x145 lb, 6x155 lb</code> (reps × weight per set)</li><li><code>// Lateral raise 3x12 @ 20 lb pair</code> (pair or each counts both dumbbells)</li><li><code>// Running 30 min</code></li><li><code>// Bodybuilding 70% compound 30% iso-machines</code> (a whole-session preset)</li></ul><p>Open Workout next to Experimental to see this week's compound vs iso/machine split and total volume.</p>"
+    }
+  ]
+}

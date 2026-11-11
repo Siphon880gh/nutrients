@@ -946,7 +946,9 @@
   var lastWeekTotals = null;
   var microDefinitions = {};
   var foodNotesDefinitions = [];
+  var exerciseNotesDefinitions = [];
   var FOOD_NOTES_URL = "definitions-food-notes.json";
+  var EXERCISE_NOTES_URL = "definitions-exercise-notes.json";
   var longevityDefinitions = {};
   var activeMicroDefKey = null;
   var activeLongevityDefKey = null;
@@ -5873,6 +5875,24 @@
       })
       .catch(function () {
         foodNotesDefinitions = [];
+        if (done) done();
+      });
+  }
+
+  // Workout notes: same shape as food notes, matched against workout lines
+  // (including // and # comment lines, where workouts are logged).
+  function loadExerciseNotesDefinitions(done) {
+    fetch(EXERCISE_NOTES_URL, { cache: "no-store" })
+      .then(function (res) {
+        if (!res.ok) throw new Error("exercise notes fetch failed");
+        return res.json();
+      })
+      .then(function (data) {
+        exerciseNotesDefinitions = normalizeFoodNotesDefinitions(data);
+        if (done) done();
+      })
+      .catch(function () {
+        exerciseNotesDefinitions = [];
         if (done) done();
       });
   }
@@ -27775,15 +27795,21 @@
   }
 
   function detectedFoodNotes() {
-    var text = dayMealsTextWithoutComments(allDayMealsText());
-    if (!text.trim() || !foodNotesDefinitions.length) return [];
-    return foodNotesDefinitions.filter(function (defn) {
-      try {
-        return new RegExp(defn.pattern, "i").test(text);
-      } catch (e) {
-        return false;
-      }
-    });
+    var allText = normalizeDayMealsText(allDayMealsText());
+    var text = dayMealsTextWithoutComments(allText);
+    function matching(defs, haystack) {
+      if (!haystack.trim() || !defs.length) return [];
+      return defs.filter(function (defn) {
+        try {
+          return new RegExp(defn.pattern, "i").test(haystack);
+        } catch (e) {
+          return false;
+        }
+      });
+    }
+    return matching(foodNotesDefinitions, text).concat(
+      matching(exerciseNotesDefinitions, allText)
+    );
   }
 
   function foodNoteBodyHtml(note) {
@@ -43779,7 +43805,7 @@
   }
 
   loadAppConfig(function () {
-    var pending = 6;
+    var pending = 7;
     function definitionsReady() {
       pending -= 1;
       if (pending === 0) boot();
@@ -43787,6 +43813,7 @@
     loadMicroDefinitions(definitionsReady);
     loadLongevityDefinitions(definitionsReady);
     loadFoodNotesDefinitions(definitionsReady);
+    loadExerciseNotesDefinitions(definitionsReady);
     loadFoodCategoriesDefinitions(definitionsReady);
     loadFoodSourcesPrecomputed(definitionsReady);
     loadFoodTextMigrations(definitionsReady);
