@@ -24751,6 +24751,7 @@
     applyLoadedFoodTextMigrations();
     loadFoodDefinitions();
     loadUserExerciseDefinitions();
+    loadDayExercises();
     loadKeywordReorderOpen();
     loadKeywordCaloriesOpen();
     loadKeywordsPageSize();
@@ -27809,6 +27810,7 @@
       renderAllDayGuidedLists();
     }
     if (experimentalPanelOpen) renderExperimentalPanel();
+    renderAllDayExercise();
   }
 
   function allDayMealsText() {
@@ -39674,6 +39676,546 @@
         renderExerciseDefinitions();
       });
     }
+  })();
+
+  // ---- Food Entry exercise layer: per-day exercise entries over a day column ----
+  // Entries persist per date (persist.saveDayExercises). Calories:
+  //   kcal = MET × 3.5 × body weight (kg) ÷ 200 × minutes
+  // Cardio uses the exercise's MET; strength uses MET 5 (compound / session) or
+  // 3.5 (isolation / machine) unless the definition sets one. Strength minutes
+  // default to sets × 3 (work + rest) when not entered; sessions default to 60.
+  // Without a body weight in Settings, 70 kg is assumed (and said so).
+  var dayExercisesByDate = {};
+  var dayExerciseOpenByDay = {};
+  var EXERCISE_DEFAULT_KG = 70;
+  var EXERCISE_STRENGTH_MET = { compound: 5, isolation_machine: 3.5, session: 5 };
+  var EXERCISE_MIN_PER_SET = 3;
+  var EXERCISE_SESSION_MINUTES = 60;
+
+  function loadDayExercises() {
+    dayExercisesByDate = {};
+    var rows = persist && persist.loadDayExercises ? persist.loadDayExercises() : null;
+    (Array.isArray(rows) ? rows : []).forEach(function (row) {
+      if (!row || typeof row.date !== "string" || !Array.isArray(row.entries)) return;
+      var list = row.entries.filter(function (e) {
+        return e && e.name;
+      });
+      if (list.length) dayExercisesByDate[row.date] = list;
+    });
+  }
+
+  function saveDayExercises() {
+    if (!persist || !persist.saveDayExercises) return;
+    var rows = Object.keys(dayExercisesByDate)
+      .sort()
+      .filter(function (k) {
+        return dayExercisesByDate[k] && dayExercisesByDate[k].length;
+      })
+      .map(function (k) {
+        return { date: k, entries: dayExercisesByDate[k] };
+      });
+    if (persist.saveDayExercises(rows)) showSaveToast();
+  }
+
+  function dayExerciseEntries(dayId) {
+    var key = dateKeyForDayId(dayId);
+    return key && dayExercisesByDate[key] ? dayExercisesByDate[key] : [];
+  }
+
+  function setDayExerciseEntries(dayId, list) {
+    var key = dateKeyForDayId(dayId);
+    if (!key) return;
+    if (list && list.length) dayExercisesByDate[key] = list;
+    else delete dayExercisesByDate[key];
+  }
+
+  function exerciseDefForEntry(entry) {
+    for (var i = 0; i < exerciseDefinitions.length; i++) {
+      var ex = exerciseDefinitions[i];
+      if ((entry.exId && ex.id === entry.exId) || ex.name === entry.name) return ex;
+    }
+    return null;
+  }
+
+  function positiveNum(v) {
+    var n = parseFloat(v);
+    return isFinite(n) && n > 0 ? n : 0;
+  }
+
+  /** Calories and the assumptions behind them for one exercise entry. */
+  function exerciseEntryCalories(entry) {
+    var def = exerciseDefForEntry(entry);
+    var category = entry.category || (def && def.category) || "compound";
+    var defMet = def ? positiveNum(def.met) : 0;
+    var met = defMet || EXERCISE_STRENGTH_MET[category] || 5;
+    var metSource = defMet ? "exercise MET" : category === "cardio" ? "default MET" : "strength MET estimate";
+    var sets = positiveNum(entry.sets);
+    var reps = positiveNum(entry.reps);
+    var weightLb = positiveNum(entry.weightLb);
+    var minutes = positiveNum(entry.minutes);
+    var minutesSource = "entered";
+    if (!minutes) {
+      if (category === "session") {
+        minutes = EXERCISE_SESSION_MINUTES;
+        minutesSource = "assumed " + EXERCISE_SESSION_MINUTES + " min session";
+      } else if (category !== "cardio" && sets) {
+        minutes = sets * EXERCISE_MIN_PER_SET;
+        minutesSource = "assumed " + EXERCISE_MIN_PER_SET + " min per set incl. rest";
+      } else {
+        minutesSource = "no minutes yet";
+      }
+    }
+    var kgSet = getBodyWeightKg();
+    var kg = kgSet || EXERCISE_DEFAULT_KG;
+    var kcal = (met * 3.5 * kg * minutes) / 200;
+    var volume = 0;
+    if (category === "session" && def) volume = positiveNum(def.volumeLb);
+    else if (category !== "cardio") volume = sets * reps * weightLb;
+    return {
+      kcal: kcal,
+      met: met,
+      metSource: metSource,
+      minutes: minutes,
+      minutesSource: minutesSource,
+      kg: kg,
+      kgAssumed: !kgSet,
+      category: category,
+      volume: volume,
+    };
+  }
+
+  function exerciseKcalForDayId(dayId) {
+    var sum = 0;
+    dayExerciseEntries(dayId).forEach(function (e) {
+      sum += exerciseEntryCalories(e).kcal;
+    });
+    return sum;
+  }
+
+  function exerciseCaloriesTitle(entry) {
+    var c = exerciseEntryCalories(entry);
+    return (
+      entry.name +
+      ": " +
+      fmtNumGrouped(Math.round(c.kcal)) +
+      " kcal = MET " +
+      fmtNum(c.met) +
+      " × 3.5 × " +
+      fmtNum(c.kg) +
+      " kg ÷ 200 × " +
+      fmtNum(c.minutes) +
+      " min"
+    );
+  }
+
+  function exerciseEntryHtml(entry, dayId, i, count) {
+    var c = exerciseEntryCalories(entry);
+    var strength = c.category === "compound" || c.category === "isolation_machine";
+    var num = function (field, value, label, step, ph) {
+      return (
+        '<label class="day__exercise-field"><span>' +
+        escapeHtml(label) +
+        '</span><input type="number" min="0" step="' +
+        step +
+        '" inputmode="decimal" data-ex-field="' +
+        field +
+        '" value="' +
+        escapeAttr(value === "" || value == null ? "" : value) +
+        '" placeholder="' +
+        escapeAttr(ph || "") +
+        '"></label>'
+      );
+    };
+    return (
+      '<li class="day__exercise-item day__exercise-item--' +
+      escapeAttr(c.category) +
+      '" data-ex-index="' +
+      i +
+      '" data-day-id="' +
+      escapeAttr(dayId) +
+      '" title="' +
+      escapeAttr(exerciseCaloriesTitle(entry) + " (right-click for details)") +
+      '">' +
+      '<div class="day__exercise-item-head">' +
+      '<span class="day__exercise-item-name">' +
+      escapeHtml(entry.name) +
+      "</span>" +
+      '<span class="day__exercise-item-kcal">−' +
+      escapeHtml(fmtNumGrouped(Math.round(c.kcal))) +
+      " kcal</span>" +
+      "</div>" +
+      '<div class="day__exercise-item-fields">' +
+      (strength
+        ? num("sets", entry.sets, "Sets", "1", "3") +
+          num("reps", entry.reps, "Reps", "1", "10") +
+          num("weightLb", entry.weightLb, "lb", "2.5", "") +
+          num("minutes", entry.minutes, "Min", "1", c.minutes ? String(c.minutes) : "")
+        : num("minutes", entry.minutes, "Min", "1", c.category === "session" ? "60" : "30")) +
+      "</div>" +
+      '<div class="day__exercise-item-actions">' +
+      '<button type="button" class="keywords__move" data-ex-action="up" aria-label="Move ' +
+      escapeAttr(entry.name) +
+      ' up"' +
+      (i === 0 ? " disabled" : "") +
+      ">↑</button>" +
+      '<button type="button" class="keywords__move" data-ex-action="down" aria-label="Move ' +
+      escapeAttr(entry.name) +
+      ' down"' +
+      (i === count - 1 ? " disabled" : "") +
+      ">↓</button>" +
+      '<button type="button" class="day__exercise-remove" data-ex-action="remove" aria-label="Remove ' +
+      escapeAttr(entry.name) +
+      '">×</button>' +
+      "</div>" +
+      "</li>"
+    );
+  }
+
+  function exerciseSuggestMatches(query) {
+    var q = workoutNormalizeText(query);
+    var words = q ? q.split(" ") : [];
+    var out = [];
+    for (var i = 0; i < exerciseDefinitions.length && out.length < 8; i++) {
+      var ex = exerciseDefinitions[i];
+      if (!ex.name) continue;
+      if (exerciseDefsMatches(ex, words)) out.push(ex);
+    }
+    return out;
+  }
+
+  function exerciseSuggestHtml(query) {
+    var matches = exerciseSuggestMatches(query);
+    if (!matches.length) return '<p class="day__exercise-suggest-empty">No exercise matches.</p>';
+    return matches
+      .map(function (ex) {
+        return (
+          '<button type="button" class="day__exercise-suggest-item" data-ex-action="pick" data-ex-name="' +
+          escapeAttr(ex.name) +
+          '">' +
+          escapeHtml(ex.name) +
+          '<span class="day__exercise-suggest-cat">' +
+          escapeHtml(exerciseCategoryLabels[ex.category] || ex.category) +
+          "</span></button>"
+        );
+      })
+      .join("");
+  }
+
+  function ensureDayExerciseEls(dayId) {
+    var textarea = document.getElementById(dayId);
+    var dayEl = textarea && textarea.closest(".day");
+    if (!dayEl) return null;
+    var headEl = dayEl.querySelector(".day__head");
+    if (headEl && !dayEl.querySelector(".day__layer-tabs")) {
+      var tabs = document.createElement("div");
+      tabs.className = "day__layer-tabs";
+      tabs.setAttribute("role", "group");
+      tabs.setAttribute("aria-label", "Food or exercise entry");
+      tabs.innerHTML =
+        '<button type="button" class="day__layer-tab day__layer-tab--food" data-ex-action="show-food" data-day-id="' +
+        escapeAttr(dayId) +
+        '" aria-pressed="true">Food</button>' +
+        '<button type="button" class="day__layer-tab day__exercise-toggle" data-ex-action="toggle" data-day-id="' +
+        escapeAttr(dayId) +
+        '" aria-pressed="false">' +
+        '<svg class="day__layer-tab-icon" viewBox="0 0 16 16" width="12" height="12" aria-hidden="true" focusable="false"><path d="M1 6.5h1.5v3H1v-3Zm2-1.5h1.75v6H3V5Zm2.25 2.25h5.5v1.5h-5.5v-1.5ZM11.25 5H13v6h-1.75V5Zm2.25 1.5H15v3h-1.5v-3Z"></path></svg>' +
+        '<span class="day__exercise-toggle-label">Exercise</span>' +
+        '<span class="day__exercise-toggle-kcal" hidden></span></button>';
+      dayEl.insertBefore(tabs, headEl.nextSibling);
+    }
+    var panel = dayEl.querySelector(".day__exercise");
+    if (!panel) {
+      panel = document.createElement("div");
+      panel.className = "day__exercise";
+      panel.hidden = true;
+      panel.setAttribute("data-day-id", dayId);
+      panel.innerHTML =
+        '<div class="day__exercise-head"><span class="day__exercise-title">Exercise</span>' +
+        '<span class="day__exercise-total"></span></div>' +
+        '<ul class="day__exercise-list" role="list"></ul>' +
+        '<p class="day__exercise-empty">No exercise yet. Add one below; its calories come off this day.</p>' +
+        '<div class="day__exercise-add">' +
+        '<input type="search" class="day__exercise-search" placeholder="Add exercise…" autocomplete="off" spellcheck="false" aria-label="Search exercises to add">' +
+        '<div class="day__exercise-suggest" hidden></div>' +
+        "</div>" +
+        '<p class="day__exercise-foot"><button type="button" class="day__exercise-back" data-ex-action="toggle" data-day-id="' +
+        escapeAttr(dayId) +
+        '">Back to food</button></p>';
+      var tabsEl = dayEl.querySelector(".day__layer-tabs");
+      if (tabsEl) dayEl.insertBefore(panel, tabsEl.nextSibling);
+      else dayEl.appendChild(panel);
+    }
+    return { dayEl: dayEl, panel: panel };
+  }
+
+  function renderDayExercise(dayId) {
+    var els = ensureDayExerciseEls(dayId);
+    if (!els) return;
+    var entries = dayExerciseEntries(dayId);
+    var kcal = exerciseKcalForDayId(dayId);
+    var open = !!dayExerciseOpenByDay[dayId];
+    var foodTab = els.dayEl.querySelector(".day__layer-tab--food");
+    if (foodTab) foodTab.setAttribute("aria-pressed", open ? "false" : "true");
+    var toggle = els.dayEl.querySelector(".day__exercise-toggle");
+    if (toggle) {
+      toggle.setAttribute("aria-pressed", open ? "true" : "false");
+      toggle.setAttribute(
+        "aria-label",
+        (open ? "Back to food on " : "Exercise entry on ") +
+          dayId +
+          (kcal ? " (−" + Math.round(kcal) + " kcal)" : "")
+      );
+      toggle.title = open ? "Back to food entry" : "Flip this column to exercise entry";
+      var badge = toggle.querySelector(".day__exercise-toggle-kcal");
+      if (badge) {
+        badge.hidden = !kcal;
+        badge.textContent = kcal ? "−" + fmtNumGrouped(Math.round(kcal)) : "";
+      }
+    }
+    if (open && !els.dayEl.classList.contains("day--exercise-open")) {
+      var body = els.dayEl.querySelector(".day__guided:not([hidden])") || els.dayEl.querySelector(".day__editor");
+      if (body && body.offsetHeight) els.panel.style.minHeight = body.offsetHeight + "px";
+    }
+    els.dayEl.classList.toggle("day--exercise-open", open);
+    els.panel.hidden = !open;
+    if (!open) return;
+    var list = els.panel.querySelector(".day__exercise-list");
+    list.innerHTML = entries
+      .map(function (e, i) {
+        return exerciseEntryHtml(e, dayId, i, entries.length);
+      })
+      .join("");
+    els.panel.querySelector(".day__exercise-empty").hidden = entries.length > 0;
+    els.panel.querySelector(".day__exercise-total").textContent = kcal
+      ? "−" + fmtNumGrouped(Math.round(kcal)) + " kcal"
+      : "";
+  }
+
+  function renderAllDayExercise() {
+    DAYS.forEach(function (day) {
+      renderDayExercise(day.id);
+    });
+    syncExerciseEntryToggleAll();
+  }
+
+  function syncExerciseEntryToggleAll() {
+    var btn = document.getElementById("exercise-entry-toggle");
+    if (!btn) return;
+    var anyOpen = DAYS.some(function (d) {
+      return dayExerciseOpenByDay[d.id];
+    });
+    btn.setAttribute("aria-pressed", anyOpen ? "true" : "false");
+  }
+
+  function setDayExerciseOpen(dayId, open) {
+    if (open) dayExerciseOpenByDay[dayId] = true;
+    else delete dayExerciseOpenByDay[dayId];
+    renderDayExercise(dayId);
+    syncExerciseEntryToggleAll();
+  }
+
+  function afterDayExerciseChange(dayId) {
+    saveDayExercises();
+    renderDayExercise(dayId);
+    renderDashboard();
+    if (isWorkoutModalOpen()) renderWorkoutModal();
+  }
+
+  function addDayExercise(dayId, name) {
+    var def = null;
+    for (var i = 0; i < exerciseDefinitions.length; i++) {
+      if (exerciseDefinitions[i].name === name) {
+        def = exerciseDefinitions[i];
+        break;
+      }
+    }
+    if (!def) return;
+    var entry = {
+      id: "dx-" + Date.now() + "-" + Math.floor(Math.random() * 1e6),
+      exId: def.id || "",
+      name: def.name,
+      category: def.category,
+    };
+    if (def.category === "cardio") entry.minutes = 30;
+    else if (def.category === "session") entry.minutes = EXERCISE_SESSION_MINUTES;
+    else {
+      entry.sets = 3;
+      entry.reps = 10;
+    }
+    var list = dayExerciseEntries(dayId).slice();
+    list.push(entry);
+    setDayExerciseEntries(dayId, list);
+    afterDayExerciseChange(dayId);
+  }
+
+  var exerciseKcalPopoverEl = null;
+
+  function hideExerciseKcalPopover() {
+    if (exerciseKcalPopoverEl) exerciseKcalPopoverEl.hidden = true;
+  }
+
+  function showExerciseKcalPopover(entry, x, y) {
+    if (!exerciseKcalPopoverEl) {
+      exerciseKcalPopoverEl = document.createElement("div");
+      exerciseKcalPopoverEl.className = "exercise-kcal-popover";
+      exerciseKcalPopoverEl.setAttribute("role", "dialog");
+      exerciseKcalPopoverEl.setAttribute("aria-label", "Exercise calories");
+      document.body.appendChild(exerciseKcalPopoverEl);
+    }
+    var c = exerciseEntryCalories(entry);
+    var rows = [
+      ["Calories", "−" + fmtNumGrouped(Math.round(c.kcal)) + " kcal"],
+      ["Formula", "MET × 3.5 × kg ÷ 200 × min"],
+      ["MET", fmtNum(c.met) + " (" + c.metSource + ")"],
+      ["Body weight", fmtNum(c.kg) + " kg" + (c.kgAssumed ? " (assumed; set weight in Settings)" : " (Settings)")],
+      ["Minutes", fmtNum(c.minutes) + " (" + c.minutesSource + ")"],
+    ];
+    if (c.volume) rows.push(["Volume", workoutLb(c.volume) + " (sets × reps × lb)"]);
+    exerciseKcalPopoverEl.innerHTML =
+      '<p class="exercise-kcal-popover__title">' +
+      escapeHtml(entry.name) +
+      "</p><table>" +
+      rows
+        .map(function (r) {
+          return "<tr><th>" + escapeHtml(r[0]) + "</th><td>" + escapeHtml(r[1]) + "</td></tr>";
+        })
+        .join("") +
+      "</table>";
+    exerciseKcalPopoverEl.hidden = false;
+    var w = exerciseKcalPopoverEl.offsetWidth;
+    var h = exerciseKcalPopoverEl.offsetHeight;
+    var vw = window.innerWidth || 1024;
+    var vh = window.innerHeight || 768;
+    exerciseKcalPopoverEl.style.left = Math.max(8, Math.min(x, vw - w - 8)) + "px";
+    exerciseKcalPopoverEl.style.top = Math.max(8, Math.min(y, vh - h - 8)) + "px";
+  }
+
+  (function initDayExerciseLayer() {
+    document.addEventListener(
+      "contextmenu",
+      function (e) {
+        var item = e.target.closest && e.target.closest(".day__exercise-item");
+        if (!item) return;
+        var dayId = item.getAttribute("data-day-id");
+        var entry = dayExerciseEntries(dayId)[parseInt(item.getAttribute("data-ex-index"), 10)];
+        if (!entry) return;
+        e.preventDefault();
+        e.stopPropagation();
+        showExerciseKcalPopover(entry, e.clientX + 6, e.clientY + 6);
+      },
+      true
+    );
+    document.addEventListener("click", function (e) {
+      if (exerciseKcalPopoverEl && !exerciseKcalPopoverEl.hidden && !exerciseKcalPopoverEl.contains(e.target)) {
+        hideExerciseKcalPopover();
+      }
+      var all = e.target.closest && e.target.closest("#exercise-entry-toggle");
+      if (all) {
+        var anyOpen = DAYS.some(function (d) {
+          return dayExerciseOpenByDay[d.id];
+        });
+        DAYS.forEach(function (d) {
+          if (anyOpen) delete dayExerciseOpenByDay[d.id];
+          else dayExerciseOpenByDay[d.id] = true;
+        });
+        renderAllDayExercise();
+        return;
+      }
+      var act = e.target.closest && e.target.closest("[data-ex-action]");
+      if (!act) return;
+      var action = act.getAttribute("data-ex-action");
+      var dayId =
+        act.getAttribute("data-day-id") ||
+        (act.closest("[data-day-id]") && act.closest("[data-day-id]").getAttribute("data-day-id"));
+      if (!dayId) return;
+      if (action === "show-food") {
+        setDayExerciseOpen(dayId, false);
+        return;
+      }
+      if (action === "toggle") {
+        setDayExerciseOpen(dayId, !dayExerciseOpenByDay[dayId]);
+        if (dayExerciseOpenByDay[dayId]) {
+          var search = document.querySelector('.day__exercise[data-day-id="' + dayId + '"] .day__exercise-search');
+          if (search) search.focus();
+        }
+        return;
+      }
+      if (action === "pick") {
+        var panel = act.closest(".day__exercise");
+        var input = panel && panel.querySelector(".day__exercise-search");
+        if (input) input.value = "";
+        var sug = panel && panel.querySelector(".day__exercise-suggest");
+        if (sug) sug.hidden = true;
+        addDayExercise(dayId, act.getAttribute("data-ex-name"));
+        return;
+      }
+      var itemEl = act.closest(".day__exercise-item");
+      if (!itemEl) return;
+      var i = parseInt(itemEl.getAttribute("data-ex-index"), 10);
+      var list = dayExerciseEntries(dayId).slice();
+      if (!list[i]) return;
+      if (action === "remove") list.splice(i, 1);
+      else if (action === "up" && i > 0) list.splice(i - 1, 0, list.splice(i, 1)[0]);
+      else if (action === "down" && i < list.length - 1) list.splice(i + 1, 0, list.splice(i, 1)[0]);
+      else return;
+      setDayExerciseEntries(dayId, list);
+      afterDayExerciseChange(dayId);
+    });
+    document.addEventListener("change", function (e) {
+      var field = e.target.getAttribute && e.target.getAttribute("data-ex-field");
+      if (!field) return;
+      var itemEl = e.target.closest(".day__exercise-item");
+      if (!itemEl) return;
+      var dayId = itemEl.getAttribute("data-day-id");
+      var list = dayExerciseEntries(dayId).slice();
+      var entry = list[parseInt(itemEl.getAttribute("data-ex-index"), 10)];
+      if (!entry) return;
+      var v = positiveNum(e.target.value);
+      if (v) entry[field] = v;
+      else delete entry[field];
+      setDayExerciseEntries(dayId, list);
+      afterDayExerciseChange(dayId);
+    });
+    document.addEventListener("input", function (e) {
+      if (!e.target.classList || !e.target.classList.contains("day__exercise-search")) return;
+      var sug = e.target.parentNode.querySelector(".day__exercise-suggest");
+      if (!sug) return;
+      var q = e.target.value || "";
+      sug.hidden = !q.trim();
+      if (!sug.hidden) sug.innerHTML = exerciseSuggestHtml(q);
+    });
+    document.addEventListener("focusin", function (e) {
+      if (!e.target.classList || !e.target.classList.contains("day__exercise-search")) return;
+      var sug = e.target.parentNode.querySelector(".day__exercise-suggest");
+      if (!sug) return;
+      sug.innerHTML = exerciseSuggestHtml(e.target.value || "");
+      sug.hidden = false;
+    });
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && exerciseKcalPopoverEl && !exerciseKcalPopoverEl.hidden) {
+        hideExerciseKcalPopover();
+        e.stopPropagation();
+        return;
+      }
+      if (!e.target.classList || !e.target.classList.contains("day__exercise-search")) return;
+      if (e.key === "Enter") {
+        e.preventDefault();
+        var first = e.target.parentNode.querySelector('[data-ex-action="pick"]');
+        if (first) first.click();
+      } else if (e.key === "Escape") {
+        var sug = e.target.parentNode.querySelector(".day__exercise-suggest");
+        if (sug) sug.hidden = true;
+      }
+    });
+    document.addEventListener("focusout", function (e) {
+      if (!e.target.classList || !e.target.classList.contains("day__exercise-search")) return;
+      var wrap = e.target.parentNode;
+      window.setTimeout(function () {
+        if (wrap.contains(document.activeElement)) return;
+        var sug = wrap.querySelector(".day__exercise-suggest");
+        if (sug) sug.hidden = true;
+      }, 150);
+    });
   })();
 
   function renderWorkoutModal() {

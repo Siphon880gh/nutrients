@@ -9,6 +9,7 @@
  *   nutrients_day_meals          DayMealsRow[]     (+ userId)
  *   nutrients_meals              SavedMeal[]       (+ userId)
  *   nutrients_exercise_definitions UserExercise[]  (+ userId; built-ins ship in data-exercises/)
+ *   nutrients_day_exercises      { date, entries[] }[] (+ userId; Food Entry exercise layer)
  *   nutrients_favorites          Favorite[]        (+ userId)
  *   nutrients_settings           SettingsRow[]     (+ userId)
  *
@@ -227,6 +228,7 @@ var NutrientsPersist = (function () {
     SETTINGS: "nutrients_settings",
     ORPHAN_LEGACY: "nutrients_orphan_legacy",
     EXERCISE_DEFINITIONS: "nutrients_exercise_definitions",
+    DAY_EXERCISES: "nutrients_day_exercises",
   };
 
   var LEGACY = {
@@ -973,6 +975,15 @@ var NutrientsPersist = (function () {
     return saveUserRowsForKey(KEYS.EXERCISE_DEFINITIONS, rows);
   }
 
+  /** Per-date exercise entries: [{ date: "YYYY-MM-DD", entries: [...] }]. */
+  function loadDayExercises() {
+    return loadUserRowsForKey(KEYS.DAY_EXERCISES);
+  }
+
+  function saveDayExercises(rows) {
+    return saveUserRowsForKey(KEYS.DAY_EXERCISES, rows);
+  }
+
   function loadSettings() {
     migrateIfNeeded();
     var userId = currentUserId();
@@ -1219,6 +1230,8 @@ var NutrientsPersist = (function () {
     saveMeals: saveMeals,
     loadExerciseDefinitions: loadExerciseDefinitions,
     saveExerciseDefinitions: saveExerciseDefinitions,
+    loadDayExercises: loadDayExercises,
+    saveDayExercises: saveDayExercises,
     loadSettings: loadSettings,
     saveSettings: saveSettings,
     patchSettings: patchSettings,
