@@ -18249,6 +18249,41 @@ body.print-preview .day__backdrop {
   cursor: pointer;
 }
 
+.xpt-copy-from__mode {
+  align-self: flex-start;
+  margin: 0 0 0.65rem;
+}
+
+.xpt-copy-from__field {
+  margin: 0 0 0.6rem;
+}
+
+.xpt-copy-from__field[hidden],
+.xpt-copy-from .import-all-mode[hidden] {
+  display: none;
+}
+
+.xpt-copy-from__select {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 2.3rem;
+  padding: 0.35rem 0.5rem;
+  border: 1px solid #c8c8c4;
+  border-radius: 6px;
+  background: #fff;
+  color: #1a1a1a;
+  font: inherit;
+  font-size: 0.85rem;
+}
+
+.xpt-copy-from__summary {
+  margin: 0 0 0.6rem;
+  color: #4b5563;
+  font-size: 0.8rem;
+  line-height: 1.4;
+}
+
 .xpt-toggle[aria-pressed="true"] {
   background: #eef4fa;
   border-color: #3d6b9e;

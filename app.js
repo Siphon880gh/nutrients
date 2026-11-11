@@ -11813,6 +11813,7 @@
       (weekJumpModalEl && !weekJumpModalEl.hidden) ||
       (diarySearchModalEl && !diarySearchModalEl.hidden) ||
       (copyDateModalEl && !copyDateModalEl.hidden) ||
+      isExperimentalCopyFromOpen() ||
       (copyConflictModalEl && !copyConflictModalEl.hidden) ||
       (favoriteEditModalEl && !favoriteEditModalEl.hidden) ||
       (mealNameModalEl && !mealNameModalEl.hidden) ||
@@ -37544,6 +37545,9 @@
       '<button type="button" data-action="xpt-copy" data-xpt-day="' +
       escapeAttr(day.id) +
       '" title="Copy this day into your diary">Copy</button>' +
+      '<button type="button" data-action="xpt-copy-from" data-xpt-day="' +
+      escapeAttr(day.id) +
+      '" title="Copy food from your diary into this day" aria-haspopup="dialog">From…</button>' +
       '<button type="button" data-action="xpt-clear-day" data-xpt-day="' +
       escapeAttr(day.id) +
       '">Clear</button>' +
@@ -37931,6 +37935,378 @@
       renderExperimentalAnalysis();
     });
   }
+
+  // ---- Copy from diary into the experimental week (never writes the diary) ----
+  var xptCopyFromState = { mode: "day", targetDay: "" };
+
+  function xptCopyFromEl(id) {
+    return document.getElementById(id);
+  }
+
+  function diaryTextForDateKey(dateKey) {
+    if (viewedWeekStart) {
+      var keys = weekDateKeys(viewedWeekStart);
+      var idx = keys.indexOf(dateKey);
+      if (idx >= 0 && DAYS[idx]) {
+        var el = document.getElementById(DAYS[idx].id);
+        if (el) return String(el.value || "");
+      }
+    }
+    return String(dayMealsByDate[dateKey] || "");
+  }
+
+  function diaryFoodCount(text) {
+    if (!String(text || "").trim()) return 0;
+    return parseDayGuidedLines(text).length;
+  }
+
+  function pluralItems(n) {
+    return n + " item" + (n === 1 ? "" : "s");
+  }
+
+  function xptCopyFromWeekOptions() {
+    var byMon = {};
+    function ensure(monKey) {
+      if (!byMon[monKey]) byMon[monKey] = { key: monKey, days: 0, favorites: [] };
+      return byMon[monKey];
+    }
+    var earliest = earliestWeekMondayKey();
+    var dateKeys = Object.keys(dayMealsByDate);
+    if (viewedWeekStart) dateKeys = dateKeys.concat(weekDateKeys(viewedWeekStart));
+    var seenDate = {};
+    dateKeys.forEach(function (dateKey) {
+      if (seenDate[dateKey]) return;
+      seenDate[dateKey] = true;
+      var d = parseDateKey(dateKey);
+      if (!d) return;
+      if (!String(diaryTextForDateKey(dateKey)).trim()) return;
+      var monKey = toDateKey(mondayOf(d));
+      if (monKey < earliest) return;
+      ensure(monKey).days += 1;
+    });
+    ensure(currentWeekMondayKey());
+    (diaryFavorites || []).forEach(function (fav) {
+      var d = parseDateKey(fav.dateKey);
+      if (!d) return;
+      var monKey = toDateKey(mondayOf(d));
+      if (!byMon[monKey]) return;
+      byMon[monKey].favorites.push(
+        (fav.type === "week" ? "★ " : "★ day: ") + fav.name
+      );
+    });
+    return Object.keys(byMon)
+      .sort()
+      .reverse()
+      .map(function (k) {
+        return byMon[k];
+      });
+  }
+
+  function xptCopyFromWeekLabel(item) {
+    var label = formatWeekRangeLabel(item.key);
+    if (item.key === currentWeekMondayKey()) label += " · This week";
+    label +=
+      " · " +
+      (item.days
+        ? item.days + " day" + (item.days === 1 ? "" : "s") + " with food"
+        : "no food");
+    if (item.favorites.length) label += " · " + item.favorites.join(", ");
+    return label;
+  }
+
+  function xptCopyFromSelectedWeek() {
+    var sel = xptCopyFromEl("xpt-copy-from-week");
+    return sel && sel.value ? sel.value : currentWeekMondayKey();
+  }
+
+  function xptCopyFromFillDays(preferDayId) {
+    var sel = xptCopyFromEl("xpt-copy-from-day");
+    if (!sel) return;
+    var keys = weekDateKeys(xptCopyFromSelectedWeek());
+    var prev = preferDayId || sel.value;
+    var firstFilled = "";
+    var todayKey = todayDateKey();
+    var todayDayId = "";
+    sel.innerHTML = DAYS.map(function (day, i) {
+      var key = keys[i];
+      var count = diaryFoodCount(diaryTextForDateKey(key));
+      if (count && !firstFilled) firstFilled = day.id;
+      if (count && key === todayKey) todayDayId = day.id;
+      return (
+        '<option value="' +
+        escapeAttr(day.id) +
+        '"' +
+        (count ? "" : " disabled") +
+        ">" +
+        escapeHtml(
+          day.label +
+            " " +
+            formatDayDateLabel(parseDateKey(key)) +
+            " — " +
+            (count ? pluralItems(count) : "empty")
+        ) +
+        "</option>"
+      );
+    }).join("");
+    var prevOpt = prev ? sel.querySelector('option[value="' + prev + '"]') : null;
+    var pick = prevOpt && !prevOpt.disabled ? prev : todayDayId || firstFilled;
+    if (pick) sel.value = pick;
+    else sel.selectedIndex = -1;
+  }
+
+  function xptCopyFromFillTargets(preferDayId) {
+    var sel = xptCopyFromEl("xpt-copy-from-target");
+    if (!sel) return;
+    sel.innerHTML = DAYS.map(function (day) {
+      var count = diaryFoodCount(experimentalWeekTexts[day.id] || "");
+      return (
+        '<option value="' +
+        escapeAttr(day.id) +
+        '">' +
+        escapeHtml(
+          "Experimental " + day.label + (count ? " — has " + pluralItems(count) : "")
+        ) +
+        "</option>"
+      );
+    }).join("");
+    if (preferDayId) sel.value = preferDayId;
+  }
+
+  function xptCopyFromShowError(message) {
+    var el = xptCopyFromEl("xpt-copy-from-error");
+    if (!el) return;
+    el.hidden = !message;
+    el.textContent = message || "";
+  }
+
+  function xptCopyFromSync() {
+    var modal = xptCopyFromEl("xpt-copy-from-modal");
+    if (!modal) return;
+    var mode = xptCopyFromState.mode;
+    modal.querySelectorAll("[data-xpt-copy-mode]").forEach(function (btn) {
+      btn.setAttribute(
+        "aria-selected",
+        btn.getAttribute("data-xpt-copy-mode") === mode ? "true" : "false"
+      );
+    });
+    modal.querySelectorAll("[data-xpt-copy-day-only]").forEach(function (el) {
+      el.hidden = mode !== "day";
+    });
+    var keys = weekDateKeys(xptCopyFromSelectedWeek());
+    var summary = "";
+    var conflict = false;
+    var canCopy = false;
+    if (mode === "week") {
+      var filled = 0;
+      var items = 0;
+      keys.forEach(function (key) {
+        var c = diaryFoodCount(diaryTextForDateKey(key));
+        if (c) filled += 1;
+        items += c;
+      });
+      canCopy = filled > 0;
+      conflict = DAYS.some(function (day) {
+        return !!String(experimentalWeekTexts[day.id] || "").trim();
+      });
+      summary = canCopy
+        ? "Copies Mon→Mon … Sun→Sun: " +
+          pluralItems(items) +
+          " across " +
+          filled +
+          " day" +
+          (filled === 1 ? "" : "s") +
+          "."
+        : "This week has no food logged.";
+    } else {
+      var daySel = xptCopyFromEl("xpt-copy-from-day");
+      var targetSel = xptCopyFromEl("xpt-copy-from-target");
+      var srcIdx = daySel && daySel.value ? dayIndexById(daySel.value) : -1;
+      var srcCount =
+        srcIdx >= 0 ? diaryFoodCount(diaryTextForDateKey(keys[srcIdx])) : 0;
+      var target = targetSel ? targetSel.value : "";
+      canCopy = srcCount > 0 && !!target;
+      conflict = !!(target && String(experimentalWeekTexts[target] || "").trim());
+      var targetDay = dayById(target);
+      summary = canCopy
+        ? "Copies " +
+          pluralItems(srcCount) +
+          " into experimental " +
+          (targetDay ? targetDay.label : "day") +
+          "."
+        : "This week has no food logged. Pick another week.";
+    }
+    var summaryEl = xptCopyFromEl("xpt-copy-from-summary");
+    if (summaryEl) summaryEl.textContent = summary;
+    var conflictEl = xptCopyFromEl("xpt-copy-from-conflict");
+    if (conflictEl) conflictEl.hidden = !conflict;
+    var applyBtn = xptCopyFromEl("xpt-copy-from-apply");
+    if (applyBtn) {
+      applyBtn.disabled = !canCopy;
+      applyBtn.textContent = mode === "week" ? "Copy week" : "Copy day";
+    }
+  }
+
+  function openExperimentalCopyFrom(targetDayId) {
+    var modal = xptCopyFromEl("xpt-copy-from-modal");
+    if (!modal) return;
+    xptCopyFromState.mode = "day";
+    xptCopyFromState.targetDay = targetDayId || "";
+    var weekSel = xptCopyFromEl("xpt-copy-from-week");
+    var weeks = xptCopyFromWeekOptions();
+    if (weekSel) {
+      weekSel.innerHTML = weeks
+        .map(function (item) {
+          return (
+            '<option value="' +
+            escapeAttr(item.key) +
+            '">' +
+            escapeHtml(xptCopyFromWeekLabel(item)) +
+            "</option>"
+          );
+        })
+        .join("");
+      var start = viewedWeekStart || currentWeekMondayKey();
+      var startItem = weeks.filter(function (w) {
+        return w.key === start && w.days > 0;
+      })[0];
+      if (!startItem) {
+        startItem = weeks.filter(function (w) {
+          return w.days > 0;
+        })[0];
+      }
+      if (startItem) weekSel.value = startItem.key;
+    }
+    xptCopyFromFillDays(targetDayId || "");
+    var daySel = xptCopyFromEl("xpt-copy-from-day");
+    xptCopyFromFillTargets(targetDayId || (daySel && daySel.value) || "mon");
+    var replaceRadio = modal.querySelector(
+      'input[name="xpt-copy-from-conflict"][value="replace"]'
+    );
+    if (replaceRadio) replaceRadio.checked = true;
+    xptCopyFromShowError("");
+    xptCopyFromSync();
+    modal.hidden = false;
+    updateBodyModalOpen();
+    var focusEl = modal.querySelector('[data-xpt-copy-mode][aria-selected="true"]');
+    if (focusEl) focusEl.focus();
+  }
+
+  function isExperimentalCopyFromOpen() {
+    var modal = xptCopyFromEl("xpt-copy-from-modal");
+    return !!(modal && !modal.hidden);
+  }
+
+  function closeExperimentalCopyFrom() {
+    var modal = xptCopyFromEl("xpt-copy-from-modal");
+    if (!modal || modal.hidden) return;
+    modal.hidden = true;
+    xptCopyFromShowError("");
+    updateBodyModalOpen();
+    var back = xptCopyFromEl("xpt-copy-from");
+    if (back && experimentalPanelOpen) back.focus();
+  }
+
+  function applyExperimentalCopyFrom() {
+    var modal = xptCopyFromEl("xpt-copy-from-modal");
+    if (!modal) return;
+    var checked = modal.querySelector(
+      'input[name="xpt-copy-from-conflict"]:checked'
+    );
+    var conflictEl = xptCopyFromEl("xpt-copy-from-conflict");
+    var mode =
+      conflictEl && !conflictEl.hidden && checked && checked.value === "append"
+        ? "append"
+        : "replace";
+    var keys = weekDateKeys(xptCopyFromSelectedWeek());
+    if (xptCopyFromState.mode === "week") {
+      var any = keys.some(function (key) {
+        return !!String(diaryTextForDateKey(key)).trim();
+      });
+      if (!any) {
+        xptCopyFromShowError("This week has no food to copy.");
+        return;
+      }
+      DAYS.forEach(function (day, i) {
+        var src = String(diaryTextForDateKey(keys[i])).replace(/\s+$/, "");
+        experimentalWeekTexts[day.id] =
+          mode === "append"
+            ? appendMealTexts(experimentalWeekTexts[day.id] || "", src)
+            : src;
+      });
+      saveExperimentalWeekSetting();
+      syncExperimentalTextareas();
+      renderExperimentalLists();
+      renderExperimentalAnalysis();
+    } else {
+      var daySel = xptCopyFromEl("xpt-copy-from-day");
+      var targetSel = xptCopyFromEl("xpt-copy-from-target");
+      var srcIdx = daySel && daySel.value ? dayIndexById(daySel.value) : -1;
+      var target = targetSel ? targetSel.value : "";
+      var srcText = srcIdx >= 0 ? String(diaryTextForDateKey(keys[srcIdx])) : "";
+      if (!srcText.trim() || !dayById(target)) {
+        xptCopyFromShowError("Pick a diary day that has food.");
+        return;
+      }
+      writeExperimentalDayText(
+        target,
+        mode === "append"
+          ? appendMealTexts(experimentalWeekTexts[target] || "", srcText)
+          : srcText
+      );
+    }
+    closeExperimentalCopyFrom();
+  }
+
+  (function initExperimentalCopyFrom() {
+    var modal = xptCopyFromEl("xpt-copy-from-modal");
+    if (!modal) return;
+    modal.addEventListener("click", function (e) {
+      if (e.target.closest('[data-action="close-xpt-copy-from"]')) {
+        closeExperimentalCopyFrom();
+        return;
+      }
+      var modeBtn = e.target.closest("[data-xpt-copy-mode]");
+      if (modeBtn) {
+        xptCopyFromState.mode =
+          modeBtn.getAttribute("data-xpt-copy-mode") === "week" ? "week" : "day";
+        xptCopyFromShowError("");
+        xptCopyFromSync();
+        return;
+      }
+      if (e.target.closest("#xpt-copy-from-apply")) {
+        applyExperimentalCopyFrom();
+      }
+    });
+    modal.addEventListener("change", function (e) {
+      xptCopyFromShowError("");
+      if (e.target.id === "xpt-copy-from-week") xptCopyFromFillDays("");
+      if (
+        (e.target.id === "xpt-copy-from-week" ||
+          e.target.id === "xpt-copy-from-day") &&
+        !xptCopyFromState.targetDay
+      ) {
+        var daySel = xptCopyFromEl("xpt-copy-from-day");
+        var targetSel = xptCopyFromEl("xpt-copy-from-target");
+        if (daySel && targetSel && daySel.value) targetSel.value = daySel.value;
+      }
+      if (e.target.id === "xpt-copy-from-target") {
+        xptCopyFromState.targetDay = e.target.value;
+      }
+      xptCopyFromSync();
+    });
+    modal.addEventListener("keydown", function (e) {
+      var modeBtn = e.target.closest("[data-xpt-copy-mode]");
+      if (!modeBtn || (e.key !== "ArrowLeft" && e.key !== "ArrowRight")) return;
+      e.preventDefault();
+      e.stopPropagation();
+      xptCopyFromState.mode = xptCopyFromState.mode === "day" ? "week" : "day";
+      xptCopyFromSync();
+      var next = modal.querySelector(
+        '[data-xpt-copy-mode="' + xptCopyFromState.mode + '"]'
+      );
+      if (next) next.focus();
+    });
+  })();
 
   function setExperimentalLine(dayId, lineIndex, nextLine) {
     var lines = experimentalLines(dayId);
@@ -38756,6 +39132,10 @@
     }
     if (copyDateModalEl && !copyDateModalEl.hidden) {
       closeCopyDateModal();
+      return;
+    }
+    if (isExperimentalCopyFromOpen()) {
+      closeExperimentalCopyFrom();
       return;
     }
     if (copyConflictModalEl && !copyConflictModalEl.hidden) {
@@ -40552,6 +40932,15 @@
       }
       if (e.target.closest("#xpt-clear-week")) {
         clearExperimentalWeek();
+        return;
+      }
+      if (e.target.closest("#xpt-copy-from")) {
+        openExperimentalCopyFrom("");
+        return;
+      }
+      var copyFromBtn = e.target.closest('[data-action="xpt-copy-from"]');
+      if (copyFromBtn) {
+        openExperimentalCopyFrom(copyFromBtn.getAttribute("data-xpt-day") || "");
         return;
       }
       var addBtn = e.target.closest('[data-action="xpt-add"]');
