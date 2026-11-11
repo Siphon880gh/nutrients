@@ -9,7 +9,7 @@ By Weng (Weng Fei Fung).
 
 You log the foods you ate for each day of the week. Each line is matched to a **food definition** that stores that food’s macros and nutrients. Those values roll up into the dashboards: daily/weekly macros and calories, **micronutrients** vs daily targets, and **longevity** nutrients by section. Your **TDEE**, **body weight**, and **gender** shape nutrient targets and macro and calorie goals.
 
-Client-only nutrition tracker for weekly meals and reusable food definitions. The app runs from static files: `index.html`, `styles.css`, and `app.js`. Sample food data lives in `samples/definitions-food.json`.
+Client-only nutrition tracker for weekly meals and reusable food definitions. The app runs from static files: `index.html`, `styles.css`, and `app.js`. Sample food data lives in `data-food/definitions-food.json`.
 
 ## Quick start
 
@@ -22,8 +22,8 @@ python3 -m http.server 8765
 
 On first visit, use **Import sample** in two places:
 
-1. **Food definitions** — scroll to the Food definitions table and click **Import sample** (or **Import our sample** when the table is empty). This loads `samples/definitions-food.json`.
-2. **Food entry** — in the Mon–Sun day-meals area, click **Import sample**. This loads `samples/day-meals.json` for the current week.
+1. **Food definitions** — scroll to the Food definitions table and click **Import sample** (or **Import our sample** when the table is empty). This loads `data-food/definitions-food.json`.
+2. **Food entry** — in the Mon–Sun day-meals area, click **Import sample**. This loads `data-food/day-meals.json` for the current week.
 
 Type food names in day meals that match your definitions; macros, micros, and longevity totals update automatically.
 
@@ -85,7 +85,7 @@ Longevity nutrients by section — fats, omegas, fiber, and related compounds fo
 
 ## App Data
 
-- `samples/definitions-food.json` contains bundled food definitions for import.
+- `data-food/definitions-food.json` contains bundled food definitions for import.
 - `definitions-micronutrients.json` and `definitions-longevity.json` contain nutrient explanation copy.
 - `demographic-dv.js` and `longevity-dv.js` provide daily value targets.
 - Browser `localStorage` (via `persist.js` / `NutrientsPersist`) stores food definitions, day meals, favorites, and settings across sessions. See `specs-data-persistence.md`.
@@ -125,7 +125,7 @@ Use `.agents/skills/qa-definitions-food.json` to audit food definition nutrients
 
 The tool explains its purpose when invoked, asks which sample file to QA, asks whether to use the default nutrient set or a custom list, then rotates through nutrient-food pairs that still need review.
 
-Example prompt to invoke tool: "Let's QA the food definitions at samples/" 
+Example prompt to invoke tool: "Let's QA the food definitions at data-food/" 
 
 Default audit nutrients:
 - Magnesium
@@ -143,7 +143,7 @@ The QA flow only asks AI about foods where the selected nutrient is `0` or missi
 {nutrientKey}|{foodName}
 ```
 
-The default progress file is `samples/definitions-food-qa-checked.json`.
+The default progress file is `data-food/definitions-food-qa-checked.json`.
 
 Example prompt with the definitions file opened:
 

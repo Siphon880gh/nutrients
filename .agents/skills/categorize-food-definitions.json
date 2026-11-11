@@ -14,8 +14,8 @@
     "options": [
       {
         "id": "sample",
-        "label": "samples/definitions-food.json",
-        "path": "samples/definitions-food.json"
+        "label": "data-food/definitions-food.json",
+        "path": "data-food/definitions-food.json"
       },
       {
         "id": "export",
@@ -28,12 +28,12 @@
         "path": null
       }
     ],
-    "defaultHint": "Prefer samples/definitions-food.json for repo work; use an export when matching the user's live browser list."
+    "defaultHint": "Prefer data-food/definitions-food.json for repo work; use an export when matching the user's live browser list."
   },
   "files": {
     "categoryMap": "definitions-food-categories.json",
     "listScript": "scripts/list-uncategorized-foods.js",
-    "sampleFoods": "samples/definitions-food.json",
+    "sampleFoods": "data-food/definitions-food.json",
     "docs": [
       "AGENTS_CODE_REFERENCE-core.md (Food categories section)",
       "AGENTS_CODE_REFERENCE.md"
@@ -74,7 +74,7 @@
   },
   "workflow": [
     "Load definitions-food-categories.json and the selected food list.",
-    "Run: node scripts/list-uncategorized-foods.js --json <foodsPath>   (omit path to use samples/definitions-food.json).",
+    "Run: node scripts/list-uncategorized-foods.js --json <foodsPath>   (omit path to use data-food/definitions-food.json).",
     "Group uncategorized names by likely family (shared prefix, food type, brand).",
     "For each group, decide: existing category | new category | leave.",
     "Propose edits before writing when the user has not asked to apply automatically: show food → proposed category id/label → pattern change.",
@@ -94,7 +94,7 @@
   "aiJudgementPrompt": "These food definition names match no category pattern. For each name, choose: (1) an existing category id from the list, (2) a new category { id, label }, or (3) leave uncategorized. Prefer existing categories. Suggest a case-insensitive regex pattern anchored to the name family (usually a ^prefix). Do not rename foods.\n\nExisting categories:\n{categoryList}\n\nUncategorized foods:\n{foodList}\n\nRespond with JSON only:\n{\n  \"assignments\": [\n    {\n      \"name\": \"<exact food name>\",\n      \"action\": \"existing\" | \"new\" | \"leave\",\n      \"categoryId\": \"<id or proposed id>\",\n      \"categoryLabel\": \"<label if new, else existing label>\",\n      \"pattern\": \"<regex string to add, or null if leave>\",\n      \"reason\": \"<brief>\"\n    }\n  ]\n}",
   "notes": [
     "Category rules live only in definitions-food-categories.json; they are not stored on food objects.",
-    "Browser localStorage food lists can use older names than samples/definitions-food.json — always audit the list the user cares about.",
+    "Browser localStorage food lists can use older names than data-food/definitions-food.json — always audit the list the user cares about.",
     "Editing a pattern can move many foods at once; after edits, verify category counts and that previously categorized foods did not jump categories unexpectedly.",
     "Do not delete categories or rewrite unrelated patterns unless the user asks.",
     "Helper script and app matching both use first match + case-insensitive RegExp; keep that contract."

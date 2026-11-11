@@ -1,6 +1,6 @@
 # Adding a Multivitamin to `definitions-food.json`
 
-A multivitamin is just another food object in `samples/definitions-food.json` (a JSON array of food objects). What makes it different is **how you pick the numbers**: you do **not** copy the amounts printed on the Supplement Facts label. You estimate what your body actually **absorbs** from one tablet.
+A multivitamin is just another food object in `data-food/definitions-food.json` (a JSON array of food objects). What makes it different is **how you pick the numbers**: you do **not** copy the amounts printed on the Supplement Facts label. You estimate what your body actually **absorbs** from one tablet.
 
 If you haven't read it yet, `GUIDE_ADDING_FOOD.md` covers the object shape, the per-key units, and the "number in `micros` / `true` in `longevity`" rule. Everything there applies here — this guide only adds the absorption layer on top.
 
@@ -21,10 +21,10 @@ So the values in a multivitamin entry are **absorption-adjusted estimates**, not
 
 ## 2. The prompt to use in Cursor
 
-Open `samples/definitions-food.json` in Cursor and prompt the agent directly. Fill in the product you want:
+Open `data-food/definitions-food.json` in Cursor and prompt the agent directly. Fill in the product you want:
 
 ```
-In @samples/definitions-food.json, add [MULTIVITAMIN PRODUCT, eg. Centrum Men]
+In @data-food/definitions-food.json, add [MULTIVITAMIN PRODUCT, eg. Centrum Men]
 
 Don't just list the label DV. Adjust both the DV and actual values for typical absorption, since we don't absorb 100% of a pill for every vitamin.
 If there is fat soluble vitamins: Assume enough fats were eaten to absorb the fat-soluble vitamins (A, D, E, K).
@@ -128,7 +128,7 @@ Notice how the numbers are scaled down from a typical label — e.g. calcium and
 Quick validation from the repo root:
 
 ```bash
-node -e "JSON.parse(require('fs').readFileSync('samples/definitions-food.json','utf8')); console.log('valid JSON')"
+node -e "JSON.parse(require('fs').readFileSync('data-food/definitions-food.json','utf8')); console.log('valid JSON')"
 ```
 
 ---

@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
  * Precompute Food Sources modal rows from micronutrient + longevity
- * definitions and samples/definitions-food.json.
+ * definitions and data-food/definitions-food.json.
  *
  * Run after changing foodSources labels, sample foods, or matching logic:
  *   node scripts/build-food-sources.js
@@ -438,7 +438,7 @@ function main() {
     fs.readFileSync(path.join(ROOT, "definitions-longevity.json"), "utf8")
   );
   const foods = JSON.parse(
-    fs.readFileSync(path.join(ROOT, "samples/definitions-food.json"), "utf8")
+    fs.readFileSync(path.join(ROOT, "data-food/definitions-food.json"), "utf8")
   );
 
   const catalog = foods

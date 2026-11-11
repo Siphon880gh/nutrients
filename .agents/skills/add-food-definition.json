@@ -1,14 +1,14 @@
 {
   "name": "add-food-definition",
-  "description": "Use when the user names a food to add, asks to add a food entry, or wants a new food written into samples/definitions-food.json from the Import food nutrition prompt.",
-  "purpose": "Add one or more named foods to samples/definitions-food.json. Nutrition objects follow the Import food definition prompt builder (Have AI help me), then get appended to the sample file.",
+  "description": "Use when the user names a food to add, asks to add a food entry, or wants a new food written into data-food/definitions-food.json from the Import food nutrition prompt.",
+  "purpose": "Add one or more named foods to data-food/definitions-food.json. Nutrition objects follow the Import food definition prompt builder (Have AI help me), then get appended to the sample file.",
   "onInvoke": [
     "The user named a food (or a list of foods) to add to the sample food definitions. You fill the Import food prompt yourself and append the objects. Do not stop after drafting a prompt for ChatGPT.",
     "If they did not name a food, ask which food. Do not invent a food.",
     "If they already named a portion, use that portion. If they did not, follow the serving rules below and write the entry. Ask only when the name is a different food under two reasonable readings (which brand, which recipe), not when only the household serving is unspecified."
   ],
   "files": {
-    "definitions": "samples/definitions-food.json",
+    "definitions": "data-food/definitions-food.json",
     "promptBuilder": "app.js functions buildAiPromptFromPortion, jsonSchemaExample, nutrientListForPrompt",
     "ui": "Import food definition modal → ✨ Have AI help me (#import-ai-panel, #import-ai-portion)"
   },
@@ -54,7 +54,7 @@
     "Only use micros, longevity, and carbQuality keys that jsonSchemaExample / nutrientListForPrompt emit, plus carbQuality.netCarbs and notes."
   ],
   "workflow": [
-    "Search samples/definitions-food.json for the food name (case-insensitive). Use search; do not load the whole file.",
+    "Search data-food/definitions-food.json for the food name (case-insensitive). Use search; do not load the whole file.",
     "If the same food and the same serving already exist, report the existing name and stop. Do not add a second copy. A different serving of the same food is allowed when it is not already there.",
     "Read the three prompt-builder functions in app.js. Estimate nutrients using their rules and units.",
     "Build one object per serving you are adding.",
@@ -62,13 +62,13 @@
     "Validate, then tell the user each new name, its serving, and the source in notes."
   ],
   "duplicateCheck": {
-    "search": "Grep samples/definitions-food.json for the food words and for \"name\" lines.",
+    "search": "Grep data-food/definitions-food.json for the food words and for \"name\" lines.",
     "sameServing": "Stop and report the existing name.",
     "differentServing": "Append only the new serving, scaled on its own.",
     "userNamedPortion": "One object for that portion, even if other servings are also common."
   },
   "validate": {
-    "command": "node -e \"JSON.parse(require('fs').readFileSync('samples/definitions-food.json','utf8')); console.log('valid JSON')\"",
+    "command": "node -e \"JSON.parse(require('fs').readFileSync('data-food/definitions-food.json','utf8')); console.log('valid JSON')\"",
     "also": [
       "The file must still be a JSON array.",
       "Each name you just added appears once, and that object has numeric protein, carbs, and fats.",

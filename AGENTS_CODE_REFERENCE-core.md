@@ -511,7 +511,7 @@ All seven `.day__editor` boxes share one height.
 | Diary favorites (day/week) | `diaryFavorites` / `goToFavoriteById` / `markFavoriteDay` / `syncDayFavoriteButtons`; CSS `.day--favorite-day`; `#favorites-sidebar` + `#favorite-edit-modal`; persist `nutrients_favorites` |
 | Mobile days carousel | `initDaysCarousel` / `setDaysCarouselDayId`; CSS `@media (max-width: 520px)` scroll-snap on `.week__grid` |
 | Multi-week nav / copy | `setViewedWeekStart` / `copyDayToToday` / `copyViewedWeekToThisWeek`; `.week__nav`, `.day__date`, `.day__copy-menu` actions (`copy-week-to-this-week`, `copy-week-to-custom`, `copy-day-to-*`) + `#copy-date-modal` |
-| Sample day meals | `IMPORT_SAMPLE_MEALS_URL` + `importSampleMeals` + `samples/day-meals.json` (applies to viewed week) |
+| Sample day meals | `IMPORT_SAMPLE_MEALS_URL` + `importSampleMeals` + `data-food/day-meals.json` (applies to viewed week) |
 | Add explanatory text | key entry in `definitions-micronutrients.json` / `definitions-longevity.json` |
 | Change day clear copy | `confirmClearDay`, `confirmClearAllDays` (viewed week) |
 | Tune food suggestions | `foodSuggestMatches`, `positionDaySuggest`, `levenshtein` thresholds |

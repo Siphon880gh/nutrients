@@ -1,13 +1,13 @@
 #!/usr/bin/env node
 /**
- * QA pass: fill missing/zero micro panel nutrients in samples/definitions-food.json
+ * QA pass: fill missing/zero micro panel nutrients in data-food/definitions-food.json
  * Follows .agents/skills/qa-definitions-food.json workflow.
  */
 const fs = require("fs");
 const path = require("path");
 
-const samplePath = path.join(__dirname, "../samples/definitions-food.json");
-const checkedPath = path.join(__dirname, "../samples/definitions-food-qa-checked.json");
+const samplePath = path.join(__dirname, "../data-food/definitions-food.json");
+const checkedPath = path.join(__dirname, "../data-food/definitions-food-qa-checked.json");
 
 const MICRO_KEYS = [
   "solubleFiber", "insolubleFiber", "fiber", "sodium", "potassium", "calcium", "iron", "copper", "magnesium", "zinc", "selenium",

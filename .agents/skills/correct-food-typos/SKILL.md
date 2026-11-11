@@ -2,7 +2,7 @@
 name: correct-food-typos
 description: >-
   Rewrite rough or mistyped food lines into exact names from
-  samples/definitions-food.json so they can be pasted into a day food column.
+  data-food/definitions-food.json so they can be pasted into a day food column.
   Use when the user asks to fix typos, correct food names, clean up a meal
   log, or turn shorthand like "2 cups white rice" or "Doritos md bag" into
   food-column lines.
@@ -10,7 +10,7 @@ description: >-
 
 # Correct food typos
 
-Turn shorthand into lines that match a food `name` in `samples/definitions-food.json`.
+Turn shorthand into lines that match a food `name` in `data-food/definitions-food.json`.
 
 ## Before rewriting
 

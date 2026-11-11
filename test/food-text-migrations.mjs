@@ -65,7 +65,7 @@ function rulesFile() {
   return JSON.parse(fs.readFileSync(path.join(root, "migrations", "food-text.json"), "utf8"));
 }
 
-const sample = fs.readFileSync(path.join(root, "samples", "definitions-food.json"), "utf8");
+const sample = fs.readFileSync(path.join(root, "data-food", "definitions-food.json"), "utf8");
 assert(!sample.includes(OLD), "sample JSON no longer uses the old chicken steak name");
 assert(sample.includes(NEXT), "sample JSON uses the with-skin chicken steak name");
 assert(sample.includes(WITHOUT), "sample JSON keeps the without-skin chicken steak name");

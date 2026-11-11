@@ -4,9 +4,9 @@
  *
  * Usage:
  *   node scripts/list-uncategorized-foods.js
- *   node scripts/list-uncategorized-foods.js samples/definitions-food.json
+ *   node scripts/list-uncategorized-foods.js data-food/definitions-food.json
  *   node scripts/list-uncategorized-foods.js ~/Downloads/nutrients-food-definitions.json
- *   node scripts/list-uncategorized-foods.js --json samples/definitions-food.json
+ *   node scripts/list-uncategorized-foods.js --json data-food/definitions-food.json
  */
 "use strict";
 
@@ -15,7 +15,7 @@ const path = require("path");
 
 const root = path.join(__dirname, "..");
 const categoriesPath = path.join(root, "definitions-food-categories.json");
-const defaultFoodsPath = path.join(root, "samples", "definitions-food.json");
+const defaultFoodsPath = path.join(root, "data-food", "definitions-food.json");
 
 function loadJson(filePath) {
   return JSON.parse(fs.readFileSync(filePath, "utf8"));

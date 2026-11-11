@@ -1,13 +1,13 @@
 #!/usr/bin/env node
 /**
- * QA pass: plant sterols & stanols (longevity.plantSterols) in samples/definitions-food.json
+ * QA pass: plant sterols & stanols (longevity.plantSterols) in data-food/definitions-food.json
  * Follows .agents/skills/qa-definitions-food.json workflow (longevity scope).
  */
 const fs = require("fs");
 const path = require("path");
 
-const samplePath = path.join(__dirname, "../samples/definitions-food.json");
-const checkedPath = path.join(__dirname, "../samples/definitions-food-qa-checked.json");
+const samplePath = path.join(__dirname, "../data-food/definitions-food.json");
+const checkedPath = path.join(__dirname, "../data-food/definitions-food-qa-checked.json");
 const NUTRIENT_KEY = "plantSterols";
 
 /** Per-food overrides (grams plant sterols + stanols per portion in name). */
@@ -169,7 +169,7 @@ fs.writeFileSync(checkedPath, JSON.stringify(checkedData, null, 2) + "\n");
 
 const pending = foods.filter((f) => needsCheck(f.longevity, NUTRIENT_KEY)).length;
 
-console.log("Plant sterols QA complete (samples/definitions-food.json)");
+console.log("Plant sterols QA complete (data-food/definitions-food.json)");
 console.log("  updated:", patched);
 console.log("  confirmed_zero:", confirmed);
 console.log("  skipped (already checked):", skipped);

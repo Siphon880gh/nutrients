@@ -1,6 +1,6 @@
 # Adding a Food to `definitions-food.json`
 
-Food definitions live in `samples/definitions-food.json`. The file is a **JSON array** of food objects. To add a food, append one more object to the array.
+Food definitions live in `data-food/definitions-food.json`. The file is a **JSON array** of food objects. To add a food, append one more object to the array.
 
 If you want to simplify things, you can have a value that is for **one serving** — but it also helps to name the units like 1 cup or 1 handful. Always bake the portion (and its unit) into the name, e.g. `"Macadamia nuts 1 oz"`, `"Peanuts 1 cup"`, `"First Street Trail Mix 6 tablespoons"`.
 
@@ -156,7 +156,7 @@ Values below are illustrative estimates for a **1 oz (28 g)** serving. Replace w
 Quick validation from the repo root:
 
 ```bash
-node -e "JSON.parse(require('fs').readFileSync('samples/definitions-food.json','utf8')); console.log('valid JSON')"
+node -e "JSON.parse(require('fs').readFileSync('data-food/definitions-food.json','utf8')); console.log('valid JSON')"
 ```
 
 ---
@@ -167,7 +167,7 @@ You can add a food in three main ways. They all produce the same object shape de
 
 ### Way 1 — Do the research yourself (manual)
 
-Build the object by hand using your own research, a nutrition database, or an AI chat (e.g. [chatgpt.com](https://chatgpt.com)). When it's ready, append it as a new entry in `samples/definitions-food.json`. This is the most hands-on option, but you're in full control of every value.
+Build the object by hand using your own research, a nutrition database, or an AI chat (e.g. [chatgpt.com](https://chatgpt.com)). When it's ready, append it as a new entry in `data-food/definitions-food.json`. This is the most hands-on option, but you're in full control of every value.
 
 ### Way 2 — Use the app's "Have AI help me" prompt
 
@@ -180,11 +180,11 @@ The app has a built-in AI flow that writes the prompt for you:
 
 What the app generates is the exact schema and unit list from this doc — the JSON structure, the per-key units, and the "number in `micros` / `true` in `longevity`" rule, all filled in automatically. See `jsonSchemaExample()` / `nutrientListForPrompt()` in `app.js` for the source of truth on keys and units.
 
-Note: food you import this way is saved to your **local browser storage**, not to the codebase. If you want it to be a permanent, shared entry (when user clicks "Import Sample"), take the object the AI generated and append it into `samples/definitions-food.json` as a new array entry (see section 6).
+Note: food you import this way is saved to your **local browser storage**, not to the codebase. If you want it to be a permanent, shared entry (when user clicks "Import Sample"), take the object the AI generated and append it into `data-food/definitions-food.json` as a new array entry (see section 6).
 
 ### Way 3 — Ask your coding agent to add it
 
-Open `samples/definitions-food.json` in your favorite coding harness (e.g. Cursor) and prompt it directly, for example:
+Open `data-food/definitions-food.json` in your favorite coding harness (e.g. Cursor) and prompt it directly, for example:
 
 ```
 [FOOD] - Butter - Please add the units for one serving

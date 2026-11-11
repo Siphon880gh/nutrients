@@ -15,9 +15,9 @@ const vm = require("vm");
 const root = path.join(__dirname, "..");
 const rulesPath = path.join(root, "migrations", "food-text.json");
 const files = [
-  "samples/definitions-food.json",
-  "samples/day-meals.json",
-  "samples/definitions-food-qa-checked.json",
+  "data-food/definitions-food.json",
+  "data-food/day-meals.json",
+  "data-food/definitions-food-qa-checked.json",
   "definitions-food-sources.json",
   "definitions-food-notes.json",
   "definitions-food-categories.json",

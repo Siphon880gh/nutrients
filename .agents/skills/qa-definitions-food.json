@@ -1,11 +1,11 @@
 {
   "name": "qa-definitions-food",
-  "description": "QA food micronutrient definitions with AI. Use when auditing samples/definitions-food.json for foods with 0 or missing nutrients, tracking checked nutrient-food pairs in a hash table.",
+  "description": "QA food micronutrient definitions with AI. Use when auditing data-food/definitions-food.json for foods with 0 or missing nutrients, tracking checked nutrient-food pairs in a hash table.",
   "purpose": "Use AI to double-check foods that currently show 0 or missing values for selected nutrients in a food definitions sample file. Only review unchecked nutrient-food pairs, then record whether each value is confirmed zero, updated, or skipped.",
   "onInvoke": [
     "Explain the purpose: this tool helps QA food definition data by finding foods where a nutrient is 0 or missing, asking AI to verify only pairs not already checked, and recording confirmed_zero, updated, or skipped in a progress hash table.",
-    "Find JSON files under samples/ that look like food definition samples.",
-    "If exactly one sample exists, ask the user: \"Are you QA'ing samples/definitions-food.json?\"",
+    "Find JSON files under data-food/ that look like food definition samples.",
+    "If exactly one sample exists, ask the user: \"Are you QA'ing data-food/definitions-food.json?\"",
     "If more than one sample exists, ask the user to choose which sample file to audit.",
     "If the user has not already stated which nutrient scope they want, STOP and run intentClarification before starting the workflow. Do not guess.",
     "After sample file and nutrient scope are confirmed, start the QA workflow for the selected sample and nutrient list."
@@ -48,7 +48,7 @@
     "implicitIntentDefault": "If the user describes a broad audit without naming nutrients, ask whether they mean default eight or all micro requirements panel nutrients before proceeding."
   },
   "currentKnownSamples": [
-    "samples/definitions-food.json"
+    "data-food/definitions-food.json"
   ],
   "defaultNutrients": [
     {
@@ -131,7 +131,7 @@
   },
   "progressHashTable": {
     "pathTemplate": "{sampleFileWithoutExtension}-qa-checked.json",
-    "defaultPath": "samples/definitions-food-qa-checked.json",
+    "defaultPath": "data-food/definitions-food-qa-checked.json",
     "rootKey": "checked",
     "hashKeyTemplate": "{nutrientKey}|{food.name}",
     "example": "magnesium|AM Shot - Avocado Oil",

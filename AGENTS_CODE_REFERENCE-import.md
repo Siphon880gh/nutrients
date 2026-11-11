@@ -104,11 +104,11 @@ Used when opening import with AI panel **closed** (`setImportAiPanelOpen(false)`
 
 ## Sample import
 
-**`importSampleFoods`** — fetches `IMPORT_SAMPLE_FOODS_URL` (`samples/definitions-food.json`), then `confirmImportSampleReplace(count)` and applies via the replace path. On success calls `advanceStarterGuideAfterImport()` (meals step of starter guide when eligible). The sample file is an array of food objects using the same `name` / `protein` / `carbs` / `fats` / `micros` / `longevity` / `carbQuality` shape.
+**`importSampleFoods`** — fetches `IMPORT_SAMPLE_FOODS_URL` (`data-food/definitions-food.json`), then `confirmImportSampleReplace(count)` and applies via the replace path. On success calls `advanceStarterGuideAfterImport()` (meals step of starter guide when eligible). The sample file is an array of food objects using the same `name` / `protein` / `carbs` / `fats` / `micros` / `longevity` / `carbQuality` shape.
 
 Empty table copy in `#keywords-empty` also links to sample import via `data-action="import-sample-from-empty"` (delegated click on `#keywords-empty`).
 
-Human/agent authoring guides (not loaded by the app): `GUIDE_ADDING_FOOD.md`, `GUIDE_IMPROVING_FOOD.md`, `GUIDE_ADDING_MULTIVITAMIN.md`. QA helpers: `scripts/run-micro-qa.js`, `scripts/run-plant-sterols-qa.js`, `scripts/list-uncategorized-foods.js`; `.agents/skills/qa-definitions-food.json` (writes `samples/definitions-food-qa-checked.json`), `.agents/skills/categorize-food-definitions.json` (updates `definitions-food-categories.json`).
+Human/agent authoring guides (not loaded by the app): `GUIDE_ADDING_FOOD.md`, `GUIDE_IMPROVING_FOOD.md`, `GUIDE_ADDING_MULTIVITAMIN.md`. QA helpers: `scripts/run-micro-qa.js`, `scripts/run-plant-sterols-qa.js`, `scripts/list-uncategorized-foods.js`; `.agents/skills/qa-definitions-food.json` (writes `data-food/definitions-food-qa-checked.json`), `.agents/skills/categorize-food-definitions.json` (updates `definitions-food-categories.json`).
 
 ## Day meals import (`#import-all-meals-modal`)
 
@@ -122,7 +122,7 @@ Human/agent authoring guides (not loaded by the app): `GUIDE_ADDING_FOOD.md`, `G
 
 ## Sample day meals (`#import-sample-meals`)
 
-**`importSampleMeals`** — fetches `IMPORT_SAMPLE_MEALS_URL` (`samples/day-meals.json`), parses with `parseImportAllDayMealsObject`, confirms via `confirmImportSampleMealsReplace` when any **viewed-week** day already has notes, then `applySampleDayMealsData(data, true)` (missing days cleared on the viewed week) + `refreshAll`.
+**`importSampleMeals`** — fetches `IMPORT_SAMPLE_MEALS_URL` (`data-food/day-meals.json`), parses with `parseImportAllDayMealsObject`, confirms via `confirmImportSampleMealsReplace` when any **viewed-week** day already has notes, then `applySampleDayMealsData(data, true)` (missing days cleared on the viewed week) + `refreshAll`.
 
 Sample shape (legacy week; applied to the viewed Mon–Sun):
 

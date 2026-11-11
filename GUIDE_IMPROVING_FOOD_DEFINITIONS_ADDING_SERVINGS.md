@@ -1,6 +1,6 @@
 # Improving Food Definitions in `definitions-food.json`
 
-Use this guide when you are **fixing or upgrading** an existing entry in `samples/definitions-food.json` — not when you are adding a brand-new food from scratch. For brand-new foods, start with `GUIDE_ADDING_FOOD.md`.
+Use this guide when you are **fixing or upgrading** an existing entry in `data-food/definitions-food.json` — not when you are adding a brand-new food from scratch. For brand-new foods, start with `GUIDE_ADDING_FOOD.md`.
 
 The app has **no separate serving field**. Every number on a food object is per whatever portion is written into `name`. Improving a definition usually means making that portion obvious, then making the nutrient numbers match it.
 
@@ -53,14 +53,14 @@ Size words like `sm` / `md` / `lg` / `whole` / `half` count as servings when the
 
 ## 3. How to improve one food (workflow)
 
-1. Find the object in `samples/definitions-food.json` by its current `name`.
+1. Find the object in `data-food/definitions-food.json` by its current `name`.
 2. Decide the serving you want (realistic, easy to measure).
 3. Rename to `Food … <serving>` — keep any useful disambiguator (`with skin`, brand, flavor).
 4. Refresh `protein` / `carbs` / `fats` / `micros` / `longevity` / `carbQuality` for **that** serving only.
 5. Validate JSON:
 
 ```bash
-node -e "JSON.parse(require('fs').readFileSync('samples/definitions-food.json','utf8')); console.log('valid JSON')"
+node -e "JSON.parse(require('fs').readFileSync('data-food/definitions-food.json','utf8')); console.log('valid JSON')"
 ```
 
 ### Cursor / agent prompt
@@ -141,5 +141,5 @@ If you later want a smaller culinary garnish (e.g. `Parsley 1 tbsp chopped`), ad
 
 - Keep **valid JSON** (tabs, no trailing comma on the last array item).
 - Prefer renaming in place over duplicating the same food twice with ambiguous names.
-- If QA status exists in `samples/definitions-food-qa-checked.json`, update keys that embed the old food name when you rename.
+- If QA status exists in `data-food/definitions-food-qa-checked.json`, update keys that embed the old food name when you rename.
 - Re-run JSON parse validation (section 3) before you stop.

@@ -5,7 +5,7 @@
  * Accepts a CSV list of one or more user-entered food terms through a URL
  * query parameter.
  *
- * For each term, this script searches `samples/definitions-food.json` and
+ * For each term, this script searches `data-food/definitions-food.json` and
  * compares the input against each object's `name` key/value.
  *
  * A single input term may match and return multiple autocomplete entries.
@@ -64,7 +64,7 @@ if (empty($terms)) {
     exit(0);
 }
 
-$jsonPath = __DIR__ . '/samples/definitions-food.json';
+$jsonPath = __DIR__ . '/data-food/definitions-food.json';
 if (!file_exists($jsonPath)) {
     http_response_code(500);
     echo "Error: Food definitions file not found.\n";

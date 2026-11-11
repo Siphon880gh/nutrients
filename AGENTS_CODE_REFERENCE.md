@@ -31,7 +31,7 @@ When context is tight: read **this file** first, then open the one feature file 
 | Markup | Static HTML5 |
 | Style | Plain CSS (`styles.css`, ~7,800 lines) |
 | Logic | Single IIFE in `app.js` (~19,800 lines) |
-| Data files | `config.json` (% DV tiers), `definitions-micronutrients.json`, `definitions-longevity.json`, `definitions-food-notes.json`, `definitions-food-categories.json`, `definitions-food-sources.json` (precomputed Food Sources modal rows), `samples/definitions-food.json`, `samples/day-meals.json` (all `fetch`ed at boot / on demand) |
+| Data files | `config.json` (% DV tiers), `definitions-micronutrients.json`, `definitions-longevity.json`, `definitions-food-notes.json`, `definitions-food-categories.json`, `definitions-food-sources.json` (precomputed Food Sources modal rows), `data-food/definitions-food.json`, `data-food/day-meals.json` (all `fetch`ed at boot / on demand) |
 | Reference values | `demographic-dv.js` (micro DV, IOM amino-acid bw minimums, fiber component ratio), `longevity-dv.js` (longevity DV) — globals, loaded before `app.js` |
 | Persistence | `persist.js` (`NutrientsAuth` + `NutrientsPersist`) → localStorage tables: **users**, **session**, **food definitions**, **day meals**, **favorites**, **settings** (rows keyed by `userId`). Header Sign up / Log in / Log out. See [AGENTS-data-persistence.md](./AGENTS-data-persistence.md) / [specs-data-persistence.md](./specs-data-persistence.md) |
 | Guides / QA | `GUIDE_ADDING_FOOD.md`, `GUIDE_IMPROVING_FOOD.md`, `GUIDE_ADDING_MULTIVITAMIN.md`; `scripts/run-micro-qa.js`, `scripts/run-plant-sterols-qa.js`, `scripts/list-uncategorized-foods.js`; `.agents/skills/qa-definitions-food.json`, `.agents/skills/categorize-food-definitions.json` |
@@ -79,7 +79,7 @@ When context is tight: read **this file** first, then open the one feature file 
 └─────────────────────────────────────────────────────────┘
 ```
 
-**Persisted** (via `NutrientsAuth` / `NutrientsPersist`): `nutrients_users`, `nutrients_session`, `nutrients_food_definitions`, `nutrients_day_meals`, `nutrients_meals`, `nutrients_favorites`, `nutrients_settings` (all entity rows include `userId`). Details: [specs-data-persistence.md](./specs-data-persistence.md). Bulk export/import for meals and foods; sample foods from `samples/definitions-food.json`; sample meals from `samples/day-meals.json`; reusable **saved meals** (named food combinations) from the **Saved meals** sheet. Clear per day / viewed week with `confirm`.
+**Persisted** (via `NutrientsAuth` / `NutrientsPersist`): `nutrients_users`, `nutrients_session`, `nutrients_food_definitions`, `nutrients_day_meals`, `nutrients_meals`, `nutrients_favorites`, `nutrients_settings` (all entity rows include `userId`). Details: [specs-data-persistence.md](./specs-data-persistence.md). Bulk export/import for meals and foods; sample foods from `data-food/definitions-food.json`; sample meals from `data-food/day-meals.json`; reusable **saved meals** (named food combinations) from the **Saved meals** sheet. Clear per day / viewed week with `confirm`.
 
 ## File tree
 
@@ -102,7 +102,7 @@ nutrients/
 ├── GUIDE_ADDING_FOOD.md            Human/agent guide for new sample foods
 ├── GUIDE_IMPROVING_FOOD.md         Guide for upgrading existing sample foods
 ├── GUIDE_ADDING_MULTIVITAMIN.md    Guide for multivitamin-style definitions
-├── samples/
+├── data-food/
 │   ├── definitions-food.json       Sample food list (Import sample foods)
 │   ├── day-meals.json              Sample Mon–Sun meals (Import sample meals)
 │   └── definitions-food-qa-checked.json  QA working copy for micro fill scripts
@@ -170,7 +170,7 @@ Micros and longevity nutrients affect **storage and UI** (button codes, import J
 - Persistence — `NutrientsAuth` + `NutrientsPersist` in `persist.js` (loaded before `app.js`). Tables: `nutrients_users`, `nutrients_session`, `nutrients_food_definitions`, `nutrients_day_meals`, `nutrients_favorites`, `nutrients_settings` (+ optional `nutrients_orphan_legacy` during upgrade). See [AGENTS-data-persistence.md](./AGENTS-data-persistence.md).
 - `demographicDv` / `longevityDv` — references to `window.NutrientsDemographicDv` / `window.NutrientsLongevityDv` (must load before `app.js`). `demographicDv` also exposes `IOM_BW_MIN_MG_PER_KG`, `getIomBwMinDaily`, `FIBER_COMPONENT_DV_RATIO`.
 - `CAL_PROTEIN|CARBS|FATS` — 4, 4, 9.
-- `CHATGPT_URL`, `CLAUDE_URL`, `IMPORT_SAMPLE_FOODS_URL` (`samples/definitions-food.json`), `IMPORT_SAMPLE_MEALS_URL` (`samples/day-meals.json`), `FOOD_NOTES_URL` (`definitions-food-notes.json`), `FOOD_CATEGORIES_URL` (`definitions-food-categories.json`).
+- `CHATGPT_URL`, `CLAUDE_URL`, `IMPORT_SAMPLE_FOODS_URL` (`data-food/definitions-food.json`), `IMPORT_SAMPLE_MEALS_URL` (`data-food/day-meals.json`), `FOOD_NOTES_URL` (`definitions-food-notes.json`), `FOOD_CATEGORIES_URL` (`definitions-food-categories.json`).
 
 ## UI regions (`index.html`)
 
@@ -219,7 +219,7 @@ Outside main (modal / overlay siblings): `#auth-signup-modal`, `#auth-login-moda
 - **Diary favorites:** persist `{id,type,dateKey,name,description}` in `nutrients_favorites`; `#favorites-open` → `#favorites-sidebar` (browse + Manage mode); `#week-nav-favorite` above day grid; per-day `data-action="favorite-day"`; `#favorite-edit-modal`; `goToFavoriteById` / `activeFavoriteDayKey` (session) → `.day--favorite-day`. Do not rename `data-favorite-id` / manage `data-action`s without updating listeners ([core doc](./AGENTS_CODE_REFERENCE-core.md)).
 - **Mobile days carousel:** at `max-width: 520px`, `initDaysCarousel` / `setDaysCarouselDayId` / `data-days-carousel`; keep in sync with favorite-day jump and unmatched jump ([core doc](./AGENTS_CODE_REFERENCE-core.md), [ui doc](./AGENTS_CODE_REFERENCE-ui.md)).
 - **Multi-week diary:** `dayMealsByDate` + `viewedWeekStart`; earliest week containing `EARLIEST_DIARY_DATE` (`2026-05-01`); `setViewedWeekStart` / `stepViewedWeek` / `goToThisWeek`; date labels via `updateDayDateLabels` / `formatDayDateLabel`; Copy menu via `handleDayCopyAction` / `#copy-date-modal` (actions live in `.day__copy-menu`, not a standalone `#copy-week-to-this` button) ([core doc](./AGENTS_CODE_REFERENCE-core.md)).
-- **Sample day meals:** `importSampleMeals` fetches `IMPORT_SAMPLE_MEALS_URL` (`samples/day-meals.json`); applies to the **viewed week**; confirm replace when any viewed day has notes ([import doc](./AGENTS_CODE_REFERENCE-import.md)).
+- **Sample day meals:** `importSampleMeals` fetches `IMPORT_SAMPLE_MEALS_URL` (`data-food/day-meals.json`); applies to the **viewed week**; confirm replace when any viewed day has notes ([import doc](./AGENTS_CODE_REFERENCE-import.md)).
 - **Food-table search / category / pagination / sort:** `keywordsFilterQuery` + `setKeywordsFilterQuery`, `keywordsCategoryFilter` + `setKeywordsCategoryFilter` / `#keywords-category-modal`, `keywordsPageSize` / `keywordsPageIndex` + `keywordsPageBounds` / `goKeywordsPage` / `changeKeywordsPageSize`, `sortKeywordsAlphabetically`; `renderKeywords` only renders the current filtered page ([core doc](./AGENTS_CODE_REFERENCE-core.md)).
 - **Food category map:** add/adjust entries in `definitions-food-categories.json` (`id`, `label`, `patterns`); first matching pattern wins; unmatched foods are **Uncategorized**. Agent workflow: `.agents/skills/categorize-food-definitions.json` + `scripts/list-uncategorized-foods.js` ([core doc](./AGENTS_CODE_REFERENCE-core.md)).
 - **Fiber component ratio:** `solubleFiber` / `insolubleFiber` micros, `splitTotalFiber` / `solubleFiberRatioForFoodName` (auto-split by food name), `fiberTotalFromParts`; `FIBER_COMPONENT_DV_RATIO` in `demographic-dv.js` derives their DV from total fiber ([core doc](./AGENTS_CODE_REFERENCE-core.md)).

@@ -602,11 +602,11 @@
   var starterGuideStep = null;
   var starterGuideTarget = null;
   var starterGuideScrollResizeBound = false;
-  var IMPORT_SAMPLE_FOODS_URL = "samples/definitions-food.json";
+  var IMPORT_SAMPLE_FOODS_URL = "data-food/definitions-food.json";
   function importSampleFoodsUrl() {
     return IMPORT_SAMPLE_FOODS_URL + "?t=" + Date.now();
   }
-  var IMPORT_SAMPLE_MEALS_URL = "samples/day-meals.json";
+  var IMPORT_SAMPLE_MEALS_URL = "data-food/day-meals.json";
   var FOOD_SOURCES_PRECOMPUTED_URL = "definitions-food-sources.json";
   var importAllMealsModalEl = document.getElementById("import-all-meals-modal");
   var importAllMealsJsonEl = document.getElementById("import-all-meals-json");
@@ -948,7 +948,7 @@
   var foodNotesDefinitions = [];
   var exerciseNotesDefinitions = [];
   var FOOD_NOTES_URL = "definitions-food-notes.json";
-  var EXERCISE_NOTES_URL = "definitions-exercise-notes.json";
+  var EXERCISE_NOTES_URL = "data-exercises/definitions-exercise-notes.json";
   var longevityDefinitions = {};
   var activeMicroDefKey = null;
   var activeLongevityDefKey = null;
@@ -38733,7 +38733,7 @@
   // Workouts are logged as comment lines (// or #) in the diary so they never
   // count as food. Tonnage = sum of reps × weight per set; "pair"/"each" counts
   // both dumbbells.
-  var EXERCISE_DEFINITIONS_URL = "definitions-exercise.json";
+  var EXERCISE_DEFINITIONS_URL = "data-exercises/definitions-exercise.json";
   var exerciseDefinitions = [];
   var exerciseCategoryLabels = {
     cardio: "Cardio",
