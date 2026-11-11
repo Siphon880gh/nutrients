@@ -20,7 +20,7 @@
       "niacin": 1.5,
       "pantothenicAcid": 0.48,
       "chromium": 1.8,
-      "vitaminA": 0,
+      "vitaminA": 0.4,
       "vitaminD": 0,
       "vitaminE": 1.4,
       "selenium": 2.3,
@@ -101,7 +101,7 @@
       "refinedCarbs": 7.5,
       "netCarbs": 16.5
     },
-    "notes": "Label-gap check on 11 Nov 2026: Nutrition Facts labels don't have to list these nutrients, so keys that were missing or 0 were checked against composition data; only those keys changed, as estimates, and other values were kept. Scaled to about 39 g, the weight implied by this entry's own protein, carbs and fat. Composition: USDA FoodData Central SR Legacy FDC 170654 (Snacks, trail mix, regular, unsalted). From typical amounts per 100 g for nuts (NIH ODS fact-sheet tables, Anderson chromium data, USDA/FDA/ODS Iodine Database; salt in processed or restaurant food assumed noniodized): iodine. Verified zero on 11 Nov 2026 (composition data, not the label): B12. Set to 0 because the amount rounds to 0 at this portion size: vitamin A."
+    "notes": "Label-gap check on 11 Nov 2026: Nutrition Facts labels don't have to list these nutrients, so keys that were missing or 0 were checked against composition data; only those keys changed, as estimates, and other values were kept. Scaled to about 39 g, the weight implied by this entry's own protein, carbs and fat. Composition: USDA FoodData Central SR Legacy FDC 170654 (Snacks, trail mix, regular, unsalted). From that record: vitamin A. From typical amounts per 100 g for nuts (NIH ODS fact-sheet tables, Anderson chromium data, USDA/FDA/ODS Iodine Database; salt in processed or restaurant food assumed noniodized): iodine. Verified zero on 11 Nov 2026 (composition data, not the label): B12."
   },
   {
     "name": "First Street Trail Mix 10 tablespoons",
@@ -1322,7 +1322,7 @@
       "potassium": 22.5,
       "calcium": 51,
       "iron": 0,
-      "magnesium": 0,
+      "magnesium": 0.4,
       "zinc": 0.012,
       "iodine": 0,
       "vitaminA": 76.5,
@@ -1342,7 +1342,7 @@
       "selenium": 0.1,
       "copper": 2.9,
       "phosphorus": 0.8,
-      "choline": 0,
+      "choline": 0.2,
       "manganese": 0.005,
       "molybdenum": 5,
       "fluoride": 0,
@@ -1414,7 +1414,7 @@
       "refinedCarbs": 0,
       "netCarbs": 0
     },
-    "notes": "Label-gap check on 11 Nov 2026: Nutrition Facts labels don't have to list these nutrients, so keys that were missing or 0 were checked against composition data; only those keys changed, as estimates, and other values were kept. Scaled to about 1.3 g, the weight implied by this entry's own protein, carbs and fat. Composition, split by weight: USDA FoodData Central SR Legacy FDC 171319 (Spices, chili powder) 20%; table salt 80%. From those records: vitamin E, vitamin K, niacin, B6, folate, phosphorus, zinc, selenium, copper, manganese. Verified zero on 11 Nov 2026 (composition data, not the label): B12. Set to 0 because the amount rounds to 0 at this portion size: thiamin, riboflavin, pantothenic acid, biotin, iodine, magnesium, chromium, choline."
+    "notes": "Label-gap check on 11 Nov 2026: Nutrition Facts labels don't have to list these nutrients, so keys that were missing or 0 were checked against composition data; only those keys changed, as estimates, and other values were kept. Scaled to about 1.3 g, the weight implied by this entry's own protein, carbs and fat. Composition, split by weight: USDA FoodData Central SR Legacy FDC 171319 (Spices, chili powder) 20%; table salt 80%. From those records: vitamin E, vitamin K, niacin, B6, folate, phosphorus, magnesium, zinc, selenium, copper, manganese, choline. Verified zero on 11 Nov 2026 (composition data, not the label): B12. Set to 0 because the amount rounds to 0 at this portion size: thiamin, riboflavin, pantothenic acid, biotin, iodine, chromium."
   },
   {
     "name": "Tajin 3 sm pinches (2.25ml)",
@@ -1446,7 +1446,7 @@
       "selenium": 0.1,
       "copper": 4.3,
       "phosphorus": 1.2,
-      "choline": 0,
+      "choline": 0.3,
       "manganese": 0.008,
       "molybdenum": 5,
       "fluoride": 0,
@@ -1518,7 +1518,7 @@
       "refinedCarbs": 0,
       "netCarbs": 0
     },
-    "notes": "Label-gap check on 11 Nov 2026: Nutrition Facts labels don't have to list these nutrients, so keys that were missing or 0 were checked against composition data; only those keys changed, as estimates, and other values were kept. Scaled to about 1.9 g, the weight implied by this entry's own protein, carbs and fat. Composition, split by weight: USDA FoodData Central SR Legacy FDC 171319 (Spices, chili powder) 20%; table salt 80%. From those records: vitamin E, vitamin K, niacin, B6, folate, phosphorus, magnesium, zinc, selenium, copper, manganese. Verified zero on 11 Nov 2026 (composition data, not the label): B12. Set to 0 because the amount rounds to 0 at this portion size: thiamin, riboflavin, pantothenic acid, biotin, iodine, chromium, choline."
+    "notes": "Label-gap check on 11 Nov 2026: Nutrition Facts labels don't have to list these nutrients, so keys that were missing or 0 were checked against composition data; only those keys changed, as estimates, and other values were kept. Scaled to about 1.9 g, the weight implied by this entry's own protein, carbs and fat. Composition, split by weight: USDA FoodData Central SR Legacy FDC 171319 (Spices, chili powder) 20%; table salt 80%. From those records: vitamin E, vitamin K, niacin, B6, folate, phosphorus, magnesium, zinc, selenium, copper, manganese, choline. Verified zero on 11 Nov 2026 (composition data, not the label): B12. Set to 0 because the amount rounds to 0 at this portion size: thiamin, riboflavin, pantothenic acid, biotin, iodine, chromium."
   },
   {
     "name": "Tajin 6 sm pinches (4.5ml)",
@@ -12728,7 +12728,7 @@
       "refinedCarbs": 0,
       "netCarbs": 0
     },
-    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 171412 (Oil, coconut), scaled to about 13.7 g, the weight implied by this entry's own values. From that record: retinol, beta-carotene, omega-3, EPA, DHA, omega-6, omega-9, ALA, linoleic acid, arachidonic acid, oleic acid, palmitoleic acid, carotenoids. Quercetin, total flavonoids from the USDA Flavonoid Values for Survey Foods 2017-2018, food code 82101500 (Coconut oil). Set to 0 because the nutrient is absent from this kind of food: curcumin, sulforaphane, creatine. Label-gap check on 11 Nov 2026: Nutrition Facts labels don't have to list these nutrients, so keys that were missing or 0 were checked against composition data; only those keys changed, as estimates, and other values were kept. Scaled to about 14 g, the weight in the name. Composition: USDA FoodData Central SR Legacy FDC 171412 (Oil, coconut). From that record: vitamin E, vitamin K. Verified zero on 11 Nov 2026 (composition data, not the label): vitamin A, vitamin C, thiamin, riboflavin, niacin, pantothenic acid, B6, biotin, folate, B12, phosphorus, iodine, magnesium, selenium, copper, manganese, chromium, molybdenum, choline. Set to 0 because the amount rounds to 0 at this portion size: zinc."
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 171412 (Oil, coconut), scaled to about 13.7 g, the weight implied by this entry's own values. From that record: retinol, beta-carotene, omega-3, EPA, DHA, omega-6, omega-9, ALA, linoleic acid, arachidonic acid, oleic acid, palmitoleic acid, carotenoids. Quercetin, total flavonoids from the USDA Flavonoid Values for Survey Foods 2017-2018, food code 82101500 (Coconut oil). Set to 0 because the nutrient is absent from this kind of food: curcumin, sulforaphane, creatine. Label-gap check on 11 Nov 2026: Nutrition Facts labels don't have to list these nutrients, so keys that were missing or 0 were checked against composition data; only those keys changed, as estimates, and other values were kept. Scaled to about 14 g, the weight in the name. Composition: USDA FoodData Central SR Legacy FDC 171412 (Oil, coconut). From that record: vitamin E, vitamin K. Verified zero on 11 Nov 2026 (composition data, not the label): vitamin A, vitamin C, thiamin, riboflavin, niacin, pantothenic acid, B6, biotin, folate, B12, phosphorus, iodine, magnesium, selenium, copper, manganese, chromium, molybdenum. Set to 0 because the amount rounds to 0 at this portion size: zinc, choline."
   },
   {
     "name": "Guacamole 3.5oz",
@@ -19376,7 +19376,7 @@
       "glycine": 26.67,
       "proline": 25,
       "tyrosine": 18.33,
-      "vitaminA": 0,
+      "vitaminA": 0.2,
       "biotin": 0.3,
       "iodine": 0.2,
       "chromium": 0.2,
@@ -19411,7 +19411,7 @@
       "addedSugar": 3,
       "refinedCarbs": 3
     },
-    "notes": "Label-gap check on 11 Nov 2026: Nutrition Facts labels don't have to list these nutrients, so keys that were missing or 0 were checked against composition data; only those keys changed, as estimates, and other values were kept. Scaled to about 11 g, the weight implied by this entry's own protein, carbs and fat. Composition: USDA FoodData Central SR Legacy FDC 170273 (Chocolate, dark, 70-85% cacao solids). From typical amounts per 100 g for dark chocolate (NIH ODS fact-sheet tables, Anderson chromium data, USDA/FDA/ODS Iodine Database; salt in processed or restaurant food assumed noniodized): biotin, iodine, chromium, molybdenum. Chloride: from the natural sodium and chloride of the ingredients. Set to 0 because the amount rounds to 0 at this portion size: vitamin A, B12. Not reported in the composition data, so left as is: vitamin C."
+    "notes": "Label-gap check on 11 Nov 2026: Nutrition Facts labels don't have to list these nutrients, so keys that were missing or 0 were checked against composition data; only those keys changed, as estimates, and other values were kept. Scaled to about 11 g, the weight implied by this entry's own protein, carbs and fat. Composition: USDA FoodData Central SR Legacy FDC 170273 (Chocolate, dark, 70-85% cacao solids). From that record: vitamin A. From typical amounts per 100 g for dark chocolate (NIH ODS fact-sheet tables, Anderson chromium data, USDA/FDA/ODS Iodine Database; salt in processed or restaurant food assumed noniodized): biotin, iodine, chromium, molybdenum. Chloride: from the natural sodium and chloride of the ingredients. Set to 0 because the amount rounds to 0 at this portion size: B12. Not reported in the composition data, so left as is: vitamin C."
   },
   {
     "name": "Chocolate - Lindor Pistachio 1 truffle (12 g)",
@@ -19532,7 +19532,7 @@
       "chromium": 0,
       "molybdenum": 0.1,
       "chloride": 15.4,
-      "choline": 0
+      "choline": 0.2
     },
     "longevity": {
       "saturatedFat": 0.2
@@ -19541,7 +19541,7 @@
       "addedSugar": 0.08,
       "refinedCarbs": 0.77
     },
-    "notes": "Label-gap check on 11 Nov 2026: Nutrition Facts labels don't have to list these nutrients, so keys that were missing or 0 were checked against composition data; only those keys changed, as estimates, and other values were kept. Scaled to about 1.5 g, the weight in the name. Composition: USDA FoodData Central SR Legacy FDC 167537 (Snacks, corn-based, extruded, chips, plain). From that record: vitamin E, vitamin K, niacin, folate, phosphorus, magnesium, zinc, selenium, copper. From typical amounts per 100 g for chips (NIH ODS fact-sheet tables, Anderson chromium data, USDA/FDA/ODS Iodine Database; salt in processed or restaurant food assumed noniodized): molybdenum. Chloride: natural chloride of the ingredients plus 1.54 times the sodium above what they contain, since the added sodium is from salt. Verified zero on 11 Nov 2026 (composition data, not the label): vitamin C, B12. Set to 0 because the amount rounds to 0 at this portion size: vitamin A, thiamin, riboflavin, pantothenic acid, B6, biotin, iodine, manganese, chromium, choline."
+    "notes": "Label-gap check on 11 Nov 2026: Nutrition Facts labels don't have to list these nutrients, so keys that were missing or 0 were checked against composition data; only those keys changed, as estimates, and other values were kept. Scaled to about 1.5 g, the weight in the name. Composition: USDA FoodData Central SR Legacy FDC 167537 (Snacks, corn-based, extruded, chips, plain). From that record: vitamin E, vitamin K, niacin, folate, phosphorus, magnesium, zinc, selenium, copper, choline. From typical amounts per 100 g for chips (NIH ODS fact-sheet tables, Anderson chromium data, USDA/FDA/ODS Iodine Database; salt in processed or restaurant food assumed noniodized): molybdenum. Chloride: natural chloride of the ingredients plus 1.54 times the sodium above what they contain, since the added sodium is from salt. Verified zero on 11 Nov 2026 (composition data, not the label): vitamin C, B12. Set to 0 because the amount rounds to 0 at this portion size: vitamin A, thiamin, riboflavin, pantothenic acid, B6, biotin, iodine, manganese, chromium."
   },
   {
     "name": "Junk Food, Korean - Binch chocolate 1 biscuit (8.5 g)",
@@ -26440,7 +26440,7 @@
       "calcium": 0,
       "iron": 0,
       "copper": 0.9,
-      "magnesium": 0,
+      "magnesium": 0.1,
       "zinc": 0,
       "selenium": 0.1,
       "manganese": 0.008,
@@ -26539,7 +26539,7 @@
       "addedSugar": 0,
       "refinedCarbs": 0
     },
-    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 172237 (Vinegar, distilled), scaled to about 15 g, a standard weight for this portion. From that record: retinol, beta-carotene. Quercetin from the USDA Flavonoid Values for Survey Foods 2017-2018, food code 64401000 (Vinegar). Set to 0 because the nutrient is absent from this kind of food: creatine. Label-gap check on 11 Nov 2026: Nutrition Facts labels don't have to list these nutrients, so keys that were missing or 0 were checked against composition data; only those keys changed, as estimates, and other values were kept. Scaled to about 15 g, the weight used by the 10 Nov 2026 gap fill. Composition: USDA FoodData Central SR Legacy FDC 172237 (Vinegar, distilled). From that record: phosphorus, selenium, copper, manganese. Verified zero on 11 Nov 2026 (composition data, not the label): vitamin A, vitamin C, vitamin E, vitamin K, thiamin, riboflavin, niacin, pantothenic acid, B6, biotin, folate, B12, iodine, chromium, choline. Set to 0 because the amount rounds to 0 at this portion size: magnesium, zinc."
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 172237 (Vinegar, distilled), scaled to about 15 g, a standard weight for this portion. From that record: retinol, beta-carotene. Quercetin from the USDA Flavonoid Values for Survey Foods 2017-2018, food code 64401000 (Vinegar). Set to 0 because the nutrient is absent from this kind of food: creatine. Label-gap check on 11 Nov 2026: Nutrition Facts labels don't have to list these nutrients, so keys that were missing or 0 were checked against composition data; only those keys changed, as estimates, and other values were kept. Scaled to about 15 g, the weight used by the 10 Nov 2026 gap fill. Composition: USDA FoodData Central SR Legacy FDC 172237 (Vinegar, distilled). From that record: phosphorus, magnesium, selenium, copper, manganese. Verified zero on 11 Nov 2026 (composition data, not the label): vitamin A, vitamin C, vitamin E, vitamin K, thiamin, riboflavin, niacin, pantothenic acid, B6, biotin, folate, B12, iodine, chromium, choline. Set to 0 because the amount rounds to 0 at this portion size: zinc."
   },
   {
     "name": "Extra Virgin Olive Oil 1 tablespoon",
@@ -26651,7 +26651,7 @@
       "refinedCarbs": 0,
       "netCarbs": 0
     },
-    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 171413 (Oil, olive, salad or cooking), scaled to about 13.5 g, a standard weight for this portion. From that record: retinol, beta-carotene, palmitoleic acid, betaine. Quercetin from the USDA Flavonoid Values for Survey Foods 2017-2018, food code 82104000 (Olive oil). Set to 0 because the nutrient is absent from this kind of food: creatine. Label-gap check on 11 Nov 2026: Nutrition Facts labels don't have to list these nutrients, so keys that were missing or 0 were checked against composition data; only those keys changed, as estimates, and other values were kept. Scaled to about 14 g, the weight in the name. Composition: USDA FoodData Central SR Legacy FDC 171413 (Oil, olive, salad or cooking). Verified zero on 11 Nov 2026 (composition data, not the label): vitamin A, vitamin C, thiamin, riboflavin, niacin, pantothenic acid, B6, biotin, folate, B12, phosphorus, iodine, magnesium, zinc, selenium, copper, manganese, chromium, choline."
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 171413 (Oil, olive, salad or cooking), scaled to about 13.5 g, a standard weight for this portion. From that record: retinol, beta-carotene, palmitoleic acid, betaine. Quercetin from the USDA Flavonoid Values for Survey Foods 2017-2018, food code 82104000 (Olive oil). Set to 0 because the nutrient is absent from this kind of food: creatine. Label-gap check on 11 Nov 2026: Nutrition Facts labels don't have to list these nutrients, so keys that were missing or 0 were checked against composition data; only those keys changed, as estimates, and other values were kept. Scaled to about 14 g, the weight in the name. Composition: USDA FoodData Central SR Legacy FDC 171413 (Oil, olive, salad or cooking). Verified zero on 11 Nov 2026 (composition data, not the label): vitamin A, vitamin C, thiamin, riboflavin, niacin, pantothenic acid, B6, biotin, folate, B12, phosphorus, iodine, magnesium, zinc, selenium, copper, manganese, chromium. Set to 0 because the amount rounds to 0 at this portion size: choline."
   },
   {
     "name": "Canned Cod Liver 1 Serving",
@@ -28767,7 +28767,7 @@
       "iron": 0.7,
       "magnesium": 15,
       "zinc": 0.3,
-      "vitaminA": 0,
+      "vitaminA": 0.3,
       "vitaminD": 0,
       "vitaminB12": 0,
       "vitaminB6": 0.08,
@@ -28864,7 +28864,7 @@
       "refinedCarbs": 0,
       "netCarbs": 3
     },
-    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 174289 (Hummus, commercial), scaled to about 27 g, the weight implied by this entry's own values. From that record: retinol, beta-carotene. Quercetin from the USDA Flavonoid Values for Survey Foods 2017-2018, food code 41205070 (Hummus, plain). Set to 0 because the nutrient is absent from this kind of food: creatine. Label-gap check on 11 Nov 2026: Nutrition Facts labels don't have to list these nutrients, so keys that were missing or 0 were checked against composition data; only those keys changed, as estimates, and other values were kept. Scaled to about 27 g, the weight in the name. Composition: USDA FoodData Central SR Legacy FDC 174289 (Hummus, commercial). Verified zero on 11 Nov 2026 (composition data, not the label): B12, iodine. Set to 0 because the amount rounds to 0 at this portion size: vitamin A."
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 174289 (Hummus, commercial), scaled to about 27 g, the weight implied by this entry's own values. From that record: retinol, beta-carotene. Quercetin from the USDA Flavonoid Values for Survey Foods 2017-2018, food code 41205070 (Hummus, plain). Set to 0 because the nutrient is absent from this kind of food: creatine. Label-gap check on 11 Nov 2026: Nutrition Facts labels don't have to list these nutrients, so keys that were missing or 0 were checked against composition data; only those keys changed, as estimates, and other values were kept. Scaled to about 27 g, the weight in the name. Composition: USDA FoodData Central SR Legacy FDC 174289 (Hummus, commercial). From that record: vitamin A. Verified zero on 11 Nov 2026 (composition data, not the label): B12, iodine."
   },
   {
     "name": "Ketchup sauce (1 tbsp / 17 g)",
@@ -29086,7 +29086,7 @@
       "potassium": 1,
       "calcium": 0.4,
       "iron": 0,
-      "magnesium": 0,
+      "magnesium": 0.1,
       "zinc": 0.007,
       "vitaminA": 1,
       "vitaminD": 0,
@@ -29186,7 +29186,7 @@
       "refinedCarbs": 0,
       "netCarbs": 0
     },
-    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 171009 (Salad dressing, mayonnaise, regular), scaled to about 5 g, the weight implied by this entry's own values. From that record: retinol, beta-carotene, betaine. Quercetin from the USDA Flavonoid Values for Survey Foods 2017-2018, food code 83107000 (Mayonnaise, regular). Set to 0 because the nutrient is absent from this kind of food: creatine. Label-gap check on 11 Nov 2026: Nutrition Facts labels don't have to list these nutrients, so keys that were missing or 0 were checked against composition data; only those keys changed, as estimates, and other values were kept. Scaled to about 5.0 g, the weight in the name. Composition: USDA FoodData Central SR Legacy FDC 171009 (Salad dressing, mayonnaise, regular). From that record: pantothenic acid, folate, zinc, copper. Verified zero on 11 Nov 2026 (composition data, not the label): vitamin C, niacin, biotin, iodine, chromium. Set to 0 because the amount rounds to 0 at this portion size: thiamin, riboflavin, B6, B12, magnesium, manganese."
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 171009 (Salad dressing, mayonnaise, regular), scaled to about 5 g, the weight implied by this entry's own values. From that record: retinol, beta-carotene, betaine. Quercetin from the USDA Flavonoid Values for Survey Foods 2017-2018, food code 83107000 (Mayonnaise, regular). Set to 0 because the nutrient is absent from this kind of food: creatine. Label-gap check on 11 Nov 2026: Nutrition Facts labels don't have to list these nutrients, so keys that were missing or 0 were checked against composition data; only those keys changed, as estimates, and other values were kept. Scaled to about 5.0 g, the weight in the name. Composition: USDA FoodData Central SR Legacy FDC 171009 (Salad dressing, mayonnaise, regular). From that record: pantothenic acid, folate, magnesium, zinc, copper. Verified zero on 11 Nov 2026 (composition data, not the label): vitamin C, niacin, biotin, iodine, chromium. Set to 0 because the amount rounds to 0 at this portion size: thiamin, riboflavin, B6, B12, manganese."
   },
   {
     "name": "Mayo 1 tablespoon",
@@ -29198,7 +29198,7 @@
       "potassium": 3,
       "calcium": 1,
       "iron": 0,
-      "magnesium": 0,
+      "magnesium": 0.1,
       "zinc": 0.021,
       "vitaminA": 2,
       "vitaminD": 0,
@@ -29298,7 +29298,7 @@
       "refinedCarbs": 0,
       "netCarbs": 0
     },
-    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 171009 (Salad dressing, mayonnaise, regular), scaled to about 14.2 g, the weight implied by this entry's own values. From that record: retinol, beta-carotene, betaine. Quercetin from the USDA Flavonoid Values for Survey Foods 2017-2018, food code 83107000 (Mayonnaise, regular). Set to 0 because the nutrient is absent from this kind of food: creatine. Label-gap check on 11 Nov 2026: Nutrition Facts labels don't have to list these nutrients, so keys that were missing or 0 were checked against composition data; only those keys changed, as estimates, and other values were kept. Scaled to about 14 g, the weight in the name. Composition: USDA FoodData Central SR Legacy FDC 171009 (Salad dressing, mayonnaise, regular). From that record: pantothenic acid, folate, zinc, copper. Verified zero on 11 Nov 2026 (composition data, not the label): vitamin C, niacin, biotin, iodine, chromium. Set to 0 because the amount rounds to 0 at this portion size: thiamin, riboflavin, B6, B12, magnesium, manganese."
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 171009 (Salad dressing, mayonnaise, regular), scaled to about 14.2 g, the weight implied by this entry's own values. From that record: retinol, beta-carotene, betaine. Quercetin from the USDA Flavonoid Values for Survey Foods 2017-2018, food code 83107000 (Mayonnaise, regular). Set to 0 because the nutrient is absent from this kind of food: creatine. Label-gap check on 11 Nov 2026: Nutrition Facts labels don't have to list these nutrients, so keys that were missing or 0 were checked against composition data; only those keys changed, as estimates, and other values were kept. Scaled to about 14 g, the weight in the name. Composition: USDA FoodData Central SR Legacy FDC 171009 (Salad dressing, mayonnaise, regular). From that record: pantothenic acid, folate, magnesium, zinc, copper. Verified zero on 11 Nov 2026 (composition data, not the label): vitamin C, niacin, biotin, iodine, chromium. Set to 0 because the amount rounds to 0 at this portion size: thiamin, riboflavin, B6, B12, manganese."
   },
   {
     "name": "Mustard 1 tsp",
@@ -29312,7 +29312,7 @@
       "iron": 0.1,
       "magnesium": 1,
       "zinc": 0.032,
-      "vitaminA": 0,
+      "vitaminA": 0.2,
       "vitaminD": 0,
       "vitaminB12": 0,
       "vitaminB6": 0,
@@ -29408,7 +29408,7 @@
       "refinedCarbs": 0,
       "netCarbs": 0.1
     },
-    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 172234 (Mustard, prepared, yellow), scaled to about 5 g, the weight implied by this entry's own values. From that record: retinol, beta-carotene, betaine. Set to 0 because the nutrient is absent from this kind of food: creatine. Label-gap check on 11 Nov 2026: Nutrition Facts labels don't have to list these nutrients, so keys that were missing or 0 were checked against composition data; only those keys changed, as estimates, and other values were kept. Scaled to about 5.0 g, the weight in the name. Composition: USDA FoodData Central SR Legacy FDC 172234 (Mustard, prepared, yellow). From that record: vitamin E, thiamin, niacin, pantothenic acid, folate, zinc, manganese. From typical amounts per 100 g for spices (NIH ODS fact-sheet tables, Anderson chromium data, USDA/FDA/ODS Iodine Database; salt in processed or restaurant food assumed noniodized): biotin, iodine, chromium. Verified zero on 11 Nov 2026 (composition data, not the label): B12. Set to 0 because the amount rounds to 0 at this portion size: vitamin A, riboflavin, B6."
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 172234 (Mustard, prepared, yellow), scaled to about 5 g, the weight implied by this entry's own values. From that record: retinol, beta-carotene, betaine. Set to 0 because the nutrient is absent from this kind of food: creatine. Label-gap check on 11 Nov 2026: Nutrition Facts labels don't have to list these nutrients, so keys that were missing or 0 were checked against composition data; only those keys changed, as estimates, and other values were kept. Scaled to about 5.0 g, the weight in the name. Composition: USDA FoodData Central SR Legacy FDC 172234 (Mustard, prepared, yellow). From that record: vitamin A, vitamin E, thiamin, niacin, pantothenic acid, folate, zinc, manganese. From typical amounts per 100 g for spices (NIH ODS fact-sheet tables, Anderson chromium data, USDA/FDA/ODS Iodine Database; salt in processed or restaurant food assumed noniodized): biotin, iodine, chromium. Verified zero on 11 Nov 2026 (composition data, not the label): B12. Set to 0 because the amount rounds to 0 at this portion size: riboflavin, B6."
   },
   {
     "name": "Mustard 1 tablespoon",
@@ -29955,7 +29955,7 @@
       "arginine": 52,
       "cysteine": 35,
       "tyrosine": 27,
-      "vitaminA": 0,
+      "vitaminA": 0.1,
       "vitaminC": 0,
       "vitaminE": 0.172,
       "vitaminK": 3.8,
@@ -29990,7 +29990,7 @@
       "addedSugar": 0,
       "refinedCarbs": 10
     },
-    "notes": "Label-gap check on 11 Nov 2026: Nutrition Facts labels don't have to list these nutrients, so keys that were missing or 0 were checked against composition data; only those keys changed, as estimates, and other values were kept. Scaled to about 15 g, the weight implied by this entry's own protein, carbs and fat. Composition: USDA FoodData Central SR Legacy FDC 172746 (Crackers, saltines (includes oyster, soda, soup)). From that record: vitamin E, vitamin K, thiamin, riboflavin, niacin, pantothenic acid, B6, folate, phosphorus, magnesium, zinc, selenium, copper, manganese, choline. From typical amounts per 100 g for refined-grain foods (NIH ODS fact-sheet tables, Anderson chromium data, USDA/FDA/ODS Iodine Database; salt in processed or restaurant food assumed noniodized): biotin, iodine, chromium, molybdenum. Chloride: from the natural sodium and chloride of the ingredients. Verified zero on 11 Nov 2026 (composition data, not the label): vitamin C. Set to 0 because the amount rounds to 0 at this portion size: vitamin A, B12."
+    "notes": "Label-gap check on 11 Nov 2026: Nutrition Facts labels don't have to list these nutrients, so keys that were missing or 0 were checked against composition data; only those keys changed, as estimates, and other values were kept. Scaled to about 15 g, the weight implied by this entry's own protein, carbs and fat. Composition: USDA FoodData Central SR Legacy FDC 172746 (Crackers, saltines (includes oyster, soda, soup)). From that record: vitamin A, vitamin E, vitamin K, thiamin, riboflavin, niacin, pantothenic acid, B6, folate, phosphorus, magnesium, zinc, selenium, copper, manganese, choline. From typical amounts per 100 g for refined-grain foods (NIH ODS fact-sheet tables, Anderson chromium data, USDA/FDA/ODS Iodine Database; salt in processed or restaurant food assumed noniodized): biotin, iodine, chromium, molybdenum. Chloride: from the natural sodium and chloride of the ingredients. Verified zero on 11 Nov 2026 (composition data, not the label): vitamin C. Set to 0 because the amount rounds to 0 at this portion size: B12."
   },
   {
     "name": "Kroger Saltines 1 stack (37 crackers)",
@@ -30751,7 +30751,7 @@
       "niacin": 0.2,
       "pantothenicAcid": 0.05,
       "chromium": 0.3,
-      "vitaminA": 0,
+      "vitaminA": 0.5,
       "vitaminD": 0.07,
       "vitaminC": 0.018,
       "copper": 30,
@@ -30834,7 +30834,7 @@
       "refinedCarbs": 0,
       "netCarbs": 4
     },
-    "notes": "Label-gap check on 11 Nov 2026: Nutrition Facts labels don't have to list these nutrients, so keys that were missing or 0 were checked against composition data; only those keys changed, as estimates, and other values were kept. Scaled to about 5.9 g, the weight implied by this entry's own protein, carbs and fat. Composition: USDA FoodData Central SR Legacy FDC 167549 (Snacks, popcorn, oil-popped, microwave, regular flavor, no trans fat). From that record: vitamin C, vitamin E. From typical amounts per 100 g for whole-grain snacks (NIH ODS fact-sheet tables, Anderson chromium data, USDA/FDA/ODS Iodine Database; salt in processed or restaurant food assumed noniodized): iodine. Verified zero on 11 Nov 2026 (composition data, not the label): B12. Set to 0 because the amount rounds to 0 at this portion size: vitamin A, riboflavin."
+    "notes": "Label-gap check on 11 Nov 2026: Nutrition Facts labels don't have to list these nutrients, so keys that were missing or 0 were checked against composition data; only those keys changed, as estimates, and other values were kept. Scaled to about 5.9 g, the weight implied by this entry's own protein, carbs and fat. Composition: USDA FoodData Central SR Legacy FDC 167549 (Snacks, popcorn, oil-popped, microwave, regular flavor, no trans fat). From that record: vitamin A, vitamin C, vitamin E. From typical amounts per 100 g for whole-grain snacks (NIH ODS fact-sheet tables, Anderson chromium data, USDA/FDA/ODS Iodine Database; salt in processed or restaurant food assumed noniodized): iodine. Verified zero on 11 Nov 2026 (composition data, not the label): B12. Set to 0 because the amount rounds to 0 at this portion size: riboflavin."
   },
   {
     "name": "Metamucil Fiber One Serving",
@@ -31776,7 +31776,7 @@
       "potassium": 3,
       "calcium": 3,
       "iron": 0,
-      "magnesium": 0,
+      "magnesium": 0.3,
       "zinc": 0.013,
       "vitaminA": 97,
       "vitaminD": 0.2,
@@ -31875,7 +31875,7 @@
       "refinedCarbs": 0,
       "netCarbs": 0
     },
-    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 173410 (Butter, salted), scaled to about 14.2 g, the weight given in this entry's name. From that record: retinol, beta-carotene, betaine. Set to 0 because the nutrient is absent from this kind of food: quercetin. Label-gap check on 11 Nov 2026: Nutrition Facts labels don't have to list these nutrients, so keys that were missing or 0 were checked against composition data; only those keys changed, as estimates, and other values were kept. Scaled to about 14 g, the weight in the name. Composition: USDA FoodData Central SR Legacy FDC 173410 (Butter, salted). From that record: folate, zinc. From typical amounts per 100 g for cream (NIH ODS fact-sheet tables, Anderson chromium data, USDA/FDA/ODS Iodine Database; salt in processed or restaurant food assumed noniodized): biotin, iodine. Verified zero on 11 Nov 2026 (composition data, not the label): vitamin C, B6, copper, manganese. Set to 0 because the amount rounds to 0 at this portion size: thiamin, magnesium, chromium."
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 173410 (Butter, salted), scaled to about 14.2 g, the weight given in this entry's name. From that record: retinol, beta-carotene, betaine. Set to 0 because the nutrient is absent from this kind of food: quercetin. Label-gap check on 11 Nov 2026: Nutrition Facts labels don't have to list these nutrients, so keys that were missing or 0 were checked against composition data; only those keys changed, as estimates, and other values were kept. Scaled to about 14 g, the weight in the name. Composition: USDA FoodData Central SR Legacy FDC 173410 (Butter, salted). From that record: folate, magnesium, zinc. From typical amounts per 100 g for cream (NIH ODS fact-sheet tables, Anderson chromium data, USDA/FDA/ODS Iodine Database; salt in processed or restaurant food assumed noniodized): biotin, iodine. Verified zero on 11 Nov 2026 (composition data, not the label): vitamin C, B6, copper, manganese. Set to 0 because the amount rounds to 0 at this portion size: thiamin, chromium."
   },
   {
     "name": "Cheese provolone 1 slice (28g)",
@@ -44510,9 +44510,9 @@
       "biotin": 0,
       "folate": 0,
       "vitaminB12": 0,
-      "phosphorus": 0,
+      "phosphorus": 0.3,
       "iodine": 0,
-      "magnesium": 0,
+      "magnesium": 0.3,
       "zinc": 0,
       "selenium": 0.2,
       "copper": 3.4,
@@ -44531,7 +44531,7 @@
       "addedSugar": 20,
       "refinedCarbs": 26
     },
-    "notes": "Label-gap check on 11 Nov 2026: Nutrition Facts labels don't have to list these nutrients, so keys that were missing or 0 were checked against composition data; only those keys changed, as estimates, and other values were kept. Scaled to about 28 g, the weight in the name. Composition: USDA FoodData Central SR Legacy FDC 167989 (Candies, gumdrops, starch jelly pieces). From that record: selenium, copper. Chloride: natural chloride of the ingredients plus 1.54 times the sodium above what they contain, since the added sodium is from salt. Verified zero on 11 Nov 2026 (composition data, not the label): vitamin A, vitamin C, vitamin E, vitamin K, biotin, folate, B12, iodine, zinc, molybdenum, choline. Set to 0 because the amount rounds to 0 at this portion size: thiamin, riboflavin, niacin, pantothenic acid, B6, phosphorus, magnesium, manganese, chromium."
+    "notes": "Label-gap check on 11 Nov 2026: Nutrition Facts labels don't have to list these nutrients, so keys that were missing or 0 were checked against composition data; only those keys changed, as estimates, and other values were kept. Scaled to about 28 g, the weight in the name. Composition: USDA FoodData Central SR Legacy FDC 167989 (Candies, gumdrops, starch jelly pieces). From that record: phosphorus, magnesium, selenium, copper. Chloride: natural chloride of the ingredients plus 1.54 times the sodium above what they contain, since the added sodium is from salt. Verified zero on 11 Nov 2026 (composition data, not the label): vitamin A, vitamin C, vitamin E, vitamin K, biotin, folate, B12, iodine, zinc, molybdenum, choline. Set to 0 because the amount rounds to 0 at this portion size: thiamin, riboflavin, niacin, pantothenic acid, B6, manganese, chromium."
   },
   {
     "name": "Junk Food - Sour Candy 1 small bag (2 oz)",
@@ -44922,7 +44922,7 @@
       "taurine": 0,
       "pantothenicAcid": 0,
       "biotin": 0,
-      "phosphorus": 0,
+      "phosphorus": 0.1,
       "iodine": 0,
       "chromium": 0,
       "molybdenum": 0,
@@ -44964,7 +44964,7 @@
       "refinedCarbs": 0,
       "netCarbs": 0
     },
-    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 167702 (Oil, flaxseed, cold pressed), scaled to about 14 g, the weight implied by this entry's own values. From that record: fiber, vitamin A, retinol, beta-carotene, vitamin D, B12, vitamin C, B6, folate, thiamin, riboflavin, niacin, selenium, copper, manganese, MK-4. Set to 0 because the nutrient is absent from this kind of food: K2, MK-7, taurine, curcumin, sulforaphane, creatine. Soluble and insoluble fiber split this entry's total fiber using the soluble share Frida reports. USDA does not list perilla oil, so the cold-pressed flaxseed oil record is a stand-in here only for nutrients that refined seed oils do not contain (zeros); vitamin E, vitamin K and fatty-acid fields were not filled from it. Label-gap check on 11 Nov 2026: Nutrition Facts labels don't have to list these nutrients, so keys that were missing or 0 were checked against composition data; only those keys changed, as estimates, and other values were kept. Scaled to about 14 g, the weight in the name. Composition: USDA FoodData Central SR Legacy FDC 167702 (Oil, flaxseed, cold pressed). From that record: vitamin K, zinc. Verified zero on 11 Nov 2026 (composition data, not the label): vitamin A, vitamin C, thiamin, riboflavin, niacin, pantothenic acid, B6, biotin, folate, B12, iodine, magnesium, selenium, copper, manganese, chromium, molybdenum, chloride, choline. Set to 0 because the amount rounds to 0 at this portion size: phosphorus."
+    "notes": "Gap fill on 10 Nov 2026: only keys that were missing were added, as estimates; existing values were not changed. Amounts are per 100 g from USDA FoodData Central SR Legacy FDC 167702 (Oil, flaxseed, cold pressed), scaled to about 14 g, the weight implied by this entry's own values. From that record: fiber, vitamin A, retinol, beta-carotene, vitamin D, B12, vitamin C, B6, folate, thiamin, riboflavin, niacin, selenium, copper, manganese, MK-4. Set to 0 because the nutrient is absent from this kind of food: K2, MK-7, taurine, curcumin, sulforaphane, creatine. Soluble and insoluble fiber split this entry's total fiber using the soluble share Frida reports. USDA does not list perilla oil, so the cold-pressed flaxseed oil record is a stand-in here only for nutrients that refined seed oils do not contain (zeros); vitamin E, vitamin K and fatty-acid fields were not filled from it. Label-gap check on 11 Nov 2026: Nutrition Facts labels don't have to list these nutrients, so keys that were missing or 0 were checked against composition data; only those keys changed, as estimates, and other values were kept. Scaled to about 14 g, the weight in the name. Composition: USDA FoodData Central SR Legacy FDC 167702 (Oil, flaxseed, cold pressed). From that record: vitamin K, phosphorus, zinc. Verified zero on 11 Nov 2026 (composition data, not the label): vitamin A, vitamin C, thiamin, riboflavin, niacin, pantothenic acid, B6, biotin, folate, B12, iodine, magnesium, selenium, copper, manganese, chromium, molybdenum, chloride. Set to 0 because the amount rounds to 0 at this portion size: choline."
   },
   {
     "name": "Nutritional yeast 2 tablespoons (16g)",
@@ -53016,7 +53016,7 @@
     "micros": {
       "sodium": 29,
       "fiber": 0.4,
-      "vitaminA": 0,
+      "vitaminA": 0.4,
       "vitaminC": 0,
       "vitaminE": 0.289,
       "vitaminK": 2,
@@ -53048,7 +53048,7 @@
       "refinedCarbs": 11.6,
       "netCarbs": 11.6
     },
-    "notes": "Label-gap check on 11 Nov 2026: Nutrition Facts labels don't have to list these nutrients, so keys that were missing or 0 were checked against composition data; only those keys changed, as estimates, and other values were kept. Scaled to about 18 g, the weight implied by this entry's own protein, carbs and fat. Composition: USDA FoodData Central SR Legacy FDC 172719 (Cookies, chocolate sandwich, with creme filling, regular, chocolate-coated). From that record: vitamin E, vitamin K, thiamin, riboflavin, niacin, pantothenic acid, B6, folate, phosphorus, magnesium, zinc, selenium, copper, manganese, choline. From typical amounts per 100 g for baked goods (NIH ODS fact-sheet tables, Anderson chromium data, USDA/FDA/ODS Iodine Database; salt in processed or restaurant food assumed noniodized): biotin, iodine, chromium, molybdenum. Chloride: from the natural sodium and chloride of the ingredients. Verified zero on 11 Nov 2026 (composition data, not the label): vitamin C. Set to 0 because the amount rounds to 0 at this portion size: vitamin A, B12."
+    "notes": "Label-gap check on 11 Nov 2026: Nutrition Facts labels don't have to list these nutrients, so keys that were missing or 0 were checked against composition data; only those keys changed, as estimates, and other values were kept. Scaled to about 18 g, the weight implied by this entry's own protein, carbs and fat. Composition: USDA FoodData Central SR Legacy FDC 172719 (Cookies, chocolate sandwich, with creme filling, regular, chocolate-coated). From that record: vitamin A, vitamin E, vitamin K, thiamin, riboflavin, niacin, pantothenic acid, B6, folate, phosphorus, magnesium, zinc, selenium, copper, manganese, choline. From typical amounts per 100 g for baked goods (NIH ODS fact-sheet tables, Anderson chromium data, USDA/FDA/ODS Iodine Database; salt in processed or restaurant food assumed noniodized): biotin, iodine, chromium, molybdenum. Chloride: from the natural sodium and chloride of the ingredients. Verified zero on 11 Nov 2026 (composition data, not the label): vitamin C. Set to 0 because the amount rounds to 0 at this portion size: B12."
   },
   {
     "name": "Beef Jerky 1 oz (28 g)",
@@ -54063,7 +54063,7 @@
     "fats": 0,
     "micros": {
       "sodium": 8,
-      "vitaminA": 0,
+      "vitaminA": 0.1,
       "vitaminC": 0,
       "vitaminE": 0,
       "vitaminK": 0.1,
@@ -54085,9 +54085,9 @@
       "chromium": 0.1,
       "molybdenum": 1.2,
       "chloride": 12.3,
-      "choline": 0
+      "choline": 0.5
     },
-    "notes": "Panda Express nutrition PDF, Fortune Cookie, 8 g: 32 kcal, 0 g fat, 8 mg sodium, 7 g carbohydrate, 3 g sugars, 1 g protein. Fiber, cholesterol and saturated fat are not listed separately. Label-gap check on 11 Nov 2026: Nutrition Facts labels don't have to list these nutrients, so keys that were missing or 0 were checked against composition data; only those keys changed, as estimates, and other values were kept. Scaled to about 8.0 g, the weight in the name. Composition: USDA FoodData Central SR Legacy FDC 172722 (Cookies, fortune). From that record: vitamin K, thiamin, riboflavin, niacin, pantothenic acid, folate, phosphorus, magnesium, zinc, selenium, copper, manganese. From typical amounts per 100 g for baked goods (NIH ODS fact-sheet tables, Anderson chromium data, USDA/FDA/ODS Iodine Database; salt in processed or restaurant food assumed noniodized): biotin, iodine, chromium, molybdenum. Chloride: natural chloride of the ingredients plus 1.54 times the sodium above what they contain, since the added sodium is from salt. Verified zero on 11 Nov 2026 (composition data, not the label): vitamin C, B12. Set to 0 because the amount rounds to 0 at this portion size: vitamin A, vitamin E, B6, choline."
+    "notes": "Panda Express nutrition PDF, Fortune Cookie, 8 g: 32 kcal, 0 g fat, 8 mg sodium, 7 g carbohydrate, 3 g sugars, 1 g protein. Fiber, cholesterol and saturated fat are not listed separately. Label-gap check on 11 Nov 2026: Nutrition Facts labels don't have to list these nutrients, so keys that were missing or 0 were checked against composition data; only those keys changed, as estimates, and other values were kept. Scaled to about 8.0 g, the weight in the name. Composition: USDA FoodData Central SR Legacy FDC 172722 (Cookies, fortune). From that record: vitamin A, vitamin K, thiamin, riboflavin, niacin, pantothenic acid, folate, phosphorus, magnesium, zinc, selenium, copper, manganese, choline. From typical amounts per 100 g for baked goods (NIH ODS fact-sheet tables, Anderson chromium data, USDA/FDA/ODS Iodine Database; salt in processed or restaurant food assumed noniodized): biotin, iodine, chromium, molybdenum. Chloride: natural chloride of the ingredients plus 1.54 times the sodium above what they contain, since the added sodium is from salt. Verified zero on 11 Nov 2026 (composition data, not the label): vitamin C, B12. Set to 0 because the amount rounds to 0 at this portion size: vitamin E, B6."
   },
   {
     "name": "Panda Express - Mixed Veggies 1 entree portion (4.3 oz)",
@@ -57921,7 +57921,7 @@
       "iron": 1.08,
       "vitaminC": 1.2,
       "fiber": 2,
-      "vitaminA": 0,
+      "vitaminA": 0.2,
       "vitaminE": 0.287,
       "vitaminK": 6.3,
       "thiamin": 0.175,
@@ -57952,7 +57952,7 @@
     "carbQuality": {
       "netCarbs": 14
     },
-    "notes": "Sky Flakes crackers (M.Y. San), single pack 25 g. USDA FoodData Central Branded FDC 2012648 (2025-12-18 release), label values per 100 g/mL scaled to 25 g/mL; about 120 kcal. Label-gap check on 11 Nov 2026: Nutrition Facts labels don't have to list these nutrients, so keys that were missing or 0 were checked against composition data; only those keys changed, as estimates, and other values were kept. Scaled to about 25 g, the weight in the name. Composition: USDA FoodData Central SR Legacy FDC 172746 (Crackers, saltines (includes oyster, soda, soup)). From that record: vitamin E, vitamin K, thiamin, riboflavin, niacin, pantothenic acid, B6, folate, phosphorus, magnesium, zinc, selenium, copper, manganese, choline. From typical amounts per 100 g for refined-grain foods (NIH ODS fact-sheet tables, Anderson chromium data, USDA/FDA/ODS Iodine Database; salt in processed or restaurant food assumed noniodized): biotin, iodine, chromium, molybdenum. Chloride: from the natural sodium and chloride of the ingredients. Set to 0 because the amount rounds to 0 at this portion size: vitamin A, B12."
+    "notes": "Sky Flakes crackers (M.Y. San), single pack 25 g. USDA FoodData Central Branded FDC 2012648 (2025-12-18 release), label values per 100 g/mL scaled to 25 g/mL; about 120 kcal. Label-gap check on 11 Nov 2026: Nutrition Facts labels don't have to list these nutrients, so keys that were missing or 0 were checked against composition data; only those keys changed, as estimates, and other values were kept. Scaled to about 25 g, the weight in the name. Composition: USDA FoodData Central SR Legacy FDC 172746 (Crackers, saltines (includes oyster, soda, soup)). From that record: vitamin A, vitamin E, vitamin K, thiamin, riboflavin, niacin, pantothenic acid, B6, folate, phosphorus, magnesium, zinc, selenium, copper, manganese, choline. From typical amounts per 100 g for refined-grain foods (NIH ODS fact-sheet tables, Anderson chromium data, USDA/FDA/ODS Iodine Database; salt in processed or restaurant food assumed noniodized): biotin, iodine, chromium, molybdenum. Chloride: from the natural sodium and chloride of the ingredients. Set to 0 because the amount rounds to 0 at this portion size: B12."
   },
   {
     "name": "Nature's Soy Silken Tofu 8 oz (227 g)",
@@ -58056,7 +58056,7 @@
       "calcium": 0,
       "iron": 0,
       "fiber": 0,
-      "vitaminA": 0,
+      "vitaminA": 0.4,
       "vitaminC": 3.74,
       "vitaminE": 0.006,
       "vitaminK": 0.1,
@@ -58070,7 +58070,7 @@
       "vitaminB12": 0,
       "phosphorus": 0.6,
       "iodine": 0.1,
-      "magnesium": 0,
+      "magnesium": 0.2,
       "zinc": 0.006,
       "selenium": 0,
       "copper": 1.4,
@@ -58088,7 +58088,7 @@
       "addedSugar": 0,
       "netCarbs": 0
     },
-    "notes": "Tapatío Salsa Picante hot sauce. USDA FoodData Central Branded FDC 1856913 (2025-12-18 release), label values per 100 g/mL scaled to 5 g/mL; about 0 kcal. Label-gap check on 11 Nov 2026: Nutrition Facts labels don't have to list these nutrients, so keys that were missing or 0 were checked against composition data; only those keys changed, as estimates, and other values were kept. Scaled to about 5.0 g, the weight in the name. Composition: USDA FoodData Central SR Legacy FDC 174527 (Sauce, ready-to-serve, pepper or hot). From that record: vitamin C, vitamin E, vitamin K, niacin, pantothenic acid, B6, folate, phosphorus, zinc, copper. From typical amounts per 100 g for sauces and condiments (NIH ODS fact-sheet tables, Anderson chromium data, USDA/FDA/ODS Iodine Database; salt in processed or restaurant food assumed noniodized): iodine, molybdenum. Chloride: from the natural sodium and chloride of the ingredients. Verified zero on 11 Nov 2026 (composition data, not the label): B12, selenium. Set to 0 because the amount rounds to 0 at this portion size: vitamin A, thiamin, riboflavin, biotin, magnesium, manganese, chromium. Not reported in the composition data, so left as is: choline."
+    "notes": "Tapatío Salsa Picante hot sauce. USDA FoodData Central Branded FDC 1856913 (2025-12-18 release), label values per 100 g/mL scaled to 5 g/mL; about 0 kcal. Label-gap check on 11 Nov 2026: Nutrition Facts labels don't have to list these nutrients, so keys that were missing or 0 were checked against composition data; only those keys changed, as estimates, and other values were kept. Scaled to about 5.0 g, the weight in the name. Composition: USDA FoodData Central SR Legacy FDC 174527 (Sauce, ready-to-serve, pepper or hot). From that record: vitamin A, vitamin C, vitamin E, vitamin K, niacin, pantothenic acid, B6, folate, phosphorus, magnesium, zinc, copper. From typical amounts per 100 g for sauces and condiments (NIH ODS fact-sheet tables, Anderson chromium data, USDA/FDA/ODS Iodine Database; salt in processed or restaurant food assumed noniodized): iodine, molybdenum. Chloride: from the natural sodium and chloride of the ingredients. Verified zero on 11 Nov 2026 (composition data, not the label): B12, selenium. Set to 0 because the amount rounds to 0 at this portion size: thiamin, riboflavin, biotin, manganese, chromium. Not reported in the composition data, so left as is: choline."
   },
   {
     "name": "Spaghetti with Meat in Tomato Sauce (ready-to-heat) 1 cup (250 g)",
@@ -62734,7 +62734,7 @@
       "chromium": 0.1,
       "molybdenum": 1.2,
       "chloride": 43.1,
-      "choline": 0
+      "choline": 0.5
     },
     "longevity": {
       "saturatedFat": 0.6,
@@ -62746,7 +62746,7 @@
       "refinedCarbs": 5.5,
       "netCarbs": 5.5
     },
-    "notes": "Lotus Biscoff original caramelised biscuit, 1 biscuit (7.75 g). UK label per biscuit: 37 kcal, 1.5 g fat, 0.6 g saturated fat, 5.6 g carbohydrate, 3.0 g sugars, 0.1 g fibre, 0.4 g protein, 0.07 g salt (28 mg sodium). The US Lotus label for 4 cookies (31 g) is 150 kcal, 6 g fat, 2.5 g saturated fat, 0 g trans fat, 0 mg cholesterol, 115 mg sodium, 23 g carbohydrate, 0 g fiber, 12 g sugars, 11 g added sugars, 2 g protein, which is the same biscuit. Added sugar is the US 11 g per 4 cookies. Vitamin D, calcium, iron, and potassium are omitted because the US label only shows 0% daily value. Label-gap check on 11 Nov 2026: Nutrition Facts labels don't have to list these nutrients, so keys that were missing or 0 were checked against composition data; only those keys changed, as estimates, and other values were kept. Scaled to about 7.8 g, the weight implied by this entry's own protein, carbs and fat. Composition: USDA FoodData Central SR Legacy FDC 174957 (Cookies, graham crackers, plain or honey (includes cinnamon)). From that record: vitamin E, vitamin K, thiamin, riboflavin, niacin, pantothenic acid, B6, folate, phosphorus, magnesium, zinc, selenium, copper, manganese. From typical amounts per 100 g for baked goods (NIH ODS fact-sheet tables, Anderson chromium data, USDA/FDA/ODS Iodine Database; salt in processed or restaurant food assumed noniodized): biotin, iodine, chromium, molybdenum. Chloride: from the natural sodium and chloride of the ingredients. Verified zero on 11 Nov 2026 (composition data, not the label): vitamin A, vitamin C, B12. Set to 0 because the amount rounds to 0 at this portion size: choline."
+    "notes": "Lotus Biscoff original caramelised biscuit, 1 biscuit (7.75 g). UK label per biscuit: 37 kcal, 1.5 g fat, 0.6 g saturated fat, 5.6 g carbohydrate, 3.0 g sugars, 0.1 g fibre, 0.4 g protein, 0.07 g salt (28 mg sodium). The US Lotus label for 4 cookies (31 g) is 150 kcal, 6 g fat, 2.5 g saturated fat, 0 g trans fat, 0 mg cholesterol, 115 mg sodium, 23 g carbohydrate, 0 g fiber, 12 g sugars, 11 g added sugars, 2 g protein, which is the same biscuit. Added sugar is the US 11 g per 4 cookies. Vitamin D, calcium, iron, and potassium are omitted because the US label only shows 0% daily value. Label-gap check on 11 Nov 2026: Nutrition Facts labels don't have to list these nutrients, so keys that were missing or 0 were checked against composition data; only those keys changed, as estimates, and other values were kept. Scaled to about 7.8 g, the weight implied by this entry's own protein, carbs and fat. Composition: USDA FoodData Central SR Legacy FDC 174957 (Cookies, graham crackers, plain or honey (includes cinnamon)). From that record: vitamin E, vitamin K, thiamin, riboflavin, niacin, pantothenic acid, B6, folate, phosphorus, magnesium, zinc, selenium, copper, manganese, choline. From typical amounts per 100 g for baked goods (NIH ODS fact-sheet tables, Anderson chromium data, USDA/FDA/ODS Iodine Database; salt in processed or restaurant food assumed noniodized): biotin, iodine, chromium, molybdenum. Chloride: from the natural sodium and chloride of the ingredients. Verified zero on 11 Nov 2026 (composition data, not the label): vitamin A, vitamin C, B12."
   },
   {
     "name": "Fck Carbs - Low Carb Cauliflower Salad + Chili-dusted Pineapple, Kimchi 1 salad",
@@ -63501,9 +63501,9 @@
       "biotin": 0,
       "folate": 0,
       "vitaminB12": 0,
-      "phosphorus": 0,
+      "phosphorus": 0.1,
       "iodine": 0,
-      "magnesium": 0,
+      "magnesium": 0.1,
       "zinc": 0,
       "selenium": 0.1,
       "copper": 5.4,
@@ -63523,7 +63523,7 @@
       "refinedCarbs": 14,
       "netCarbs": 14
     },
-    "notes": "Assorted-bag size. Skittles Original fun size, 1 pack (15 g), 60 kcal. Mars Wrigley letter for Skittles Original bite size candies (webstaurantstore nutrition PDF, February 28, 2022) and the current Kroger fun-size bag (10.72 oz, about 20 packs): 0.5 g fat, 0.5 g saturated fat, 0 g trans fat, 0 mg cholesterol, 0 mg sodium, 14 g carbohydrate, 0 g fiber, 11 g total sugar, 11 g added sugar, 0 g protein. The letter lists potassium, calcium, iron, and vitamin D as 0. Original fruit only. Label-gap check on 11 Nov 2026: Nutrition Facts labels don't have to list these nutrients, so keys that were missing or 0 were checked against composition data; only those keys changed, as estimates, and other values were kept. Scaled to about 15 g, the weight in the name. Composition: USDA FoodData Central SR Legacy FDC 168843 (Candies, MARS SNACKFOOD US, SKITTLES Original Bite Size Candies). From that record: vitamin E, vitamin K, selenium, copper, manganese. Chloride: from the natural sodium and chloride of the ingredients. Verified zero on 11 Nov 2026 (composition data, not the label): vitamin A, vitamin C, thiamin, B6, biotin, folate, B12, iodine, molybdenum, choline. Set to 0 because the amount rounds to 0 at this portion size: riboflavin, niacin, pantothenic acid, phosphorus, magnesium, zinc, chromium."
+    "notes": "Assorted-bag size. Skittles Original fun size, 1 pack (15 g), 60 kcal. Mars Wrigley letter for Skittles Original bite size candies (webstaurantstore nutrition PDF, February 28, 2022) and the current Kroger fun-size bag (10.72 oz, about 20 packs): 0.5 g fat, 0.5 g saturated fat, 0 g trans fat, 0 mg cholesterol, 0 mg sodium, 14 g carbohydrate, 0 g fiber, 11 g total sugar, 11 g added sugar, 0 g protein. The letter lists potassium, calcium, iron, and vitamin D as 0. Original fruit only. Label-gap check on 11 Nov 2026: Nutrition Facts labels don't have to list these nutrients, so keys that were missing or 0 were checked against composition data; only those keys changed, as estimates, and other values were kept. Scaled to about 15 g, the weight in the name. Composition: USDA FoodData Central SR Legacy FDC 168843 (Candies, MARS SNACKFOOD US, SKITTLES Original Bite Size Candies). From that record: vitamin E, vitamin K, phosphorus, magnesium, selenium, copper, manganese. Chloride: from the natural sodium and chloride of the ingredients. Verified zero on 11 Nov 2026 (composition data, not the label): vitamin A, vitamin C, thiamin, B6, biotin, folate, B12, iodine, molybdenum, choline. Set to 0 because the amount rounds to 0 at this portion size: riboflavin, niacin, pantothenic acid, zinc, chromium."
   },
   {
     "name": "Junk Food - Skittles Original 1 bag (2.17 oz / 61.5 g, vending)",
