@@ -307,7 +307,7 @@
   var longevityAnalysisReturnPending = false;
   var analysisActiveKind = null;
   var analysisActiveDayId = null;
-  var analysisShowFatSoluble = true;
+  var analysisFatSolubleOnly = false;
   // Want more: low % = sad → high % = happy. Want less: high % = sad → low % = happy.
   var LONGEVITY_ANALYSIS_AVG_BANDS = [
     { id: "0-20", label: "0–20%", min: 0, max: 20, maxInclusive: false, color: "red", emoji: "😢" },
@@ -20775,17 +20775,18 @@
 
   function syncAnalysisFatSolubleToggle() {
     if (!longevityAnalysisReportEl) return;
-    var btn = longevityAnalysisReportEl.querySelector(
+    var btns = longevityAnalysisReportEl.querySelectorAll(
       "[data-analysis-fat-soluble-toggle]"
     );
-    if (!btn) return;
-    btn.setAttribute("aria-pressed", analysisShowFatSoluble ? "true" : "false");
-    btn.setAttribute(
-      "aria-label",
-      analysisShowFatSoluble
-        ? "Fat soluble shown. Hide fat-soluble vitamins."
-        : "Fat soluble hidden. Show fat-soluble vitamins."
-    );
+    Array.prototype.forEach.call(btns, function (btn) {
+      btn.setAttribute("aria-pressed", analysisFatSolubleOnly ? "true" : "false");
+      btn.setAttribute(
+        "aria-label",
+        analysisFatSolubleOnly
+          ? "Fat solubles only is on. Showing only fat-soluble vitamins. Turn off to show all."
+          : "Fat solubles only is off. Showing all. Turn on to show only fat-soluble vitamins."
+      );
+    });
   }
 
   function syncAnalysisAimBandCountsForFatSoluble() {
@@ -20797,7 +20798,7 @@
     var pills = longevityAnalysisReportEl.querySelectorAll("[data-analysis-nutrient]");
     Array.prototype.forEach.call(pills, function (pill) {
       if (pill.getAttribute("data-analysis-pill-kind") !== "aim") return;
-      if (!analysisShowFatSoluble && pill.getAttribute("data-fat-soluble") === "true") {
+      if (analysisFatSolubleOnly && pill.getAttribute("data-fat-soluble") !== "true") {
         return;
       }
       var bandId = pill.getAttribute("data-analysis-pill-band") || "";
@@ -20864,7 +20865,9 @@
       var kind = pill.getAttribute("data-analysis-pill-kind");
       var bandId = pill.getAttribute("data-analysis-pill-band") || "";
       var fatSolubleHidden =
-        !analysisShowFatSoluble && pill.getAttribute("data-fat-soluble") === "true";
+        analysisFatSolubleOnly &&
+        kind !== "limit" &&
+        pill.getAttribute("data-fat-soluble") !== "true";
       var show =
         !fatSolubleHidden &&
         (kind === "limit"
@@ -21839,10 +21842,10 @@
     return (
       '<div class="analysis-nutrient-board__tools">' +
       '<button type="button" class="analysis-fat-soluble-toggle" data-analysis-fat-soluble-toggle aria-pressed="' +
-      (analysisShowFatSoluble ? "true" : "false") +
+      (analysisFatSolubleOnly ? "true" : "false") +
       '">' +
       '<span class="analysis-fat-soluble-toggle__switch" aria-hidden="true"></span>' +
-      '<span class="analysis-fat-soluble-toggle__label">Fat soluble</span>' +
+      '<span class="analysis-fat-soluble-toggle__label">Fat solubles only</span>' +
       "</button>" +
       '<span class="analysis-nutrient-board__sep" aria-hidden="true"></span>' +
       '<span class="analysis-fat-soluble-help">' +
@@ -38456,7 +38459,7 @@
         longevityAnalysisReportEl.contains(fatSolubleToggle)
       ) {
         e.preventDefault();
-        analysisShowFatSoluble = !analysisShowFatSoluble;
+        analysisFatSolubleOnly = !analysisFatSolubleOnly;
         syncLongevityAnalysisBandFilter();
         return;
       }
