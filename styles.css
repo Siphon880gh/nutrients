@@ -18284,6 +18284,67 @@ body.print-preview .day__backdrop {
   line-height: 1.4;
 }
 
+.xpt-nutrient [hidden] {
+  display: none !important;
+}
+
+.xpt-nutrient__toolbar .xpt__tabs {
+  margin-right: 0.35rem;
+}
+
+.micro-sources-modal__item.xpt-nutrient__item {
+  grid-template-columns: 1.75rem minmax(0, 1fr) auto 4.2rem;
+}
+
+.xpt-nutrient__day {
+  display: inline-block;
+  margin-left: 0.4rem;
+  padding: 0 0.35rem;
+  border-radius: 999px;
+  background: #eef1f5;
+  color: #4b5563;
+  font-size: 0.7rem;
+  font-weight: 650;
+  vertical-align: 0.05rem;
+}
+
+.xpt-nutrient__share {
+  color: #2a4a6e;
+  font-size: 0.75rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+.xpt-nutrient__add {
+  justify-self: end;
+  min-height: 1.6rem;
+  padding: 0.1rem 0.55rem;
+  border: 1px solid #3d6b9e;
+  border-radius: 999px;
+  background: #eef4fa;
+  color: #2a4a6e;
+  font: inherit;
+  font-size: 0.72rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.xpt-nutrient__add:hover {
+  background: #dfeaf6;
+}
+
+.xpt-nutrient__note {
+  margin: 0.5rem 0 0;
+  color: #6a6a66;
+  font-size: 0.75rem;
+}
+
+.xpt-day__analysis .analysis-daily-nonstored__name,
+.xpt-week-board .analysis-daily-nonstored__name {
+  cursor: pointer;
+}
+
 .xpt-toggle[aria-pressed="true"] {
   background: #eef4fa;
   border-color: #3d6b9e;

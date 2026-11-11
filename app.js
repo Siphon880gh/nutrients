@@ -11814,6 +11814,7 @@
       (diarySearchModalEl && !diarySearchModalEl.hidden) ||
       (copyDateModalEl && !copyDateModalEl.hidden) ||
       isExperimentalCopyFromOpen() ||
+      isExperimentalNutrientOpen() ||
       (copyConflictModalEl && !copyConflictModalEl.hidden) ||
       (favoriteEditModalEl && !favoriteEditModalEl.hidden) ||
       (mealNameModalEl && !mealNameModalEl.hidden) ||
@@ -38308,6 +38309,399 @@
     });
   })();
 
+  // ---- Experimental week: click a nutrient → foods ranked by that nutrient ----
+  var xptNutrientState = {
+    kind: "micro",
+    key: "",
+    tab: "yours",
+    scope: "week",
+    addDay: "mon",
+    filter: "",
+    valueMode: "amount",
+  };
+  var XPT_NUTRIENT_OTHER_LIMIT = 200;
+
+  function xptNutrientEl(id) {
+    return document.getElementById(id);
+  }
+
+  function isExperimentalNutrientOpen() {
+    var modal = xptNutrientEl("xpt-nutrient-modal");
+    return !!(modal && !modal.hidden);
+  }
+
+  function xptNutrientField() {
+    return xptNutrientState.kind === "longevity"
+      ? longevityFieldByKey(xptNutrientState.key)
+      : microFieldByKey(xptNutrientState.key);
+  }
+
+  function xptNutrientPerServing(kw) {
+    var key = xptNutrientState.key;
+    var v;
+    if (xptNutrientState.kind === "longevity") {
+      v = resolveLongevityValue(kw, key);
+    } else if (key === "fiber") {
+      v = fiberTotalFromParts(kw.micros);
+    } else {
+      v = kw.micros ? kw.micros[key] : "";
+    }
+    if (v === "" || v == null) return 0;
+    var n = parseFloat(v);
+    return isNaN(n) || n <= 0 ? 0 : n;
+  }
+
+  function xptNutrientContributions(text) {
+    return xptNutrientState.kind === "longevity"
+      ? longevityContributionsFromText(text, xptNutrientState.key)
+      : microContributionsFromText(text, xptNutrientState.key);
+  }
+
+  function xptNutrientYourList() {
+    var scope = xptNutrientState.scope;
+    var list = [];
+    DAYS.forEach(function (day) {
+      if (scope !== "week" && scope !== day.id) return;
+      var text = experimentalWeekTexts[day.id] || "";
+      if (!String(text).trim()) return;
+      xptNutrientContributions(text).forEach(function (item) {
+        list.push({
+          name: item.name,
+          dayLabel: day.label,
+          amount: item.amount,
+          hits: item.hits,
+          perServing: item.perServing,
+        });
+      });
+    });
+    list.sort(function (a, b) {
+      return b.amount - a.amount;
+    });
+    return list;
+  }
+
+  function xptNutrientWeekFoodNames() {
+    var names = {};
+    DAYS.forEach(function (day) {
+      parseDayGuidedLines(experimentalWeekTexts[day.id] || "").forEach(function (entry) {
+        if (entry.kind === "food" && entry.name) {
+          names[String(entry.name).trim().toLowerCase()] = true;
+        }
+      });
+      var hits = keywordHitCounts(experimentalWeekTexts[day.id] || "");
+      Object.keys(hits).forEach(function (k) {
+        names[k] = true;
+      });
+    });
+    return names;
+  }
+
+  function xptNutrientOtherList() {
+    var inWeek = xptNutrientWeekFoodNames();
+    var seen = {};
+    var list = [];
+    keywords.forEach(function (kw) {
+      var name = String(kw.name || "").trim();
+      if (!name) return;
+      var k = name.toLowerCase();
+      if (seen[k] || inWeek[k]) return;
+      seen[k] = true;
+      var per = xptNutrientPerServing(kw);
+      if (!per) return;
+      list.push({ name: name, amount: per, hits: 1, perServing: per });
+    });
+    list.sort(function (a, b) {
+      return b.amount - a.amount;
+    });
+    return list;
+  }
+
+  function xptNutrientValueText(amount, unit, dailyDv) {
+    return xptNutrientState.valueMode === "pct"
+      ? sourcesPctOfDailyText(amount, dailyDv)
+      : fmtNum(amount) + " " + (unit || "");
+  }
+
+  function xptNutrientFilterList(list) {
+    var q = String(xptNutrientState.filter || "").trim().toLowerCase();
+    var ranked = list.map(function (item, idx) {
+      item.rank = idx + 1;
+      return item;
+    });
+    if (!q) return ranked;
+    var words = q.split(/\s+/);
+    return ranked.filter(function (item) {
+      var name = String(item.name || "").toLowerCase();
+      return words.every(function (w) {
+        return name.indexOf(w) !== -1;
+      });
+    });
+  }
+
+  function renderExperimentalNutrientBody() {
+    var body = xptNutrientEl("xpt-nutrient-body");
+    if (!body) return;
+    var field = xptNutrientField();
+    var unit = field && field.unit ? field.unit : "";
+    var dailyDv = sourcesDailyReference(xptNutrientState.kind, xptNutrientState.key);
+    var yours = xptNutrientState.tab === "yours";
+    var subtitle = xptNutrientEl("xpt-nutrient-subtitle");
+    var scopeDay = dayById(xptNutrientState.scope);
+    if (subtitle) {
+      subtitle.textContent = yours
+        ? (scopeDay ? "Experimental " + scopeDay.label : "Entire experimental week") +
+          " — your food ranked by amount, servings applied"
+        : "Food definitions not in your experimental week — ranked per serving";
+    }
+    if (!field) {
+      body.innerHTML =
+        '<p class="micro-sources-modal__empty">This value is calculated from other nutrients, so foods cannot be ranked by it.</p>';
+      return;
+    }
+    var full = yours ? xptNutrientYourList() : xptNutrientOtherList();
+    var list = xptNutrientFilterList(full);
+    if (!full.length) {
+      body.innerHTML =
+        '<p class="micro-sources-modal__empty">' +
+        (yours
+          ? "No food in this period has " + escapeHtml(field.label) + " data."
+          : "No other food definitions have " + escapeHtml(field.label) + " data.") +
+        "</p>";
+      return;
+    }
+    if (!list.length) {
+      body.innerHTML = sourcesFilterEmptyHtml(xptNutrientState.filter);
+      return;
+    }
+    var total = 0;
+    full.forEach(function (item) {
+      total += item.amount;
+    });
+    var shown = yours ? list : list.slice(0, XPT_NUTRIENT_OTHER_LIMIT);
+    var addDay = dayById(xptNutrientState.addDay);
+    var html =
+      '<div class="micro-sources-modal__list-head xpt-nutrient__item micro-sources-modal__item">' +
+      "<span></span><span>Food</span><span>" +
+      escapeHtml(
+        (xptNutrientState.valueMode === "pct" ? "% DV" : "Amount") +
+          (yours ? "" : " per serving")
+      ) +
+      "</span><span>" +
+      (yours ? "Share" : "") +
+      "</span></div>" +
+      '<ol class="micro-sources-modal__list">';
+    shown.forEach(function (item) {
+      var calc;
+      if (yours && item.hits !== 1) {
+        calc =
+          '<span class="micro-sources-modal__per">' +
+          escapeHtml(xptNutrientValueText(item.perServing, unit, dailyDv)) +
+          '</span><span class="micro-sources-modal__times">× ' +
+          escapeHtml(fmtNum(item.hits)) +
+          '</span><span class="micro-sources-modal__eq">=</span>' +
+          '<span class="micro-sources-modal__row-total">' +
+          escapeHtml(xptNutrientValueText(item.amount, unit, dailyDv)) +
+          "</span>";
+      } else {
+        calc =
+          '<span class="micro-sources-modal__row-total">' +
+          escapeHtml(xptNutrientValueText(item.amount, unit, dailyDv)) +
+          "</span>";
+      }
+      var last = yours
+        ? '<span class="xpt-nutrient__share">' +
+          (total > 0 ? Math.round((item.amount / total) * 100) + "%" : "—") +
+          "</span>"
+        : '<button type="button" class="xpt-nutrient__add" data-xpt-nutrient-add="' +
+          escapeAttr(item.name) +
+          '" aria-label="Add ' +
+          escapeAttr(item.name) +
+          " to experimental " +
+          escapeAttr(addDay ? addDay.label : "day") +
+          '">+ Add</button>';
+      html +=
+        '<li class="micro-sources-modal__item xpt-nutrient__item">' +
+        '<span class="micro-sources-modal__rank">' +
+        item.rank +
+        "</span>" +
+        '<span class="micro-sources-modal__name">' +
+        escapeHtml(item.name) +
+        (yours
+          ? '<span class="xpt-nutrient__day">' + escapeHtml(item.dayLabel) + "</span>"
+          : "") +
+        "</span>" +
+        '<span class="micro-sources-modal__calc">' +
+        calc +
+        "</span>" +
+        last +
+        "</li>";
+    });
+    html += "</ol>";
+    if (yours) {
+      html +=
+        '<p class="micro-sources-modal__total">Total: ' +
+        escapeHtml(
+          xptNutrientValueText(total, unit, dailyDv) +
+            (xptNutrientState.valueMode === "pct" && dailyDv ? " of daily value" : "")
+        ) +
+        "</p>";
+    } else if (list.length > shown.length) {
+      html +=
+        '<p class="xpt-nutrient__note">Showing the top ' +
+        shown.length +
+        " of " +
+        list.length +
+        ". Type in Find to narrow the list.</p>";
+    }
+    body.innerHTML = html;
+  }
+
+  function syncExperimentalNutrientControls() {
+    var modal = xptNutrientEl("xpt-nutrient-modal");
+    if (!modal) return;
+    var yours = xptNutrientState.tab === "yours";
+    modal.querySelectorAll("[data-xpt-nutrient-tab]").forEach(function (btn) {
+      btn.setAttribute(
+        "aria-selected",
+        btn.getAttribute("data-xpt-nutrient-tab") === xptNutrientState.tab
+          ? "true"
+          : "false"
+      );
+    });
+    modal.querySelectorAll("[data-xpt-nutrient-yours]").forEach(function (el) {
+      el.hidden = !yours;
+    });
+    modal.querySelectorAll("[data-xpt-nutrient-other]").forEach(function (el) {
+      el.hidden = yours;
+    });
+    var filterEl = xptNutrientEl("xpt-nutrient-filter");
+    if (filterEl && filterEl.value !== xptNutrientState.filter) {
+      filterEl.value = xptNutrientState.filter;
+    }
+    syncSourcesPctToggle(xptNutrientEl("xpt-nutrient-pct-toggle"), xptNutrientState.valueMode);
+  }
+
+  function xptNutrientDayOptionsHtml(includeWeek, selected) {
+    var choices = includeWeek ? [{ value: "week", label: "Entire week" }] : [];
+    DAYS.forEach(function (day) {
+      choices.push({ value: day.id, label: day.label });
+    });
+    return choices
+      .map(function (c) {
+        return (
+          '<option value="' +
+          escapeAttr(c.value) +
+          '"' +
+          (c.value === selected ? " selected" : "") +
+          ">" +
+          escapeHtml(c.label) +
+          "</option>"
+        );
+      })
+      .join("");
+  }
+
+  function openExperimentalNutrientModal(kind, key, dayId) {
+    var modal = xptNutrientEl("xpt-nutrient-modal");
+    if (!modal || !key) return;
+    xptNutrientState.kind = kind === "longevity" ? "longevity" : "micro";
+    xptNutrientState.key = key;
+    xptNutrientState.tab = "yours";
+    xptNutrientState.scope = dayId && dayById(dayId) ? dayId : "week";
+    xptNutrientState.addDay = dayId && dayById(dayId) ? dayId : "mon";
+    xptNutrientState.filter = "";
+    xptNutrientState.valueMode = "amount";
+    var field = xptNutrientField();
+    var title = xptNutrientEl("xpt-nutrient-title");
+    if (title) {
+      title.textContent = ((field && field.label) || key) + " — ranked foods";
+    }
+    var scopeEl = xptNutrientEl("xpt-nutrient-scope");
+    if (scopeEl) scopeEl.innerHTML = xptNutrientDayOptionsHtml(true, xptNutrientState.scope);
+    var addEl = xptNutrientEl("xpt-nutrient-add-day");
+    if (addEl) addEl.innerHTML = xptNutrientDayOptionsHtml(false, xptNutrientState.addDay);
+    syncExperimentalNutrientControls();
+    renderExperimentalNutrientBody();
+    modal.hidden = false;
+    updateBodyModalOpen();
+    var focusEl = modal.querySelector('[data-xpt-nutrient-tab="yours"]');
+    if (focusEl) focusEl.focus();
+  }
+
+  function closeExperimentalNutrientModal() {
+    var modal = xptNutrientEl("xpt-nutrient-modal");
+    if (!modal || modal.hidden) return;
+    modal.hidden = true;
+    updateBodyModalOpen();
+  }
+
+  function addFoodToExperimentalDayFromNutrient(name) {
+    var dayId = xptNutrientState.addDay;
+    if (!name || !dayById(dayId)) return;
+    writeExperimentalDayText(
+      dayId,
+      appendMealTexts(experimentalWeekTexts[dayId] || "", formatDayFoodLine(name, 1))
+    );
+    renderExperimentalNutrientBody();
+  }
+
+  (function initExperimentalNutrientModal() {
+    var modal = xptNutrientEl("xpt-nutrient-modal");
+    if (!modal) return;
+    modal.addEventListener("click", function (e) {
+      if (e.target.closest('[data-action="close-xpt-nutrient"]')) {
+        closeExperimentalNutrientModal();
+        return;
+      }
+      var tab = e.target.closest("[data-xpt-nutrient-tab]");
+      if (tab) {
+        xptNutrientState.tab =
+          tab.getAttribute("data-xpt-nutrient-tab") === "other" ? "other" : "yours";
+        syncExperimentalNutrientControls();
+        renderExperimentalNutrientBody();
+        return;
+      }
+      if (e.target.closest("#xpt-nutrient-pct-toggle")) {
+        xptNutrientState.valueMode =
+          xptNutrientState.valueMode === "pct" ? "amount" : "pct";
+        syncExperimentalNutrientControls();
+        renderExperimentalNutrientBody();
+        return;
+      }
+      var addBtn = e.target.closest("[data-xpt-nutrient-add]");
+      if (addBtn) {
+        addFoodToExperimentalDayFromNutrient(addBtn.getAttribute("data-xpt-nutrient-add"));
+      }
+    });
+    modal.addEventListener("change", function (e) {
+      if (e.target.id === "xpt-nutrient-scope") {
+        xptNutrientState.scope = e.target.value;
+        renderExperimentalNutrientBody();
+      } else if (e.target.id === "xpt-nutrient-add-day") {
+        xptNutrientState.addDay = e.target.value;
+        renderExperimentalNutrientBody();
+      }
+    });
+    modal.addEventListener("input", function (e) {
+      if (e.target.id !== "xpt-nutrient-filter") return;
+      xptNutrientState.filter = e.target.value;
+      renderExperimentalNutrientBody();
+    });
+    modal.addEventListener("keydown", function (e) {
+      var tab = e.target.closest("[data-xpt-nutrient-tab]");
+      if (!tab || (e.key !== "ArrowLeft" && e.key !== "ArrowRight")) return;
+      e.preventDefault();
+      e.stopPropagation();
+      xptNutrientState.tab = xptNutrientState.tab === "yours" ? "other" : "yours";
+      syncExperimentalNutrientControls();
+      renderExperimentalNutrientBody();
+      var next = modal.querySelector(
+        '[data-xpt-nutrient-tab="' + xptNutrientState.tab + '"]'
+      );
+      if (next) next.focus();
+    });
+  })();
+
   function setExperimentalLine(dayId, lineIndex, nextLine) {
     var lines = experimentalLines(dayId);
     if (lineIndex < 0 || lineIndex >= lines.length) return;
@@ -39132,6 +39526,10 @@
     }
     if (copyDateModalEl && !copyDateModalEl.hidden) {
       closeCopyDateModal();
+      return;
+    }
+    if (isExperimentalNutrientOpen()) {
+      closeExperimentalNutrientModal();
       return;
     }
     if (isExperimentalCopyFromOpen()) {
@@ -40910,6 +41308,23 @@
   }
   if (experimentalPanelEl) {
     experimentalPanelEl.addEventListener("click", function (e) {
+      var xptNutrientBtn = e.target.closest(
+        ".xpt-day__analysis [data-micro-def], .xpt-day__analysis [data-longevity-def], .xpt-week-board [data-micro-def], .xpt-week-board [data-longevity-def]"
+      );
+      if (xptNutrientBtn) {
+        e.preventDefault();
+        e.stopPropagation();
+        var xptSlot = xptNutrientBtn.closest("[data-xpt-analysis]");
+        var isLongevityBtn = xptNutrientBtn.hasAttribute("data-longevity-def");
+        openExperimentalNutrientModal(
+          isLongevityBtn ? "longevity" : "micro",
+          xptNutrientBtn.getAttribute(
+            isLongevityBtn ? "data-longevity-def" : "data-micro-def"
+          ),
+          xptSlot ? xptSlot.getAttribute("data-xpt-analysis") : ""
+        );
+        return;
+      }
       if (e.target.closest('[data-action="close-experimental-panel"]')) {
         setExperimentalPanelOpen(false);
         return;

@@ -1724,6 +1724,35 @@
     </div>
   </div>
 
+  <div id="xpt-nutrient-modal" class="modal xpt-nutrient" hidden>
+    <div class="modal__backdrop" data-action="close-xpt-nutrient"></div>
+    <div class="modal__panel modal__panel--wide" role="dialog" aria-modal="true" aria-labelledby="xpt-nutrient-title">
+      <header class="modal__header">
+        <div class="modal__header-text">
+          <h3 id="xpt-nutrient-title" class="modal__title"></h3>
+          <p id="xpt-nutrient-subtitle" class="modal__subtitle"></p>
+        </div>
+      </header>
+      <div class="micro-sources-modal__toolbar xpt-nutrient__toolbar">
+        <div class="xpt__tabs" role="tablist" aria-label="Which foods">
+          <button type="button" class="xpt__tab" role="tab" data-xpt-nutrient-tab="yours" aria-selected="true">Your food</button>
+          <button type="button" class="xpt__tab" role="tab" data-xpt-nutrient-tab="other" aria-selected="false">Other food</button>
+        </div>
+        <label class="micro-sources-modal__label" for="xpt-nutrient-scope" data-xpt-nutrient-yours>Period</label>
+        <select id="xpt-nutrient-scope" class="micro-sources-modal__select" data-xpt-nutrient-yours></select>
+        <label class="micro-sources-modal__label" for="xpt-nutrient-add-day" data-xpt-nutrient-other>Add to</label>
+        <select id="xpt-nutrient-add-day" class="micro-sources-modal__select" data-xpt-nutrient-other></select>
+        <label class="micro-sources-modal__label" for="xpt-nutrient-filter">Find</label>
+        <input type="search" id="xpt-nutrient-filter" class="micro-sources-modal__filter" placeholder="Filter by food name" autocomplete="off" spellcheck="false">
+        <button type="button" id="xpt-nutrient-pct-toggle" class="micro-sources-modal__pct-btn" aria-pressed="false">Column: Amount</button>
+      </div>
+      <div id="xpt-nutrient-body" class="micro-sources-modal__body" role="tabpanel" aria-live="polite"></div>
+      <footer class="modal__footer">
+        <button type="button" id="xpt-nutrient-done" class="modal__secondary" data-action="close-xpt-nutrient">Done</button>
+      </footer>
+    </div>
+  </div>
+
   <div id="copy-conflict-modal" class="modal" hidden>
     <div class="modal__backdrop" data-action="close-copy-conflict-modal"></div>
     <div class="modal__panel" role="dialog" aria-modal="true" aria-labelledby="copy-conflict-modal-title">
