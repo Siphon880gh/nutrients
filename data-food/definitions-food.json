@@ -31676,7 +31676,7 @@
       "folate": 0,
       "biotin": 0,
       "phosphorus": 0,
-      "choline": 0,
+      "choline": 20,
       "molybdenum": 5,
       "chloride": 25,
       "histidine": 0,
@@ -31696,7 +31696,7 @@
       "tyrosine": 0,
       "taurine": 0
     },
-    "notes": "Label-gap check on 11 Nov 2026: Nutrition Facts labels don't have to list these nutrients, but this is a supplement, and a Supplement Facts label must list every dietary ingredient it contains, so nutrients it doesn't list were set to 0. Verified zero on 11 Nov 2026 (Supplement Facts rule, not a measured value): vitamin A, vitamin C, vitamin E, vitamin K, thiamin, riboflavin, niacin, pantothenic acid, B6, biotin, folate, B12, phosphorus, iodine, magnesium, zinc, selenium, copper, manganese, chromium, choline."
+    "notes": "Label-gap check on 11 Nov 2026: Nutrition Facts labels don't have to list these nutrients, but this is a supplement, and a Supplement Facts label must list every dietary ingredient it contains, so nutrients it doesn't list were set to 0. Verified zero on 11 Nov 2026 (Supplement Facts rule, not a measured value): vitamin A, vitamin C, vitamin E, vitamin K, thiamin, riboflavin, niacin, pantothenic acid, B6, biotin, folate, B12, phosphorus, iodine, magnesium, zinc, selenium, copper, manganese, chromium. Choline is an estimate of about 20 mg: krill oil carries its omega-3s as phospholipids, mostly phosphatidylcholine, which is about 13%% choline by weight, and a 500 mg softgel holds roughly 150 to 200 mg of phospholipids."
   },
   {
     "name": "Nature Made Cod Liver Oil 530 mg 1 softgel",
