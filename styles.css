@@ -18471,6 +18471,41 @@ body.print-preview .day__backdrop {
   color: #6a6a66;
 }
 
+.keywords__owner-tag {
+  display: inline-block;
+  margin-top: 0.2rem;
+  padding: 0 0.4rem;
+  border-radius: 999px;
+  background: #e5f3e8;
+  color: #1a6a32;
+  font-size: 0.66rem;
+  font-weight: 750;
+}
+
+.keywords__owner-tag--edited {
+  background: #fdf3dc;
+  color: #8a5a00;
+}
+
+.exercise-defs__builtin {
+  font-size: 0.7rem;
+  color: #5b6573;
+  font-weight: 650;
+}
+
+.exercise-defs__table td {
+  vertical-align: top;
+  font-size: 0.82rem;
+}
+
+.exercise-defs__table select.keywords__input {
+  min-width: 8.5rem;
+}
+
+.keywords__row--first-own > td {
+  border-top: 3px solid #2a4a6e;
+}
+
 .xpt-toggle[aria-pressed="true"] {
   background: #eef4fa;
   border-color: #3d6b9e;

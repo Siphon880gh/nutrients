@@ -20,10 +20,11 @@ python3 -m http.server 8765
 # open http://localhost:8765/
 ```
 
-On first visit, use **Import sample** in two places:
+Built-in definitions load automatically on every visit — no import step:
 
-1. **Food definitions** — scroll to the Food definitions table and click **Import sample** (or **Import our sample** when the table is empty). This loads `data-food/definitions-food.json`.
-2. **Food entry** — in the Mon–Sun day-meals area, click **Import sample**. This loads `data-food/day-meals.json` for the current week.
+1. **Food definitions** — `data-food/definitions-food.json` is always included. Foods you add (or built-ins you edit or delete) are saved locally and listed after the built-ins; **Restore built-ins** undoes edits/deletes to built-ins.
+2. **Exercise definitions** — `data-exercises/definitions-exercise.json` is always included; exercises you add in **Exercise Definitions** are saved locally after the built-ins.
+3. **Food entry** — optional: in the Mon–Sun day-meals area, click **Import sample** to load `data-food/day-meals.json` for the current week.
 
 Type food names in day meals that match your definitions; macros, micros, and longevity totals update automatically.
 

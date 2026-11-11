@@ -603,6 +603,13 @@
   var starterGuideTarget = null;
   var starterGuideScrollResizeBound = false;
   var IMPORT_SAMPLE_FOODS_URL = "data-food/definitions-food.json";
+  // Built-in food definitions ship with the app (data-food/definitions-food.json)
+  // and load automatically. They are not stored as user data: only the user's
+  // own foods, their edits to a built-in, and hidden (deleted) built-ins persist.
+  var builtinFoodItems = [];
+  var builtinFoodSnapshotById = {};
+  var builtinFoodNameById = {};
+  var hadPersistedFoodDefinitions = false;
   function importSampleFoodsUrl() {
     return IMPORT_SAMPLE_FOODS_URL + "?t=" + Date.now();
   }
@@ -11926,7 +11933,21 @@
   var exclusiveOverlayScrollSaved = false;
 
   function syncExclusiveOverlayUi() {
+    if (
+      exerciseDefinitionsOpen &&
+      (foodDefinitionsOpen || mealsPanelOpen || experimentalPanelOpen || microRequirementsOpen || longevityPanelOpen)
+    ) {
+      exerciseDefinitionsOpen = false;
+      var exPanel = document.getElementById("exercise-definitions-panel");
+      if (exPanel) exPanel.hidden = true;
+      var exBtn = document.getElementById("dashboard-exercise-definitions-jump");
+      if (exBtn) {
+        exBtn.setAttribute("aria-expanded", "false");
+        exBtn.classList.remove("app-nav__btn--open");
+      }
+    }
     var overlayOpen = !!(
+      exerciseDefinitionsOpen ||
       foodDefinitionsOpen ||
       mealsPanelOpen ||
       experimentalPanelOpen ||
@@ -11954,6 +11975,7 @@
   }
 
   function closeExclusiveOverlays() {
+    if (exerciseDefinitionsOpen) setExerciseDefinitionsOpen(false);
     if (foodDefinitionsOpen) setFoodDefinitionsOpen(false);
     if (mealsPanelOpen) setMealsPanelOpen(false);
     if (experimentalPanelOpen) setExperimentalPanelOpen(false);
@@ -24728,6 +24750,7 @@
     if (persist) persist.migrate();
     applyLoadedFoodTextMigrations();
     loadFoodDefinitions();
+    loadUserExerciseDefinitions();
     loadKeywordReorderOpen();
     loadKeywordCaloriesOpen();
     loadKeywordsPageSize();
@@ -27999,41 +28022,257 @@
     hideDayFoodNotesPopover(true);
   }
 
-  function saveFoodDefinitions() {
-    if (!persist) return;
-    if (persist.saveFoodDefinitions(keywords)) showSaveToast();
-    invalidateFoodSourcesRowsCache();
+  function loadBuiltinFoodDefinitions(done) {
+    fetchSampleFoodItems()
+      .then(function (items) {
+        builtinFoodItems = Array.isArray(items) ? items : [];
+      })
+      .catch(function () {
+        builtinFoodItems = [];
+      })
+      .then(function () {
+        if (done) done();
+      });
   }
 
-  function loadFoodDefinitions() {
-    if (!persist) return;
-    var data = persist.loadFoodDefinitions();
-    if (!data) {
-      keywords = [];
-      syncNextIdFromKeywords();
-      return;
-    }
-    var migrated = false;
-    keywords = data.map(function (item) {
-      var micros = normalizeMicros(item.micros);
-      var longevity = normalizeLongevity(item.longevity, micros);
-      longevity = mergeCarbQualityIntoLongevity(longevity, item.carbQuality);
-      if (syncSharedMicroLongevity(micros, longevity)) migrated = true;
-      return {
-        id:
-          item.id != null && item.id !== "" ? String(item.id) : makeId(),
+  function builtinFoodSlug(name) {
+    return String(name || "")
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-+|-+$/g, "")
+      .slice(0, 80);
+  }
+
+  function keywordSnapshot(kw) {
+    return JSON.stringify({
+      name: String(kw.name || "").trim(),
+      protein: kw.protein,
+      carbs: kw.carbs,
+      fats: kw.fats,
+      micros: kw.micros,
+      longevity: kw.longevity,
+    });
+  }
+
+  function isBuiltinKeyword(kw) {
+    return !!(kw && builtinFoodNameById[String(kw.id)] != null);
+  }
+
+  function isPristineBuiltinKeyword(kw) {
+    var id = kw && String(kw.id);
+    return !!(id && builtinFoodSnapshotById[id] && keywordSnapshot(kw) === builtinFoodSnapshotById[id]);
+  }
+
+  function builtinFoodKeywords() {
+    var list = [];
+    var seenId = {};
+    builtinFoodItems.forEach(function (item, i) {
+      var kw;
+      try {
+        kw = keywordFromImportItem(item, i);
+      } catch (e) {
+        return;
+      }
+      var id = "kw-0-b-" + builtinFoodSlug(kw.name);
+      while (seenId[id]) id += "-x";
+      seenId[id] = true;
+      kw.id = id;
+      list.push(kw);
+    });
+    return list;
+  }
+
+  function normalizePersistedKeyword(item) {
+    var micros = normalizeMicros(item.micros);
+    var longevity = normalizeLongevity(item.longevity, micros);
+    longevity = mergeCarbQualityIntoLongevity(longevity, item.carbQuality);
+    var changed = syncSharedMicroLongevity(micros, longevity);
+    return {
+      kw: {
+        id: item.id != null && item.id !== "" ? String(item.id) : makeId(),
         name: typeof item.name === "string" ? item.name : "",
         protein: item.protein === "" || item.protein == null ? "" : item.protein,
         carbs: item.carbs === "" || item.carbs == null ? "" : item.carbs,
         fats: item.fats === "" || item.fats == null ? "" : item.fats,
         micros: micros,
         longevity: longevity,
-      };
+      },
+      changed: changed,
+    };
+  }
+
+  /** Built-ins first (user edits replace them in place), then the user's own foods. */
+  function mergeBuiltinAndPersistedKeywords(data) {
+    builtinFoodSnapshotById = {};
+    builtinFoodNameById = {};
+    var builtins = builtinFoodKeywords();
+    var byName = {};
+    builtins.forEach(function (kw, i) {
+      var lower = kw.name.toLowerCase();
+      (byName[lower] = byName[lower] || []).push(i);
     });
+    var claimed = {};
+    function unclaimedBuiltin(name) {
+      var list = byName[String(name || "").trim().toLowerCase()] || [];
+      for (var li = 0; li < list.length; li++) {
+        if (!claimed[list[li]]) return list[li];
+      }
+      return null;
+    }
+    var slots = builtins.slice();
+    var builtinOriginal = builtins.map(function (kw) {
+      return { name: kw.name, snapshot: keywordSnapshot(kw) };
+    });
+    var own = [];
+    var migrated = false;
+    (Array.isArray(data) ? data : []).forEach(function (item) {
+      if (!item || typeof item !== "object") return;
+      var origin =
+        typeof item.builtinName === "string" && item.builtinName
+          ? item.builtinName
+          : typeof item.name === "string"
+            ? item.name
+            : "";
+      var bi = unclaimedBuiltin(origin);
+      if (bi == null && item.builtinName) bi = unclaimedBuiltin(item.name);
+      if (item.hiddenBuiltin) {
+        if (bi != null) {
+          claimed[bi] = true;
+          slots[bi] = { hidden: true, id: String(item.id || builtins[bi].id) };
+        }
+        return;
+      }
+      var norm = normalizePersistedKeyword(item);
+      if (norm.changed) migrated = true;
+      var kw = norm.kw;
+      if (bi != null) {
+        claimed[bi] = true;
+        var builtinKw = builtins[bi];
+        var keepId = isValidKeywordId(kw.id) ? kw.id : builtinKw.id;
+        if (keywordSnapshot(kw) === builtinOriginal[bi].snapshot) {
+          builtinKw.id = keepId;
+          slots[bi] = builtinKw;
+          if (!item.builtinName) migrated = true;
+        } else {
+          kw.id = keepId;
+          slots[bi] = kw;
+        }
+        return;
+      }
+      own.push(kw);
+    });
+    var next = [];
+    slots.forEach(function (slot, i) {
+      var id = slot.id;
+      builtinFoodNameById[id] = builtinOriginal[i].name;
+      builtinFoodSnapshotById[id] = builtinOriginal[i].snapshot;
+      if (slot.hidden) return;
+      next.push(slot);
+    });
+    return { keywords: next.concat(own), migrated: migrated };
+  }
+
+  function persistedFoodRows() {
+    var rows = [];
+    var present = {};
+    keywords.forEach(function (kw) {
+      var id = String(kw.id);
+      present[id] = true;
+      if (isPristineBuiltinKeyword(kw)) return;
+      var row = {
+        id: kw.id,
+        name: kw.name,
+        protein: kw.protein,
+        carbs: kw.carbs,
+        fats: kw.fats,
+        micros: kw.micros,
+        longevity: kw.longevity,
+      };
+      if (builtinFoodNameById[id] != null) row.builtinName = builtinFoodNameById[id];
+      rows.push(row);
+    });
+    Object.keys(builtinFoodNameById).forEach(function (id) {
+      if (present[id]) return;
+      rows.push({ id: id, name: builtinFoodNameById[id], builtinName: builtinFoodNameById[id], hiddenBuiltin: true });
+    });
+    return rows;
+  }
+
+  function builtinFoodRestoreCount() {
+    var n = 0;
+    var present = {};
+    keywords.forEach(function (kw) {
+      present[String(kw.id)] = true;
+      if (isBuiltinKeyword(kw) && !isPristineBuiltinKeyword(kw)) n += 1;
+    });
+    Object.keys(builtinFoodNameById).forEach(function (id) {
+      if (!present[id]) n += 1;
+    });
+    return n;
+  }
+
+  function syncRestoreBuiltinFoodsButtons() {
+    var n = builtinFoodRestoreCount();
+    [importSampleFoodsBtn, importSampleFoodsTopBtn].forEach(function (btn) {
+      if (!btn) return;
+      btn.textContent = n ? "Restore built-ins (" + n + ")" : "Built-ins up to date";
+      btn.disabled = !n;
+      btn.title = n
+        ? "Undo your edits to " + n + " built-in food(s) and bring back deleted ones. Foods you added stay."
+        : "Built-in food definitions load automatically and match the app's values.";
+    });
+  }
+
+  function restoreBuiltinFoods() {
+    syncAllFieldsFromDom();
+    var n = builtinFoodRestoreCount();
+    if (!n) return;
+    if (
+      !window.confirm(
+        "Restore " +
+          n +
+          " built-in food definition(s) to the app's values? Edits to built-ins are undone and deleted built-ins come back. Foods you added stay."
+      )
+    ) {
+      return;
+    }
+    var own = keywords.filter(function (kw) {
+      return !isBuiltinKeyword(kw);
+    });
+    var restored = builtinFoodKeywords();
+    var idByName = {};
+    Object.keys(builtinFoodNameById).forEach(function (id) {
+      idByName[builtinFoodNameById[id].toLowerCase()] = id;
+    });
+    restored.forEach(function (kw) {
+      var id = idByName[kw.name.toLowerCase()];
+      if (id) kw.id = id;
+    });
+    keywords = restored.concat(own);
+    syncNextIdFromKeywords();
+    saveFoodDefinitions();
+    renderKeywords();
+    refreshAll();
+  }
+
+  function saveFoodDefinitions() {
+    syncRestoreBuiltinFoodsButtons();
+    if (!persist) return;
+    if (persist.saveFoodDefinitions(persistedFoodRows())) showSaveToast();
+    invalidateFoodSourcesRowsCache();
+  }
+
+  function loadFoodDefinitions() {
+    var data = persist ? persist.loadFoodDefinitions() : null;
+    hadPersistedFoodDefinitions = !!(data && data.length);
+    var merged = mergeBuiltinAndPersistedKeywords(data);
+    keywords = merged.keywords;
+    var migrated = merged.migrated;
     if (migrated || ensureUniqueKeywordIds()) {
       saveFoodDefinitions();
     }
     syncNextIdFromKeywords();
+    syncRestoreBuiltinFoodsButtons();
   }
 
   function findIndex(id) {
@@ -29100,7 +29339,14 @@
       var index = bounds.indices[ri];
       var kw = keywords[index];
       var tr = document.createElement("tr");
-      tr.className = "keywords__row";
+      var ownRow = !isBuiltinKeyword(kw);
+      var prevKw = ri > 0 ? keywords[bounds.indices[ri - 1]] : null;
+      tr.className =
+        "keywords__row" +
+        (ownRow ? " keywords__row--own" : "") +
+        (ownRow && (!prevKw || isBuiltinKeyword(prevKw)) && Object.keys(builtinFoodNameById).length
+          ? " keywords__row--first-own"
+          : "");
       tr.setAttribute("data-id", kw.id);
 
       var proteinVal = kw.protein === "" ? "" : kw.protein;
@@ -29172,6 +29418,11 @@
         '<input type="text" class="keywords__input keywords__input--name" data-field="name" value="' +
         escapeAttr(kw.name) +
         '" placeholder="e.g. chicken" spellcheck="false">' +
+        (ownRow
+          ? '<span class="keywords__owner-tag" title="Your definition (saved in this browser)">Yours</span>'
+          : isPristineBuiltinKeyword(kw)
+            ? ""
+            : '<span class="keywords__owner-tag keywords__owner-tag--edited" title="Built-in you edited. Restore built-ins undoes it.">Edited</span>') +
         "</td>" +
         macroCellsHtml +
         '<td class="keywords__micros-cell">' +
@@ -38746,6 +38997,66 @@
   var workoutFilter = "";
   var exerciseDefinitionsRequested = false;
   var LB_PER_KG = 2.20462;
+  // Built-ins ship in data-exercises/ and load at startup; exercises the user
+  // adds persist locally (persist.saveExerciseDefinitions) and list after them.
+  var builtinExerciseDefinitions = [];
+  var userExerciseDefinitions = [];
+  var exerciseDefinitionsOpen = false;
+  var exerciseDefsFilter = "";
+
+  function rebuildExerciseDefinitions() {
+    exerciseDefinitions = builtinExerciseDefinitions.concat(userExerciseDefinitions);
+    buildExerciseKeywordIndex();
+  }
+
+  function normalizeUserExercise(row) {
+    if (!row || typeof row !== "object") return null;
+    var listOf = function (v) {
+      if (Array.isArray(v)) return v.map(String).filter(Boolean);
+      return String(v || "")
+        .split(",")
+        .map(function (s) {
+          return s.trim();
+        })
+        .filter(Boolean);
+    };
+    var cat = exerciseCategoryLabels[row.category] && row.category !== "session" ? row.category : "compound";
+    var met = parseFloat(row.met);
+    return {
+      id: row.id ? String(row.id) : "ex-u-" + Date.now() + "-" + Math.floor(Math.random() * 1e6),
+      name: typeof row.name === "string" ? row.name : "",
+      category: cat,
+      met: isFinite(met) && met > 0 ? met : "",
+      muscles: listOf(row.muscles),
+      equipment: listOf(row.equipment),
+      keywords: listOf(row.keywords),
+      user: true,
+    };
+  }
+
+  function loadUserExerciseDefinitions() {
+    var rows = persist && persist.loadExerciseDefinitions ? persist.loadExerciseDefinitions() : null;
+    userExerciseDefinitions = (Array.isArray(rows) ? rows : []).map(normalizeUserExercise).filter(Boolean);
+    rebuildExerciseDefinitions();
+    if (exerciseDefinitionsOpen) renderExerciseDefinitions();
+  }
+
+  function saveUserExerciseDefinitions() {
+    rebuildExerciseDefinitions();
+    if (!persist || !persist.saveExerciseDefinitions) return;
+    var rows = userExerciseDefinitions.map(function (ex) {
+      return {
+        id: ex.id,
+        name: ex.name,
+        category: ex.category,
+        met: ex.met,
+        muscles: ex.muscles,
+        equipment: ex.equipment,
+        keywords: ex.keywords,
+      };
+    });
+    if (persist.saveExerciseDefinitions(rows)) showSaveToast();
+  }
 
   function workoutNormalizeText(text) {
     return String(text || "")
@@ -38784,15 +39095,15 @@
       })
       .then(function (data) {
         var list = data && Array.isArray(data.exercises) ? data.exercises : [];
-        exerciseDefinitions = list.filter(function (ex) {
+        builtinExerciseDefinitions = list.filter(function (ex) {
           return ex && ex.name && exerciseCategoryLabels[ex.category];
         });
-        buildExerciseKeywordIndex();
+        rebuildExerciseDefinitions();
         if (done) done();
       })
       .catch(function () {
-        exerciseDefinitions = [];
-        exerciseKeywordIndex = [];
+        builtinExerciseDefinitions = [];
+        rebuildExerciseDefinitions();
         if (done) done();
       });
   }
@@ -39153,6 +39464,217 @@
     });
     return html || sourcesFilterEmptyHtml(workoutFilter);
   }
+
+  // ---- Exercise Definitions sheet (mirrors Food Definitions) ----
+  function exerciseDefsMatches(ex, words) {
+    if (!words.length) return true;
+    var hay = workoutNormalizeText(
+      [ex.name, exerciseCategoryLabels[ex.category] || ""]
+        .concat(ex.keywords || [], ex.muscles || [], ex.equipment || [])
+        .join(" ")
+    );
+    return words.every(function (w) {
+      return hay.indexOf(w) !== -1;
+    });
+  }
+
+  function exerciseCategoryOptionsHtml(selected) {
+    return ["cardio", "compound", "isolation_machine"]
+      .map(function (cat) {
+        return (
+          '<option value="' +
+          cat +
+          '"' +
+          (cat === selected ? " selected" : "") +
+          ">" +
+          escapeHtml(exerciseCategoryLabels[cat]) +
+          "</option>"
+        );
+      })
+      .join("");
+  }
+
+  function renderExerciseDefinitions() {
+    var list = document.getElementById("exercise-defs-list");
+    if (!list) return;
+    var q = workoutNormalizeText(exerciseDefsFilter);
+    var words = q ? q.split(" ") : [];
+    var html = "";
+    var shown = 0;
+    var firstOwn = true;
+    builtinExerciseDefinitions.forEach(function (ex, i) {
+      if (!exerciseDefsMatches(ex, words)) return;
+      shown += 1;
+      html +=
+        '<tr class="keywords__row exercise-defs__row" data-builtin-index="' +
+        i +
+        '">' +
+        '<td class="keywords__order"><span class="keywords__num">' +
+        (i + 1) +
+        "</span></td>" +
+        '<td class="keywords__name exercise-defs__name">' +
+        escapeHtml(ex.name) +
+        (ex.note ? '<br><span class="workout__card-sub">' + escapeHtml(ex.note) + "</span>" : "") +
+        "</td>" +
+        "<td>" +
+        escapeHtml(exerciseCategoryLabels[ex.category] || ex.category) +
+        "</td>" +
+        '<td class="keywords__macro">' +
+        (ex.category === "cardio" && ex.met ? escapeHtml(fmtNum(parseFloat(ex.met))) : ex.category === "session" ? escapeHtml(workoutLb(ex.volumeLb || 0)) : "—") +
+        "</td>" +
+        "<td>" +
+        escapeHtml((ex.muscles || []).join(", ")) +
+        "</td>" +
+        "<td>" +
+        escapeHtml((ex.equipment || []).join(", ")) +
+        "</td>" +
+        '<td class="keywords__actions"><span class="exercise-defs__builtin" title="Ships with the app; loads automatically">Built-in</span></td>' +
+        "</tr>";
+    });
+    userExerciseDefinitions.forEach(function (ex, i) {
+      if (!exerciseDefsMatches(ex, words) && ex.name) return;
+      shown += 1;
+      html +=
+        '<tr class="keywords__row keywords__row--own exercise-defs__row' +
+        (firstOwn && builtinExerciseDefinitions.length ? " keywords__row--first-own" : "") +
+        '" data-user-index="' +
+        i +
+        '">' +
+        '<td class="keywords__order"><div class="keywords__order-cell"><span class="keywords__num">' +
+        (builtinExerciseDefinitions.length + i + 1) +
+        '</span><div class="keywords__order-steppers">' +
+        '<button type="button" class="keywords__move" data-exdef-action="up" aria-label="Move up"' +
+        (i === 0 ? " disabled" : "") +
+        ">↑</button>" +
+        '<button type="button" class="keywords__move" data-exdef-action="down" aria-label="Move down"' +
+        (i === userExerciseDefinitions.length - 1 ? " disabled" : "") +
+        ">↓</button></div></div></td>" +
+        '<td class="keywords__name"><input type="text" class="keywords__input keywords__input--name" data-exdef-field="name" value="' +
+        escapeAttr(ex.name) +
+        '" placeholder="e.g. cable fly" spellcheck="false">' +
+        '<span class="keywords__owner-tag" title="Your exercise (saved in this browser)">Yours</span></td>' +
+        '<td><select class="keywords__input" data-exdef-field="category">' +
+        exerciseCategoryOptionsHtml(ex.category) +
+        "</select></td>" +
+        '<td class="keywords__macro"><input type="number" class="keywords__input keywords__input--num" data-exdef-field="met" min="0" step="0.1" placeholder="MET" value="' +
+        escapeAttr(ex.met === "" ? "" : ex.met) +
+        '"></td>' +
+        '<td><input type="text" class="keywords__input" data-exdef-field="muscles" placeholder="chest, triceps" value="' +
+        escapeAttr((ex.muscles || []).join(", ")) +
+        '"></td>' +
+        '<td><input type="text" class="keywords__input" data-exdef-field="equipment" placeholder="cable" value="' +
+        escapeAttr((ex.equipment || []).join(", ")) +
+        '"></td>' +
+        '<td class="keywords__actions"><button type="button" class="keywords__delete" data-exdef-action="delete" aria-label="Delete exercise">Delete</button></td>' +
+        "</tr>";
+      firstOwn = false;
+    });
+    list.innerHTML = html;
+    var empty = document.getElementById("exercise-defs-empty");
+    if (empty) empty.hidden = shown > 0;
+    var count = document.getElementById("exercise-defs-count");
+    if (count) {
+      count.textContent =
+        builtinExerciseDefinitions.length +
+        " built-in · " +
+        userExerciseDefinitions.length +
+        " yours";
+    }
+  }
+
+  function setExerciseDefinitionsOpen(open) {
+    var panel = document.getElementById("exercise-definitions-panel");
+    var btn = document.getElementById("dashboard-exercise-definitions-jump");
+    if (open) closeExclusiveOverlays();
+    exerciseDefinitionsOpen = !!open;
+    if (btn) {
+      btn.setAttribute("aria-expanded", exerciseDefinitionsOpen ? "true" : "false");
+      btn.classList.toggle("app-nav__btn--open", exerciseDefinitionsOpen);
+    }
+    if (panel) panel.hidden = !exerciseDefinitionsOpen;
+    if (exerciseDefinitionsOpen) {
+      renderExerciseDefinitions();
+      resetAppSheetScroll(panel);
+    }
+    syncExclusiveOverlayUi();
+  }
+
+  function addUserExerciseDefinition() {
+    userExerciseDefinitions.push(normalizeUserExercise({ name: "", category: "compound" }));
+    exerciseDefsFilter = "";
+    var search = document.getElementById("exercise-defs-search");
+    if (search) search.value = "";
+    saveUserExerciseDefinitions();
+    renderExerciseDefinitions();
+    var rows = document.querySelectorAll('#exercise-defs-list [data-user-index] [data-exdef-field="name"]');
+    if (rows.length) rows[rows.length - 1].focus();
+  }
+
+  (function initExerciseDefinitionsSheet() {
+    var panel = document.getElementById("exercise-definitions-panel");
+    var jump = document.getElementById("dashboard-exercise-definitions-jump");
+    if (jump) {
+      jump.addEventListener("click", function () {
+        setExerciseDefinitionsOpen(!exerciseDefinitionsOpen);
+      });
+    }
+    if (!panel) return;
+    panel.addEventListener("click", function (e) {
+      if (e.target.closest('[data-action="close-exercise-definitions"]')) {
+        setExerciseDefinitionsOpen(false);
+        return;
+      }
+      if (e.target.closest("[data-exdef-add]")) {
+        addUserExerciseDefinition();
+        return;
+      }
+      var act = e.target.closest("[data-exdef-action]");
+      if (!act) return;
+      var row = act.closest("[data-user-index]");
+      if (!row) return;
+      var i = parseInt(row.getAttribute("data-user-index"), 10);
+      var ex = userExerciseDefinitions[i];
+      if (!ex) return;
+      var action = act.getAttribute("data-exdef-action");
+      if (action === "delete") {
+        if (ex.name && !window.confirm('Delete exercise "' + ex.name + '"?')) return;
+        userExerciseDefinitions.splice(i, 1);
+      } else if (action === "up" && i > 0) {
+        userExerciseDefinitions.splice(i - 1, 0, userExerciseDefinitions.splice(i, 1)[0]);
+      } else if (action === "down" && i < userExerciseDefinitions.length - 1) {
+        userExerciseDefinitions.splice(i + 1, 0, userExerciseDefinitions.splice(i, 1)[0]);
+      } else {
+        return;
+      }
+      saveUserExerciseDefinitions();
+      renderExerciseDefinitions();
+    });
+    panel.addEventListener("change", function (e) {
+      var field = e.target.getAttribute && e.target.getAttribute("data-exdef-field");
+      if (!field) return;
+      var row = e.target.closest("[data-user-index]");
+      var ex = row && userExerciseDefinitions[parseInt(row.getAttribute("data-user-index"), 10)];
+      if (!ex) return;
+      var patch = {};
+      Object.keys(ex).forEach(function (k) {
+        patch[k] = ex[k];
+      });
+      patch[field] = field === "name" ? String(e.target.value || "").trim() : e.target.value;
+      var next = normalizeUserExercise(patch);
+      Object.keys(next).forEach(function (k) {
+        ex[k] = next[k];
+      });
+      saveUserExerciseDefinitions();
+      if (field === "category") renderExerciseDefinitions();
+    });
+    var search = document.getElementById("exercise-defs-search");
+    if (search) {
+      search.addEventListener("input", function () {
+        exerciseDefsFilter = search.value || "";
+        renderExerciseDefinitions();
+      });
+    }
+  })();
 
   function renderWorkoutModal() {
     var modal = document.getElementById("workout-modal");
@@ -40398,7 +40920,7 @@
   }
 
   if (importSampleFoodsBtn) {
-    importSampleFoodsBtn.addEventListener("click", importSampleFoods);
+    importSampleFoodsBtn.addEventListener("click", restoreBuiltinFoods);
   }
 
   if (exportAllFoodsTopBtn) {
@@ -40410,13 +40932,13 @@
   }
 
   if (importSampleFoodsTopBtn) {
-    importSampleFoodsTopBtn.addEventListener("click", importSampleFoods);
+    importSampleFoodsTopBtn.addEventListener("click", restoreBuiltinFoods);
   }
 
   if (keywordsEmptyEl) {
     keywordsEmptyEl.addEventListener("click", function (e) {
       if (e.target.closest('[data-action="import-sample-from-empty"]')) {
-        importSampleFoods();
+        restoreBuiltinFoods();
       }
     });
   }
@@ -44239,7 +44761,13 @@
   }
 
   function maybeAutoImportSampleFoodsAndShowStarterGuide() {
-    if (keywords.length > 0) return;
+    if (keywords.length > 0) {
+      if (!hadPersistedFoodDefinitions && !starterGuideFinished) {
+        starterGuideEligible = true;
+        advanceStarterGuideAfterImport();
+      }
+      return;
+    }
 
     fetchSampleFoodItems()
       .then(function (items) {
@@ -44320,7 +44848,7 @@
   }
 
   loadAppConfig(function () {
-    var pending = 7;
+    var pending = 9;
     function definitionsReady() {
       pending -= 1;
       if (pending === 0) boot();
@@ -44329,6 +44857,8 @@
     loadLongevityDefinitions(definitionsReady);
     loadFoodNotesDefinitions(definitionsReady);
     loadExerciseNotesDefinitions(definitionsReady);
+    loadBuiltinFoodDefinitions(definitionsReady);
+    loadExerciseDefinitions(definitionsReady);
     loadFoodCategoriesDefinitions(definitionsReady);
     loadFoodSourcesPrecomputed(definitionsReady);
     loadFoodTextMigrations(definitionsReady);

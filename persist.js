@@ -8,6 +8,7 @@
  *   nutrients_food_definitions   FoodDefinition[]  (+ userId)
  *   nutrients_day_meals          DayMealsRow[]     (+ userId)
  *   nutrients_meals              SavedMeal[]       (+ userId)
+ *   nutrients_exercise_definitions UserExercise[]  (+ userId; built-ins ship in data-exercises/)
  *   nutrients_favorites          Favorite[]        (+ userId)
  *   nutrients_settings           SettingsRow[]     (+ userId)
  *
@@ -225,6 +226,7 @@ var NutrientsPersist = (function () {
     FAVORITES: "nutrients_favorites",
     SETTINGS: "nutrients_settings",
     ORPHAN_LEGACY: "nutrients_orphan_legacy",
+    EXERCISE_DEFINITIONS: "nutrients_exercise_definitions",
   };
 
   var LEGACY = {
@@ -945,6 +947,32 @@ var NutrientsPersist = (function () {
     );
   }
 
+  function loadUserRowsForKey(key) {
+    migrateIfNeeded();
+    var userId = currentUserId();
+    if (!userId) return null;
+    return rowsForUser(loadJson(key), userId).map(stripUserId);
+  }
+
+  function saveUserRowsForKey(key, rows) {
+    migrateIfNeeded();
+    var userId = currentUserId();
+    if (!userId || !Array.isArray(rows)) return false;
+    var next = rows.map(function (row) {
+      return withUserId(stripUserId(row), userId);
+    });
+    return saveJson(key, replaceUserRows(loadJson(key), userId, next));
+  }
+
+  /** User-added exercise definitions (built-ins load from data-exercises/). */
+  function loadExerciseDefinitions() {
+    return loadUserRowsForKey(KEYS.EXERCISE_DEFINITIONS);
+  }
+
+  function saveExerciseDefinitions(rows) {
+    return saveUserRowsForKey(KEYS.EXERCISE_DEFINITIONS, rows);
+  }
+
   function loadSettings() {
     migrateIfNeeded();
     var userId = currentUserId();
@@ -1189,6 +1217,8 @@ var NutrientsPersist = (function () {
     saveFavorites: saveFavorites,
     loadMeals: loadMeals,
     saveMeals: saveMeals,
+    loadExerciseDefinitions: loadExerciseDefinitions,
+    saveExerciseDefinitions: saveExerciseDefinitions,
     loadSettings: loadSettings,
     saveSettings: saveSettings,
     patchSettings: patchSettings,

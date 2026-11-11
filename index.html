@@ -204,6 +204,11 @@
           <span class="app-nav__label app-nav__label--short" aria-hidden="true">Defs</span>
           <span class="app-nav__shortcut" aria-hidden="true">D</span>
         </button>
+        <button type="button" id="dashboard-exercise-definitions-jump" class="app-nav__btn" aria-label="Exercise Definitions" aria-expanded="false" aria-haspopup="dialog" aria-controls="exercise-definitions-panel">
+          <svg class="app-nav__icon" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true" focusable="false"><use href="#icon-nav-definitions"></use></svg>
+          <span class="app-nav__label app-nav__label--full" aria-hidden="true">Exercise Definitions</span>
+          <span class="app-nav__label app-nav__label--short" aria-hidden="true">Ex Defs</span>
+        </button>
       </div>
     </nav>
 
@@ -1062,12 +1067,12 @@
       </form>
 
       <div class="keywords__toolbar">
-        <p class="keywords__hint">Define foods with macros (g). Saved in this browser. Matching names in day meals are highlighted.</p>
+        <p class="keywords__hint">Built-in food definitions load automatically. Foods you add are saved in this browser and listed after the built-ins (tagged Yours). Matching names in day meals are highlighted.</p>
         <div class="keywords__toolbar-actions">
           <button type="button" id="sort-foods-alphabetically-top" class="toolbar-bulk-btn">Sort alphabetically</button>
           <button type="button" id="export-all-foods-top" class="toolbar-bulk-btn">Export all</button>
           <button type="button" id="import-all-foods-top" class="toolbar-bulk-btn">Import all</button>
-          <button type="button" id="import-sample-foods-top" class="toolbar-bulk-btn">Import sample</button>
+          <button type="button" id="import-sample-foods-top" class="toolbar-bulk-btn">Restore built-ins</button>
         </div>
       </div>
 
@@ -1196,8 +1201,8 @@
         </p>
 
         <p id="keywords-empty" class="keywords__empty" hidden>
-          No food definitions yet. Recommended:
-          <button type="button" class="keywords__empty-link" data-action="import-sample-from-empty">Import our sample</button>.
+          No food definitions are showing.
+          <button type="button" class="keywords__empty-link" data-action="import-sample-from-empty">Restore built-ins</button>.
           You need food definitions before entering your meals; otherwise calories, macros, nutrition, and more won&rsquo;t tabulate.
         </p>
 
@@ -1207,10 +1212,56 @@
             <button type="button" id="sort-foods-alphabetically" class="keywords__bulk-btn toolbar-bulk-btn">Sort alphabetically</button>
             <button type="button" id="export-all-foods" class="keywords__bulk-btn toolbar-bulk-btn">Export all</button>
             <button type="button" id="import-all-foods" class="keywords__bulk-btn toolbar-bulk-btn">Import all</button>
-            <button type="button" id="import-sample-foods" class="keywords__bulk-btn toolbar-bulk-btn">Import sample</button>
+            <button type="button" id="import-sample-foods" class="keywords__bulk-btn toolbar-bulk-btn">Restore built-ins</button>
           </div>
         </div>
       </div>
+      </section>
+      </div>
+      </div>
+    </div>
+
+    <div id="exercise-definitions-panel" class="app-sheet" hidden>
+      <div class="app-sheet__backdrop" data-action="close-exercise-definitions"></div>
+      <div class="app-sheet__panel keywords-sheet__panel" role="dialog" aria-modal="true" aria-labelledby="exercise-definitions-heading">
+      <div class="app-sheet__body">
+      <section class="keywords keywords--sheet exercise-defs">
+        <div class="keywords__header">
+          <h2 id="exercise-definitions-heading" class="keywords__title">Exercise definitions</h2>
+          <button type="button" class="dashboard__panel-close" data-action="close-exercise-definitions" aria-label="Close exercise definitions">×</button>
+        </div>
+        <div class="keywords__toolbar">
+          <p class="keywords__hint">Built-in exercises (data-exercises/) load automatically. Exercises you add are saved in this browser and listed after the built-ins (tagged Yours). Cardio uses MET for calories; strength uses a MET of 5 unless you set one. <span id="exercise-defs-count"></span></p>
+          <div class="keywords__toolbar-actions">
+            <button type="button" class="toolbar-bulk-btn" data-exdef-add>Add exercise</button>
+          </div>
+        </div>
+        <div class="keywords__filter">
+          <label for="exercise-defs-search" class="keywords__filter-label">Search</label>
+          <div class="keywords__filter-controls">
+            <input type="search" id="exercise-defs-search" class="keywords__filter-input" placeholder="Filter by exercise, muscle or equipment" autocomplete="off" spellcheck="false" data-1p-ignore data-lpignore="true">
+          </div>
+        </div>
+        <div class="keywords__table-wrap">
+          <table class="keywords__table exercise-defs__table">
+            <thead>
+              <tr>
+                <th scope="col" class="keywords__order">#</th>
+                <th scope="col">Name</th>
+                <th scope="col">Category</th>
+                <th scope="col">MET</th>
+                <th scope="col">Muscles</th>
+                <th scope="col">Equipment</th>
+                <th scope="col"><span class="visually-hidden">Actions</span></th>
+              </tr>
+            </thead>
+            <tbody id="exercise-defs-list"></tbody>
+          </table>
+        </div>
+        <p id="exercise-defs-empty" class="keywords__empty" hidden>No exercises match your search.</p>
+        <div class="keywords__footer">
+          <button type="button" class="keywords__add" data-exdef-add>Add exercise</button>
+        </div>
       </section>
       </div>
       </div>
@@ -3583,7 +3634,7 @@
     data-avoid=".app-nav"
     data-role="supplementary"
     data-input="Import more food definitions so the app can help you track more food and analyze more nutrients."
-    data-ask="Ask it to add or fix food definitions in `data-food/definitions-food.json`, or to turn rough food lines into exact names with the `correct-food-typos` skill (`.agents/skills/`). Reload, then go to Food Definitions and click Import sample to see the change."
+    data-ask="Ask it to add or fix food definitions in `data-food/definitions-food.json`, or to turn rough food lines into exact names with the `correct-food-typos` skill (`.agents/skills/`). Reload to see the change; built-in food definitions load automatically."
     data-chat-steps="Go to Food Definitions and click Import on a food (add one first with Add food definition).
       | Click ✨ Have AI help me and type the serving and food, for example `1 cup of peanuts`.
       | Click Copy prompt, then open ChatGPT or Claude and paste it.
