@@ -1,0 +1,1530 @@
+{
+  "version": 1,
+  "categories": [
+    {
+      "id": "cardio",
+      "label": "Cardio"
+    },
+    {
+      "id": "compound",
+      "label": "Compound"
+    },
+    {
+      "id": "isolation_machine",
+      "label": "Isolation / machine"
+    },
+    {
+      "id": "session",
+      "label": "Session preset"
+    }
+  ],
+  "notes": "category is cardio, compound, or isolation_machine (isolation moves and machine work, including machine compound moves like leg press). met is the approximate metabolic equivalent for cardio (Adult Compendium of Physical Activities). keywords are lowercase phrases matched as whole words in workout lines; the longest match wins. session entries are whole bodybuilding workouts whose volumeLb comes from the stored split, exercise count, sets, reps and assumed weights.",
+  "exercises": [
+    {
+      "id": "walking-3-mph",
+      "name": "Walking (3 mph)",
+      "category": "cardio",
+      "muscles": [
+        "legs"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "keywords": [
+        "walking",
+        "walk"
+      ],
+      "met": 3.5
+    },
+    {
+      "id": "brisk-walking-4-mph",
+      "name": "Brisk walking (4 mph)",
+      "category": "cardio",
+      "muscles": [
+        "legs"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "keywords": [
+        "brisk walk",
+        "brisk walking",
+        "power walk"
+      ],
+      "met": 5.0
+    },
+    {
+      "id": "incline-treadmill-walking",
+      "name": "Incline treadmill walking",
+      "category": "cardio",
+      "muscles": [
+        "legs",
+        "glutes"
+      ],
+      "equipment": [
+        "treadmill"
+      ],
+      "keywords": [
+        "incline walk",
+        "incline treadmill",
+        "treadmill walk"
+      ],
+      "met": 6.0
+    },
+    {
+      "id": "hiking",
+      "name": "Hiking",
+      "category": "cardio",
+      "muscles": [
+        "legs",
+        "glutes"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "keywords": [
+        "hike",
+        "hiking"
+      ],
+      "met": 6.0
+    },
+    {
+      "id": "jogging-5-mph",
+      "name": "Jogging (5 mph)",
+      "category": "cardio",
+      "muscles": [
+        "legs"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "keywords": [
+        "jog",
+        "jogging"
+      ],
+      "met": 8.3
+    },
+    {
+      "id": "running-6-mph",
+      "name": "Running (6 mph)",
+      "category": "cardio",
+      "muscles": [
+        "legs"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "keywords": [
+        "run",
+        "running",
+        "treadmill run"
+      ],
+      "met": 9.8
+    },
+    {
+      "id": "running-fast-8-mph",
+      "name": "Running fast (8 mph)",
+      "category": "cardio",
+      "muscles": [
+        "legs"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "keywords": [
+        "fast run",
+        "tempo run",
+        "8 mph run"
+      ],
+      "met": 11.8
+    },
+    {
+      "id": "cycling-outdoors-12-14-mph",
+      "name": "Cycling outdoors (12–14 mph)",
+      "category": "cardio",
+      "muscles": [
+        "legs"
+      ],
+      "equipment": [
+        "bike"
+      ],
+      "keywords": [
+        "cycling",
+        "bike ride",
+        "biking",
+        "road bike"
+      ],
+      "met": 8.0
+    },
+    {
+      "id": "stationary-bike-moderate",
+      "name": "Stationary bike (moderate)",
+      "category": "cardio",
+      "muscles": [
+        "legs"
+      ],
+      "equipment": [
+        "stationary bike"
+      ],
+      "keywords": [
+        "stationary bike",
+        "exercise bike",
+        "bike"
+      ],
+      "met": 6.8
+    },
+    {
+      "id": "spin-class",
+      "name": "Spin class",
+      "category": "cardio",
+      "muscles": [
+        "legs"
+      ],
+      "equipment": [
+        "stationary bike"
+      ],
+      "keywords": [
+        "spin",
+        "spin class",
+        "spinning",
+        "peloton"
+      ],
+      "met": 8.5
+    },
+    {
+      "id": "air-bike-vigorous",
+      "name": "Air bike (vigorous)",
+      "category": "cardio",
+      "muscles": [
+        "legs",
+        "arms"
+      ],
+      "equipment": [
+        "air bike"
+      ],
+      "keywords": [
+        "air bike",
+        "assault bike",
+        "echo bike"
+      ],
+      "met": 8.8
+    },
+    {
+      "id": "rowing-machine-moderate",
+      "name": "Rowing machine (moderate)",
+      "category": "cardio",
+      "muscles": [
+        "back",
+        "legs",
+        "arms"
+      ],
+      "equipment": [
+        "rowing machine"
+      ],
+      "keywords": [
+        "rowing",
+        "rower",
+        "erg",
+        "rowing machine"
+      ],
+      "met": 7.0
+    },
+    {
+      "id": "swimming-laps-freestyle-moderate",
+      "name": "Swimming laps (freestyle, moderate)",
+      "category": "cardio",
+      "muscles": [
+        "full body"
+      ],
+      "equipment": [
+        "pool"
+      ],
+      "keywords": [
+        "swim",
+        "swimming",
+        "laps",
+        "freestyle"
+      ],
+      "met": 5.8
+    },
+    {
+      "id": "elliptical-moderate",
+      "name": "Elliptical (moderate)",
+      "category": "cardio",
+      "muscles": [
+        "legs"
+      ],
+      "equipment": [
+        "elliptical"
+      ],
+      "keywords": [
+        "elliptical",
+        "cross trainer"
+      ],
+      "met": 5.0
+    },
+    {
+      "id": "stair-climber",
+      "name": "Stair climber",
+      "category": "cardio",
+      "muscles": [
+        "legs",
+        "glutes"
+      ],
+      "equipment": [
+        "stair machine"
+      ],
+      "keywords": [
+        "stair climber",
+        "stairmaster",
+        "stair master",
+        "stepmill",
+        "stair stepper"
+      ],
+      "met": 9.0
+    },
+    {
+      "id": "jump-rope-moderate",
+      "name": "Jump rope (moderate)",
+      "category": "cardio",
+      "muscles": [
+        "legs",
+        "calves"
+      ],
+      "equipment": [
+        "jump rope"
+      ],
+      "keywords": [
+        "jump rope",
+        "jumping rope",
+        "skipping rope"
+      ],
+      "met": 11.8
+    },
+    {
+      "id": "hiit-circuit-training-vigorous",
+      "name": "HIIT / circuit training (vigorous)",
+      "category": "cardio",
+      "muscles": [
+        "full body"
+      ],
+      "equipment": [
+        "various"
+      ],
+      "keywords": [
+        "hiit",
+        "circuit",
+        "circuit training",
+        "tabata"
+      ],
+      "met": 8.0
+    },
+    {
+      "id": "aerobic-dance",
+      "name": "Aerobic dance",
+      "category": "cardio",
+      "muscles": [
+        "full body"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "keywords": [
+        "aerobics",
+        "dance class",
+        "zumba"
+      ],
+      "met": 7.3
+    },
+    {
+      "id": "heavy-bag-boxing",
+      "name": "Heavy bag boxing",
+      "category": "cardio",
+      "muscles": [
+        "arms",
+        "shoulders",
+        "core"
+      ],
+      "equipment": [
+        "punching bag"
+      ],
+      "keywords": [
+        "boxing",
+        "heavy bag",
+        "punching bag",
+        "kickboxing"
+      ],
+      "met": 5.5
+    },
+    {
+      "id": "back-squat",
+      "name": "Back squat",
+      "category": "compound",
+      "muscles": [
+        "quads",
+        "glutes",
+        "hamstrings",
+        "core"
+      ],
+      "equipment": [
+        "barbell"
+      ],
+      "keywords": [
+        "back squat",
+        "squat",
+        "squats",
+        "barbell squat"
+      ]
+    },
+    {
+      "id": "front-squat",
+      "name": "Front squat",
+      "category": "compound",
+      "muscles": [
+        "quads",
+        "glutes",
+        "core"
+      ],
+      "equipment": [
+        "barbell"
+      ],
+      "keywords": [
+        "front squat"
+      ]
+    },
+    {
+      "id": "goblet-squat",
+      "name": "Goblet squat",
+      "category": "compound",
+      "muscles": [
+        "quads",
+        "glutes"
+      ],
+      "equipment": [
+        "dumbbell",
+        "kettlebell"
+      ],
+      "keywords": [
+        "goblet squat"
+      ]
+    },
+    {
+      "id": "bulgarian-split-squat",
+      "name": "Bulgarian split squat",
+      "category": "compound",
+      "muscles": [
+        "quads",
+        "glutes"
+      ],
+      "equipment": [
+        "dumbbell",
+        "bodyweight"
+      ],
+      "keywords": [
+        "bulgarian split squat",
+        "split squat",
+        "bss"
+      ]
+    },
+    {
+      "id": "lunge",
+      "name": "Lunge",
+      "category": "compound",
+      "muscles": [
+        "quads",
+        "glutes",
+        "hamstrings"
+      ],
+      "equipment": [
+        "dumbbell",
+        "bodyweight"
+      ],
+      "keywords": [
+        "lunge",
+        "lunges",
+        "walking lunge",
+        "walking lunges"
+      ]
+    },
+    {
+      "id": "step-up",
+      "name": "Step-up",
+      "category": "compound",
+      "muscles": [
+        "quads",
+        "glutes"
+      ],
+      "equipment": [
+        "dumbbell",
+        "bodyweight"
+      ],
+      "keywords": [
+        "step up",
+        "step ups"
+      ]
+    },
+    {
+      "id": "deadlift",
+      "name": "Deadlift",
+      "category": "compound",
+      "muscles": [
+        "hamstrings",
+        "glutes",
+        "back",
+        "traps"
+      ],
+      "equipment": [
+        "barbell"
+      ],
+      "keywords": [
+        "deadlift",
+        "deadlifts",
+        "conventional deadlift"
+      ]
+    },
+    {
+      "id": "romanian-deadlift",
+      "name": "Romanian deadlift",
+      "category": "compound",
+      "muscles": [
+        "hamstrings",
+        "glutes",
+        "lower back"
+      ],
+      "equipment": [
+        "barbell",
+        "dumbbell"
+      ],
+      "keywords": [
+        "romanian deadlift",
+        "rdl",
+        "rdls",
+        "stiff leg deadlift"
+      ]
+    },
+    {
+      "id": "sumo-deadlift",
+      "name": "Sumo deadlift",
+      "category": "compound",
+      "muscles": [
+        "glutes",
+        "hamstrings",
+        "adductors",
+        "back"
+      ],
+      "equipment": [
+        "barbell"
+      ],
+      "keywords": [
+        "sumo deadlift"
+      ]
+    },
+    {
+      "id": "hip-thrust",
+      "name": "Hip thrust",
+      "category": "compound",
+      "muscles": [
+        "glutes",
+        "hamstrings"
+      ],
+      "equipment": [
+        "barbell"
+      ],
+      "keywords": [
+        "hip thrust",
+        "hip thrusts",
+        "glute bridge"
+      ]
+    },
+    {
+      "id": "good-morning",
+      "name": "Good morning",
+      "category": "compound",
+      "muscles": [
+        "hamstrings",
+        "lower back"
+      ],
+      "equipment": [
+        "barbell"
+      ],
+      "keywords": [
+        "good morning",
+        "good mornings"
+      ]
+    },
+    {
+      "id": "bench-press",
+      "name": "Bench press",
+      "category": "compound",
+      "muscles": [
+        "chest",
+        "triceps",
+        "front delts"
+      ],
+      "equipment": [
+        "barbell"
+      ],
+      "keywords": [
+        "bench press",
+        "bench",
+        "flat bench",
+        "barbell bench press"
+      ]
+    },
+    {
+      "id": "incline-bench-press",
+      "name": "Incline bench press",
+      "category": "compound",
+      "muscles": [
+        "upper chest",
+        "triceps",
+        "front delts"
+      ],
+      "equipment": [
+        "barbell"
+      ],
+      "keywords": [
+        "incline bench press",
+        "incline bench",
+        "incline press"
+      ]
+    },
+    {
+      "id": "dumbbell-bench-press",
+      "name": "Dumbbell bench press",
+      "category": "compound",
+      "muscles": [
+        "chest",
+        "triceps",
+        "front delts"
+      ],
+      "equipment": [
+        "dumbbell"
+      ],
+      "keywords": [
+        "dumbbell bench press",
+        "db bench press",
+        "db bench",
+        "dumbbell press"
+      ],
+      "note": "Usually two dumbbells: log 'pair' or 'each' to count both in volume."
+    },
+    {
+      "id": "overhead-press",
+      "name": "Overhead press",
+      "category": "compound",
+      "muscles": [
+        "shoulders",
+        "triceps",
+        "core"
+      ],
+      "equipment": [
+        "barbell"
+      ],
+      "keywords": [
+        "overhead press",
+        "ohp",
+        "military press",
+        "standing press"
+      ]
+    },
+    {
+      "id": "dumbbell-shoulder-press",
+      "name": "Dumbbell shoulder press",
+      "category": "compound",
+      "muscles": [
+        "shoulders",
+        "triceps"
+      ],
+      "equipment": [
+        "dumbbell"
+      ],
+      "keywords": [
+        "dumbbell shoulder press",
+        "db shoulder press",
+        "seated dumbbell press",
+        "arnold press"
+      ],
+      "note": "Usually two dumbbells: log 'pair' or 'each' to count both in volume."
+    },
+    {
+      "id": "push-press",
+      "name": "Push press",
+      "category": "compound",
+      "muscles": [
+        "shoulders",
+        "triceps",
+        "legs"
+      ],
+      "equipment": [
+        "barbell"
+      ],
+      "keywords": [
+        "push press"
+      ]
+    },
+    {
+      "id": "barbell-row",
+      "name": "Barbell row",
+      "category": "compound",
+      "muscles": [
+        "back",
+        "lats",
+        "biceps",
+        "rear delts"
+      ],
+      "equipment": [
+        "barbell"
+      ],
+      "keywords": [
+        "barbell row",
+        "bent over row",
+        "pendlay row",
+        "bb row"
+      ]
+    },
+    {
+      "id": "dumbbell-row",
+      "name": "Dumbbell row",
+      "category": "compound",
+      "muscles": [
+        "lats",
+        "back",
+        "biceps"
+      ],
+      "equipment": [
+        "dumbbell"
+      ],
+      "keywords": [
+        "dumbbell row",
+        "db row",
+        "one arm row",
+        "single arm row"
+      ]
+    },
+    {
+      "id": "t-bar-row",
+      "name": "T-bar row",
+      "category": "compound",
+      "muscles": [
+        "back",
+        "lats",
+        "biceps"
+      ],
+      "equipment": [
+        "t-bar",
+        "barbell"
+      ],
+      "keywords": [
+        "t bar row",
+        "tbar row"
+      ]
+    },
+    {
+      "id": "inverted-row",
+      "name": "Inverted row",
+      "category": "compound",
+      "muscles": [
+        "back",
+        "biceps"
+      ],
+      "equipment": [
+        "bodyweight"
+      ],
+      "keywords": [
+        "inverted row",
+        "bodyweight row",
+        "australian pull up"
+      ]
+    },
+    {
+      "id": "pull-up",
+      "name": "Pull-up",
+      "category": "compound",
+      "muscles": [
+        "lats",
+        "biceps",
+        "back"
+      ],
+      "equipment": [
+        "bodyweight"
+      ],
+      "keywords": [
+        "pull up",
+        "pull ups",
+        "pullup",
+        "pullups"
+      ]
+    },
+    {
+      "id": "chin-up",
+      "name": "Chin-up",
+      "category": "compound",
+      "muscles": [
+        "lats",
+        "biceps"
+      ],
+      "equipment": [
+        "bodyweight"
+      ],
+      "keywords": [
+        "chin up",
+        "chin ups",
+        "chinup",
+        "chinups"
+      ]
+    },
+    {
+      "id": "dips",
+      "name": "Dips",
+      "category": "compound",
+      "muscles": [
+        "chest",
+        "triceps",
+        "front delts"
+      ],
+      "equipment": [
+        "bodyweight"
+      ],
+      "keywords": [
+        "dips",
+        "parallel bar dips",
+        "chest dips",
+        "triceps dips"
+      ]
+    },
+    {
+      "id": "push-up",
+      "name": "Push-up",
+      "category": "compound",
+      "muscles": [
+        "chest",
+        "triceps",
+        "front delts",
+        "core"
+      ],
+      "equipment": [
+        "bodyweight"
+      ],
+      "keywords": [
+        "push up",
+        "push ups",
+        "pushup",
+        "pushups"
+      ]
+    },
+    {
+      "id": "power-clean",
+      "name": "Power clean",
+      "category": "compound",
+      "muscles": [
+        "full body",
+        "traps",
+        "legs"
+      ],
+      "equipment": [
+        "barbell"
+      ],
+      "keywords": [
+        "power clean",
+        "clean",
+        "hang clean"
+      ]
+    },
+    {
+      "id": "farmer-s-carry",
+      "name": "Farmer's carry",
+      "category": "compound",
+      "muscles": [
+        "grip",
+        "traps",
+        "core"
+      ],
+      "equipment": [
+        "dumbbell",
+        "kettlebell"
+      ],
+      "keywords": [
+        "farmer carry",
+        "farmers carry",
+        "farmer's carry",
+        "farmer walk",
+        "farmers walk"
+      ]
+    },
+    {
+      "id": "kettlebell-swing",
+      "name": "Kettlebell swing",
+      "category": "compound",
+      "muscles": [
+        "glutes",
+        "hamstrings",
+        "core"
+      ],
+      "equipment": [
+        "kettlebell"
+      ],
+      "keywords": [
+        "kettlebell swing",
+        "kb swing",
+        "kettlebell swings"
+      ]
+    },
+    {
+      "id": "barbell-curl",
+      "name": "Barbell curl",
+      "category": "isolation_machine",
+      "muscles": [
+        "biceps"
+      ],
+      "equipment": [
+        "barbell"
+      ],
+      "keywords": [
+        "barbell curl",
+        "bb curl",
+        "ez bar curl",
+        "ez curl"
+      ]
+    },
+    {
+      "id": "dumbbell-curl",
+      "name": "Dumbbell curl",
+      "category": "isolation_machine",
+      "muscles": [
+        "biceps"
+      ],
+      "equipment": [
+        "dumbbell"
+      ],
+      "keywords": [
+        "dumbbell curl",
+        "db curl",
+        "bicep curl",
+        "biceps curl",
+        "curl",
+        "curls"
+      ],
+      "note": "Usually two dumbbells: log 'pair' or 'each' to count both in volume."
+    },
+    {
+      "id": "hammer-curl",
+      "name": "Hammer curl",
+      "category": "isolation_machine",
+      "muscles": [
+        "biceps",
+        "forearms"
+      ],
+      "equipment": [
+        "dumbbell"
+      ],
+      "keywords": [
+        "hammer curl",
+        "hammer curls"
+      ]
+    },
+    {
+      "id": "preacher-curl",
+      "name": "Preacher curl",
+      "category": "isolation_machine",
+      "muscles": [
+        "biceps"
+      ],
+      "equipment": [
+        "machine",
+        "ez bar"
+      ],
+      "keywords": [
+        "preacher curl",
+        "preacher curls"
+      ]
+    },
+    {
+      "id": "cable-curl",
+      "name": "Cable curl",
+      "category": "isolation_machine",
+      "muscles": [
+        "biceps"
+      ],
+      "equipment": [
+        "cable"
+      ],
+      "keywords": [
+        "cable curl",
+        "cable curls"
+      ]
+    },
+    {
+      "id": "triceps-pushdown",
+      "name": "Triceps pushdown",
+      "category": "isolation_machine",
+      "muscles": [
+        "triceps"
+      ],
+      "equipment": [
+        "cable"
+      ],
+      "keywords": [
+        "triceps pushdown",
+        "tricep pushdown",
+        "pushdown",
+        "pushdowns",
+        "rope pushdown"
+      ]
+    },
+    {
+      "id": "overhead-triceps-extension",
+      "name": "Overhead triceps extension",
+      "category": "isolation_machine",
+      "muscles": [
+        "triceps"
+      ],
+      "equipment": [
+        "dumbbell",
+        "cable"
+      ],
+      "keywords": [
+        "overhead triceps extension",
+        "overhead tricep extension",
+        "triceps extension",
+        "tricep extension"
+      ]
+    },
+    {
+      "id": "skull-crusher",
+      "name": "Skull crusher",
+      "category": "isolation_machine",
+      "muscles": [
+        "triceps"
+      ],
+      "equipment": [
+        "ez bar",
+        "dumbbell"
+      ],
+      "keywords": [
+        "skull crusher",
+        "skull crushers",
+        "lying triceps extension"
+      ]
+    },
+    {
+      "id": "lateral-raise",
+      "name": "Lateral raise",
+      "category": "isolation_machine",
+      "muscles": [
+        "side delts"
+      ],
+      "equipment": [
+        "dumbbell",
+        "cable"
+      ],
+      "keywords": [
+        "lateral raise",
+        "lateral raises",
+        "side raise",
+        "side raises"
+      ],
+      "note": "Usually two dumbbells: log 'pair' or 'each' to count both in volume."
+    },
+    {
+      "id": "front-raise",
+      "name": "Front raise",
+      "category": "isolation_machine",
+      "muscles": [
+        "front delts"
+      ],
+      "equipment": [
+        "dumbbell",
+        "plate"
+      ],
+      "keywords": [
+        "front raise",
+        "front raises"
+      ]
+    },
+    {
+      "id": "rear-delt-fly",
+      "name": "Rear delt fly",
+      "category": "isolation_machine",
+      "muscles": [
+        "rear delts",
+        "upper back"
+      ],
+      "equipment": [
+        "dumbbell",
+        "machine"
+      ],
+      "keywords": [
+        "rear delt fly",
+        "rear delt flye",
+        "reverse fly",
+        "reverse pec deck"
+      ]
+    },
+    {
+      "id": "face-pull",
+      "name": "Face pull",
+      "category": "isolation_machine",
+      "muscles": [
+        "rear delts",
+        "upper back"
+      ],
+      "equipment": [
+        "cable"
+      ],
+      "keywords": [
+        "face pull",
+        "face pulls"
+      ]
+    },
+    {
+      "id": "dumbbell-chest-fly",
+      "name": "Dumbbell chest fly",
+      "category": "isolation_machine",
+      "muscles": [
+        "chest"
+      ],
+      "equipment": [
+        "dumbbell"
+      ],
+      "keywords": [
+        "dumbbell fly",
+        "db fly",
+        "chest fly",
+        "fly",
+        "flye",
+        "flyes",
+        "flys"
+      ]
+    },
+    {
+      "id": "pec-deck",
+      "name": "Pec deck",
+      "category": "isolation_machine",
+      "muscles": [
+        "chest"
+      ],
+      "equipment": [
+        "machine"
+      ],
+      "keywords": [
+        "pec deck",
+        "machine fly",
+        "pec fly"
+      ]
+    },
+    {
+      "id": "cable-crossover",
+      "name": "Cable crossover",
+      "category": "isolation_machine",
+      "muscles": [
+        "chest"
+      ],
+      "equipment": [
+        "cable"
+      ],
+      "keywords": [
+        "cable crossover",
+        "cable fly",
+        "cable flye"
+      ]
+    },
+    {
+      "id": "machine-chest-press",
+      "name": "Machine chest press",
+      "category": "isolation_machine",
+      "muscles": [
+        "chest",
+        "triceps"
+      ],
+      "equipment": [
+        "machine"
+      ],
+      "keywords": [
+        "machine chest press",
+        "chest press machine",
+        "chest press"
+      ]
+    },
+    {
+      "id": "machine-shoulder-press",
+      "name": "Machine shoulder press",
+      "category": "isolation_machine",
+      "muscles": [
+        "shoulders",
+        "triceps"
+      ],
+      "equipment": [
+        "machine"
+      ],
+      "keywords": [
+        "machine shoulder press",
+        "shoulder press machine"
+      ]
+    },
+    {
+      "id": "lat-pulldown",
+      "name": "Lat pulldown",
+      "category": "isolation_machine",
+      "muscles": [
+        "lats",
+        "biceps"
+      ],
+      "equipment": [
+        "machine",
+        "cable"
+      ],
+      "keywords": [
+        "lat pulldown",
+        "lat pull down",
+        "pulldown",
+        "pulldowns"
+      ]
+    },
+    {
+      "id": "seated-cable-row",
+      "name": "Seated cable row",
+      "category": "isolation_machine",
+      "muscles": [
+        "back",
+        "lats",
+        "biceps"
+      ],
+      "equipment": [
+        "cable",
+        "machine"
+      ],
+      "keywords": [
+        "seated cable row",
+        "cable row",
+        "seated row",
+        "machine row"
+      ]
+    },
+    {
+      "id": "leg-press",
+      "name": "Leg press",
+      "category": "isolation_machine",
+      "muscles": [
+        "quads",
+        "glutes"
+      ],
+      "equipment": [
+        "machine"
+      ],
+      "keywords": [
+        "leg press"
+      ]
+    },
+    {
+      "id": "hack-squat-machine",
+      "name": "Hack squat machine",
+      "category": "isolation_machine",
+      "muscles": [
+        "quads",
+        "glutes"
+      ],
+      "equipment": [
+        "machine"
+      ],
+      "keywords": [
+        "hack squat"
+      ]
+    },
+    {
+      "id": "smith-machine-squat",
+      "name": "Smith machine squat",
+      "category": "isolation_machine",
+      "muscles": [
+        "quads",
+        "glutes"
+      ],
+      "equipment": [
+        "machine"
+      ],
+      "keywords": [
+        "smith machine squat",
+        "smith squat"
+      ]
+    },
+    {
+      "id": "leg-extension",
+      "name": "Leg extension",
+      "category": "isolation_machine",
+      "muscles": [
+        "quads"
+      ],
+      "equipment": [
+        "machine"
+      ],
+      "keywords": [
+        "leg extension",
+        "leg extensions"
+      ]
+    },
+    {
+      "id": "lying-leg-curl",
+      "name": "Lying leg curl",
+      "category": "isolation_machine",
+      "muscles": [
+        "hamstrings"
+      ],
+      "equipment": [
+        "machine"
+      ],
+      "keywords": [
+        "lying leg curl",
+        "leg curl",
+        "leg curls",
+        "hamstring curl"
+      ]
+    },
+    {
+      "id": "seated-leg-curl",
+      "name": "Seated leg curl",
+      "category": "isolation_machine",
+      "muscles": [
+        "hamstrings"
+      ],
+      "equipment": [
+        "machine"
+      ],
+      "keywords": [
+        "seated leg curl"
+      ]
+    },
+    {
+      "id": "standing-calf-raise",
+      "name": "Standing calf raise",
+      "category": "isolation_machine",
+      "muscles": [
+        "calves"
+      ],
+      "equipment": [
+        "machine",
+        "dumbbell"
+      ],
+      "keywords": [
+        "calf raise",
+        "calf raises",
+        "standing calf raise"
+      ]
+    },
+    {
+      "id": "seated-calf-raise",
+      "name": "Seated calf raise",
+      "category": "isolation_machine",
+      "muscles": [
+        "calves"
+      ],
+      "equipment": [
+        "machine"
+      ],
+      "keywords": [
+        "seated calf raise"
+      ]
+    },
+    {
+      "id": "hip-abduction-machine",
+      "name": "Hip abduction machine",
+      "category": "isolation_machine",
+      "muscles": [
+        "glutes"
+      ],
+      "equipment": [
+        "machine"
+      ],
+      "keywords": [
+        "hip abduction",
+        "abductor machine",
+        "abduction machine"
+      ]
+    },
+    {
+      "id": "hip-adduction-machine",
+      "name": "Hip adduction machine",
+      "category": "isolation_machine",
+      "muscles": [
+        "adductors"
+      ],
+      "equipment": [
+        "machine"
+      ],
+      "keywords": [
+        "hip adduction",
+        "adductor machine",
+        "adduction machine"
+      ]
+    },
+    {
+      "id": "shrug",
+      "name": "Shrug",
+      "category": "isolation_machine",
+      "muscles": [
+        "traps"
+      ],
+      "equipment": [
+        "dumbbell",
+        "barbell"
+      ],
+      "keywords": [
+        "shrug",
+        "shrugs"
+      ]
+    },
+    {
+      "id": "cable-crunch",
+      "name": "Cable crunch",
+      "category": "isolation_machine",
+      "muscles": [
+        "abs"
+      ],
+      "equipment": [
+        "cable"
+      ],
+      "keywords": [
+        "cable crunch",
+        "crunch",
+        "crunches",
+        "ab machine"
+      ]
+    },
+    {
+      "id": "back-extension",
+      "name": "Back extension",
+      "category": "isolation_machine",
+      "muscles": [
+        "lower back",
+        "glutes"
+      ],
+      "equipment": [
+        "bench"
+      ],
+      "keywords": [
+        "back extension",
+        "back extensions",
+        "hyperextension",
+        "hyperextensions"
+      ]
+    },
+    {
+      "id": "wrist-curl",
+      "name": "Wrist curl",
+      "category": "isolation_machine",
+      "muscles": [
+        "forearms"
+      ],
+      "equipment": [
+        "dumbbell",
+        "barbell"
+      ],
+      "keywords": [
+        "wrist curl",
+        "wrist curls"
+      ]
+    },
+    {
+      "id": "session-bodybuilding-100-0",
+      "name": "Bodybuilding 100% compound 24,300 lb",
+      "category": "session",
+      "compoundPct": 100,
+      "isolationMachinePct": 0,
+      "exerciseCount": 6,
+      "compoundExercises": 6,
+      "isolationMachineExercises": 0,
+      "setsPerExercise": 3,
+      "repsPerSet": 10,
+      "compoundWeightLb": 135,
+      "isolationMachineWeightLb": 50,
+      "volumeLb": 24300,
+      "keywords": [
+        "bodybuilding 100% compound",
+        "bodybuilding all compound"
+      ],
+      "note": "Standard session: 6 exercises x 3 sets x 10 reps. 100% of 6 exercises rounds to 6 compound + 0 iso/machine. Assumed working weights: compound 135 lb (bar plus plates, e.g. squat, bench, row) and iso/machine 50 lb (machine stack, or a pair of 25 lb dumbbells counted as both). Volume = 3 x 10 x (6 x 135 + 0 x 50) = 24,300 lb."
+    },
+    {
+      "id": "session-bodybuilding-70-30",
+      "name": "Bodybuilding 70% compound 30% iso-machines 19,200 lb",
+      "category": "session",
+      "compoundPct": 70,
+      "isolationMachinePct": 30,
+      "exerciseCount": 6,
+      "compoundExercises": 4,
+      "isolationMachineExercises": 2,
+      "setsPerExercise": 3,
+      "repsPerSet": 10,
+      "compoundWeightLb": 135,
+      "isolationMachineWeightLb": 50,
+      "volumeLb": 19200,
+      "keywords": [
+        "bodybuilding 70% compound",
+        "bodybuilding 70/30",
+        "bodybuilding"
+      ],
+      "note": "Standard session: 6 exercises x 3 sets x 10 reps. 70% of 6 exercises rounds to 4 compound + 2 iso/machine. Assumed working weights: compound 135 lb (bar plus plates, e.g. squat, bench, row) and iso/machine 50 lb (machine stack, or a pair of 25 lb dumbbells counted as both). Volume = 3 x 10 x (4 x 135 + 2 x 50) = 19,200 lb."
+    },
+    {
+      "id": "session-bodybuilding-50-50",
+      "name": "Bodybuilding 50% compound 50% iso-machines 16,650 lb",
+      "category": "session",
+      "compoundPct": 50,
+      "isolationMachinePct": 50,
+      "exerciseCount": 6,
+      "compoundExercises": 3,
+      "isolationMachineExercises": 3,
+      "setsPerExercise": 3,
+      "repsPerSet": 10,
+      "compoundWeightLb": 135,
+      "isolationMachineWeightLb": 50,
+      "volumeLb": 16650,
+      "keywords": [
+        "bodybuilding 50% compound",
+        "bodybuilding 50/50"
+      ],
+      "note": "Standard session: 6 exercises x 3 sets x 10 reps. 50% of 6 exercises rounds to 3 compound + 3 iso/machine. Assumed working weights: compound 135 lb (bar plus plates, e.g. squat, bench, row) and iso/machine 50 lb (machine stack, or a pair of 25 lb dumbbells counted as both). Volume = 3 x 10 x (3 x 135 + 3 x 50) = 16,650 lb."
+    },
+    {
+      "id": "session-bodybuilding-30-70",
+      "name": "Bodybuilding 30% compound 70% iso-machines 14,100 lb",
+      "category": "session",
+      "compoundPct": 30,
+      "isolationMachinePct": 70,
+      "exerciseCount": 6,
+      "compoundExercises": 2,
+      "isolationMachineExercises": 4,
+      "setsPerExercise": 3,
+      "repsPerSet": 10,
+      "compoundWeightLb": 135,
+      "isolationMachineWeightLb": 50,
+      "volumeLb": 14100,
+      "keywords": [
+        "bodybuilding 30% compound",
+        "bodybuilding 30/70"
+      ],
+      "note": "Standard session: 6 exercises x 3 sets x 10 reps. 30% of 6 exercises rounds to 2 compound + 4 iso/machine. Assumed working weights: compound 135 lb (bar plus plates, e.g. squat, bench, row) and iso/machine 50 lb (machine stack, or a pair of 25 lb dumbbells counted as both). Volume = 3 x 10 x (2 x 135 + 4 x 50) = 14,100 lb."
+    },
+    {
+      "id": "session-bodybuilding-0-100",
+      "name": "Bodybuilding 100% iso-machines 9,000 lb",
+      "category": "session",
+      "compoundPct": 0,
+      "isolationMachinePct": 100,
+      "exerciseCount": 6,
+      "compoundExercises": 0,
+      "isolationMachineExercises": 6,
+      "setsPerExercise": 3,
+      "repsPerSet": 10,
+      "compoundWeightLb": 135,
+      "isolationMachineWeightLb": 50,
+      "volumeLb": 9000,
+      "keywords": [
+        "bodybuilding 100% iso machines",
+        "bodybuilding 100% iso-machines",
+        "bodybuilding all iso machines",
+        "bodybuilding 100% isolation"
+      ],
+      "note": "Standard session: 6 exercises x 3 sets x 10 reps. 0% of 6 exercises rounds to 0 compound + 6 iso/machine. Assumed working weights: compound 135 lb (bar plus plates, e.g. squat, bench, row) and iso/machine 50 lb (machine stack, or a pair of 25 lb dumbbells counted as both). Volume = 3 x 10 x (0 x 135 + 6 x 50) = 9,000 lb."
+    }
+  ]
+}
