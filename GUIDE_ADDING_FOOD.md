@@ -30,7 +30,9 @@ If you want to simplify things, you can have a value that is for **one serving**
 | `longevity`   | No       | object | longevity/fat/compound values            |
 | `carbQuality` | No       | object | glycemic index, added sugar, refined carb |
 
-Omit any nutrient key you can't estimate — don't guess. Leave the whole `micros`/`longevity`/`carbQuality` object out if you have nothing for it.
+Omit a nutrient key when no composition source reports it. Don't invent a number with no source. Leave the whole `micros`/`longevity`/`carbQuality` object out if you have nothing for it.
+
+A Nutrition Facts label is not a complete list. The FDA only requires vitamin D, calcium, iron, and potassium among vitamins and minerals. B vitamins (thiamin, riboflavin, niacin, pantothenic acid, B6, biotin, folate, B12) and most other vitamins and minerals are voluntary unless the food is fortified with them or the package claims them. Fill those from a composition table such as USDA FoodData Central, including for a branded or restaurant food. A missing line, or a label 0%, is not a reason to omit the key or store 0. A Supplement Facts panel does have to list every dietary ingredient, so a nutrient it leaves off can be 0.
 
 ---
 
@@ -178,7 +180,7 @@ The app has a built-in AI flow that writes the prompt for you:
 3. Copy the generated prompt and paste it into ChatGPT (or another AI chat).
 4. Paste the JSON that the AI returns back into the app.
 
-What the app generates is the exact schema and unit list from this doc — the JSON structure, the per-key units, and the "number in `micros` / `true` in `longevity`" rule, all filled in automatically. See `jsonSchemaExample()` / `nutrientListForPrompt()` in `app.js` for the source of truth on keys and units.
+What the app generates is the exact schema and unit list from this doc — the JSON structure, the per-key units, and the "number in `micros` / `true` in `longevity`" rule, all filled in automatically. The prompt also says a Nutrition Facts label is not complete: B vitamins and the other vitamins and minerals the FDA does not require must be filled from composition data. See `jsonSchemaExample()` / `nutrientListForPrompt()` / `buildAiPromptFromPortion()` in `app.js` for the source of truth on keys, units, and that rule.
 
 Note: food you import this way is saved to your **local browser storage**, not to the codebase. If you want it to be a permanent, shared entry (when user clicks "Import Sample"), take the object the AI generated and append it into `data-food/definitions-food.json` as a new array entry (see section 6).
 

@@ -1,7 +1,7 @@
 {
   "name": "add-food-definition",
-  "description": "Use when the user names a food to add, asks to add a food entry, or wants a new food written into data-food/definitions-food.json from the Import food nutrition prompt.",
-  "purpose": "Add one or more named foods to data-food/definitions-food.json. Nutrition objects follow the Import food definition prompt builder (Have AI help me), then get appended to the sample file.",
+  "description": "Use when the user names a food to add, asks to add a food entry, or wants a new food written into data-food/definitions-food.json from the Import food nutrition prompt. Fills vitamins and minerals the Nutrition Facts label does not have to list, including B vitamins, from composition data.",
+  "purpose": "Add one or more named foods to data-food/definitions-food.json. Nutrition objects follow the Import food definition prompt builder (Have AI help me). A Nutrition Facts label is only a start: B vitamins and the other voluntary vitamins and minerals are filled from composition data, then the objects are appended to the sample file.",
   "onInvoke": [
     "The user named a food (or a list of foods) to add to the sample food definitions. You fill the Import food prompt yourself and append the objects. Do not stop after drafting a prompt for ChatGPT.",
     "If they did not name a food, ask which food. Do not invent a food.",
@@ -19,7 +19,8 @@
       "jsonSchemaExample() zeroes every key as a shape demo. Those zeroes are not data. Do not paste that object into the file."
     ],
     "rulesFromBuilder": [
-      "Return JSON matching the structure: one object, or an array when there is more than one common serving. Omit any nutrient key you cannot estimate.",
+      "Return JSON matching the structure: one object, or an array when there is more than one common serving. Omit a nutrient key only when no composition source reports it.",
+      "A Nutrition Facts label is not a complete nutrient list. The FDA only requires vitamin D, calcium, iron, and potassium among vitamins and minerals. Fill the voluntary ones from composition data, including every B vitamin (thiamin, riboflavin, niacin, pantothenic acid, vitamin B6, biotin, folate, vitamin B12) and vitamins A, C, E, and K, magnesium, zinc, selenium, copper, manganese, chromium, iodine, phosphorus, molybdenum, chloride, and choline. Keys and lookup sources are labelGapNutrients and sources in .agents/skills/qa-definitions-food-label-gaps.json. Use the label for nutrients it actually prints. A missing label line is not an omit and not a 0. A label 0% means under 2% DV, not zero. Store 0 only when composition data shows the nutrient is absent (vitamin B12 in an unfortified plant food, vitamin C in unfortified oil). A Supplement Facts panel must list every dietary ingredient, so a nutrient it does not list can be 0. For a heavily fortified product, use the label or the maker's full list for the added premix; do not estimate those added vitamins from the unfortified base food. Enriched bread is a typical miss: the flour adds thiamin, riboflavin, niacin, and folic acid, and the grain supplies other B vitamins, even when the label lists none of them. Cite the composition source and portion weight in notes.",
       "Use the portion in the name field.",
       "If the food is missing serving information, append a common serving size to the end of the food name (e.g. 1/2 cup, 1 cup, 1 oz, 2 oz, 3 oz). Prefer everyday portions people actually log. If the serving is in oz, add a visual reference in parentheses if possible (e.g. \"3 oz (palm-sized)\", \"1 oz (about a small handful)\"). If it's usually eaten all in one sitting from a container or bag, name it as container or bag followed by oz etc in parenthesis.",
       "If the food has more than one common serving size people actually log, return an array of objects — one object per serving — with all nutrients scaled to that serving. When the user already named one portion, write only that portion.",
@@ -38,7 +39,7 @@
       "micros": "object of numeric amounts. Units are whatever nutrientListForPrompt assigns to that key.",
       "longevity": "object. Longevity-only keys are numbers. Keys that also exist in micros are boolean true.",
       "carbQuality": "object. glycemicIndex (GI, not grams), addedSugar (g), refinedCarbs (g). Also set netCarbs (g) to carbs minus fiber when fiber is known; the file stores it even though CARB_QUALITY_KEYS does not list it.",
-      "notes": "string. Cite the published source, the gram weight scaled to, and any important omission. The prompt schema omits notes; the sample file includes them."
+      "notes": "string. Cite the published source, the gram weight scaled to, and any important omission. When a Nutrition Facts label was used, also cite the composition source for B vitamins and the other nutrients the label did not have to list. The prompt schema omits notes; the sample file includes them."
     },
     "bridgeExample": {
       "micros": { "copper": 214, "selenium": 1 },
@@ -47,9 +48,9 @@
   },
   "values": [
     "Scale every number to the serving in the name.",
-    "Use a published source: USDA FoodData Central, a national food table (CoFID or equivalent), or the product label for a branded food. Name that source in notes.",
-    "Omit keys the source does not report. A stored 0 means the source reported zero, or the nutrient is absent for that food (vitamin B12 in an unfortified plant food, vitamin C in unfortified oil).",
-    "Do not copy the zero-filled schema. Do not invent a full micronutrient panel to look complete.",
+    "Use a published source. USDA FoodData Central or a national food table (CoFID or equivalent) for composition. A Nutrition Facts or restaurant page is a start for branded food: keep the numbers it actually prints, then fill B vitamins and the other voluntary vitamins and minerals from composition data. Name each source in notes.",
+    "A missing Nutrition Facts line is not a reason to omit the key or store 0. A label 0% means under 2% DV, not zero. Omit a key only when composition data also does not report it. A stored 0 means composition data reported zero, or the nutrient is absent for that food (vitamin B12 in an unfortified plant food, vitamin C in unfortified oil). On a Supplement Facts panel, a nutrient the panel does not list can be 0.",
+    "Do not copy the zero-filled schema. Do not invent a number with no source. Do fill B vitamins and the other nutrients the label is allowed to skip when a composition source reports them.",
     "Protein, carbs, and fats are required. If you cannot find those three, do not append the food; say what source you checked.",
     "Only use micros, longevity, and carbQuality keys that jsonSchemaExample / nutrientListForPrompt emit, plus carbQuality.netCarbs and notes."
   ],
@@ -57,6 +58,7 @@
     "Search data-food/definitions-food.json for the food name (case-insensitive). Use search; do not load the whole file.",
     "If the same food and the same serving already exist, report the existing name and stop. Do not add a second copy. A different serving of the same food is allowed when it is not already there.",
     "Read the three prompt-builder functions in app.js. Estimate nutrients using their rules and units.",
+    "When the food has a Nutrition Facts label or a restaurant nutrition page, treat that page as incomplete. Keep what it lists. Fill the label-gap nutrients, including every B vitamin, from composition data, and say so in notes. Do not leave those nutrients for a later QA pass.",
     "Build one object per serving you are adding.",
     "Append those objects to the end of the JSON array. Put a comma after the previous last object. Match the file's 2-space indent. Do not re-serialize or reformat the rest of the file.",
     "Validate, then tell the user each new name, its serving, and the source in notes."
@@ -80,6 +82,7 @@
     "Do not edit definitions-food-categories.json in this skill. If the new name is likely uncategorized, say so. Categorizing is the categorize-food-definitions skill.",
     "Do not change existing food objects.",
     "Do not put a bridge nutrient's number in longevity. The number stays in micros; longevity gets true.",
+    "Do not treat a Nutrition Facts label as the full micronutrient list. Do not store 0 for a vitamin or mineral the label left off or printed as 0%.",
     "Do not add foods the user did not name."
   ]
 }

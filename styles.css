@@ -238,6 +238,9 @@ body {
 }
 
 .week__nav-label-hint {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2rem;
   font-size: 0.65rem;
   font-weight: 500;
   color: #6a6a66;
@@ -271,6 +274,9 @@ body {
 }
 
 .week__nav-this {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.28rem;
   padding: 0.25rem 0.65rem;
   font: inherit;
   font-size: 0.8rem;
@@ -295,6 +301,7 @@ body {
 .week__favorites-toggle {
   display: inline-flex;
   align-items: center;
+  gap: 0.3rem;
   min-height: 1.9rem;
   padding: 0.25rem 0.65rem;
   font: inherit;
@@ -311,6 +318,7 @@ body {
 .week__saved-meals-toggle {
   display: inline-flex;
   align-items: center;
+  gap: 0.3rem;
   min-height: 1.9rem;
   padding: 0.25rem 0.65rem;
   font: inherit;
@@ -340,6 +348,7 @@ body {
 
 .week__days-favorite-week {
   display: flex;
+  flex-wrap: wrap;
   justify-content: flex-start;
   align-items: center;
   padding: 0.55rem 0.65rem 0.5rem;
@@ -446,9 +455,33 @@ body {
   background: #eaf1f8;
 }
 
+.btn-icon {
+  display: block;
+  width: 0.9rem;
+  height: 0.9rem;
+  flex: 0 0 auto;
+}
+
+.week__nav-label-hint .btn-icon,
+.week__meals-bulk .btn-icon,
+.week__clear-all .btn-icon,
+.week__meals-more-toggle .btn-icon,
+.week__entry-mode-toggle .btn-icon,
+.day__add-others .btn-icon,
+.day__guided-rearrange .btn-icon {
+  width: 0.8rem;
+  height: 0.8rem;
+}
+
+.week__days-favorite-week .btn-icon {
+  width: 0.85rem;
+  height: 0.85rem;
+}
+
 .week__days-favorite-week-btn {
   display: inline-flex;
   align-items: center;
+  gap: 0.28rem;
   min-height: 1.65rem;
   padding: 0.2rem 0.55rem;
   font: inherit;
@@ -907,6 +940,9 @@ body {
 }
 
 .week__meals-more-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.28rem;
   padding: 0.35rem 0.65rem;
   font: inherit;
   font-size: 0.8rem;
@@ -951,6 +987,12 @@ body {
     left: 0;
     max-width: calc(100vw - 1.5rem);
   }
+}
+
+.week__meals-bulk {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
 }
 
 .week__meals-bulk--primary {
@@ -1230,12 +1272,8 @@ body.app-nav-shortcuts-visible [data-app-shortcut] > .app-nav__shortcut {
   display: inline-flex !important;
 }
 
-/* Navbar: highlight the shortcut letter in the label instead of the badge. */
+/* Navbar: underline the shortcut letter in the label instead of the badge. */
 body.app-nav-shortcuts-visible .app-nav__key {
-  border-radius: 2px;
-  background: #fde68a;
-  color: #1a1a1a;
-  box-shadow: 0 0 0 1px #d4a017;
   text-decoration: underline;
   text-decoration-thickness: 2px;
   text-underline-offset: 2px;
@@ -5908,11 +5946,115 @@ button.dashboard__micro-day-name:focus-visible {
   flex-direction: column;
 }
 
+.longevity-analysis-modal--daily-nonstored .modal__header {
+  flex-shrink: 0;
+}
+
 .longevity-analysis-modal--daily-nonstored .longevity-analysis-modal__body,
 .longevity-analysis-report--daily-nonstored {
   flex: 1 1 auto;
   min-height: 0;
   overflow: auto;
+}
+
+.analysis-daily-nonstored__filter {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem 0.65rem;
+  margin-top: 0.75rem;
+}
+
+.analysis-daily-nonstored__filter[hidden] {
+  display: none;
+}
+
+.analysis-daily-nonstored__filter-label {
+  font-size: 0.78rem;
+  font-weight: 650;
+  color: #333;
+}
+
+.analysis-daily-nonstored__filter-field {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  flex: 1 1 16rem;
+  max-width: 28rem;
+  min-width: 0;
+}
+
+.analysis-daily-nonstored__filter-input {
+  flex: 1 1 auto;
+  min-width: 0;
+  width: 100%;
+  box-sizing: border-box;
+  font: inherit;
+  font-size: 0.9rem;
+  padding: 0.4rem 0.6rem;
+  border: 1px solid #c8c8c4;
+  border-radius: 4px;
+  background: #fff;
+  color: inherit;
+}
+
+.analysis-daily-nonstored__filter-input::-webkit-search-decoration,
+.analysis-daily-nonstored__filter-input::-webkit-search-cancel-button,
+.analysis-daily-nonstored__filter-input::-webkit-search-results-button,
+.analysis-daily-nonstored__filter-input::-webkit-search-results-decoration {
+  -webkit-appearance: none;
+  appearance: none;
+  display: none;
+}
+
+.analysis-daily-nonstored__filter-input:focus-visible {
+  outline: 2px solid #4a7fd4;
+  outline-offset: 1px;
+}
+
+.analysis-daily-nonstored__filter-clear {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  border: 1px solid #e0b4b4;
+  border-radius: 4px;
+  background: #fff5f5;
+  color: #b42318;
+  font-size: 1.25rem;
+  font-weight: 650;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.analysis-daily-nonstored__filter-clear[hidden] {
+  display: none;
+}
+
+.analysis-daily-nonstored__filter-clear:hover,
+.analysis-daily-nonstored__filter-clear:focus-visible {
+  background: #fce8e8;
+  border-color: #d7a0a0;
+  color: #8f1d14;
+}
+
+.analysis-daily-nonstored__filter-clear:focus-visible {
+  outline: 2px solid #4a7fd4;
+  outline-offset: 1px;
+}
+
+.analysis-daily-nonstored__filter-status {
+  flex: 1 1 100%;
+  margin: 0;
+  font-size: 0.75rem;
+  color: #8a4b08;
+}
+
+.analysis-daily-nonstored__filter-status[hidden] {
+  display: none;
 }
 
 .analysis-daily-nonstored__legend {
@@ -6049,6 +6191,10 @@ button.dashboard__micro-day-name:focus-visible {
   flex-direction: column;
   gap: 0;
   max-width: none;
+}
+
+.analysis-daily-nonstored__list[hidden] {
+  display: none;
 }
 
 .analysis-daily-nonstored__row {
@@ -6240,6 +6386,10 @@ button.analysis-daily-nonstored__name:focus-visible {
   margin: 0 0 0.35rem;
 }
 
+.analysis-nutrient-board__excess {
+  margin: 0;
+}
+
 .analysis-nutrient-board__label {
   margin: 0 0 0.35rem;
   font-size: 0.68rem;
@@ -6277,7 +6427,7 @@ button.analysis-daily-nonstored__name:focus-visible {
   background: #d0d0cc;
 }
 
-.analysis-fat-soluble-toggle {
+.analysis-nonstored-toggle {
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
@@ -6295,7 +6445,7 @@ button.analysis-daily-nonstored__name:focus-visible {
   cursor: pointer;
 }
 
-.analysis-fat-soluble-toggle__switch {
+.analysis-nonstored-toggle__switch {
   position: relative;
   width: 1.45rem;
   height: 0.85rem;
@@ -6303,7 +6453,7 @@ button.analysis-daily-nonstored__name:focus-visible {
   background: #d5d5d0;
 }
 
-.analysis-fat-soluble-toggle__switch::after {
+.analysis-nonstored-toggle__switch::after {
   content: "";
   position: absolute;
   top: 0.1rem;
@@ -6315,38 +6465,38 @@ button.analysis-daily-nonstored__name:focus-visible {
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.18);
 }
 
-.analysis-fat-soluble-toggle[aria-pressed="true"] {
+.analysis-nonstored-toggle[aria-pressed="true"] {
   border-color: #a8d4b4;
   background: #f3faf5;
   color: #14632c;
 }
 
-.analysis-fat-soluble-toggle[aria-pressed="true"] .analysis-fat-soluble-toggle__switch {
+.analysis-nonstored-toggle[aria-pressed="true"] .analysis-nonstored-toggle__switch {
   background: #1f8a4c;
 }
 
-.analysis-fat-soluble-toggle[aria-pressed="true"] .analysis-fat-soluble-toggle__switch::after {
+.analysis-nonstored-toggle[aria-pressed="true"] .analysis-nonstored-toggle__switch::after {
   left: 0.7rem;
 }
 
-.analysis-fat-soluble-toggle:hover,
-.analysis-fat-soluble-toggle:focus-visible {
+.analysis-nonstored-toggle:hover,
+.analysis-nonstored-toggle:focus-visible {
   border-color: #9eb0c2;
 }
 
-.analysis-fat-soluble-toggle:focus-visible,
-.analysis-fat-soluble-help__btn:focus-visible,
+.analysis-nonstored-toggle:focus-visible,
+.analysis-nonstored-help__btn:focus-visible,
 .analysis-period-nav__btn:focus-visible {
   outline: 2px solid #3d6b9e;
   outline-offset: 2px;
 }
 
-.analysis-fat-soluble-help {
+.analysis-nonstored-help {
   position: relative;
   display: inline-flex;
 }
 
-.analysis-fat-soluble-help__btn {
+.analysis-nonstored-help__btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -6360,14 +6510,14 @@ button.analysis-daily-nonstored__name:focus-visible {
   cursor: pointer;
 }
 
-.analysis-fat-soluble-help__btn:hover,
-.analysis-fat-soluble-help__btn:focus-visible,
-.analysis-fat-soluble-help__btn[aria-expanded="true"] {
+.analysis-nonstored-help__btn:hover,
+.analysis-nonstored-help__btn:focus-visible,
+.analysis-nonstored-help__btn[aria-expanded="true"] {
   background: #f4f4f2;
   color: #1f3a58;
 }
 
-.analysis-fat-soluble-help__chevron {
+.analysis-nonstored-help__chevron {
   width: 0.45rem;
   height: 0.45rem;
   margin-top: -0.15rem;
@@ -6376,7 +6526,7 @@ button.analysis-daily-nonstored__name:focus-visible {
   transform: rotate(45deg);
 }
 
-.analysis-fat-soluble-help__popup {
+.analysis-nonstored-help__popup {
   display: none;
   position: absolute;
   top: calc(100% + 0.28rem);
@@ -6397,7 +6547,7 @@ button.analysis-daily-nonstored__name:focus-visible {
   color: #243444;
 }
 
-.analysis-fat-soluble-help__popup::before {
+.analysis-nonstored-help__popup::before {
   content: "";
   position: absolute;
   right: 0;
@@ -6406,9 +6556,9 @@ button.analysis-daily-nonstored__name:focus-visible {
   height: 0.4rem;
 }
 
-.analysis-fat-soluble-help:hover .analysis-fat-soluble-help__popup,
-.analysis-fat-soluble-help:focus-within .analysis-fat-soluble-help__popup,
-.analysis-fat-soluble-help__btn[aria-expanded="true"] + .analysis-fat-soluble-help__popup {
+.analysis-nonstored-help:hover .analysis-nonstored-help__popup,
+.analysis-nonstored-help:focus-within .analysis-nonstored-help__popup,
+.analysis-nonstored-help__btn[aria-expanded="true"] + .analysis-nonstored-help__popup {
   display: block;
 }
 
@@ -9100,6 +9250,7 @@ button.dashboard__longevity-name:focus-visible {
 .week__clear-all {
   display: inline-flex;
   align-items: center;
+  gap: 0.25rem;
   justify-content: center;
   min-height: 1.2rem;
   padding: 0.1rem 0.25rem;
@@ -9666,6 +9817,7 @@ body.day-entry-guided .week__advanced-only {
 }
 
 .week__entry-mode-toggle {
+  gap: 0.28rem;
   width: auto;
   height: auto;
   min-width: 4.75rem;
@@ -10805,6 +10957,7 @@ input[type="number"]::-webkit-inner-spin-button {
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 0.32rem;
   width: 100%;
   min-height: 2.05rem;
   padding: 0.35rem 0.5rem;
@@ -10837,6 +10990,7 @@ input[type="number"]::-webkit-inner-spin-button {
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 0.32rem;
   width: 100%;
   min-height: 2.05rem;
   padding: 0.35rem 0.5rem;
@@ -10877,6 +11031,7 @@ input[type="number"]::-webkit-inner-spin-button {
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 0.28rem;
   width: 100%;
   min-height: 1.75rem;
   padding: 0.25rem 0.35rem;
@@ -10901,6 +11056,7 @@ input[type="number"]::-webkit-inner-spin-button {
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 0.28rem;
   width: 100%;
   min-height: 1.75rem;
   margin-top: 0;
@@ -10937,6 +11093,7 @@ input[type="number"]::-webkit-inner-spin-button {
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 0.32rem;
   width: 100%;
   min-height: 2.05rem;
   padding: 0.4rem 0.5rem;
@@ -10975,6 +11132,7 @@ input[type="number"]::-webkit-inner-spin-button {
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 0.28rem;
   width: 100%;
   min-height: 1.85rem;
   padding: 0.3rem 0.5rem;
@@ -12738,6 +12896,14 @@ body.day-word-wrap-off .day__input {
   gap: 0.5rem;
 }
 
+.add-food-modal__result-name {
+  flex: 1 1 auto;
+  min-width: 0;
+  font-weight: 400;
+  text-align: left;
+  overflow-wrap: break-word;
+}
+
 .day__suggest-item--meal .day__suggest-kind {
   flex: 0 0 auto;
 }
@@ -14336,6 +14502,76 @@ body.day-word-wrap-off .day__input {
   display: none;
 }
 
+.image-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 220;
+}
+
+.image-lightbox[hidden] {
+  display: none;
+}
+
+.image-lightbox__backdrop {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: rgba(12, 12, 12, 0.92);
+  cursor: zoom-out;
+}
+
+.image-lightbox__stage {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  padding: 3rem 1.25rem 1.25rem;
+  pointer-events: none;
+  box-sizing: border-box;
+}
+
+.image-lightbox__img {
+  display: block;
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  pointer-events: auto;
+  cursor: default;
+}
+
+.image-lightbox__close {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  z-index: 2;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-color: transparent;
+  background: rgba(255, 255, 255, 0.14);
+  color: #fff;
+  font-size: 1.5rem;
+}
+
+.image-lightbox__close:hover,
+.image-lightbox__close:focus-visible {
+  border-color: transparent;
+  background: rgba(255, 255, 255, 0.28);
+  color: #fff;
+}
+
+img:not(.image-lightbox__img) {
+  cursor: zoom-in;
+}
+
 body.modal-open {
   overflow: hidden;
 }
@@ -15176,6 +15412,119 @@ button.longevity-form__label-link:focus-visible {
 
 .import-all-mode__text {
   flex: 1;
+}
+
+.copy-foods {
+  margin: 0;
+  border: 1px solid #e0e0dc;
+  border-radius: 6px;
+  background: #fafaf8;
+}
+
+.copy-foods[hidden] {
+  display: none;
+}
+
+.copy-foods__summary {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.35rem 0.55rem;
+  padding: 0.5rem 0.65rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #333;
+  cursor: pointer;
+  list-style: none;
+}
+
+.copy-foods__summary::-webkit-details-marker {
+  display: none;
+}
+
+.copy-foods__summary::before {
+  content: "▸ ";
+  color: #5c5c5c;
+}
+
+.copy-foods[open] .copy-foods__summary::before {
+  content: "▾ ";
+}
+
+.copy-foods__count {
+  font-weight: 500;
+  color: #6a6a66;
+}
+
+.copy-foods__body {
+  padding: 0 0.65rem 0.55rem;
+  border-top: 1px solid #e8e8e4;
+}
+
+.copy-foods__list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  max-height: 11rem;
+  overflow: auto;
+  margin-top: 0.4rem;
+}
+
+.copy-foods__option {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.4rem;
+  margin: 0;
+  padding: 0.22rem 0;
+  font-size: 0.8rem;
+  font-weight: 400;
+  line-height: 1.35;
+  color: #333;
+  cursor: pointer;
+}
+
+.copy-foods__option input {
+  margin-top: 0.15rem;
+  flex-shrink: 0;
+}
+
+.copy-foods__option span {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.copy-foods__dividers {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.15rem 0.85rem;
+  margin-top: 0.45rem;
+  padding-top: 0.4rem;
+  border-top: 1px solid #e8e8e4;
+}
+
+.copy-foods__dividers-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: #5c5c5c;
+}
+
+.copy-foods__dividers .copy-foods__option {
+  padding: 0.12rem 0;
+}
+
+#copy-conflict-apply:disabled,
+#copy-date-apply:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+#copy-conflict-apply:disabled:hover,
+#copy-date-apply:disabled:hover {
+  background: #3d6b9e;
+  border-color: #3d6b9e;
 }
 
 .import-ai-panel {
@@ -16870,7 +17219,8 @@ button.longevity-form__label-link:focus-visible {
   }
 
   body.print-longevity-analysis .analysis-daily-nonstored__skeleton,
-  body.print-longevity-analysis .analysis-daily-nonstored__not-yet {
+  body.print-longevity-analysis .analysis-daily-nonstored__not-yet,
+  body.print-longevity-analysis #analysis-daily-nonstored-filter {
     display: none !important;
   }
 
@@ -18613,6 +18963,13 @@ body.print-preview .day__backdrop {
   font-variant-numeric: tabular-nums;
 }
 
+.day__exercise-item-note {
+  margin: 0.12rem 0 0;
+  font-size: 0.66rem;
+  line-height: 1.3;
+  color: #1e5a37;
+}
+
 .day__exercise-item-fields {
   display: flex;
   flex-wrap: wrap;
@@ -18704,6 +19061,31 @@ body.print-preview .day__backdrop {
   background: #eef7f1;
 }
 
+.day__exercise-suggest-name {
+  min-width: 0;
+}
+
+.day__exercise-suggest-meta {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.4rem;
+  flex: 0 0 auto;
+}
+
+.day__exercise-suggest-kcal {
+  color: #1e5a37;
+  font-size: 0.68rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.day__exercise-suggest-post {
+  color: #1e5a37;
+  font-size: 0.62rem;
+  white-space: nowrap;
+}
+
 .day__exercise-suggest-cat {
   color: #6b7280;
   font-size: 0.64rem;
@@ -18715,6 +19097,9 @@ body.print-preview .day__backdrop {
 }
 
 .day__exercise-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.22rem;
   font: inherit;
   font-size: 0.72rem;
   border: 0;
@@ -18725,10 +19110,99 @@ body.print-preview .day__backdrop {
   padding: 0;
 }
 
+.day__exercise-back .btn-icon {
+  width: 0.75rem;
+  height: 0.75rem;
+}
+
 #exercise-entry-toggle[aria-pressed="true"] {
   border-color: #2f7a4f;
   background: #e8f5ec;
   color: #1e5a37;
+}
+
+button.day__exercise-item-name {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  font-weight: 650;
+  text-align: left;
+  cursor: pointer;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.14em;
+}
+
+.exercise-detail-popover {
+  position: fixed;
+  z-index: 10050;
+  width: min(34rem, calc(100vw - 1rem));
+  max-height: min(28rem, calc(100vh - 1rem));
+  overflow: auto;
+  padding: 0.7rem 0.8rem 0.8rem;
+  border: 1px solid #cfd8d2;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.18);
+  font-size: 0.76rem;
+  line-height: 1.35;
+}
+
+.exercise-detail-popover[hidden] {
+  display: none;
+}
+
+.exercise-detail-popover__title {
+  margin: 0 0 0.35rem;
+  font-weight: 750;
+}
+
+.exercise-detail-popover p {
+  margin: 0 0 0.5rem;
+}
+
+.exercise-detail-popover__table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0 0 0.55rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.exercise-detail-popover__table th,
+.exercise-detail-popover__table td {
+  padding: 0.18rem 0.35rem;
+  border-bottom: 1px solid #e6ebe8;
+  text-align: left;
+}
+
+.exercise-detail-popover__table th {
+  color: #6b7280;
+  font-size: 0.68rem;
+  font-weight: 700;
+}
+
+.exercise-detail-popover__table td:nth-child(n + 2),
+.exercise-detail-popover__table th:nth-child(n + 2) {
+  text-align: right;
+}
+
+.exercise-detail-popover__table tfoot td {
+  font-weight: 750;
+  border-bottom: 0;
+}
+
+.exercise-detail-popover__add {
+  font: inherit;
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: #fff;
+  background: #1e5a37;
+  border: 0;
+  border-radius: 4px;
+  padding: 0.35rem 0.7rem;
+  cursor: pointer;
 }
 
 .exercise-kcal-popover {

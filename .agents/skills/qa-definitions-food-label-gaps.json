@@ -6,6 +6,7 @@
     "The FDA Nutrition Facts panel only requires vitamin D, calcium, iron and potassium among micronutrients. Every other vitamin and mineral is voluntary unless the food is fortified with it or makes a claim about it.",
     "Restaurant nutrition pages usually copy the same short list, so a missing value on a chain dish almost never means zero.",
     "A 0 typed from a label row like 'Vitamin C 0%' only means less than 2% DV, not none.",
+    "Bread is another example. It can contain various B vitamins (enriched flour adds thiamin, riboflavin, niacin, and folic acid, and the grain also supplies others such as B6). A label does not have to list a B vitamin unless that vitamin was added or the package claims it, and many breads leave them off anyway. Missing B vitamins on a bread label are not zeros.",
     "Supplements are the exception: a Supplement Facts label must list every dietary ingredient, so a nutrient a supplement doesn't list can be recorded as 0."
   ],
   "labelGapNutrients": [
@@ -82,7 +83,7 @@
   "rounding": "3 significant figures. mcg keys and phosphorus, magnesium, chloride, choline to 0.1; other mg keys to 0.001. Below 0.05 of the last shown digit counts as rounding to 0.",
   "relationshipToOtherSkills": [
     "qa-definitions-food is the first pass (AI estimates per nutrient, tracked in definitions-food-qa-checked.json). Its confirmed_zero verdicts can come from label reading, so they don't count as verified zeros here.",
-    "add-food-definition: when a new branded or restaurant food is added from its label, run this pass on that food before committing."
+    "add-food-definition fills these nutrients at add time from composition data, not from the label alone. Run this pass on that food before committing when any of the 23 keys are still missing or 0."
   ],
   "notes": [
     "Every food is in scope, including branded and restaurant food. Don't skip a food just because it has a label.",

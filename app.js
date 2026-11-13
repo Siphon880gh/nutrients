@@ -287,6 +287,18 @@
   var longevityAnalysisPrintBtn = document.getElementById("longevity-analysis-print");
   var longevityAnalysisDoneBtn = document.getElementById("longevity-analysis-done");
   var analysisAiActionsEl = document.getElementById("analysis-ai-actions");
+  var analysisDailyNonstoredFilterEl = document.getElementById(
+    "analysis-daily-nonstored-filter"
+  );
+  var analysisDailyNonstoredFilterInputEl = document.getElementById(
+    "analysis-daily-nonstored-filter-input"
+  );
+  var analysisDailyNonstoredFilterClearEl = document.getElementById(
+    "analysis-daily-nonstored-filter-clear"
+  );
+  var analysisDailyNonstoredFilterStatusEl = document.getElementById(
+    "analysis-daily-nonstored-filter-status"
+  );
   var analysisMicroGapsAiOpenBtn = document.getElementById(
     "analysis-micro-gaps-ai-open"
   );
@@ -307,7 +319,8 @@
   var longevityAnalysisReturnPending = false;
   var analysisActiveKind = null;
   var analysisActiveDayId = null;
-  var analysisFatSolubleOnly = false;
+  var analysisNonStoredOnly = false;
+  var analysisDailyNonstoredNameQuery = "";
   // Want more: low % = sad → high % = happy. Want less: high % = sad → low % = happy.
   var LONGEVITY_ANALYSIS_AVG_BANDS = [
     { id: "0-20", label: "0–20%", min: 0, max: 20, maxInclusive: false, color: "red", emoji: "😢" },
@@ -386,6 +399,9 @@
   var foodNoteModalTitleEl = document.getElementById("food-note-modal-title");
   var foodNoteModalBodyEl = document.getElementById("food-note-modal-body");
   var foodNoteModalDoneBtn = document.getElementById("food-note-modal-done");
+  var imageLightboxEl = document.getElementById("image-lightbox");
+  var imageLightboxImgEl = document.getElementById("image-lightbox-img");
+  var imageLightboxReturnFocus = null;
   var settingsOpenBtn = document.getElementById("settings-open");
   var settingsModalEl = document.getElementById("settings-modal");
   var settingsModalDoneBtn = document.getElementById("settings-modal-done");
@@ -683,6 +699,7 @@
   var copyDateApplyBtn = document.getElementById("copy-date-apply");
   var copyDateCancelBtn = document.getElementById("copy-date-cancel");
   var copyDatePending = null;
+  var copyDateFoodsEl = document.getElementById("copy-date-foods");
   var copyConflictModalEl = document.getElementById("copy-conflict-modal");
   var copyConflictModalTitleEl = document.getElementById(
     "copy-conflict-modal-title"
@@ -693,6 +710,7 @@
   var copyConflictApplyBtn = document.getElementById("copy-conflict-apply");
   var copyConflictCancelBtn = document.getElementById("copy-conflict-cancel");
   var copyConflictPending = null;
+  var copyConflictFoodsEl = document.getElementById("copy-conflict-foods");
   var EARLIEST_DIARY_DATE = "2026-05-01";
   var dayHighlightsToggleBtn = document.getElementById("day-highlights-toggle");
   var dayWordWrapToggleBtn = document.getElementById("day-word-wrap-toggle");
@@ -4376,7 +4394,9 @@
         );
       }
     });
-    lines.push("Estimation hints — omit any key you cannot estimate:");
+    lines.push(
+      "Estimation hints — a Nutrition Facts label often leaves these off. The FDA does not require B vitamins or most other vitamins and minerals. Estimate them from composition data (USDA FoodData Central or a national food table), scaled to this serving. Omit a key only when no composition source reports it:"
+    );
     lines.push(
       "  - micros.zinc: oysters, beef, pumpkin seeds, chickpeas, chicken (mg)"
     );
@@ -4523,12 +4543,22 @@
       "(a single object, or an array of objects when there is more than one common serving). " +
       'Use the portion in the name field (e.g. "' +
       nameExample +
-      '"). Omit any nutrient keys you cannot estimate.\n\n' +
+      '").\n\n' +
       'Rule: If the food is missing serving information, append a common serving size to the end of the food name (e.g. 1/2 cup, 1 cup, 1 oz, 2 oz, 3 oz). Prefer everyday portions people actually log. If the serving is in oz, add a visual reference in parentheses if possible (e.g. "3 oz (palm-sized)", "1 oz (about a small handful)"). If it\'s usually eaten all in one sitting from a container or bag, name it as container or bag followed by oz etc in parenthesis.\n\n' +
       "Rule: If the food has more than one common serving size people actually log, return an array of objects — one object per serving — with all nutrients scaled to that serving. " +
       "Example: peanuts as both 1 oz and 1 cup → [{ \"name\": \"Peanuts 1 oz (...)\", ... }, { \"name\": \"Peanuts 1 cup\", ... }].\n\n" +
       "Rule: Amounts for the micro requirements panel belong in micros. " +
       "When the same nutrient key also appears in longevity, store the number in micros only and set longevity[key] to true.\n\n" +
+      "Rule: A Nutrition Facts label is not a complete nutrient list. The FDA only requires vitamin D, calcium, iron, and potassium among vitamins and minerals. " +
+      "B vitamins are voluntary unless the food is fortified with them or the package claims them: thiamin (B1), riboflavin (B2), niacin (B3), pantothenic acid (B5), vitamin B6, biotin (B7), folate (B9), and vitamin B12. " +
+      "The same is true of vitamins A, C, E, and K, and of magnesium, zinc, selenium, copper, manganese, chromium, iodine, phosphorus, molybdenum, chloride, and choline. " +
+      "Packages and restaurant pages often leave these off even when the food contains them. Enriched bread is a typical case: the flour adds thiamin, riboflavin, niacin, and folic acid, and the grain supplies other B vitamins, but the label may list none of them. " +
+      "Use the label for nutrients it actually prints. Estimate the ones it leaves off from USDA FoodData Central or another food-composition table, scaled to this serving, for branded and restaurant foods too. " +
+      "A missing line is not zero. A label value of 0% means less than 2% of the Daily Value, not none. " +
+      "Store 0 only when composition data shows the nutrient is absent, such as vitamin B12 in an unfortified plant food or vitamin C in unfortified oil. " +
+      "For a fortified food, such as a meal replacement or a shake with a vitamin premix, use the added amounts when the label or the maker lists them. Do not estimate those added vitamins from the unfortified ingredient alone. " +
+      "A Supplement Facts panel is different: it has to list every dietary ingredient, so a nutrient it leaves off can be 0. " +
+      "Omit a key only when no composition source reports it.\n\n" +
       "Rule: If the food is a multivitamin or vitamin entry: Don't just list the label DV. " +
       "Adjust both the DV and actual values for typical absorption, since we don't absorb 100% of a pill for every vitamin. " +
       "If there is fat soluble vitamins, assume enough fats were eaten to absorb the fat-soluble vitamins (A, D, E, K).\n\n" +
@@ -5613,7 +5643,7 @@
       "- Do this only after I say that opening the URL and pasting its response also failed, or after a lookup response (the one you fetched, or the one I pasted) still leaves foods unmatched.",
       "- Create importable food-definition JSON for every food that was not matched by the recent-foods table and was not matched by the autocomplete URL.",
       "- Return one JSON array I can paste into Food definitions → Import all, using Amend. One object per unmatched food. No markdown fences or commentary around the JSON.",
-      "- Use the food-definition JSON shape at the end of this prompt. Each object needs a non-empty name. If a serving is missing, append a common serving to the name. Omit nutrient keys you cannot estimate.",
+      "- Use the food-definition JSON shape at the end of this prompt. Each object needs a non-empty name. If a serving is missing, append a common serving to the name. A Nutrition Facts label is not complete: fill B vitamins and the other vitamins and minerals the FDA does not require on the label from composition data. Omit a key only when no composition source reports it.",
       "- Put micro amounts in micros. When the same key also belongs in longevity, store the number in micros and set longevity[key] to true.",
       "- After the JSON, return the complete day meal log in one fenced text block. That block is what I paste into the day after importing. Include every food line from the original day meal log and every food this conversation has already matched, rewritten, or split: recent-foods table matches, autocomplete matches, and foods that still needed a new definition. A list of only the unmatched foods is incomplete.",
       "- Write each line with its resolved name: the recent-foods table wording when that matched, the autocomplete name when that matched, or the new JSON object's name exactly when the food was still unmatched. Keep the original order, comments, and blank lines. If the original line had a serving multiplier, keep that * N on the same line. Do not invent extra foods, and do not leave out a food because it was matched earlier in the conversation.",
@@ -5629,7 +5659,7 @@
       "",
       "Food-definition JSON for the next step (only foods matched by neither the recent-foods table nor the autocomplete URL):",
       "",
-      "The JSON array contains only foods still unmatched by both the recent-foods table and the autocomplete response. Return that JSON with no markdown fences (one object, or an array of objects when more than one food is unmatched). Omit any nutrient keys you cannot estimate. After that JSON, return the complete rewritten day meal log in one fenced text block: every food from the original log and from the whole conversation, in original order. Use the matched recent-foods name, the matched autocomplete name, or the new JSON name. Include foods already matched earlier; do not return only the unmatched foods.",
+      "The JSON array contains only foods still unmatched by both the recent-foods table and the autocomplete response. Return that JSON with no markdown fences (one object, or an array of objects when more than one food is unmatched). A Nutrition Facts label is not complete: fill B vitamins and the other vitamins and minerals the FDA does not require on the label from composition data. Omit a key only when no composition source reports it. After that JSON, return the complete rewritten day meal log in one fenced text block: every food from the original log and from the whole conversation, in original order. Use the matched recent-foods name, the matched autocomplete name, or the new JSON name. Include foods already matched earlier; do not return only the unmatched foods.",
       "",
       jsonSchemaExample(),
       "",
@@ -11869,6 +11899,7 @@
       (pufaAntioxidantTipModalEl && !pufaAntioxidantTipModalEl.hidden) ||
       (histamineTipModalEl && !histamineTipModalEl.hidden) ||
       (foodNoteModalEl && !foodNoteModalEl.hidden) ||
+      (imageLightboxEl && !imageLightboxEl.hidden) ||
       (settingsModalEl && !settingsModalEl.hidden) ||
       (authSignupModalEl && !authSignupModalEl.hidden) ||
       (authLoginModalEl && !authLoginModalEl.hidden) ||
@@ -20810,40 +20841,40 @@
     });
   }
 
-  function closeAnalysisFatSolubleNote() {
+  function closeAnalysisNonStoredNote() {
     if (!longevityAnalysisReportEl) return;
     var helpBtn = longevityAnalysisReportEl.querySelector(
-      "[data-analysis-fat-soluble-help]"
+      "[data-analysis-nonstored-help]"
     );
     if (helpBtn) helpBtn.setAttribute("aria-expanded", "false");
   }
 
-  function syncAnalysisFatSolubleToggle() {
+  function syncAnalysisNonStoredToggle() {
     if (!longevityAnalysisReportEl) return;
     var btns = longevityAnalysisReportEl.querySelectorAll(
-      "[data-analysis-fat-soluble-toggle]"
+      "[data-analysis-nonstored-toggle]"
     );
     Array.prototype.forEach.call(btns, function (btn) {
-      btn.setAttribute("aria-pressed", analysisFatSolubleOnly ? "true" : "false");
+      btn.setAttribute("aria-pressed", analysisNonStoredOnly ? "true" : "false");
       btn.setAttribute(
         "aria-label",
-        analysisFatSolubleOnly
-          ? "Fat solubles only is on. Showing only fat-soluble vitamins. Turn off to show all."
-          : "Fat solubles only is off. Showing all. Turn on to show only fat-soluble vitamins."
+        analysisNonStoredOnly
+          ? "Non-stored only is on. Showing nutrients that store poorly. Turn off to show all."
+          : "Non-stored only is off. Showing all. Turn on to show only nutrients that store poorly."
       );
     });
   }
 
-  function syncAnalysisAimBandCountsForFatSoluble() {
+  function syncAnalysisAimBandCountsForNonStored() {
     if (!longevityAnalysisReportEl) return;
-    if (!longevityAnalysisReportEl.querySelector("[data-analysis-fat-soluble-toggle]")) {
+    if (!longevityAnalysisReportEl.querySelector("[data-analysis-nonstored-toggle]")) {
       return;
     }
     var counts = {};
     var pills = longevityAnalysisReportEl.querySelectorAll("[data-analysis-nutrient]");
     Array.prototype.forEach.call(pills, function (pill) {
       if (pill.getAttribute("data-analysis-pill-kind") !== "aim") return;
-      if (analysisFatSolubleOnly && pill.getAttribute("data-fat-soluble") !== "true") {
+      if (analysisNonStoredOnly && pill.getAttribute("data-nonstored") !== "true") {
         return;
       }
       var bandId = pill.getAttribute("data-analysis-pill-band") || "";
@@ -20874,8 +20905,8 @@
 
   function syncLongevityAnalysisBandFilter() {
     if (!longevityAnalysisReportEl) return;
-    syncAnalysisFatSolubleToggle();
-    syncAnalysisAimBandCountsForFatSoluble();
+    syncAnalysisNonStoredToggle();
+    syncAnalysisAimBandCountsForNonStored();
     var aimActive = !!longevityAnalysisActiveAimBand;
     var limitActive = !!longevityAnalysisActiveLimitBand;
     var filterBtns = longevityAnalysisReportEl.querySelectorAll(
@@ -20909,12 +20940,12 @@
     Array.prototype.forEach.call(pills, function (pill) {
       var kind = pill.getAttribute("data-analysis-pill-kind");
       var bandId = pill.getAttribute("data-analysis-pill-band") || "";
-      var fatSolubleHidden =
-        analysisFatSolubleOnly &&
+      var nonStoredHidden =
+        analysisNonStoredOnly &&
         kind !== "limit" &&
-        pill.getAttribute("data-fat-soluble") !== "true";
+        pill.getAttribute("data-nonstored") !== "true";
       var show =
-        !fatSolubleHidden &&
+        !nonStoredHidden &&
         (kind === "limit"
           ? !limitActive || bandId === longevityAnalysisActiveLimitBand
           : !aimActive || bandId === longevityAnalysisActiveAimBand);
@@ -20932,7 +20963,7 @@
       ".analysis-nutrient-board__group"
     );
     Array.prototype.forEach.call(groups, function (group) {
-      if (group.querySelector("[data-analysis-fat-soluble-toggle]")) {
+      if (group.querySelector("[data-analysis-nonstored-toggle]")) {
         group.hidden = false;
         return;
       }
@@ -21152,6 +21183,18 @@
     if (!longevityAnalysisModalEl) return;
     longevityAnalysisModalEl.hidden = true;
     longevityAnalysisClearBandFilters();
+    analysisDailyNonstoredNameQuery = "";
+    if (analysisDailyNonstoredFilterInputEl) {
+      analysisDailyNonstoredFilterInputEl.value = "";
+    }
+    if (analysisDailyNonstoredFilterEl) analysisDailyNonstoredFilterEl.hidden = true;
+    if (analysisDailyNonstoredFilterClearEl) {
+      analysisDailyNonstoredFilterClearEl.hidden = true;
+    }
+    if (analysisDailyNonstoredFilterStatusEl) {
+      analysisDailyNonstoredFilterStatusEl.hidden = true;
+      analysisDailyNonstoredFilterStatusEl.textContent = "";
+    }
     longevityAnalysisReturnPending = false;
     analysisActiveKind = null;
     analysisActiveDayId = null;
@@ -21785,19 +21828,6 @@
     lysine: true,
   };
 
-  function analysisNutrientIsFatSoluble(key) {
-    if (!key) return false;
-    var focus = MICRO_CONDITION_FOCUS.fatSolubleVitamins;
-    var nutrients = focus && focus.nutrients;
-    if (nutrients && nutrients.indexOf(key) !== -1) return true;
-    return (
-      key === "vitaminK1" ||
-      key === "vitaminK2" ||
-      key === "vitaminK2MK4" ||
-      key === "vitaminK2MK7"
-    );
-  }
-
   function analysisNutrientPillSkipped(key) {
     if (!key || ANALYSIS_NUTRIENT_PILL_SKIP[key]) return true;
     if (MICRO_AMINO_SHORTFALL_KEYS[key]) return true;
@@ -21838,6 +21868,53 @@
     return list;
   }
 
+  function analysisNutrientExcessEntries(bySection) {
+    var seen = {};
+    var list = [];
+    MICRO_ANALYSIS_SECTIONS.forEach(function (section) {
+      var buckets = bySection[section.id] || { aim: [], limit: [] };
+      (buckets.aim || []).forEach(function (entry) {
+        if (!entry || !entry.key || seen[entry.key]) return;
+        if (analysisNutrientPillSkipped(entry.key)) return;
+        if (!(entry.pct > 100)) return;
+        seen[entry.key] = true;
+        list.push(entry);
+      });
+    });
+    list.sort(function (a, b) {
+      if (a.pct !== b.pct) return a.pct - b.pct;
+      return String(a.label || "").localeCompare(String(b.label || ""));
+    });
+    return list;
+  }
+
+  function analysisNutrientExcessHtml(entries) {
+    if (!entries || !entries.length) return "";
+    var rows = entries
+      .map(function (entry) {
+        return microAnalysisNutrientRowHtml(entry, false, true);
+      })
+      .join("");
+    var countLabel =
+      String(entries.length) +
+      " nutrient" +
+      (entries.length === 1 ? "" : "s");
+    return (
+      '<details class="analysis-nutrient-board__excess longevity-analysis-report__band-group">' +
+      '<summary class="longevity-analysis-report__band-summary">' +
+      '<span class="longevity-analysis-report__band-summary-main">' +
+      '<span class="longevity-analysis-report__band-label longevity-analysis-report__avg longevity-analysis-report__avg--yellow">Excess</span>' +
+      '<span class="longevity-analysis-report__band-count">' +
+      escapeHtml(">100% · " + countLabel) +
+      "</span></span>" +
+      '<span class="longevity-analysis-report__band-chevron" aria-hidden="true"></span>' +
+      "</summary>" +
+      '<div class="longevity-analysis-report__nutrient-list">' +
+      rows +
+      "</div></details>"
+    );
+  }
+
   function analysisNutrientPillsHtml(entries, limiting) {
     return entries
       .map(function (entry) {
@@ -21850,15 +21927,15 @@
         var feel =
           !limiting && entry.pct < 85 ? microShortfallFeelForKey(entry.key) : null;
         if (feel && feel.early) meta += " · " + feel.early;
-        var fatSolubleAttr =
-          !limiting && analysisNutrientIsFatSoluble(entry.key)
-            ? ' data-fat-soluble="true"'
+        var nonStoredAttr =
+          !limiting && microRequiresDailyIntake(entry.key)
+            ? ' data-nonstored="true"'
             : "";
         return (
           '<button type="button" class="analysis-nutrient-pill analysis-nutrient-pill--' +
           escapeAttr(color) +
           '"' +
-          fatSolubleAttr +
+          nonStoredAttr +
           ' data-analysis-nutrient="' +
           escapeAttr(entry.key) +
           '" data-analysis-nutrient-label="' +
@@ -21883,22 +21960,22 @@
       .join("");
   }
 
-  function analysisFatSolubleToolsHtml() {
+  function analysisNonStoredToolsHtml() {
     return (
       '<div class="analysis-nutrient-board__tools">' +
-      '<button type="button" class="analysis-fat-soluble-toggle" data-analysis-fat-soluble-toggle aria-pressed="' +
-      (analysisFatSolubleOnly ? "true" : "false") +
+      '<button type="button" class="analysis-nonstored-toggle" data-analysis-nonstored-toggle aria-pressed="' +
+      (analysisNonStoredOnly ? "true" : "false") +
       '">' +
-      '<span class="analysis-fat-soluble-toggle__switch" aria-hidden="true"></span>' +
-      '<span class="analysis-fat-soluble-toggle__label">Fat solubles only</span>' +
+      '<span class="analysis-nonstored-toggle__switch" aria-hidden="true"></span>' +
+      '<span class="analysis-nonstored-toggle__label">Non-stored only</span>' +
       "</button>" +
       '<span class="analysis-nutrient-board__sep" aria-hidden="true"></span>' +
-      '<span class="analysis-fat-soluble-help">' +
-      '<button type="button" class="analysis-fat-soluble-help__btn" data-analysis-fat-soluble-help aria-expanded="false" aria-controls="analysis-fat-soluble-note" aria-label="About fat-soluble vitamins">' +
-      '<span class="analysis-fat-soluble-help__chevron" aria-hidden="true"></span>' +
+      '<span class="analysis-nonstored-help">' +
+      '<button type="button" class="analysis-nonstored-help__btn" data-analysis-nonstored-help aria-expanded="false" aria-controls="analysis-nonstored-note" aria-label="About nutrients that store poorly">' +
+      '<span class="analysis-nonstored-help__chevron" aria-hidden="true"></span>' +
       "</button>" +
-      '<p id="analysis-fat-soluble-note" class="analysis-fat-soluble-help__popup" role="note">' +
-      "Fat-soluble vitamins tend to store longer, so being acutely short is less of a problem. See previous weeks/days." +
+      '<p id="analysis-nonstored-note" class="analysis-nonstored-help__popup" role="note">' +
+      "These nutrients store poorly, so a short day matters more than a weekly average." +
       "</p></span></div>"
     );
   }
@@ -21906,7 +21983,8 @@
   function microAnalysisNutrientBoardHtml(bySection) {
     var aim = analysisNutrientPillEntries(bySection, false);
     var limit = analysisNutrientPillEntries(bySection, true);
-    if (!aim.length && !limit.length) return "";
+    var excess = analysisNutrientExcessEntries(bySection);
+    if (!aim.length && !limit.length && !excess.length) return "";
     function group(label, entries, limiting) {
       if (!entries.length) return "";
       return (
@@ -21915,7 +21993,7 @@
         '<p class="analysis-nutrient-board__label">' +
         escapeHtml(label) +
         "</p>" +
-        (limiting ? "" : analysisFatSolubleToolsHtml()) +
+        (limiting ? "" : analysisNonStoredToolsHtml()) +
         "</div>" +
         '<div class="analysis-nutrient-board__pills">' +
         analysisNutrientPillsHtml(entries, limiting) +
@@ -21926,6 +22004,7 @@
       '<div class="analysis-nutrient-board">' +
       group("Want more", aim, false) +
       group("Want less", limit, true) +
+      analysisNutrientExcessHtml(excess) +
       '<div class="analysis-nutrient-choice" hidden>' +
       '<div class="analysis-nutrient-choice__text">' +
       '<p class="analysis-nutrient-choice__name"></p>' +
@@ -22017,6 +22096,45 @@
     );
   }
 
+  function microAnalysisNutrientRowHtml(entry, limiting, showShortfallFeel) {
+    var entryColor = limiting
+      ? longevityAnalysisLimitColorClass(entry.pct)
+      : longevityAnalysisAvgColorClass(entry.pct);
+    if (!limiting && entry.pct > 100) {
+      entryColor = "longevity-analysis-report__avg--yellow";
+    }
+    var actions =
+      microAnalysisNutrientInfoIconHtml(entry) +
+      microAnalysisNutrientSourcesIconHtml(entry);
+    var feelCells = showShortfallFeel
+      ? microAnalysisFeelCellsHtml(entry, limiting)
+      : "";
+    return (
+      '<div class="longevity-analysis-report__nutrient-row' +
+      (showShortfallFeel
+        ? " longevity-analysis-report__nutrient-row--feel"
+        : "") +
+      '">' +
+      '<span class="longevity-analysis-report__nutrient-main">' +
+      '<span class="longevity-analysis-report__nutrient-name">' +
+      escapeHtml(entry.label || "Untitled") +
+      "</span>" +
+      (actions
+        ? '<span class="longevity-analysis-report__nutrient-actions">' +
+          actions +
+          "</span>"
+        : "") +
+      "</span>" +
+      '<span class="longevity-analysis-report__nutrient-pct longevity-analysis-report__avg ' +
+      escapeAttr(entryColor) +
+      '">' +
+      escapeHtml(formatTargetPctNumber(entry.pct)) +
+      "</span>" +
+      feelCells +
+      "</div>"
+    );
+  }
+
   function microAnalysisNutrientRowsHtml(entries, limiting, showShortfallFeel) {
     if (!entries || !entries.length) return "";
     var bandsOrder = limiting
@@ -22053,42 +22171,7 @@
         var colorClass = "longevity-analysis-report__avg--" + band.color;
         var rows = group
           .map(function (entry) {
-            var entryColor = limiting
-              ? longevityAnalysisLimitColorClass(entry.pct)
-              : longevityAnalysisAvgColorClass(entry.pct);
-            if (!limiting && entry.pct > 100) {
-              entryColor = "longevity-analysis-report__avg--yellow";
-            }
-            var actions =
-              microAnalysisNutrientInfoIconHtml(entry) +
-              microAnalysisNutrientSourcesIconHtml(entry);
-            var feelCells = showShortfallFeel
-              ? microAnalysisFeelCellsHtml(entry, limiting)
-              : "";
-            return (
-              '<div class="longevity-analysis-report__nutrient-row' +
-              (showShortfallFeel
-                ? " longevity-analysis-report__nutrient-row--feel"
-                : "") +
-              '">' +
-              '<span class="longevity-analysis-report__nutrient-main">' +
-              '<span class="longevity-analysis-report__nutrient-name">' +
-              escapeHtml(entry.label || "Untitled") +
-              "</span>" +
-              (actions
-                ? '<span class="longevity-analysis-report__nutrient-actions">' +
-                  actions +
-                  "</span>"
-                : "") +
-              "</span>" +
-              '<span class="longevity-analysis-report__nutrient-pct longevity-analysis-report__avg ' +
-              escapeAttr(entryColor) +
-              '">' +
-              escapeHtml(formatTargetPctNumber(entry.pct)) +
-              "</span>" +
-              feelCells +
-              "</div>"
-            );
+            return microAnalysisNutrientRowHtml(entry, limiting, showShortfallFeel);
           })
           .join("");
         var hasShortfall =
@@ -22380,7 +22463,9 @@
       escapeAttr(bandColor) +
       '"' +
       (bandId ? ' data-pct-band="' + escapeAttr(bandId) + '"' : "") +
-      ' data-analysis-daily-pct="' +
+      ' data-analysis-name="' +
+      escapeAttr(field && field.label ? field.label : item.label || "Untitled") +
+      '" data-analysis-daily-pct="' +
       escapeAttr(String(item.pct)) +
       '" role="listitem">' +
       nameHtml +
@@ -22450,11 +22535,117 @@
               return microDailyNonstoredRowHtml(item);
             })
             .join("") +
-          "</div>";
+          "</div>" +
+          '<p class="analysis-daily-nonstored__empty" data-analysis-daily-nonstored-nomatch hidden>No match</p>';
       }
     }
     html += "</section>";
     return html;
+  }
+
+  function analysisDailyNonstoredNameQueryNormalized() {
+    return String(analysisDailyNonstoredNameQuery || "")
+      .replace(/[\u2018\u2019]/g, "'")
+      .replace(/\s+/g, " ")
+      .trim()
+      .toLowerCase();
+  }
+
+  function analysisDailyNonstoredNameMatches(name, query) {
+    if (!query) return true;
+    var norm = String(name || "")
+      .replace(/[\u2018\u2019]/g, "'")
+      .replace(/\s+/g, " ")
+      .trim()
+      .toLowerCase();
+    return norm.indexOf(query) !== -1;
+  }
+
+  function syncAnalysisDailyNonstoredNameFilter() {
+    var daily = analysisActiveKind === "micro-daily-nonstored";
+    if (analysisDailyNonstoredFilterEl) {
+      analysisDailyNonstoredFilterEl.hidden = !daily;
+    }
+    if (!daily) {
+      if (analysisDailyNonstoredFilterInputEl) {
+        analysisDailyNonstoredFilterInputEl.value = "";
+      }
+      if (analysisDailyNonstoredFilterClearEl) {
+        analysisDailyNonstoredFilterClearEl.hidden = true;
+      }
+      if (analysisDailyNonstoredFilterStatusEl) {
+        analysisDailyNonstoredFilterStatusEl.hidden = true;
+        analysisDailyNonstoredFilterStatusEl.textContent = "";
+      }
+      return;
+    }
+    var query = analysisDailyNonstoredNameQueryNormalized();
+    var raw = String(analysisDailyNonstoredNameQuery || "");
+    if (
+      analysisDailyNonstoredFilterInputEl &&
+      analysisDailyNonstoredFilterInputEl.value !== raw
+    ) {
+      analysisDailyNonstoredFilterInputEl.value = raw;
+    }
+    if (analysisDailyNonstoredFilterClearEl) {
+      analysisDailyNonstoredFilterClearEl.hidden = !raw.length;
+    }
+    var matchCount = 0;
+    if (longevityAnalysisReportEl) {
+      var cols = longevityAnalysisReportEl.querySelectorAll(
+        ".analysis-daily-nonstored__col"
+      );
+      Array.prototype.forEach.call(cols, function (col) {
+        var list = col.querySelector(".analysis-daily-nonstored__list");
+        var nomatch = col.querySelector("[data-analysis-daily-nonstored-nomatch]");
+        if (!list) {
+          if (nomatch) nomatch.hidden = true;
+          return;
+        }
+        if (!list._analysisDailyNonstoredRows) {
+          list._analysisDailyNonstoredRows = Array.prototype.slice.call(
+            list.querySelectorAll(".analysis-daily-nonstored__row")
+          );
+        }
+        var visible = [];
+        list._analysisDailyNonstoredRows.forEach(function (row) {
+          if (
+            analysisDailyNonstoredNameMatches(
+              row.getAttribute("data-analysis-name") || "",
+              query
+            )
+          ) {
+            visible.push(row);
+          }
+        });
+        while (list.firstChild) list.removeChild(list.firstChild);
+        visible.forEach(function (row) {
+          list.appendChild(row);
+        });
+        matchCount += visible.length;
+        var none = !!query && !visible.length;
+        list.hidden = none;
+        if (nomatch) nomatch.hidden = !none;
+      });
+    }
+    if (analysisDailyNonstoredFilterStatusEl) {
+      if (!query || matchCount) {
+        analysisDailyNonstoredFilterStatusEl.hidden = true;
+        analysisDailyNonstoredFilterStatusEl.textContent = "";
+      } else {
+        analysisDailyNonstoredFilterStatusEl.hidden = false;
+        analysisDailyNonstoredFilterStatusEl.textContent =
+          "No nutrients match “" + raw.trim() + "”.";
+      }
+    }
+  }
+
+  function clearAnalysisDailyNonstoredNameFilter() {
+    analysisDailyNonstoredNameQuery = "";
+    syncAnalysisDailyNonstoredNameFilter();
+    if (analysisDailyNonstoredFilterInputEl) {
+      analysisDailyNonstoredFilterInputEl.focus();
+    }
   }
 
   function microDailyNonstoredReportHtml(options) {
@@ -22588,7 +22779,10 @@
     } else if (kind === "micro-day") {
       var dayId = analysisActiveDayId;
       var dayMeta = dayMetaById(dayId);
-      if (!dayMeta) return;
+      if (!dayMeta) {
+        syncAnalysisDailyNonstoredNameFilter();
+        return;
+      }
       var dayDateLabel = dateLabelForDayId(dayId);
       if (longevityAnalysisTitleEl) {
         longevityAnalysisTitleEl.textContent =
@@ -22639,6 +22833,7 @@
 
     syncAnalysisPeriodNav();
     syncLongevityAnalysisBandFilter();
+    syncAnalysisDailyNonstoredNameFilter();
   }
 
   function analysisCanStepPeriod(delta) {
@@ -22740,6 +22935,7 @@
     closeOtherModalsForAnalysis();
     dismissLongevityAnalysisReturnWidget();
     longevityAnalysisClearBandFilters();
+    analysisDailyNonstoredNameQuery = "";
 
     analysisActiveKind = kind;
     analysisActiveDayId = analysisIsDayScopedKind(kind) ? dayId : null;
@@ -27887,6 +28083,13 @@
 
   function detectedFoodNotes() {
     var allText = normalizeDayMealsText(allDayMealsText());
+    var exerciseNames = [];
+    DAYS.forEach(function (day) {
+      dayExerciseEntries(day.id).forEach(function (entry) {
+        if (entry && entry.name) exerciseNames.push(entry.name);
+      });
+    });
+    if (exerciseNames.length) allText += "\n" + exerciseNames.join("\n");
     var text = dayMealsTextWithoutComments(allText);
     function matching(defs, haystack) {
       if (!haystack.trim() || !defs.length) return [];
@@ -30379,9 +30582,19 @@
     var existing = viewedWeekStart
       ? findFavoriteByTypeAndKey("week", viewedWeekStart)
       : null;
-    weekNavFavoriteBtn.textContent = existing
-      ? "Week favorited"
-      : "Favorite week";
+    var label = existing ? "Week favorited" : "Favorite week";
+    var labelEl = weekNavFavoriteBtn.querySelector(
+      ".week__days-favorite-week-label"
+    );
+    if (labelEl) labelEl.textContent = label;
+    else weekNavFavoriteBtn.textContent = label;
+    var iconUse = weekNavFavoriteBtn.querySelector("use");
+    if (iconUse) {
+      iconUse.setAttribute(
+        "href",
+        existing ? "#icon-day-favorite" : "#icon-star-outline"
+      );
+    }
     weekNavFavoriteBtn.setAttribute("aria-pressed", existing ? "true" : "false");
   }
 
@@ -33298,6 +33511,202 @@
     setViewedWeekStart(toDateKey(mondayOf(d)));
   }
 
+  function copyFoodChoicesFromText(text) {
+    var lines = normalizeDayMealsText(text).split("\n");
+    var choices = [];
+    lines.forEach(function (line, index) {
+      if (isBlankDayMealLine(line) || isCommentDayMealLine(line)) return;
+      choices.push({ index: index, text: visibleDayLineText(line) });
+    });
+    return choices;
+  }
+
+  /**
+   * Omit unchecked food lines. Comments, notes, and dividers stay, since they
+   * are not checkboxes. Extra blank lines left by a removed food collapse.
+   */
+  function mealTextKeepingFoodLines(text, keepIndexes) {
+    var keep = {};
+    var i;
+    for (i = 0; i < keepIndexes.length; i++) keep[keepIndexes[i]] = true;
+    var lines = normalizeDayMealsText(text).split("\n");
+    var out = [];
+    for (i = 0; i < lines.length; i++) {
+      var line = lines[i];
+      var isFood = !isBlankDayMealLine(line) && !isCommentDayMealLine(line);
+      if (isFood && !keep[i]) continue;
+      if (isBlankDayMealLine(line)) {
+        var visible = visibleDayLineText(line);
+        if (!visible) {
+          if (!out.length || isBlankDayMealLine(out[out.length - 1])) continue;
+          out.push("");
+          continue;
+        }
+        if (!out.length || isBlankDayMealLine(out[out.length - 1])) continue;
+        out.push(line);
+        continue;
+      }
+      out.push(line);
+    }
+    while (out.length && isBlankDayMealLine(out[out.length - 1])) out.pop();
+    return out.join("\n");
+  }
+
+  function copyLineIsDivider(line) {
+    return isBlankDayMealLine(line) && !!visibleDayLineText(line);
+  }
+
+  function applyCopyDividerChoice(text, choice) {
+    choice = choice || {};
+    if (!choice.before && !choice.after) return text;
+    var lines = normalizeDayMealsText(text).split("\n");
+    while (
+      lines.length &&
+      isBlankDayMealLine(lines[0]) &&
+      !visibleDayLineText(lines[0])
+    ) {
+      lines.shift();
+    }
+    while (
+      lines.length &&
+      isBlankDayMealLine(lines[lines.length - 1]) &&
+      !visibleDayLineText(lines[lines.length - 1])
+    ) {
+      lines.pop();
+    }
+    if (!lines.length) return "";
+    if (choice.before && !copyLineIsDivider(lines[0])) lines.unshift("---");
+    if (choice.after && !copyLineIsDivider(lines[lines.length - 1])) {
+      lines.push("---");
+    }
+    return lines.join("\n");
+  }
+
+  function copyFoodPickerState(rootEl) {
+    if (!rootEl || rootEl.hidden) return null;
+    var boxes = rootEl.querySelectorAll(
+      'input[type="checkbox"][data-line-index]'
+    );
+    if (!boxes.length) return null;
+    var indexes = [];
+    for (var i = 0; i < boxes.length; i++) {
+      if (!boxes[i].checked) continue;
+      indexes.push(parseInt(boxes[i].getAttribute("data-line-index"), 10));
+    }
+    return {
+      indexes: indexes,
+      total: boxes.length,
+      selected: indexes.length,
+    };
+  }
+
+  function syncCopyFoodPicker(rootEl, applyBtn) {
+    var state = copyFoodPickerState(rootEl);
+    var countEl = rootEl ? rootEl.querySelector(".copy-foods__count") : null;
+    if (countEl) {
+      if (!state) countEl.textContent = "";
+      else if (state.selected === state.total) {
+        countEl.textContent = "(" + state.total + ")";
+      } else {
+        countEl.textContent =
+          "(" + state.selected + " of " + state.total + " selected)";
+      }
+    }
+    if (!applyBtn) return;
+    if (!state) {
+      applyBtn.disabled = false;
+      applyBtn.textContent = "Copy";
+      applyBtn.removeAttribute("title");
+      return;
+    }
+    if (!state.selected) {
+      applyBtn.disabled = true;
+      applyBtn.textContent = "Copy";
+      applyBtn.title = "Select at least one food";
+      return;
+    }
+    applyBtn.disabled = false;
+    applyBtn.removeAttribute("title");
+    applyBtn.textContent =
+      state.selected === state.total ? "Copy all" : "Copy selected";
+  }
+
+  function renderCopyFoodPicker(rootEl, applyBtn, text) {
+    if (!rootEl) return;
+    var listEl = rootEl.querySelector(".copy-foods__list");
+    var choices = copyFoodChoicesFromText(text);
+    rootEl.hidden = choices.length === 0;
+    rootEl.open = false;
+    if (listEl) {
+      listEl.innerHTML = choices
+        .map(function (choice) {
+          var id = rootEl.id + "-line-" + choice.index;
+          return (
+            '<label class="copy-foods__option" for="' +
+            id +
+            '">' +
+            '<input type="checkbox" id="' +
+            id +
+            '" data-line-index="' +
+            choice.index +
+            '" checked>' +
+            "<span>" +
+            escapeHtml(choice.text) +
+            "</span></label>"
+          );
+        })
+        .join("");
+    }
+    resetCopyDividerChoice(rootEl);
+    syncCopyFoodPicker(rootEl, applyBtn);
+  }
+
+  function hideCopyFoodPicker(rootEl, applyBtn) {
+    if (!rootEl) return;
+    rootEl.hidden = true;
+    rootEl.open = false;
+    var listEl = rootEl.querySelector(".copy-foods__list");
+    if (listEl) listEl.innerHTML = "";
+    resetCopyDividerChoice(rootEl);
+    syncCopyFoodPicker(rootEl, applyBtn);
+  }
+
+  function resetCopyDividerChoice(rootEl) {
+    if (!rootEl) return;
+    rootEl.querySelectorAll("input[data-copy-divider]").forEach(function (box) {
+      box.checked = false;
+    });
+  }
+
+  function copyDividerChoice(rootEl) {
+    if (!rootEl || rootEl.hidden) return { before: false, after: false };
+    var before = rootEl.querySelector('input[data-copy-divider="before"]');
+    var after = rootEl.querySelector('input[data-copy-divider="after"]');
+    return {
+      before: !!(before && before.checked),
+      after: !!(after && after.checked),
+    };
+  }
+
+  function assignCopyDividerOptions(copyOpts, rootEl) {
+    var choice = copyDividerChoice(rootEl);
+    if (choice.before) copyOpts.dividerBefore = true;
+    if (choice.after) copyOpts.dividerAfter = true;
+  }
+
+  function noteCopyFoodPickerInHint(hintEl, rootEl) {
+    if (!hintEl || !rootEl || rootEl.hidden) return;
+    if (hintEl.textContent.indexOf("Foods to copy") !== -1) return;
+    hintEl.textContent +=
+      " Expand Foods to copy to leave some out, or add --- before or after.";
+  }
+
+  function copyLineIndexesFromPicker(rootEl) {
+    var state = copyFoodPickerState(rootEl);
+    if (!state || !state.selected || state.selected === state.total) return null;
+    return state.indexes;
+  }
+
   function copyDayToDateKey(dayId, destKey, confirmLabel, options) {
     options = options || {};
     var mode = options.mode === "append" ? "append" : "replace";
@@ -33314,6 +33723,17 @@
       return false;
     }
     var srcText = dayMealsByDate[srcKey] || "";
+    if (options.lineIndexes) {
+      if (!options.lineIndexes.length) return false;
+      srcText = mealTextKeepingFoodLines(srcText, options.lineIndexes);
+      if (!String(srcText).trim()) return false;
+    }
+    if (options.dividerBefore || options.dividerAfter) {
+      srcText = applyCopyDividerChoice(srcText, {
+        before: !!options.dividerBefore,
+        after: !!options.dividerAfter,
+      });
+    }
     var text =
       mode === "append"
         ? appendMealTexts(dayMealsByDate[destKey] || "", srcText)
@@ -33438,7 +33858,14 @@
     if (!copyConflictModalEl) return;
     copyConflictModalEl.hidden = true;
     copyConflictPending = null;
+    hideCopyFoodPicker(copyConflictFoodsEl, copyConflictApplyBtn);
     updateBodyModalOpen();
+  }
+
+  function sourceMealTextForDayCopy(dayId) {
+    flushEditorsToDayMeals();
+    var srcKey = dateKeyForDayId(dayId);
+    return srcKey ? dayMealsByDate[srcKey] || "" : "";
   }
 
   function openCopyConflictModal(pending) {
@@ -33455,6 +33882,16 @@
         pending.hint ||
         "Choose append or replace for " + (pending.label || "the destination") + ".";
     }
+    if (pending.kind === "day") {
+      renderCopyFoodPicker(
+        copyConflictFoodsEl,
+        copyConflictApplyBtn,
+        sourceMealTextForDayCopy(pending.dayId)
+      );
+      noteCopyFoodPickerInHint(copyConflictModalHintEl, copyConflictFoodsEl);
+    } else {
+      hideCopyFoodPicker(copyConflictFoodsEl, copyConflictApplyBtn);
+    }
     copyConflictModalEl.hidden = false;
     updateBodyModalOpen();
     if (copyConflictApplyBtn) copyConflictApplyBtn.focus();
@@ -33463,7 +33900,12 @@
   function runCopyConflictModalApply() {
     if (!copyConflictPending) return;
     var pending = copyConflictPending;
+    var selection = copyFoodPickerState(copyConflictFoodsEl);
+    if (selection && !selection.selected) return;
     var copyOpts = { mode: getCopyConflictMode(), skipConfirm: true };
+    var lineIndexes = copyLineIndexesFromPicker(copyConflictFoodsEl);
+    if (lineIndexes) copyOpts.lineIndexes = lineIndexes;
+    assignCopyDividerOptions(copyOpts, copyConflictFoodsEl);
     var ok = false;
     if (pending.kind === "week") {
       ok = copyWeekToMondayKey(pending.destMon, pending.label, copyOpts);
@@ -33650,6 +34092,7 @@
     if (!copyDateModalEl) return;
     copyDateModalEl.hidden = true;
     copyDatePending = null;
+    hideCopyFoodPicker(copyDateFoodsEl, copyDateApplyBtn);
     showCopyDateError("");
     updateBodyModalOpen();
   }
@@ -33680,6 +34123,22 @@
             : "Pick the destination calendar day for this date’s meals. Choose append or replace when that day already has food.";
     }
     showCopyDateError("");
+    if (mode === "day") {
+      renderCopyFoodPicker(
+        copyDateFoodsEl,
+        copyDateApplyBtn,
+        sourceMealTextForDayCopy(dayId)
+      );
+    } else if (mode === "experimental") {
+      renderCopyFoodPicker(
+        copyDateFoodsEl,
+        copyDateApplyBtn,
+        experimentalWeekTexts[dayId] || ""
+      );
+    } else {
+      hideCopyFoodPicker(copyDateFoodsEl, copyDateApplyBtn);
+    }
+    noteCopyFoodPickerInHint(copyDateModalHintEl, copyDateFoodsEl);
     copyDateModalEl.hidden = false;
     updateBodyModalOpen();
     copyDateInputEl.focus();
@@ -33703,8 +34162,13 @@
       return;
     }
     var pending = copyDatePending;
+    var selection = copyFoodPickerState(copyDateFoodsEl);
+    if (selection && !selection.selected) return;
     var conflictMode = getCopyDateConflictMode();
     var copyOpts = { mode: conflictMode, skipConfirm: true };
+    var lineIndexes = copyLineIndexesFromPicker(copyDateFoodsEl);
+    if (lineIndexes) copyOpts.lineIndexes = lineIndexes;
+    assignCopyDividerOptions(copyOpts, copyDateFoodsEl);
     var ok = false;
     if (pending.mode === "week") {
       ok = copyWeekToMondayKey(
@@ -35969,6 +36433,14 @@
     );
   }
 
+  function entryBtnIcon(symbolId) {
+    return (
+      '<svg class="btn-icon" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" focusable="false"><use href="#' +
+      symbolId +
+      '"></use></svg>'
+    );
+  }
+
   function dayGuidedFooterHtml(dayId) {
     var rearrangeOn = isGuidedRearrangeEnabled(dayId);
     var removeSelectOn = isGuidedRemoveSelectEnabled(dayId);
@@ -35991,17 +36463,23 @@
       (addDisabled
         ? "Select foods to duplicate, or turn off Rearrange to add food"
         : "Pick foods or a saved meal") +
-      '">Add food</button>' +
+      '">' +
+      entryBtnIcon("icon-plus") +
+      "Add food</button>" +
       '<button type="button" class="day__duplicate-food" data-action="duplicate-guided-selected" data-day-id="' +
       escapeAttr(dayId) +
       '"' +
       (showDup ? "" : " hidden") +
-      ' title="Duplicate selected foods">Duplicate</button>' +
+      ' title="Duplicate selected foods">' +
+      entryBtnIcon("icon-day-copy") +
+      "Duplicate</button>" +
       '<div class="day__guided-footer-secondary">' +
       '<div class="day__guided-others">' +
       '<button type="button" class="day__add-others" data-action="toggle-guided-others" data-day-id="' +
       escapeAttr(dayId) +
-      '" aria-haspopup="menu" aria-expanded="false">Add Others</button>' +
+      '" aria-haspopup="menu" aria-expanded="false">' +
+      entryBtnIcon("icon-others") +
+      "Add Others</button>" +
       '<div class="day__guided-others-menu" hidden role="menu">' +
       '<button type="button" role="menuitem" data-action="guided-add-comment" data-comment-prefix="//" data-day-id="' +
       escapeAttr(dayId) +
@@ -36017,7 +36495,9 @@
       escapeAttr(dayId) +
       '" aria-pressed="' +
       (rearrangeOn ? "true" : "false") +
-      '">Rearrange</button>' +
+      '">' +
+      entryBtnIcon("icon-rearrange") +
+      "Rearrange</button>" +
       "</div>" +
       "</div>" +
       '<div class="day__guided-footer-remove-select"' +
@@ -36027,10 +36507,14 @@
       escapeAttr(dayId) +
       '"' +
       (guidedRemoveSelectedIndexes(dayId).length ? "" : " disabled") +
-      ">Confirm Deletion</button>" +
+      ">" +
+      entryBtnIcon("icon-day-clear") +
+      "Confirm Deletion</button>" +
       '<button type="button" class="day__guided-remove-cancel" data-action="cancel-guided-remove-select" data-day-id="' +
       escapeAttr(dayId) +
-      '">Cancel</button>' +
+      '">' +
+      entryBtnIcon("icon-close") +
+      "Cancel</button>" +
       "</div>" +
       "</div>"
     );
@@ -37224,17 +37708,19 @@
         var name = match.name;
         var isMeal = match.kind === "meal" && match.mealId;
         var range = foodSuggestHighlightRange(name, query);
-        var labelHtml;
+        var nameHtml;
         if (range && range.len > 0) {
-          labelHtml =
+          nameHtml =
             escapeHtml(name.slice(0, range.start)) +
             '<span class="day__suggest-match">' +
             escapeHtml(name.slice(range.start, range.start + range.len)) +
             "</span>" +
             escapeHtml(name.slice(range.start + range.len));
         } else {
-          labelHtml = escapeHtml(name);
+          nameHtml = escapeHtml(name);
         }
+        var labelHtml =
+          '<span class="add-food-modal__result-name">' + nameHtml + "</span>";
         if (isMeal) {
           labelHtml += '<span class="add-food-modal__result-kind">Meal</span>';
         }
@@ -38211,6 +38697,17 @@
       });
       return false;
     }
+    if (options.lineIndexes) {
+      if (!options.lineIndexes.length) return false;
+      srcText = mealTextKeepingFoodLines(srcText, options.lineIndexes);
+      if (!String(srcText).trim()) return false;
+    }
+    if (options.dividerBefore || options.dividerAfter) {
+      srcText = applyCopyDividerChoice(srcText, {
+        before: !!options.dividerBefore,
+        after: !!options.dividerAfter,
+      });
+    }
     var text =
       mode === "append"
         ? appendMealTexts(dayMealsByDate[destKey] || "", srcText)
@@ -39138,7 +39635,7 @@
   function buildExerciseKeywordIndex() {
     exerciseKeywordIndex = [];
     exerciseDefinitions.forEach(function (ex) {
-      (ex.keywords || []).concat([ex.name]).forEach(function (kw) {
+      (ex.keywords || []).concat([ex.name, ex.shortName]).forEach(function (kw) {
         var norm = workoutNormalizeText(kw);
         if (!norm) return;
         exerciseKeywordIndex.push({
@@ -39274,7 +39771,9 @@
             per * (ex.isolationMachineExercises || 0) * (ex.isolationMachineWeightLb || 0);
         } else if (ex.category === "cardio") {
           entry.minutes = workoutParseMinutes(hit.rest);
-          entry.metMinutes = entry.minutes * (parseFloat(ex.met) || 0);
+          entry.postBurn = positiveNum(ex.postBurn);
+          entry.metMinutes =
+            entry.minutes * (parseFloat(ex.met) || 0) * (1 + entry.postBurn);
         } else {
           var parsed = workoutParseSets(hit.rest);
           if (ex.category === "compound") {
@@ -39346,7 +39845,7 @@
       var c = exerciseEntryCalories(e);
       var sets = positiveNum(e.sets);
       var out = {
-        text: e.name + (sets ? " " + sets + "×" + (positiveNum(e.reps) || "?") + (positiveNum(e.weightLb) ? " @ " + e.weightLb + " lb" : "") : "") + (c.minutes ? " · " + fmtNum(c.minutes) + " min" : "") + " (exercise entry)",
+        text: e.name + (sets ? " " + sets + "×" + (positiveNum(e.reps) || "?") + (positiveNum(e.weightLb) ? " @ " + e.weightLb + " lb" : "") : "") + (c.showDuration && c.minutes ? " · " + fmtNum(c.minutes) + " min" : "") + " (exercise entry)",
         ex: def,
         category: c.category,
         compoundSets: 0,
@@ -39364,7 +39863,8 @@
         out.isoVolume = per * (def.isolationMachineExercises || 0) * (def.isolationMachineWeightLb || 0);
       } else if (c.category === "cardio") {
         out.minutes = c.minutes;
-        out.metMinutes = c.minutes * c.met;
+        out.postBurn = c.postBurnRate;
+        out.metMinutes = c.minutes * c.met * (1 + (c.postBurnRate || 0));
       } else if (c.category === "compound") {
         out.compoundSets = sets;
         out.compoundVolume = c.volume;
@@ -39402,6 +39902,9 @@
     var pctVol = volTotal ? Math.round((t.compoundVolume / volTotal) * 100) : 0;
     var weightKg = getBodyWeightKg();
     var kcal = weightKg ? (t.metMinutes * 3.5 * weightKg) / 200 : 0;
+    var postBurnIncluded = all.some(function (e) {
+      return e.postBurn > 0 && e.metMinutes;
+    });
     var html =
       hint +
       '<div class="workout__cards">' +
@@ -39430,7 +39933,13 @@
       escapeHtml(
         t.metMinutes
           ? kcal
-            ? "≈ " + fmtNumGrouped(Math.round(kcal)) + " kcal (MET × 3.5 × " + fmtNum(weightKg) + " kg ÷ 200 × min)"
+            ? "≈ " +
+              fmtNumGrouped(Math.round(kcal)) +
+              " kcal (MET × 3.5 × " +
+              fmtNum(weightKg) +
+              " kg ÷ 200 × min" +
+              (postBurnIncluded ? ", including post-burn" : "") +
+              ")"
             : fmtNumGrouped(Math.round(t.metMinutes)) + " MET-min · set body weight in Settings for kcal"
           : "No cardio minutes logged"
       ) +
@@ -39547,8 +40056,8 @@
               : (ex.equipment || []).join(", ");
         html +=
           "<tr><td>" +
-          escapeHtml(ex.name) +
-          (ex.note && cat !== "session"
+          escapeHtml(ex.shortName || ex.name) +
+          (ex.note && cat !== "session" && !ex.shortName
             ? '<br><span class="workout__card-sub">' + escapeHtml(ex.note) + "</span>"
             : "") +
           "</td><td>" +
@@ -39573,7 +40082,7 @@
   function exerciseDefsMatches(ex, words) {
     if (!words.length) return true;
     var hay = workoutNormalizeText(
-      [ex.name, exerciseCategoryLabels[ex.category] || ""]
+      [ex.shortName, ex.name, exerciseCategoryLabels[ex.category] || ""]
         .concat(ex.keywords || [], ex.muscles || [], ex.equipment || [])
         .join(" ")
     );
@@ -39617,8 +40126,8 @@
         (i + 1) +
         "</span></td>" +
         '<td class="keywords__name exercise-defs__name">' +
-        escapeHtml(ex.name) +
-        (ex.note ? '<br><span class="workout__card-sub">' + escapeHtml(ex.note) + "</span>" : "") +
+        escapeHtml(ex.shortName || ex.name) +
+        (ex.note && !ex.shortName ? '<br><span class="workout__card-sub">' + escapeHtml(ex.note) + "</span>" : "") +
         "</td>" +
         "<td>" +
         escapeHtml(exerciseCategoryLabels[ex.category] || ex.category) +
@@ -39783,16 +40292,16 @@
   // ---- Food Entry exercise layer: per-day exercise entries over a day column ----
   // Entries persist per date (persist.saveDayExercises). Calories:
   //   kcal = MET × 3.5 × body weight (kg) ÷ 200 × minutes
-  // Cardio uses the exercise's MET; strength uses MET 5 (compound / session) or
-  // 3.5 (isolation / machine) unless the definition sets one. Strength minutes
-  // default to sets × 3 (work + rest) when not entered; sessions default to 60.
+  // Cardio uses the exercise's MET. Strength uses MET 5 (compound) or 3.5
+  // (isolation / machine) unless the definition sets one, and minutes default
+  // to sets × 3 (work + rest) when not entered. Bodybuilding sessions have no
+  // duration; their calories use the preset's exercises × sets, not a clock time.
   // Without a body weight in Settings, 70 kg is assumed (and said so).
   var dayExercisesByDate = {};
   var dayExerciseOpenByDay = {};
   var EXERCISE_DEFAULT_KG = 70;
   var EXERCISE_STRENGTH_MET = { compound: 5, isolation_machine: 3.5, session: 5 };
   var EXERCISE_MIN_PER_SET = 3;
-  var EXERCISE_SESSION_MINUTES = 60;
 
   function loadDayExercises() {
     dayExercisesByDate = {};
@@ -39834,7 +40343,7 @@
   function exerciseDefForEntry(entry) {
     for (var i = 0; i < exerciseDefinitions.length; i++) {
       var ex = exerciseDefinitions[i];
-      if ((entry.exId && ex.id === entry.exId) || ex.name === entry.name) return ex;
+      if ((entry.exId && ex.id === entry.exId) || ex.name === entry.name || ex.shortName === entry.name) return ex;
     }
     return null;
   }
@@ -39854,13 +40363,25 @@
     var sets = positiveNum(entry.sets);
     var reps = positiveNum(entry.reps);
     var weightLb = positiveNum(entry.weightLb);
-    var minutes = positiveNum(entry.minutes);
+    var timed = category !== "session";
+    var minutes = timed ? positiveNum(entry.minutes) : 0;
     var minutesSource = "entered";
-    if (!minutes) {
-      if (category === "session") {
-        minutes = EXERCISE_SESSION_MINUTES;
-        minutesSource = "assumed " + EXERCISE_SESSION_MINUTES + " min session";
-      } else if (category !== "cardio" && sets) {
+    if (!timed) {
+      var presetExercises = def ? positiveNum(def.exerciseCount) : 0;
+      var presetSets = def ? positiveNum(def.setsPerExercise) : 0;
+      if (presetExercises && presetSets) {
+        minutes = presetExercises * presetSets * EXERCISE_MIN_PER_SET;
+        minutesSource =
+          "preset " +
+          presetExercises +
+          " exercises × " +
+          presetSets +
+          " sets, not a logged duration";
+      } else {
+        minutesSource = "no duration";
+      }
+    } else if (!minutes) {
+      if (category !== "cardio" && sets) {
         minutes = sets * EXERCISE_MIN_PER_SET;
         minutesSource = "assumed " + EXERCISE_MIN_PER_SET + " min per set incl. rest";
       } else {
@@ -39869,7 +40390,10 @@
     }
     var kgSet = getBodyWeightKg();
     var kg = kgSet || EXERCISE_DEFAULT_KG;
-    var kcal = (met * 3.5 * kg * minutes) / 200;
+    var sessionKcal = (met * 3.5 * kg * minutes) / 200;
+    var postBurnRate = def ? positiveNum(def.postBurn) : 0;
+    var postKcal = sessionKcal * postBurnRate;
+    var kcal = sessionKcal + postKcal;
     var volume = 0;
     if (category === "session" && def) volume = positiveNum(def.volumeLb);
     else if (category !== "cardio") volume = sets * reps * weightLb;
@@ -39883,6 +40407,10 @@
       kgAssumed: !kgSet,
       category: category,
       volume: volume,
+      sessionKcal: sessionKcal,
+      postBurnRate: postBurnRate,
+      postKcal: postKcal,
+      showDuration: timed,
     };
   }
 
@@ -39896,7 +40424,15 @@
 
   function exerciseCaloriesTitle(entry) {
     var c = exerciseEntryCalories(entry);
-    return (
+    if (!c.showDuration) {
+      return (
+        entry.name +
+        ": " +
+        fmtNumGrouped(Math.round(c.kcal)) +
+        " kcal, no duration"
+      );
+    }
+    var title =
       entry.name +
       ": " +
       fmtNumGrouped(Math.round(c.kcal)) +
@@ -39906,12 +40442,16 @@
       fmtNum(c.kg) +
       " kg ÷ 200 × " +
       fmtNum(c.minutes) +
-      " min"
-    );
+      " min";
+    if (c.postKcal) {
+      title += " + " + Math.round(c.postBurnRate * 100) + "% post-burn";
+    }
+    return title;
   }
 
   function exerciseEntryHtml(entry, dayId, i, count) {
     var c = exerciseEntryCalories(entry);
+    var def = exerciseDefForEntry(entry);
     var strength = c.category === "compound" || c.category === "isolation_machine";
     var num = function (field, value, label, step, ph) {
       return (
@@ -39928,6 +40468,14 @@
         '"></label>'
       );
     };
+    var fieldsHtml = strength
+      ? num("sets", entry.sets, "Sets", "1", "3") +
+        num("reps", entry.reps, "Reps", "1", "10") +
+        num("weightLb", entry.weightLb, "lb", "2.5", "") +
+        num("minutes", entry.minutes, "Min", "1", c.minutes ? String(c.minutes) : "")
+      : c.showDuration
+        ? num("minutes", entry.minutes, "Min", "1", "30")
+        : "";
     return (
       '<li class="day__exercise-item day__exercise-item--' +
       escapeAttr(c.category) +
@@ -39939,21 +40487,23 @@
       escapeAttr(exerciseCaloriesTitle(entry) + " (right-click for details)") +
       '">' +
       '<div class="day__exercise-item-head">' +
-      '<span class="day__exercise-item-name">' +
-      escapeHtml(entry.name) +
-      "</span>" +
+      (def && def.shortName
+        ? '<button type="button" class="day__exercise-item-name" data-ex-action="detail" data-ex-id="' +
+          escapeAttr(def.id || "") +
+          '">' +
+          escapeHtml(def.shortName) +
+          "</button>"
+        : '<span class="day__exercise-item-name">' + escapeHtml(entry.name) + "</span>") +
       '<span class="day__exercise-item-kcal">−' +
       escapeHtml(fmtNumGrouped(Math.round(c.kcal))) +
       " kcal</span>" +
       "</div>" +
-      '<div class="day__exercise-item-fields">' +
-      (strength
-        ? num("sets", entry.sets, "Sets", "1", "3") +
-          num("reps", entry.reps, "Reps", "1", "10") +
-          num("weightLb", entry.weightLb, "lb", "2.5", "") +
-          num("minutes", entry.minutes, "Min", "1", c.minutes ? String(c.minutes) : "")
-        : num("minutes", entry.minutes, "Min", "1", c.category === "session" ? "60" : "30")) +
-      "</div>" +
+      (def && def.note && !def.shortName
+        ? '<p class="day__exercise-item-note">' + escapeHtml(def.note) + "</p>"
+        : "") +
+      (fieldsHtml
+        ? '<div class="day__exercise-item-fields">' + fieldsHtml + "</div>"
+        : "") +
       '<div class="day__exercise-item-actions">' +
       '<button type="button" class="keywords__move" data-ex-action="up" aria-label="Move ' +
       escapeAttr(entry.name) +
@@ -39985,19 +40535,63 @@
     return out;
   }
 
+  /** Defaults used when an exercise is added, so the menu calorie matches the row. */
+  function exerciseEntryFromDef(def) {
+    var entry = {
+      id: "dx-" + Date.now() + "-" + Math.floor(Math.random() * 1e6),
+      exId: def.id || "",
+      name: def.shortName || def.name,
+      category: def.category,
+    };
+    if (def.category === "cardio") entry.minutes = 30;
+    else if (def.category !== "session") {
+      entry.sets = 3;
+      entry.reps = 10;
+    }
+    return entry;
+  }
+
+  function findExerciseDef(id, name) {
+    for (var i = 0; i < exerciseDefinitions.length; i++) {
+      var ex = exerciseDefinitions[i];
+      if (id && ex.id === id) return ex;
+      if (name && (ex.name === name || ex.shortName === name)) return ex;
+    }
+    return null;
+  }
+
   function exerciseSuggestHtml(query) {
     var matches = exerciseSuggestMatches(query);
     if (!matches.length) return '<p class="day__exercise-suggest-empty">No exercise matches.</p>';
     return matches
       .map(function (ex) {
+        var entry = exerciseEntryFromDef(ex);
+        var cals = exerciseEntryCalories(entry);
+        var kcal = Math.round(cals.kcal);
+        var shown = ex.shortName || ex.name;
+        var label = ex.shortName ? "Add a " + shown : shown;
         return (
-          '<button type="button" class="day__exercise-suggest-item" data-ex-action="pick" data-ex-name="' +
+          '<button type="button" class="day__exercise-suggest-item" data-ex-action="' +
+          (ex.shortName ? "detail" : "pick") +
+          '" data-ex-id="' +
+          escapeAttr(ex.id || "") +
+          '" data-ex-name="' +
           escapeAttr(ex.name) +
+          '" title="' +
+          escapeAttr(ex.shortName ? ex.name : exerciseCaloriesTitle(entry)) +
           '">' +
-          escapeHtml(ex.name) +
+          '<span class="day__exercise-suggest-name">' +
+          escapeHtml(label) +
+          '</span><span class="day__exercise-suggest-meta">' +
+          '<span class="day__exercise-suggest-kcal">−' +
+          escapeHtml(fmtNumGrouped(kcal)) +
+          " kcal</span>" +
+          (cals.postKcal
+            ? '<span class="day__exercise-suggest-post">post-burn</span>'
+            : "") +
           '<span class="day__exercise-suggest-cat">' +
           escapeHtml(exerciseCategoryLabels[ex.category] || ex.category) +
-          "</span></button>"
+          "</span></span></button>"
         );
       })
       .join("");
@@ -40016,7 +40610,7 @@
       tabs.innerHTML =
         '<button type="button" class="day__layer-tab day__layer-tab--food" data-ex-action="show-food" data-day-id="' +
         escapeAttr(dayId) +
-        '" aria-pressed="true">Food</button>' +
+        '" aria-pressed="true"><svg class="day__layer-tab-icon" viewBox="0 0 16 16" width="12" height="12" aria-hidden="true" focusable="false"><use href="#icon-nav-entry"></use></svg>Food</button>' +
         '<button type="button" class="day__layer-tab day__exercise-toggle" data-ex-action="toggle" data-day-id="' +
         escapeAttr(dayId) +
         '" aria-pressed="false">' +
@@ -40042,7 +40636,7 @@
         "</div>" +
         '<p class="day__exercise-foot"><button type="button" class="day__exercise-back" data-ex-action="toggle" data-day-id="' +
         escapeAttr(dayId) +
-        '">Back to food</button></p>';
+        '"><svg class="btn-icon" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" focusable="false"><use href="#icon-nav-entry"></use></svg>Back to food</button></p>';
       var tabsEl = dayEl.querySelector(".day__layer-tabs");
       if (tabsEl) dayEl.insertBefore(panel, tabsEl.nextSibling);
       else dayEl.appendChild(panel);
@@ -40120,34 +40714,150 @@
     saveDayExercises();
     renderDayExercise(dayId);
     renderDashboard();
+    updateDayFoodNotesUi();
     if (isWorkoutModalOpen()) renderWorkoutModal();
   }
 
-  function addDayExercise(dayId, name) {
-    var def = null;
-    for (var i = 0; i < exerciseDefinitions.length; i++) {
-      if (exerciseDefinitions[i].name === name) {
-        def = exerciseDefinitions[i];
-        break;
-      }
-    }
+  function addDayExercise(dayId, name, id) {
+    var def = findExerciseDef(id, name);
     if (!def) return;
-    var entry = {
-      id: "dx-" + Date.now() + "-" + Math.floor(Math.random() * 1e6),
-      exId: def.id || "",
-      name: def.name,
-      category: def.category,
-    };
-    if (def.category === "cardio") entry.minutes = 30;
-    else if (def.category === "session") entry.minutes = EXERCISE_SESSION_MINUTES;
-    else {
-      entry.sets = 3;
-      entry.reps = 10;
-    }
+    var entry = exerciseEntryFromDef(def);
     var list = dayExerciseEntries(dayId).slice();
     list.push(entry);
     setDayExerciseEntries(dayId, list);
     afterDayExerciseChange(dayId);
+  }
+
+  var exerciseDetailPopoverEl = null;
+
+  function hideExerciseDetailPopover() {
+    if (exerciseDetailPopoverEl) exerciseDetailPopoverEl.hidden = true;
+  }
+
+  function sessionSetTableHtml(def) {
+    var sets = positiveNum(def.setsPerExercise);
+    var reps = positiveNum(def.repsPerSet);
+    var rows = [];
+    function addKind(count, label, weight) {
+      for (var i = 1; i <= count; i++) {
+        for (var s = 1; s <= sets; s++) {
+          rows.push({
+            exercise: label + " " + i,
+            set: s,
+            reps: reps,
+            weight: weight,
+            volume: reps * weight,
+          });
+        }
+      }
+    }
+    addKind(positiveNum(def.compoundExercises), "Compound", positiveNum(def.compoundWeightLb));
+    addKind(positiveNum(def.isolationMachineExercises), "Machine", positiveNum(def.isolationMachineWeightLb));
+    if (!rows.length) return "";
+    var total = 0;
+    var body = rows
+      .map(function (row) {
+        total += row.volume;
+        return (
+          "<tr><td>" +
+          escapeHtml(row.exercise) +
+          "</td><td>" +
+          row.set +
+          "</td><td>" +
+          row.reps +
+          "</td><td>" +
+          escapeHtml(workoutLb(row.weight)) +
+          "</td><td>" +
+          escapeHtml(workoutLb(row.volume)) +
+          "</td></tr>"
+        );
+      })
+      .join("");
+    return (
+      '<table class="exercise-detail-popover__table"><thead><tr><th>Exercise</th><th>Set</th><th>Reps</th><th>Weight</th><th>Volume</th></tr></thead><tbody>' +
+      body +
+      '</tbody><tfoot><tr><td colspan="4">Total</td><td>' +
+      escapeHtml(workoutLb(total)) +
+      "</td></tr></tfoot></table>"
+    );
+  }
+
+  function sessionSplitSentence(def) {
+    var compound = positiveNum(def.compoundExercises);
+    var machine = positiveNum(def.isolationMachineExercises);
+    var total = positiveNum(def.exerciseCount) || compound + machine;
+    var sets = positiveNum(def.setsPerExercise);
+    var reps = positiveNum(def.repsPerSet);
+    var split;
+    if (compound && machine) {
+      split =
+        compound +
+        " of the " +
+        total +
+        " exercises are compound. " +
+        machine +
+        (machine === 1 ? " is a machine." : " are machines.");
+    } else if (compound) {
+      split = "All " + total + " exercises are compound.";
+    } else {
+      split = "All " + total + " exercises are machines.";
+    }
+    return split + " Each exercise is " + sets + " sets of " + reps + " reps.";
+  }
+
+  function showExerciseDetailPopover(def, dayId, anchor, canAdd) {
+    if (!def) return;
+    if (!exerciseDetailPopoverEl) {
+      exerciseDetailPopoverEl = document.createElement("div");
+      exerciseDetailPopoverEl.className = "exercise-detail-popover";
+      exerciseDetailPopoverEl.setAttribute("role", "dialog");
+      document.body.appendChild(exerciseDetailPopoverEl);
+    }
+    exerciseDetailPopoverEl.setAttribute("aria-label", def.name);
+    var weights = [];
+    if (positiveNum(def.compoundExercises)) {
+      weights.push(
+        "Compound sets use " +
+          workoutLb(positiveNum(def.compoundWeightLb)) +
+          ", a bar plus plates."
+      );
+    }
+    if (positiveNum(def.isolationMachineExercises)) {
+      weights.push(
+        "Machine sets use " +
+          workoutLb(positiveNum(def.isolationMachineWeightLb)) +
+          ", a stack or both dumbbells."
+      );
+    }
+    exerciseDetailPopoverEl.innerHTML =
+      '<p class="exercise-detail-popover__title">' +
+      escapeHtml(def.name) +
+      "</p><p>" +
+      escapeHtml(sessionSplitSentence(def)) +
+      "</p>" +
+      sessionSetTableHtml(def) +
+      (weights.length ? "<p>" + escapeHtml(weights.join(" ")) + "</p>" : "") +
+      (canAdd
+        ? '<button type="button" class="exercise-detail-popover__add" data-ex-action="pick" data-ex-id="' +
+          escapeAttr(def.id || "") +
+          '" data-ex-name="' +
+          escapeAttr(def.name) +
+          '" data-day-id="' +
+          escapeAttr(dayId || "") +
+          '">Add to this day</button>'
+        : "");
+    exerciseDetailPopoverEl.hidden = false;
+    var rect = anchor && anchor.getBoundingClientRect ? anchor.getBoundingClientRect() : null;
+    var w = exerciseDetailPopoverEl.offsetWidth;
+    var h = exerciseDetailPopoverEl.offsetHeight;
+    var vw = window.innerWidth || 1024;
+    var vh = window.innerHeight || 768;
+    var left = rect ? rect.left : 16;
+    var top = rect ? rect.bottom + 6 : 16;
+    if (left + w > vw - 8) left = Math.max(8, vw - w - 8);
+    if (top + h > vh - 8) top = Math.max(8, (rect ? rect.top : vh) - h - 6);
+    exerciseDetailPopoverEl.style.left = left + "px";
+    exerciseDetailPopoverEl.style.top = top + "px";
   }
 
   var exerciseKcalPopoverEl = null;
@@ -40167,11 +40877,27 @@
     var c = exerciseEntryCalories(entry);
     var rows = [
       ["Calories", "−" + fmtNumGrouped(Math.round(c.kcal)) + " kcal"],
-      ["Formula", "MET × 3.5 × kg ÷ 200 × min"],
+      [
+        "Formula",
+        c.postKcal
+          ? "MET × 3.5 × kg ÷ 200 × min, plus post-burn"
+          : "MET × 3.5 × kg ÷ 200 × min",
+      ],
       ["MET", fmtNum(c.met) + " (" + c.metSource + ")"],
       ["Body weight", fmtNum(c.kg) + " kg" + (c.kgAssumed ? " (assumed; set weight in Settings)" : " (Settings)")],
-      ["Minutes", fmtNum(c.minutes) + " (" + c.minutesSource + ")"],
+      c.showDuration
+        ? ["Minutes", fmtNum(c.minutes) + " (" + c.minutesSource + ")"]
+        : ["Duration", "None. " + c.minutesSource],
     ];
+    if (c.postKcal) {
+      rows.splice(1, 0, [
+        "Post-burn",
+        Math.round(c.postBurnRate * 100) +
+          "% of the session, included (−" +
+          fmtNumGrouped(Math.round(c.postKcal)) +
+          " kcal)",
+      ]);
+    }
     if (c.volume) rows.push(["Volume", workoutLb(c.volume) + " (sets × reps × lb)"]);
     exerciseKcalPopoverEl.innerHTML =
       '<p class="exercise-kcal-popover__title">' +
@@ -40211,6 +40937,14 @@
       if (exerciseKcalPopoverEl && !exerciseKcalPopoverEl.hidden && !exerciseKcalPopoverEl.contains(e.target)) {
         hideExerciseKcalPopover();
       }
+      if (
+        exerciseDetailPopoverEl &&
+        !exerciseDetailPopoverEl.hidden &&
+        !exerciseDetailPopoverEl.contains(e.target) &&
+        !(e.target.closest && e.target.closest('[data-ex-action="detail"]'))
+      ) {
+        hideExerciseDetailPopover();
+      }
       var all = e.target.closest && e.target.closest("#exercise-entry-toggle");
       if (all) {
         var anyOpen = DAYS.some(function (d) {
@@ -40242,13 +40976,35 @@
         }
         return;
       }
+      if (action === "detail") {
+        var detailDef = findExerciseDef(
+          act.getAttribute("data-ex-id"),
+          act.getAttribute("data-ex-name")
+        );
+        var detailSug = act.closest(".day__exercise-suggest");
+        if (detailSug) detailSug.hidden = true;
+        showExerciseDetailPopover(
+          detailDef,
+          dayId,
+          act,
+          !act.closest(".day__exercise-item")
+        );
+        return;
+      }
       if (action === "pick") {
+        hideExerciseDetailPopover();
         var panel = act.closest(".day__exercise");
+        if (!panel) {
+          var holders = document.querySelectorAll(".day__exercise");
+          for (var pi = 0; pi < holders.length; pi++) {
+            if (holders[pi].getAttribute("data-day-id") === dayId) panel = holders[pi];
+          }
+        }
         var input = panel && panel.querySelector(".day__exercise-search");
         if (input) input.value = "";
         var sug = panel && panel.querySelector(".day__exercise-suggest");
         if (sug) sug.hidden = true;
-        addDayExercise(dayId, act.getAttribute("data-ex-name"));
+        addDayExercise(dayId, act.getAttribute("data-ex-name"), act.getAttribute("data-ex-id"));
         return;
       }
       var itemEl = act.closest(".day__exercise-item");
@@ -40294,6 +41050,11 @@
       sug.hidden = false;
     });
     document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && exerciseDetailPopoverEl && !exerciseDetailPopoverEl.hidden) {
+        hideExerciseDetailPopover();
+        e.stopPropagation();
+        return;
+      }
       if (e.key === "Escape" && exerciseKcalPopoverEl && !exerciseKcalPopoverEl.hidden) {
         hideExerciseKcalPopover();
         e.stopPropagation();
@@ -40302,7 +41063,9 @@
       if (!e.target.classList || !e.target.classList.contains("day__exercise-search")) return;
       if (e.key === "Enter") {
         e.preventDefault();
-        var first = e.target.parentNode.querySelector('[data-ex-action="pick"]');
+        var first = e.target.parentNode.querySelector(
+          '[data-ex-action="detail"], [data-ex-action="pick"]'
+        );
         if (first) first.click();
       } else if (e.key === "Escape") {
         var sug = e.target.parentNode.querySelector(".day__exercise-suggest");
@@ -40918,33 +41681,38 @@
 
   if (longevityAnalysisModalEl) {
     longevityAnalysisModalEl.addEventListener("click", function (e) {
-      if (!e.target.closest(".analysis-fat-soluble-help")) {
-        closeAnalysisFatSolubleNote();
+      if (e.target.closest("#analysis-daily-nonstored-filter-clear")) {
+        e.preventDefault();
+        clearAnalysisDailyNonstoredNameFilter();
+        return;
+      }
+      if (!e.target.closest(".analysis-nonstored-help")) {
+        closeAnalysisNonStoredNote();
       }
       if (e.target.closest('[data-action="close-longevity-analysis-modal"]')) {
         closeLongevityAnalysisModal();
         return;
       }
-      var fatSolubleToggle = e.target.closest("[data-analysis-fat-soluble-toggle]");
+      var nonStoredToggle = e.target.closest("[data-analysis-nonstored-toggle]");
       if (
-        fatSolubleToggle &&
+        nonStoredToggle &&
         longevityAnalysisReportEl &&
-        longevityAnalysisReportEl.contains(fatSolubleToggle)
+        longevityAnalysisReportEl.contains(nonStoredToggle)
       ) {
         e.preventDefault();
-        analysisFatSolubleOnly = !analysisFatSolubleOnly;
+        analysisNonStoredOnly = !analysisNonStoredOnly;
         syncLongevityAnalysisBandFilter();
         return;
       }
-      var fatSolubleHelp = e.target.closest("[data-analysis-fat-soluble-help]");
+      var nonStoredHelp = e.target.closest("[data-analysis-nonstored-help]");
       if (
-        fatSolubleHelp &&
+        nonStoredHelp &&
         longevityAnalysisReportEl &&
-        longevityAnalysisReportEl.contains(fatSolubleHelp)
+        longevityAnalysisReportEl.contains(nonStoredHelp)
       ) {
         e.preventDefault();
-        var expanded = fatSolubleHelp.getAttribute("aria-expanded") === "true";
-        fatSolubleHelp.setAttribute("aria-expanded", expanded ? "false" : "true");
+        var expanded = nonStoredHelp.getAttribute("aria-expanded") === "true";
+        nonStoredHelp.setAttribute("aria-expanded", expanded ? "false" : "true");
         return;
       }
       var longevitySourcesBtn = e.target.closest("[data-longevity-sources]");
@@ -41054,7 +41822,23 @@
         );
       }
     });
+    longevityAnalysisModalEl.addEventListener("input", function (e) {
+      if (e.target !== analysisDailyNonstoredFilterInputEl) return;
+      analysisDailyNonstoredNameQuery = analysisDailyNonstoredFilterInputEl.value;
+      syncAnalysisDailyNonstoredNameFilter();
+    });
     longevityAnalysisModalEl.addEventListener("keydown", function (e) {
+      if (e.key === "Escape") {
+        var inNameFilter =
+          e.target === analysisDailyNonstoredFilterInputEl ||
+          e.target === analysisDailyNonstoredFilterClearEl;
+        if (inNameFilter && String(analysisDailyNonstoredNameQuery || "").length) {
+          e.preventDefault();
+          e.stopPropagation();
+          clearAnalysisDailyNonstoredNameFilter();
+        }
+        return;
+      }
       if (e.key !== "Enter" && e.key !== " ") return;
       var gotoSection = e.target.closest("[data-longevity-analysis-goto]");
       if (!gotoSection || !longevityAnalysisReportEl.contains(gotoSection)) return;
@@ -41189,8 +41973,68 @@
     });
   }
 
+  function openImageLightbox(img) {
+    if (!imageLightboxEl || !imageLightboxImgEl || !img) return;
+    var src = img.currentSrc || img.getAttribute("src") || img.src;
+    if (!src) return;
+    imageLightboxReturnFocus =
+      document.activeElement && document.activeElement !== document.body
+        ? document.activeElement
+        : null;
+    imageLightboxImgEl.src = src;
+    imageLightboxImgEl.alt = img.alt || "";
+    imageLightboxEl.setAttribute(
+      "aria-label",
+      img.alt ? img.alt : "Image"
+    );
+    imageLightboxEl.hidden = false;
+    updateBodyModalOpen();
+    var closeBtn = imageLightboxEl.querySelector(".image-lightbox__close");
+    if (closeBtn) closeBtn.focus();
+  }
+
+  function closeImageLightbox() {
+    if (!imageLightboxEl || imageLightboxEl.hidden) return;
+    imageLightboxEl.hidden = true;
+    if (imageLightboxImgEl) {
+      imageLightboxImgEl.removeAttribute("src");
+      imageLightboxImgEl.alt = "";
+    }
+    updateBodyModalOpen();
+    var returnFocus = imageLightboxReturnFocus;
+    imageLightboxReturnFocus = null;
+    if (returnFocus && returnFocus.focus && document.contains(returnFocus)) {
+      returnFocus.focus();
+    }
+  }
+
+  document.addEventListener(
+    "click",
+    function (e) {
+      if (!imageLightboxEl) return;
+      var closer = e.target.closest("[data-action='close-image-lightbox']");
+      if (closer) {
+        e.preventDefault();
+        closeImageLightbox();
+        return;
+      }
+      var img = e.target.closest("img");
+      if (!img || img === imageLightboxImgEl) return;
+      if (!img.currentSrc && !img.getAttribute("src") && !img.src) return;
+      e.preventDefault();
+      e.stopPropagation();
+      openImageLightbox(img);
+    },
+    true
+  );
+
   document.addEventListener("keydown", function (e) {
     if (e.key !== "Escape") return;
+    if (imageLightboxEl && !imageLightboxEl.hidden) {
+      e.preventDefault();
+      closeImageLightbox();
+      return;
+    }
     if (appConfirmModalEl && !appConfirmModalEl.hidden) {
       closeAppConfirmModal(false);
       return;
@@ -41337,13 +42181,13 @@
       return;
     }
     if (longevityAnalysisModalEl && !longevityAnalysisModalEl.hidden) {
-      var fatSolubleHelpOpen =
+      var nonStoredHelpOpen =
         longevityAnalysisReportEl &&
         longevityAnalysisReportEl.querySelector(
-          '[data-analysis-fat-soluble-help][aria-expanded="true"]'
+          '[data-analysis-nonstored-help][aria-expanded="true"]'
         );
-      if (fatSolubleHelpOpen) {
-        fatSolubleHelpOpen.setAttribute("aria-expanded", "false");
+      if (nonStoredHelpOpen) {
+        nonStoredHelpOpen.setAttribute("aria-expanded", "false");
         return;
       }
       closeLongevityAnalysisModal();
@@ -42300,6 +43144,15 @@
       }
     });
   }
+  [copyDateFoodsEl, copyConflictFoodsEl].forEach(function (rootEl) {
+    if (!rootEl) return;
+    rootEl.addEventListener("change", function () {
+      syncCopyFoodPicker(
+        rootEl,
+        rootEl === copyDateFoodsEl ? copyDateApplyBtn : copyConflictApplyBtn
+      );
+    });
+  });
 
   if (loggedOutBannerLoginBtn) {
     loggedOutBannerLoginBtn.addEventListener("click", openAuthLoginModal);
@@ -42703,7 +43556,7 @@
     );
   }
 
-  // Navbar items highlight their shortcut letter inside the label instead of a
+  // Navbar items underline their shortcut letter inside the label instead of a
   // corner badge. Labels without the letter (e.g. "Try" for X) keep the badge.
   function wrapAppNavLabelShortcutChar(labelEl, letter) {
     if (!labelEl) return false;
@@ -42846,7 +43699,7 @@
       dashboardFoodDefinitionsJumpEl.click();
       return;
     }
-    if (e.key === "g" || e.key === "G") {
+    if (e.key === "m" || e.key === "M") {
       if (!dashboardMealsJumpEl) return;
       e.preventDefault();
       dashboardMealsJumpEl.click();
@@ -42864,7 +43717,7 @@
       dashboardExperimentalJumpEl.click();
       return;
     }
-    if (e.key === "m" || e.key === "M") {
+    if (e.key === "c" || e.key === "C") {
       if (!dashboardMacrosJumpEl) return;
       e.preventDefault();
       dashboardMacrosJumpEl.click();
