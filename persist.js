@@ -297,6 +297,7 @@ var NutrientsPersist = (function () {
       keywordsCaloriesOpen: false,
       keywordsPageSize: 25,
       experimentalWeek: null,
+      breakfastFoods: [],
     };
   }
 

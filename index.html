@@ -2264,6 +2264,52 @@
     </div>
   </div>
 
+  <div id="breakfast-analysis-modal" class="modal" hidden>
+    <div class="modal__backdrop" data-action="close-breakfast-analysis-modal"></div>
+    <div class="modal__panel modal__panel--wide breakfast-analysis-modal__panel" role="dialog" aria-modal="true" aria-labelledby="breakfast-analysis-modal-title">
+      <header class="modal__header">
+        <h3 id="breakfast-analysis-modal-title" class="modal__title">Breakfast analysis</h3>
+        <p class="modal__subtitle">Did I hit as many nutrients as I can before going out the door?</p>
+      </header>
+      <div class="import-modal__body breakfast-analysis">
+        <section class="breakfast-analysis__setup" aria-label="Your breakfast">
+          <label class="breakfast-analysis__label" for="breakfast-analysis-day">Day with your usual breakfast</label>
+          <select id="breakfast-analysis-day" class="micro-sources-modal__select breakfast-analysis__day"></select>
+          <p id="breakfast-analysis-checklist-label" class="breakfast-analysis__label">Check the foods that are your breakfast</p>
+          <div id="breakfast-analysis-checklist" class="breakfast-analysis__checklist" role="group" aria-labelledby="breakfast-analysis-checklist-label"></div>
+          <p id="breakfast-analysis-saved" class="breakfast-analysis__saved" role="status"></p>
+        </section>
+        <section class="breakfast-analysis__results" aria-label="Nutrients missing from breakfast">
+          <div id="breakfast-analysis-report" class="breakfast-analysis__report"></div>
+          <div id="breakfast-analysis-foods" class="breakfast-analysis__foods" hidden>
+            <div class="breakfast-analysis__foods-head">
+              <h4 id="breakfast-analysis-foods-title" class="breakfast-analysis__foods-title"></h4>
+              <div class="breakfast-analysis__pool" role="group" aria-label="Which foods to list">
+                <button type="button" class="breakfast-analysis__pool-btn" data-breakfast-pool="ate" aria-pressed="true">Foods you ate</button>
+                <button type="button" class="breakfast-analysis__pool-btn" data-breakfast-pool="all" aria-pressed="false">All foods</button>
+              </div>
+            </div>
+            <div class="breakfast-analysis__foods-toolbar">
+              <div id="breakfast-analysis-scope-field" class="breakfast-analysis__field">
+                <label class="micro-sources-modal__label" for="breakfast-analysis-scope">Period</label>
+                <select id="breakfast-analysis-scope" class="micro-sources-modal__select"></select>
+              </div>
+              <div class="breakfast-analysis__field breakfast-analysis__field--grow">
+                <label class="micro-sources-modal__label" for="breakfast-analysis-filter">Find</label>
+                <input type="search" id="breakfast-analysis-filter" class="micro-sources-modal__filter" placeholder="Filter by food name" autocomplete="off" spellcheck="false">
+              </div>
+            </div>
+            <p id="breakfast-analysis-foods-note" class="breakfast-analysis__foods-note"></p>
+            <div id="breakfast-analysis-foods-list" class="breakfast-analysis__foods-list"></div>
+          </div>
+        </section>
+      </div>
+      <footer class="modal__footer">
+        <button type="button" id="breakfast-analysis-done" class="modal__done">Done</button>
+      </footer>
+    </div>
+  </div>
+
   <div id="longevity-analysis-modal" class="modal" hidden>
     <div class="modal__backdrop" data-action="close-longevity-analysis-modal"></div>
     <div class="modal__panel modal__panel--wide longevity-analysis-modal__panel" role="dialog" aria-modal="true" aria-labelledby="longevity-analysis-modal-title">

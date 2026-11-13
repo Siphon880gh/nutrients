@@ -246,7 +246,8 @@ One settings document per user:
     days: { mon: string, tue: string, wed: string, thu: string, fri: string, sat: string, sun: string },
     view: "day" | "week",
     nonStored: boolean               // include nutrients the body does not store (cleared after the day)
-  }
+  },
+  breakfastFoods: string[]          // Breakfast analysis: food definition names checked as the usual breakfast; servings come from the day picked each run
 }
 ```
 

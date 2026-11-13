@@ -273,6 +273,19 @@
   var analysisPickerModalEl = document.getElementById("analysis-picker-modal");
   var analysisPickerOptionsEl = document.getElementById("analysis-picker-options");
   var analysisPickerCancelBtn = document.getElementById("analysis-picker-cancel");
+  var breakfastModalEl = document.getElementById("breakfast-analysis-modal");
+  var breakfastDayEl = document.getElementById("breakfast-analysis-day");
+  var breakfastChecklistEl = document.getElementById("breakfast-analysis-checklist");
+  var breakfastSavedEl = document.getElementById("breakfast-analysis-saved");
+  var breakfastReportEl = document.getElementById("breakfast-analysis-report");
+  var breakfastFoodsEl = document.getElementById("breakfast-analysis-foods");
+  var breakfastFoodsTitleEl = document.getElementById("breakfast-analysis-foods-title");
+  var breakfastScopeFieldEl = document.getElementById("breakfast-analysis-scope-field");
+  var breakfastScopeEl = document.getElementById("breakfast-analysis-scope");
+  var breakfastFilterEl = document.getElementById("breakfast-analysis-filter");
+  var breakfastFoodsNoteEl = document.getElementById("breakfast-analysis-foods-note");
+  var breakfastFoodsListEl = document.getElementById("breakfast-analysis-foods-list");
+  var breakfastDoneBtn = document.getElementById("breakfast-analysis-done");
   var longevityAnalysisModalEl = document.getElementById("longevity-analysis-modal");
   var longevityAnalysisTitleEl = document.getElementById(
     "longevity-analysis-modal-title"
@@ -11884,6 +11897,7 @@
       (healthTimelineModalEl && !healthTimelineModalEl.hidden) ||
       (dayFoodsAiModalEl && !dayFoodsAiModalEl.hidden) ||
       (analysisPickerModalEl && !analysisPickerModalEl.hidden) ||
+      (breakfastModalEl && !breakfastModalEl.hidden) ||
       (longevityAnalysisModalEl && !longevityAnalysisModalEl.hidden) ||
       (microDefModalEl && !microDefModalEl.hidden) ||
       (microSourcesModalEl && !microSourcesModalEl.hidden) ||
@@ -22674,6 +22688,9 @@
     if (analysisPickerModalEl && !analysisPickerModalEl.hidden) {
       analysisPickerModalEl.hidden = true;
     }
+    if (breakfastModalEl && !breakfastModalEl.hidden) {
+      breakfastModalEl.hidden = true;
+    }
     if (activeImportId) closeImportModal();
     if (importAllModalEl && !importAllModalEl.hidden) closeImportAllModal();
     if (importAllMealsModalEl && !importAllMealsModalEl.hidden) {
@@ -23068,7 +23085,14 @@
       "</span></span>" +
       '<span class="analysis-picker__btn-meta">Weekly longevity topics · ' +
       escapeHtml(weekLabel) +
-      "</span></button>";
+      "</span></button>" +
+      '<button type="button" class="analysis-picker__btn" data-analysis-pick="breakfast" aria-keyshortcuts="B">' +
+      '<span class="analysis-picker__btn-title-row">' +
+      '<span class="analysis-picker__btn-title">' +
+      analysisPickerShortcutLabel("Breakfast", "B") +
+      " analysis</span></span>" +
+      '<span class="analysis-picker__btn-meta">Did I hit as many nutrients as I can before going out the door?</span>' +
+      "</button>";
     return html;
   }
 
@@ -23106,6 +23130,11 @@
       pickAnalysisFromPicker("micro-daily-nonstored");
       return true;
     }
+    if (key === "b") {
+      e.preventDefault();
+      pickAnalysisFromPicker("breakfast");
+      return true;
+    }
     return false;
   }
 
@@ -23120,6 +23149,7 @@
     if (longevityAnalysisModalEl && !longevityAnalysisModalEl.hidden) {
       closeLongevityAnalysisModal();
     }
+    closeBreakfastAnalysisModal();
     if (activeImportId) closeImportModal();
     if (importAllModalEl && !importAllModalEl.hidden) closeImportAllModal();
     if (importAllMealsModalEl && !importAllMealsModalEl.hidden) {
@@ -23142,6 +23172,10 @@
 
   function pickAnalysisFromPicker(kind, dayId) {
     closeAnalysisPickerModal();
+    if (kind === "breakfast") {
+      openBreakfastAnalysisModal();
+      return;
+    }
     openAnalysisModal(kind, dayId);
   }
 
@@ -23149,6 +23183,7 @@
     if (!dashboardAnalysisToggleEl) return;
     var analysisOpen =
       (analysisPickerModalEl && !analysisPickerModalEl.hidden) ||
+      (breakfastModalEl && !breakfastModalEl.hidden) ||
       (longevityAnalysisModalEl && !longevityAnalysisModalEl.hidden);
     dashboardAnalysisToggleEl.setAttribute(
       "aria-expanded",
@@ -23160,6 +23195,10 @@
   function toggleAnalysisShortcut() {
     if (analysisPickerModalEl && !analysisPickerModalEl.hidden) {
       closeAnalysisPickerModal();
+      return;
+    }
+    if (breakfastModalEl && !breakfastModalEl.hidden) {
+      closeBreakfastAnalysisModal();
       return;
     }
     if (longevityAnalysisModalEl && !longevityAnalysisModalEl.hidden) {
@@ -23175,6 +23214,803 @@
 
   function toggleLongevityAnalysisModal() {
     toggleAnalysisShortcut();
+  }
+
+  // ---- Breakfast analysis: nutrients a usual breakfast has none of ----
+  // The checked food names are saved per user (settings.breakfastFoods);
+  // servings are read from the day picked each run.
+  var breakfastGuestFoodNames = [];
+  var breakfastState = {
+    dateKey: null,
+    items: [],
+    checked: {},
+    nonStoredOnly: false,
+    nutrientKey: null,
+    nutrientSource: "micro",
+    nutrientLabel: "",
+    scope: "weeks-2",
+    pool: "ate",
+    filter: "",
+  };
+
+  function breakfastSignedIn() {
+    return !!(persist && persist.isLoggedIn && persist.isLoggedIn());
+  }
+
+  function normalizeBreakfastFoodNames(raw) {
+    var out = [];
+    var seen = {};
+    (Array.isArray(raw) ? raw : []).forEach(function (name) {
+      var clean = typeof name === "string" ? name.trim() : "";
+      var key = clean.toLowerCase();
+      if (!clean || seen[key]) return;
+      seen[key] = true;
+      out.push(clean);
+    });
+    return out;
+  }
+
+  function loadBreakfastFoodNames() {
+    if (breakfastSignedIn()) {
+      return normalizeBreakfastFoodNames(persist.getSetting("breakfastFoods"));
+    }
+    return breakfastGuestFoodNames.slice();
+  }
+
+  function saveBreakfastFoodNames(names) {
+    var clean = normalizeBreakfastFoodNames(names);
+    if (breakfastSignedIn()) {
+      persist.setSetting("breakfastFoods", clean);
+      return;
+    }
+    breakfastGuestFoodNames = clean;
+  }
+
+  /** Logged days (any week), newest first. */
+  function breakfastLoggedDateKeys() {
+    flushEditorsToDayMeals();
+    return Object.keys(dayMealsByDate)
+      .filter(function (key) {
+        return (
+          !!parseDateKey(key) && !!String(dayMealsByDate[key] || "").trim()
+        );
+      })
+      .sort()
+      .reverse();
+  }
+
+  function breakfastDayLabel(dateKey) {
+    var d = parseDateKey(dateKey);
+    if (!d) return dateKey;
+    var day = DAYS[(d.getDay() + 6) % 7];
+    return (
+      (day ? day.label + " · " : "") +
+      WEEK_RANGE_MONTHS[d.getMonth()] +
+      " " +
+      d.getDate() +
+      ", " +
+      d.getFullYear() +
+      (dateKey === todayDateKey() ? " (today)" : "")
+    );
+  }
+
+  function breakfastWeekMondayKey(dateKey) {
+    var d = parseDateKey(dateKey);
+    return d ? toDateKey(mondayOf(d)) : null;
+  }
+
+  function breakfastDayOptionsHtml(keys, selectedKey) {
+    var html = "";
+    var openWeek = null;
+    keys.forEach(function (key) {
+      var monKey = breakfastWeekMondayKey(key);
+      if (monKey !== openWeek) {
+        if (openWeek) html += "</optgroup>";
+        html +=
+          '<optgroup label="' +
+          escapeAttr(formatWeekRangeLabel(monKey)) +
+          '">';
+        openWeek = monKey;
+      }
+      html +=
+        '<option value="' +
+        escapeAttr(key) +
+        '"' +
+        (key === selectedKey ? " selected" : "") +
+        ">" +
+        escapeHtml(breakfastDayLabel(key)) +
+        "</option>";
+    });
+    if (openWeek) html += "</optgroup>";
+    return html;
+  }
+
+  /**
+   * Day to start on: the day used last time this page was open, else the most
+   * recent logged day (today or earlier) that mentions a saved breakfast food,
+   * else the most recent logged day.
+   */
+  function breakfastDefaultDateKey(keys, savedNames) {
+    if (!keys.length) return null;
+    if (breakfastState.dateKey && keys.indexOf(breakfastState.dateKey) !== -1) {
+      return breakfastState.dateKey;
+    }
+    var today = todayDateKey();
+    var past = keys.filter(function (key) {
+      return key <= today;
+    });
+    var wanted = savedNames.map(function (name) {
+      return name.toLowerCase();
+    });
+    if (wanted.length) {
+      for (var i = 0; i < past.length; i++) {
+        var lower = String(dayMealsByDate[past[i]] || "").toLowerCase();
+        for (var j = 0; j < wanted.length; j++) {
+          if (lower.indexOf(wanted[j]) !== -1) return past[i];
+        }
+      }
+    }
+    return past.length ? past[0] : keys[keys.length - 1];
+  }
+
+  /**
+   * Matched foods on the day (servings of a repeated food are added together),
+   * in the order they appear, followed by saved breakfast foods that the day
+   * does not have (0 servings).
+   */
+  function breakfastItemsForDate(dateKey, savedNames) {
+    var text = dayMealsByDate[dateKey] || "";
+    var counts = keywordHitCounts(text);
+    var lower = dayMealsTextWithoutComments(text).toLowerCase();
+    var items = [];
+    var seen = {};
+    keywordNames().forEach(function (name) {
+      var key = name.toLowerCase();
+      var servings = counts[key] || 0;
+      if (!(servings > 0)) return;
+      seen[key] = true;
+      items.push({
+        key: key,
+        name: name,
+        servings: servings,
+        onDay: true,
+        at: lower.indexOf(key),
+      });
+    });
+    items.sort(function (a, b) {
+      return a.at - b.at;
+    });
+    savedNames.forEach(function (name) {
+      var key = name.toLowerCase();
+      if (seen[key]) return;
+      seen[key] = true;
+      items.push({ key: key, name: name, servings: 0, onDay: false, at: -1 });
+    });
+    return items;
+  }
+
+  function breakfastCheckedItems() {
+    return breakfastState.items.filter(function (item) {
+      return !!breakfastState.checked[item.key];
+    });
+  }
+
+  function breakfastServingsText(item) {
+    if (!item.onDay) return "0 servings · not on this day";
+    var n = Math.round(item.servings * 1000) / 1000;
+    return fmtFoodSourcesAmount(n) + (n === 1 ? " serving" : " servings");
+  }
+
+  /** Nutrient totals of the checked foods at the chosen day's servings. */
+  function breakfastCheckedTotals() {
+    var lines = [];
+    breakfastCheckedItems().forEach(function (item) {
+      if (!(item.servings > 0)) return;
+      lines.push(formatDayFoodLine(item.name, item.servings));
+    });
+    var text = lines.join("\n");
+    return {
+      scoredCount: lines.length,
+      micro: microTotalsFromText(text),
+      longevity: longevityTotalsFromText(text),
+    };
+  }
+
+  /**
+   * Same requirement nutrients a day analysis scores ("want more" only).
+   * A nutrient is covered when the breakfast has any amount of it.
+   */
+  function breakfastNutrientCoverage(totals) {
+    var restoreMore = microMoreExpanded;
+    microMoreExpanded = true;
+    var fields = microBaseDisplayFields();
+    microMoreExpanded = restoreMore;
+
+    var missing = [];
+    var tracked = 0;
+    var seen = {};
+    fields.forEach(function (entry) {
+      var key = entry.field && entry.field.key;
+      if (!key || seen[key] || entry.source === "derived") return;
+      var snap = microEntryStatusSnapshot(
+        entry,
+        totals.micro,
+        totals.longevity,
+        true
+      );
+      var pct = snap.targetDisplay && snap.targetDisplay.pct;
+      if (pct == null || isNaN(pct)) return;
+      if (
+        (snap.targetDisplay && snap.targetDisplay.kind === "studyMax") ||
+        studyMaxMicroRef(key)
+      ) {
+        return;
+      }
+      if (microAnalysisEntryIsLimit(entry, snap.targetDisplay)) return;
+      seen[key] = true;
+      tracked++;
+      if (!snap.isZero) return;
+      missing.push({
+        key: key,
+        label: entry.field.label || key,
+        source: entry.source === "longevity" ? "longevity" : "micro",
+        nonStored: !!microRequiresDailyIntake(key),
+      });
+    });
+    return { missing: missing, tracked: tracked, covered: tracked - missing.length };
+  }
+
+  function renderBreakfastChecklist() {
+    if (!breakfastChecklistEl) return;
+    if (!breakfastState.dateKey) {
+      breakfastChecklistEl.innerHTML =
+        '<p class="breakfast-analysis__empty">No days are logged yet. Add foods to a day first, then come back.</p>';
+      return;
+    }
+    if (!breakfastState.items.length) {
+      breakfastChecklistEl.innerHTML =
+        '<p class="breakfast-analysis__empty">This day has no lines that match a food in your list. Pick another day.</p>';
+      return;
+    }
+    breakfastChecklistEl.innerHTML = breakfastState.items
+      .map(function (item) {
+        return (
+          '<label class="breakfast-analysis__food' +
+          (item.onDay ? "" : " breakfast-analysis__food--off-day") +
+          '">' +
+          '<input type="checkbox" class="breakfast-analysis__food-check" data-breakfast-food="' +
+          escapeAttr(item.key) +
+          '"' +
+          (breakfastState.checked[item.key] ? " checked" : "") +
+          ">" +
+          '<span class="breakfast-analysis__food-name">' +
+          escapeHtml(item.name) +
+          "</span>" +
+          '<span class="breakfast-analysis__food-servings">' +
+          escapeHtml(breakfastServingsText(item)) +
+          "</span></label>"
+        );
+      })
+      .join("");
+  }
+
+  function renderBreakfastSavedStatus() {
+    if (!breakfastSavedEl) return;
+    var count = breakfastCheckedItems().length;
+    if (!breakfastState.items.length) {
+      breakfastSavedEl.textContent = "";
+    } else if (!breakfastSignedIn()) {
+      breakfastSavedEl.textContent =
+        "Log in to keep these as your usual breakfast for next time.";
+    } else if (!count) {
+      breakfastSavedEl.textContent =
+        "The foods you check are saved as your usual breakfast.";
+    } else {
+      breakfastSavedEl.textContent =
+        "Saved as your usual breakfast: " +
+        count +
+        (count === 1 ? " food." : " foods.");
+    }
+  }
+
+  function clearBreakfastNutrient() {
+    breakfastState.nutrientKey = null;
+    breakfastState.nutrientSource = "micro";
+    breakfastState.nutrientLabel = "";
+  }
+
+  function renderBreakfastReport() {
+    if (!breakfastReportEl) return;
+    var checked = breakfastCheckedItems();
+    if (!breakfastState.items.length || !checked.length) {
+      clearBreakfastNutrient();
+      breakfastReportEl.innerHTML = breakfastState.items.length
+        ? '<p class="breakfast-analysis__empty">Check the foods that are your breakfast. The nutrients it has none of show up here.</p>'
+        : "";
+      return;
+    }
+
+    var totals = breakfastCheckedTotals();
+    var coverage = breakfastNutrientCoverage(totals);
+    var missing = coverage.missing;
+    var visible = breakfastState.nonStoredOnly
+      ? missing.filter(function (entry) {
+          return entry.nonStored;
+        })
+      : missing;
+
+    var stillListed = visible.some(function (entry) {
+      return (
+        entry.key === breakfastState.nutrientKey &&
+        entry.source === breakfastState.nutrientSource
+      );
+    });
+    if (!stillListed) clearBreakfastNutrient();
+
+    var html = "";
+    if (!totals.scoredCount) {
+      html +=
+        '<p class="breakfast-analysis__warn">None of the checked foods are logged on this day, so every nutrient counts as missing. Pick a day where you ate this breakfast.</p>';
+    }
+    if (!missing.length) {
+      html +=
+        '<p class="breakfast-analysis__headline">This breakfast has some of all <strong>' +
+        coverage.tracked +
+        "</strong> nutrients.</p>" +
+        '<p class="breakfast-analysis__goal">Nothing is missing before you head out.</p>';
+      breakfastReportEl.innerHTML = html;
+      return;
+    }
+
+    html +=
+      '<p class="breakfast-analysis__headline">This breakfast has <strong>' +
+      coverage.covered +
+      " of " +
+      coverage.tracked +
+      "</strong> nutrients. <strong>" +
+      missing.length +
+      "</strong> " +
+      (missing.length === 1 ? "is" : "are") +
+      " missing.</p>" +
+      '<p class="breakfast-analysis__goal">You want to hit every nutrient before heading out. Click a missing one to see foods that have it.</p>' +
+      '<div class="breakfast-analysis__missing-head">' +
+      '<p class="breakfast-analysis__label">' +
+      (breakfastState.nonStoredOnly
+        ? "Missing non-stored nutrients · "
+        : "Missing from this breakfast · ") +
+      visible.length +
+      "</p>" +
+      '<button type="button" class="analysis-nonstored-toggle" data-breakfast-nonstored aria-pressed="' +
+      (breakfastState.nonStoredOnly ? "true" : "false") +
+      '" title="Show only nutrients your body stores poorly">' +
+      '<span class="analysis-nonstored-toggle__switch" aria-hidden="true"></span>' +
+      '<span class="analysis-nonstored-toggle__label">Non-stored only</span>' +
+      "</button></div>";
+
+    if (!visible.length) {
+      html +=
+        '<p class="breakfast-analysis__empty">No non-stored nutrient is missing. Turn the filter off to see the rest.</p>';
+    } else {
+      html +=
+        '<div class="analysis-nutrient-board__pills breakfast-analysis__pills">' +
+        visible
+          .map(function (entry) {
+            var selected =
+              entry.key === breakfastState.nutrientKey &&
+              entry.source === breakfastState.nutrientSource;
+            return (
+              '<button type="button" class="analysis-nutrient-pill analysis-nutrient-pill--red' +
+              (selected ? " analysis-nutrient-pill--selected" : "") +
+              '" data-breakfast-nutrient="' +
+              escapeAttr(entry.key) +
+              '" data-breakfast-nutrient-source="' +
+              escapeAttr(entry.source) +
+              '" data-breakfast-nutrient-label="' +
+              escapeAttr(entry.label) +
+              '" title="' +
+              escapeAttr(entry.label) +
+              '" aria-pressed="' +
+              (selected ? "true" : "false") +
+              '">' +
+              '<span class="analysis-nutrient-pill__name">' +
+              escapeHtml(analysisNutrientPillName(entry.label)) +
+              "</span></button>"
+            );
+          })
+          .join("") +
+        "</div>";
+    }
+    breakfastReportEl.innerHTML = html;
+  }
+
+  function breakfastNutrientField() {
+    if (!breakfastState.nutrientKey) return null;
+    return breakfastState.nutrientSource === "longevity"
+      ? longevityFieldByKey(breakfastState.nutrientKey)
+      : microFieldByKey(breakfastState.nutrientKey);
+  }
+
+  /** Period choices match "Your food ranked", based on the breakfast day's week. */
+  function breakfastScopeDateKeys(scope) {
+    var monKey = breakfastWeekMondayKey(breakfastState.dateKey);
+    var mon = monKey ? parseDateKey(monKey) : null;
+    if (!mon) return [];
+    if (scope === "weeks-2" || scope === "weeks-3") {
+      var weeks = scope === "weeks-2" ? 2 : 3;
+      var keys = [];
+      for (var i = -7 * (weeks - 1); i < 7; i++) {
+        keys.push(toDateKey(addDays(mon, i)));
+      }
+      return keys;
+    }
+    if (!scope || scope === "week") return weekDateKeys(monKey);
+    var one = dateKeyForDayId(scope, monKey);
+    return one ? [one] : [];
+  }
+
+  function breakfastScopeRangeLabel(scope) {
+    var keys = breakfastScopeDateKeys(scope);
+    if (!keys.length) return "";
+    var start = parseDateKey(keys[0]);
+    var end = parseDateKey(keys[keys.length - 1]);
+    if (keys.length === 1) return breakfastDayLabel(keys[0]);
+    return (
+      WEEK_RANGE_MONTHS[start.getMonth()] +
+      " " +
+      start.getDate() +
+      " – " +
+      WEEK_RANGE_MONTHS[end.getMonth()] +
+      " " +
+      end.getDate()
+    );
+  }
+
+  function populateBreakfastScopeSelect() {
+    if (!breakfastScopeEl) return;
+    var monKey = breakfastWeekMondayKey(breakfastState.dateKey);
+    var choices = [
+      { value: "week", label: "This week · " + breakfastScopeRangeLabel("week") },
+      { value: "weeks-2", label: "2 weeks" },
+      { value: "weeks-3", label: "3 weeks" },
+    ];
+    DAYS.forEach(function (day) {
+      var dayKey = dateKeyForDayId(day.id, monKey);
+      var d = dayKey ? parseDateKey(dayKey) : null;
+      choices.push({
+        value: day.id,
+        label: day.label + (d ? " · " + formatDayDateLabel(d) : ""),
+      });
+    });
+    breakfastScopeEl.innerHTML = choices
+      .map(function (choice) {
+        return (
+          '<option value="' +
+          escapeAttr(choice.value) +
+          '"' +
+          (breakfastState.scope === choice.value ? " selected" : "") +
+          ">" +
+          escapeHtml(choice.label) +
+          "</option>"
+        );
+      })
+      .join("");
+  }
+
+  /** Foods eaten in the period, ranked by how much of the nutrient they gave. */
+  function breakfastAteContributions() {
+    var key = breakfastState.nutrientKey;
+    var longevity = breakfastState.nutrientSource === "longevity";
+    var scope = breakfastState.scope;
+    var skipIgnored = sourcesScopeSkipsIgnored(scope);
+    var merged = {};
+    breakfastScopeDateKeys(scope).forEach(function (dateKey) {
+      if (skipIgnored && ignoredDaysByDate[dateKey]) return;
+      var text = dayMealsByDate[dateKey] || "";
+      var list = longevity
+        ? longevityContributionsFromText(text, key)
+        : microContributionsFromText(text, key);
+      list.forEach(function (item) {
+        var k = item.name.toLowerCase();
+        if (merged[k]) {
+          merged[k].amount += item.amount;
+          merged[k].hits += item.hits;
+        } else {
+          merged[k] = {
+            name: item.name,
+            amount: item.amount,
+            hits: item.hits,
+            perServing: item.perServing,
+          };
+        }
+      });
+    });
+    return Object.keys(merged)
+      .map(function (k) {
+        return merged[k];
+      })
+      .sort(function (a, b) {
+        return b.amount - a.amount;
+      });
+  }
+
+  /**
+   * Every catalog food and every food in the user's list that has the
+   * nutrient, ranked by the amount in one serving (unknown amounts last).
+   */
+  function breakfastAllFoodsList() {
+    var key = breakfastState.nutrientKey;
+    var longevity = breakfastState.nutrientSource === "longevity";
+    var byName = {};
+    function add(name, perServing) {
+      var clean = String(name || "").trim();
+      if (!clean) return;
+      var k = clean.toLowerCase();
+      var amount = perServing > 0 && isFinite(perServing) ? perServing : null;
+      if (!byName[k]) {
+        byName[k] = { name: clean, perServing: amount };
+      } else if (byName[k].perServing == null && amount != null) {
+        byName[k].perServing = amount;
+      }
+    }
+    var seenKw = {};
+    keywords.forEach(function (kw) {
+      var name = kw.name.trim();
+      var k = name.toLowerCase();
+      if (!name || seenKw[k]) return;
+      seenKw[k] = true;
+      var perServing;
+      if (longevity) {
+        perServing = parseFloat(resolveLongevityValue(kw, key));
+      } else if (key === "fiber") {
+        perServing = fiberTotalFromParts(kw.micros);
+      } else {
+        perServing = parseFloat(kw.micros ? kw.micros[key] : "");
+      }
+      if (!(perServing > 0)) return;
+      add(name, perServing);
+    });
+    getFoodSourcesRows().forEach(function (row) {
+      if (row.nutrientKey !== key) return;
+      add(row.food, row.amount);
+    });
+    return Object.keys(byName)
+      .map(function (k) {
+        return byName[k];
+      })
+      .sort(function (a, b) {
+        if (a.perServing == null && b.perServing == null) {
+          return a.name.localeCompare(b.name, undefined, { sensitivity: "base" });
+        }
+        if (a.perServing == null) return 1;
+        if (b.perServing == null) return -1;
+        return b.perServing - a.perServing;
+      });
+  }
+
+  function breakfastFoodRowsHtml(list, unit, allFoods) {
+    var unitText = unit ? " " + unit : "";
+    return (
+      '<ol class="micro-sources-modal__list">' +
+      list
+        .map(function (item) {
+          var calcHtml;
+          if (allFoods) {
+            calcHtml =
+              '<span class="micro-sources-modal__calc">' +
+              (item.perServing != null
+                ? '<span class="micro-sources-modal__row-total">' +
+                  escapeHtml(fmtFoodSourcesAmount(item.perServing) + unitText) +
+                  "</span>"
+                : '<span class="micro-sources-modal__per">amount not listed</span>') +
+              "</span>";
+          } else if (item.hits !== 1) {
+            calcHtml =
+              '<span class="micro-sources-modal__calc">' +
+              '<span class="micro-sources-modal__per">' +
+              escapeHtml(fmtFoodSourcesAmount(item.perServing) + unitText) +
+              "</span>" +
+              '<span class="micro-sources-modal__times">× ' +
+              escapeHtml(fmtFoodSourcesAmount(item.hits)) +
+              "</span>" +
+              '<span class="micro-sources-modal__eq">=</span>' +
+              '<span class="micro-sources-modal__row-total">' +
+              escapeHtml(fmtFoodSourcesAmount(item.amount) + unitText) +
+              "</span></span>";
+          } else {
+            calcHtml =
+              '<span class="micro-sources-modal__calc">' +
+              '<span class="micro-sources-modal__row-total">' +
+              escapeHtml(fmtFoodSourcesAmount(item.amount) + unitText) +
+              "</span></span>";
+          }
+          return (
+            '<li class="micro-sources-modal__item">' +
+            '<span class="micro-sources-modal__rank">' +
+            item.rank +
+            "</span>" +
+            '<span class="micro-sources-modal__name">' +
+            escapeHtml(item.name) +
+            "</span>" +
+            calcHtml +
+            "</li>"
+          );
+        })
+        .join("") +
+      "</ol>"
+    );
+  }
+
+  function renderBreakfastFoodsList() {
+    if (!breakfastFoodsListEl) return;
+    var field = breakfastNutrientField();
+    if (!field) {
+      breakfastFoodsListEl.innerHTML = "";
+      return;
+    }
+    var label = breakfastState.nutrientLabel || field.label;
+    var allFoods = breakfastState.pool === "all";
+    var list = allFoods ? breakfastAllFoodsList() : breakfastAteContributions();
+    if (breakfastFoodsNoteEl) {
+      breakfastFoodsNoteEl.textContent = allFoods
+        ? "Every food in the catalog and in your food list that has " +
+          label +
+          ", ranked by the amount in one serving."
+        : breakfastScopeRangeLabel(breakfastState.scope) +
+          " · foods you ate, ranked by how much " +
+          label +
+          " they gave you.";
+    }
+    if (!list.length) {
+      breakfastFoodsListEl.innerHTML =
+        '<p class="micro-sources-modal__empty">' +
+        escapeHtml(
+          allFoods
+            ? "No food with " + label + " is listed."
+            : "Nothing you ate in this period has " +
+                label +
+                ". Try a longer period or All foods."
+        ) +
+        "</p>";
+      return;
+    }
+    list.forEach(function (item, idx) {
+      item.rank = idx + 1;
+    });
+    var q = breakfastState.filter.trim().toLowerCase();
+    var shown = q
+      ? list.filter(function (item) {
+          return item.name.toLowerCase().indexOf(q) !== -1;
+        })
+      : list;
+    if (!shown.length) {
+      breakfastFoodsListEl.innerHTML = sourcesFilterEmptyHtml(breakfastState.filter);
+      return;
+    }
+    breakfastFoodsListEl.innerHTML = breakfastFoodRowsHtml(
+      shown,
+      field.unit,
+      allFoods
+    );
+  }
+
+  function renderBreakfastFoods() {
+    if (!breakfastFoodsEl) return;
+    var field = breakfastNutrientField();
+    if (!field) {
+      breakfastFoodsEl.hidden = true;
+      if (breakfastFoodsListEl) breakfastFoodsListEl.innerHTML = "";
+      return;
+    }
+    breakfastFoodsEl.hidden = false;
+    var allFoods = breakfastState.pool === "all";
+    if (breakfastFoodsTitleEl) {
+      breakfastFoodsTitleEl.textContent =
+        "Foods with " + (breakfastState.nutrientLabel || field.label);
+    }
+    breakfastFoodsEl.querySelectorAll("[data-breakfast-pool]").forEach(function (btn) {
+      btn.setAttribute(
+        "aria-pressed",
+        btn.getAttribute("data-breakfast-pool") === breakfastState.pool
+          ? "true"
+          : "false"
+      );
+    });
+    if (breakfastScopeEl) breakfastScopeEl.value = breakfastState.scope;
+    if (breakfastScopeFieldEl) breakfastScopeFieldEl.hidden = allFoods;
+    if (breakfastFilterEl && breakfastFilterEl.value !== breakfastState.filter) {
+      breakfastFilterEl.value = breakfastState.filter;
+    }
+    renderBreakfastFoodsList();
+  }
+
+  function renderBreakfastAnalysis() {
+    renderBreakfastChecklist();
+    renderBreakfastSavedStatus();
+    renderBreakfastReport();
+    renderBreakfastFoods();
+  }
+
+  function selectBreakfastDate(dateKey) {
+    var saved = loadBreakfastFoodNames();
+    breakfastState.dateKey = dateKey || null;
+    breakfastState.items = dateKey ? breakfastItemsForDate(dateKey, saved) : [];
+    breakfastState.checked = {};
+    saved.forEach(function (name) {
+      breakfastState.checked[name.toLowerCase()] = true;
+    });
+    populateBreakfastScopeSelect();
+    renderBreakfastAnalysis();
+  }
+
+  function setBreakfastFoodChecked(key, on) {
+    if (!key) return;
+    if (on) breakfastState.checked[key] = true;
+    else delete breakfastState.checked[key];
+    saveBreakfastFoodNames(
+      breakfastCheckedItems().map(function (item) {
+        return item.name;
+      })
+    );
+    renderBreakfastSavedStatus();
+    renderBreakfastReport();
+    renderBreakfastFoods();
+  }
+
+  function selectBreakfastNutrient(key, source, label) {
+    var same =
+      breakfastState.nutrientKey === key &&
+      breakfastState.nutrientSource === source;
+    if (same) {
+      clearBreakfastNutrient();
+    } else {
+      breakfastState.nutrientKey = key;
+      breakfastState.nutrientSource = source === "longevity" ? "longevity" : "micro";
+      breakfastState.nutrientLabel = label || "";
+    }
+    renderBreakfastReport();
+    renderBreakfastFoods();
+    // Keep the missing nutrients in view above the food list so the next one
+    // can be clicked without scrolling back up.
+    var missingHead =
+      breakfastReportEl &&
+      breakfastReportEl.querySelector(".breakfast-analysis__missing-head");
+    if (!same && missingHead && breakfastFoodsEl && !breakfastFoodsEl.hidden) {
+      missingHead.scrollIntoView({ block: "start" });
+    }
+    var pill =
+      breakfastReportEl &&
+      breakfastReportEl.querySelector('[data-breakfast-nutrient][aria-pressed="true"]');
+    if (pill) pill.focus({ preventScroll: true });
+  }
+
+  function closeBreakfastAnalysisModal() {
+    if (!breakfastModalEl || breakfastModalEl.hidden) return;
+    breakfastModalEl.hidden = true;
+    updateBodyModalOpen();
+  }
+
+  function openBreakfastAnalysisModal() {
+    if (!breakfastModalEl) return;
+    closeOtherModalsForAnalysis();
+    if (longevityAnalysisModalEl && !longevityAnalysisModalEl.hidden) {
+      closeLongevityAnalysisModal();
+    }
+    var keys = breakfastLoggedDateKeys();
+    var dateKey = breakfastDefaultDateKey(keys, loadBreakfastFoodNames());
+    breakfastState.nonStoredOnly = false;
+    breakfastState.scope = "weeks-2";
+    breakfastState.pool = "ate";
+    breakfastState.filter = "";
+    clearBreakfastNutrient();
+    if (breakfastDayEl) {
+      breakfastDayEl.innerHTML = breakfastDayOptionsHtml(keys, dateKey);
+      breakfastDayEl.disabled = !keys.length;
+    }
+    selectBreakfastDate(dateKey);
+    breakfastModalEl.hidden = false;
+    updateBodyModalOpen();
+    if (breakfastDayEl && !breakfastDayEl.disabled) breakfastDayEl.focus();
+    else if (breakfastDoneBtn) breakfastDoneBtn.focus();
   }
 
   function longevityNavSectionEl(sectionDefKey) {
@@ -41641,6 +42477,70 @@
     });
   }
 
+  if (breakfastModalEl) {
+    breakfastModalEl.addEventListener("click", function (e) {
+      if (e.target.closest('[data-action="close-breakfast-analysis-modal"]')) {
+        closeBreakfastAnalysisModal();
+        return;
+      }
+      var nonStoredBtn = e.target.closest("[data-breakfast-nonstored]");
+      if (nonStoredBtn) {
+        breakfastState.nonStoredOnly = !breakfastState.nonStoredOnly;
+        renderBreakfastReport();
+        renderBreakfastFoods();
+        var nextToggle =
+          breakfastReportEl &&
+          breakfastReportEl.querySelector("[data-breakfast-nonstored]");
+        if (nextToggle) nextToggle.focus();
+        return;
+      }
+      var pill = e.target.closest("[data-breakfast-nutrient]");
+      if (pill) {
+        selectBreakfastNutrient(
+          pill.getAttribute("data-breakfast-nutrient"),
+          pill.getAttribute("data-breakfast-nutrient-source") || "micro",
+          pill.getAttribute("data-breakfast-nutrient-label") || ""
+        );
+        return;
+      }
+      var poolBtn = e.target.closest("[data-breakfast-pool]");
+      if (poolBtn) {
+        breakfastState.pool =
+          poolBtn.getAttribute("data-breakfast-pool") === "all" ? "all" : "ate";
+        renderBreakfastFoods();
+      }
+    });
+    breakfastModalEl.addEventListener("change", function (e) {
+      var check = e.target.closest("[data-breakfast-food]");
+      if (!check) return;
+      setBreakfastFoodChecked(check.getAttribute("data-breakfast-food"), check.checked);
+    });
+  }
+
+  if (breakfastDayEl) {
+    breakfastDayEl.addEventListener("change", function () {
+      selectBreakfastDate(breakfastDayEl.value);
+    });
+  }
+
+  if (breakfastScopeEl) {
+    breakfastScopeEl.addEventListener("change", function () {
+      breakfastState.scope = breakfastScopeEl.value || "weeks-2";
+      renderBreakfastFoodsList();
+    });
+  }
+
+  if (breakfastFilterEl) {
+    breakfastFilterEl.addEventListener("input", function () {
+      breakfastState.filter = breakfastFilterEl.value || "";
+      renderBreakfastFoodsList();
+    });
+  }
+
+  if (breakfastDoneBtn) {
+    breakfastDoneBtn.addEventListener("click", closeBreakfastAnalysisModal);
+  }
+
   if (longevityAnalysisDoneBtn) {
     longevityAnalysisDoneBtn.addEventListener("click", closeLongevityAnalysisModal);
   }
@@ -42142,6 +43042,10 @@
     }
     if (analysisPickerModalEl && !analysisPickerModalEl.hidden) {
       closeAnalysisPickerModal();
+      return;
+    }
+    if (breakfastModalEl && !breakfastModalEl.hidden) {
+      closeBreakfastAnalysisModal();
       return;
     }
     if (macroRankModalEl && !macroRankModalEl.hidden) {
