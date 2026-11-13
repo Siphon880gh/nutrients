@@ -46,7 +46,7 @@ Bake the product, the serving (1 tablet), and the fact that it's adjusted into `
 - Good: `"Multivitamin - One A Day Men's 1 tablet (Adjusted)"`
 - Bad: `"Centrum"` (no serving, and it looks like raw label values)
 
-The `(Adjusted)` tag also matches the app's Multivitamin note (pattern `\bmultivitamin\b`), which explains the absorption caveat to anyone viewing the food.
+The `(Adjusted)` tag also matches the app's Vitamin note (pattern `\b(?:multi)?vitamins?\b`), which explains the absorption caveat to anyone viewing the food.
 
 ---
 
@@ -135,4 +135,4 @@ node -e "JSON.parse(require('fs').readFileSync('data-food/definitions-food.json'
 
 ## 7. Reminder for whoever eats it
 
-Because the fat-soluble values assume dietary fat was present, the entry is only accurate if you **take the tablet with a meal that has enough fat**. On an empty stomach or a very low-fat meal, your real intake of A, D, E, and K will be lower than the entry shows. The app surfaces this in the Multivitamin note automatically.
+Because the fat-soluble values assume dietary fat was present, the entry is only accurate if you **take the tablet with a meal that has enough fat**. On an empty stomach or a very low-fat meal, your real intake of A, D, E, and K will be lower than the entry shows. The app surfaces this in the Vitamin note automatically.
