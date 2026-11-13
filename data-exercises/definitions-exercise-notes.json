@@ -6,6 +6,11 @@
       "note": "<p>Yes. Total workout volume (tonnage) = add up reps × weight for each set.</p><ul><li>Same weight and reps each set: 3 sets × 10 reps × 100 lb = 3,000 lb</li><li>Weight or reps change: (10 × 100 lb) + (8 × 110 lb) + (6 × 120 lb) = 2,600 lb</li></ul><p>For your whole workout, add the totals for each exercise. With two dumbbells lifted together, count both. For example, 10 reps with two 25-lb dumbbells is 500 lb of volume.</p>"
     },
     {
+      "label": "HIIT includes post-burn",
+      "pattern": "\\b(?:hiit|tabata|high intensity intervals?|sprint intervals?|sprints?|burpees?|mountain climbers?|squat jumps?|bike hiit|bike intervals|cycling hiit|cycling intervals|rowing intervals|rowing hiit|rower intervals|rower hiit|battle ropes?|battling ropes|boxing intervals|boxing hiit|circuits?|circuit training)\\b",
+      "note": "<p><strong>HIIT calories include post-burn.</strong> The MET is only the work during the session. After hard intervals, oxygen use stays above rest for a while. That afterburn is excess post-exercise oxygen consumption (EPOC).</p><p>Reviews put it at about 6–15% of the energy used in the session for vigorous work (Laforgia, Withers, and Gore, Sports Medicine, 2006). This app adds 15% on top of the MET calories for vigorous HIIT, Tabata, sprints, and vigorous circuits, and 10% for moderate HIIT. The added calories are already inside the number on the exercise.</p>"
+    },
+    {
       "label": "Cardio calories (MET)",
       "pattern": "\\b(?:cardio|run|running|jog|jogging|cycling|biking|bike ride|stationary bike|spin class|rowing|rower|swim|swimming|walking|brisk walk|hike|hiking|elliptical|stair ?(?:climber|master|stepper)|stepmill|jump(?:ing)? rope|hiit|tabata|treadmill|zumba|kickboxing)\\b",
       "note": "<p><strong>Estimate cardio calories with METs.</strong> kcal ≈ MET × 3.5 × body weight (kg) ÷ 200 × minutes.</p><p>Example: running at 6 mph (MET 9.8) for 30 minutes at 70 kg ≈ 9.8 × 3.5 × 70 ÷ 200 × 30 ≈ 360 kcal. MET values are averages from the Adult Compendium of Physical Activities; your real burn varies with fitness, terrain and effort. The MET for each cardio exercise is in Exercise definitions.</p>"

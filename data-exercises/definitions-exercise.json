@@ -18,7 +18,7 @@
       "label": "Session preset"
     }
   ],
-  "notes": "category is cardio, compound, or isolation_machine (isolation moves and machine work, including machine compound moves like leg press). met is the approximate metabolic equivalent for cardio (Adult Compendium of Physical Activities). keywords are lowercase phrases matched as whole words in workout lines; the longest match wins. session entries are whole bodybuilding workouts whose volumeLb comes from the stored split, exercise count, sets, reps and assumed weights.",
+  "notes": "category is cardio, compound, or isolation_machine (isolation moves and machine work, including machine compound moves like leg press). met is the approximate metabolic equivalent for cardio (2024 Adult Compendium of Physical Activities). postBurn is an extra fraction of the session calories for the afterburn (EPOC): 0.15 is 15% on top. keywords are lowercase phrases matched as whole words in workout lines; the longest match wins. session entries are whole bodybuilding workouts whose volumeLb comes from the stored split, exercise count, sets, reps and assumed weights.",
   "exercises": [
     {
       "id": "walking-3-mph",
@@ -303,7 +303,7 @@
     },
     {
       "id": "hiit-circuit-training-vigorous",
-      "name": "HIIT / circuit training (vigorous)",
+      "name": "HIIT (vigorous)",
       "category": "cardio",
       "muscles": [
         "full body"
@@ -313,11 +313,226 @@
       ],
       "keywords": [
         "hiit",
-        "circuit",
-        "circuit training",
+        "high intensity interval",
+        "high intensity intervals"
+      ],
+      "met": 11.0,
+      "postBurn": 0.15,
+      "note": "Includes post-burn (15% on top of the session)."
+    },
+    {
+      "id": "hiit-moderate",
+      "name": "HIIT (moderate)",
+      "category": "cardio",
+      "muscles": [
+        "full body"
+      ],
+      "equipment": [
+        "various"
+      ],
+      "keywords": [
+        "moderate hiit",
+        "hiit moderate"
+      ],
+      "met": 7.0,
+      "postBurn": 0.1,
+      "note": "Includes post-burn (10% on top of the session)."
+    },
+    {
+      "id": "tabata",
+      "name": "Tabata",
+      "category": "cardio",
+      "muscles": [
+        "full body"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "keywords": [
         "tabata"
       ],
-      "met": 8.0
+      "met": 11.0,
+      "postBurn": 0.15,
+      "note": "Includes post-burn (15% on top of the session)."
+    },
+    {
+      "id": "sprint-intervals",
+      "name": "Sprint intervals",
+      "category": "cardio",
+      "muscles": [
+        "legs"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "keywords": [
+        "sprint",
+        "sprints",
+        "sprint interval",
+        "sprint intervals"
+      ],
+      "met": 11.0,
+      "postBurn": 0.15,
+      "note": "Includes post-burn (15% on top of the session)."
+    },
+    {
+      "id": "bike-hiit",
+      "name": "Bike HIIT",
+      "category": "cardio",
+      "muscles": [
+        "legs"
+      ],
+      "equipment": [
+        "bike"
+      ],
+      "keywords": [
+        "bike hiit",
+        "bike intervals",
+        "cycling hiit",
+        "cycling intervals"
+      ],
+      "met": 8.8,
+      "postBurn": 0.15,
+      "note": "Includes post-burn (15% on top of the session)."
+    },
+    {
+      "id": "rowing-intervals",
+      "name": "Rowing intervals",
+      "category": "cardio",
+      "muscles": [
+        "back",
+        "legs",
+        "arms"
+      ],
+      "equipment": [
+        "rowing machine"
+      ],
+      "keywords": [
+        "rowing intervals",
+        "rowing hiit",
+        "rower intervals",
+        "rower hiit"
+      ],
+      "met": 11.0,
+      "postBurn": 0.15,
+      "note": "Includes post-burn (15% on top of the session)."
+    },
+    {
+      "id": "burpee-intervals",
+      "name": "Burpee intervals",
+      "category": "cardio",
+      "muscles": [
+        "full body"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "keywords": [
+        "burpee",
+        "burpees"
+      ],
+      "met": 11.0,
+      "postBurn": 0.15,
+      "note": "Includes post-burn (15% on top of the session)."
+    },
+    {
+      "id": "mountain-climber-intervals",
+      "name": "Mountain climber intervals",
+      "category": "cardio",
+      "muscles": [
+        "core",
+        "shoulders",
+        "legs"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "keywords": [
+        "mountain climber",
+        "mountain climbers"
+      ],
+      "met": 11.0,
+      "postBurn": 0.15,
+      "note": "Includes post-burn (15% on top of the session)."
+    },
+    {
+      "id": "squat-jump-intervals",
+      "name": "Squat jump intervals",
+      "category": "cardio",
+      "muscles": [
+        "quads",
+        "glutes"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "keywords": [
+        "squat jump",
+        "squat jumps"
+      ],
+      "met": 11.0,
+      "postBurn": 0.15,
+      "note": "Includes post-burn (15% on top of the session)."
+    },
+    {
+      "id": "battle-rope-intervals",
+      "name": "Battle rope intervals",
+      "category": "cardio",
+      "muscles": [
+        "shoulders",
+        "arms",
+        "core"
+      ],
+      "equipment": [
+        "battle ropes"
+      ],
+      "keywords": [
+        "battle rope",
+        "battle ropes",
+        "battling ropes"
+      ],
+      "met": 7.5,
+      "postBurn": 0.15,
+      "note": "Includes post-burn (15% on top of the session)."
+    },
+    {
+      "id": "boxing-intervals",
+      "name": "Boxing intervals",
+      "category": "cardio",
+      "muscles": [
+        "arms",
+        "shoulders",
+        "core"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "keywords": [
+        "boxing intervals",
+        "boxing hiit"
+      ],
+      "met": 9.3,
+      "postBurn": 0.15,
+      "note": "Includes post-burn (15% on top of the session)."
+    },
+    {
+      "id": "circuit-training-vigorous",
+      "name": "Circuit training (vigorous)",
+      "category": "cardio",
+      "muscles": [
+        "full body"
+      ],
+      "equipment": [
+        "various"
+      ],
+      "keywords": [
+        "circuit",
+        "circuits",
+        "circuit training"
+      ],
+      "met": 7.5,
+      "postBurn": 0.15,
+      "note": "Includes post-burn (15% on top of the session)."
     },
     {
       "id": "aerobic-dance",
@@ -1425,7 +1640,8 @@
     },
     {
       "id": "session-bodybuilding-100-0",
-      "name": "Bodybuilding 100% compound 24,300 lb",
+      "name": "Bodybuilding session, 6 compound exercises, 24,300 lb",
+      "shortName": "Bodybuilding, all compound",
       "category": "session",
       "compoundPct": 100,
       "isolationMachinePct": 0,
@@ -1445,7 +1661,8 @@
     },
     {
       "id": "session-bodybuilding-70-30",
-      "name": "Bodybuilding 70% compound 30% iso-machines 19,200 lb",
+      "name": "Bodybuilding session, 4 compound and 2 machine exercises, 19,200 lb",
+      "shortName": "Bodybuilding, 70% compound",
       "category": "session",
       "compoundPct": 70,
       "isolationMachinePct": 30,
@@ -1466,7 +1683,8 @@
     },
     {
       "id": "session-bodybuilding-50-50",
-      "name": "Bodybuilding 50% compound 50% iso-machines 16,650 lb",
+      "name": "Bodybuilding session, 3 compound and 3 machine exercises, 16,650 lb",
+      "shortName": "Bodybuilding, half compound",
       "category": "session",
       "compoundPct": 50,
       "isolationMachinePct": 50,
@@ -1486,7 +1704,8 @@
     },
     {
       "id": "session-bodybuilding-30-70",
-      "name": "Bodybuilding 30% compound 70% iso-machines 14,100 lb",
+      "name": "Bodybuilding session, 2 compound and 4 machine exercises, 14,100 lb",
+      "shortName": "Bodybuilding, 30% compound",
       "category": "session",
       "compoundPct": 30,
       "isolationMachinePct": 70,
@@ -1506,7 +1725,8 @@
     },
     {
       "id": "session-bodybuilding-0-100",
-      "name": "Bodybuilding 100% iso-machines 9,000 lb",
+      "name": "Bodybuilding session, 6 machine exercises, 9,000 lb",
+      "shortName": "Bodybuilding, all machines",
       "category": "session",
       "compoundPct": 0,
       "isolationMachinePct": 100,
