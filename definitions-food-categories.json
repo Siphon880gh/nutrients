@@ -185,7 +185,15 @@
     {
       "id": "meals",
       "label": "Prepared meals",
-      "patterns": ["^Denny", "^Starbucks", "^Trifecta", "^Hong Kong", "^Golden Deli"]
+      "patterns": [
+        "^Denny",
+        "^Starbucks",
+        "^Trifecta",
+        "^Hong Kong",
+        "^Golden Deli",
+        "^Canned - Mac n cheese",
+        "^Canned - Ravioli"
+      ]
     },
     {
       "id": "salt",
