@@ -275,6 +275,8 @@
   var analysisPickerCancelBtn = document.getElementById("analysis-picker-cancel");
   var breakfastModalEl = document.getElementById("breakfast-analysis-modal");
   var breakfastDayEl = document.getElementById("breakfast-analysis-day");
+  var breakfastDayPrevEl = document.getElementById("breakfast-analysis-day-prev");
+  var breakfastDayNextEl = document.getElementById("breakfast-analysis-day-next");
   var breakfastChecklistEl = document.getElementById("breakfast-analysis-checklist");
   var breakfastSavedEl = document.getElementById("breakfast-analysis-saved");
   var breakfastReportEl = document.getElementById("breakfast-analysis-report");
@@ -624,13 +626,41 @@
   var importSampleFoodsTopBtn = document.getElementById("import-sample-foods-top");
   var sortFoodsAlphabeticallyTopBtn = document.getElementById("sort-foods-alphabetically-top");
   var starterGuideEl = document.getElementById("starter-guide");
+  var starterGuideTitleEl = document.getElementById("starter-guide-title");
   var starterGuideTextEl = document.getElementById("starter-guide-text");
+  var starterGuideProgressEl = document.getElementById("starter-guide-progress");
+  var starterGuidePrevEl = document.getElementById("starter-guide-prev");
+  var starterGuideNextEl = document.getElementById("starter-guide-next");
+  var starterGuideCloseEl = document.getElementById("starter-guide-close");
   var starterGuideDismissEl = document.getElementById("starter-guide-dismiss");
-  var starterGuideEligible = false;
-  var starterGuideFinished = false;
-  var starterGuideStep = null;
-  var starterGuideTarget = null;
+  var starterGuideIndex = 0;
   var starterGuideScrollResizeBound = false;
+  var STARTER_GUIDE_STEPS = [
+    {
+      title: "Log a meal",
+      message: "Log meals with Add food on each day — search your food definitions and pick servings. Turn on Advanced if you prefer free-text entry.",
+    },
+    {
+      title: "Find and add foods",
+      target: "dashboard-food-definitions-jump",
+      message: "Open Food Definitions to search the built-in foods. Use Add food definition to enter a food and its nutrition if it’s missing from the list.",
+    },
+    {
+      title: "Reuse a meal",
+      target: "dashboard-meals-jump",
+      message: "Open Saved meals to create a combination you eat often. Then pick it by name in Add food to log the whole meal.",
+    },
+    {
+      title: "Check your totals",
+      target: "dashboard-macros-jump",
+      message: "Open Macros to see calories, protein, carbs, and fat for each day. Open Week summary to see how the week adds up.",
+    },
+    {
+      title: "Review vitamins and minerals",
+      target: "dashboard-micro-toggle",
+      message: "Open Micro Requirements to compare your intake with daily targets. Switch between Weekly average and Each day to see where you’re falling short.",
+    },
+  ];
   var IMPORT_SAMPLE_FOODS_URL = "data-food/definitions-food.json";
   // Built-in food definitions ship with the app (data-food/definitions-food.json)
   // and load automatically. They are not stored as user data: only the user's
@@ -11936,6 +11966,7 @@
       !!activeMicroDefKey ||
       !!activeLongevityDefKey;
     document.body.classList.toggle("modal-open", open);
+    if (!open) repositionStarterGuide();
     syncAnalysisNavBtn();
   }
 
@@ -12101,7 +12132,6 @@
       .then(function (items) {
         if (!confirmImportSampleReplace(items.length)) return;
         applySampleFoodItems(items);
-        advanceStarterGuideAfterImport();
       })
       .catch(function (e) {
         if (e.message === "cancelled") return;
@@ -23219,11 +23249,16 @@
   // ---- Breakfast analysis: nutrients a usual breakfast has none of ----
   // The checked food names are saved per user (settings.breakfastFoods);
   // servings are read from the day picked each run.
+  // settings.breakfastMissingBelowPct (10, 20, 33, or null) counts a nutrient
+  // under that share of its daily target as missing. null counts only a miss
+  // with no amount at all.
   var breakfastGuestFoodNames = [];
+  var breakfastGuestMissingPct = null;
   var breakfastState = {
     dateKey: null,
     items: [],
     checked: {},
+    missingBelowPct: null,
     nonStoredOnly: false,
     nutrientKey: null,
     nutrientSource: "micro",
@@ -23264,6 +23299,81 @@
       return;
     }
     breakfastGuestFoodNames = clean;
+  }
+
+  function normalizeBreakfastMissingPct(raw) {
+    var n = typeof raw === "number" ? raw : parseInt(raw, 10);
+    return n === 10 || n === 20 || n === 33 ? n : null;
+  }
+
+  function breakfastMissingBelowPct() {
+    return normalizeBreakfastMissingPct(breakfastState.missingBelowPct);
+  }
+
+  function loadBreakfastMissingPct() {
+    if (breakfastSignedIn()) {
+      return normalizeBreakfastMissingPct(
+        persist.getSetting("breakfastMissingBelowPct")
+      );
+    }
+    return breakfastGuestMissingPct;
+  }
+
+  function saveBreakfastMissingPct(pct) {
+    var clean = normalizeBreakfastMissingPct(pct);
+    breakfastState.missingBelowPct = clean;
+    if (breakfastSignedIn()) {
+      persist.setSetting("breakfastMissingBelowPct", clean);
+      return;
+    }
+    breakfastGuestMissingPct = clean;
+  }
+
+  /** Logged days in the day menu, newest first — the same order as the select. */
+  function breakfastMenuDateKeys() {
+    if (!breakfastDayEl) return breakfastLoggedDateKeys();
+    var keys = [];
+    var options = breakfastDayEl.options;
+    for (var i = 0; i < options.length; i++) {
+      if (options[i].value) keys.push(options[i].value);
+    }
+    return keys;
+  }
+
+  function syncBreakfastDayNav() {
+    var keys = breakfastMenuDateKeys();
+    var index = keys.indexOf(breakfastState.dateKey || "");
+    if (breakfastDayPrevEl) {
+      breakfastDayPrevEl.disabled = index < 0 || index >= keys.length - 1;
+    }
+    if (breakfastDayNextEl) {
+      breakfastDayNextEl.disabled = index <= 0;
+    }
+  }
+
+  /**
+   * direction 1 moves to a later logged day (right chevron).
+   * direction -1 moves to an earlier logged day (left chevron).
+   */
+  function stepBreakfastDate(direction, trigger) {
+    var keys = breakfastMenuDateKeys();
+    var index = keys.indexOf(breakfastState.dateKey || "");
+    if (index < 0) return;
+    var nextIndex = index - direction;
+    if (nextIndex < 0 || nextIndex >= keys.length) return;
+    var nextKey = keys[nextIndex];
+    if (breakfastDayEl) breakfastDayEl.value = nextKey;
+    selectBreakfastDate(nextKey);
+    if (!trigger || !trigger.disabled) return;
+    var fallback = null;
+    if (direction < 0 && breakfastDayNextEl && !breakfastDayNextEl.disabled) {
+      fallback = breakfastDayNextEl;
+    } else if (direction > 0 && breakfastDayPrevEl && !breakfastDayPrevEl.disabled) {
+      fallback = breakfastDayPrevEl;
+    } else if (breakfastDayEl && !breakfastDayEl.disabled) {
+      fallback = breakfastDayEl;
+    }
+    if (fallback) fallback.focus();
   }
 
   /** Logged days (any week), newest first. */
@@ -23418,8 +23528,17 @@
 
   /**
    * Same requirement nutrients a day analysis scores ("want more" only).
-   * A nutrient is covered when the breakfast has any amount of it.
+   * With no threshold, a nutrient is covered when the breakfast has any amount.
+   * With a threshold, it is covered at that percent of its daily target or more.
    */
+  function breakfastNutrientIsMissing(snap) {
+    var floor = breakfastMissingBelowPct();
+    if (floor == null) return !!snap.isZero;
+    var pct = snap.targetDisplay && snap.targetDisplay.pct;
+    if (pct == null || isNaN(pct)) return !!snap.isZero;
+    return pct < floor;
+  }
+
   function breakfastNutrientCoverage(totals) {
     var restoreMore = microMoreExpanded;
     microMoreExpanded = true;
@@ -23449,7 +23568,7 @@
       if (microAnalysisEntryIsLimit(entry, snap.targetDisplay)) return;
       seen[key] = true;
       tracked++;
-      if (!snap.isZero) return;
+      if (!breakfastNutrientIsMissing(snap)) return;
       missing.push({
         key: key,
         label: entry.field.label || key,
@@ -23519,13 +23638,104 @@
     breakfastState.nutrientLabel = "";
   }
 
+  function breakfastThresholdHtml() {
+    var current = breakfastMissingBelowPct();
+    var buttons = [10, 20, 33]
+      .map(function (pct) {
+        var on = current === pct;
+        return (
+          '<button type="button" class="breakfast-analysis__pool-btn" data-breakfast-missing-pct="' +
+          pct +
+          '" aria-pressed="' +
+          (on ? "true" : "false") +
+          '" title="Count a nutrient as missing when this breakfast is under ' +
+          pct +
+          '% of its daily target">&lt;' +
+          pct +
+          "%</button>"
+        );
+      })
+      .join("");
+    return (
+      '<div class="breakfast-analysis__threshold">' +
+      '<p class="breakfast-analysis__label" id="breakfast-analysis-threshold-label">Consider &lt; % as missing</p>' +
+      '<div class="breakfast-analysis__threshold-controls">' +
+      '<div class="breakfast-analysis__pool" role="group" aria-labelledby="breakfast-analysis-threshold-label">' +
+      buttons +
+      "</div>" +
+      '<button type="button" class="breakfast-analysis__threshold-clear" data-breakfast-missing-pct="off"' +
+      (current == null ? " disabled" : "") +
+      ' title="Only a complete miss counts as missing">Clear</button>' +
+      "</div></div>"
+    );
+  }
+
+  function breakfastCoverageSummaryHtml(coverage, missingCount) {
+    var floor = breakfastMissingBelowPct();
+    if (floor == null) {
+      if (!missingCount) {
+        return (
+          '<p class="breakfast-analysis__headline">This breakfast has some of all <strong>' +
+          coverage.tracked +
+          "</strong> nutrients.</p>" +
+          '<p class="breakfast-analysis__goal">Nothing is missing before you head out.</p>'
+        );
+      }
+      return (
+        '<p class="breakfast-analysis__headline">This breakfast has <strong>' +
+        coverage.covered +
+        " of " +
+        coverage.tracked +
+        "</strong> nutrients. <strong>" +
+        missingCount +
+        "</strong> " +
+        (missingCount === 1 ? "is" : "are") +
+        " missing.</p>" +
+        '<p class="breakfast-analysis__goal">You want to hit every nutrient before heading out. Click a missing one to see foods that have it.</p>'
+      );
+    }
+    if (!missingCount) {
+      return (
+        '<p class="breakfast-analysis__headline">This breakfast is at <strong>' +
+        floor +
+        "%</strong> or more for all <strong>" +
+        coverage.tracked +
+        "</strong> nutrients.</p>" +
+        '<p class="breakfast-analysis__goal">Nothing is under ' +
+        floor +
+        "% before you head out.</p>"
+      );
+    }
+    return (
+      '<p class="breakfast-analysis__headline">This breakfast has <strong>' +
+      coverage.covered +
+      " of " +
+      coverage.tracked +
+      "</strong> nutrients at " +
+      floor +
+      "% or more. <strong>" +
+      missingCount +
+      "</strong> " +
+      (missingCount === 1 ? "is" : "are") +
+      " under " +
+      floor +
+      "%.</p>" +
+      '<p class="breakfast-analysis__goal">You want every nutrient at ' +
+      floor +
+      "% or more before heading out. Click one under " +
+      floor +
+      "% to see foods that have it.</p>"
+    );
+  }
+
   function renderBreakfastReport() {
     if (!breakfastReportEl) return;
     var checked = breakfastCheckedItems();
     if (!breakfastState.items.length || !checked.length) {
       clearBreakfastNutrient();
       breakfastReportEl.innerHTML = breakfastState.items.length
-        ? '<p class="breakfast-analysis__empty">Check the foods that are your breakfast. The nutrients it has none of show up here.</p>'
+        ? '<p class="breakfast-analysis__empty">Check the foods that are your breakfast. The nutrients it has none of show up here.</p>' +
+          breakfastThresholdHtml()
         : "";
       return;
     }
@@ -23547,37 +23757,29 @@
     });
     if (!stillListed) clearBreakfastNutrient();
 
+    var floor = breakfastMissingBelowPct();
     var html = "";
     if (!totals.scoredCount) {
       html +=
         '<p class="breakfast-analysis__warn">None of the checked foods are logged on this day, so every nutrient counts as missing. Pick a day where you ate this breakfast.</p>';
     }
+    html += breakfastCoverageSummaryHtml(coverage, missing.length);
+    html += breakfastThresholdHtml();
     if (!missing.length) {
-      html +=
-        '<p class="breakfast-analysis__headline">This breakfast has some of all <strong>' +
-        coverage.tracked +
-        "</strong> nutrients.</p>" +
-        '<p class="breakfast-analysis__goal">Nothing is missing before you head out.</p>';
       breakfastReportEl.innerHTML = html;
       return;
     }
 
     html +=
-      '<p class="breakfast-analysis__headline">This breakfast has <strong>' +
-      coverage.covered +
-      " of " +
-      coverage.tracked +
-      "</strong> nutrients. <strong>" +
-      missing.length +
-      "</strong> " +
-      (missing.length === 1 ? "is" : "are") +
-      " missing.</p>" +
-      '<p class="breakfast-analysis__goal">You want to hit every nutrient before heading out. Click a missing one to see foods that have it.</p>' +
       '<div class="breakfast-analysis__missing-head">' +
       '<p class="breakfast-analysis__label">' +
       (breakfastState.nonStoredOnly
-        ? "Missing non-stored nutrients · "
-        : "Missing from this breakfast · ") +
+        ? floor == null
+          ? "Missing non-stored nutrients · "
+          : "Under " + floor + "% · non-stored · "
+        : floor == null
+          ? "Missing from this breakfast · "
+          : "Under " + floor + "% from this breakfast · ") +
       visible.length +
       "</p>" +
       '<button type="button" class="analysis-nonstored-toggle" data-breakfast-nonstored aria-pressed="' +
@@ -23589,7 +23791,13 @@
 
     if (!visible.length) {
       html +=
-        '<p class="breakfast-analysis__empty">No non-stored nutrient is missing. Turn the filter off to see the rest.</p>';
+        '<p class="breakfast-analysis__empty">' +
+        (floor == null
+          ? "No non-stored nutrient is missing. Turn the filter off to see the rest."
+          : "No non-stored nutrient is under " +
+            floor +
+            "%. Turn the filter off to see the rest.") +
+        "</p>";
     } else {
       html +=
         '<div class="analysis-nutrient-board__pills breakfast-analysis__pills">' +
@@ -23940,6 +24148,7 @@
     });
     populateBreakfastScopeSelect();
     renderBreakfastAnalysis();
+    syncBreakfastDayNav();
   }
 
   function setBreakfastFoodChecked(key, on) {
@@ -23997,6 +24206,7 @@
     }
     var keys = breakfastLoggedDateKeys();
     var dateKey = breakfastDefaultDateKey(keys, loadBreakfastFoodNames());
+    breakfastState.missingBelowPct = loadBreakfastMissingPct();
     breakfastState.nonStoredOnly = false;
     breakfastState.scope = "weeks-2";
     breakfastState.pool = "ate";
@@ -25840,6 +26050,7 @@
   }
 
   function afterAuthSessionChange() {
+    hideStarterGuide();
     loadPersistedAppState();
     applyLoadedAppStateToUi();
     maybeAutoImportSampleFoodsAndShowStarterGuide();
@@ -42508,6 +42719,25 @@
         breakfastState.pool =
           poolBtn.getAttribute("data-breakfast-pool") === "all" ? "all" : "ate";
         renderBreakfastFoods();
+        return;
+      }
+      var pctBtn = e.target.closest("[data-breakfast-missing-pct]");
+      if (pctBtn && breakfastModalEl.contains(pctBtn)) {
+        var raw = pctBtn.getAttribute("data-breakfast-missing-pct");
+        var previous = breakfastMissingBelowPct();
+        var next = raw === "off" ? null : normalizeBreakfastMissingPct(raw);
+        if (next != null && next === previous) next = null;
+        saveBreakfastMissingPct(next);
+        renderBreakfastReport();
+        renderBreakfastFoods();
+        var focusAttr =
+          next == null ? (previous == null ? "10" : String(previous)) : String(next);
+        var again =
+          breakfastReportEl &&
+          breakfastReportEl.querySelector(
+            '[data-breakfast-missing-pct="' + focusAttr + '"]'
+          );
+        if (again && !again.disabled) again.focus();
       }
     });
     breakfastModalEl.addEventListener("change", function (e) {
@@ -42520,6 +42750,18 @@
   if (breakfastDayEl) {
     breakfastDayEl.addEventListener("change", function () {
       selectBreakfastDate(breakfastDayEl.value);
+    });
+  }
+
+  if (breakfastDayPrevEl) {
+    breakfastDayPrevEl.addEventListener("click", function () {
+      stepBreakfastDate(-1, breakfastDayPrevEl);
+    });
+  }
+
+  if (breakfastDayNextEl) {
+    breakfastDayNextEl.addEventListener("click", function () {
+      stepBreakfastDate(1, breakfastDayNextEl);
     });
   }
 
@@ -43335,8 +43577,21 @@
     });
   }
 
-  if (starterGuideDismissEl) {
+  if (starterGuideEl) {
+    starterGuidePrevEl.addEventListener("click", function () {
+      showStarterGuideStep(starterGuideIndex - 1, true);
+    });
+    starterGuideNextEl.addEventListener("click", function () {
+      showStarterGuideStep(starterGuideIndex + 1, true);
+    });
+    starterGuideCloseEl.addEventListener("click", dismissStarterGuide);
     starterGuideDismissEl.addEventListener("click", dismissStarterGuide);
+    starterGuideEl.addEventListener("keydown", function (e) {
+      if (e.key !== "Escape") return;
+      e.preventDefault();
+      e.stopPropagation();
+      dismissStarterGuide();
+    });
   }
 
   if (importAllApplyBtn) {
@@ -44066,22 +44321,7 @@
   }
   if (helpOpenBtn) {
     helpOpenBtn.addEventListener("click", function () {
-      starterGuideEligible = true;
-      starterGuideFinished = false;
-      if (keywords.length > 0) {
-        advanceStarterGuideAfterImport();
-      } else {
-        setFoodDefinitionsOpen(true);
-        window.requestAnimationFrame(function () {
-          showStarterGuideStep(
-            "import",
-            "Start here — import our sample food definitions so the app knows each food\u2019s nutrition.",
-            importSampleFoodsTopBtn ||
-              importSampleFoodsBtn ||
-              dashboardFoodDefinitionsJumpEl
-          );
-        });
-      }
+      showStarterGuideStep(0, true);
     });
   }
   if (weekMealsMoreToggleBtn && weekMealsMoreMenuEl) {
@@ -47058,149 +47298,130 @@
   }
 
   function starterGuideTargetForStep(step) {
-    if (step === "foods") {
-      return (
-        (keywordsListEl && keywordsListEl.querySelector(".keywords__row")) ||
-        document.getElementById("add-keyword") ||
-        document.getElementById("food-definitions-heading")
-      );
-    }
-    if (step === "import") {
-      return (
-        importSampleFoodsTopBtn ||
-        importSampleFoodsBtn ||
-        document.getElementById("food-definitions-heading")
-      );
-    }
-    if (step === "meals") {
-      return document.querySelector(".week__grid");
-    }
-    return null;
+    if (step.target) return document.getElementById(step.target);
+
+    var dayId = isDaysCarouselActive()
+      ? DAYS[daysCarouselIndex].id
+      : activeTodayDayId() || DAYS[0].id;
+    var addFood = document.querySelector(
+      '[data-action="open-add-food"][data-day-id="' + dayId + '"]'
+    );
+    return addFood && addFood.offsetWidth && !addFood.disabled
+      ? addFood
+      : document.getElementById("day-entry-advanced-toggle");
   }
 
   function repositionStarterGuide() {
-    if (!starterGuideEl || starterGuideEl.hidden || !starterGuideTarget) return;
+    if (!starterGuideEl || starterGuideEl.hidden || !starterGuideEl.offsetWidth) return;
 
-    var rect = starterGuideTarget.getBoundingClientRect();
-    var gap = 14;
-    var panelWidth = starterGuideEl.offsetWidth || 280;
-    var left = rect.left + rect.width / 2;
-    var minLeft = panelWidth / 2 + 12;
-    var maxLeft = window.innerWidth - panelWidth / 2 - 12;
-    left = Math.max(minLeft, Math.min(maxLeft, left));
+    var step = STARTER_GUIDE_STEPS[starterGuideIndex];
+    var target = starterGuideTargetForStep(step);
+    var panelWidth = starterGuideEl.offsetWidth;
+    var panelHeight = starterGuideEl.offsetHeight;
+    var margin = 12;
+    var gap = 12;
+    var viewportTop = margin;
+    var viewportBottom = window.innerHeight - margin;
+    var nav = document.getElementById("app-nav");
+    var navRect = nav.getBoundingClientRect();
+    if (navRect.top <= 0 && navRect.bottom > 0) viewportTop = navRect.bottom + margin;
+    if (navRect.bottom >= window.innerHeight - 1) viewportBottom = navRect.top - margin;
 
-    if (
-      starterGuideStep === "foods" ||
-      starterGuideStep === "import" ||
-      starterGuideStep === "meals"
-    ) {
-      starterGuideEl.style.left = left + "px";
-      starterGuideEl.style.top = rect.top - gap + "px";
-      starterGuideEl.style.transform = "translate(-50%, -100%)";
-      starterGuideEl.setAttribute("data-placement", "bottom");
+    var targetRect = target && target.getBoundingClientRect();
+    var targetInNav = target && nav.contains(target);
+    var targetVisible = targetRect && targetRect.width > 0 &&
+      targetRect.bottom > (targetInNav ? 0 : viewportTop) &&
+      targetRect.top < (targetInNav ? window.innerHeight : viewportBottom) &&
+      targetRect.right > 0 && targetRect.left < window.innerWidth;
+    var targetCenter = targetVisible
+      ? targetRect.left + targetRect.width / 2
+      : window.innerWidth - margin - panelWidth / 2;
+    var left = Math.max(
+      margin,
+      Math.min(window.innerWidth - margin - panelWidth, targetCenter - panelWidth / 2)
+    );
+    var top = viewportBottom - panelHeight;
+    var placement = "";
+    if (targetVisible) {
+      if (targetRect.top - gap - panelHeight >= viewportTop) {
+        top = targetRect.top - gap - panelHeight;
+        placement = "bottom";
+      } else if (targetRect.bottom + gap + panelHeight <= viewportBottom) {
+        top = targetRect.bottom + gap;
+        placement = "top";
+      }
     }
+
+    starterGuideEl.style.left = left + "px";
+    starterGuideEl.style.top = Math.max(viewportTop, top) + "px";
+    starterGuideEl.style.setProperty(
+      "--starter-guide-arrow-left",
+      Math.max(12, Math.min(panelWidth - 12, targetCenter - left)) + "px"
+    );
+    starterGuideEl.setAttribute("data-placement", placement);
   }
 
   function hideStarterGuide() {
     if (!starterGuideEl) return;
     starterGuideEl.hidden = true;
-    starterGuideStep = null;
-    starterGuideTarget = null;
+    if (helpOpenBtn) helpOpenBtn.setAttribute("aria-expanded", "false");
     unbindStarterGuideScrollResize();
   }
 
   function dismissStarterGuide() {
-    if (starterGuideStep === "foods") {
-      hideStarterGuide();
-      advanceStarterGuideAfterImport();
-      return;
-    }
-    if (starterGuideStep === "meals") {
-      starterGuideEligible = false;
-      starterGuideFinished = true;
-    }
     hideStarterGuide();
+    if (helpOpenBtn) helpOpenBtn.focus({ preventScroll: true });
   }
 
-  function showStarterGuideStep(step, message, scrollTarget) {
-    if (!starterGuideEl || !starterGuideTextEl) return;
+  function showStarterGuideStep(index, moveFocus) {
+    var step = STARTER_GUIDE_STEPS[index];
+    if (!starterGuideEl || !step) return;
 
-    starterGuideStep = step;
-    starterGuideTarget = starterGuideTargetForStep(step);
-    if (!starterGuideTarget) return;
-
-    starterGuideTextEl.textContent = message;
+    starterGuideIndex = index;
+    var last = index === STARTER_GUIDE_STEPS.length - 1;
+    starterGuideTitleEl.textContent = step.title;
+    starterGuideTextEl.textContent = index === 1 && keywords.length === 0
+      ? "Open Food Definitions to add a food and its nutrition. If the built-in foods are missing, reload the page to try loading them again."
+      : step.message;
+    starterGuideProgressEl.textContent = (index + 1) + " of " + STARTER_GUIDE_STEPS.length;
+    starterGuidePrevEl.disabled = index === 0;
+    starterGuideNextEl.hidden = last;
+    starterGuideDismissEl.hidden = !last;
     starterGuideEl.hidden = false;
+    if (helpOpenBtn) helpOpenBtn.setAttribute("aria-expanded", "true");
 
-    if (scrollTarget) {
-      scrollTarget.scrollIntoView({ behavior: "smooth", block: "center" });
-      window.setTimeout(repositionStarterGuide, 350);
-    } else {
-      repositionStarterGuide();
+    var target = starterGuideTargetForStep(step);
+    if (target) {
+      target.scrollIntoView({ behavior: "instant", block: step.target ? "nearest" : "center", inline: "nearest" });
     }
-
     bindStarterGuideScrollResize();
-  }
-
-  function showStarterGuideFoodsStep() {
-    if (!starterGuideEligible || keywords.length === 0) return;
-    advanceStarterGuideAfterImport();
-  }
-
-  function showStarterGuideImportStepFallback() {
-    if (keywords.length > 0 || !starterGuideEligible) return;
-    window.requestAnimationFrame(function () {
-      window.requestAnimationFrame(function () {
-        if (keywords.length > 0 || !starterGuideEligible) return;
-        showStarterGuideStep(
-          "import",
-          "Start here — import our sample food definitions so the app knows each food\u2019s nutrition.",
-          dashboardFoodDefinitionsJumpEl
-        );
-      });
-    });
+    repositionStarterGuide();
+    if (moveFocus) starterGuideTitleEl.focus({ preventScroll: true });
+    if (index === 0 && persist) persist.markStarterGuideSeen();
   }
 
   function maybeAutoImportSampleFoodsAndShowStarterGuide() {
-    if (keywords.length > 0) {
-      if (!hadPersistedFoodDefinitions && !starterGuideFinished) {
-        starterGuideEligible = true;
-        advanceStarterGuideAfterImport();
-      }
-      return;
-    }
+    if (keywords.length > 0) return showStarterGuideAutomatically();
 
+    var userId = auth && auth.getCurrentUserId();
     fetchSampleFoodItems()
       .then(function (items) {
-        if (keywords.length > 0) {
-          if (!starterGuideFinished) {
-            starterGuideEligible = true;
-            advanceStarterGuideAfterImport();
-          }
-          return;
-        }
-        applySampleFoodItems(items);
-        if (starterGuideFinished) return;
-        starterGuideEligible = true;
-        advanceStarterGuideAfterImport();
+        if (auth && auth.getCurrentUserId() !== userId) return;
+        if (keywords.length === 0) applySampleFoodItems(items);
+        showStarterGuideAutomatically();
       })
       .catch(function () {
-        if (starterGuideFinished) return;
-        starterGuideEligible = true;
-        showStarterGuideImportStepFallback();
+        if (!auth || auth.getCurrentUserId() === userId) showStarterGuideAutomatically();
       });
+    return false;
   }
 
-  function advanceStarterGuideAfterImport() {
-    if (!starterGuideEligible || keywords.length === 0) return;
-
-    setFoodDefinitionsOpen(false);
-    var weekGrid = document.querySelector(".week__grid");
-    showStarterGuideStep(
-      "meals",
-      "Log meals with Add food on each day — search your food definitions and pick servings. Turn on Advanced if you prefer free-text entry.",
-      weekGrid
-    );
+  function showStarterGuideAutomatically() {
+    if (!starterGuideEl || !starterGuideEl.hidden ||
+        hadPersistedFoodDefinitions || (persist && persist.hasSeenStarterGuide()) ||
+        document.body.classList.contains("modal-open")) return false;
+    showStarterGuideStep(0, false);
+    return true;
   }
 
   var FOOD_TEXT_MIGRATIONS_URL = "migrations/food-text.json";
@@ -47244,8 +47465,7 @@
     initIgnoredDaysPopoverEvents();
     applyLoadedAppStateToUi();
     applyInitialLongevityHash();
-    maybeAutoImportSampleFoodsAndShowStarterGuide();
-    maybeScrollToFoodEntryOnBoot();
+    if (!maybeAutoImportSampleFoodsAndShowStarterGuide()) maybeScrollToFoodEntryOnBoot();
   }
 
   loadAppConfig(function () {

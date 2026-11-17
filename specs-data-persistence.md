@@ -27,6 +27,7 @@ UI code never calls `localStorage` for app data; it uses the repositories only.
 | `nutrients_meals` | Saved meal templates | rows with `userId` (named food combinations) |
 | `nutrients_favorites` | Diary favorites table | rows with `userId` |
 | `nutrients_settings` | Settings table | one row per user (`userId` + prefs) |
+| `nutrients_guest_starter_guide_seen` | Meal-entry walkthrough viewed while logged out | `"true"` once shown in this browser |
 | `nutrients_orphan_legacy` | Temporary pre–multi-user payload | claimed by first signup, then removed |
 
 ---
@@ -218,6 +219,7 @@ One settings document per user:
   dayHighlights: boolean,           // default true
   dayWordWrap: boolean,             // default true
   dayEntryAdvanced: boolean,        // default false — free-text day editors; guided Add food when false
+  starterGuideSeen: boolean,        // default false — set when the meal-entry walkthrough opens
   quizFavoriteFoods: Array<{        // Quiz mode: persistent food + serving portions, auto-selected
     id: string,
     keywordId: string,
@@ -248,6 +250,7 @@ One settings document per user:
     nonStored: boolean               // include nutrients the body does not store (cleared after the day)
   },
   breakfastFoods: string[]          // Breakfast analysis: food definition names checked as the usual breakfast; servings come from the day picked each run
+  breakfastMissingBelowPct: null | 10 | 20 | 33  // Breakfast analysis: a nutrient under this percent of its daily target counts as missing. null counts only a complete miss (no amount)
 }
 ```
 

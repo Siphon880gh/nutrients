@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Nutrients — Week meals</title>
-  <link rel="stylesheet" href="styles.css?t=1794549600">
+  <link rel="stylesheet" href="styles.css?t=1794834909">
 </head>
 <body class="show-daily-intake-icons day-entry-guided">
   <svg class="app-icon-symbols" width="0" height="0" aria-hidden="true" focusable="false">
@@ -192,7 +192,7 @@
           <span id="auth-user-email" class="week__auth-email"></span>
           <button type="button" id="auth-logout" class="week__auth-btn">Log out</button>
         </div>
-        <button type="button" id="help-open" class="week__help" aria-label="Help">Help</button>
+        <button type="button" id="help-open" class="week__help" aria-label="Help" aria-controls="starter-guide" aria-haspopup="dialog" aria-expanded="false">Help</button>
         <button type="button" id="settings-open" class="week__settings" aria-haspopup="dialog" aria-label="Settings">
           <span id="settings-demographic-icon" class="week__settings-icon" aria-hidden="true">♂</span>
           <span id="settings-demographic-abbr" class="week__settings-abbr" aria-hidden="true">M</span>
@@ -2274,7 +2274,15 @@
       <div class="import-modal__body breakfast-analysis">
         <section class="breakfast-analysis__setup" aria-label="Your breakfast">
           <label class="breakfast-analysis__label" for="breakfast-analysis-day">Day with your usual breakfast</label>
-          <select id="breakfast-analysis-day" class="micro-sources-modal__select breakfast-analysis__day"></select>
+          <div class="breakfast-analysis__day-nav">
+            <button type="button" id="breakfast-analysis-day-prev" class="breakfast-analysis__day-nav-btn" aria-label="Previous day" disabled>
+              <svg class="breakfast-analysis__day-nav-icon breakfast-analysis__day-nav-icon--prev" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" focusable="false"><use href="#icon-chevron-down"></use></svg>
+            </button>
+            <select id="breakfast-analysis-day" class="micro-sources-modal__select breakfast-analysis__day"></select>
+            <button type="button" id="breakfast-analysis-day-next" class="breakfast-analysis__day-nav-btn" aria-label="Next day" disabled>
+              <svg class="breakfast-analysis__day-nav-icon breakfast-analysis__day-nav-icon--next" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" focusable="false"><use href="#icon-chevron-down"></use></svg>
+            </button>
+          </div>
           <p id="breakfast-analysis-checklist-label" class="breakfast-analysis__label">Check the foods that are your breakfast</p>
           <div id="breakfast-analysis-checklist" class="breakfast-analysis__checklist" role="group" aria-labelledby="breakfast-analysis-checklist-label"></div>
           <p id="breakfast-analysis-saved" class="breakfast-analysis__saved" role="status"></p>
@@ -3769,18 +3777,29 @@
     <button type="button" class="image-lightbox__close modal__close" data-action="close-image-lightbox" aria-label="Close">×</button>
   </div>
 
-  <div id="starter-guide" class="starter-guide" hidden role="dialog" aria-modal="false" aria-labelledby="starter-guide-text">
+  <div id="starter-guide" class="starter-guide" hidden role="dialog" aria-modal="false" aria-labelledby="starter-guide-title" aria-describedby="starter-guide-text">
     <div class="starter-guide__panel">
-      <p id="starter-guide-text" class="starter-guide__text"></p>
-      <button type="button" id="starter-guide-dismiss" class="starter-guide__dismiss">Got it</button>
+      <div class="starter-guide__heading">
+        <h2 id="starter-guide-title" class="starter-guide__title" tabindex="-1"></h2>
+        <button type="button" id="starter-guide-close" class="starter-guide__close" aria-label="Close walkthrough">×</button>
+      </div>
+      <p id="starter-guide-text" class="starter-guide__text" aria-live="polite"></p>
+      <div class="starter-guide__footer">
+        <span id="starter-guide-progress" class="starter-guide__progress"></span>
+        <div class="starter-guide__actions">
+          <button type="button" id="starter-guide-prev" class="starter-guide__button">Previous</button>
+          <button type="button" id="starter-guide-next" class="starter-guide__button starter-guide__button--primary">Next</button>
+          <button type="button" id="starter-guide-dismiss" class="starter-guide__button starter-guide__button--primary" hidden>Done</button>
+        </div>
+      </div>
     </div>
     <div class="starter-guide__arrow" aria-hidden="true"></div>
   </div>
 
   <script src="demographic-dv.js?t=1786025202"></script>
   <script src="longevity-dv.js?t=1784087916"></script>
-  <script src="persist.js?t=1793704100"></script>
-  <script src="app.js?t=1794552500"></script>
+  <script src="persist.js?t=1794834909"></script>
+  <script src="app.js?t=1794834909"></script>
   <script
     src="harness-ai.js"
     defer

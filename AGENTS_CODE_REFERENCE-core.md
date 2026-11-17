@@ -38,7 +38,7 @@ Parent overview: [AGENTS_CODE_REFERENCE.md](./AGENTS_CODE_REFERENCE.md)
 | Food-name suggestions | `updateDaySuggest`, `positionDaySuggest`, `foodSuggestMatches`, `applyDayFoodSuggest`, `daySuggestPickItem`, `hideDaySuggest`, `hideAllDaySuggests`; Tab accepts hovered/first (`daySuggestPickItem`); per-item fit/scroll: `updateDaySuggestItemHover`, `bindDaySuggestHover`, `bindDaySuggestResize`, `slowScrollDaySuggestItemRight`, `daySuggestItemScrollTo`, `daySuggestItemUpdateChevrons` |
 | Food notes (toolbar) | `loadFoodNotesDefinitions`, `normalizeFoodNotesDefinitions`, `detectedFoodNotes`, `updateDayFoodNotesUi`, `dayFoodNotesLabelsHtml`, `showDayFoodNotesPopoverForIndex`, `initDayFoodNotesEvents`, `foodNotesDefinitions`, `FOOD_NOTES_URL` |
 | Food categories (table filter) | `loadFoodCategoriesDefinitions`, `normalizeFoodCategories`, `foodCategoryIdForName`, `keywordsCategoryCounts`, `foodCategories`, `FOOD_CATEGORIES_URL` |
-| Starter guide | `maybeShowStarterGuideImportStep`, `advanceStarterGuideAfterImport`, `showStarterGuideStep`, `repositionStarterGuide`, `dismissStarterGuide`, `hideStarterGuide`, `starterGuideEligible`, `starterGuideStep` |
+| Starter guide | `STARTER_GUIDE_STEPS`, `showStarterGuideAutomatically`, `showStarterGuideStep`, `repositionStarterGuide`, `dismissStarterGuide` |
 | Day editor height | `loadDayEditorHeight`, `saveDayEditorHeight`, `applyDayEditorHeight`, `bindDayEditorResize`, `clampDayEditorHeight` |
 | Persistence | `saveFoodDefinitions`, `loadFoodDefinitions`, `saveDayNotes`, `loadDayNotes` (v2 migrate from legacy mon–sun) |
 | Day meals | `exportAllDayMeals` (full v2 history), `applyImportAllDayMealsReplace` (legacy week → viewed week, or v2 diary), `applySampleDayMealsData`, `applyImportV2DayMealsData`, `getImportAllMealsMissingMode` (`empty` \| `keep`), `importSampleMeals`, `confirmImportSampleMealsReplace`, `clearDayNotes`, `clearAllDayNotes` (viewed week), `anyDayHasNotes`, `anyStoredDayHasNotes` |
@@ -443,19 +443,11 @@ Only one popover is visible at a time (`hideAllDaySuggests` before show).
 
 ## Starter guide (beginner popover)
 
-Two-step, session-only onboarding when the food list is empty on first load.
+`showStarterGuideAutomatically` runs after built-in food definitions load for users without saved food definitions who have yet to see the guide. `NutrientsPersist.markStarterGuideSeen` runs when the opening bubble displays. The flag lives in the current user's settings or a browser-local flag for guests.
 
-**Eligibility** — `maybeShowStarterGuideImportStep()` runs at end of `boot()` when `keywords.length === 0`; sets `starterGuideEligible = true` and, after a double `requestAnimationFrame`, shows step **`import`** if the list is still empty.
+**Help** (`#help-open`) starts at meal entry every time. **Next** and **Previous** move through Food Definitions, Saved meals, Macros, and Micro Requirements. **Done**, close, or Escape within the guide dismiss it.
 
-**Step `import`** — anchored to `#import-sample-foods` or `#food-definitions-heading`; copy prompts sample import. Scrolls `.keywords` into view. Also reachable from `#keywords-empty` inline link (`data-action="import-sample-from-empty"` → `importSampleFoods()`).
-
-**Step `meals`** — after successful sample import (`advanceStarterGuideAfterImport()` from `importSampleFoods` replace path), anchored to `.week__grid`; copy prompts **Add food** on each day (definitions-only) and mentions Advanced free-text.
-
-**Dismiss** — `#starter-guide-dismiss` (**Got it**): on **`meals`** step sets `starterGuideEligible = false` (won’t re-show); on **`import`** step only hides (eligible until meals dismissed or foods added).
-
-**Positioning** — `#starter-guide` is `position: fixed`; `repositionStarterGuide` reads target `getBoundingClientRect`, clamps horizontal center, places panel above target (`data-placement="bottom"` arrow). `bindStarterGuideScrollResize` listens to scroll (capture) + resize while visible.
-
-Not persisted; not closed by the global Escape modal stack.
+`repositionStarterGuide` anchors the fixed bubble to the active step's control and fits it within the viewport. Scroll and resize update placement while it is open.
 
 ## Day editor height (shared resize)
 

@@ -226,6 +226,7 @@ var NutrientsPersist = (function () {
     MEALS: "nutrients_meals",
     FAVORITES: "nutrients_favorites",
     SETTINGS: "nutrients_settings",
+    GUEST_STARTER_GUIDE_SEEN: "nutrients_guest_starter_guide_seen",
     ORPHAN_LEGACY: "nutrients_orphan_legacy",
     EXERCISE_DEFINITIONS: "nutrients_exercise_definitions",
     DAY_EXERCISES: "nutrients_day_exercises",
@@ -280,6 +281,7 @@ var NutrientsPersist = (function () {
       dayHighlights: true,
       dayWordWrap: true,
       dayEntryAdvanced: false,
+      starterGuideSeen: false,
       quizFavoriteFoods: [],
       microViewDaily: false,
       microShowDv: false,
@@ -298,6 +300,7 @@ var NutrientsPersist = (function () {
       keywordsPageSize: 25,
       experimentalWeek: null,
       breakfastFoods: [],
+      breakfastMissingBelowPct: null,
     };
   }
 
@@ -1044,6 +1047,21 @@ var NutrientsPersist = (function () {
     return patchSettings(partial);
   }
 
+  function hasSeenStarterGuide() {
+    return currentUserId()
+      ? getSetting("starterGuideSeen") === true
+      : safeGet(KEYS.GUEST_STARTER_GUIDE_SEEN) === "true";
+  }
+
+  function markStarterGuideSeen() {
+    if (hasSeenStarterGuide()) return;
+    if (currentUserId()) {
+      setSetting("starterGuideSeen", true);
+    } else {
+      safeSet(KEYS.GUEST_STARTER_GUIDE_SEEN, "true");
+    }
+  }
+
   var SKIP_TEXT_MIGRATION_KEYS = {
     nutrients_users: true,
     nutrients_session: true,
@@ -1238,5 +1256,7 @@ var NutrientsPersist = (function () {
     patchSettings: patchSettings,
     getSetting: getSetting,
     setSetting: setSetting,
+    hasSeenStarterGuide: hasSeenStarterGuide,
+    markStarterGuideSeen: markStarterGuideSeen,
   };
 })();

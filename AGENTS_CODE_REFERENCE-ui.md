@@ -247,13 +247,13 @@ Variants & instances:
 - **Copy date** (`#copy-date-modal`) — destination `#copy-date-input`; dynamic `#copy-date-modal-title` / `#copy-date-modal-hint` / `#copy-date-modal-error` from pending copy action; Apply `#copy-date-apply` / Cancel `#copy-date-cancel`. Used for custom week or custom day copy targets from `.day__copy-menu`.
 - **Favorite edit** (`#favorite-edit-modal`) — name + why fields; Save `#favorite-edit-save` / Cancel `#favorite-edit-cancel`.
 - **Favorites sidebar** (`#favorites-sidebar`) — not a `.modal`; right slide-in with `favorites-sidebar--open` (see Diary favorites). Still participates in `updateBodyModalOpen` / Escape-to-close.
-- **Starter guide** (`#starter-guide`) — fixed popover above import button or week grid; `#starter-guide-text`, `#starter-guide-dismiss` (**Got it**); `.starter-guide__arrow` with `data-placement`; hidden in print / print-preview.
+- **Starter guide** (`#starter-guide`) — fixed popover anchored to each step's control, with Previous, Next, Done, and close buttons. The arrow follows `data-placement`. The guide is hidden while dialogs are open and in print preview.
 
 ## Z-index & stacking
 
 - Modals `z-index: 100`.
 - Favorites sidebar `z-index: 80` (below modals so `#favorite-edit-modal` can stack above it).
-- Starter guide `.starter-guide` `z-index: 120` (above modals).
+- Starter guide `.starter-guide` stacks above the floating AI button.
 - Daily intake / acute toxicity / target-ref / guided food-item popovers `z-index: 120` (fixed tooltips, not modals).
 - Micros / longevity tooltip on button is above the row (cells use `overflow: visible` so it isn’t clipped).
 

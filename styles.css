@@ -1622,7 +1622,7 @@ body.exclusive-overlay-open .app-nav {
   backdrop-filter: none;
 }
 
-body.exclusive-overlay-open .starter-guide {
+body.modal-open .starter-guide {
   display: none;
 }
 
@@ -5639,9 +5639,61 @@ button.dashboard__micro-day-name:focus-visible {
   color: #5c5c5c;
 }
 
-.breakfast-analysis__day {
-  width: 100%;
+.breakfast-analysis__day-nav {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 0.35rem;
   margin-bottom: 0.35rem;
+}
+
+.breakfast-analysis__day {
+  flex: 1 1 auto;
+  width: auto;
+  min-width: 0;
+  margin-bottom: 0;
+}
+
+.breakfast-analysis__day-nav-btn {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.8rem;
+  height: 1.8rem;
+  padding: 0;
+  border: 1px solid #c8c8c4;
+  border-radius: 4px;
+  background: #fafaf8;
+  color: #333;
+  cursor: pointer;
+}
+
+.breakfast-analysis__day-nav-btn:hover:not(:disabled),
+.breakfast-analysis__day-nav-btn:focus-visible:not(:disabled) {
+  background: rgba(0, 0, 0, 0.04);
+}
+
+.breakfast-analysis__day-nav-btn:focus-visible {
+  outline: 2px solid #c8c8c4;
+  outline-offset: 1px;
+}
+
+.breakfast-analysis__day-nav-btn:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.breakfast-analysis__day-nav-icon {
+  display: block;
+}
+
+.breakfast-analysis__day-nav-icon--prev {
+  transform: rotate(90deg);
+}
+
+.breakfast-analysis__day-nav-icon--next {
+  transform: rotate(-90deg);
 }
 
 .breakfast-analysis__checklist {
@@ -5728,6 +5780,47 @@ button.dashboard__micro-day-name:focus-visible {
   font-size: 0.8rem;
   line-height: 1.4;
   color: #5c5c5c;
+}
+
+.breakfast-analysis__threshold {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem 0.65rem;
+}
+
+.breakfast-analysis__threshold-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.breakfast-analysis__threshold-clear {
+  padding: 0.3rem 0.15rem;
+  border: 0;
+  background: transparent;
+  color: #3d6b9e;
+  font: inherit;
+  font-size: 0.75rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.breakfast-analysis__threshold-clear:hover:not(:disabled),
+.breakfast-analysis__threshold-clear:focus-visible:not(:disabled) {
+  text-decoration: underline;
+}
+
+.breakfast-analysis__threshold-clear:focus-visible {
+  outline: 2px solid #c8c8c4;
+  outline-offset: 1px;
+}
+
+.breakfast-analysis__threshold-clear:disabled {
+  color: #9a9a96;
+  cursor: default;
+  text-decoration: none;
 }
 
 .breakfast-analysis__checklist .breakfast-analysis__empty {
@@ -16531,7 +16624,7 @@ button.longevity-form__label-link:focus-visible {
 
 .starter-guide {
   position: fixed;
-  z-index: 120;
+  z-index: 2147483002; /* Keep guide controls above the floating AI button. */
   width: min(17.5rem, calc(100vw - 1.5rem));
   pointer-events: auto;
 }
@@ -16550,6 +16643,42 @@ button.longevity-form__label-link:focus-visible {
   box-shadow: 0 4px 18px rgba(26, 26, 26, 0.14);
 }
 
+.starter-guide__heading,
+.starter-guide__footer,
+.starter-guide__actions {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.starter-guide__heading,
+.starter-guide__footer {
+  justify-content: space-between;
+}
+
+.starter-guide__heading {
+  margin-bottom: 0.35rem;
+}
+
+.starter-guide__title {
+  margin: 0;
+  color: #243f59;
+  font-size: 0.925rem;
+}
+
+.starter-guide__close {
+  flex: 0 0 auto;
+  min-width: 2rem;
+  min-height: 2rem;
+  padding: 0;
+  border: 0;
+  border-radius: 5px;
+  background: transparent;
+  color: #444;
+  font-size: 1.3rem;
+  cursor: pointer;
+}
+
 .starter-guide__text {
   margin: 0 0 0.65rem;
   font-size: 0.8125rem;
@@ -16557,9 +16686,14 @@ button.longevity-form__label-link:focus-visible {
   color: #333;
 }
 
-.starter-guide__dismiss {
-  margin: 0;
-  padding: 0.28rem 0.65rem;
+.starter-guide__progress {
+  font-size: 0.75rem;
+  color: #555;
+}
+
+.starter-guide__button {
+  min-height: 2rem;
+  padding: 0.25rem 0.65rem;
   border: 1px solid #c8c8c4;
   border-radius: 999px;
   background: #f5f5f3;
@@ -16570,33 +16704,49 @@ button.longevity-form__label-link:focus-visible {
   cursor: pointer;
 }
 
-.starter-guide__dismiss:hover {
+.starter-guide__button:hover:not(:disabled),
+.starter-guide__close:hover {
   background: #ececea;
-  border-color: #b0b0aa;
+}
+
+.starter-guide__button:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+
+.starter-guide__button--primary {
+  border-color: #2d567c;
+  background: #2d567c;
+  color: white;
+}
+
+.starter-guide__button--primary:hover:not(:disabled) {
+  background: #1f3d5c;
 }
 
 .starter-guide__arrow {
+  display: none;
   position: absolute;
   z-index: 0;
   width: 12px;
   height: 12px;
+  left: var(--starter-guide-arrow-left, 50%);
+  margin-left: -6px;
   background: #fff;
   border: 1px solid #3d6b9e;
 }
 
 .starter-guide[data-placement="top"] .starter-guide__arrow {
+  display: block;
   top: -7px;
-  left: 50%;
-  margin-left: -6px;
   transform: rotate(45deg);
   border-right: none;
   border-bottom: none;
 }
 
 .starter-guide[data-placement="bottom"] .starter-guide__arrow {
+  display: block;
   bottom: -7px;
-  left: 50%;
-  margin-left: -6px;
   transform: rotate(45deg);
   border-left: none;
   border-top: none;
