@@ -1,9 +1,10 @@
 {
   "name": "add-food-definition",
-  "description": "Use when the user names a food to add, asks to add a food entry, or wants a new food written into data-food/definitions-food.json from the Import food nutrition prompt. Fills vitamins and minerals the Nutrition Facts label does not have to list, including B vitamins, from composition data.",
-  "purpose": "Add one or more named foods to data-food/definitions-food.json. Nutrition objects follow the Import food definition prompt builder (Have AI help me). A Nutrition Facts label is only a start: B vitamins and the other voluntary vitamins and minerals are filled from composition data, then the objects are appended to the sample file.",
+  "description": "Use when the user names a food to add, asks to add a food entry, or wants a new food written into data-food/definitions-food.json from the Import food nutrition prompt. Writes the Nutrition Facts or restaurant-sheet nutrients into the file first, then fills vitamins and minerals that sheet did not list, including B vitamins, from composition data.",
+  "purpose": "Add one or more named foods to data-food/definitions-food.json. Nutrition objects follow the Import food definition prompt builder (Have AI help me). When a Nutrition Facts label or restaurant sheet exists, append that sheet's nutrients immediately so the food is in the file, then update the same object with the vitamins and minerals the sheet did not list.",
   "onInvoke": [
     "The user named a food (or a list of foods) to add to the sample food definitions. You fill the Import food prompt yourself and append the objects. Do not stop after drafting a prompt for ChatGPT.",
+    "When the food has a Nutrition Facts label or a restaurant nutrition sheet, write that sheet into the file before looking up anything it left off. The food has to be in definitions-food.json as soon as the printed nutrients are known.",
     "If they did not name a food, ask which food. Do not invent a food.",
     "If they already named a portion, use that portion. If they did not, follow the serving rules below and write the entry. Ask only when the name is a different food under two reasonable readings (which brand, which recipe), not when only the household serving is unspecified."
   ],
@@ -14,8 +15,8 @@
   },
   "promptSource": {
     "readBeforeWriting": [
-      "Read buildAiPromptFromPortion, jsonSchemaExample, and nutrientListForPrompt in app.js before estimating nutrients.",
-      "Keys, labels, and units come from those functions. If this skill and app.js disagree, app.js wins.",
+      "Use rulesFromBuilder in this skill as the working copy. Do not read buildAiPromptFromPortion, jsonSchemaExample, or nutrientListForPrompt unless a key or unit is missing here and is also missing on a recent entry in definitions-food.json.",
+      "If this skill and app.js disagree, app.js wins. Open only the field list that holds that key (MICRO_FIELDS, MICRO_EXTENDED_FIELDS, or LONGEVITY_FIELDS).",
       "jsonSchemaExample() zeroes every key as a shape demo. Those zeroes are not data. Do not paste that object into the file."
     ],
     "rulesFromBuilder": [
@@ -48,20 +49,33 @@
   },
   "values": [
     "Scale every number to the serving in the name.",
-    "Use a published source. USDA FoodData Central or a national food table (CoFID or equivalent) for composition. A Nutrition Facts or restaurant page is a start for branded food: keep the numbers it actually prints, then fill B vitamins and the other voluntary vitamins and minerals from composition data. Name each source in notes.",
+    "Use a published source. USDA FoodData Central or a national food table (CoFID or equivalent) for composition. A Nutrition Facts or restaurant page is a start for branded food: write the numbers it actually prints into the file first, then update that object with B vitamins and the other vitamins and minerals the sheet did not list. Name each source in notes.",
     "A missing Nutrition Facts line is not a reason to omit the key or store 0. A label 0% means under 2% DV, not zero. Omit a key only when composition data also does not report it. A stored 0 means composition data reported zero, or the nutrient is absent for that food (vitamin B12 in an unfortified plant food, vitamin C in unfortified oil). On a Supplement Facts panel, a nutrient the panel does not list can be 0.",
     "Do not copy the zero-filled schema. Do not invent a number with no source. Do fill B vitamins and the other nutrients the label is allowed to skip when a composition source reports them.",
     "Protein, carbs, and fats are required. If you cannot find those three, do not append the food; say what source you checked.",
     "Only use micros, longevity, and carbQuality keys that jsonSchemaExample / nutrientListForPrompt emit, plus carbQuality.netCarbs and notes."
   ],
+  "research": [
+    "Search this file before the web. After the duplicate check, search definitions-food.json for the same ingredient or brand family (another canned fruit, another Trifecta meal, chicken breast, cauliflower, carrot). Reuse its FDC ids and the per-100 g biotin, chromium, molybdenum, iodine, and chloride method already written in that note. Do not open MEXT, NIH, or Anderson for a food type this file already documents.",
+    "Lock one label and stop. For a branded food use one USDA branded FDC record or the maker's page. Write down the serving in grams and the printed protein, carbs, fat, fiber, sodium, and any mineral the label gives as a number. A second calorie site that disagrees is not a second label.",
+    "Write that label into the file before filling gaps. Append the object with only the printed nutrients, validate the JSON, and only then do the composition steps below. Do not research vitamins and minerals the sheet left off while the food is still absent from the file.",
+    "Fill gaps from USDA SR Legacy per 100 g. The foods/search response already includes foodNutrients; save that JSON and do not fetch the same food again. DEMO_KEY returns 429 if you search in a burst: one script, a short pause between calls, and on 429 use the payloads already saved. Do not switch to per-cup HTML (nutritionvalue, MyFoodData, getfoodfacts) and divide by hand.",
+    "Compute in code from per 100 g. Copper is USDA mg times 1000. Amino acids are USDA g per 100 g times 10 times the gram weight, which yields mg. Do not transcribe a cup table into an object: two nutrients abbreviated the same way (potassium and vitamin K both as k) overwrite each other.",
+    "A prepared meal keeps the label's protein, carbs, fat, sodium, and fiber. Estimate one gram split that sums to the labeled weight and lands near the label protein and fat. Cite each FDC id and gram weight. A few grams off on carbohydrate is acceptable. Do not run an optimizer. Leave garlic, ginger, seeds, vinegar, and stock in the note when they have no separate weight. If saturated, monounsaturated, and polyunsaturated fat must sum to the labeled fat, scale the unsaturated fats once.",
+    "If the closest record is missing vitamin E, vitamin K, choline, selenium, or carotenoids, borrow only those keys from the nearest other pack (light syrup when extra light has no value). Do not build a second full blend.",
+    "Trace nutrients are last, and only for keys still empty. Prefer a rate already stored on a similar food in this file. Then one MEXT fooddb page or the label-gap sources. Do not parse a MEXT PDF when a per-100 g number is already in a note or on fooddb.mext.go.jp.",
+    "Do not run the label-gap QA script, rebuild sources, or commit as part of adding a food. Fill the gap keys on the new object and cite them in notes."
+  ],
   "workflow": [
     "Search data-food/definitions-food.json for the food name (case-insensitive). Use search; do not load the whole file.",
     "If the same food and the same serving already exist, report the existing name and stop. Do not add a second copy. A different serving of the same food is allowed when it is not already there.",
-    "Read the three prompt-builder functions in app.js. Estimate nutrients using their rules and units.",
-    "When the food has a Nutrition Facts label or a restaurant nutrition page, treat that page as incomplete. Keep what it lists. Fill the label-gap nutrients, including every B vitamin, from composition data, and say so in notes. Do not leave those nutrients for a later QA pass.",
-    "Build one object per serving you are adding.",
-    "Append those objects to the end of the JSON array. Put a comma after the previous last object. Match the file's 2-space indent. Do not re-serialize or reformat the rest of the file.",
-    "Validate, then tell the user each new name, its serving, and the source in notes."
+    "Follow research, in that order. Estimate nutrients with rulesFromBuilder. Open app.js only for a key or unit this skill does not already state.",
+    "When the food has a Nutrition Facts label or a restaurant nutrition sheet, add it in two passes on the same object. Do not wait until the composition fill is done to insert the food.",
+    "Pass 1, label: append one object per serving with only the nutrients that sheet prints, plus protein, carbs, and fats. Set netCarbs when that sheet prints both carbohydrate and fiber. Notes cite the sheet, the serving, and which vitamins and minerals it did not list. Validate the JSON before any composition lookup. The food is in the file at this point.",
+    "Pass 2, gaps: update that same object. Keep every printed number. Fill the nutrients the sheet did not list, including every B vitamin and the other label-gap nutrients, from composition data, and append that source to the notes. Do not leave those nutrients for a later QA pass.",
+    "When there is no label or restaurant sheet, build the full object from composition data and append it once.",
+    "Append new objects to the end of the JSON array. Put a comma after the previous last object. Match the file's 2-space indent, including the array item itself (the new object starts indented under the array, not at column 0). Do not JSON.parse and rewrite the rest of the file.",
+    "Validate after the label pass and again after the gap pass. Then tell the user each new name, its serving, the label source, and the composition source in notes."
   ],
   "duplicateCheck": {
     "search": "Grep data-food/definitions-food.json for the food words and for \"name\" lines.",
@@ -83,6 +97,11 @@
     "Do not change existing food objects.",
     "Do not put a bridge nutrient's number in longevity. The number stays in micros; longevity gets true.",
     "Do not treat a Nutrition Facts label as the full micronutrient list. Do not store 0 for a vitamin or mineral the label left off or printed as 0%.",
-    "Do not add foods the user did not name."
+    "Do not hold a labeled food out of definitions-food.json until the composition fill is finished. The printed nutrients go in first.",
+    "Do not add foods the user did not name.",
+    "Do not open a second or third nutrition site after the branded FDC record or the maker's page is in hand.",
+    "Do not hand-copy per-cup HTML into per-100 g numbers.",
+    "Do not fetch a USDA food again when its nutrients are already in a search response.",
+    "Do not run the label-gap QA workflow while adding a food."
   ]
 }
