@@ -338,18 +338,18 @@
   var analysisDailyNonstoredNameQuery = "";
   // Want more: low % = sad → high % = happy. Want less: high % = sad → low % = happy.
   var LONGEVITY_ANALYSIS_AVG_BANDS = [
-    { id: "0-20", label: "0–20%", min: 0, max: 20, maxInclusive: false, color: "red", emoji: "😢" },
-    { id: "20-50", label: "20–50%", min: 20, max: 50, maxInclusive: false, color: "red", emoji: "😕" },
-    { id: "50-75", label: "50–75%", min: 50, max: 75, maxInclusive: false, color: "yellow", emoji: "😐" },
-    { id: "75-85", label: "75–85%", min: 75, max: 85, maxInclusive: false, color: "yellow", emoji: "🙂" },
-    { id: "85-100", label: "85–100%", min: 85, max: 100, maxInclusive: true, color: "green", emoji: "😄" },
+    { id: "0-20", label: "0–20%", min: 0, max: 20, maxInclusive: false, color: "red", stack: "red", emoji: "😢" },
+    { id: "20-50", label: "20–50%", min: 20, max: 50, maxInclusive: false, color: "red", stack: "orange", emoji: "😕" },
+    { id: "50-75", label: "50–75%", min: 50, max: 75, maxInclusive: false, color: "yellow", stack: "yellow", emoji: "😐" },
+    { id: "75-85", label: "75–85%", min: 75, max: 85, maxInclusive: false, color: "yellow", stack: "lime", emoji: "🙂" },
+    { id: "85-100", label: "85–100%", min: 85, max: 100, maxInclusive: true, color: "green", stack: "green", emoji: "😄" },
   ];
   var LONGEVITY_ANALYSIS_LIMIT_BANDS = [
-    { id: "limit-85-plus", label: "85%+", min: 85, max: Infinity, maxInclusive: true, color: "red", emoji: "😢" },
-    { id: "limit-75-85", label: "75–85%", min: 75, max: 85, maxInclusive: false, color: "yellow", emoji: "😕" },
-    { id: "limit-50-75", label: "50–75%", min: 50, max: 75, maxInclusive: false, color: "yellow", emoji: "😐" },
-    { id: "limit-20-50", label: "20–50%", min: 20, max: 50, maxInclusive: false, color: "green", emoji: "🙂" },
-    { id: "limit-0-20", label: "0–20%", min: 0, max: 20, maxInclusive: false, color: "green", emoji: "😄" },
+    { id: "limit-85-plus", label: "85%+", min: 85, max: Infinity, maxInclusive: true, color: "red", stack: "red", emoji: "😢" },
+    { id: "limit-75-85", label: "75–85%", min: 75, max: 85, maxInclusive: false, color: "yellow", stack: "orange", emoji: "😕" },
+    { id: "limit-50-75", label: "50–75%", min: 50, max: 75, maxInclusive: false, color: "yellow", stack: "yellow", emoji: "😐" },
+    { id: "limit-20-50", label: "20–50%", min: 20, max: 50, maxInclusive: false, color: "green", stack: "lime", emoji: "🙂" },
+    { id: "limit-0-20", label: "0–20%", min: 0, max: 20, maxInclusive: false, color: "green", stack: "green", emoji: "😄" },
   ];
   /** % DV bands for Requirements — daily non-stored ranked shortfall list. */
   var ANALYSIS_DAILY_NONSTORED_BANDS = [
@@ -887,6 +887,8 @@
   var tdeeCalcHydrating = false;
   var tdeeCalcCleared = false;
   var dayHighlightsEnabled = true;
+  var diaryDaysMuted = false;
+  var diaryWeekMuted = false;
   var dayWordWrapEnabled = true;
   var dayLineSelectEnabled = false;
   var dayLineSelectDayId = null;
@@ -9891,8 +9893,16 @@
       "scroll",
       function (e) {
         var t = e.target;
-        if (t && t.closest && t.closest("#day-food-item-popover")) return;
+        if (
+          t &&
+          t.closest &&
+          (t.closest("#day-food-item-popover") ||
+            t.closest("#diary-coverage-popover"))
+        ) {
+          return;
+        }
         hideDayFoodItemPopover();
+        hideDiaryCoveragePopover();
       },
       true
     );
@@ -20941,9 +20951,109 @@
       ".longevity-analysis-report__filters--aim"
     );
     if (aimRow) {
+      syncAnalysisStackSegments(aimRow, counts);
       aimRow.hidden = !aimRow.querySelector(
         "[data-longevity-analysis-band]:not([hidden])"
       );
+    }
+  }
+
+  function syncAnalysisStackSegments(row, counts) {
+    if (!row) return;
+    var stack = row.querySelector(".longevity-analysis-report__stack");
+    if (!stack) return;
+    var described = [];
+    var segs = stack.querySelectorAll("[data-analysis-stack-band]");
+    Array.prototype.forEach.call(segs, function (seg) {
+      var id = seg.getAttribute("data-analysis-stack-band");
+      var count = counts[id] || 0;
+      seg.hidden = count <= 0;
+      seg.style.flexGrow = String(count);
+      seg.textContent = String(count);
+      var label = seg.getAttribute("data-analysis-stack-label") || "";
+      if (count > 0) described.push(label + " " + count);
+    });
+    syncAnalysisStackCountTitles(stack);
+    var rowLabelEl = row.querySelector(
+      ".longevity-analysis-report__filters-label"
+    );
+    var rowLabel = rowLabelEl ? rowLabelEl.textContent.trim() : "";
+    stack.setAttribute(
+      "aria-label",
+      rowLabel +
+        (described.length ? " by percent range: " + described.join(", ") : "")
+    );
+  }
+
+  function syncAnalysisStackCountTitles(stack) {
+    if (!stack) return;
+    var shown = stack.getAttribute("aria-pressed") === "true";
+    stack.title = shown ? "Hide counts" : "Show counts";
+    var segs = stack.querySelectorAll("[data-analysis-stack-band]");
+    Array.prototype.forEach.call(segs, function (seg) {
+      if (!shown) {
+        seg.removeAttribute("title");
+        return;
+      }
+      var label = seg.getAttribute("data-analysis-stack-label") || "";
+      seg.title = label + ": " + seg.textContent;
+    });
+  }
+
+  function longevityAnalysisStackBarHtml(label, bands, bandCounts, options) {
+    options = options || {};
+    var pressed = !!options.pressed;
+    var parts = [];
+    var described = [];
+    bands.forEach(function (band) {
+      var count = bandCounts[band.id] || 0;
+      if (count <= 0) return;
+      described.push(band.label + " " + count);
+      parts.push(
+        '<span class="longevity-analysis-report__stack-seg longevity-analysis-report__stack-seg--' +
+          escapeAttr(band.stack || band.color) +
+          '" data-analysis-stack-band="' +
+          escapeAttr(band.id) +
+          '" data-analysis-stack-label="' +
+          escapeAttr(band.label) +
+          '" style="flex-grow:' +
+          String(count) +
+          '"' +
+          (pressed
+            ? ' title="' + escapeAttr(band.label + ": " + count) + '"'
+            : "") +
+          ">" +
+          escapeHtml(String(count)) +
+          "</span>"
+      );
+    });
+    if (!parts.length) return "";
+    return (
+      '<button type="button" class="longevity-analysis-report__stack' +
+      (options.extraClass ? " " + options.extraClass : "") +
+      '" aria-pressed="' +
+      (pressed ? "true" : "false") +
+      '" title="' +
+      escapeAttr(
+        options.title || (pressed ? "Hide counts" : "Show counts")
+      ) +
+      '" aria-label="' +
+      escapeAttr(label + " by percent range: " + described.join(", ")) +
+      '">' +
+      parts.join("") +
+      "</button>"
+    );
+  }
+
+  function toggleAnalysisStackCounts(stackBar) {
+    if (!stackBar) return;
+    var countsShown = stackBar.getAttribute("aria-pressed") === "true";
+    var next = !countsShown;
+    stackBar.setAttribute("aria-pressed", next ? "true" : "false");
+    syncAnalysisStackCountTitles(stackBar);
+    var slot = stackBar.closest("[data-diary-coverage]");
+    if (slot) {
+      diaryCoverageCountsShown[slot.getAttribute("data-diary-coverage")] = next;
     }
   }
 
@@ -21017,7 +21127,7 @@
     syncLongevityAnalysisFilterEmojis();
   }
 
-  function longevityAnalysisFilterRowHtml(kind, label, bands, bandCounts) {
+  function longevityAnalysisFilterRowHtml(kind, label, bands, bandCounts, showStack) {
     var buttonsHtml = "";
     bands.forEach(function (band) {
       var count = bandCounts[band.id] || 0;
@@ -21042,32 +21152,45 @@
         "</button>";
     });
     if (!buttonsHtml) return "";
+    var stackHtml = showStack
+      ? longevityAnalysisStackBarHtml(label, bands, bandCounts)
+      : "";
     return (
       '<div class="longevity-analysis-report__filters longevity-analysis-report__filters--' +
       escapeAttr(kind) +
+      (stackHtml ? " longevity-analysis-report__filters--stacked" : "") +
       '" role="group" aria-label="Filter by ' +
       escapeAttr(label) +
       ' average">' +
       '<span class="longevity-analysis-report__filters-label">' +
       escapeHtml(label) +
       "</span>" +
-      buttonsHtml +
+      stackHtml +
+      (stackHtml
+        ? '<div class="longevity-analysis-report__filter-btns">' +
+          buttonsHtml +
+          "</div>"
+        : buttonsHtml) +
       "</div>"
     );
   }
 
-  function longevityAnalysisFilterBarHtml(aimBandCounts, limitBandCounts) {
+  function longevityAnalysisFilterBarHtml(aimBandCounts, limitBandCounts, options) {
+    options = options || {};
+    var showStack = !!options.stack;
     var aimRow = longevityAnalysisFilterRowHtml(
       "aim",
       "Want more",
       LONGEVITY_ANALYSIS_AVG_BANDS,
-      aimBandCounts
+      aimBandCounts,
+      showStack
     );
     var limitRow = longevityAnalysisFilterRowHtml(
       "limit",
       "Want less",
       LONGEVITY_ANALYSIS_LIMIT_BANDS,
-      limitBandCounts
+      limitBandCounts,
+      showStack
     );
     if (!aimRow && !limitRow) return "";
     return (
@@ -21932,8 +22055,10 @@
     return list;
   }
 
-  function analysisNutrientExcessHtml(entries) {
+  function analysisNutrientExcessHtml(entries, options) {
+    options = options || {};
     if (!entries || !entries.length) return "";
+    var averaged = !!options.averaged;
     var rows = entries
       .map(function (entry) {
         return microAnalysisNutrientRowHtml(entry, false, true);
@@ -21943,17 +22068,33 @@
       String(entries.length) +
       " nutrient" +
       (entries.length === 1 ? "" : "s");
+    var basis = averaged
+      ? "over 100% of the daily target · " + countLabel
+      : ">100% · " + countLabel;
+    var note = averaged
+      ? '<p class="analysis-nutrient-board__excess-note">Each percent is this week’s intake divided by the days in the average, then compared with one day’s target.</p>' +
+        '<div class="analysis-nutrient-board__excess-head">' +
+        '<span class="analysis-nutrient-board__excess-col">Nutrient</span>' +
+        '<span class="analysis-nutrient-board__excess-col">Avg</span>' +
+        '<span class="analysis-nutrient-board__excess-col analysis-nutrient-board__excess-target">Target</span>' +
+        "</div>"
+      : "";
     return (
-      '<details class="analysis-nutrient-board__excess longevity-analysis-report__band-group">' +
+      '<details class="analysis-nutrient-board__excess longevity-analysis-report__band-group"' +
+      (averaged ? " open" : "") +
+      ">" +
       '<summary class="longevity-analysis-report__band-summary">' +
       '<span class="longevity-analysis-report__band-summary-main">' +
-      '<span class="longevity-analysis-report__band-label longevity-analysis-report__avg longevity-analysis-report__avg--yellow">Excess</span>' +
+      '<span class="longevity-analysis-report__band-label longevity-analysis-report__avg longevity-analysis-report__avg--yellow">' +
+      (averaged ? "Excess · daily average" : "Excess") +
+      "</span>" +
       '<span class="longevity-analysis-report__band-count">' +
-      escapeHtml(">100% · " + countLabel) +
+      escapeHtml(basis) +
       "</span></span>" +
       '<span class="longevity-analysis-report__band-chevron" aria-hidden="true"></span>' +
       "</summary>" +
       '<div class="longevity-analysis-report__nutrient-list">' +
+      note +
       rows +
       "</div></details>"
     );
@@ -22027,8 +22168,7 @@
   function microAnalysisNutrientBoardHtml(bySection) {
     var aim = analysisNutrientPillEntries(bySection, false);
     var limit = analysisNutrientPillEntries(bySection, true);
-    var excess = analysisNutrientExcessEntries(bySection);
-    if (!aim.length && !limit.length && !excess.length) return "";
+    if (!aim.length && !limit.length) return "";
     function group(label, entries, limiting) {
       if (!entries.length) return "";
       return (
@@ -22048,7 +22188,6 @@
       '<div class="analysis-nutrient-board">' +
       group("Want more", aim, false) +
       group("Want less", limit, true) +
-      analysisNutrientExcessHtml(excess) +
       '<div class="analysis-nutrient-choice" hidden>' +
       '<div class="analysis-nutrient-choice__text">' +
       '<p class="analysis-nutrient-choice__name"></p>' +
@@ -22380,7 +22519,12 @@
           "Grouped like your micro requirements. “Want more” averages treat values over 100% as 100%. “Want less” shows % of the daily max with no cap (over 100% = over the ceiling)."
       ) +
       "</p>" +
-      longevityAnalysisFilterBarHtml(aimBandCounts, limitBandCounts) +
+      longevityAnalysisFilterBarHtml(aimBandCounts, limitBandCounts, {
+        stack: true,
+      }) +
+      analysisNutrientExcessHtml(analysisNutrientExcessEntries(bySection), {
+        averaged: !!options.averaged,
+      }) +
       microAnalysisNutrientBoardHtml(bySection) +
       microAnalysisFeelHeadHtml() +
       sectionBlocks.join("")
@@ -22794,33 +22938,35 @@
       }
       if (longevityAnalysisSubtitleEl) {
         longevityAnalysisSubtitleEl.textContent =
-          "Weekly average for " +
-          weekLabel +
-          " (÷ " +
+          "Daily average over " +
           dayCount +
           " day" +
           (dayCount === 1 ? "" : "s") +
-          ")";
+          " · " +
+          weekLabel;
       }
       longevityAnalysisReportEl.innerHTML = microAnalysisReportHtml(
         collectMicroAnalysisEntriesBySection(false),
         {
+          averaged: true,
           metaHtml:
             "Week: " +
             weekLabel +
             " · Sex profile: " +
             sexLabel +
-            " · Days in average: " +
-            dayCount,
+            " · Daily average over " +
+            dayCount +
+            " day" +
+            (dayCount === 1 ? "" : "s"),
           note:
+            "Each percent compares a daily average with the daily target. The average is this week’s intake divided by " +
+            dayCount +
+            " day" +
+            (dayCount === 1 ? "" : "s") +
             (isCurrentWeek()
-              ? "Current week average uses Mon–today (" +
-                dayCount +
-                " day" +
-                (dayCount === 1 ? "" : "s") +
-                "). "
-              : "Full week average uses 7 days. ") +
-            "Grouped like your micro requirements. “Want more” averages treat values over 100% as 100%. “Want less” shows % of the daily max with no cap (over 100% = over the ceiling).",
+              ? " (Monday through today). "
+              : " (Monday–Sunday). ") +
+            "Excess means that daily average is over 100%. “Want more” section averages treat values over 100% as 100%. “Want less” shows % of the daily max with no cap (over 100% = over the ceiling).",
         }
       );
     } else if (kind === "micro-day") {
@@ -26001,6 +26147,7 @@
     loadFavorites();
     loadMeals();
     loadDayHighlightsPreference();
+    loadDiaryCoverageMutePreference();
     loadDayWordWrapPreference();
     loadDayEntryAdvancedPreference();
     loadWeekQuizFavorites();
@@ -28682,7 +28829,513 @@
       : fmtNumGrouped(week.totalCal) + " cal";
   }
 
+  var diaryCoverageCountsShown = { week: false };
+
+  function analysisAimBandCounts(bySection) {
+    var counts = {};
+    LONGEVITY_ANALYSIS_AVG_BANDS.forEach(function (band) {
+      counts[band.id] = 0;
+    });
+    analysisNutrientPillEntries(bySection, false).forEach(function (entry) {
+      var band = microAnalysisNutrientBandForPct(entry.pct, false);
+      if (band && counts[band.id] != null) counts[band.id] += 1;
+    });
+    return counts;
+  }
+
+  function diaryCoverageIsMuted(shownKey) {
+    return shownKey === "week" ? diaryWeekMuted : diaryDaysMuted;
+  }
+
+  function diaryCoverageBarTitle(shownKey) {
+    var action = "Show counts";
+    if (diaryCoverageIsMuted(shownKey)) action = "Show colors";
+    else if (diaryCoverageCountsShown[shownKey]) action = "Mute colors";
+    return action + ". Right-click or hold a range for its nutrients";
+  }
+
+  function loadDiaryCoverageMutePreference() {
+    diaryDaysMuted = false;
+    diaryWeekMuted = false;
+    if (!persist || !persist.getDiaryCoverageMute) return;
+    var value = persist.getDiaryCoverageMute();
+    if (!value) return;
+    diaryDaysMuted = !!value.days;
+    diaryWeekMuted = !!value.week;
+  }
+
+  function saveDiaryCoverageMutePreference() {
+    if (!persist || !persist.setDiaryCoverageMute) return;
+    persist.setDiaryCoverageMute({
+      days: !!diaryDaysMuted,
+      week: !!diaryWeekMuted,
+    });
+  }
+
+  function toggleDiaryCoverageBar(stackBar) {
+    var slot = stackBar && stackBar.closest("[data-diary-coverage]");
+    if (!slot) return;
+    var key = slot.getAttribute("data-diary-coverage");
+    if (key === "week") {
+      if (diaryWeekMuted) {
+        diaryWeekMuted = false;
+        diaryCoverageCountsShown.week = false;
+      } else if (diaryCoverageCountsShown.week) {
+        diaryWeekMuted = true;
+        diaryCoverageCountsShown.week = false;
+      } else {
+        diaryCoverageCountsShown.week = true;
+      }
+    } else if (diaryDaysMuted) {
+      diaryDaysMuted = false;
+      DAYS.forEach(function (day) {
+        diaryCoverageCountsShown[day.id] = false;
+      });
+    } else if (diaryCoverageCountsShown[key]) {
+      diaryDaysMuted = true;
+      DAYS.forEach(function (day) {
+        diaryCoverageCountsShown[day.id] = false;
+      });
+    } else {
+      diaryCoverageCountsShown[key] = true;
+    }
+    saveDiaryCoverageMutePreference();
+    renderDiaryCoverage();
+  }
+
+  function diaryCoverageBarHtml(label, bandCounts, shownKey, emptyKind) {
+    var total = 0;
+    LONGEVITY_ANALYSIS_AVG_BANDS.forEach(function (band) {
+      total += bandCounts[band.id] || 0;
+    });
+    if (!total) {
+      var clear = emptyKind === "clear";
+      return (
+        '<div class="diary-coverage__track diary-coverage__track--' +
+        (clear ? "clear" : "empty") +
+        '" role="img" aria-label="' +
+        escapeAttr(label + (clear ? ": no nutrient shortfalls" : ": no foods logged")) +
+        '"></div>'
+      );
+    }
+    var muted = diaryCoverageIsMuted(shownKey);
+    return longevityAnalysisStackBarHtml(
+      label,
+      LONGEVITY_ANALYSIS_AVG_BANDS,
+      bandCounts,
+      {
+        pressed: !muted && !!diaryCoverageCountsShown[shownKey],
+        extraClass: "diary-coverage__bar" + (muted ? " diary-coverage__bar--muted" : ""),
+        title: diaryCoverageBarTitle(shownKey),
+      }
+    );
+  }
+
+  function ensureDiaryCoverageSlots() {
+    var grid = document.querySelector(".week__grid");
+    if (!grid || !grid.parentNode) return;
+    if (!grid.parentNode.querySelector('[data-diary-coverage="week"]')) {
+      var week = document.createElement("div");
+      week.className = "diary-coverage diary-coverage--week";
+      week.setAttribute("data-diary-coverage", "week");
+      grid.parentNode.insertBefore(week, grid);
+    }
+    var i;
+    for (i = 0; i < grid.children.length; i++) {
+      var column = grid.children[i];
+      if (!column.classList || !column.classList.contains("day")) continue;
+      if (column.querySelector("[data-diary-coverage]")) continue;
+      var input = column.querySelector(".day__input");
+      if (!input || !input.id) continue;
+      var slot = document.createElement("div");
+      slot.className = "diary-coverage diary-coverage--day";
+      slot.setAttribute("data-diary-coverage", input.id);
+      var head = column.querySelector(".day__head");
+      if (head) head.insertBefore(slot, head.firstChild);
+      else column.insertBefore(slot, column.firstChild);
+    }
+  }
+
+  function renderDiaryCoverage() {
+    hideDiaryCoveragePopover();
+    ensureDiaryCoverageSlots();
+    var weekSlot = document.querySelector('[data-diary-coverage="week"]');
+    if (weekSlot) {
+      var weekHasFood = false;
+      DAYS.forEach(function (day) {
+        if (isDayIgnoredForWeekTotals(day.id)) return;
+        var el = document.getElementById(day.id);
+        if (el && String(el.value || "").trim()) weekHasFood = true;
+      });
+      var weekCounts = weekHasFood
+        ? analysisAimBandCounts(collectMicroAnalysisEntriesBySection(false))
+        : {};
+      weekSlot.innerHTML =
+        '<span class="diary-coverage__label">Week</span>' +
+        diaryCoverageBarHtml(
+          "Week average",
+          weekCounts,
+          "week",
+          weekHasFood ? "clear" : "empty"
+        );
+    }
+    DAYS.forEach(function (day) {
+      var slot = document.querySelector(
+        '.diary-coverage--day[data-diary-coverage="' + day.id + '"]'
+      );
+      if (!slot) return;
+      var el = document.getElementById(day.id);
+      var hasFood = !!(el && String(el.value || "").trim());
+      var ignored = isDayIgnoredForWeekTotals(day.id);
+      slot.classList.toggle("diary-coverage--ignored", ignored);
+      var counts = hasFood
+        ? analysisAimBandCounts(collectMicroAnalysisEntriesBySection(true, day.id))
+        : {};
+      slot.innerHTML = diaryCoverageBarHtml(
+        day.label,
+        counts,
+        day.id,
+        hasFood ? "clear" : "empty"
+      );
+    });
+  }
+
+  var diaryCoveragePopoverState = null;
+  var diaryCoveragePopoverPoint = null;
+  var diaryCoveragePopoverOpenedAt = 0;
+  var diaryCoveragePress = null;
+  var diaryCoverageSwallowClick = false;
+  var diaryCoverageContextAt = 0;
+  var DIARY_COVERAGE_LONG_PRESS_MS = 550;
+
+  function diaryCoverageBandById(bandId) {
+    var i;
+    for (i = 0; i < LONGEVITY_ANALYSIS_AVG_BANDS.length; i++) {
+      if (LONGEVITY_ANALYSIS_AVG_BANDS[i].id === bandId) {
+        return LONGEVITY_ANALYSIS_AVG_BANDS[i];
+      }
+    }
+    return null;
+  }
+
+  function diaryCoverageScopeName(key) {
+    if (key === "week") return "Week";
+    var i;
+    for (i = 0; i < DAYS.length; i++) {
+      if (DAYS[i].id === key) return DAYS[i].label;
+    }
+    return key || "";
+  }
+
+  function diaryCoverageBandPhrase(band) {
+    if (!band) return "in this range of the daily target";
+    if (band.min <= 0 && isFinite(band.max)) {
+      return "under " + band.max + "% of the daily target";
+    }
+    if (band.maxInclusive && isFinite(band.max)) {
+      return "from " + band.min + "% to " + band.max + "% of the daily target";
+    }
+    if (isFinite(band.max)) {
+      return "from " + band.min + "% to under " + band.max + "% of the daily target";
+    }
+    return "in the " + band.label + " range of the daily target";
+  }
+
+  function diaryCoverageEntriesForSegment(seg) {
+    var slot = seg.closest("[data-diary-coverage]");
+    if (!slot) return null;
+    var key = slot.getAttribute("data-diary-coverage");
+    var bandId = seg.getAttribute("data-analysis-stack-band");
+    if (!key || !bandId) return null;
+    var band = diaryCoverageBandById(bandId);
+    var bySection =
+      key === "week"
+        ? collectMicroAnalysisEntriesBySection(false)
+        : collectMicroAnalysisEntriesBySection(true, key);
+    var entries = analysisNutrientPillEntries(bySection, false).filter(function (entry) {
+      var entryBand = microAnalysisNutrientBandForPct(entry.pct, false);
+      return entryBand && entryBand.id === bandId;
+    });
+    return {
+      key: key,
+      scopeName: diaryCoverageScopeName(key),
+      band: band,
+      bandLabel: (band && band.label) || seg.getAttribute("data-analysis-stack-label") || "",
+      stack: (band && (band.stack || band.color)) || "",
+      week: key === "week",
+      entries: entries,
+      page: 0,
+    };
+  }
+
+  function diaryCoveragePopoverHtml(state) {
+    var entries = state.entries || [];
+    var countLabel =
+      entries.length + " nutrient" + (entries.length === 1 ? "" : "s");
+    var note = countLabel + " " + diaryCoverageBandPhrase(state.band) + ".";
+    if (state.week) {
+      note += " Week average against one day’s target.";
+    }
+    var html =
+      '<div class="diary-coverage-popover__head">' +
+      (state.stack
+        ? '<span class="diary-coverage-popover__swatch diary-coverage-popover__swatch--' +
+          escapeAttr(state.stack) +
+          '" aria-hidden="true"></span>'
+        : "") +
+      '<p class="day__food-popover-title">' +
+      escapeHtml(state.scopeName + " · " + state.bandLabel) +
+      "</p></div>" +
+      '<p class="diary-coverage-popover__note">' +
+      escapeHtml(note) +
+      "</p>";
+    if (!entries.length) {
+      html += '<p class="day__food-popover-empty">No nutrients in this range.</p>';
+      return html;
+    }
+    var pages = Math.max(1, Math.ceil(entries.length / FOOD_ITEM_POPOVER_PAGE_SIZE));
+    var page = state.page || 0;
+    if (page < 0) page = 0;
+    if (page > pages - 1) page = pages - 1;
+    state.page = page;
+    var start = page * FOOD_ITEM_POPOVER_PAGE_SIZE;
+    var pageRows = entries.slice(start, start + FOOD_ITEM_POPOVER_PAGE_SIZE);
+    html += '<div class="day__food-popover-nutrients-head">';
+    html += '<p class="day__food-popover-nutrients-label">Nutrients</p>';
+    if (pages > 1) {
+      html +=
+        '<div class="day__food-popover-nutrients-nav">' +
+        '<button type="button" class="day__food-popover-adj" data-action="coverage-popover-prev" aria-label="Previous nutrients"' +
+        (page <= 0 ? " disabled" : "") +
+        ">‹</button>" +
+        '<span class="day__food-popover-nutrients-page">' +
+        (page + 1) +
+        " / " +
+        pages +
+        "</span>" +
+        '<button type="button" class="day__food-popover-adj" data-action="coverage-popover-next" aria-label="More nutrients"' +
+        (page >= pages - 1 ? " disabled" : "") +
+        ">›</button></div>";
+    }
+    html += "</div>";
+    html += '<ul class="day__food-popover-nutrients">';
+    pageRows.forEach(function (row) {
+      var dest = foodItemPopoverJumpDest(row.key);
+      var pctText = formatTargetPctNumber(row.pct);
+      var inner =
+        '<span class="day__food-popover-nutrient-name">' +
+        escapeHtml(row.label) +
+        "</span>" +
+        '<span class="day__food-popover-nutrient-pct">' +
+        escapeHtml(pctText) +
+        "</span>";
+      if (dest) {
+        var destLabel =
+          dest === "micro"
+            ? "Show in Micro requirements"
+            : "Show in Longevity and wellness";
+        html +=
+          '<li><button type="button" class="day__food-popover-nutrient" data-action="coverage-popover-jump" data-nutrient-key="' +
+          escapeAttr(row.key) +
+          '" title="' +
+          escapeAttr(destLabel) +
+          '" aria-label="' +
+          escapeAttr(row.label + ", " + pctText + ". " + destLabel) +
+          '">' +
+          inner +
+          "</button></li>";
+      } else {
+        html += '<li class="day__food-popover-nutrient">' + inner + "</li>";
+      }
+    });
+    html += "</ul>";
+    return html;
+  }
+
+  function hideDiaryCoveragePopover() {
+    var el = document.getElementById("diary-coverage-popover");
+    if (el) el.hidden = true;
+    diaryCoveragePopoverState = null;
+    diaryCoveragePopoverPoint = null;
+  }
+
+  function positionDiaryCoveragePopover(x, y) {
+    var el = document.getElementById("diary-coverage-popover");
+    if (!el || el.hidden) return;
+    var margin = 8;
+    el.style.left = "0px";
+    el.style.top = "0px";
+    var width = el.offsetWidth;
+    var height = el.offsetHeight;
+    var left = x;
+    var top = y + 6;
+    if (left + width > window.innerWidth - margin) {
+      left = window.innerWidth - width - margin;
+    }
+    if (top + height > window.innerHeight - margin) {
+      top = y - height - 6;
+    }
+    el.style.left = Math.max(margin, left) + "px";
+    el.style.top = Math.max(margin, top) + "px";
+  }
+
+  function renderDiaryCoveragePopover() {
+    var body = document.getElementById("diary-coverage-popover-body");
+    var el = document.getElementById("diary-coverage-popover");
+    if (!body || !el || !diaryCoveragePopoverState) return;
+    body.innerHTML = diaryCoveragePopoverHtml(diaryCoveragePopoverState);
+    el.hidden = false;
+    if (diaryCoveragePopoverPoint) {
+      positionDiaryCoveragePopover(
+        diaryCoveragePopoverPoint.x,
+        diaryCoveragePopoverPoint.y
+      );
+    }
+  }
+
+  function showDiaryCoveragePopover(seg, x, y) {
+    var state = diaryCoverageEntriesForSegment(seg);
+    if (!state) return;
+    hideDayFoodItemPopover();
+    diaryCoveragePopoverState = state;
+    diaryCoveragePopoverPoint = { x: x, y: y };
+    diaryCoveragePopoverOpenedAt = Date.now();
+    renderDiaryCoveragePopover();
+  }
+
+  function diaryCoverageSegmentFromEvent(e) {
+    if (!e.target || !e.target.closest) return null;
+    var seg = e.target.closest(".longevity-analysis-report__stack-seg");
+    if (!seg || !seg.closest(".diary-coverage__bar")) return null;
+    return seg;
+  }
+
+  function clearDiaryCoveragePressTimer() {
+    if (diaryCoveragePress && diaryCoveragePress.timer) {
+      clearTimeout(diaryCoveragePress.timer);
+      diaryCoveragePress.timer = 0;
+    }
+  }
+
+  var diaryCoverageRoot = document.querySelector(".week__days");
+  if (diaryCoverageRoot) {
+    diaryCoverageRoot.addEventListener("click", function (e) {
+      if (
+        diaryCoverageSwallowClick ||
+        Date.now() - diaryCoverageContextAt < 500
+      ) {
+        diaryCoverageSwallowClick = false;
+        diaryCoverageContextAt = 0;
+        e.preventDefault();
+        e.stopPropagation();
+        return;
+      }
+      var stackBar = e.target.closest(".longevity-analysis-report__stack");
+      if (!stackBar || !diaryCoverageRoot.contains(stackBar)) return;
+      e.preventDefault();
+      toggleDiaryCoverageBar(stackBar);
+    });
+    diaryCoverageRoot.addEventListener("contextmenu", function (e) {
+      var seg = diaryCoverageSegmentFromEvent(e);
+      if (!seg || !diaryCoverageRoot.contains(seg)) return;
+      e.preventDefault();
+      diaryCoverageContextAt = Date.now();
+      showDiaryCoveragePopover(seg, e.clientX, e.clientY);
+    });
+    diaryCoverageRoot.addEventListener("pointerdown", function (e) {
+      if (e.button !== 0) return;
+      var seg = diaryCoverageSegmentFromEvent(e);
+      if (!seg || !diaryCoverageRoot.contains(seg)) return;
+      clearDiaryCoveragePressTimer();
+      var press = {
+        seg: seg,
+        x: e.clientX,
+        y: e.clientY,
+        pointerId: e.pointerId,
+        fired: false,
+        timer: 0,
+      };
+      press.timer = setTimeout(function () {
+        if (diaryCoveragePress !== press) return;
+        press.fired = true;
+        showDiaryCoveragePopover(press.seg, press.x, press.y);
+      }, DIARY_COVERAGE_LONG_PRESS_MS);
+      diaryCoveragePress = press;
+    });
+    diaryCoverageRoot.addEventListener("pointermove", function (e) {
+      if (!diaryCoveragePress || diaryCoveragePress.fired) return;
+      if (e.pointerId !== diaryCoveragePress.pointerId) return;
+      var dx = e.clientX - diaryCoveragePress.x;
+      var dy = e.clientY - diaryCoveragePress.y;
+      if (dx * dx + dy * dy > 144) {
+        clearDiaryCoveragePressTimer();
+        diaryCoveragePress = null;
+      }
+    });
+    var endDiaryCoveragePress = function (e) {
+      if (!diaryCoveragePress || e.pointerId !== diaryCoveragePress.pointerId) return;
+      var fired = diaryCoveragePress.fired;
+      clearDiaryCoveragePressTimer();
+      diaryCoveragePress = null;
+      if (!fired) return;
+      diaryCoverageSwallowClick = true;
+      setTimeout(function () {
+        diaryCoverageSwallowClick = false;
+      }, 400);
+    };
+    diaryCoverageRoot.addEventListener("pointerup", endDiaryCoveragePress);
+    diaryCoverageRoot.addEventListener("pointercancel", endDiaryCoveragePress);
+  }
+
+  var diaryCoveragePopoverEl = document.getElementById("diary-coverage-popover");
+  if (diaryCoveragePopoverEl) {
+    diaryCoveragePopoverEl.addEventListener("click", function (e) {
+      var prev = e.target.closest('[data-action="coverage-popover-prev"]');
+      var next = e.target.closest('[data-action="coverage-popover-next"]');
+      var jump = e.target.closest('[data-action="coverage-popover-jump"]');
+      if (!prev && !next && !jump) return;
+      e.preventDefault();
+      e.stopPropagation();
+      if (!diaryCoveragePopoverState) return;
+      if (prev && diaryCoveragePopoverState.page > 0) {
+        diaryCoveragePopoverState.page -= 1;
+        renderDiaryCoveragePopover();
+        return;
+      }
+      if (next) {
+        diaryCoveragePopoverState.page += 1;
+        renderDiaryCoveragePopover();
+        return;
+      }
+      if (jump) {
+        var key = jump.getAttribute("data-nutrient-key");
+        hideDiaryCoveragePopover();
+        jumpFromFoodItemPopover(key);
+      }
+    });
+  }
+
+  document.addEventListener("keydown", function (e) {
+    if (e.key !== "Escape") return;
+    var el = document.getElementById("diary-coverage-popover");
+    if (!el || el.hidden) return;
+    e.preventDefault();
+    e.stopPropagation();
+    hideDiaryCoveragePopover();
+  });
+
+  window.addEventListener("resize", function () {
+    if (!diaryCoveragePopoverPoint) return;
+    var el = document.getElementById("diary-coverage-popover");
+    if (!el || el.hidden) return;
+    positionDiaryCoveragePopover(
+      diaryCoveragePopoverPoint.x,
+      diaryCoveragePopoverPoint.y
+    );
+  });
+
   function renderDashboard() {
+    renderDiaryCoverage();
     if (!dashboardGridEl) return;
 
     var week = emptyTotals();
@@ -37915,6 +38568,7 @@
   }
 
   function showDayFoodItemPopover(itemEl, x, y) {
+    hideDiaryCoveragePopover();
     if (!dayFoodItemPopoverEl || !dayFoodItemPopoverBodyEl || !itemEl) return;
     if (dayEntryAdvancedEnabled) return;
     var dayId = itemEl.getAttribute("data-day-id");
@@ -42930,6 +43584,16 @@
         selectAnalysisNutrientPill(nutrientPill);
         return;
       }
+      var stackBar = e.target.closest(".longevity-analysis-report__stack");
+      if (
+        stackBar &&
+        longevityAnalysisReportEl &&
+        longevityAnalysisReportEl.contains(stackBar)
+      ) {
+        e.preventDefault();
+        toggleAnalysisStackCounts(stackBar);
+        return;
+      }
       var bandBtn = e.target.closest("[data-longevity-analysis-band]");
       if (bandBtn && longevityAnalysisReportEl.contains(bandBtn)) {
         var bandId = bandBtn.getAttribute("data-longevity-analysis-band");
@@ -44257,6 +44921,15 @@
       !e.target.closest("#day-food-item-popover")
     ) {
       hideDayFoodItemPopover();
+    }
+    var diaryCoveragePopoverEl = document.getElementById("diary-coverage-popover");
+    if (
+      diaryCoveragePopoverEl &&
+      !diaryCoveragePopoverEl.hidden &&
+      Date.now() - diaryCoveragePopoverOpenedAt > 250 &&
+      !e.target.closest("#diary-coverage-popover")
+    ) {
+      hideDiaryCoveragePopover();
     }
     // Keep the widened day column while a modal is open (e.g. picking a food in
     // Add food). Collapsing on that click looks like the food was already added.

@@ -227,6 +227,7 @@ var NutrientsPersist = (function () {
     FAVORITES: "nutrients_favorites",
     SETTINGS: "nutrients_settings",
     GUEST_STARTER_GUIDE_SEEN: "nutrients_guest_starter_guide_seen",
+    GUEST_DIARY_COVERAGE: "nutrients_guest_diary_coverage",
     ORPHAN_LEGACY: "nutrients_orphan_legacy",
     EXERCISE_DEFINITIONS: "nutrients_exercise_definitions",
     DAY_EXERCISES: "nutrients_day_exercises",
@@ -279,6 +280,7 @@ var NutrientsPersist = (function () {
       viewedWeekStart: null,
       dayEditorHeight: null,
       dayHighlights: true,
+      diaryCoverageMute: { days: false, week: false },
       dayWordWrap: true,
       dayEntryAdvanced: false,
       starterGuideSeen: false,
@@ -1047,6 +1049,32 @@ var NutrientsPersist = (function () {
     return patchSettings(partial);
   }
 
+  function normalizeDiaryCoverageMute(value) {
+    return {
+      days: !!(value && value.days),
+      week: !!(value && value.week),
+    };
+  }
+
+  function getDiaryCoverageMute() {
+    if (currentUserId()) {
+      return normalizeDiaryCoverageMute(getSetting("diaryCoverageMute"));
+    }
+    var raw = safeGet(KEYS.GUEST_DIARY_COVERAGE);
+    if (!raw) return { days: false, week: false };
+    try {
+      return normalizeDiaryCoverageMute(JSON.parse(raw));
+    } catch (e) {
+      return { days: false, week: false };
+    }
+  }
+
+  function setDiaryCoverageMute(value) {
+    var next = normalizeDiaryCoverageMute(value);
+    if (currentUserId()) return setSetting("diaryCoverageMute", next);
+    return safeSet(KEYS.GUEST_DIARY_COVERAGE, JSON.stringify(next));
+  }
+
   function hasSeenStarterGuide() {
     return currentUserId()
       ? getSetting("starterGuideSeen") === true
@@ -1256,6 +1284,8 @@ var NutrientsPersist = (function () {
     patchSettings: patchSettings,
     getSetting: getSetting,
     setSetting: setSetting,
+    getDiaryCoverageMute: getDiaryCoverageMute,
+    setDiaryCoverageMute: setDiaryCoverageMute,
     hasSeenStarterGuide: hasSeenStarterGuide,
     markStarterGuideSeen: markStarterGuideSeen,
   };

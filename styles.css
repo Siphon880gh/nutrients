@@ -6731,8 +6731,64 @@ button.analysis-daily-nonstored__name:focus-visible {
   margin: 0 0 0.35rem;
 }
 
+.longevity-analysis-report__filters-wrap:has(+ .analysis-nutrient-board__excess) {
+  margin-bottom: 0.45rem;
+}
+
 .analysis-nutrient-board__excess {
-  margin: 0;
+  margin: 0 0 0.75rem;
+  border-color: #e0c36a;
+  background: #fff6dc;
+}
+
+.analysis-nutrient-board__excess .longevity-analysis-report__band-summary {
+  padding: 0.55rem 0.7rem;
+}
+
+.analysis-nutrient-board__excess .longevity-analysis-report__band-label {
+  font-size: 0.95rem;
+  letter-spacing: 0.01em;
+}
+
+.analysis-nutrient-board__excess .longevity-analysis-report__band-count {
+  font-size: 0.78rem;
+  font-weight: 650;
+  color: #7a5200;
+}
+
+.analysis-nutrient-board__excess-note {
+  margin: 0.15rem 0 0.35rem;
+  font-size: 0.75rem;
+  line-height: 1.4;
+  color: #7a5200;
+}
+
+.analysis-nutrient-board__excess-head {
+  display: grid;
+  grid-template-columns: var(--analysis-feel-columns);
+  gap: 0.3rem 0.75rem;
+  align-items: end;
+  margin: 0 0 0.1rem;
+  padding: 0 0.1rem;
+}
+
+.analysis-nutrient-board__excess-col {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: #7a5200;
+}
+
+.analysis-nutrient-board__excess-target {
+  grid-column: 3 / -1;
+}
+
+.analysis-nutrient-board__excess .longevity-analysis-report__band-chevron {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-right-width: 2px;
+  border-bottom-width: 2px;
+  border-color: #9a6700;
 }
 
 .analysis-nutrient-board__label {
@@ -7177,6 +7233,15 @@ button.analysis-daily-nonstored__name:focus-visible {
     grid-template-columns: minmax(0, 1fr) auto;
   }
 
+  .analysis-nutrient-board__excess-head,
+  .analysis-nutrient-board__excess .longevity-analysis-report__nutrient-row--feel {
+    grid-template-columns: minmax(0, 1fr) 3.5rem;
+  }
+
+  .analysis-nutrient-board__excess-target {
+    grid-column: 1 / -1;
+  }
+
   .longevity-analysis-report__feel,
   .longevity-analysis-report__feel--span {
     grid-column: 1 / -1;
@@ -7265,6 +7330,82 @@ button.analysis-daily-nonstored__name:focus-visible {
   border: 1px solid #e4e8ee;
   border-radius: 6px;
   background: #f4f6f8;
+}
+
+.longevity-analysis-report__stack {
+  display: flex;
+  flex: 1 1 10rem;
+  min-width: 8rem;
+  height: 1.45rem;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 4px;
+  overflow: hidden;
+  gap: 2px;
+  background: transparent;
+  cursor: pointer;
+  font: inherit;
+}
+
+.longevity-analysis-report__stack:focus-visible {
+  outline: 2px solid #3d6b9e;
+  outline-offset: 2px;
+}
+
+.longevity-analysis-report__stack-seg {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-basis: 0;
+  min-width: 1.35rem;
+  padding: 0 0.15rem;
+  color: transparent;
+  font-size: 0.72rem;
+  font-weight: 750;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+.longevity-analysis-report__stack[aria-pressed="true"] .longevity-analysis-report__stack-seg {
+  color: #fff;
+}
+
+.longevity-analysis-report__stack-seg[hidden] {
+  display: none !important;
+}
+
+.longevity-analysis-report__stack-seg--red {
+  background: #c4312b;
+}
+
+.longevity-analysis-report__stack-seg--orange {
+  background: #e36a12;
+}
+
+.longevity-analysis-report__stack-seg--yellow {
+  background: #e6b325;
+}
+
+.longevity-analysis-report__stack-seg--lime {
+  background: #8fb339;
+}
+
+.longevity-analysis-report__stack-seg--green {
+  background: #1a7a36;
+}
+
+.longevity-analysis-report__stack[aria-pressed="true"] .longevity-analysis-report__stack-seg--yellow,
+.longevity-analysis-report__stack[aria-pressed="true"] .longevity-analysis-report__stack-seg--lime {
+  color: #2c3800;
+}
+
+.longevity-analysis-report__filter-btns {
+  display: flex;
+  flex: 1 0 100%;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
 }
 
 .longevity-analysis-report__filters--limit {
@@ -9897,6 +10038,76 @@ button.dashboard__longevity-name:focus-visible {
   display: none;
 }
 
+.diary-coverage--week {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.5rem 0.55rem 0;
+}
+
+.diary-coverage__label {
+  flex: 0 0 auto;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #5c6b7a;
+}
+
+.diary-coverage--day {
+  padding: 0.4rem 0.4rem 0;
+}
+
+.diary-coverage__track {
+  flex: 1 1 auto;
+  width: 100%;
+  min-width: 0;
+  height: 0.7rem;
+  border-radius: 4px;
+  background: #e4e3dd;
+}
+
+.diary-coverage--week .diary-coverage__track,
+.diary-coverage--week .diary-coverage__bar.longevity-analysis-report__stack {
+  height: 1.05rem;
+}
+
+.diary-coverage__track--clear {
+  background: #1a7a36;
+}
+
+.diary-coverage__bar.longevity-analysis-report__stack {
+  flex: 1 1 auto;
+  width: 100%;
+  min-width: 0;
+  height: 0.7rem;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.longevity-analysis-report__stack.diary-coverage__bar--muted {
+  gap: 0;
+  background: #c8c7c1;
+}
+
+.longevity-analysis-report__stack.diary-coverage__bar--muted .longevity-analysis-report__stack-seg,
+.longevity-analysis-report__stack.diary-coverage__bar--muted[aria-pressed="true"] .longevity-analysis-report__stack-seg,
+.longevity-analysis-report__stack.diary-coverage__bar--muted[aria-pressed="true"] .longevity-analysis-report__stack-seg--yellow {
+  background: transparent;
+  color: transparent;
+}
+
+.diary-coverage--day .longevity-analysis-report__stack-seg {
+  min-width: 0.4rem;
+  padding: 0;
+  font-size: 0.62rem;
+}
+
+.diary-coverage--ignored {
+  opacity: 0.4;
+}
+
 .week__grid {
   display: grid;
   grid-template-columns: repeat(7, minmax(0, 1fr));
@@ -10819,6 +11030,53 @@ body.day-entry-guided .day__guided {
 
 .day__food-popover[hidden] {
   display: none;
+}
+
+.diary-coverage-popover__head {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin: 0 0 0.25rem;
+}
+
+.diary-coverage-popover__head .day__food-popover-title {
+  margin: 0;
+}
+
+.diary-coverage-popover__swatch {
+  width: 0.7rem;
+  height: 0.7rem;
+  border-radius: 2px;
+  flex: 0 0 auto;
+}
+
+.diary-coverage-popover__swatch--red {
+  background: #c4312b;
+}
+
+.diary-coverage-popover__swatch--orange {
+  background: #e36a12;
+}
+
+.diary-coverage-popover__swatch--yellow {
+  background: #e6b325;
+}
+
+.diary-coverage-popover__swatch--lime {
+  background: #8fb339;
+}
+
+.diary-coverage-popover__swatch--green {
+  background: #1a7a36;
+}
+
+.diary-coverage-popover__note {
+  margin: 0 0 0.5rem;
+  color: #5c5c58;
+}
+
+.diary-coverage-popover .day__food-popover-nutrient {
+  grid-template-columns: minmax(0, 1fr) auto;
 }
 
 .day__finish-rearrange-popover {

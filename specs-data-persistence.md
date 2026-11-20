@@ -217,6 +217,7 @@ One settings document per user:
   viewedWeekStart: string | null,   // Monday YYYY-MM-DD
   dayEditorHeight: number | null,
   dayHighlights: boolean,           // default true
+  diaryCoverageMute: { days: boolean, week: boolean }, // default both false. Day bars share `days`; the week bar uses `week`. Guest (logged out) copy lives in nutrients_guest_diary_coverage.
   dayWordWrap: boolean,             // default true
   dayEntryAdvanced: boolean,        // default false — free-text day editors; guided Add food when false
   starterGuideSeen: boolean,        // default false — set when the meal-entry walkthrough opens
