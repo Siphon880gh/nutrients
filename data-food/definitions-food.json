@@ -68484,5 +68484,50 @@
       "netCarbs": 19.8
     },
     "notes": "One chicken taquito. USDA FoodData Central FNDDS 2021-2023 FDC 2708601 (Taquito, chicken), household measure 1 small/regular taquito, 70 g: 188 kcal, 8.77 g protein, 22.1 g carbohydrate, 7.29 g fat, 2.31 g fiber, 1.12 g sugars, 344 mg sodium, and 23.8 mg cholesterol. The survey recipe for that food is 15 g chicken, 45 g tortilla (not further specified), 5 g cheese, 2 g vegetable oil, and 0.3 g salt. Published protein, carbohydrate, fat, sodium, and fiber are that record, scaled to 70 g. Vitamin K is phylloquinone. Copper is USDA mg times 1000. Folate is DFE. Omega-3 is undifferentiated 18:3 plus EPA, DHA, and DPA. Omega-6 is undifferentiated 18:2 plus 20:4. The record does not list manganese, pantothenic acid, biotin, iodine, chromium, molybdenum, chloride, or amino acids. Manganese and pantothenic acid use the same recipe weights: chicken from Chicken breast 3 oz (palm-sized) in this file (USDA SR Legacy FDC 171477), tortilla from SR Legacy FDC 175037 (Tortillas, ready-to-bake or -fry, flour, refrigerated), and cheese from SR Legacy FDC 173414 (Cheese, cheddar). Amino acids use those same three records. Chicken glutamine is USDA glutamic acid on FDC 171477; the other chicken amino acids are the amounts already stored on Chicken breast 3 oz. Biotin, iodine, chromium, and molybdenum use rates already in this file: Chicken breast 3 oz for the 15 g chicken, Chipotle - Flour Tortilla (burrito, 13 inch) 1 tortilla (102 g) for the 45 g tortilla, and Cheese cheddar 1 slice (28g) for the 5 g cheese. Oil is 0 for those four. Vitamin K2, MK-4, and MK-7 are the cheddar entry scaled to 5 g. Chloride is 1.54 times the record's sodium, because this record does not report chloride and the sodium is from salt. Salt is assumed noniodized. Verified zero on 19 Nov 2026 (FNDDS composition, not a label): vitamin C, vitamin D, beta-carotene. Added sugar is not declared. The 1.12 g total sugars are included in the carbohydrate."
+  },
+  {
+    "name": "Shirakiku - Aloe Vera Drink with pulp original 1 bottle (1.5 L / 50.7 fl oz)",
+    "protein": 0,
+    "carbs": 154,
+    "fats": 0,
+    "micros": {
+      "sodium": 271,
+      "potassium": 0,
+      "calcium": 271,
+      "iron": 0,
+      "magnesium": 0,
+      "zinc": 0,
+      "copper": 0,
+      "selenium": 0,
+      "vitaminA": 0,
+      "vitaminD": 0,
+      "vitaminE": 0,
+      "vitaminK": 0,
+      "vitaminC": 57,
+      "thiamin": 0,
+      "riboflavin": 0,
+      "niacin": 0,
+      "vitaminB6": 0,
+      "biotin": 1.5,
+      "folate": 0,
+      "vitaminB12": 0,
+      "phosphorus": 0,
+      "iodine": 6,
+      "chromium": 13.5,
+      "molybdenum": 15,
+      "choline": 0,
+      "fiber": 0
+    },
+    "longevity": {
+      "saturatedFat": 0,
+      "transFat": 0,
+      "cholesterol": 0
+    },
+    "carbQuality": {
+      "addedSugar": 154,
+      "refinedCarbs": 154,
+      "netCarbs": 154
+    },
+    "notes": "Shirakiku Aloe Vera Drink with pulp, original, one 1.5 L (50.7 fl oz) bottle. Aloevine maker label for the 1.5 L original (real aloe pulp), the bottle Shirakiku sells: about 4 servings per container, serving size 1-1/2 cups (360 mL), 150 calories, 0 g fat, 0 g saturated fat, 0 g trans fat, 0 mg cholesterol, 65 mg sodium, 37 g carbohydrate, 0 g fiber, 37 g total sugars, 37 g added sugars, 0 g protein, 0 mcg vitamin D, 65 mg calcium, 0 mg iron, 0 mg potassium. Scaled by 1500/360 to the whole bottle, about 625 calories. Ingredients: purified water, fructose, aloe vera gel (8%), sugar, citric acid, gellan gum, artificial aloe flavor, calcium lactate, sodium citrate, vitamin C. Label-gap check on 20 Nov 2026: Nutrition Facts labels don't have to list these nutrients, so keys that were missing or 0 were checked against composition data; only those keys changed, as estimates, and other values were kept. Scaled to 1500 g, the weight in the name. Composition: USDA FoodData Central SR Legacy FDC 174131 (Beverages, aloe vera juice drink, fortified with Vitamin C). From that record: vitamin C. That record is 15 kcal per 100 g; this bottle's label is about 42 kcal per 100 g, so printed protein, carbohydrate, fat, sodium, calcium, iron, potassium, and vitamin D were kept. Iron stays the printed 0 mg. The generic drink has 0.15 mg iron per 100 g, and this panel prints 0 mg. From typical amounts per 100 g for juice (NIH ODS fact-sheet tables, Anderson chromium data, USDA/FDA/ODS Iodine Database; salt in processed or restaurant food assumed noniodized): biotin, iodine, chromium, molybdenum. Sodium on this label is from sodium citrate, not salt, so chloride is not 1.54 times that sodium. Not reported in the composition data, so left as is: pantothenic acid, manganese, chloride. Verified zero on 20 Nov 2026 (composition data, not the label): vitamin A, vitamin E, vitamin K, thiamin, riboflavin, niacin, B6, folate, B12, phosphorus, magnesium, zinc, selenium, copper, choline."
   }
 ]
