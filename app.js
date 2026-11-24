@@ -21980,33 +21980,15 @@
     );
   }
 
-  var ANALYSIS_NUTRIENT_PILL_SKIP = {
-    fiber: true,
-    solubleFiber: true,
-    insolubleFiber: true,
-    insolubleToSolubleFiber: true,
-    insolubleToSolubleFiber2To1: true,
-    omega3: true,
-    epa: true,
-    dha: true,
-    omega6: true,
-    quercetin: true,
-    tryptophan: true,
-    lysine: true,
-  };
-
-  function analysisNutrientPillSkipped(key) {
-    if (!key || ANALYSIS_NUTRIENT_PILL_SKIP[key]) return true;
-    if (MICRO_AMINO_SHORTFALL_KEYS[key]) return true;
-    return !microFieldByKey(key);
-  }
-
   function analysisNutrientPillName(label) {
     var text = String(label || "Nutrient").replace(/\s+/g, " ").trim();
     var match = text.match(/\(([^)]+)\)\s*$/);
     if (match) {
       var before = text.slice(0, match.index).replace(/[,;]\s*$/, "").trim();
-      if (before.length > 18 && match[1].length <= 14) return match[1];
+      // Short aliases such as B6. Ratios such as 3:1 stay with the nutrient name.
+      if (before.length > 18 && match[1].length <= 14 && /[a-z]/i.test(match[1])) {
+        return match[1];
+      }
       if (before) return before;
     }
     if (text.length > 22) return text.slice(0, 20).trim() + "…";
@@ -22021,7 +22003,6 @@
       var entries = limiting ? buckets.limit : buckets.aim;
       (entries || []).forEach(function (entry) {
         if (!entry || !entry.key || seen[entry.key]) return;
-        if (analysisNutrientPillSkipped(entry.key)) return;
         // Want more is only a shortfall. At or over 100% the target is already met.
         if (!limiting && !(entry.pct < 100)) return;
         seen[entry.key] = true;
@@ -22042,7 +22023,6 @@
       var buckets = bySection[section.id] || { aim: [], limit: [] };
       (buckets.aim || []).forEach(function (entry) {
         if (!entry || !entry.key || seen[entry.key]) return;
-        if (analysisNutrientPillSkipped(entry.key)) return;
         if (!(entry.pct > 100)) return;
         seen[entry.key] = true;
         list.push(entry);
@@ -22493,7 +22473,7 @@
       );
     }
 
-    // Range badges count the same vitamins and minerals as the pills below.
+    // Range badges count the same nutrients as the pills below, including fiber and amino acids.
     LONGEVITY_ANALYSIS_AVG_BANDS.forEach(function (b) {
       aimBandCounts[b.id] = 0;
     });
@@ -29309,8 +29289,17 @@
       }
       if (jump) {
         var key = jump.getAttribute("data-nutrient-key");
+        var scopeKey = diaryCoveragePopoverState.key;
+        var dayId = "";
+        var i;
+        for (i = 0; i < DAYS.length; i++) {
+          if (DAYS[i].id === scopeKey) dayId = scopeKey;
+        }
         hideDiaryCoveragePopover();
-        jumpFromFoodItemPopover(key);
+        jumpFromFoodItemPopover(key, {
+          dailyView: dayId !== "",
+          dayId: dayId,
+        });
       }
     });
   }
@@ -38446,8 +38435,13 @@
     return false;
   }
 
-  function prepareMicroPanelForNutrient(key) {
-    if (microViewDaily) setMicroViewDaily(false);
+  function prepareMicroPanelForNutrient(key, options) {
+    options = options || {};
+    if (options.dailyView === true) {
+      if (!microViewDaily) setMicroViewDaily(true);
+    } else if (microViewDaily) {
+      setMicroViewDaily(false);
+    }
     if (microConditionFocus) setMicroConditionFocus(null);
     if (microStatusFilter) setMicroStatusFilter(null);
     if (microStickyFilterActive()) clearStickyIconFilters();
@@ -38470,7 +38464,7 @@
       });
   }
 
-  function scrollSheetToNutrient(sheetEl, key) {
+  function scrollSheetToNutrient(sheetEl, key, dayId) {
     if (!sheetEl || !key) return false;
     var scope = sheetEl;
     if (sheetEl === dashboardMicroPanelEl) {
@@ -38480,16 +38474,33 @@
     } else if (sheetEl === dashboardLongevityPanelEl) {
       scope = dashboardLongevityContentEl || sheetEl;
     }
-    var btn = scope.querySelector(
-      '[data-micro-def="' +
-        key +
-        '"], [data-longevity-def="' +
-        key +
-        '"]'
-    );
+    var btn = null;
+    if (microViewDaily && dayId && scope.querySelector) {
+      var card = scope.querySelector(
+        '[data-micro-day-card="' + dayId + '"]'
+      );
+      if (card) {
+        btn = card.querySelector(
+          '[data-micro-def="' +
+            key +
+            '"], [data-longevity-def="' +
+            key +
+            '"]'
+        );
+      }
+    }
+    if (!btn) {
+      btn = scope.querySelector(
+        '[data-micro-def="' +
+          key +
+          '"], [data-longevity-def="' +
+          key +
+          '"]'
+      );
+    }
     if (!btn) return false;
     var row = btn.closest(
-      ".dashboard__micro-row, .dashboard__longevity-row"
+      ".dashboard__micro-row, .dashboard__micro-day-row, .dashboard__longevity-row"
     );
     var target = row || btn;
     clearJumpTargetHighlights();
@@ -38514,30 +38525,32 @@
     return true;
   }
 
-  function scheduleNutrientScroll(sheetEl, key, delayMs) {
+  function scheduleNutrientScroll(sheetEl, key, delayMs, dayId) {
     var tries = 0;
     function attempt() {
       tries += 1;
-      if (scrollSheetToNutrient(sheetEl, key) || tries >= 10) return;
+      if (scrollSheetToNutrient(sheetEl, key, dayId) || tries >= 10) return;
       window.setTimeout(attempt, 80);
     }
     window.setTimeout(attempt, delayMs || 40);
   }
 
-  function jumpFromFoodItemPopover(key) {
+  function jumpFromFoodItemPopover(key, options) {
+    options = options || {};
     var dest = foodItemPopoverJumpDest(key);
     hideDayFoodItemPopover();
     if (!dest) return;
     var alreadyOpen;
     if (dest === "micro") {
       alreadyOpen = microRequirementsOpen;
-      prepareMicroPanelForNutrient(key);
+      prepareMicroPanelForNutrient(key, options);
       if (!alreadyOpen) setMicroRequirementsOpen(true);
       else renderMicroRequirements();
       scheduleNutrientScroll(
         dashboardMicroPanelEl,
         key,
-        alreadyOpen ? 40 : 280
+        alreadyOpen ? 40 : 280,
+        options.dayId || ""
       );
       return;
     }
