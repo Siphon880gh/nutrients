@@ -335,6 +335,8 @@
   var analysisActiveKind = null;
   var analysisActiveDayId = null;
   var analysisNonStoredOnly = false;
+  // Default on: stacked bars and requirements include the misc deficiency group.
+  var miscDeficienciesOn = true;
   var analysisDailyNonstoredNameQuery = "";
   // Want more: low % = sad → high % = happy. Want less: high % = sad → low % = happy.
   var LONGEVITY_ANALYSIS_AVG_BANDS = [
@@ -1243,16 +1245,20 @@
 
   var TARGET_REF_POPOVER_DETAILS = {
     arginine: {
-      text: "Arginine: Shao & Hathcock, Regulatory Toxicology and Pharmacology (2008), “Risk assessment for the amino acids taurine, L-glutamine and L-arginine.” The study used an Observed Safe Level / Highest Observed Intake approach and selected 20 g/day as the OSL for normal healthy adults.",
+      text: "Arginine: Wu, Amino Acids (2009), reports typical mixed-diet arginine intake of about 4–5 g/day in healthy adults. This app uses 4 g/day as a study-min for deficiency tracking; the body also synthesizes arginine, and need rises in illness or injury. Shao & Hathcock, Regulatory Toxicology and Pharmacology (2008), selected 20 g/day as the Observed Safe Level (study max) for normal healthy adults.",
       url: "https://pubmed.ncbi.nlm.nih.gov/18325648/",
     },
     glutamine: {
-      text: "Glutamine: Shao & Hathcock, Regulatory Toxicology and Pharmacology (2008), “Risk assessment for the amino acids taurine, L-glutamine and L-arginine.” The study used an Observed Safe Level / Highest Observed Intake approach and selected 14 g/day as the OSL for normal healthy adults.",
+      text: "Glutamine: Lacey & Wilmore, Nutrition Reviews (1990), describe glutamine as conditionally essential, with typical mixed-diet intake of about 5–10 g/day from protein foods. This app uses 5 g/day as a study-min for deficiency tracking. Shao & Hathcock, Regulatory Toxicology and Pharmacology (2008), selected 14 g/day as the Observed Safe Level (study max) for normal healthy adults.",
       url: "https://pubmed.ncbi.nlm.nih.gov/18325648/",
     },
     taurine: {
-      text: "Taurine: Shao & Hathcock, Regulatory Toxicology and Pharmacology (2008), “Risk assessment for the amino acids taurine, L-glutamine and L-arginine.” The study used an Observed Safe Level / Highest Observed Intake approach and selected 3 g/day as the OSL for normal healthy adults.",
+      text: "Taurine: Rana & Sanders, British Journal of Nutrition (1986), and later reviews report typical omnivore taurine intake of about 40–400 mg/day, often around 200 mg. This app uses 200 mg/day as a study-min for deficiency tracking; vegetarian and vegan diets are often lower. Shao & Hathcock, Regulatory Toxicology and Pharmacology (2008), selected 3 g/day as the Observed Safe Level (study max) for normal healthy adults.",
       url: "https://pubmed.ncbi.nlm.nih.gov/18325648/",
+    },
+    cysteine: {
+      text: "Cysteine: Institute of Medicine (2005) set the estimated average requirement for sulfur amino acids (methionine + cysteine) at 15 mg/kg/day. This app already scores methionine at 10.4 mg/kg and uses the remaining 4.6 mg/kg as the cysteine body-weight minimum, the same split used for phenylalanine and tyrosine.",
+      url: "https://nap.nationalacademies.org/catalog/10490/dietary-reference-intakes-for-energy-carbohydrate-fiber-fat-fatty-acids-cholesterol-protein-and-amino-acids",
     },
     glycine: {
       text: "Glycine: Mel\u00e9ndez-Hevia et al., Journal of Biosciences (2009), showed that endogenous glycine synthesis (~3 g/day) plus typical dietary intake (~2 g/day) falls ~10 g/day short of the amount needed for collagen synthesis and other metabolic uses in a 70 kg human. de Paz-Lugo et al., Amino Acids (2018), confirmed that higher glycine concentrations increase collagen synthesis by articular chondrocytes in vitro, supporting the 10 g/day target for joint and connective tissue health.",
@@ -13671,6 +13677,18 @@
   }
 
   var STUDY_MIN_MICRO_REFS = {
+    arginine: {
+      amount: 4000,
+      source: "Wu 2009 — typical mixed-diet arginine intake",
+    },
+    glutamine: {
+      amount: 5000,
+      source: "Lacey & Wilmore 1990 — typical mixed-diet glutamine intake",
+    },
+    taurine: {
+      amount: 200,
+      source: "Rana & Sanders 1986 — typical omnivore taurine intake",
+    },
     glycine: {
       amount: 10000,
       source: "Meléndez-Hevia et al. 2009 — collagen synthesis deficit",
@@ -13706,7 +13724,6 @@
     vitaminK2: true,
     vitaminK2MK4: true,
     vitaminK2MK7: true,
-    cysteine: true,
     epa: true,
     dha: true,
   };
@@ -15064,10 +15081,14 @@
         });
       }
     }
-    if (!microStickyFilterActive()) return fields;
-    fields = ensureSelectedNutrientFields(fields);
+    if (microStickyFilterActive()) {
+      fields = ensureSelectedNutrientFields(fields);
+      fields = fields.filter(function (entry) {
+        return microKeyMatchesStickyFilter(entry.field.key);
+      });
+    }
     return fields.filter(function (entry) {
-      return microKeyMatchesStickyFilter(entry.field.key);
+      return shouldIncludeAnalysisKey(entry.field && entry.field.key);
     });
   }
 
@@ -15718,6 +15739,7 @@
     syncMicroDailyDvToggleUi();
     syncMicroViewToggleUi();
     syncMicroHintText();
+    syncMiscDeficienciesToggleUi();
     syncMicroConditionUi();
     syncMicroStatusFilterUi();
 
@@ -21205,6 +21227,7 @@
       '" title="Show sad-to-happy faces on percent ranges">' +
       (longevityAnalysisShowFilterEmojis ? "Hide faces" : "Show faces") +
       "</button>" +
+      miscDeficienciesToggleHtml() +
       '<span class="longevity-analysis-report__emoji-hint">Want more: low = sad · Want less: low = happy</span>' +
       "</div>" +
       aimRow +
@@ -21460,6 +21483,143 @@
     return !!(dayText && String(dayText).trim());
   }
 
+  var ESSENTIAL_AMINO_KEYS = {
+    histidine: true,
+    isoleucine: true,
+    leucine: true,
+    lysine: true,
+    methionine: true,
+    phenylalanine: true,
+    threonine: true,
+    tryptophan: true,
+    valine: true,
+  };
+
+  var NONESSENTIAL_AMINO_KEYS = {
+    arginine: true,
+    cysteine: true,
+    glutamine: true,
+    glycine: true,
+    proline: true,
+    tyrosine: true,
+    taurine: true,
+  };
+
+  var MISC_DEFICIENCY_FLAVONOID_KEYS = {
+    flavonoids: true,
+    quercetin: true,
+  };
+
+  var MISC_DEFICIENCY_POLYPHENOL_KEYS = {
+    polyphenols: true,
+  };
+
+  var MISC_DEFICIENCY_ANTIOXIDANT_KEYS = {
+    carotenoids: true,
+    lutein: true,
+    glutathione: true,
+    alphaLipoicAcid: true,
+    coq10: true,
+    sulforaphane: true,
+  };
+
+  var MISC_DEFICIENCY_FIBER_KEYS = {
+    fiber: true,
+    solubleFiber: true,
+    insolubleFiber: true,
+    insolubleToSolubleFiber2To1: true,
+    insolubleToSolubleFiber: true,
+  };
+
+  var MISC_DEFICIENCIES_TOGGLE_TITLE =
+    "When on, shortfall bars and requirements include essential amino acids, flavonoids, antioxidants, polyphenols, and fiber. Turn off to hide those groups. Non-essential amino acids stay in the shortfall lists either way.";
+
+  function isMiscDeficiencyKey(key) {
+    if (!key || NONESSENTIAL_AMINO_KEYS[key]) return false;
+    return !!(
+      ESSENTIAL_AMINO_KEYS[key] ||
+      MISC_DEFICIENCY_FLAVONOID_KEYS[key] ||
+      MISC_DEFICIENCY_POLYPHENOL_KEYS[key] ||
+      MISC_DEFICIENCY_ANTIOXIDANT_KEYS[key] ||
+      MISC_DEFICIENCY_FIBER_KEYS[key]
+    );
+  }
+
+  function shouldIncludeAnalysisKey(key) {
+    return miscDeficienciesOn || !isMiscDeficiencyKey(key);
+  }
+
+  function analysisSkipsUnscoredCeiling(targetDisplay) {
+    return !!(targetDisplay && targetDisplay.kind === "studyMax");
+  }
+
+  function miscDeficienciesToggleAriaLabel() {
+    return miscDeficienciesOn
+      ? "Misc deficiencies is on. Showing essential amino acids, flavonoids, antioxidants, polyphenols, and fiber. Turn off to hide those groups. Non-essential amino acids stay visible either way."
+      : "Misc deficiencies is off. Essential amino acids, flavonoids, antioxidants, polyphenols, and fiber are hidden. Turn on to show them. Non-essential amino acids stay visible either way.";
+  }
+
+  function miscDeficienciesToggleHtml(extraClass) {
+    return (
+      '<button type="button" class="analysis-nonstored-toggle' +
+      (extraClass ? " " + extraClass : "") +
+      '" data-misc-deficiencies-toggle aria-pressed="' +
+      (miscDeficienciesOn ? "true" : "false") +
+      '" aria-label="' +
+      escapeAttr(miscDeficienciesToggleAriaLabel()) +
+      '" title="' +
+      escapeAttr(MISC_DEFICIENCIES_TOGGLE_TITLE) +
+      '">' +
+      '<span class="analysis-nonstored-toggle__switch" aria-hidden="true"></span>' +
+      '<span class="analysis-nonstored-toggle__label">Misc deficiencies</span>' +
+      "</button>"
+    );
+  }
+
+  function syncMiscDeficienciesToggleUi() {
+    var btns = document.querySelectorAll("[data-misc-deficiencies-toggle]");
+    Array.prototype.forEach.call(btns, function (btn) {
+      btn.setAttribute("aria-pressed", miscDeficienciesOn ? "true" : "false");
+      btn.setAttribute("aria-label", miscDeficienciesToggleAriaLabel());
+      btn.setAttribute("title", MISC_DEFICIENCIES_TOGGLE_TITLE);
+    });
+  }
+
+  function loadMiscDeficienciesPreference() {
+    miscDeficienciesOn = true;
+    if (persist && persist.getMiscDeficiencies) {
+      miscDeficienciesOn = persist.getMiscDeficiencies() !== false;
+    }
+    syncMiscDeficienciesToggleUi();
+  }
+
+  function saveMiscDeficienciesPreference() {
+    if (persist && persist.setMiscDeficiencies) {
+      persist.setMiscDeficiencies(miscDeficienciesOn);
+    }
+  }
+
+  function setMiscDeficienciesOn(next) {
+    next = next !== false;
+    if (miscDeficienciesOn === next) {
+      syncMiscDeficienciesToggleUi();
+      return;
+    }
+    miscDeficienciesOn = next;
+    saveMiscDeficienciesPreference();
+    syncMiscDeficienciesToggleUi();
+    renderDiaryCoverage();
+    if (experimentalPanelOpen) renderExperimentalPanel();
+    if (microRequirementsOpen) renderMicroRequirements();
+    if (longevityAnalysisModalEl && !longevityAnalysisModalEl.hidden) {
+      renderAnalysisModal();
+    }
+  }
+
+  function toggleMiscDeficiencies() {
+    setMiscDeficienciesOn(!miscDeficienciesOn);
+  }
+
   var MICRO_ANALYSIS_SECTIONS = [
     { id: "fiber", label: "Fiber" },
     { id: "electrolytes", label: "Electrolytes" },
@@ -21651,6 +21811,8 @@
     });
 
     fields.forEach(function (entry) {
+      var entryKey = entry.field && entry.field.key;
+      if (!shouldIncludeAnalysisKey(entryKey)) return;
       var snap = microEntryStatusSnapshot(
         entry,
         microTotals,
@@ -21660,11 +21822,8 @@
       var pct = snap.targetDisplay && snap.targetDisplay.pct;
       if (pct == null || isNaN(pct)) return;
       // Study-max OSL/UL refs are safety ceilings, not "want less" dietary goals.
-      var entryKey = entry.field && entry.field.key;
-      if (
-        (snap.targetDisplay && snap.targetDisplay.kind === "studyMax") ||
-        (entryKey && studyMaxMicroRef(entryKey))
-      ) {
+      // Nutrients that also have a study-min or other target still count as aim.
+      if (analysisSkipsUnscoredCeiling(snap.targetDisplay)) {
         return;
       }
       var sectionIds = microAnalysisSectionIdsForEntry(entry);
@@ -22135,6 +22294,8 @@
       '<span class="analysis-nonstored-toggle__label">Non-stored only</span>' +
       "</button>" +
       '<span class="analysis-nutrient-board__sep" aria-hidden="true"></span>' +
+      miscDeficienciesToggleHtml() +
+      '<span class="analysis-nutrient-board__sep" aria-hidden="true"></span>' +
       '<span class="analysis-nonstored-help">' +
       '<button type="button" class="analysis-nonstored-help__btn" data-analysis-nonstored-help aria-expanded="false" aria-controls="analysis-nonstored-note" aria-label="About nutrients that store poorly">' +
       '<span class="analysis-nonstored-help__chevron" aria-hidden="true"></span>' +
@@ -22531,6 +22692,7 @@
     fields.forEach(function (entry) {
       var key = entry && entry.field && entry.field.key;
       if (!key || seen[key]) return;
+      if (!shouldIncludeAnalysisKey(key)) return;
       if (!microRequiresDailyIntake(key)) return;
       var snap = microEntryStatusSnapshot(
         entry,
@@ -22541,10 +22703,7 @@
       var targetDisplay = snap.targetDisplay;
       var pct = targetDisplay && targetDisplay.pct;
       if (pct == null || isNaN(pct)) return;
-      if (
-        (targetDisplay && targetDisplay.kind === "studyMax") ||
-        studyMaxMicroRef(key)
-      ) {
+      if (analysisSkipsUnscoredCeiling(targetDisplay)) {
         return;
       }
       // Shortfall ranking: skip ceilings (e.g. sodium).
@@ -22831,6 +22990,9 @@
           "One column per day for nutrients with poor body storage. Each day is ranked by its own largest shortfall. Future days show a placeholder."
       ) +
       "</p>" +
+      '<div class="analysis-nutrient-board__tools">' +
+      miscDeficienciesToggleHtml() +
+      "</div>" +
       microDailyNonstoredLegendHtml() +
       '<div class="analysis-daily-nonstored__columns">' +
       columns +
@@ -23677,6 +23839,7 @@
     fields.forEach(function (entry) {
       var key = entry.field && entry.field.key;
       if (!key || seen[key] || entry.source === "derived") return;
+      if (!shouldIncludeAnalysisKey(key)) return;
       var snap = microEntryStatusSnapshot(
         entry,
         totals.micro,
@@ -23685,10 +23848,7 @@
       );
       var pct = snap.targetDisplay && snap.targetDisplay.pct;
       if (pct == null || isNaN(pct)) return;
-      if (
-        (snap.targetDisplay && snap.targetDisplay.kind === "studyMax") ||
-        studyMaxMicroRef(key)
-      ) {
+      if (analysisSkipsUnscoredCeiling(snap.targetDisplay)) {
         return;
       }
       if (microAnalysisEntryIsLimit(entry, snap.targetDisplay)) return;
@@ -26128,6 +26288,7 @@
     loadMeals();
     loadDayHighlightsPreference();
     loadDiaryCoverageMutePreference();
+    loadMiscDeficienciesPreference();
     loadDayWordWrapPreference();
     loadDayEntryAdvancedPreference();
     loadWeekQuizFavorites();
@@ -28957,7 +29118,8 @@
           weekCounts,
           "week",
           weekHasFood ? "clear" : "empty"
-        );
+        ) +
+        miscDeficienciesToggleHtml("diary-coverage__misc-toggle");
     }
     DAYS.forEach(function (day) {
       var slot = document.querySelector(
@@ -29303,6 +29465,13 @@
       }
     });
   }
+
+  document.addEventListener("click", function (e) {
+    var btn = e.target.closest("[data-misc-deficiencies-toggle]");
+    if (!btn) return;
+    e.preventDefault();
+    toggleMiscDeficiencies();
+  });
 
   document.addEventListener("keydown", function (e) {
     if (e.key !== "Escape") return;
@@ -40203,6 +40372,7 @@
     fields.forEach(function (entry) {
       var key = entry && entry.field && entry.field.key;
       if (!key || seen[key]) return;
+      if (!shouldIncludeAnalysisKey(key)) return;
       var nonStored = !!microRequiresDailyIntake(key);
       if (!experimentalNonStored && nonStored) return;
       var snap = microEntryStatusSnapshot(
@@ -40214,10 +40384,7 @@
       var targetDisplay = snap.targetDisplay;
       var pct = targetDisplay && targetDisplay.pct;
       if (pct == null || isNaN(pct)) return;
-      if (
-        (targetDisplay && targetDisplay.kind === "studyMax") ||
-        studyMaxMicroRef(key)
-      ) {
+      if (analysisSkipsUnscoredCeiling(targetDisplay)) {
         return;
       }
       if (microAnalysisEntryIsLimit(entry, targetDisplay)) return;

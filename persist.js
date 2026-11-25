@@ -228,6 +228,7 @@ var NutrientsPersist = (function () {
     SETTINGS: "nutrients_settings",
     GUEST_STARTER_GUIDE_SEEN: "nutrients_guest_starter_guide_seen",
     GUEST_DIARY_COVERAGE: "nutrients_guest_diary_coverage",
+    GUEST_MISC_DEFICIENCIES: "nutrients_guest_misc_deficiencies",
     ORPHAN_LEGACY: "nutrients_orphan_legacy",
     EXERCISE_DEFINITIONS: "nutrients_exercise_definitions",
     DAY_EXERCISES: "nutrients_day_exercises",
@@ -281,6 +282,7 @@ var NutrientsPersist = (function () {
       dayEditorHeight: null,
       dayHighlights: true,
       diaryCoverageMute: { days: false, week: false },
+      miscDeficiencies: true,
       dayWordWrap: true,
       dayEntryAdvanced: false,
       starterGuideSeen: false,
@@ -1075,6 +1077,33 @@ var NutrientsPersist = (function () {
     return safeSet(KEYS.GUEST_DIARY_COVERAGE, JSON.stringify(next));
   }
 
+  // Default on when unset, so existing users keep the current shortfall set.
+  function normalizeMiscDeficiencies(value) {
+    if (value === false || value === "false" || value === 0 || value === "0") {
+      return false;
+    }
+    return true;
+  }
+
+  function getMiscDeficiencies() {
+    if (currentUserId()) {
+      return normalizeMiscDeficiencies(getSetting("miscDeficiencies"));
+    }
+    var raw = safeGet(KEYS.GUEST_MISC_DEFICIENCIES);
+    if (raw == null || raw === "") return true;
+    try {
+      return normalizeMiscDeficiencies(JSON.parse(raw));
+    } catch (e) {
+      return normalizeMiscDeficiencies(raw);
+    }
+  }
+
+  function setMiscDeficiencies(value) {
+    var next = normalizeMiscDeficiencies(value);
+    if (currentUserId()) return setSetting("miscDeficiencies", next);
+    return safeSet(KEYS.GUEST_MISC_DEFICIENCIES, JSON.stringify(next));
+  }
+
   function hasSeenStarterGuide() {
     return currentUserId()
       ? getSetting("starterGuideSeen") === true
@@ -1286,6 +1315,8 @@ var NutrientsPersist = (function () {
     setSetting: setSetting,
     getDiaryCoverageMute: getDiaryCoverageMute,
     setDiaryCoverageMute: setDiaryCoverageMute,
+    getMiscDeficiencies: getMiscDeficiencies,
+    setMiscDeficiencies: setMiscDeficiencies,
     hasSeenStarterGuide: hasSeenStarterGuide,
     markStarterGuideSeen: markStarterGuideSeen,
   };

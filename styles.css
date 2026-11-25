@@ -6828,6 +6828,10 @@ button.analysis-daily-nonstored__name:focus-visible {
   background: #d0d0cc;
 }
 
+.dashboard__micro-intro-actions .analysis-nonstored-toggle {
+  align-self: center;
+}
+
 .analysis-nonstored-toggle {
   display: inline-flex;
   align-items: center;
@@ -10041,8 +10045,14 @@ button.dashboard__longevity-name:focus-visible {
 .diary-coverage--week {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 0.45rem;
   padding: 0.5rem 0.55rem 0;
+}
+
+.diary-coverage__misc-toggle {
+  flex: 0 0 auto;
+  margin-left: auto;
 }
 
 .diary-coverage__label {

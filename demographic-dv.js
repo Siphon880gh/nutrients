@@ -183,6 +183,7 @@
     leucine: 39,
     lysine: 30,
     methionine: 10.4,
+    cysteine: 4.6,
     phenylalanine: 14,
     threonine: 15,
     tryptophan: 5,
