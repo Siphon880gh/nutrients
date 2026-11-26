@@ -622,14 +622,19 @@
               <span class="dashboard__micro-toggle-label">Daily Targets</span>
               <button type="button" id="dashboard-micro-dv-toggle" class="dashboard__micro-segment dashboard__micro-segment--solo" aria-pressed="false">Show daily targets</button>
             </div>
-            <div class="dashboard__micro-toggle-group" role="group" aria-label="Misc deficiencies">
-              <span class="dashboard__micro-toggle-label">Misc deficiencies</span>
-              <button type="button" id="dashboard-micro-misc-toggle" class="analysis-nonstored-toggle" data-misc-deficiencies-toggle aria-pressed="true" title="When on, shortfall bars and requirements include essential amino acids, flavonoids, antioxidants, polyphenols, and fiber. Turn off to hide those groups. Non-essential amino acids stay in the shortfall lists either way.">
+            <div class="dashboard__micro-toggle-group dashboard__micro-toggle-group--deficiency" role="group" aria-label="Amino acid deficiencies">
+              <button type="button" id="dashboard-micro-amino-toggle" class="analysis-nonstored-toggle" data-amino-deficiencies-toggle aria-pressed="true" title="When on, shortfall bars and requirements include amino acids. Turn off to hide them. The menu chooses essential amino acids only or all amino acids.">
                 <span class="analysis-nonstored-toggle__switch" aria-hidden="true"></span>
-                <span class="analysis-nonstored-toggle__label">Show group</span>
+                <span class="analysis-nonstored-toggle__label">Amino acid deficiencies</span>
               </button>
-              <button type="button" class="misc-deficiencies-amino__btn" data-misc-deficiencies-amino-menu aria-expanded="false" aria-haspopup="menu" aria-controls="misc-deficiencies-amino-menu" aria-label="Amino acids included in Misc deficiencies: Essential amino acids only. Change amino acids mode." title="Amino acids mode">
+              <button type="button" class="misc-deficiencies-amino__btn" data-misc-deficiencies-amino-menu aria-expanded="false" aria-haspopup="menu" aria-controls="misc-deficiencies-amino-menu" aria-label="Amino acid deficiencies: Essential amino acids only. Change which amino acids appear in shortfall bars and requirements." title="Choose essential or all amino acids">
                 <span class="misc-deficiencies-amino__chevron" aria-hidden="true"></span>
+              </button>
+            </div>
+            <div class="dashboard__micro-toggle-group dashboard__micro-toggle-group--deficiency" role="group" aria-label="Misc deficiencies">
+              <button type="button" id="dashboard-micro-misc-toggle" class="analysis-nonstored-toggle" data-misc-deficiencies-toggle aria-pressed="true" title="When on, shortfall bars and requirements include flavonoids, antioxidants, polyphenols, and fiber. Turn off to hide those groups.">
+                <span class="analysis-nonstored-toggle__switch" aria-hidden="true"></span>
+                <span class="analysis-nonstored-toggle__label">Misc deficiencies</span>
               </button>
               <button type="button" class="misc-deficiencies-help__btn" data-misc-deficiencies-help aria-expanded="false" aria-controls="misc-deficiencies-help-popover" aria-label="About Misc deficiencies" title="About Misc deficiencies">
                 <svg class="misc-deficiencies-help__icon" viewBox="0 0 16 16" width="13" height="13" aria-hidden="true" focusable="false">
@@ -978,9 +983,9 @@
         </div>
       </div>
       <div id="coverage-action-note" class="coverage-action-note" role="status" aria-live="polite" hidden></div>
-      <p id="misc-deficiencies-help-popover" class="misc-deficiencies-help-popover" role="note" hidden>This toggle shows or hides misc deficiencies — essential amino acids, flavonoids, antioxidants, polyphenols, fibers — in the stacked bars and requirements. Amino acids mode is Essential amino acids only, so non-essential amino acids are always tracked either way.</p>
+      <p id="misc-deficiencies-help-popover" class="misc-deficiencies-help-popover" role="note" hidden>This toggle shows or hides flavonoids, antioxidants, polyphenols, and fiber in the stacked bars and requirements. Amino acid deficiencies are on, set to Essential amino acids only.</p>
       <div id="misc-deficiencies-amino-menu" class="misc-deficiencies-amino-menu" role="menu" aria-labelledby="misc-deficiencies-amino-menu-label" hidden>
-        <p id="misc-deficiencies-amino-menu-label" class="misc-deficiencies-amino-menu__label">Amino acids</p>
+        <p id="misc-deficiencies-amino-menu-label" class="misc-deficiencies-amino-menu__label">Amino acid deficiencies</p>
         <button type="button" class="misc-deficiencies-amino-menu__item" role="menuitemradio" data-misc-deficiencies-amino="essential" aria-checked="true">
           <span class="misc-deficiencies-amino-menu__check" aria-hidden="true"></span>
           <span class="misc-deficiencies-amino-menu__text">Essential amino acids only</span>

@@ -338,6 +338,8 @@
   // Default on: stacked bars and requirements include the misc deficiency group.
   var miscDeficienciesOn = true;
   var miscDeficienciesAminoMode = "essential";
+  // Default on: amino acids count in shortfall bars and requirements.
+  var aminoDeficienciesOn = true;
   var analysisDailyNonstoredNameQuery = "";
   // Want more: low % = sad → high % = happy. Want less: high % = sad → low % = happy.
   var LONGEVITY_ANALYSIS_AVG_BANDS = [
@@ -21570,19 +21572,16 @@
   }
 
   function miscDeficienciesToggleTitle() {
-    if (miscDeficienciesAminoMode === "all") {
-      return "When on, shortfall bars and requirements include all amino acids, flavonoids, antioxidants, polyphenols, and fiber. Turn off to hide those groups, including non-essential amino acids.";
-    }
-    return "When on, shortfall bars and requirements include essential amino acids, flavonoids, antioxidants, polyphenols, and fiber. Turn off to hide those groups. Non-essential amino acids stay in the shortfall lists either way.";
+    return "When on, shortfall bars and requirements include flavonoids, antioxidants, polyphenols, and fiber. Turn off to hide those groups.";
+  }
+
+  function aminoDeficienciesToggleTitle() {
+    return "When on, shortfall bars and requirements include amino acids. Turn off to hide them. The menu chooses essential amino acids only or all amino acids.";
   }
 
   function isMiscDeficiencyKey(key) {
     if (!key) return false;
-    if (NONESSENTIAL_AMINO_KEYS[key]) {
-      return miscDeficienciesAminoMode === "all";
-    }
     return !!(
-      ESSENTIAL_AMINO_KEYS[key] ||
       MISC_DEFICIENCY_FLAVONOID_KEYS[key] ||
       MISC_DEFICIENCY_POLYPHENOL_KEYS[key] ||
       MISC_DEFICIENCY_ANTIOXIDANT_KEYS[key] ||
@@ -21590,7 +21589,19 @@
     );
   }
 
+  function isAminoAnalysisKey(key) {
+    return !!(key && (ESSENTIAL_AMINO_KEYS[key] || NONESSENTIAL_AMINO_KEYS[key]));
+  }
+
+  function shouldIncludeAminoKey(key) {
+    if (!isAminoAnalysisKey(key)) return true;
+    if (!aminoDeficienciesOn) return false;
+    if (ESSENTIAL_AMINO_KEYS[key]) return true;
+    return miscDeficienciesAminoMode === "all";
+  }
+
   function shouldIncludeAnalysisKey(key) {
+    if (!shouldIncludeAminoKey(key)) return false;
     return miscDeficienciesOn || !isMiscDeficiencyKey(key);
   }
 
@@ -21599,28 +21610,41 @@
   }
 
   function miscDeficienciesToggleAriaLabel() {
-    if (miscDeficienciesAminoMode === "all") {
-      return miscDeficienciesOn
-        ? "Misc deficiencies is on. Showing all amino acids, flavonoids, antioxidants, polyphenols, and fiber. Turn off to hide those groups, including non-essential amino acids."
-        : "Misc deficiencies is off. All amino acids, flavonoids, antioxidants, polyphenols, and fiber are hidden. Turn on to show them.";
-    }
     return miscDeficienciesOn
-      ? "Misc deficiencies is on. Showing essential amino acids, flavonoids, antioxidants, polyphenols, and fiber. Turn off to hide those groups. Non-essential amino acids stay visible either way."
-      : "Misc deficiencies is off. Essential amino acids, flavonoids, antioxidants, polyphenols, and fiber are hidden. Turn on to show them. Non-essential amino acids stay visible either way.";
+      ? "Misc deficiencies is on. Showing flavonoids, antioxidants, polyphenols, and fiber. Turn off to hide those groups."
+      : "Misc deficiencies is off. Flavonoids, antioxidants, polyphenols, and fiber are hidden. Turn on to show them.";
+  }
+
+  function aminoDeficienciesToggleAriaLabel() {
+    if (!aminoDeficienciesOn) {
+      return (
+        "Amino acid deficiencies are off. Amino acids are hidden from shortfall bars and requirements. Turn on to show them. The menu is set to " +
+        miscDeficienciesAminoModeLabel() +
+        "."
+      );
+    }
+    return (
+      "Amino acid deficiencies are on. Showing " +
+      miscDeficienciesAminoModeLabel().toLowerCase() +
+      ". Turn off to hide amino acids."
+    );
   }
 
   function miscDeficienciesHelpText() {
-    if (miscDeficienciesAminoMode === "all") {
-      return "This toggle shows or hides misc deficiencies — all amino acids (essential and non-essential), flavonoids, antioxidants, polyphenols, fibers — in the stacked bars and requirements. Turning the toggle off also hides non-essential amino acids.";
-    }
-    return "This toggle shows or hides misc deficiencies — essential amino acids, flavonoids, antioxidants, polyphenols, fibers — in the stacked bars and requirements. Amino acids mode is Essential amino acids only, so non-essential amino acids are always tracked either way.";
+    return (
+      "This toggle shows or hides flavonoids, antioxidants, polyphenols, and fiber in the stacked bars and requirements. Amino acid deficiencies are " +
+      (aminoDeficienciesOn ? "on" : "off") +
+      ", set to " +
+      miscDeficienciesAminoModeLabel() +
+      "."
+    );
   }
 
   function miscDeficienciesAminoChevronAriaLabel() {
     return (
-      "Amino acids included in Misc deficiencies: " +
+      "Amino acid deficiencies: " +
       miscDeficienciesAminoModeLabel() +
-      ". Change amino acids mode."
+      ". Change which amino acids appear in shortfall bars and requirements."
     );
   }
 
@@ -21644,15 +21668,48 @@
     );
   }
 
+  function aminoDeficienciesToggleHtml() {
+    return (
+      '<button type="button" class="analysis-nonstored-toggle" data-amino-deficiencies-toggle aria-pressed="' +
+      (aminoDeficienciesOn ? "true" : "false") +
+      '" aria-label="' +
+      escapeAttr(aminoDeficienciesToggleAriaLabel()) +
+      '" title="' +
+      escapeAttr(aminoDeficienciesToggleTitle()) +
+      '">' +
+      '<span class="analysis-nonstored-toggle__switch" aria-hidden="true"></span>' +
+      '<span class="analysis-nonstored-toggle__label">Amino acid deficiencies</span>' +
+      "</button>"
+    );
+  }
+
   function miscDeficienciesAminoChevronHtml() {
     return (
       '<button type="button" class="misc-deficiencies-amino__btn" data-misc-deficiencies-amino-menu aria-expanded="false" aria-haspopup="menu" aria-controls="' +
       MISC_DEFICIENCIES_AMINO_MENU_ID +
       '" aria-label="' +
       escapeAttr(miscDeficienciesAminoChevronAriaLabel()) +
-      '" title="Amino acids mode">' +
+      '" title="Choose essential or all amino acids">' +
       '<span class="misc-deficiencies-amino__chevron" aria-hidden="true"></span>' +
       "</button>"
+    );
+  }
+
+  function aminoDeficienciesControlHtml() {
+    return (
+      '<span class="amino-deficiencies-control">' +
+      aminoDeficienciesToggleHtml() +
+      miscDeficienciesAminoChevronHtml() +
+      "</span>"
+    );
+  }
+
+  function miscDeficienciesControlHtml() {
+    return (
+      '<span class="misc-deficiencies-control">' +
+      miscDeficienciesToggleHtml() +
+      miscDeficienciesInfoBtnHtml() +
+      "</span>"
     );
   }
 
@@ -21674,9 +21731,8 @@
       '<span class="misc-deficiencies-toggle-group' +
       (extraClass ? " " + extraClass : "") +
       '">' +
-      miscDeficienciesToggleHtml() +
-      miscDeficienciesAminoChevronHtml() +
-      miscDeficienciesInfoBtnHtml() +
+      aminoDeficienciesControlHtml() +
+      miscDeficienciesControlHtml() +
       "</span>"
     );
   }
@@ -21854,6 +21910,12 @@
       btn.setAttribute("title", miscDeficienciesToggleTitle());
     });
     syncMiscDeficienciesAminoMenuUi();
+    var aminoToggles = document.querySelectorAll("[data-amino-deficiencies-toggle]");
+    Array.prototype.forEach.call(aminoToggles, function (btn) {
+      btn.setAttribute("aria-pressed", aminoDeficienciesOn ? "true" : "false");
+      btn.setAttribute("aria-label", aminoDeficienciesToggleAriaLabel());
+      btn.setAttribute("title", aminoDeficienciesToggleTitle());
+    });
     var help = miscDeficienciesHelpPopoverEl();
     if (help && !help.hidden) {
       help.textContent = miscDeficienciesHelpText();
@@ -21866,8 +21928,12 @@
   function loadMiscDeficienciesPreference() {
     miscDeficienciesOn = true;
     miscDeficienciesAminoMode = "essential";
+    aminoDeficienciesOn = true;
     if (persist && persist.getMiscDeficiencies) {
       miscDeficienciesOn = persist.getMiscDeficiencies() !== false;
+    }
+    if (persist && persist.getAminoDeficiencies) {
+      aminoDeficienciesOn = persist.getAminoDeficiencies() !== false;
     }
     if (persist && persist.getMiscDeficienciesAmino) {
       miscDeficienciesAminoMode = normalizeMiscDeficienciesAminoMode(
@@ -21886,6 +21952,12 @@
   function saveMiscDeficienciesAminoPreference() {
     if (persist && persist.setMiscDeficienciesAmino) {
       persist.setMiscDeficienciesAmino(miscDeficienciesAminoMode);
+    }
+  }
+
+  function saveAminoDeficienciesPreference() {
+    if (persist && persist.setAminoDeficiencies) {
+      persist.setAminoDeficiencies(aminoDeficienciesOn);
     }
   }
 
@@ -21920,6 +21992,24 @@
 
   function toggleMiscDeficiencies() {
     setMiscDeficienciesOn(!miscDeficienciesOn);
+  }
+
+  function setAminoDeficienciesOn(next) {
+    next = next !== false;
+    if (aminoDeficienciesOn === next) {
+      syncMiscDeficienciesToggleUi();
+      return;
+    }
+    aminoDeficienciesOn = next;
+    saveAminoDeficienciesPreference();
+    hideMiscDeficienciesHelp();
+    hideMiscDeficienciesAminoMenu();
+    syncMiscDeficienciesToggleUi();
+    rerenderMiscDeficienciesViews();
+  }
+
+  function toggleAminoDeficiencies() {
+    setAminoDeficienciesOn(!aminoDeficienciesOn);
   }
 
   var MICRO_ANALYSIS_SECTIONS = [
@@ -30269,6 +30359,12 @@
     if (aminoBtn) {
       e.preventDefault();
       toggleMiscDeficienciesAminoMenu(aminoBtn);
+      return;
+    }
+    var aminoTrackBtn = e.target.closest("[data-amino-deficiencies-toggle]");
+    if (aminoTrackBtn) {
+      e.preventDefault();
+      toggleAminoDeficiencies();
       return;
     }
     if (!e.target.closest("#" + MISC_DEFICIENCIES_AMINO_MENU_ID)) {

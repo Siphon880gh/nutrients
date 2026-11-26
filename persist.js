@@ -230,6 +230,7 @@ var NutrientsPersist = (function () {
     GUEST_DIARY_COVERAGE: "nutrients_guest_diary_coverage",
     GUEST_MISC_DEFICIENCIES: "nutrients_guest_misc_deficiencies",
     GUEST_MISC_DEFICIENCIES_AMINO: "nutrients_guest_misc_deficiencies_amino",
+    GUEST_AMINO_DEFICIENCIES: "nutrients_guest_amino_deficiencies",
     GUEST_COVERAGE_CLICK_ACTION: "nutrients_guest_coverage_click_action",
     ORPHAN_LEGACY: "nutrients_orphan_legacy",
     EXERCISE_DEFINITIONS: "nutrients_exercise_definitions",
@@ -286,6 +287,7 @@ var NutrientsPersist = (function () {
       diaryCoverageMute: { days: false, week: false },
       miscDeficiencies: true,
       miscDeficienciesAmino: "essential",
+      aminoDeficiencies: true,
       coverageClickAction: "info",
       coverageClickActionV2: false,
       dayWordWrap: true,
@@ -1136,6 +1138,25 @@ var NutrientsPersist = (function () {
     return safeSet(KEYS.GUEST_MISC_DEFICIENCIES_AMINO, JSON.stringify(next));
   }
 
+  function getAminoDeficiencies() {
+    if (currentUserId()) {
+      return normalizeMiscDeficiencies(getSetting("aminoDeficiencies"));
+    }
+    var raw = safeGet(KEYS.GUEST_AMINO_DEFICIENCIES);
+    if (raw == null || raw === "") return true;
+    try {
+      return normalizeMiscDeficiencies(JSON.parse(raw));
+    } catch (e) {
+      return normalizeMiscDeficiencies(raw);
+    }
+  }
+
+  function setAminoDeficiencies(value) {
+    var next = normalizeMiscDeficiencies(value);
+    if (currentUserId()) return setSetting("aminoDeficiencies", next);
+    return safeSet(KEYS.GUEST_AMINO_DEFICIENCIES, JSON.stringify(next));
+  }
+
   var DEFAULT_COVERAGE_CLICK_ACTION = "info";
   var COVERAGE_CLICK_ACTIONS = { jump: true, yours: true, other: true, info: true };
 
@@ -1411,6 +1432,8 @@ var NutrientsPersist = (function () {
     setMiscDeficiencies: setMiscDeficiencies,
     getMiscDeficienciesAmino: getMiscDeficienciesAmino,
     setMiscDeficienciesAmino: setMiscDeficienciesAmino,
+    getAminoDeficiencies: getAminoDeficiencies,
+    setAminoDeficiencies: setAminoDeficiencies,
     getCoverageClickAction: getCoverageClickAction,
     setCoverageClickAction: setCoverageClickAction,
     hasSeenStarterGuide: hasSeenStarterGuide,
