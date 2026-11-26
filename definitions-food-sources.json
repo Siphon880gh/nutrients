@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-11-11T11:25:54.391Z",
-  "sampleFoods": 776,
+  "generatedAt": "2026-11-26T04:10:03.305Z",
+  "sampleFoods": 2079,
   "rowCount": 668,
   "rows": [
     {
@@ -464,12 +464,12 @@
       "matched": false
     },
     {
-      "food": "Sardines canned 3 oz (palm-sized)",
+      "food": "Sardines canned 2 fillets (~12 oz)",
       "sourceLabel": "Sardines & canned salmon (with bones)",
       "nutrientKey": "calcium",
       "nutrientLabel": "Calcium",
-      "nutrientText": "Calcium 325 mg",
-      "amount": 325,
+      "nutrientText": "Calcium 1300 mg",
+      "amount": 1300,
       "unit": "mg",
       "matched": true
     },
@@ -484,12 +484,12 @@
       "matched": true
     },
     {
-      "food": "Green beans 1 cup",
+      "food": "Pastry - Almond Bar 4 x 1⅓ inch bar (about 31 g)",
       "sourceLabel": "Legumes & nuts (calcium-set tofu, almonds, beans)",
       "nutrientKey": "calcium",
       "nutrientLabel": "Calcium",
-      "nutrientText": "Calcium 37 mg",
-      "amount": 37,
+      "nutrientText": "Calcium 9 mg",
+      "amount": 9,
       "unit": "mg",
       "matched": true
     },
@@ -554,14 +554,14 @@
       "matched": true
     },
     {
-      "food": "Tofu 1 serving",
+      "food": "Tofu with minced pork 1 cup (about 200 g, estimated cooked dish)",
       "sourceLabel": "Tofu",
       "nutrientKey": "iron",
       "nutrientLabel": "Iron",
-      "nutrientText": "Iron",
-      "amount": null,
+      "nutrientText": "Iron 2.9 mg",
+      "amount": 2.94,
       "unit": "mg",
-      "matched": false
+      "matched": true
     },
     {
       "food": "Pair with citrus or peppers for plant sources 1 serving",
@@ -604,14 +604,14 @@
       "matched": true
     },
     {
-      "food": "Black beans 1 cup",
+      "food": "Canned - Black Beans 1/2 cup drained and rinsed (about 85 g)",
       "sourceLabel": "Black beans",
       "nutrientKey": "magnesium",
       "nutrientLabel": "Magnesium",
-      "nutrientText": "Magnesium",
-      "amount": null,
+      "nutrientText": "Magnesium 27.6 mg",
+      "amount": 27.6,
       "unit": "mg",
-      "matched": false
+      "matched": true
     },
     {
       "food": "Dark chocolate 70% 1 oz",
@@ -664,14 +664,14 @@
       "matched": true
     },
     {
-      "food": "Oysters 1 serving",
+      "food": "Canned - Oysters 3 oz (palm-sized, 85 g)",
       "sourceLabel": "Oysters",
       "nutrientKey": "zinc",
       "nutrientLabel": "Zinc",
-      "nutrientText": "Zinc",
-      "amount": null,
+      "nutrientText": "Zinc 77.3 mg",
+      "amount": 77.3,
       "unit": "mg",
-      "matched": false
+      "matched": true
     },
     {
       "food": "Beef 3 oz (palm-sized)",
@@ -944,12 +944,12 @@
       "matched": true
     },
     {
-      "food": "Sardines canned 3 oz (palm-sized)",
+      "food": "Salmon 2 fillets (~12 oz)",
       "sourceLabel": "Salmon & sardines",
       "nutrientKey": "vitaminD",
       "nutrientLabel": "Vitamin D",
-      "nutrientText": "Vitamin D 4.5 mcg",
-      "amount": 4.5,
+      "nutrientText": "Vitamin D 44 mcg",
+      "amount": 44,
       "unit": "mcg",
       "matched": true
     },
@@ -1394,12 +1394,12 @@
       "matched": true
     },
     {
-      "food": "Sardines canned 3 oz (palm-sized)",
+      "food": "Salmon 2 fillets (~12 oz)",
       "sourceLabel": "Salmon & sardines",
       "nutrientKey": "biotin",
       "nutrientLabel": "Biotin (B7)",
-      "nutrientText": "Biotin (B7) 3.4 mcg",
-      "amount": 3.43,
+      "nutrientText": "Biotin (B7) 17.2 mcg",
+      "amount": 17.2,
       "unit": "mcg",
       "matched": true
     },
@@ -1554,12 +1554,12 @@
       "matched": true
     },
     {
-      "food": "Junk Food - Almond Joy 1 bar (1.61 oz / 45 g, vending)",
+      "food": "Pastry - Almond Bar 4 x 1⅓ inch bar (about 31 g)",
       "sourceLabel": "Almonds",
       "nutrientKey": "riboflavin",
       "nutrientLabel": "Riboflavin (B2)",
       "nutrientText": "Riboflavin (B2) 0.07 mg",
-      "amount": 0.068,
+      "amount": 0.065,
       "unit": "mg",
       "matched": true
     },
@@ -1824,12 +1824,12 @@
       "matched": true
     },
     {
-      "food": "Sardines canned 3 oz (palm-sized)",
+      "food": "Sardines canned 2 fillets (~12 oz)",
       "sourceLabel": "Tuna & sardines",
       "nutrientKey": "selenium",
       "nutrientLabel": "Selenium",
-      "nutrientText": "Selenium 45 mcg",
-      "amount": 45,
+      "nutrientText": "Selenium 180 mcg",
+      "amount": 180,
       "unit": "mcg",
       "matched": true
     },
@@ -1964,12 +1964,12 @@
       "matched": false
     },
     {
-      "food": "Junk Food - Almond Joy 1 bar (1.61 oz / 45 g, vending)",
+      "food": "Pastry - Almond Bar 4 x 1⅓ inch bar (about 31 g)",
       "sourceLabel": "Pecans & almonds",
       "nutrientKey": "manganese",
       "nutrientLabel": "Manganese",
-      "nutrientText": "Manganese 0.63 mg",
-      "amount": 0.634,
+      "nutrientText": "Manganese 0.04 mg",
+      "amount": 0.04,
       "unit": "mg",
       "matched": true
     },
@@ -2024,12 +2024,12 @@
       "matched": true
     },
     {
-      "food": "Junk Food - Almond Joy 1 bar (1.61 oz / 45 g, vending)",
+      "food": "Pastry - Almond Bar 4 x 1⅓ inch bar (about 31 g)",
       "sourceLabel": "Sunflower seeds & almonds",
       "nutrientKey": "vitaminE",
       "nutrientLabel": "Vitamin E",
-      "nutrientText": "Vitamin E 1.3 mg",
-      "amount": 1.25,
+      "nutrientText": "Vitamin E 0.05 mg",
+      "amount": 0.05,
       "unit": "mg",
       "matched": true
     },
@@ -2094,12 +2094,12 @@
       "matched": false
     },
     {
-      "food": "Sardines canned 3 oz (palm-sized)",
+      "food": "Salmon 2 fillets (~12 oz)",
       "sourceLabel": "Salmon & sardines",
       "nutrientKey": "omega3",
       "nutrientLabel": "Omega-3 (total)",
-      "nutrientText": "Omega-3 (total) 1.5 g",
-      "amount": 1.5,
+      "nutrientText": "Omega-3 (total) 7.2 g",
+      "amount": 7.2,
       "unit": "g",
       "matched": true
     },
@@ -2174,12 +2174,12 @@
       "matched": true
     },
     {
-      "food": "Sardines canned 3 oz (palm-sized)",
+      "food": "Sardines canned 2 fillets (~12 oz)",
       "sourceLabel": "Sardines",
       "nutrientKey": "epa",
       "nutrientLabel": "Omega-3 (EPA)",
-      "nutrientText": "Omega-3 (EPA) 0.45 g",
-      "amount": 0.45,
+      "nutrientText": "Omega-3 (EPA) 1.8 g",
+      "amount": 1.8,
       "unit": "g",
       "matched": true
     },
@@ -2194,14 +2194,14 @@
       "matched": false
     },
     {
-      "food": "Anchovies 1 serving",
+      "food": "Canned - Anchovies in oil, drained 1 oz (28 g)",
       "sourceLabel": "Anchovies",
       "nutrientKey": "epa",
       "nutrientLabel": "Omega-3 (EPA)",
-      "nutrientText": "Omega-3 (EPA)",
-      "amount": null,
+      "nutrientText": "Omega-3 (EPA) 0.21 g",
+      "amount": 0.214,
       "unit": "g",
-      "matched": false
+      "matched": true
     },
     {
       "food": "Supplement - Fish Oil 1000mg 1 tablespoon",
@@ -2244,12 +2244,12 @@
       "matched": true
     },
     {
-      "food": "Sardines canned 3 oz (palm-sized)",
+      "food": "Sardines canned 2 fillets (~12 oz)",
       "sourceLabel": "Sardines",
       "nutrientKey": "dha",
       "nutrientLabel": "Omega-3 (DHA)",
-      "nutrientText": "Omega-3 (DHA) 0.7 g",
-      "amount": 0.7,
+      "nutrientText": "Omega-3 (DHA) 2.8 g",
+      "amount": 2.8,
       "unit": "g",
       "matched": true
     },
@@ -2704,12 +2704,12 @@
       "matched": true
     },
     {
-      "food": "Sardines canned 3 oz (palm-sized)",
+      "food": "Salmon 2 fillets (~12 oz)",
       "sourceLabel": "Salmon & sardines",
       "nutrientKey": "phosphorus",
       "nutrientLabel": "Phosphorus",
-      "nutrientText": "Phosphorus 420 mg",
-      "amount": 420,
+      "nutrientText": "Phosphorus 880 mg",
+      "amount": 880,
       "unit": "mg",
       "matched": true
     },
@@ -3514,12 +3514,12 @@
       "matched": true
     },
     {
-      "food": "Jamba - Soy Protein Boost 1 boost (8.9 g)",
+      "food": "Tofu with minced pork 1 cup (about 200 g, estimated cooked dish)",
       "sourceLabel": "Tofu & soy",
       "nutrientKey": "tryptophan",
       "nutrientLabel": "Tryptophan",
-      "nutrientText": "Tryptophan",
-      "amount": null,
+      "nutrientText": "Tryptophan 316.5 mg",
+      "amount": 316.5,
       "unit": "mg",
       "matched": true
     },
@@ -3784,14 +3784,14 @@
       "matched": true
     },
     {
-      "food": "Tofu 1 serving",
+      "food": "Tofu with minced pork 1 cup (about 200 g, estimated cooked dish)",
       "sourceLabel": "Tofu",
       "nutrientKey": "glutamine",
       "nutrientLabel": "Glutamine",
       "nutrientText": "Glutamine",
       "amount": null,
       "unit": "mg",
-      "matched": false
+      "matched": true
     },
     {
       "food": "Bone broth 1 serving",
@@ -4584,14 +4584,14 @@
       "matched": true
     },
     {
-      "food": "Almonds 1 oz",
+      "food": "Pastry - Almond Bar 4 x 1⅓ inch bar (about 31 g)",
       "sourceLabel": "Almonds",
       "nutrientKey": "omega9",
       "nutrientLabel": "Omega-9",
-      "nutrientText": "Omega-9",
-      "amount": null,
+      "nutrientText": "Omega-9 2.8 g",
+      "amount": 2.77,
       "unit": "g",
-      "matched": false
+      "matched": true
     },
     {
       "food": "Cashews 1 oz",
@@ -4814,12 +4814,12 @@
       "matched": true
     },
     {
-      "food": "Sardines canned 3 oz (palm-sized)",
+      "food": "Salmon 2 fillets (~12 oz)",
       "sourceLabel": "Salmon & sardines",
       "nutrientKey": "arachidonicAcid",
       "nutrientLabel": "Arachidonic acid",
-      "nutrientText": "Arachidonic acid 0.12 g",
-      "amount": 0.12,
+      "nutrientText": "Arachidonic acid 0.4 g",
+      "amount": 0.4,
       "unit": "g",
       "matched": true
     },
@@ -4854,14 +4854,14 @@
       "matched": true
     },
     {
-      "food": "Almonds 1 oz",
+      "food": "Pastry - Almond Bar 4 x 1⅓ inch bar (about 31 g)",
       "sourceLabel": "Almonds",
       "nutrientKey": "oleicAcid",
       "nutrientLabel": "Oleic acid",
-      "nutrientText": "Oleic acid",
-      "amount": null,
+      "nutrientText": "Oleic acid 2.8 g",
+      "amount": 2.77,
       "unit": "g",
-      "matched": false
+      "matched": true
     },
     {
       "food": "Cashews 1 oz",
@@ -4964,12 +4964,12 @@
       "matched": true
     },
     {
-      "food": "Junk Food - Almond Joy 1 bar (1.61 oz / 45 g, vending)",
+      "food": "Pastry - Almond Bar 4 x 1⅓ inch bar (about 31 g)",
       "sourceLabel": "Almonds & sunflower seeds",
       "nutrientKey": "vitaminE",
       "nutrientLabel": "Vitamin E",
-      "nutrientText": "Vitamin E 1.3 mg",
-      "amount": 1.25,
+      "nutrientText": "Vitamin E 0.05 mg",
+      "amount": 0.05,
       "unit": "mg",
       "matched": true
     },
@@ -5654,12 +5654,12 @@
       "matched": true
     },
     {
-      "food": "Sardines canned 3 oz (palm-sized)",
+      "food": "Sardines canned 2 fillets (~12 oz)",
       "sourceLabel": "Sardines & mackerel",
       "nutrientKey": "coq10",
       "nutrientLabel": "Coenzyme Q10",
-      "nutrientText": "Coenzyme Q10 1.2 mg",
-      "amount": 1.2,
+      "nutrientText": "Coenzyme Q10 4.8 mg",
+      "amount": 4.8,
       "unit": "mg",
       "matched": true
     },
@@ -6384,7 +6384,7 @@
       "matched": false
     },
     {
-      "food": "Ice Cream Scoop - Baskin-Robbins Triple Mango 2.5 oz scoop (71 g)",
+      "food": "Ice Cream Scoop - Baskin-Robbins Jamoca 4 oz scoop (113 g)",
       "sourceLabel": "Ice cream",
       "nutrientKey": "addedSugar",
       "nutrientLabel": "Added sugar",
@@ -6464,14 +6464,14 @@
       "matched": false
     },
     {
-      "food": "Pastries 1 serving",
+      "food": "Pastry - Peanut Butter Oatmeal Bar 2⅔ x 2⅔ inch bar (about 134 g)",
       "sourceLabel": "Pastries",
       "nutrientKey": "refinedCarbs",
       "nutrientLabel": "Refined carbohydrates",
       "nutrientText": "Refined carbohydrates",
       "amount": null,
       "unit": "g",
-      "matched": false
+      "matched": true
     },
     {
       "food": "Pretzels 1 serving",
