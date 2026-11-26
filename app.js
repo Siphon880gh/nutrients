@@ -21069,10 +21069,17 @@
     );
   }
 
+  function analysisStackBarTitle(shown) {
+    return (
+      (shown ? "Hide counts" : "Show counts") +
+      ". Right-click or hold a range for its nutrients"
+    );
+  }
+
   function syncAnalysisStackCountTitles(stack) {
     if (!stack) return;
     var shown = stack.getAttribute("aria-pressed") === "true";
-    stack.title = shown ? "Hide counts" : "Show counts";
+    stack.title = analysisStackBarTitle(shown);
     var segs = stack.querySelectorAll("[data-analysis-stack-band]");
     Array.prototype.forEach.call(segs, function (seg) {
       if (!shown) {
@@ -21112,6 +21119,18 @@
       );
     });
     if (!parts.length) return "";
+    var coverageAttrs = "";
+    if (options.coverageKey) {
+      coverageAttrs =
+        ' data-analysis-coverage="' +
+        escapeAttr(options.coverageKey) +
+        '"' +
+        (options.coverageKind
+          ? ' data-analysis-coverage-kind="' +
+            escapeAttr(options.coverageKind) +
+            '"'
+          : "");
+    }
     return (
       '<button type="button" class="longevity-analysis-report__stack' +
       (options.extraClass ? " " + options.extraClass : "") +
@@ -21119,11 +21138,13 @@
       (pressed ? "true" : "false") +
       '" title="' +
       escapeAttr(
-        options.title || (pressed ? "Hide counts" : "Show counts")
+        options.title || analysisStackBarTitle(pressed)
       ) +
       '" aria-label="' +
       escapeAttr(label + " by percent range: " + described.join(", ")) +
-      '">' +
+      '"' +
+      coverageAttrs +
+      ">" +
       parts.join("") +
       "</button>"
     );
@@ -21211,7 +21232,7 @@
     syncLongevityAnalysisFilterEmojis();
   }
 
-  function longevityAnalysisFilterRowHtml(kind, label, bands, bandCounts, showStack) {
+  function longevityAnalysisFilterRowHtml(kind, label, bands, bandCounts, showStack, coverageKey) {
     var buttonsHtml = "";
     bands.forEach(function (band) {
       var count = bandCounts[band.id] || 0;
@@ -21237,7 +21258,11 @@
     });
     if (!buttonsHtml) return "";
     var stackHtml = showStack
-      ? longevityAnalysisStackBarHtml(label, bands, bandCounts)
+      ? longevityAnalysisStackBarHtml(label, bands, bandCounts, {
+          coverageKey: coverageKey || "",
+          coverageKind: kind,
+          title: analysisStackBarTitle(false),
+        })
       : "";
     return (
       '<div class="longevity-analysis-report__filters longevity-analysis-report__filters--' +
@@ -21336,19 +21361,28 @@
   function longevityAnalysisFilterBarHtml(aimBandCounts, limitBandCounts, options) {
     options = options || {};
     var showStack = !!options.stack;
+    var coverageKey = "";
+    if (showStack) {
+      coverageKey =
+        analysisIsDayScopedKind() && analysisActiveDayId
+          ? analysisActiveDayId
+          : "week";
+    }
     var aimRow = longevityAnalysisFilterRowHtml(
       "aim",
       "Want more",
       LONGEVITY_ANALYSIS_AVG_BANDS,
       aimBandCounts,
-      showStack
+      showStack,
+      coverageKey
     );
     var limitRow = longevityAnalysisFilterRowHtml(
       "limit",
       "Want less",
       LONGEVITY_ANALYSIS_LIMIT_BANDS,
       limitBandCounts,
-      showStack
+      showStack,
+      coverageKey
     );
     if (!aimRow && !limitRow) return "";
     return (
@@ -21517,6 +21551,7 @@
 
   function closeLongevityAnalysisModal() {
     if (!longevityAnalysisModalEl) return;
+    hideDiaryCoveragePopover();
     hideLongevityAnalysisEmojiHint();
     longevityAnalysisModalEl.hidden = true;
     longevityAnalysisClearBandFilters();
@@ -21550,6 +21585,7 @@
 
   function hideLongevityAnalysisModalForSectionJump() {
     if (!longevityAnalysisModalEl) return;
+    hideDiaryCoveragePopover();
     hideLongevityAnalysisEmojiHint();
     longevityAnalysisModalEl.hidden = true;
     longevityAnalysisReturnPending = true;
@@ -23552,6 +23588,7 @@
 
   function renderAnalysisModal() {
     if (!longevityAnalysisModalEl || !longevityAnalysisReportEl) return;
+    hideDiaryCoveragePopover();
     hideLongevityAnalysisEmojiHint();
     var kind = analysisActiveKind;
     var requirementsAnalysis = analysisIsRequirementsKind(kind);
@@ -29679,14 +29716,41 @@
   var coverageNutrientSwallowClick = false;
   var coverageActionNoteTimer = 0;
 
-  function diaryCoverageBandById(bandId) {
-    var i;
-    for (i = 0; i < LONGEVITY_ANALYSIS_AVG_BANDS.length; i++) {
-      if (LONGEVITY_ANALYSIS_AVG_BANDS[i].id === bandId) {
-        return LONGEVITY_ANALYSIS_AVG_BANDS[i];
+  function diaryCoverageBandById(bandId, limiting) {
+    var lists = limiting
+      ? [LONGEVITY_ANALYSIS_LIMIT_BANDS, LONGEVITY_ANALYSIS_AVG_BANDS]
+      : [LONGEVITY_ANALYSIS_AVG_BANDS, LONGEVITY_ANALYSIS_LIMIT_BANDS];
+    var i, j, bands;
+    for (i = 0; i < lists.length; i++) {
+      bands = lists[i];
+      for (j = 0; j < bands.length; j++) {
+        if (bands[j].id === bandId) return bands[j];
       }
     }
     return null;
+  }
+
+  function diaryCoverageSlotFromSegment(seg) {
+    if (!seg || !seg.closest) return null;
+    return (
+      seg.closest("[data-analysis-coverage]") ||
+      seg.closest("[data-diary-coverage]")
+    );
+  }
+
+  function diaryCoverageKeyFromSlot(slot) {
+    if (!slot || !slot.getAttribute) return "";
+    return (
+      slot.getAttribute("data-analysis-coverage") ||
+      slot.getAttribute("data-diary-coverage") ||
+      ""
+    );
+  }
+
+  function diaryCoverageKindIsLimiting(slot) {
+    return !!(
+      slot && slot.getAttribute("data-analysis-coverage-kind") === "limit"
+    );
   }
 
   function diaryCoverageScopeName(key) {
@@ -29698,38 +29762,51 @@
     return key || "";
   }
 
-  function diaryCoverageBandPhrase(band) {
-    if (!band) return "in this range of the daily target";
+  function diaryCoverageBandPhrase(band, limiting) {
+    var ofWhat = limiting ? "the daily max" : "the daily target";
+    if (!band) return "in this range of " + ofWhat;
     if (band.min <= 0 && isFinite(band.max)) {
-      return "under " + band.max + "% of the daily target";
+      return "under " + band.max + "% of " + ofWhat;
     }
-    if (band.maxInclusive && isFinite(band.max)) {
-      return "from " + band.min + "% to " + band.max + "% of the daily target";
+    if (!isFinite(band.max)) {
+      if (band.maxInclusive) {
+        return "at or over " + band.min + "% of " + ofWhat;
+      }
+      return "over " + band.min + "% of " + ofWhat;
     }
-    if (isFinite(band.max)) {
-      return "from " + band.min + "% to under " + band.max + "% of the daily target";
+    if (band.maxInclusive) {
+      return "from " + band.min + "% to " + band.max + "% of " + ofWhat;
     }
-    return "in the " + band.label + " range of the daily target";
+    return "from " + band.min + "% to under " + band.max + "% of " + ofWhat;
   }
 
   function diaryCoverageEntriesForSegment(seg) {
-    var slot = seg.closest("[data-diary-coverage]");
+    var slot = diaryCoverageSlotFromSegment(seg);
     if (!slot) return null;
-    var key = slot.getAttribute("data-diary-coverage");
+    var key = diaryCoverageKeyFromSlot(slot);
     var bandId = seg.getAttribute("data-analysis-stack-band");
     if (!key || !bandId) return null;
-    var band = diaryCoverageBandById(bandId);
+    var limiting = diaryCoverageKindIsLimiting(slot);
+    var band = diaryCoverageBandById(bandId, limiting);
     var bySection =
       key === "week"
         ? collectMicroAnalysisEntriesBySection(false)
         : collectMicroAnalysisEntriesBySection(true, key);
-    var entries = analysisNutrientPillEntries(bySection, false).filter(function (entry) {
-      var entryBand = microAnalysisNutrientBandForPct(entry.pct, false);
-      return entryBand && entryBand.id === bandId;
-    });
+    var entries = analysisNutrientPillEntries(bySection, limiting).filter(
+      function (entry) {
+        var entryBand = microAnalysisNutrientBandForPct(entry.pct, limiting);
+        return entryBand && entryBand.id === bandId;
+      }
+    );
+    var kind = slot.getAttribute("data-analysis-coverage-kind");
+    var kindLabel = "";
+    if (kind === "limit") kindLabel = "Want less";
+    else if (kind === "aim") kindLabel = "Want more";
     return {
       key: key,
       scopeName: diaryCoverageScopeName(key),
+      kindLabel: kindLabel,
+      limiting: limiting,
       band: band,
       bandLabel: (band && band.label) || seg.getAttribute("data-analysis-stack-label") || "",
       stack: (band && (band.stack || band.color)) || "",
@@ -29743,9 +29820,19 @@
     var entries = state.entries || [];
     var countLabel =
       entries.length + " nutrient" + (entries.length === 1 ? "" : "s");
-    var note = countLabel + " " + diaryCoverageBandPhrase(state.band) + ".";
+    var note =
+      countLabel + " " + diaryCoverageBandPhrase(state.band, state.limiting) + ".";
     if (state.week) {
-      note += " Week average against one day’s target.";
+      note += state.limiting
+        ? " Week average against one day’s max."
+        : " Week average against one day’s target.";
+    }
+    var title = state.scopeName || "";
+    if (state.kindLabel) {
+      title += (title ? " · " : "") + state.kindLabel;
+    }
+    if (state.bandLabel) {
+      title += (title ? " · " : "") + state.bandLabel;
     }
     var html =
       '<div class="diary-coverage-popover__head">' +
@@ -29755,7 +29842,7 @@
           '" aria-hidden="true"></span>'
         : "") +
       '<p class="day__food-popover-title">' +
-      escapeHtml(state.scopeName + " · " + state.bandLabel) +
+      escapeHtml(title) +
       "</p></div>" +
       '<p class="diary-coverage-popover__note">' +
       escapeHtml(note) +
@@ -30144,6 +30231,9 @@
       return;
     }
     hideDiaryCoveragePopover();
+    if (longevityAnalysisModalEl && !longevityAnalysisModalEl.hidden) {
+      hideLongevityAnalysisModalForSectionJump();
+    }
     jumpFromFoodItemPopover(key, {
       dailyView: !!dayId,
       dayId: dayId || "",
@@ -30261,8 +30351,68 @@
   function diaryCoverageSegmentFromEvent(e) {
     if (!e.target || !e.target.closest) return null;
     var seg = e.target.closest(".longevity-analysis-report__stack-seg");
-    if (!seg || !seg.closest(".diary-coverage__bar")) return null;
-    return seg;
+    if (!seg) return null;
+    if (
+      seg.closest(".diary-coverage__bar") ||
+      seg.closest("[data-analysis-coverage]")
+    ) {
+      return seg;
+    }
+    return null;
+  }
+
+  function bindDiaryCoverageSegmentGestures(root) {
+    if (!root) return;
+    root.addEventListener("contextmenu", function (e) {
+      var seg = diaryCoverageSegmentFromEvent(e);
+      if (!seg || !root.contains(seg)) return;
+      e.preventDefault();
+      diaryCoverageContextAt = Date.now();
+      showDiaryCoveragePopover(seg, e.clientX, e.clientY);
+    });
+    root.addEventListener("pointerdown", function (e) {
+      if (e.button !== 0) return;
+      var seg = diaryCoverageSegmentFromEvent(e);
+      if (!seg || !root.contains(seg)) return;
+      clearDiaryCoveragePressTimer();
+      var press = {
+        seg: seg,
+        x: e.clientX,
+        y: e.clientY,
+        pointerId: e.pointerId,
+        fired: false,
+        timer: 0,
+      };
+      press.timer = setTimeout(function () {
+        if (diaryCoveragePress !== press) return;
+        press.fired = true;
+        showDiaryCoveragePopover(press.seg, press.x, press.y);
+      }, DIARY_COVERAGE_LONG_PRESS_MS);
+      diaryCoveragePress = press;
+    });
+    root.addEventListener("pointermove", function (e) {
+      if (!diaryCoveragePress || diaryCoveragePress.fired) return;
+      if (e.pointerId !== diaryCoveragePress.pointerId) return;
+      var dx = e.clientX - diaryCoveragePress.x;
+      var dy = e.clientY - diaryCoveragePress.y;
+      if (dx * dx + dy * dy > 144) {
+        clearDiaryCoveragePressTimer();
+        diaryCoveragePress = null;
+      }
+    });
+    var endDiaryCoveragePress = function (e) {
+      if (!diaryCoveragePress || e.pointerId !== diaryCoveragePress.pointerId) return;
+      var fired = diaryCoveragePress.fired;
+      clearDiaryCoveragePressTimer();
+      diaryCoveragePress = null;
+      if (!fired) return;
+      diaryCoverageSwallowClick = true;
+      setTimeout(function () {
+        diaryCoverageSwallowClick = false;
+      }, 400);
+    };
+    root.addEventListener("pointerup", endDiaryCoveragePress);
+    root.addEventListener("pointercancel", endDiaryCoveragePress);
   }
 
   function clearDiaryCoveragePressTimer() {
@@ -30290,57 +30440,9 @@
       e.preventDefault();
       toggleDiaryCoverageBar(stackBar);
     });
-    diaryCoverageRoot.addEventListener("contextmenu", function (e) {
-      var seg = diaryCoverageSegmentFromEvent(e);
-      if (!seg || !diaryCoverageRoot.contains(seg)) return;
-      e.preventDefault();
-      diaryCoverageContextAt = Date.now();
-      showDiaryCoveragePopover(seg, e.clientX, e.clientY);
-    });
-    diaryCoverageRoot.addEventListener("pointerdown", function (e) {
-      if (e.button !== 0) return;
-      var seg = diaryCoverageSegmentFromEvent(e);
-      if (!seg || !diaryCoverageRoot.contains(seg)) return;
-      clearDiaryCoveragePressTimer();
-      var press = {
-        seg: seg,
-        x: e.clientX,
-        y: e.clientY,
-        pointerId: e.pointerId,
-        fired: false,
-        timer: 0,
-      };
-      press.timer = setTimeout(function () {
-        if (diaryCoveragePress !== press) return;
-        press.fired = true;
-        showDiaryCoveragePopover(press.seg, press.x, press.y);
-      }, DIARY_COVERAGE_LONG_PRESS_MS);
-      diaryCoveragePress = press;
-    });
-    diaryCoverageRoot.addEventListener("pointermove", function (e) {
-      if (!diaryCoveragePress || diaryCoveragePress.fired) return;
-      if (e.pointerId !== diaryCoveragePress.pointerId) return;
-      var dx = e.clientX - diaryCoveragePress.x;
-      var dy = e.clientY - diaryCoveragePress.y;
-      if (dx * dx + dy * dy > 144) {
-        clearDiaryCoveragePressTimer();
-        diaryCoveragePress = null;
-      }
-    });
-    var endDiaryCoveragePress = function (e) {
-      if (!diaryCoveragePress || e.pointerId !== diaryCoveragePress.pointerId) return;
-      var fired = diaryCoveragePress.fired;
-      clearDiaryCoveragePressTimer();
-      diaryCoveragePress = null;
-      if (!fired) return;
-      diaryCoverageSwallowClick = true;
-      setTimeout(function () {
-        diaryCoverageSwallowClick = false;
-      }, 400);
-    };
-    diaryCoverageRoot.addEventListener("pointerup", endDiaryCoveragePress);
-    diaryCoverageRoot.addEventListener("pointercancel", endDiaryCoveragePress);
+    bindDiaryCoverageSegmentGestures(diaryCoverageRoot);
   }
+  bindDiaryCoverageSegmentGestures(longevityAnalysisReportEl);
 
   var diaryCoveragePopoverEl = document.getElementById("diary-coverage-popover");
   if (diaryCoveragePopoverEl) {
@@ -45022,6 +45124,16 @@
         longevityAnalysisReportEl &&
         longevityAnalysisReportEl.contains(stackBar)
       ) {
+        if (
+          diaryCoverageSwallowClick ||
+          Date.now() - diaryCoverageContextAt < 500
+        ) {
+          diaryCoverageSwallowClick = false;
+          diaryCoverageContextAt = 0;
+          e.preventDefault();
+          e.stopPropagation();
+          return;
+        }
         e.preventDefault();
         toggleAnalysisStackCounts(stackBar);
         return;

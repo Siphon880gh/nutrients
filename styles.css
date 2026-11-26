@@ -7513,6 +7513,9 @@ button.analysis-daily-nonstored__name:focus-visible {
   background: transparent;
   cursor: pointer;
   font: inherit;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 .longevity-analysis-report__stack:focus-visible {
@@ -15405,7 +15408,8 @@ body.day-word-wrap-off .day__input {
 #longevity-sources-modal,
 #tdee-hr-zones-modal,
 #tdee-rpe-modal,
-#weight-trend-chart-modal {
+#weight-trend-chart-modal,
+#xpt-nutrient-modal {
   z-index: 110;
 }
 
