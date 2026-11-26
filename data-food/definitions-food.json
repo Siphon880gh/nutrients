@@ -23461,7 +23461,7 @@
       "refinedCarbs": 0,
       "netCarbs": 2
     },
-    "notes": "Label-gap check on 11 Nov 2026: Nutrition Facts labels don't have to list these nutrients, so keys that were missing or 0 were checked against composition data; only those keys changed, as estimates, and other values were kept. Scaled to about 355 g, the weight in the name. Composition: USDA FoodData Central SR Legacy FDC 173204 (Beverages, carbonated, low calorie, other than cola or pepper,  without caffeine). From that record: magnesium, copper, manganese. Verified zero on 11 Nov 2026 (composition data, not the label): vitamin A, vitamin E, vitamin K, thiamin, folate, phosphorus, iodine, zinc, selenium, molybdenum, choline."
+    "notes": "Label-gap check on 11 Nov 2026: Nutrition Facts labels don't have to list these nutrients, so keys that were missing or 0 were checked against composition data; only those keys changed, as estimates, and other values were kept. Scaled to about 355 g, the weight in the name. Composition: USDA FoodData Central SR Legacy FDC 173204 (Beverages, carbonated, low calorie, other than cola or pepper,  without caffeine). From that record: magnesium, copper, manganese. Verified zero on 11 Nov 2026 (composition data, not the label): vitamin A, vitamin E, vitamin K, thiamin, folate, phosphorus, iodine, zinc, selenium, molybdenum, choline. Label B6 on 25 Nov 2026: a 12 fl oz (355 mL) can lists 2 mg vitamin B6, 120% of the 1.7 mg FDA Daily Value (ShopRite listing of the Celsius Live Fit 12 fl oz variety pack)."
   },
   {
     "name": "Junk Food - Kit Kat Miniature 1 piece (8.5 g, assorted)",
@@ -24402,7 +24402,7 @@
       "refinedCarbs": 0,
       "netCarbs": 3
     },
-    "notes": "Label-gap check on 11 Nov 2026: Nutrition Facts labels don't have to list these nutrients, so keys that were missing or 0 were checked against composition data; only those keys changed, as estimates, and other values were kept. Scaled to about 355 g, the weight in the name. Composition: USDA FoodData Central SR Legacy FDC 173204 (Beverages, carbonated, low calorie, other than cola or pepper,  without caffeine). From that record: magnesium, copper, manganese. From typical amounts per 100 g for soft drinks (NIH ODS fact-sheet tables, Anderson chromium data, USDA/FDA/ODS Iodine Database; salt in processed or restaurant food assumed noniodized): chromium. Verified zero on 11 Nov 2026 (composition data, not the label): vitamin A, vitamin C, vitamin E, vitamin K, thiamin, riboflavin, folate, phosphorus, iodine, zinc, selenium, molybdenum, choline."
+    "notes": "Label-gap check on 11 Nov 2026: Nutrition Facts labels don't have to list these nutrients, so keys that were missing or 0 were checked against composition data; only those keys changed, as estimates, and other values were kept. Scaled to about 355 g, the weight in the name. Composition: USDA FoodData Central SR Legacy FDC 173204 (Beverages, carbonated, low calorie, other than cola or pepper,  without caffeine). From that record: magnesium, copper, manganese. From typical amounts per 100 g for soft drinks (NIH ODS fact-sheet tables, Anderson chromium data, USDA/FDA/ODS Iodine Database; salt in processed or restaurant food assumed noniodized): chromium. Verified zero on 11 Nov 2026 (composition data, not the label): vitamin A, vitamin C, vitamin E, vitamin K, thiamin, riboflavin, folate, phosphorus, iodine, zinc, selenium, molybdenum, choline. Label B6 on 25 Nov 2026: official Alani Nu 12 fl oz (355 mL) can lists 1.8 mg vitamin B6, 110% DV (https://www.alaninu.com/products/energy-drink-breezeberry)."
   },
   {
     "name": "Energy Drink - Monster",
@@ -24419,7 +24419,7 @@
       "vitaminA": 0,
       "vitaminD": 0,
       "vitaminB12": 6,
-      "vitaminB6": 2,
+      "vitaminB6": 4.7,
       "vitaminC": 0,
       "folate": 0,
       "biotin": 0,
@@ -24485,7 +24485,7 @@
       "refinedCarbs": 54,
       "netCarbs": 58
     },
-    "notes": "Label-gap check on 11 Nov 2026: Nutrition Facts labels don't have to list these nutrients, so keys that were missing or 0 were checked against composition data; only those keys changed, as estimates, and other values were kept. Scaled to about 473 g, the weight in the name. Composition: USDA FoodData Central SR Legacy FDC 173205 (Beverages, carbonated, lemon-lime soda, no caffeine). From that record: magnesium, zinc, choline. From typical amounts per 100 g for soft drinks (NIH ODS fact-sheet tables, Anderson chromium data, USDA/FDA/ODS Iodine Database; salt in processed or restaurant food assumed noniodized): chromium. Verified zero on 11 Nov 2026 (composition data, not the label): vitamin A, vitamin C, vitamin E, vitamin K, thiamin, biotin, folate, phosphorus, iodine, selenium, copper, manganese, molybdenum."
+    "notes": "Label-gap check on 11 Nov 2026: Nutrition Facts labels don't have to list these nutrients, so keys that were missing or 0 were checked against composition data; only those keys changed, as estimates, and other values were kept. Scaled to about 473 g, the weight in the name. Composition: USDA FoodData Central SR Legacy FDC 173205 (Beverages, carbonated, lemon-lime soda, no caffeine). From that record: magnesium, zinc, choline. From typical amounts per 100 g for soft drinks (NIH ODS fact-sheet tables, Anderson chromium data, USDA/FDA/ODS Iodine Database; salt in processed or restaurant food assumed noniodized): chromium. Verified zero on 11 Nov 2026 (composition data, not the label): vitamin A, vitamin C, vitamin E, vitamin K, thiamin, biotin, folate, phosphorus, iodine, selenium, copper, manganese, molybdenum. Label B6 on 25 Nov 2026: branded listings of the 16 fl oz (473 mL) Monster Energy original can give 4.7 mg vitamin B6, 278% of the 1.7 mg FDA Daily Value. The previous 2 mg value was too low for that serving."
   },
   {
     "name": "Energy Drink - Red Bull",
@@ -24502,7 +24502,7 @@
       "vitaminA": 0,
       "vitaminD": 0,
       "vitaminB12": 4.8,
-      "vitaminB6": 5,
+      "vitaminB6": 4.25,
       "vitaminC": 0,
       "folate": 0,
       "biotin": 0,
@@ -24568,7 +24568,7 @@
       "refinedCarbs": 26,
       "netCarbs": 29
     },
-    "notes": "Label-gap check on 11 Nov 2026: Nutrition Facts labels don't have to list these nutrients, so keys that were missing or 0 were checked against composition data; only those keys changed, as estimates, and other values were kept. Scaled to about 250 g, the weight in the name. Composition: USDA FoodData Central SR Legacy FDC 173210 (Beverages, Energy drink, RED BULL). From that record: magnesium, zinc, selenium, copper, manganese, choline. From typical amounts per 100 g for soft drinks (NIH ODS fact-sheet tables, Anderson chromium data, USDA/FDA/ODS Iodine Database; salt in processed or restaurant food assumed noniodized): chromium. Verified zero on 11 Nov 2026 (composition data, not the label): vitamin A, vitamin C, vitamin E, vitamin K, thiamin, riboflavin, biotin, folate, phosphorus, iodine, molybdenum."
+    "notes": "Label-gap check on 11 Nov 2026: Nutrition Facts labels don't have to list these nutrients, so keys that were missing or 0 were checked against composition data; only those keys changed, as estimates, and other values were kept. Scaled to about 250 g, the weight in the name. Composition: USDA FoodData Central SR Legacy FDC 173210 (Beverages, Energy drink, RED BULL). From that record: magnesium, zinc, selenium, copper, manganese, choline. From typical amounts per 100 g for soft drinks (NIH ODS fact-sheet tables, Anderson chromium data, USDA/FDA/ODS Iodine Database; salt in processed or restaurant food assumed noniodized): chromium. Verified zero on 11 Nov 2026 (composition data, not the label): vitamin A, vitamin C, vitamin E, vitamin K, thiamin, riboflavin, biotin, folate, phosphorus, iodine, molybdenum. Label B6 on 25 Nov 2026: official U.S. Red Bull 8.4 fl oz can lists vitamin B6 as 250% DV, which is 4.25 mg at the current 1.7 mg FDA Daily Value (https://www.redbull.com/us-en/energydrink/products/red-bull-energy-drink-ingredients-list). The previous 5 mg figure matched 250% of the former 2 mg Daily Value."
   },
   {
     "name": "Energy Drink - Colombe Vanilla Latte",
