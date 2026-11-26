@@ -21635,13 +21635,16 @@
     );
   }
 
-  function miscDeficienciesHelpText() {
+  function miscDeficienciesHelpHtml() {
     return (
-      "This toggle shows or hides flavonoids, antioxidants, polyphenols, fiber, and chloride in the stacked bars and requirements. Chloride deficiency is rare; most intake comes from salt. Amino acid deficiencies are " +
+      "<strong>Amino acid deficiencies</strong><br>" +
+      "When on, shortfall bars and requirements include amino acids. Turn off to hide them. The menu chooses essential amino acids only or all amino acids. Amino acid deficiencies are " +
       (aminoDeficienciesOn ? "on" : "off") +
       ", set to " +
-      miscDeficienciesAminoModeLabel() +
-      "."
+      escapeHtml(miscDeficienciesAminoModeLabel()) +
+      ".<br><br>" +
+      "<strong>Misc deficiencies</strong><br>" +
+      "When on, shortfall bars and requirements include flavonoids, antioxidants, polyphenols, fiber, and chloride. Turn off to hide those groups. Chloride deficiency is rare; most intake comes from salt."
     );
   }
 
@@ -21722,7 +21725,7 @@
     return (
       '<button type="button" class="misc-deficiencies-help__btn" data-misc-deficiencies-help aria-expanded="false" aria-controls="' +
       MISC_DEFICIENCIES_HELP_POPOVER_ID +
-      '" aria-label="About Misc deficiencies" title="About Misc deficiencies">' +
+      '" aria-label="About Amino acid deficiencies and Misc deficiencies" title="About Amino acid deficiencies and Misc deficiencies">' +
       '<svg class="misc-deficiencies-help__icon" viewBox="0 0 16 16" width="13" height="13" aria-hidden="true" focusable="false">' +
       '<circle cx="8" cy="8" r="6.25" fill="none" stroke="currentColor" stroke-width="1.2"></circle>' +
       '<path d="M8 7.1v4.4" fill="none" stroke="currentColor" stroke-width="1.35" stroke-linecap="round"></path>' +
@@ -21794,7 +21797,7 @@
   function showMiscDeficienciesHelp(anchor) {
     var el = miscDeficienciesHelpPopoverEl();
     if (!el || !anchor) return;
-    el.textContent = miscDeficienciesHelpText();
+    el.innerHTML = miscDeficienciesHelpHtml();
     miscDeficienciesHelpAnchor = anchor;
     el.hidden = false;
     syncMiscDeficienciesHelpButtons();
@@ -21923,7 +21926,7 @@
     });
     var help = miscDeficienciesHelpPopoverEl();
     if (help && !help.hidden) {
-      help.textContent = miscDeficienciesHelpText();
+      help.innerHTML = miscDeficienciesHelpHtml();
       if (miscDeficienciesHelpAnchor) {
         positionMiscDeficienciesHelp(miscDeficienciesHelpAnchor);
       }
