@@ -29176,7 +29176,7 @@
   var diaryCoverageContextAt = 0;
   var DIARY_COVERAGE_LONG_PRESS_MS = 550;
   var COVERAGE_NUTRIENT_LONG_PRESS_MS = 500;
-  var coverageClickAction = "jump";
+  var coverageClickAction = "info";
   var coverageClickActionMenuKey = "";
   var coverageNutrientPress = null;
   var coverageNutrientSwallowClick = false;
@@ -29337,13 +29337,13 @@
   }
 
   function normalizeCoverageClickAction(value) {
-    return value === "yours" || value === "other" || value === "info"
+    return value === "yours" || value === "other" || value === "jump"
       ? value
-      : "jump";
+      : "info";
   }
 
   function loadCoverageClickActionPreference() {
-    coverageClickAction = "jump";
+    coverageClickAction = "info";
     if (persist && persist.getCoverageClickAction) {
       coverageClickAction = normalizeCoverageClickAction(
         persist.getCoverageClickAction()

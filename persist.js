@@ -284,7 +284,8 @@ var NutrientsPersist = (function () {
       dayHighlights: true,
       diaryCoverageMute: { days: false, week: false },
       miscDeficiencies: true,
-      coverageClickAction: "jump",
+      coverageClickAction: "info",
+      coverageClickActionV2: false,
       dayWordWrap: true,
       dayEntryAdvanced: false,
       starterGuideSeen: false,
@@ -1106,19 +1107,48 @@ var NutrientsPersist = (function () {
     return safeSet(KEYS.GUEST_MISC_DEFICIENCIES, JSON.stringify(next));
   }
 
+  var DEFAULT_COVERAGE_CLICK_ACTION = "info";
   var COVERAGE_CLICK_ACTIONS = { jump: true, yours: true, other: true, info: true };
 
   function normalizeCoverageClickAction(value) {
     var key = value == null ? "" : String(value);
-    return COVERAGE_CLICK_ACTIONS[key] ? key : "jump";
+    return COVERAGE_CLICK_ACTIONS[key] ? key : DEFAULT_COVERAGE_CLICK_ACTION;
+  }
+
+  function rawSettingsForCurrentUser() {
+    var userId = currentUserId();
+    if (!userId) return null;
+    var rows = rowsForUser(loadJson(KEYS.SETTINGS), userId);
+    return rows.length ? stripUserId(rows[0]) : null;
+  }
+
+  // Logged-in settings saves write the full default-merged object, so a stored
+  // "jump" may be the old implicit default rather than an explicit choice.
+  // One-time: treat stored "jump" as unset and move it to "info". Later
+  // explicit choices, including jump, are kept. Guests can be distinguished
+  // (the guest key is only written when a choice is saved), so their saved
+  // jump/yours/other/info values are left alone.
+  function migrateLoggedInCoverageClickAction() {
+    var raw = rawSettingsForCurrentUser();
+    if (raw && raw.coverageClickActionV2) return;
+    var had = !!(raw && Object.prototype.hasOwnProperty.call(raw, "coverageClickAction"));
+    var next =
+      !had || raw.coverageClickAction === "jump"
+        ? DEFAULT_COVERAGE_CLICK_ACTION
+        : normalizeCoverageClickAction(raw.coverageClickAction);
+    patchSettings({
+      coverageClickAction: next,
+      coverageClickActionV2: true,
+    });
   }
 
   function getCoverageClickAction() {
     if (currentUserId()) {
+      migrateLoggedInCoverageClickAction();
       return normalizeCoverageClickAction(getSetting("coverageClickAction"));
     }
     var raw = safeGet(KEYS.GUEST_COVERAGE_CLICK_ACTION);
-    if (raw == null || raw === "") return "jump";
+    if (raw == null || raw === "") return DEFAULT_COVERAGE_CLICK_ACTION;
     try {
       return normalizeCoverageClickAction(JSON.parse(raw));
     } catch (e) {
@@ -1128,7 +1158,12 @@ var NutrientsPersist = (function () {
 
   function setCoverageClickAction(value) {
     var next = normalizeCoverageClickAction(value);
-    if (currentUserId()) return setSetting("coverageClickAction", next);
+    if (currentUserId()) {
+      return patchSettings({
+        coverageClickAction: next,
+        coverageClickActionV2: true,
+      });
+    }
     return safeSet(KEYS.GUEST_COVERAGE_CLICK_ACTION, JSON.stringify(next));
   }
 

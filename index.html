@@ -938,8 +938,15 @@
           <p id="coverage-click-action-menu-label" class="coverage-click-action-menu__label">When I click a nutrient</p>
           <p class="coverage-click-action-menu__label coverage-click-action-menu__label--now" id="coverage-click-action-open-now-label">Open now</p>
         </div>
+        <div class="coverage-click-action-menu__row" role="none" data-coverage-action-row="info">
+          <button type="button" class="coverage-click-action-menu__item" role="menuitemradio" data-coverage-click-action="info" aria-checked="true">
+            <span class="coverage-click-action-menu__check" aria-hidden="true"></span>
+            <span class="coverage-click-action-menu__text">Open nutrient modal</span>
+          </button>
+          <button type="button" class="coverage-click-action-menu__now" data-coverage-open-now="info" aria-labelledby="coverage-click-action-open-now-label" aria-label="Open now: Open nutrient modal">Open now</button>
+        </div>
         <div class="coverage-click-action-menu__row" role="none" data-coverage-action-row="jump">
-          <button type="button" class="coverage-click-action-menu__item" role="menuitemradio" data-coverage-click-action="jump" aria-checked="true">
+          <button type="button" class="coverage-click-action-menu__item" role="menuitemradio" data-coverage-click-action="jump" aria-checked="false">
             <span class="coverage-click-action-menu__check" aria-hidden="true"></span>
             <span class="coverage-click-action-menu__text">Jump to it in Micro requirements or Longevity</span>
           </button>
@@ -958,13 +965,6 @@
             <span class="coverage-click-action-menu__text">Rank all other food for this nutrient</span>
           </button>
           <button type="button" class="coverage-click-action-menu__now" data-coverage-open-now="other" aria-labelledby="coverage-click-action-open-now-label" aria-label="Open now: Rank all other food for this nutrient">Open now</button>
-        </div>
-        <div class="coverage-click-action-menu__row" role="none" data-coverage-action-row="info">
-          <button type="button" class="coverage-click-action-menu__item" role="menuitemradio" data-coverage-click-action="info" aria-checked="false">
-            <span class="coverage-click-action-menu__check" aria-hidden="true"></span>
-            <span class="coverage-click-action-menu__text">Open nutrient modal</span>
-          </button>
-          <button type="button" class="coverage-click-action-menu__now" data-coverage-open-now="info" aria-labelledby="coverage-click-action-open-now-label" aria-label="Open now: Open nutrient modal">Open now</button>
         </div>
       </div>
       <div id="coverage-action-note" class="coverage-action-note" role="status" aria-live="polite" hidden></div>
