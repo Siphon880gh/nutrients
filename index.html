@@ -628,6 +628,14 @@
                 <span class="analysis-nonstored-toggle__switch" aria-hidden="true"></span>
                 <span class="analysis-nonstored-toggle__label">Show group</span>
               </button>
+              <span class="misc-deficiencies-toggle-group__sep" aria-hidden="true"></span>
+              <button type="button" class="misc-deficiencies-help__btn" data-misc-deficiencies-help aria-expanded="false" aria-controls="misc-deficiencies-help-popover" aria-label="About Misc deficiencies" title="About Misc deficiencies">
+                <svg class="misc-deficiencies-help__icon" viewBox="0 0 16 16" width="13" height="13" aria-hidden="true" focusable="false">
+                  <circle cx="8" cy="8" r="6.25" fill="none" stroke="currentColor" stroke-width="1.2"></circle>
+                  <path d="M8 7.1v4.4" fill="none" stroke="currentColor" stroke-width="1.35" stroke-linecap="round"></path>
+                  <circle cx="8" cy="4.75" r="0.7" fill="currentColor"></circle>
+                </svg>
+              </button>
             </div>
           </div>
           <div class="dashboard__micro-sticky-filters">
@@ -968,6 +976,7 @@
         </div>
       </div>
       <div id="coverage-action-note" class="coverage-action-note" role="status" aria-live="polite" hidden></div>
+      <p id="misc-deficiencies-help-popover" class="misc-deficiencies-help-popover" role="note" hidden>This toggle shows or hides misc deficiencies — essential amino acids, flavonoids, antioxidants, polyphenols, fibers — in the stacked bars and requirements. Non-essential amino acids are always tracked either way.</p>
       <button type="button" id="guided-finish-popover" class="day__finish-rearrange-popover" hidden>
         Finish Rearrange?
       </button>

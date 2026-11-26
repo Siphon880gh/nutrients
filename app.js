@@ -21252,7 +21252,7 @@
       '" title="Show sad-to-happy faces on percent ranges">' +
       (longevityAnalysisShowFilterEmojis ? "Hide faces" : "Show faces") +
       "</button>" +
-      miscDeficienciesToggleHtml() +
+      miscDeficienciesToggleGroupHtml() +
       '<span class="longevity-analysis-report__emoji-hint">Want more: low = sad · Want less: low = happy</span>' +
       "</div>" +
       aimRow +
@@ -21584,11 +21584,14 @@
       : "Misc deficiencies is off. Essential amino acids, flavonoids, antioxidants, polyphenols, and fiber are hidden. Turn on to show them. Non-essential amino acids stay visible either way.";
   }
 
-  function miscDeficienciesToggleHtml(extraClass) {
+  var MISC_DEFICIENCIES_HELP_POPOVER_ID = "misc-deficiencies-help-popover";
+  var MISC_DEFICIENCIES_HELP_TEXT =
+    "This toggle shows or hides misc deficiencies — essential amino acids, flavonoids, antioxidants, polyphenols, fibers — in the stacked bars and requirements. Non-essential amino acids are always tracked either way.";
+  var miscDeficienciesHelpAnchor = null;
+
+  function miscDeficienciesToggleHtml() {
     return (
-      '<button type="button" class="analysis-nonstored-toggle' +
-      (extraClass ? " " + extraClass : "") +
-      '" data-misc-deficiencies-toggle aria-pressed="' +
+      '<button type="button" class="analysis-nonstored-toggle" data-misc-deficiencies-toggle aria-pressed="' +
       (miscDeficienciesOn ? "true" : "false") +
       '" aria-label="' +
       escapeAttr(miscDeficienciesToggleAriaLabel()) +
@@ -21599,6 +21602,101 @@
       '<span class="analysis-nonstored-toggle__label">Misc deficiencies</span>' +
       "</button>"
     );
+  }
+
+  function miscDeficienciesInfoBtnHtml() {
+    return (
+      '<button type="button" class="misc-deficiencies-help__btn" data-misc-deficiencies-help aria-expanded="false" aria-controls="' +
+      MISC_DEFICIENCIES_HELP_POPOVER_ID +
+      '" aria-label="About Misc deficiencies" title="About Misc deficiencies">' +
+      '<svg class="misc-deficiencies-help__icon" viewBox="0 0 16 16" width="13" height="13" aria-hidden="true" focusable="false">' +
+      '<circle cx="8" cy="8" r="6.25" fill="none" stroke="currentColor" stroke-width="1.2"></circle>' +
+      '<path d="M8 7.1v4.4" fill="none" stroke="currentColor" stroke-width="1.35" stroke-linecap="round"></path>' +
+      '<circle cx="8" cy="4.75" r="0.7" fill="currentColor"></circle>' +
+      "</svg></button>"
+    );
+  }
+
+  function miscDeficienciesToggleGroupHtml(extraClass) {
+    return (
+      '<span class="misc-deficiencies-toggle-group' +
+      (extraClass ? " " + extraClass : "") +
+      '">' +
+      miscDeficienciesToggleHtml() +
+      '<span class="misc-deficiencies-toggle-group__sep" aria-hidden="true"></span>' +
+      miscDeficienciesInfoBtnHtml() +
+      "</span>"
+    );
+  }
+
+  function miscDeficienciesHelpPopoverEl() {
+    return document.getElementById(MISC_DEFICIENCIES_HELP_POPOVER_ID);
+  }
+
+  function isMiscDeficienciesHelpOpen() {
+    var el = miscDeficienciesHelpPopoverEl();
+    return !!(el && !el.hidden);
+  }
+
+  function syncMiscDeficienciesHelpButtons() {
+    var open = isMiscDeficienciesHelpOpen();
+    var btns = document.querySelectorAll("[data-misc-deficiencies-help]");
+    Array.prototype.forEach.call(btns, function (btn) {
+      btn.setAttribute(
+        "aria-expanded",
+        open && btn === miscDeficienciesHelpAnchor ? "true" : "false"
+      );
+    });
+  }
+
+  function hideMiscDeficienciesHelp() {
+    var el = miscDeficienciesHelpPopoverEl();
+    if (el) el.hidden = true;
+    miscDeficienciesHelpAnchor = null;
+    syncMiscDeficienciesHelpButtons();
+  }
+
+  function positionMiscDeficienciesHelp(anchor) {
+    var el = miscDeficienciesHelpPopoverEl();
+    if (!el || el.hidden || !anchor) return;
+    var margin = 8;
+    el.style.left = "0px";
+    el.style.top = "0px";
+    var width = el.offsetWidth;
+    var height = el.offsetHeight;
+    var rect = anchor.getBoundingClientRect();
+    var left = rect.right - width;
+    var top = rect.bottom + 6;
+    if (left < margin) left = rect.left;
+    if (left + width > window.innerWidth - margin) {
+      left = window.innerWidth - width - margin;
+    }
+    if (top + height > window.innerHeight - margin) {
+      top = rect.top - height - 6;
+    }
+    el.style.left = Math.max(margin, left) + "px";
+    el.style.top = Math.max(margin, top) + "px";
+  }
+
+  function showMiscDeficienciesHelp(anchor) {
+    var el = miscDeficienciesHelpPopoverEl();
+    if (!el || !anchor) return;
+    if (!el.textContent) el.textContent = MISC_DEFICIENCIES_HELP_TEXT;
+    miscDeficienciesHelpAnchor = anchor;
+    el.hidden = false;
+    syncMiscDeficienciesHelpButtons();
+    positionMiscDeficienciesHelp(anchor);
+  }
+
+  function toggleMiscDeficienciesHelp(anchor) {
+    if (
+      isMiscDeficienciesHelpOpen() &&
+      miscDeficienciesHelpAnchor === anchor
+    ) {
+      hideMiscDeficienciesHelp();
+      return;
+    }
+    showMiscDeficienciesHelp(anchor);
   }
 
   function syncMiscDeficienciesToggleUi() {
@@ -21632,6 +21730,7 @@
     }
     miscDeficienciesOn = next;
     saveMiscDeficienciesPreference();
+    hideMiscDeficienciesHelp();
     syncMiscDeficienciesToggleUi();
     renderDiaryCoverage();
     if (experimentalPanelOpen) renderExperimentalPanel();
@@ -22319,7 +22418,7 @@
       '<span class="analysis-nonstored-toggle__label">Non-stored only</span>' +
       "</button>" +
       '<span class="analysis-nutrient-board__sep" aria-hidden="true"></span>' +
-      miscDeficienciesToggleHtml() +
+      miscDeficienciesToggleGroupHtml() +
       '<span class="analysis-nutrient-board__sep" aria-hidden="true"></span>' +
       '<span class="analysis-nonstored-help">' +
       '<button type="button" class="analysis-nonstored-help__btn" data-analysis-nonstored-help aria-expanded="false" aria-controls="analysis-nonstored-note" aria-label="About nutrients that store poorly">' +
@@ -23016,7 +23115,7 @@
       ) +
       "</p>" +
       '<div class="analysis-nutrient-board__tools">' +
-      miscDeficienciesToggleHtml() +
+      miscDeficienciesToggleGroupHtml() +
       "</div>" +
       microDailyNonstoredLegendHtml() +
       '<div class="analysis-daily-nonstored__columns">' +
@@ -29145,7 +29244,7 @@
           "week",
           weekHasFood ? "clear" : "empty"
         ) +
-        miscDeficienciesToggleHtml("diary-coverage__misc-toggle");
+        miscDeficienciesToggleGroupHtml("diary-coverage__misc-toggle");
     }
     DAYS.forEach(function (day) {
       var slot = document.querySelector(
@@ -29977,6 +30076,15 @@
   }
 
   document.addEventListener("click", function (e) {
+    var helpBtn = e.target.closest("[data-misc-deficiencies-help]");
+    if (helpBtn) {
+      e.preventDefault();
+      toggleMiscDeficienciesHelp(helpBtn);
+      return;
+    }
+    if (!e.target.closest("#misc-deficiencies-help-popover")) {
+      hideMiscDeficienciesHelp();
+    }
     var btn = e.target.closest("[data-misc-deficiencies-toggle]");
     if (!btn) return;
     e.preventDefault();
@@ -29999,6 +30107,9 @@
   });
 
   window.addEventListener("resize", function () {
+    if (isMiscDeficienciesHelpOpen()) {
+      positionMiscDeficienciesHelp(miscDeficienciesHelpAnchor);
+    }
     if (!diaryCoveragePopoverPoint) return;
     var el = document.getElementById("diary-coverage-popover");
     if (!el || el.hidden) return;
@@ -44574,6 +44685,13 @@
 
   document.addEventListener("keydown", function (e) {
     if (e.key !== "Escape") return;
+    if (isMiscDeficienciesHelpOpen()) {
+      e.preventDefault();
+      var helpAnchor = miscDeficienciesHelpAnchor;
+      hideMiscDeficienciesHelp();
+      if (helpAnchor && document.contains(helpAnchor)) helpAnchor.focus();
+      return;
+    }
     if (imageLightboxEl && !imageLightboxEl.hidden) {
       e.preventDefault();
       closeImageLightbox();
