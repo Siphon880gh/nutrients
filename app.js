@@ -4850,6 +4850,15 @@
     return { lines: lines, deficiencies: deficiencies };
   }
 
+  function customGapFoodDefinitionName(date) {
+    var d = date || new Date();
+    var month = String(d.getMonth() + 1);
+    var day = String(d.getDate());
+    if (month.length < 2) month = "0" + month;
+    if (day.length < 2) day = "0" + day;
+    return "Custom Food - " + month + "/" + day + "/" + d.getFullYear();
+  }
+
   function buildMicroGapsAiPrompt() {
     var snapshot = buildMicroGapsSnapshotLines();
     var demo = demographicLabelForPrompt();
@@ -4917,10 +4926,24 @@
       }
     }
 
+    var foodName = customGapFoodDefinitionName();
     parts.push("");
     parts.push(
-      "Reply in plain language (no JSON). Use short sections or a simple list."
+      "Reply in plain language first. Use short sections or a simple list."
     );
+    parts.push("");
+    parts.push(
+      "Then return JSON I can import as a food definition. Return one JSON array with a single object, and no markdown fences or commentary around the JSON. Paste that array into Food definitions → Import all, using Amend, so it is added and my other foods stay."
+    );
+    parts.push(
+      'The name must be exactly "' +
+        foodName +
+        '". Amounts are for one serving of that custom food: the nutrients still short of the daily target, so logging it once closes those gaps for an average day. Include protein, carbs, and fats for that serving. Put micro amounts in micros. When the same key also belongs in longevity, store the number in micros and set longevity[key] to true. Omit a key only when that serving would not contain it. A Nutrition Facts label is not complete: estimate B vitamins and the other vitamins and minerals the FDA does not require on the label from composition data. Use the structure below, and replace the example name and the zeros with this food.'
+    );
+    parts.push("");
+    parts.push(jsonSchemaExample());
+    parts.push("");
+    parts.push(nutrientListForPrompt());
 
     return parts.join("\n");
   }
