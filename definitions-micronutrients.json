@@ -745,7 +745,14 @@
   "vitaminB6": {
     "warning": [
       "Do not take a supplement that is only vitamin B6. An observational study (the VITAL cohort) found that long-term B6 from individual supplements, not from a multivitamin, was associated with higher lung cancer risk in men, and the association was stronger in men who were smoking at baseline. Men with a 10-year average dose above 20 mg/day had an 82% higher risk than nonusers (HR 1.82, 95% CI 1.25–2.65). No such association was seen in women, or when the B6 came from a multivitamin.",
-      "Brasky TM, White E, Chen C-L. J Clin Oncol. 2017;35(30):3440-3448. https://pubmed.ncbi.nlm.nih.gov/28829668/"
+      "Brasky TM, White E, Chen C-L. J Clin Oncol. 2017;35(30):3440-3448. https://pubmed.ncbi.nlm.nih.gov/28829668/",
+      "Although vitamin B6 is water-soluble, excess from supplements can still accumulate in tissues and damage peripheral nerves. That can cause sensory neuropathy: tingling, numbness, or burning in the hands and feet. The first case series described this after 2–6 g/day for months. The U.S. adult Tolerable Upper Intake Level is 100 mg/day (NIH/IOM). In 2023, EFSA set a lower adult UL of 12 mg/day. Pharmacovigilance reports from the Netherlands (Lareb) and Australia (TGA) have also linked neuropathy to lower supplemental doses, including under 50 mg/day, and when several B6-containing products are taken together.",
+      "Energy drinks can add a lot of B6 on top of supplements. A 12 fl oz Celsius can lists 2 mg, which is 120% of the 1.7 mg FDA Daily Value. Red Bull lists 250% DV per 8.4 fl oz can, and other drinks such as Monster, Alani Nu, and Reign often exceed 100% DV per can. A regular 5-hour Energy shot lists 40 mg (2,353% DV). Add up B6 from drinks and supplements.",
+      "Schaumburg H, Kaplan J, Windebank A, Vick N, Rasmus S, Pleasure D, Brown MJ. N Engl J Med. 1983;309(8):445-448. https://pubmed.ncbi.nlm.nih.gov/6308447/",
+      "NIH Office of Dietary Supplements. Vitamin B6 Fact Sheet for Health Professionals. https://ods.od.nih.gov/factsheets/VitaminB6-HealthProfessional/",
+      "EFSA NDA Panel. EFSA Journal. 2023;21(5):e8006. https://pubmed.ncbi.nlm.nih.gov/37207271/ https://doi.org/10.2903/j.efsa.2023.8006",
+      "van Hunsel F, van de Koppel S, van Puijenbroek E, Kant A. Drug Saf. 2018. https://pubmed.ncbi.nlm.nih.gov/29737502/",
+      "Therapeutic Goods Administration (Australia). Peripheral neuropathy with supplementary vitamin B6 (pyridoxine). https://www.tga.gov.au/news/safety-updates/peripheral-neuropathy-supplementary-vitamin-b6-pyridoxine"
     ],
     "tooLow": [
       "Low B6 can cause anemia-like fatigue, cracked lips, depression, and weakened immunity; severe deficiency damages nerves.",
@@ -759,8 +766,8 @@
       "Vitamin B6 covers pyridoxine, pyridoxal, and pyridoxamine (active form PLP)—needed daily with folate and B12 for neurotransmitter and homocysteine chemistry."
     ],
     "tooHigh": [
-      "Very high B6 supplements (often 50–100 mg) for months can cause nerve tingling and numbness—stay near food-level intake unless prescribed.",
-      "Chronic megadoses are not needed for TMAO and can harm nerves."
+      "Although vitamin B6 is water-soluble, excess from supplements can accumulate in tissues and damage peripheral nerves, causing tingling, numbness, or burning in the hands and feet.",
+      "The U.S. adult UL is 100 mg/day; EFSA’s 2023 adult UL is 12 mg/day. Neuropathy has also been reported at lower supplemental doses, especially with prolonged use or several B6-containing products at once. Energy drinks such as Celsius (2 mg, 120% DV per 12 fl oz can) often pack more than 100% DV per serving—count them with any B6 supplements."
     ],
     "foodSources": [
       "Chickpeas & lentils",
