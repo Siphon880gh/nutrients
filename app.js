@@ -4944,6 +4944,10 @@
     parts.push(jsonSchemaExample());
     parts.push("");
     parts.push(nutrientListForPrompt());
+    parts.push("");
+    parts.push(
+      "If the food you add is a known food — a specific restaurant or food-app menu item, a branded product, or one of the customization choices I pasted — put that identification in the notes field of its JSON object, such as the restaurant or app, the item name, and the chosen options."
+    );
 
     return parts.join("\n");
   }
