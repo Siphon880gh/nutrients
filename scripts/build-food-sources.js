@@ -311,6 +311,8 @@ function findFoodDefinitionForSourcePass(catalog, sourceLabel, nutrientKey, requ
   catalog.forEach((kw) => {
     const name = (kw.name || "").trim();
     if (!name) return;
+    // Recipe dishes are mixtures, so they never stand in for a single source food.
+    if (/^recipe\s*-/i.test(name)) return;
     let score = 0;
     tokens.forEach((token) => {
       score = Math.max(score, scoreFoodNameAgainstToken(name, token));

@@ -8386,6 +8386,8 @@
     catalog.forEach(function (kw) {
       var name = (kw.name || "").trim();
       if (!name) return;
+      // Recipe dishes are mixtures, so they never stand in for a single source food.
+      if (/^recipe\s*-/i.test(name)) return;
       var score = 0;
       tokens.forEach(function (token) {
         score = Math.max(score, scoreFoodNameAgainstToken(name, token));
