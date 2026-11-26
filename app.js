@@ -21561,6 +21561,10 @@
     insolubleToSolubleFiber: true,
   };
 
+  var MISC_DEFICIENCY_CHLORIDE_KEYS = {
+    chloride: true,
+  };
+
   function normalizeMiscDeficienciesAminoMode(value) {
     return value === "all" ? "all" : "essential";
   }
@@ -21585,7 +21589,8 @@
       MISC_DEFICIENCY_FLAVONOID_KEYS[key] ||
       MISC_DEFICIENCY_POLYPHENOL_KEYS[key] ||
       MISC_DEFICIENCY_ANTIOXIDANT_KEYS[key] ||
-      MISC_DEFICIENCY_FIBER_KEYS[key]
+      MISC_DEFICIENCY_FIBER_KEYS[key] ||
+      MISC_DEFICIENCY_CHLORIDE_KEYS[key]
     );
   }
 
