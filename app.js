@@ -21576,7 +21576,7 @@
   }
 
   function miscDeficienciesToggleTitle() {
-    return "When on, shortfall bars and requirements include flavonoids, antioxidants, polyphenols, and fiber. Turn off to hide those groups.";
+    return "When on, shortfall bars and requirements include flavonoids, antioxidants, polyphenols, fiber, and chloride. Turn off to hide those groups.";
   }
 
   function aminoDeficienciesToggleTitle() {
@@ -21616,8 +21616,8 @@
 
   function miscDeficienciesToggleAriaLabel() {
     return miscDeficienciesOn
-      ? "Misc deficiencies is on. Showing flavonoids, antioxidants, polyphenols, and fiber. Turn off to hide those groups."
-      : "Misc deficiencies is off. Flavonoids, antioxidants, polyphenols, and fiber are hidden. Turn on to show them.";
+      ? "Misc deficiencies is on. Showing flavonoids, antioxidants, polyphenols, fiber, and chloride. Turn off to hide those groups."
+      : "Misc deficiencies is off. Flavonoids, antioxidants, polyphenols, fiber, and chloride are hidden. Turn on to show them.";
   }
 
   function aminoDeficienciesToggleAriaLabel() {
@@ -21637,7 +21637,7 @@
 
   function miscDeficienciesHelpText() {
     return (
-      "This toggle shows or hides flavonoids, antioxidants, polyphenols, and fiber in the stacked bars and requirements. Amino acid deficiencies are " +
+      "This toggle shows or hides flavonoids, antioxidants, polyphenols, fiber, and chloride in the stacked bars and requirements. Chloride deficiency is rare; most intake comes from salt. Amino acid deficiencies are " +
       (aminoDeficienciesOn ? "on" : "off") +
       ", set to " +
       miscDeficienciesAminoModeLabel() +
