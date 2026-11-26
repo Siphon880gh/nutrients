@@ -134,6 +134,21 @@
       "label": "Baskin-Robbins",
       "pattern": "\\bbaskin[\\s-]+robbins\\b",
       "note": "<p>At Baskin-Robbins, <strong>each scoop is 4 oz</strong> in both a regular Double Scoop cup and a Triple Scoop cup. <a href=\"https://news.baskinrobbins.com/news/baskin-robbins-kicks-off-the-ice-cream-season-with-a-scoop-fest-celebration\" target=\"_blank\" rel=\"noopener noreferrer\">Baskin-Robbins</a></p><table class=\"micro-tip-modal__table\"><thead><tr><th scope=\"col\">Cup</th><th scope=\"col\">Size per scoop</th><th scope=\"col\">Total ice cream</th></tr></thead><tbody><tr><td>Double Scoop</td><td>4 oz</td><td>8 oz</td></tr><tr><td>Triple Scoop</td><td>4 oz</td><td>12 oz</td></tr></tbody></table><p>The <strong>2.5 oz</strong> size is used for the Kid's Scoop and the classic 2- and 3-scoop sundaes. <a href=\"https://www.ubereats.com/brand-city/los-angeles-ca/baskin-robbins\" target=\"_blank\" rel=\"noopener noreferrer\">Uber Eats</a></p>"
+    },
+    {
+      "label": "Vitamin B6 supplement",
+      "pattern": "(?:^|\\n)(?![^\\n]*\\b(?:multi[-\\s]?vitamins?|one\\s*a\\s*day|centrum|b[-\\s]?complex)\\b)[^\\n]*\\b(?:(?:(?:vitamin|vit\\.?)\\s+)?b\\s*-?\\s*6|pyridoxine|pyridoxal(?:-?5-?phosphate)?|pyridoxamine|p5p)\\b",
+      "note": "<p>Do not take a supplement that is only vitamin B6. In the VITAL cohort (observational), long-term B6 from individual supplements, not from a multivitamin, was associated with higher lung cancer risk in men, and the association was stronger in men who were smoking at baseline. Men with a 10-year average dose above 20 mg/day had an 82% higher risk than nonusers (HR 1.82, 95% CI 1.25–2.65). No such association was seen in women, or when the B6 came from a multivitamin.</p><p>Brasky TM, White E, Chen C-L. <em>J Clin Oncol</em>. 2017;35(30):3440-3448. <a href=\"https://pubmed.ncbi.nlm.nih.gov/28829668/\" target=\"_blank\" rel=\"noopener noreferrer\">PubMed 28829668</a>.</p>"
+    },
+    {
+      "label": "Beta-carotene supplement",
+      "pattern": "(?:^|\\n)(?![^\\n]*\\b(?:multi[-\\s]?vitamins?|one\\s*a\\s*day|centrum)\\b)[^\\n]*(?:β[-\\s]?|\\bbeta[-\\s]?)carotene\\b",
+      "note": "<p>High-dose beta-carotene as a sole supplement increased lung cancer in randomized trials of high-risk people. In ATBC, 20 mg/day raised lung cancer incidence by 18% in male smokers. In CARET, 30 mg/day plus 25,000 IU retinol raised lung cancer risk by 28% in smokers and asbestos-exposed workers. That signal was not seen with a standard daily multivitamin (Physicians' Health Study II: no increase in total cancer, and a modest decrease, HR 0.92).</p><p>ATBC Study Group. <em>N Engl J Med</em>. 1994;330(15):1029-1035. <a href=\"https://pubmed.ncbi.nlm.nih.gov/8127329/\" target=\"_blank\" rel=\"noopener noreferrer\">PubMed 8127329</a>. Omenn GS et al. <em>N Engl J Med</em>. 1996;334(18):1150-1155. <a href=\"https://pubmed.ncbi.nlm.nih.gov/8602180/\" target=\"_blank\" rel=\"noopener noreferrer\">PubMed 8602180</a>. Gaziano JM et al. <em>JAMA</em>. 2012;308(18):1871-1880. <a href=\"https://pubmed.ncbi.nlm.nih.gov/23162860/\" target=\"_blank\" rel=\"noopener noreferrer\">PubMed 23162860</a>.</p>"
+    },
+    {
+      "label": "Vitamin E supplement",
+      "pattern": "(?:^|\\n)(?![^\\n]*\\b(?:multi[-\\s]?vitamins?|one\\s*a\\s*day|centrum)\\b)[^\\n]*\\b(?:(?:vitamin|vit\\.?)\\s*e\\b|(?:alpha[-\\s]?)?tocopherols?|tocotrienols?)\\b",
+      "note": "<p>High-dose vitamin E as a sole supplement increased prostate cancer in a randomized trial. In SELECT, 400 IU/day of all rac-α-tocopheryl acetate alone raised prostate cancer risk by about 17% in healthy men (HR 1.17) compared with placebo. A standard daily multivitamin did not show this (Physicians' Health Study II: no increase in prostate cancer, HR 0.98, and a modest decrease in total cancer, HR 0.92).</p><p>Klein EA et al. <em>JAMA</em>. 2011;306(14):1549-1556. <a href=\"https://pubmed.ncbi.nlm.nih.gov/21990298/\" target=\"_blank\" rel=\"noopener noreferrer\">PubMed 21990298</a>. Gaziano JM et al. <em>JAMA</em>. 2012;308(18):1871-1880. <a href=\"https://pubmed.ncbi.nlm.nih.gov/23162860/\" target=\"_blank\" rel=\"noopener noreferrer\">PubMed 23162860</a>.</p>"
     }
   ]
 }
