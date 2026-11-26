@@ -20911,9 +20911,14 @@
         "aria-pressed",
         longevityAnalysisShowFilterEmojis ? "true" : "false"
       );
-      toggleBtn.textContent = longevityAnalysisShowFilterEmojis
+      var toggleLabel = toggleBtn.querySelector(
+        ".longevity-analysis-report__emoji-toggle-label"
+      );
+      var toggleText = longevityAnalysisShowFilterEmojis
         ? "Hide faces"
         : "Show faces";
+      if (toggleLabel) toggleLabel.textContent = toggleText;
+      else toggleBtn.textContent = toggleText;
     }
   }
 
@@ -21254,6 +21259,80 @@
     );
   }
 
+  var LONGEVITY_ANALYSIS_EMOJI_HINT_ID = "longevity-analysis-emoji-hint";
+  var longevityAnalysisEmojiHintAnchor = null;
+
+  function longevityAnalysisEmojiHintEl() {
+    return document.getElementById(LONGEVITY_ANALYSIS_EMOJI_HINT_ID);
+  }
+
+  function isLongevityAnalysisEmojiHintOpen() {
+    var el = longevityAnalysisEmojiHintEl();
+    return !!(el && !el.hidden);
+  }
+
+  function syncLongevityAnalysisEmojiHintButtons() {
+    var open = isLongevityAnalysisEmojiHintOpen();
+    var btns = document.querySelectorAll("[data-longevity-analysis-emoji-hint]");
+    Array.prototype.forEach.call(btns, function (btn) {
+      btn.setAttribute(
+        "aria-expanded",
+        open && btn === longevityAnalysisEmojiHintAnchor ? "true" : "false"
+      );
+    });
+  }
+
+  function hideLongevityAnalysisEmojiHint() {
+    var el = longevityAnalysisEmojiHintEl();
+    if (el) el.hidden = true;
+    longevityAnalysisEmojiHintAnchor = null;
+    syncLongevityAnalysisEmojiHintButtons();
+  }
+
+  function positionLongevityAnalysisEmojiHint(anchor) {
+    var el = longevityAnalysisEmojiHintEl();
+    if (!el || el.hidden || !anchor) return;
+    var margin = 8;
+    el.style.left = "0px";
+    el.style.top = "0px";
+    var width = el.offsetWidth;
+    var height = el.offsetHeight;
+    var rect = anchor.getBoundingClientRect();
+    var left = rect.left;
+    var top = rect.bottom + 6;
+    if (left + width > window.innerWidth - margin) {
+      left = window.innerWidth - width - margin;
+    }
+    if (left < margin) left = margin;
+    if (top + height > window.innerHeight - margin) {
+      top = rect.top - height - 6;
+    }
+    el.style.left = Math.max(margin, left) + "px";
+    el.style.top = Math.max(margin, top) + "px";
+  }
+
+  function showLongevityAnalysisEmojiHint(anchor) {
+    var el = longevityAnalysisEmojiHintEl();
+    if (!el || !anchor) return;
+    hideMiscDeficienciesHelp();
+    hideMiscDeficienciesAminoMenu();
+    longevityAnalysisEmojiHintAnchor = anchor;
+    el.hidden = false;
+    syncLongevityAnalysisEmojiHintButtons();
+    positionLongevityAnalysisEmojiHint(anchor);
+  }
+
+  function toggleLongevityAnalysisEmojiHint(anchor) {
+    if (
+      isLongevityAnalysisEmojiHintOpen() &&
+      longevityAnalysisEmojiHintAnchor === anchor
+    ) {
+      hideLongevityAnalysisEmojiHint();
+      return;
+    }
+    showLongevityAnalysisEmojiHint(anchor);
+  }
+
   function longevityAnalysisFilterBarHtml(aimBandCounts, limitBandCounts, options) {
     options = options || {};
     var showStack = !!options.stack;
@@ -21282,10 +21361,20 @@
       '<button type="button" class="longevity-analysis-report__emoji-toggle" data-longevity-analysis-emoji-toggle aria-pressed="' +
       (longevityAnalysisShowFilterEmojis ? "true" : "false") +
       '" title="Show sad-to-happy faces on percent ranges">' +
+      '<span class="longevity-analysis-report__emoji-toggle-label">' +
       (longevityAnalysisShowFilterEmojis ? "Hide faces" : "Show faces") +
+      "</span>" +
+      '<span class="longevity-analysis-report__emoji-toggle-sep" aria-hidden="true"></span>' +
+      '<span class="longevity-analysis-report__emoji-hint-btn" data-longevity-analysis-emoji-hint role="button" tabindex="0" aria-expanded="false" aria-controls="' +
+      LONGEVITY_ANALYSIS_EMOJI_HINT_ID +
+      '" aria-label="About sad-to-happy faces" title="About sad-to-happy faces">' +
+      '<svg class="misc-deficiencies-help__icon" viewBox="0 0 16 16" width="13" height="13" aria-hidden="true" focusable="false">' +
+      '<circle cx="8" cy="8" r="6.25" fill="none" stroke="currentColor" stroke-width="1.2"></circle>' +
+      '<path d="M8 7.1v4.4" fill="none" stroke="currentColor" stroke-width="1.35" stroke-linecap="round"></path>' +
+      '<circle cx="8" cy="4.75" r="0.7" fill="currentColor"></circle>' +
+      "</svg></span>" +
       "</button>" +
       miscDeficienciesToggleGroupHtml() +
-      '<span class="longevity-analysis-report__emoji-hint">Want more: low = sad · Want less: low = happy</span>' +
       "</div>" +
       aimRow +
       limitRow +
@@ -21428,6 +21517,7 @@
 
   function closeLongevityAnalysisModal() {
     if (!longevityAnalysisModalEl) return;
+    hideLongevityAnalysisEmojiHint();
     longevityAnalysisModalEl.hidden = true;
     longevityAnalysisClearBandFilters();
     analysisDailyNonstoredNameQuery = "";
@@ -21460,6 +21550,7 @@
 
   function hideLongevityAnalysisModalForSectionJump() {
     if (!longevityAnalysisModalEl) return;
+    hideLongevityAnalysisEmojiHint();
     longevityAnalysisModalEl.hidden = true;
     longevityAnalysisReturnPending = true;
     document.body.classList.remove("print-longevity-analysis");
@@ -21824,6 +21915,7 @@
   function showMiscDeficienciesHelp(anchor) {
     var el = miscDeficienciesHelpPopoverEl();
     if (!el || !anchor) return;
+    hideLongevityAnalysisEmojiHint();
     el.innerHTML = miscDeficienciesHelpHtml();
     miscDeficienciesHelpAnchor = anchor;
     el.hidden = false;
@@ -21905,6 +21997,7 @@
   function showMiscDeficienciesAminoMenu(anchor) {
     var el = miscDeficienciesAminoMenuEl();
     if (!el || !anchor) return;
+    hideLongevityAnalysisEmojiHint();
     hideMiscDeficienciesHelp();
     miscDeficienciesAminoMenuAnchor = anchor;
     syncMiscDeficienciesAminoMenuUi();
@@ -23459,6 +23552,7 @@
 
   function renderAnalysisModal() {
     if (!longevityAnalysisModalEl || !longevityAnalysisReportEl) return;
+    hideLongevityAnalysisEmojiHint();
     var kind = analysisActiveKind;
     var requirementsAnalysis = analysisIsRequirementsKind(kind);
     longevityAnalysisModalEl.classList.toggle(
@@ -30523,6 +30617,12 @@
     if (!e.target.closest("#misc-deficiencies-help-popover")) {
       hideMiscDeficienciesHelp();
     }
+    if (
+      !e.target.closest("[data-longevity-analysis-emoji-hint]") &&
+      !e.target.closest("#" + LONGEVITY_ANALYSIS_EMOJI_HINT_ID)
+    ) {
+      hideLongevityAnalysisEmojiHint();
+    }
     var btn = e.target.closest("[data-misc-deficiencies-toggle]");
     if (!btn) return;
     e.preventDefault();
@@ -30550,6 +30650,9 @@
     }
     if (isMiscDeficienciesHelpOpen()) {
       positionMiscDeficienciesHelp(miscDeficienciesHelpAnchor);
+    }
+    if (isLongevityAnalysisEmojiHintOpen()) {
+      positionLongevityAnalysisEmojiHint(longevityAnalysisEmojiHintAnchor);
     }
     if (!diaryCoveragePopoverPoint) return;
     var el = document.getElementById("diary-coverage-popover");
@@ -44944,8 +45047,16 @@
         syncLongevityAnalysisBandFilter();
         return;
       }
+      var emojiHintBtn = e.target.closest("[data-longevity-analysis-emoji-hint]");
+      if (emojiHintBtn && longevityAnalysisReportEl.contains(emojiHintBtn)) {
+        e.preventDefault();
+        e.stopPropagation();
+        toggleLongevityAnalysisEmojiHint(emojiHintBtn);
+        return;
+      }
       var emojiToggleBtn = e.target.closest("[data-longevity-analysis-emoji-toggle]");
       if (emojiToggleBtn && longevityAnalysisReportEl.contains(emojiToggleBtn)) {
+        hideLongevityAnalysisEmojiHint();
         longevityAnalysisShowFilterEmojis = !longevityAnalysisShowFilterEmojis;
         syncLongevityAnalysisFilterEmojis();
         return;
@@ -44971,7 +45082,26 @@
           e.preventDefault();
           e.stopPropagation();
           clearAnalysisDailyNonstoredNameFilter();
+          return;
         }
+        if (isLongevityAnalysisEmojiHintOpen()) {
+          e.preventDefault();
+          e.stopPropagation();
+          var hintAnchor = longevityAnalysisEmojiHintAnchor;
+          hideLongevityAnalysisEmojiHint();
+          if (hintAnchor && document.contains(hintAnchor)) hintAnchor.focus();
+        }
+        return;
+      }
+      var emojiHintKeyBtn = e.target.closest("[data-longevity-analysis-emoji-hint]");
+      if (
+        emojiHintKeyBtn &&
+        longevityAnalysisReportEl.contains(emojiHintKeyBtn) &&
+        (e.key === "Enter" || e.key === " ")
+      ) {
+        e.preventDefault();
+        e.stopPropagation();
+        toggleLongevityAnalysisEmojiHint(emojiHintKeyBtn);
         return;
       }
       if (e.key !== "Enter" && e.key !== " ") return;
@@ -45170,6 +45300,15 @@
       var aminoAnchor = miscDeficienciesAminoMenuAnchor;
       hideMiscDeficienciesAminoMenu();
       if (aminoAnchor && document.contains(aminoAnchor)) aminoAnchor.focus();
+      return;
+    }
+    if (isLongevityAnalysisEmojiHintOpen()) {
+      e.preventDefault();
+      var emojiHintAnchor = longevityAnalysisEmojiHintAnchor;
+      hideLongevityAnalysisEmojiHint();
+      if (emojiHintAnchor && document.contains(emojiHintAnchor)) {
+        emojiHintAnchor.focus();
+      }
       return;
     }
     if (isMiscDeficienciesHelpOpen()) {

@@ -7398,7 +7398,10 @@ button.analysis-daily-nonstored__name:focus-visible {
 }
 
 .longevity-analysis-report__emoji-toggle {
-  padding: 0.28rem 0.55rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.2rem 0.2rem 0.2rem 0.55rem;
   border: 1px solid #cfd5dd;
   border-radius: 5px;
   background: #fff;
@@ -7408,6 +7411,43 @@ button.analysis-daily-nonstored__name:focus-visible {
   font-weight: 650;
   line-height: 1.2;
   cursor: pointer;
+}
+
+.longevity-analysis-report__emoji-toggle-sep {
+  width: 1px;
+  align-self: stretch;
+  margin: 0.18rem 0;
+  background: #cfd5dd;
+}
+
+.longevity-analysis-report__emoji-hint-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.55rem;
+  height: 1.55rem;
+  padding: 0;
+  border: 0;
+  border-radius: 4px;
+  background: transparent;
+  color: #5c6b7a;
+  cursor: pointer;
+}
+
+.longevity-analysis-report__emoji-hint-btn:hover,
+.longevity-analysis-report__emoji-hint-btn:focus-visible,
+.longevity-analysis-report__emoji-hint-btn[aria-expanded="true"] {
+  background: #f4f4f2;
+  color: #1f3a58;
+}
+
+.longevity-analysis-report__emoji-hint-btn:focus-visible {
+  outline: 2px solid #3d6b9e;
+  outline-offset: 2px;
+}
+
+.longevity-analysis-report__emoji-toggle[aria-pressed="true"] .longevity-analysis-report__emoji-toggle-sep {
+  background: #9bb3cc;
 }
 
 .longevity-analysis-report__emoji-toggle:hover,
@@ -7427,10 +7467,24 @@ button.analysis-daily-nonstored__name:focus-visible {
   color: #1f4e79;
 }
 
-.longevity-analysis-report__emoji-hint {
-  font-size: 0.68rem;
-  line-height: 1.3;
-  color: #6a7380;
+.longevity-analysis-emoji-hint-popover {
+  position: fixed;
+  z-index: 145;
+  width: max-content;
+  max-width: min(18.5rem, calc(100vw - 1.5rem));
+  margin: 0;
+  padding: 0.55rem 0.7rem;
+  border: 1px solid #d7e0ea;
+  border-radius: 8px;
+  background: #fff;
+  color: #333;
+  font-size: 0.8rem;
+  line-height: 1.4;
+  box-shadow: 0 8px 24px rgba(31, 58, 88, 0.14);
+}
+
+.longevity-analysis-emoji-hint-popover[hidden] {
+  display: none;
 }
 
 .longevity-analysis-report__filters {
