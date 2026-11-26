@@ -505,6 +505,12 @@
     ]
   },
   "vitaminABetaCarotene": {
+    "warning": [
+      "High-dose beta-carotene as a sole supplement increased lung cancer in randomized trials of high-risk people. In ATBC, 20 mg/day raised lung cancer incidence by 18% in male smokers (95% CI 3–36%). In CARET, 30 mg/day plus 25,000 IU retinol raised lung cancer risk by 28% in smokers and asbestos-exposed workers (RR 1.28, 95% CI 1.04–1.57). That signal was not seen with a standard daily multivitamin: in Physicians' Health Study II, a daily multivitamin did not increase total cancer and was associated with a modest decrease (HR 0.92, 95% CI 0.86–0.998).",
+      "ATBC Study Group. N Engl J Med. 1994;330(15):1029-1035. https://pubmed.ncbi.nlm.nih.gov/8127329/",
+      "Omenn GS et al. N Engl J Med. 1996;334(18):1150-1155. https://pubmed.ncbi.nlm.nih.gov/8602180/",
+      "Gaziano JM et al. JAMA. 2012;308(18):1871-1880. https://pubmed.ncbi.nlm.nih.gov/23162860/"
+    ],
     "dashboardTracking": [
       "Log proform vitamin A (β-carotene) as mcg of β-carotene mass (USDA-style), not RAE. Omit when only total vitamin A is listed.",
       "Shown unscored: there is no separate FDA Daily Value, RDA, or recommended retinol∶β-carotene ratio. IOM conversion for totals is 12 mcg dietary β-carotene ≈ 1 mcg RAE (2 mcg if from a supplement)."
@@ -737,6 +743,10 @@
     ]
   },
   "vitaminB6": {
+    "warning": [
+      "Do not take a supplement that is only vitamin B6. An observational study (the VITAL cohort) found that long-term B6 from individual supplements, not from a multivitamin, was associated with higher lung cancer risk in men, and the association was stronger in men who were smoking at baseline. Men with a 10-year average dose above 20 mg/day had an 82% higher risk than nonusers (HR 1.82, 95% CI 1.25–2.65). No such association was seen in women, or when the B6 came from a multivitamin.",
+      "Brasky TM, White E, Chen C-L. J Clin Oncol. 2017;35(30):3440-3448. https://pubmed.ncbi.nlm.nih.gov/28829668/"
+    ],
     "tooLow": [
       "Low B6 can cause anemia-like fatigue, cracked lips, depression, and weakened immunity; severe deficiency damages nerves.",
       "Heavy alcohol use, some medications, and very processed diets increase risk."
@@ -1198,6 +1208,11 @@
     ]
   },
   "vitaminE": {
+    "warning": [
+      "High-dose vitamin E as a sole supplement increased prostate cancer in a randomized trial. In SELECT, 400 IU/day of all rac-α-tocopheryl acetate alone raised prostate cancer risk by about 17% in healthy men (HR 1.17, 99% CI 1.004–1.36) compared with placebo. A standard daily multivitamin did not show this: in Physicians' Health Study II, a daily multivitamin had no increase in prostate cancer (HR 0.98, 95% CI 0.88–1.09) and a modest decrease in total cancer (HR 0.92, 95% CI 0.86–0.998).",
+      "Klein EA et al. JAMA. 2011;306(14):1549-1556. https://pubmed.ncbi.nlm.nih.gov/21990298/",
+      "Gaziano JM et al. JAMA. 2012;308(18):1871-1880. https://pubmed.ncbi.nlm.nih.gov/23162860/"
+    ],
     "tooLow": [
       "Low vitamin E weakens cell membrane protection against oxidative damage—showing up as muscle weakness, vision issues, and impaired immunity over time.",
       "Fat malabsorption conditions, very low-fat diets, and genetic disorders can cause deficiency."

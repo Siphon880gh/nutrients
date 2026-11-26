@@ -370,6 +370,11 @@
     ]
   },
   "vitaminE": {
+    "warning": [
+      "High-dose vitamin E as a sole supplement increased prostate cancer in a randomized trial. In SELECT, 400 IU/day of all rac-α-tocopheryl acetate alone raised prostate cancer risk by about 17% in healthy men (HR 1.17, 99% CI 1.004–1.36) compared with placebo. A standard daily multivitamin did not show this: in Physicians' Health Study II, a daily multivitamin had no increase in prostate cancer (HR 0.98, 95% CI 0.88–1.09) and a modest decrease in total cancer (HR 0.92, 95% CI 0.86–0.998).",
+      "Klein EA et al. JAMA. 2011;306(14):1549-1556. https://pubmed.ncbi.nlm.nih.gov/21990298/",
+      "Gaziano JM et al. JAMA. 2012;308(18):1871-1880. https://pubmed.ncbi.nlm.nih.gov/23162860/"
+    ],
     "tooLow": [
       "Low vitamin E reduces antioxidant protection for cell membranes and LDL particles.",
       "Very low-fat diets or fat malabsorption increase risk."

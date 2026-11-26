@@ -6138,6 +6138,7 @@
 
   function longevityDefEntryHasContent(entry) {
     if (
+      entry.warning.length ||
       entry.tooLow.length ||
       entry.tooHigh.length ||
       entry.enough.length ||
@@ -6161,6 +6162,7 @@
       if (!raw || typeof raw !== "object") return;
       var entry = Object.assign(
         {
+          warning: stringArray(raw.warning),
           tooLow: stringArray(raw.tooLow),
           tooHigh: stringArray(raw.tooHigh),
           enough: stringArray(raw.enough),
@@ -6204,10 +6206,32 @@
     return null;
   }
 
+  function linkifyHttpUrls(escapedText) {
+    return String(escapedText || "").replace(
+      /https?:\/\/[^\s<>"']+/g,
+      function (url) {
+        var trailing = "";
+        var core = url.replace(/[),.;:]+$/, function (m) {
+          trailing = m;
+          return "";
+        });
+        if (!core) return url;
+        return (
+          '<a href="' +
+          core +
+          '" target="_blank" rel="noopener noreferrer">' +
+          core +
+          "</a>" +
+          trailing
+        );
+      }
+    );
+  }
+
   function microDefParagraphsHtml(paragraphs) {
     return paragraphs
       .map(function (p) {
-        return '<p class="micro-def__p">' + escapeHtml(p) + "</p>";
+        return '<p class="micro-def__p">' + linkifyHttpUrls(escapeHtml(p)) + "</p>";
       })
       .join("");
   }
@@ -6638,6 +6662,7 @@
       key === "pufaVitaminEProtection"
         ? pufaVitaminEProtectionCalcHtml() + pufaVitaminEAntioxidantSupportHtml()
         : "";
+    html += microDefWarningSectionHtml(def);
     html += microDefConditionSectionHtml(key, def);
 
     if (def.targetReference && def.targetReference.length) {
