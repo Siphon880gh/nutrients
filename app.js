@@ -6366,6 +6366,13 @@
       '<ul class="micro-def__sources-list">' +
       items
         .map(function (item) {
+          if (!isClickableFoodSource(item)) {
+            return (
+              '<li><span class="micro-def__source-text">' +
+              escapeHtml(item) +
+              "</span></li>"
+            );
+          }
           return (
             '<li><button type="button" class="micro-def__source-btn" data-action="open-food-sources-filter" data-food-source-filter="' +
             escapeAttr(item) +
@@ -8219,6 +8226,20 @@
     return /^supplements?\b/i.test(String(label || "").trim());
   }
 
+  /** Advice lines in a Food sources list (sunlight, pairings, swaps, supplement products) are not foods. */
+  function isNonFoodSourceTip(label) {
+    var t = String(label || "").trim();
+    return (
+      /^(pair with|combine with|cook greens|swap:|safe sun|plants:)/i.test(t) ||
+      /\bsupplements\b/i.test(t)
+    );
+  }
+
+  /** Food source labels that open Food Sources when clicked. */
+  function isClickableFoodSource(label) {
+    return !isGenericSupplementFoodSource(label) && !isNonFoodSourceTip(label);
+  }
+
   function mergeFoodSourcesCatalogEntry(target, source) {
     if (!target || !source) return target;
     if (!target.micros) target.micros = {};
@@ -8350,6 +8371,23 @@
     "dairy fat": ["milk", "butter", "cheese"],
     "whole milk": ["milk whole"],
     "milk whole": ["whole milk"],
+    apples: ["apple"],
+    oranges: ["orange"],
+    grapes: ["grape"],
+    citrus: ["orange", "grapefruit"],
+    "citrus fruit": ["orange", "grapefruit"],
+    "extra-virgin olive oil": ["olive oil"],
+    "hard cheeses": ["hard cheese"],
+    "soy foods": ["tofu"],
+    "processed meats": ["cured meat"],
+    "some fried fast food": ["fast food"],
+    "some mustards": ["mustard"],
+    "purple grapes": ["red grapes"],
+    "most crackers": ["crackers"],
+    "eggs with yolk intact": ["egg"],
+    "naturally tiny amounts in dairy": ["dairy"],
+    "fortified foods": ["fortified egg", "fortified plant milk"],
+    "yellow-orange vegetables": ["winter squash", "butternut squash"],
   };
 
   function expandFoodSourceTokenCandidates(token) {
@@ -8655,12 +8693,12 @@
     if (def.foodSourceGroups && def.foodSourceGroups.length) {
       def.foodSourceGroups.forEach(function (group) {
         (group.items || []).forEach(function (item) {
-          if (item && !isGenericSupplementFoodSource(item)) labels.push(item);
+          if (item && isClickableFoodSource(item)) labels.push(item);
         });
       });
     } else if (def.foodSources && def.foodSources.length) {
       def.foodSources.forEach(function (item) {
-        if (item && !isGenericSupplementFoodSource(item)) labels.push(item);
+        if (item && isClickableFoodSource(item)) labels.push(item);
       });
     }
     return labels;
@@ -8703,8 +8741,9 @@
           }
         }
 
-        // If still no clear 1-serving label, attach a typical serving.
-        if (meta.label && !foodNameHasServing(foodName)) {
+        // Unmatched labels get a typical serving. A matched food keeps its exact
+        // name so clicking it finds the definition (foodSourcesCatalogEntryByName).
+        if (meta.label && !(match && match.name) && !foodNameHasServing(foodName)) {
           foodName = withSuggestedFoodServing(foodName, sourceLabel);
         }
 

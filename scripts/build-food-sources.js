@@ -60,6 +60,23 @@ const FOOD_SOURCE_TOKEN_ALIASES = {
   "dairy fat": ["milk", "butter", "cheese"],
   "whole milk": ["milk whole"],
   "milk whole": ["whole milk"],
+  apples: ["apple"],
+  oranges: ["orange"],
+  grapes: ["grape"],
+  citrus: ["orange", "grapefruit"],
+  "citrus fruit": ["orange", "grapefruit"],
+  "extra-virgin olive oil": ["olive oil"],
+  "hard cheeses": ["hard cheese"],
+  "soy foods": ["tofu"],
+  "processed meats": ["cured meat"],
+  "some fried fast food": ["fast food"],
+  "some mustards": ["mustard"],
+  "purple grapes": ["red grapes"],
+  "most crackers": ["crackers"],
+  "eggs with yolk intact": ["egg"],
+  "naturally tiny amounts in dairy": ["dairy"],
+  "fortified foods": ["fortified egg", "fortified plant milk"],
+  "yellow-orange vegetables": ["winter squash", "butternut squash"],
 };
 
 function escapeRegex(text) {
@@ -68,6 +85,19 @@ function escapeRegex(text) {
 
 function isGenericSupplementFoodSource(label) {
   return /^supplements?\b/i.test(String(label || "").trim());
+}
+
+/** Advice lines in a Food sources list (sunlight, pairings, swaps, supplement products) are not foods. Keep in sync with app.js. */
+function isNonFoodSourceTip(label) {
+  const t = String(label || "").trim();
+  return (
+    /^(pair with|combine with|cook greens|swap:|safe sun|plants:)/i.test(t) ||
+    /\bsupplements\b/i.test(t)
+  );
+}
+
+function isClickableFoodSource(label) {
+  return !isGenericSupplementFoodSource(label) && !isNonFoodSourceTip(label);
 }
 
 /** Map unicode vulgar fractions to words so ½ survives token cleanup. */
@@ -372,12 +402,12 @@ function collectDefinitionFoodSourceLabels(def) {
   if (Array.isArray(def.foodSourceGroups) && def.foodSourceGroups.length) {
     def.foodSourceGroups.forEach((group) => {
       (group.items || []).forEach((item) => {
-        if (item && !isGenericSupplementFoodSource(item)) labels.push(item);
+        if (item && isClickableFoodSource(item)) labels.push(item);
       });
     });
   } else if (Array.isArray(def.foodSources)) {
     def.foodSources.forEach((item) => {
-      if (item && !isGenericSupplementFoodSource(item)) labels.push(item);
+      if (item && isClickableFoodSource(item)) labels.push(item);
     });
   }
   return labels;
@@ -403,6 +433,20 @@ function extractFieldMeta(appJs) {
     unit: "",
   };
   return byKey;
+}
+
+/** Same as app.js mergeCarbQualityIntoLongevity: GI, added sugar and refined carbs live in carbQuality. */
+const CARB_QUALITY_KEYS = ["glycemicIndex", "addedSugar", "refinedCarbs"];
+function mergeCarbQuality(longevity, carbQuality) {
+  const out = Object.assign({}, longevity || {});
+  if (!carbQuality || typeof carbQuality !== "object" || Array.isArray(carbQuality)) return out;
+  CARB_QUALITY_KEYS.forEach((key) => {
+    if (key in carbQuality) {
+      const n = parseFloat(carbQuality[key]);
+      out[key] = isNaN(n) ? "" : n;
+    }
+  });
+  return out;
 }
 
 function longevityDefLabel(key) {
@@ -448,7 +492,7 @@ function main() {
     .map((f) => ({
       name: f.name.trim(),
       micros: f.micros || {},
-      longevity: f.longevity || {},
+      longevity: mergeCarbQuality(f.longevity, f.carbQuality),
     }));
 
   const rows = [];
@@ -470,7 +514,9 @@ function main() {
       let amount =
         match && match.amount != null && match.amount > 0 ? match.amount : null;
 
-      if (meta.label && !foodNameHasServing(foodName)) {
+      // Unmatched labels get a typical serving. A matched food keeps its exact
+      // name so the app's click lookup (by exact name) finds the definition.
+      if (meta.label && !(match && match.name) && !foodNameHasServing(foodName)) {
         foodName = withSuggestedFoodServing(foodName, sourceLabel);
       }
 

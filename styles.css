@@ -5018,6 +5018,16 @@ body.highlight-adverse-effects .dashboard__micro-acute-btn--adverse .dashboard__
   outline-offset: 1px;
 }
 
+.micro-def__source-text {
+  display: block;
+  padding: 0.3rem 0.55rem;
+  border: 1px dashed #d0d7df;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  line-height: 1.35;
+  color: #5c6b7a;
+}
+
 .micro-def__sex-label {
   display: flex;
   align-items: center;
@@ -15518,7 +15528,8 @@ body.day-word-wrap-off .day__input {
   font-size: 1.2rem;
 }
 
-#micro-def-modal.modal--stacked-food-sources:not(.modal--fullscreen) .micro-def__source-btn {
+#micro-def-modal.modal--stacked-food-sources:not(.modal--fullscreen) .micro-def__source-btn,
+#micro-def-modal.modal--stacked-food-sources:not(.modal--fullscreen) .micro-def__source-text {
   font-size: 1.2rem;
 }
 
@@ -16090,7 +16101,8 @@ body.modal-open {
   font-size: 1rem;
 }
 
-#micro-def-modal.modal--fullscreen .micro-def__source-btn {
+#micro-def-modal.modal--fullscreen .micro-def__source-btn,
+#micro-def-modal.modal--fullscreen .micro-def__source-text {
   font-size: 1rem;
 }
 
