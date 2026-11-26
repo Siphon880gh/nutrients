@@ -1106,7 +1106,7 @@ var NutrientsPersist = (function () {
     return safeSet(KEYS.GUEST_MISC_DEFICIENCIES, JSON.stringify(next));
   }
 
-  var COVERAGE_CLICK_ACTIONS = { jump: true, yours: true, other: true };
+  var COVERAGE_CLICK_ACTIONS = { jump: true, yours: true, other: true, info: true };
 
   function normalizeCoverageClickAction(value) {
     var key = value == null ? "" : String(value);

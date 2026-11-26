@@ -29337,7 +29337,9 @@
   }
 
   function normalizeCoverageClickAction(value) {
-    return value === "yours" || value === "other" ? value : "jump";
+    return value === "yours" || value === "other" || value === "info"
+      ? value
+      : "jump";
   }
 
   function loadCoverageClickActionPreference() {
@@ -29375,19 +29377,39 @@
     }
     if (action === "yours") return "Rank Your food for this nutrient";
     if (action === "other") return "Rank all other food for this nutrient";
+    if (action === "info") return "Open the nutrient modal";
     return dest === "longevity"
       ? "Show in Longevity and wellness"
       : "Show in Micro requirements";
   }
 
+  function coverageRankHint() {
+    return "This nutrient is a calculated ratio, so foods cannot be ranked by it.";
+  }
+
   function syncCoverageClickActionMenuUi() {
     var menu = coverageClickActionMenuEl();
     if (!menu) return;
+    var canRank =
+      !coverageClickActionMenuKey || canRankNutrientFoods(coverageClickActionMenuKey);
     var items = menu.querySelectorAll("[data-coverage-click-action]");
     Array.prototype.forEach.call(items, function (item) {
       var selected =
         item.getAttribute("data-coverage-click-action") === coverageClickAction;
       item.setAttribute("aria-checked", selected ? "true" : "false");
+    });
+    var nowBtns = menu.querySelectorAll("[data-coverage-open-now]");
+    Array.prototype.forEach.call(nowBtns, function (btn) {
+      var action = btn.getAttribute("data-coverage-open-now");
+      var disableRank = (action === "yours" || action === "other") && !canRank;
+      btn.disabled = disableRank;
+      if (disableRank) {
+        btn.title = coverageRankHint();
+        btn.setAttribute("aria-disabled", "true");
+      } else {
+        btn.removeAttribute("title");
+        btn.removeAttribute("aria-disabled");
+      }
     });
   }
 
@@ -29457,10 +29479,22 @@
     return longevityFieldByKey(key) && !microFieldByKey(key) ? "longevity" : "micro";
   }
 
-  function openCoverageNutrientRankModal(key, tab) {
-    if (!diaryCoveragePopoverState) return;
+  function coverageDayIdFromPopover() {
+    if (!diaryCoveragePopoverState) return "";
     var scopeKey = diaryCoveragePopoverState.key;
-    var dayId = scopeKey && dayById(scopeKey) ? scopeKey : "";
+    return scopeKey && dayById(scopeKey) ? scopeKey : "";
+  }
+
+  function canOpenNutrientInfoModal(key) {
+    return !!(
+      microDisplayFieldByKey(key) ||
+      longevityFieldByKey(key) ||
+      (typeof longevityDefLabel === "function" && longevityDefLabel(key))
+    );
+  }
+
+  function openCoverageNutrientRankModal(key, tab, dayId) {
+    if (dayId == null) dayId = coverageDayIdFromPopover();
     hideDiaryCoveragePopover();
     openExperimentalNutrientModal(coverageNutrientKindForKey(key), key, dayId, {
       source: "diary",
@@ -29468,17 +29502,40 @@
     });
   }
 
-  function performCoverageNutrientClick(key, dayId) {
+  function openCoverageNutrientInfoModal(key) {
+    hideDiaryCoveragePopover();
+    if (microDisplayFieldByKey(key)) {
+      openMicroDefModal(key);
+      return true;
+    }
+    if (longevityFieldByKey(key) || (typeof longevityDefLabel === "function" && longevityDefLabel(key))) {
+      openLongevityDefModal(key);
+      return true;
+    }
+    return false;
+  }
+
+  function performCoverageNutrientAction(action, key, dayId) {
     if (!key) return;
-    var action = coverageClickAction;
+    action = normalizeCoverageClickAction(action);
     if ((action === "yours" || action === "other") && !canRankNutrientFoods(key)) {
       showCoverageActionNote(
-        "This nutrient is a calculated ratio, so foods cannot be ranked by it. Opening Micro requirements instead."
+        coverageRankHint() + " Opening Micro requirements instead."
       );
       action = "jump";
     }
+    if (action === "info") {
+      if (!openCoverageNutrientInfoModal(key)) {
+        showCoverageActionNote(
+          "No nutrient info is available for this item. Opening Micro requirements instead."
+        );
+        action = "jump";
+      } else {
+        return;
+      }
+    }
     if (action === "yours" || action === "other") {
-      openCoverageNutrientRankModal(key, action);
+      openCoverageNutrientRankModal(key, action, dayId);
       return;
     }
     hideDiaryCoveragePopover();
@@ -29486,6 +29543,62 @@
       dailyView: !!dayId,
       dayId: dayId || "",
     });
+  }
+
+  function performCoverageNutrientClick(key, dayId) {
+    performCoverageNutrientAction(coverageClickAction, key, dayId);
+  }
+
+  function runCoverageOpenNow(action) {
+    var key = coverageClickActionMenuKey;
+    if (!key || !action) return;
+    if ((action === "yours" || action === "other") && !canRankNutrientFoods(key)) {
+      showCoverageActionNote(coverageRankHint());
+      return;
+    }
+    performCoverageNutrientAction(action, key, coverageDayIdFromPopover());
+  }
+
+  function coverageMenuDefaultButtons() {
+    var menu = coverageClickActionMenuEl();
+    if (!menu) return [];
+    return Array.prototype.slice.call(
+      menu.querySelectorAll("[data-coverage-click-action]")
+    );
+  }
+
+  function coverageMenuOpenNowButtons() {
+    var menu = coverageClickActionMenuEl();
+    if (!menu) return [];
+    return Array.prototype.slice.call(
+      menu.querySelectorAll("[data-coverage-open-now]:not([disabled])")
+    );
+  }
+
+  function coverageMenuRowAction(el) {
+    if (!el || !el.getAttribute) return "";
+    return (
+      el.getAttribute("data-coverage-click-action") ||
+      el.getAttribute("data-coverage-open-now") ||
+      ""
+    );
+  }
+
+  function coverageMenuButton(action, column) {
+    var menu = coverageClickActionMenuEl();
+    if (!menu || !action) return null;
+    if (column === "now") {
+      return menu.querySelector('[data-coverage-open-now="' + action + '"]');
+    }
+    return menu.querySelector('[data-coverage-click-action="' + action + '"]');
+  }
+
+  function coverageMenuFocusRelative(list, current, delta) {
+    if (!list.length) return;
+    var idx = list.indexOf(current);
+    var nextIdx =
+      idx < 0 ? 0 : (idx + delta + list.length * 10) % list.length;
+    list[nextIdx].focus();
   }
 
   function hideDiaryCoveragePopover() {
@@ -29746,6 +29859,14 @@
   );
   if (coverageClickActionMenuElRef) {
     coverageClickActionMenuElRef.addEventListener("click", function (e) {
+      var nowBtn = e.target.closest("[data-coverage-open-now]");
+      if (nowBtn && coverageClickActionMenuElRef.contains(nowBtn)) {
+        e.preventDefault();
+        e.stopPropagation();
+        if (nowBtn.disabled) return;
+        runCoverageOpenNow(nowBtn.getAttribute("data-coverage-open-now"));
+        return;
+      }
       var item = e.target.closest("[data-coverage-click-action]");
       if (!item || !coverageClickActionMenuElRef.contains(item)) return;
       e.preventDefault();
@@ -29754,10 +29875,12 @@
       hideCoverageClickActionMenu();
     });
     coverageClickActionMenuElRef.addEventListener("keydown", function (e) {
-      var items = Array.prototype.slice.call(
-        coverageClickActionMenuElRef.querySelectorAll("[data-coverage-click-action]")
-      );
-      var idx = items.indexOf(document.activeElement);
+      var defaults = coverageMenuDefaultButtons();
+      var nowBtns = coverageMenuOpenNowButtons();
+      var active = document.activeElement;
+      var onDefault = defaults.indexOf(active) >= 0;
+      var onNow = nowBtns.indexOf(active) >= 0;
+      var action = coverageMenuRowAction(active);
       if (e.key === "Escape") {
         e.preventDefault();
         e.stopPropagation();
@@ -29779,25 +29902,75 @@
       if (e.key === "ArrowDown" || e.key === "ArrowUp") {
         e.preventDefault();
         e.stopPropagation();
-        if (!items.length) return;
-        var nextIdx =
-          e.key === "ArrowDown"
-            ? (idx + 1) % items.length
-            : (idx - 1 + items.length) % items.length;
-        items[nextIdx].focus();
+        var col = onNow ? nowBtns : defaults;
+        coverageMenuFocusRelative(col, active, e.key === "ArrowDown" ? 1 : -1);
+        return;
+      }
+      if (e.key === "ArrowRight") {
+        e.preventDefault();
+        e.stopPropagation();
+        if (onDefault) {
+          var nowBtn = coverageMenuButton(action, "now");
+          if (nowBtn && !nowBtn.disabled) nowBtn.focus();
+        }
+        return;
+      }
+      if (e.key === "ArrowLeft") {
+        e.preventDefault();
+        e.stopPropagation();
+        if (onNow) {
+          var defaultBtn = coverageMenuButton(action, "default");
+          if (defaultBtn) defaultBtn.focus();
+        }
+        return;
+      }
+      if (e.key === "Tab") {
+        e.preventDefault();
+        e.stopPropagation();
+        if (e.shiftKey) {
+          if (onNow) {
+            var defaultBtn = coverageMenuButton(action, "default");
+            if (defaultBtn) defaultBtn.focus();
+          } else {
+            var prevIdx = defaults.indexOf(active);
+            var prevAction =
+              defaults[(prevIdx <= 0 ? defaults.length : prevIdx) - 1];
+            var prevNow = prevAction
+              ? coverageMenuButton(
+                  prevAction.getAttribute("data-coverage-click-action"),
+                  "now"
+                )
+              : null;
+            if (prevNow && !prevNow.disabled) prevNow.focus();
+            else if (prevAction) prevAction.focus();
+          }
+        } else if (onDefault) {
+          var nowBtn = coverageMenuButton(action, "now");
+          if (nowBtn && !nowBtn.disabled) nowBtn.focus();
+          else coverageMenuFocusRelative(defaults, active, 1);
+        } else {
+          coverageMenuFocusRelative(defaults, coverageMenuButton(action, "default"), 1);
+        }
         return;
       }
       if (e.key === "Home" || e.key === "End") {
         e.preventDefault();
         e.stopPropagation();
-        if (!items.length) return;
-        items[e.key === "Home" ? 0 : items.length - 1].focus();
+        var ends = onNow ? nowBtns : defaults;
+        if (!ends.length) return;
+        ends[e.key === "Home" ? 0 : ends.length - 1].focus();
         return;
       }
-      if ((e.key === "Enter" || e.key === " ") && idx >= 0) {
+      if ((e.key === "Enter" || e.key === " ") && onNow) {
         e.preventDefault();
         e.stopPropagation();
-        setCoverageClickAction(items[idx].getAttribute("data-coverage-click-action"));
+        runCoverageOpenNow(action);
+        return;
+      }
+      if ((e.key === "Enter" || e.key === " ") && onDefault) {
+        e.preventDefault();
+        e.stopPropagation();
+        setCoverageClickAction(action);
         hideCoverageClickActionMenu();
       }
     });
