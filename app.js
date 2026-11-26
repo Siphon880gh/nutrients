@@ -4022,6 +4022,7 @@
       fats: "",
       micros: blankMicros(),
       longevity: blankLongevity(),
+      notes: "",
     };
   }
 
@@ -4127,6 +4128,12 @@
     return isNaN(n) ? "" : n;
   }
 
+  function storedNotesValue(val) {
+    if (val == null) return "";
+    if (typeof val !== "string") return "";
+    return val.trim();
+  }
+
   function exportFoodObject(kw) {
     var obj = { name: kw.name };
     if (kw.protein !== "" && kw.protein != null) obj.protein = kw.protein;
@@ -4170,6 +4177,7 @@
     if (Object.keys(carbQuality).length > 0) {
       obj.carbQuality = carbQuality;
     }
+    if (kw.notes) obj.notes = kw.notes;
 
     return obj;
   }
@@ -4235,6 +4243,10 @@
 
     applyLongevityImportToKeyword(kw, data);
     syncSharedMicroLongevity(kw.micros, kw.longevity);
+
+    if ("notes" in data) {
+      kw.notes = storedNotesValue(data.notes);
+    }
   }
 
   function findKeywordIndexByName(name) {
@@ -4385,6 +4397,7 @@
         micros: micros,
         longevity: longevity,
         carbQuality: carbQuality,
+        notes: "",
       },
       null,
       2
@@ -31568,6 +31581,7 @@
       fats: kw.fats,
       micros: kw.micros,
       longevity: kw.longevity,
+      notes: kw.notes || "",
     });
   }
 
@@ -31613,6 +31627,7 @@
         fats: item.fats === "" || item.fats == null ? "" : item.fats,
         micros: micros,
         longevity: longevity,
+        notes: typeof item.notes === "string" ? item.notes : "",
       },
       changed: changed,
     };
@@ -31666,6 +31681,9 @@
         claimed[bi] = true;
         var builtinKw = builtins[bi];
         var keepId = isValidKeywordId(kw.id) ? kw.id : builtinKw.id;
+        if (!("notes" in item) && builtinKw.notes) {
+          kw.notes = builtinKw.notes;
+        }
         if (keywordSnapshot(kw) === builtinOriginal[bi].snapshot) {
           builtinKw.id = keepId;
           slots[bi] = builtinKw;
@@ -31705,6 +31723,7 @@
         micros: kw.micros,
         longevity: kw.longevity,
       };
+      if (kw.notes) row.notes = kw.notes;
       if (builtinFoodNameById[id] != null) row.builtinName = builtinFoodNameById[id];
       rows.push(row);
     });
