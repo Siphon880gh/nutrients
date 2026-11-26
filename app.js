@@ -7070,6 +7070,8 @@
     var stackedKey = activeMicroDefKey || activeLongevityDefKey;
     activeMicroDefKey = null;
     activeLongevityDefKey = null;
+    coverageDefSwitcher = null;
+    renderCoverageDefSwitcher();
     setMicroDefFullscreen(false);
     clearDefModalTargets();
     microDefModalEl.hidden = true;
@@ -11761,6 +11763,7 @@
     setDefModalReturnSources(returnTo || null);
     setDefModalStackedForm(stackOnForm || null);
     syncDefModalSourcesBtn();
+    renderCoverageDefSwitcher();
     microDefModalEl.hidden = false;
     updateBodyModalOpen();
     if (defModalReturnSources && microDefModalBackBtn) {
@@ -11829,6 +11832,7 @@
     setDefModalReturnSources(returnTo || null);
     setDefModalStackedForm(stackOnForm || null);
     syncDefModalSourcesBtn();
+    renderCoverageDefSwitcher();
     microDefModalEl.hidden = false;
     updateBodyModalOpen();
     if (defModalReturnSources && microDefModalBackBtn) {
@@ -29544,6 +29548,7 @@
   }
 
   var diaryCoveragePopoverState = null;
+  var coverageDefSwitcher = null;
   var diaryCoveragePopoverPoint = null;
   var diaryCoveragePopoverOpenedAt = 0;
   var diaryCoveragePress = null;
@@ -29877,17 +29882,125 @@
     });
   }
 
-  function openCoverageNutrientInfoModal(key) {
-    hideDiaryCoveragePopover();
+  function coverageDefRangeLabel(scopeKey) {
+    if (scopeKey === "week") {
+      return formatWeekRangeLabel(viewedWeekStart) || "This week";
+    }
+    var day = dayById(scopeKey);
+    var dateLabel = dateLabelForDayId(scopeKey);
+    var name = day ? day.label : diaryCoverageScopeName(scopeKey);
+    return dateLabel ? name + " " + dateLabel : name;
+  }
+
+  function coverageDefSwitcherFromPopover() {
+    var state = diaryCoveragePopoverState;
+    if (!state || !state.entries || !state.entries.length) return null;
+    return {
+      rangeLabel: coverageDefRangeLabel(state.key),
+      bandLabel: state.bandLabel || "",
+      entries: state.entries.map(function (entry) {
+        return {
+          key: entry.key,
+          label: entry.label || entry.key,
+          pct: entry.pct,
+        };
+      }),
+    };
+  }
+
+  function renderCoverageDefSwitcher() {
+    var bar = document.getElementById("micro-def-coverage-bar");
+    if (!bar) return;
+    var state = coverageDefSwitcher;
+    var current = activeMicroDefKey || activeLongevityDefKey;
+    if (!state || !state.entries || !state.entries.length) {
+      bar.hidden = true;
+      bar.innerHTML = "";
+      return;
+    }
+    var meta = state.rangeLabel || "";
+    if (state.bandLabel) meta += (meta ? " · " : "") + state.bandLabel;
+    var buttons = state.entries
+      .map(function (entry) {
+        var selected = entry.key === current;
+        var name = analysisNutrientPillName(entry.label);
+        var pctText = formatTargetPctNumber(entry.pct);
+        return (
+          '<button type="button" class="micro-def-coverage__nutrient" data-coverage-def-key="' +
+          escapeAttr(entry.key) +
+          '" aria-pressed="' +
+          (selected ? "true" : "false") +
+          '" title="' +
+          escapeAttr(entry.label + ", " + pctText) +
+          '">' +
+          '<span class="micro-def-coverage__name">' +
+          escapeHtml(name) +
+          "</span>" +
+          '<span class="micro-def-coverage__pct">' +
+          escapeHtml(pctText) +
+          "</span></button>"
+        );
+      })
+      .join("");
+    bar.hidden = false;
+    bar.innerHTML =
+      '<p class="micro-def-coverage__meta">' +
+      escapeHtml(meta) +
+      "</p>" +
+      '<div class="micro-def-coverage__nutrients" role="group" aria-label="Nutrients in this percent range">' +
+      buttons +
+      "</div>";
+    var row = bar.querySelector(".micro-def-coverage__nutrients");
+    var currentBtn = bar.querySelector('[aria-pressed="true"]');
+    if (row && currentBtn) {
+      var target =
+        currentBtn.offsetLeft - (row.clientWidth - currentBtn.offsetWidth) / 2;
+      row.scrollLeft = target < 0 ? 0 : target;
+    }
+  }
+
+  function switchCoverageDefNutrient(key) {
+    if (!coverageDefSwitcher || !key) return;
+    if ((activeMicroDefKey || activeLongevityDefKey) === key) return;
+    var switcher = coverageDefSwitcher;
+    var opened = false;
     if (microDisplayFieldByKey(key)) {
       openMicroDefModal(key);
-      return true;
-    }
-    if (longevityFieldByKey(key) || (typeof longevityDefLabel === "function" && longevityDefLabel(key))) {
+      opened = true;
+    } else if (
+      longevityFieldByKey(key) ||
+      (typeof longevityDefLabel === "function" && longevityDefLabel(key))
+    ) {
       openLongevityDefModal(key);
-      return true;
+      opened = true;
     }
-    return false;
+    if (!opened) return;
+    coverageDefSwitcher = switcher;
+    renderCoverageDefSwitcher();
+    var currentBtn = document.querySelector(
+      '#micro-def-coverage-bar [aria-pressed="true"]'
+    );
+    if (currentBtn) currentBtn.focus();
+  }
+
+  function openCoverageNutrientInfoModal(key) {
+    var switcher = coverageDefSwitcherFromPopover();
+    hideDiaryCoveragePopover();
+    var opened = false;
+    if (microDisplayFieldByKey(key)) {
+      openMicroDefModal(key);
+      opened = true;
+    } else if (
+      longevityFieldByKey(key) ||
+      (typeof longevityDefLabel === "function" && longevityDefLabel(key))
+    ) {
+      openLongevityDefModal(key);
+      opened = true;
+    }
+    if (!opened) return false;
+    coverageDefSwitcher = switcher;
+    renderCoverageDefSwitcher();
+    return true;
   }
 
   function performCoverageNutrientAction(action, key, dayId) {
@@ -48052,6 +48165,12 @@
       }
       if (e.target.closest('[data-action="close-micro-def-modal"]')) {
         closeMicroDefModal();
+        return;
+      }
+      var coverageNutrient = e.target.closest("[data-coverage-def-key]");
+      if (coverageNutrient && microDefModalEl.contains(coverageNutrient)) {
+        e.preventDefault();
+        switchCoverageDefNutrient(coverageNutrient.getAttribute("data-coverage-def-key"));
       }
     });
   }
