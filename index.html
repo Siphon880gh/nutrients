@@ -933,6 +933,22 @@
       <div id="diary-coverage-popover" class="day__food-popover diary-coverage-popover" role="dialog" aria-label="Nutrients in this range" hidden>
         <div id="diary-coverage-popover-body" class="day__food-popover-body"></div>
       </div>
+      <div id="coverage-click-action-menu" class="coverage-click-action-menu" role="menu" aria-labelledby="coverage-click-action-menu-label" hidden>
+        <p id="coverage-click-action-menu-label" class="coverage-click-action-menu__label">When I click a nutrient</p>
+        <button type="button" class="coverage-click-action-menu__item" role="menuitemradio" data-coverage-click-action="jump" aria-checked="true">
+          <span class="coverage-click-action-menu__check" aria-hidden="true"></span>
+          <span class="coverage-click-action-menu__text">Jump to it in Micro requirements or Longevity</span>
+        </button>
+        <button type="button" class="coverage-click-action-menu__item" role="menuitemradio" data-coverage-click-action="yours" aria-checked="false">
+          <span class="coverage-click-action-menu__check" aria-hidden="true"></span>
+          <span class="coverage-click-action-menu__text">Rank Your food for this nutrient</span>
+        </button>
+        <button type="button" class="coverage-click-action-menu__item" role="menuitemradio" data-coverage-click-action="other" aria-checked="false">
+          <span class="coverage-click-action-menu__check" aria-hidden="true"></span>
+          <span class="coverage-click-action-menu__text">Rank all other food for this nutrient</span>
+        </button>
+      </div>
+      <div id="coverage-action-note" class="coverage-action-note" role="status" aria-live="polite" hidden></div>
       <button type="button" id="guided-finish-popover" class="day__finish-rearrange-popover" hidden>
         Finish Rearrange?
       </button>

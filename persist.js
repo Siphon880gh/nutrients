@@ -229,6 +229,7 @@ var NutrientsPersist = (function () {
     GUEST_STARTER_GUIDE_SEEN: "nutrients_guest_starter_guide_seen",
     GUEST_DIARY_COVERAGE: "nutrients_guest_diary_coverage",
     GUEST_MISC_DEFICIENCIES: "nutrients_guest_misc_deficiencies",
+    GUEST_COVERAGE_CLICK_ACTION: "nutrients_guest_coverage_click_action",
     ORPHAN_LEGACY: "nutrients_orphan_legacy",
     EXERCISE_DEFINITIONS: "nutrients_exercise_definitions",
     DAY_EXERCISES: "nutrients_day_exercises",
@@ -283,6 +284,7 @@ var NutrientsPersist = (function () {
       dayHighlights: true,
       diaryCoverageMute: { days: false, week: false },
       miscDeficiencies: true,
+      coverageClickAction: "jump",
       dayWordWrap: true,
       dayEntryAdvanced: false,
       starterGuideSeen: false,
@@ -1104,6 +1106,32 @@ var NutrientsPersist = (function () {
     return safeSet(KEYS.GUEST_MISC_DEFICIENCIES, JSON.stringify(next));
   }
 
+  var COVERAGE_CLICK_ACTIONS = { jump: true, yours: true, other: true };
+
+  function normalizeCoverageClickAction(value) {
+    var key = value == null ? "" : String(value);
+    return COVERAGE_CLICK_ACTIONS[key] ? key : "jump";
+  }
+
+  function getCoverageClickAction() {
+    if (currentUserId()) {
+      return normalizeCoverageClickAction(getSetting("coverageClickAction"));
+    }
+    var raw = safeGet(KEYS.GUEST_COVERAGE_CLICK_ACTION);
+    if (raw == null || raw === "") return "jump";
+    try {
+      return normalizeCoverageClickAction(JSON.parse(raw));
+    } catch (e) {
+      return normalizeCoverageClickAction(raw);
+    }
+  }
+
+  function setCoverageClickAction(value) {
+    var next = normalizeCoverageClickAction(value);
+    if (currentUserId()) return setSetting("coverageClickAction", next);
+    return safeSet(KEYS.GUEST_COVERAGE_CLICK_ACTION, JSON.stringify(next));
+  }
+
   function hasSeenStarterGuide() {
     return currentUserId()
       ? getSetting("starterGuideSeen") === true
@@ -1317,6 +1345,8 @@ var NutrientsPersist = (function () {
     setDiaryCoverageMute: setDiaryCoverageMute,
     getMiscDeficiencies: getMiscDeficiencies,
     setMiscDeficiencies: setMiscDeficiencies,
+    getCoverageClickAction: getCoverageClickAction,
+    setCoverageClickAction: setCoverageClickAction,
     hasSeenStarterGuide: hasSeenStarterGuide,
     markStarterGuideSeen: markStarterGuideSeen,
   };

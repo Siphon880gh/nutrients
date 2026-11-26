@@ -26289,6 +26289,7 @@
     loadDayHighlightsPreference();
     loadDiaryCoverageMutePreference();
     loadMiscDeficienciesPreference();
+    loadCoverageClickActionPreference();
     loadDayWordWrapPreference();
     loadDayEntryAdvancedPreference();
     loadWeekQuizFavorites();
@@ -29149,6 +29150,12 @@
   var diaryCoverageSwallowClick = false;
   var diaryCoverageContextAt = 0;
   var DIARY_COVERAGE_LONG_PRESS_MS = 550;
+  var COVERAGE_NUTRIENT_LONG_PRESS_MS = 500;
+  var coverageClickAction = "jump";
+  var coverageClickActionMenuKey = "";
+  var coverageNutrientPress = null;
+  var coverageNutrientSwallowClick = false;
+  var coverageActionNoteTimer = 0;
 
   function diaryCoverageBandById(bandId) {
     var i;
@@ -29272,15 +29279,12 @@
         escapeHtml(pctText) +
         "</span>";
       if (dest) {
-        var destLabel =
-          dest === "micro"
-            ? "Show in Micro requirements"
-            : "Show in Longevity and wellness";
+        var destLabel = coverageNutrientClickActionLabel(row.key, dest);
         html +=
           '<li><button type="button" class="day__food-popover-nutrient" data-action="coverage-popover-jump" data-nutrient-key="' +
           escapeAttr(row.key) +
           '" title="' +
-          escapeAttr(destLabel) +
+          escapeAttr(destLabel + ". Right-click or hold to change the default click.") +
           '" aria-label="' +
           escapeAttr(row.label + ", " + pctText + ". " + destLabel) +
           '">' +
@@ -29294,7 +29298,173 @@
     return html;
   }
 
+  function coverageClickActionMenuEl() {
+    return document.getElementById("coverage-click-action-menu");
+  }
+
+  function coverageActionNoteEl() {
+    return document.getElementById("coverage-action-note");
+  }
+
+  function isCoverageClickActionMenuOpen() {
+    var el = coverageClickActionMenuEl();
+    return !!(el && !el.hidden);
+  }
+
+  function normalizeCoverageClickAction(value) {
+    return value === "yours" || value === "other" ? value : "jump";
+  }
+
+  function loadCoverageClickActionPreference() {
+    coverageClickAction = "jump";
+    if (persist && persist.getCoverageClickAction) {
+      coverageClickAction = normalizeCoverageClickAction(
+        persist.getCoverageClickAction()
+      );
+    }
+    syncCoverageClickActionMenuUi();
+  }
+
+  function saveCoverageClickActionPreference() {
+    if (persist && persist.setCoverageClickAction) {
+      persist.setCoverageClickAction(coverageClickAction);
+    }
+  }
+
+  function setCoverageClickAction(next) {
+    next = normalizeCoverageClickAction(next);
+    if (coverageClickAction === next) {
+      syncCoverageClickActionMenuUi();
+      return;
+    }
+    coverageClickAction = next;
+    saveCoverageClickActionPreference();
+    syncCoverageClickActionMenuUi();
+    if (diaryCoveragePopoverState) renderDiaryCoveragePopover();
+  }
+
+  function coverageNutrientClickActionLabel(key, dest) {
+    var action = coverageClickAction;
+    if ((action === "yours" || action === "other") && !canRankNutrientFoods(key)) {
+      action = "jump";
+    }
+    if (action === "yours") return "Rank Your food for this nutrient";
+    if (action === "other") return "Rank all other food for this nutrient";
+    return dest === "longevity"
+      ? "Show in Longevity and wellness"
+      : "Show in Micro requirements";
+  }
+
+  function syncCoverageClickActionMenuUi() {
+    var menu = coverageClickActionMenuEl();
+    if (!menu) return;
+    var items = menu.querySelectorAll("[data-coverage-click-action]");
+    Array.prototype.forEach.call(items, function (item) {
+      var selected =
+        item.getAttribute("data-coverage-click-action") === coverageClickAction;
+      item.setAttribute("aria-checked", selected ? "true" : "false");
+    });
+  }
+
+  function hideCoverageClickActionMenu() {
+    var menu = coverageClickActionMenuEl();
+    if (menu) menu.hidden = true;
+    coverageClickActionMenuKey = "";
+    coverageNutrientSwallowClick = false;
+  }
+
+  function positionCoverageClickActionMenu(x, y, anchor) {
+    var menu = coverageClickActionMenuEl();
+    if (!menu || menu.hidden) return;
+    var margin = 8;
+    menu.style.left = "0px";
+    menu.style.top = "0px";
+    var width = menu.offsetWidth;
+    var height = menu.offsetHeight;
+    var left = x;
+    var top = y + 6;
+    if (anchor && anchor.getBoundingClientRect) {
+      var rect = anchor.getBoundingClientRect();
+      if (x == null || !isFinite(x)) left = rect.left;
+      if (y == null || !isFinite(y)) top = rect.bottom + 4;
+    }
+    if (left + width > window.innerWidth - margin) {
+      left = window.innerWidth - width - margin;
+    }
+    if (top + height > window.innerHeight - margin) {
+      top = (y != null && isFinite(y) ? y : top) - height - 6;
+    }
+    menu.style.left = Math.max(margin, left) + "px";
+    menu.style.top = Math.max(margin, top) + "px";
+  }
+
+  function showCoverageClickActionMenu(btn, x, y, key) {
+    var menu = coverageClickActionMenuEl();
+    if (!menu || !btn) return;
+    coverageClickActionMenuKey = key || btn.getAttribute("data-nutrient-key") || "";
+    syncCoverageClickActionMenuUi();
+    menu.hidden = false;
+    positionCoverageClickActionMenu(x, y, btn);
+    var selected = menu.querySelector(
+      '[data-coverage-click-action="' + coverageClickAction + '"]'
+    );
+    if (selected) selected.focus();
+  }
+
+  function showCoverageActionNote(text) {
+    var el = coverageActionNoteEl();
+    if (!el || !text) return;
+    el.textContent = text;
+    el.hidden = false;
+    clearTimeout(coverageActionNoteTimer);
+    coverageActionNoteTimer = setTimeout(function () {
+      el.hidden = true;
+    }, 2800);
+  }
+
+  function hideCoverageActionNote() {
+    var el = coverageActionNoteEl();
+    if (el) el.hidden = true;
+    clearTimeout(coverageActionNoteTimer);
+  }
+
+  function coverageNutrientKindForKey(key) {
+    return longevityFieldByKey(key) && !microFieldByKey(key) ? "longevity" : "micro";
+  }
+
+  function openCoverageNutrientRankModal(key, tab) {
+    if (!diaryCoveragePopoverState) return;
+    var scopeKey = diaryCoveragePopoverState.key;
+    var dayId = scopeKey && dayById(scopeKey) ? scopeKey : "";
+    hideDiaryCoveragePopover();
+    openExperimentalNutrientModal(coverageNutrientKindForKey(key), key, dayId, {
+      source: "diary",
+      tab: tab,
+    });
+  }
+
+  function performCoverageNutrientClick(key, dayId) {
+    if (!key) return;
+    var action = coverageClickAction;
+    if ((action === "yours" || action === "other") && !canRankNutrientFoods(key)) {
+      showCoverageActionNote(
+        "This nutrient is a calculated ratio, so foods cannot be ranked by it. Opening Micro requirements instead."
+      );
+      action = "jump";
+    }
+    if (action === "yours" || action === "other") {
+      openCoverageNutrientRankModal(key, action);
+      return;
+    }
+    hideDiaryCoveragePopover();
+    jumpFromFoodItemPopover(key, {
+      dailyView: !!dayId,
+      dayId: dayId || "",
+    });
+  }
+
   function hideDiaryCoveragePopover() {
+    hideCoverageClickActionMenu();
     var el = document.getElementById("diary-coverage-popover");
     if (el) el.hidden = true;
     diaryCoveragePopoverState = null;
@@ -29440,16 +29610,26 @@
       e.stopPropagation();
       if (!diaryCoveragePopoverState) return;
       if (prev && diaryCoveragePopoverState.page > 0) {
+        hideCoverageClickActionMenu();
         diaryCoveragePopoverState.page -= 1;
         renderDiaryCoveragePopover();
         return;
       }
       if (next) {
+        hideCoverageClickActionMenu();
         diaryCoveragePopoverState.page += 1;
         renderDiaryCoveragePopover();
         return;
       }
       if (jump) {
+        if (coverageNutrientSwallowClick) {
+          coverageNutrientSwallowClick = false;
+          return;
+        }
+        if (isCoverageClickActionMenuOpen()) {
+          hideCoverageClickActionMenu();
+          return;
+        }
         var key = jump.getAttribute("data-nutrient-key");
         var scopeKey = diaryCoveragePopoverState.key;
         var dayId = "";
@@ -29457,11 +29637,143 @@
         for (i = 0; i < DAYS.length; i++) {
           if (DAYS[i].id === scopeKey) dayId = scopeKey;
         }
-        hideDiaryCoveragePopover();
-        jumpFromFoodItemPopover(key, {
-          dailyView: dayId !== "",
-          dayId: dayId,
-        });
+        performCoverageNutrientClick(key, dayId);
+      }
+    });
+    diaryCoveragePopoverEl.addEventListener("contextmenu", function (e) {
+      var jump = e.target.closest('[data-action="coverage-popover-jump"]');
+      if (!jump || !diaryCoveragePopoverEl.contains(jump)) return;
+      e.preventDefault();
+      e.stopPropagation();
+      coverageNutrientSwallowClick = true;
+      setTimeout(function () {
+        coverageNutrientSwallowClick = false;
+      }, 400);
+      showCoverageClickActionMenu(jump, e.clientX, e.clientY, jump.getAttribute("data-nutrient-key"));
+    });
+    diaryCoveragePopoverEl.addEventListener("pointerdown", function (e) {
+      if (e.button !== 0) return;
+      var jump = e.target.closest('[data-action="coverage-popover-jump"]');
+      if (!jump || !diaryCoveragePopoverEl.contains(jump)) return;
+      if (coverageNutrientPress && coverageNutrientPress.timer) {
+        clearTimeout(coverageNutrientPress.timer);
+      }
+      var press = {
+        btn: jump,
+        key: jump.getAttribute("data-nutrient-key"),
+        x: e.clientX,
+        y: e.clientY,
+        pointerId: e.pointerId,
+        fired: false,
+        timer: 0,
+      };
+      press.timer = setTimeout(function () {
+        if (coverageNutrientPress !== press) return;
+        press.fired = true;
+        showCoverageClickActionMenu(press.btn, press.x, press.y, press.key);
+      }, COVERAGE_NUTRIENT_LONG_PRESS_MS);
+      coverageNutrientPress = press;
+    });
+    diaryCoveragePopoverEl.addEventListener("pointermove", function (e) {
+      if (!coverageNutrientPress || coverageNutrientPress.fired) return;
+      if (e.pointerId !== coverageNutrientPress.pointerId) return;
+      var dx = e.clientX - coverageNutrientPress.x;
+      var dy = e.clientY - coverageNutrientPress.y;
+      if (dx * dx + dy * dy > 144) {
+        clearTimeout(coverageNutrientPress.timer);
+        coverageNutrientPress = null;
+      }
+    });
+    var endCoverageNutrientPress = function (e) {
+      if (!coverageNutrientPress || e.pointerId !== coverageNutrientPress.pointerId) {
+        return;
+      }
+      var fired = coverageNutrientPress.fired;
+      clearTimeout(coverageNutrientPress.timer);
+      coverageNutrientPress = null;
+      if (!fired) return;
+      coverageNutrientSwallowClick = true;
+      setTimeout(function () {
+        coverageNutrientSwallowClick = false;
+      }, 400);
+    };
+    diaryCoveragePopoverEl.addEventListener("pointerup", endCoverageNutrientPress);
+    diaryCoveragePopoverEl.addEventListener("pointercancel", endCoverageNutrientPress);
+    diaryCoveragePopoverEl.addEventListener("keydown", function (e) {
+      var jump = e.target.closest('[data-action="coverage-popover-jump"]');
+      if (!jump || !diaryCoveragePopoverEl.contains(jump)) return;
+      var menuKey = e.key === "ContextMenu" || e.key === "Apps";
+      if (!(menuKey || (e.key === "F10" && e.shiftKey))) return;
+      e.preventDefault();
+      e.stopPropagation();
+      var rect = jump.getBoundingClientRect();
+      showCoverageClickActionMenu(
+        jump,
+        rect.left,
+        rect.bottom,
+        jump.getAttribute("data-nutrient-key")
+      );
+    });
+  }
+
+  var coverageClickActionMenuElRef = document.getElementById(
+    "coverage-click-action-menu"
+  );
+  if (coverageClickActionMenuElRef) {
+    coverageClickActionMenuElRef.addEventListener("click", function (e) {
+      var item = e.target.closest("[data-coverage-click-action]");
+      if (!item || !coverageClickActionMenuElRef.contains(item)) return;
+      e.preventDefault();
+      e.stopPropagation();
+      setCoverageClickAction(item.getAttribute("data-coverage-click-action"));
+      hideCoverageClickActionMenu();
+    });
+    coverageClickActionMenuElRef.addEventListener("keydown", function (e) {
+      var items = Array.prototype.slice.call(
+        coverageClickActionMenuElRef.querySelectorAll("[data-coverage-click-action]")
+      );
+      var idx = items.indexOf(document.activeElement);
+      if (e.key === "Escape") {
+        e.preventDefault();
+        e.stopPropagation();
+        var menuNutrientKey = coverageClickActionMenuKey;
+        hideCoverageClickActionMenu();
+        var pop = document.getElementById("diary-coverage-popover");
+        var focusBtn =
+          (menuNutrientKey &&
+            pop &&
+            pop.querySelector(
+              '[data-action="coverage-popover-jump"][data-nutrient-key="' +
+                menuNutrientKey +
+                '"]'
+            )) ||
+          (pop && pop.querySelector('[data-action="coverage-popover-jump"]'));
+        if (focusBtn) focusBtn.focus();
+        return;
+      }
+      if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+        e.preventDefault();
+        e.stopPropagation();
+        if (!items.length) return;
+        var nextIdx =
+          e.key === "ArrowDown"
+            ? (idx + 1) % items.length
+            : (idx - 1 + items.length) % items.length;
+        items[nextIdx].focus();
+        return;
+      }
+      if (e.key === "Home" || e.key === "End") {
+        e.preventDefault();
+        e.stopPropagation();
+        if (!items.length) return;
+        items[e.key === "Home" ? 0 : items.length - 1].focus();
+        return;
+      }
+      if ((e.key === "Enter" || e.key === " ") && idx >= 0) {
+        e.preventDefault();
+        e.stopPropagation();
+        setCoverageClickAction(items[idx].getAttribute("data-coverage-click-action"));
+        hideCoverageClickActionMenu();
       }
     });
   }
@@ -29475,6 +29787,12 @@
 
   document.addEventListener("keydown", function (e) {
     if (e.key !== "Escape") return;
+    if (isCoverageClickActionMenuOpen()) {
+      e.preventDefault();
+      e.stopPropagation();
+      hideCoverageClickActionMenu();
+      return;
+    }
     var el = document.getElementById("diary-coverage-popover");
     if (!el || el.hidden) return;
     e.preventDefault();
@@ -38460,9 +38778,16 @@
   }
 
   function foodItemPopoverJumpDest(key) {
-    if (microFieldByKey(key)) return "micro";
+    if (microFieldByKey(key) || microDerivedDefByKey(key)) return "micro";
     if (longevityFieldByKey(key)) return "longevity";
     return "";
+  }
+
+  function canRankNutrientFoods(key) {
+    if (!key || isInsolubleToSolubleFiberRatioKey(key) || microDerivedDefByKey(key)) {
+      return false;
+    }
+    return !!(microFieldByKey(key) || longevityFieldByKey(key));
   }
 
   function foodItemPopoverPageCount(rows) {
@@ -41041,6 +41366,7 @@
     addDay: "mon",
     filter: "",
     valueMode: "amount",
+    source: "experimental",
   };
   var XPT_NUTRIENT_OTHER_LIMIT = 200;
 
@@ -41080,12 +41406,24 @@
       : microContributionsFromText(text, xptNutrientState.key);
   }
 
+  function xptNutrientSourceIsDiary() {
+    return xptNutrientState.source === "diary";
+  }
+
+  function xptNutrientDayText(dayId) {
+    if (xptNutrientSourceIsDiary()) {
+      var el = document.getElementById(dayId);
+      return el ? el.value : "";
+    }
+    return experimentalWeekTexts[dayId] || "";
+  }
+
   function xptNutrientYourList() {
     var scope = xptNutrientState.scope;
     var list = [];
     DAYS.forEach(function (day) {
       if (scope !== "week" && scope !== day.id) return;
-      var text = experimentalWeekTexts[day.id] || "";
+      var text = xptNutrientDayText(day.id);
       if (!String(text).trim()) return;
       xptNutrientContributions(text).forEach(function (item) {
         list.push({
@@ -41105,13 +41443,17 @@
 
   function xptNutrientWeekFoodNames() {
     var names = {};
+    var diaryDayScope =
+      xptNutrientSourceIsDiary() && xptNutrientState.scope !== "week";
     DAYS.forEach(function (day) {
-      parseDayGuidedLines(experimentalWeekTexts[day.id] || "").forEach(function (entry) {
+      if (diaryDayScope && xptNutrientState.scope !== day.id) return;
+      var text = xptNutrientDayText(day.id);
+      parseDayGuidedLines(text).forEach(function (entry) {
         if (entry.kind === "food" && entry.name) {
           names[String(entry.name).trim().toLowerCase()] = true;
         }
       });
-      var hits = keywordHitCounts(experimentalWeekTexts[day.id] || "");
+      var hits = keywordHitCounts(text);
       Object.keys(hits).forEach(function (k) {
         names[k] = true;
       });
@@ -41171,10 +41513,19 @@
     var subtitle = xptNutrientEl("xpt-nutrient-subtitle");
     var scopeDay = dayById(xptNutrientState.scope);
     if (subtitle) {
+      var diary = xptNutrientSourceIsDiary();
+      var periodLabel = scopeDay
+        ? (diary ? scopeDay.label : "Experimental " + scopeDay.label)
+        : diary
+          ? "This week"
+          : "Entire experimental week";
       subtitle.textContent = yours
-        ? (scopeDay ? "Experimental " + scopeDay.label : "Entire experimental week") +
-          " — your food ranked by amount, servings applied"
-        : "Food definitions not in your experimental week — ranked per serving";
+        ? periodLabel + " — your food ranked by amount, servings applied"
+        : diary
+          ? "Food definitions not in " +
+            (scopeDay ? scopeDay.label : "this week") +
+            " — ranked per serving"
+          : "Food definitions not in your experimental week — ranked per serving";
     }
     if (!field) {
       body.innerHTML =
@@ -41239,7 +41590,7 @@
           escapeAttr(item.name) +
           '" aria-label="Add ' +
           escapeAttr(item.name) +
-          " to experimental " +
+          (xptNutrientSourceIsDiary() ? " to " : " to experimental ") +
           escapeAttr(addDay ? addDay.label : "day") +
           '">+ Add</button>';
       html +=
@@ -41324,12 +41675,15 @@
       .join("");
   }
 
-  function openExperimentalNutrientModal(kind, key, dayId) {
+  function openExperimentalNutrientModal(kind, key, dayId, options) {
     var modal = xptNutrientEl("xpt-nutrient-modal");
     if (!modal || !key) return;
+    options = options || {};
     xptNutrientState.kind = kind === "longevity" ? "longevity" : "micro";
     xptNutrientState.key = key;
-    xptNutrientState.tab = "yours";
+    xptNutrientState.tab = options.tab === "other" ? "other" : "yours";
+    xptNutrientState.source =
+      options.source === "diary" ? "diary" : "experimental";
     xptNutrientState.scope = dayId && dayById(dayId) ? dayId : "week";
     xptNutrientState.addDay = dayId && dayById(dayId) ? dayId : "mon";
     xptNutrientState.filter = "";
@@ -41347,7 +41701,9 @@
     renderExperimentalNutrientBody();
     modal.hidden = false;
     updateBodyModalOpen();
-    var focusEl = modal.querySelector('[data-xpt-nutrient-tab="yours"]');
+    var focusEl = modal.querySelector(
+      '[data-xpt-nutrient-tab="' + xptNutrientState.tab + '"]'
+    );
     if (focusEl) focusEl.focus();
   }
 
@@ -41361,10 +41717,14 @@
   function addFoodToExperimentalDayFromNutrient(name) {
     var dayId = xptNutrientState.addDay;
     if (!name || !dayById(dayId)) return;
-    writeExperimentalDayText(
-      dayId,
-      appendMealTexts(experimentalWeekTexts[dayId] || "", formatDayFoodLine(name, 1))
-    );
+    if (xptNutrientSourceIsDiary()) {
+      appendDayFoodLine(dayId, name, 1);
+    } else {
+      writeExperimentalDayText(
+        dayId,
+        appendMealTexts(experimentalWeekTexts[dayId] || "", formatDayFoodLine(name, 1))
+      );
+    }
     renderExperimentalNutrientBody();
   }
 
@@ -45103,11 +45463,22 @@
       hideDayFoodItemPopover();
     }
     var diaryCoveragePopoverEl = document.getElementById("diary-coverage-popover");
+    var clickOnCoverageMenu = !!e.target.closest("#coverage-click-action-menu");
+    if (isCoverageClickActionMenuOpen() && !clickOnCoverageMenu) {
+      hideCoverageClickActionMenu();
+      if (e.target.closest("#diary-coverage-popover")) {
+        coverageNutrientSwallowClick = true;
+        setTimeout(function () {
+          coverageNutrientSwallowClick = false;
+        }, 0);
+      }
+    }
     if (
       diaryCoveragePopoverEl &&
       !diaryCoveragePopoverEl.hidden &&
       Date.now() - diaryCoveragePopoverOpenedAt > 250 &&
-      !e.target.closest("#diary-coverage-popover")
+      !e.target.closest("#diary-coverage-popover") &&
+      !clickOnCoverageMenu
     ) {
       hideDiaryCoveragePopover();
     }
