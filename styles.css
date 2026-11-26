@@ -7390,6 +7390,13 @@ button.analysis-daily-nonstored__name:focus-visible {
   gap: 0.45rem 0.65rem;
 }
 
+.longevity-analysis-report__filters-toolbar .misc-deficiencies-toggle-group {
+  margin-left: auto;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  max-width: 100%;
+}
+
 .longevity-analysis-report__emoji-toggle {
   padding: 0.28rem 0.55rem;
   border: 1px solid #cfd5dd;
