@@ -21623,7 +21623,6 @@
       (extraClass ? " " + extraClass : "") +
       '">' +
       miscDeficienciesToggleHtml() +
-      '<span class="misc-deficiencies-toggle-group__sep" aria-hidden="true"></span>' +
       miscDeficienciesInfoBtnHtml() +
       "</span>"
     );

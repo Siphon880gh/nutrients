@@ -10073,13 +10073,6 @@ button.dashboard__longevity-name:focus-visible {
   flex: 0 0 auto;
 }
 
-.misc-deficiencies-toggle-group__sep {
-  width: 1px;
-  align-self: stretch;
-  margin: 0.15rem 0;
-  background: #d0d0cc;
-}
-
 .misc-deficiencies-help__btn {
   display: inline-flex;
   align-items: center;
