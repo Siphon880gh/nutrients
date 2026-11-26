@@ -5011,8 +5011,81 @@
 
   function closeMicroGapsModal() {
     if (!microGapsModalEl) return;
+    hideMicroGapsAdditionalHelp();
     microGapsModalEl.hidden = true;
     updateBodyModalOpen();
+  }
+
+  var MICRO_GAPS_ADDITIONAL_HELP_POPOVER_ID = "micro-gaps-additional-help-popover";
+  var microGapsAdditionalHelpAnchor = null;
+
+  function microGapsAdditionalHelpPopoverEl() {
+    return document.getElementById(MICRO_GAPS_ADDITIONAL_HELP_POPOVER_ID);
+  }
+
+  function isMicroGapsAdditionalHelpOpen() {
+    var el = microGapsAdditionalHelpPopoverEl();
+    return !!(el && !el.hidden);
+  }
+
+  function syncMicroGapsAdditionalHelpButtons() {
+    var open = isMicroGapsAdditionalHelpOpen();
+    var btns = document.querySelectorAll("[data-micro-gaps-additional-help]");
+    Array.prototype.forEach.call(btns, function (btn) {
+      btn.setAttribute(
+        "aria-expanded",
+        open && btn === microGapsAdditionalHelpAnchor ? "true" : "false"
+      );
+    });
+  }
+
+  function hideMicroGapsAdditionalHelp() {
+    var el = microGapsAdditionalHelpPopoverEl();
+    if (el) el.hidden = true;
+    microGapsAdditionalHelpAnchor = null;
+    syncMicroGapsAdditionalHelpButtons();
+  }
+
+  function positionMicroGapsAdditionalHelp(anchor) {
+    var el = microGapsAdditionalHelpPopoverEl();
+    if (!el || el.hidden || !anchor) return;
+    var margin = 8;
+    el.style.left = "0px";
+    el.style.top = "0px";
+    var width = el.offsetWidth;
+    var height = el.offsetHeight;
+    var rect = anchor.getBoundingClientRect();
+    var left = rect.left;
+    var top = rect.bottom + 6;
+    if (left + width > window.innerWidth - margin) {
+      left = window.innerWidth - width - margin;
+    }
+    if (left < margin) left = margin;
+    if (top + height > window.innerHeight - margin) {
+      top = rect.top - height - 6;
+    }
+    el.style.left = Math.max(margin, left) + "px";
+    el.style.top = Math.max(margin, top) + "px";
+  }
+
+  function showMicroGapsAdditionalHelp(anchor) {
+    var el = microGapsAdditionalHelpPopoverEl();
+    if (!el || !anchor) return;
+    microGapsAdditionalHelpAnchor = anchor;
+    el.hidden = false;
+    syncMicroGapsAdditionalHelpButtons();
+    positionMicroGapsAdditionalHelp(anchor);
+  }
+
+  function toggleMicroGapsAdditionalHelp(anchor) {
+    if (
+      isMicroGapsAdditionalHelpOpen() &&
+      microGapsAdditionalHelpAnchor === anchor
+    ) {
+      hideMicroGapsAdditionalHelp();
+      return;
+    }
+    showMicroGapsAdditionalHelp(anchor);
   }
 
   function buildHealthTimelineLongevityLines() {
@@ -45324,6 +45397,28 @@
     microGapsAdditionalEl.addEventListener("input", renderMicroGapsAiPreview);
   }
 
+  document.addEventListener("click", function (e) {
+    var additionalHelpBtn = e.target.closest("[data-micro-gaps-additional-help]");
+    if (additionalHelpBtn) {
+      e.preventDefault();
+      e.stopPropagation();
+      toggleMicroGapsAdditionalHelp(additionalHelpBtn);
+      return;
+    }
+    if (
+      isMicroGapsAdditionalHelpOpen() &&
+      !e.target.closest("#" + MICRO_GAPS_ADDITIONAL_HELP_POPOVER_ID)
+    ) {
+      hideMicroGapsAdditionalHelp();
+    }
+  });
+
+  window.addEventListener("resize", function () {
+    if (isMicroGapsAdditionalHelpOpen()) {
+      positionMicroGapsAdditionalHelp(microGapsAdditionalHelpAnchor);
+    }
+  });
+
   if (microGapsAiCopyBtn) {
     microGapsAiCopyBtn.addEventListener("click", function () {
       copyMicroGapsPromptToClipboard(function () {
@@ -45428,6 +45523,15 @@
       var helpAnchor = miscDeficienciesHelpAnchor;
       hideMiscDeficienciesHelp();
       if (helpAnchor && document.contains(helpAnchor)) helpAnchor.focus();
+      return;
+    }
+    if (isMicroGapsAdditionalHelpOpen()) {
+      e.preventDefault();
+      var additionalHelpAnchor = microGapsAdditionalHelpAnchor;
+      hideMicroGapsAdditionalHelp();
+      if (additionalHelpAnchor && document.contains(additionalHelpAnchor)) {
+        additionalHelpAnchor.focus();
+      }
       return;
     }
     if (imageLightboxEl && !imageLightboxEl.hidden) {

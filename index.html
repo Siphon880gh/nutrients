@@ -2466,7 +2466,16 @@
             <option value="easy_prep">Easy to prepare</option>
             <option value="portable">Portable finger food I can bring to work</option>
           </select>
-          <label class="import-ai-panel__label micro-gaps-modal__additional-label" for="micro-gaps-additional">Additional dietary preferences</label>
+          <div class="micro-gaps-modal__additional-label-row">
+            <label class="import-ai-panel__label micro-gaps-modal__additional-label" for="micro-gaps-additional">Additional dietary preferences or app food order customization choices</label>
+            <button type="button" class="micro-gaps-additional-help__btn" data-micro-gaps-additional-help aria-expanded="false" aria-controls="micro-gaps-additional-help-popover" aria-label="About additional dietary preferences or app food order customization choices" title="About additional dietary preferences or app food order customization choices">
+              <svg class="micro-gaps-additional-help__icon" viewBox="0 0 16 16" width="13" height="13" aria-hidden="true" focusable="false">
+                <circle cx="8" cy="8" r="6.25" fill="none" stroke="currentColor" stroke-width="1.2"></circle>
+                <path d="M8 7.1v4.4" fill="none" stroke="currentColor" stroke-width="1.35" stroke-linecap="round"></path>
+                <circle cx="8" cy="4.75" r="0.7" fill="currentColor"></circle>
+              </svg>
+            </button>
+          </div>
           <textarea id="micro-gaps-additional" class="import-ai-panel__portion micro-gaps-modal__additional" rows="2" placeholder="I prefer whole foods and easy breakfasts I can pack for work." autocomplete="off" spellcheck="true"></textarea>
         </div>
         <div id="micro-gaps-reeat-panel" hidden>
@@ -2520,6 +2529,11 @@
         <button type="button" id="micro-gaps-modal-done" class="modal__done">Done</button>
       </footer>
     </div>
+  </div>
+
+  <div id="micro-gaps-additional-help-popover" class="micro-gaps-additional-help-popover" role="note" hidden>
+    <p class="micro-gaps-additional-help-popover__text">Ordering from a food app with build-your-own options? Copy the customization choices (bases, proteins, toppings, sauces) from the app and paste them here. The AI will pick the choices that best fill your nutrient gaps.</p>
+    <img class="micro-gaps-additional-help-popover__img" src="assets/fill-gaps-order-customization-example.jpg" width="1200" height="700" alt="A restaurant app's Custom Organic Bowl options on the left, and the same choices pasted into this box on the right.">
   </div>
 
   <div id="micro-def-modal" class="modal" hidden>
