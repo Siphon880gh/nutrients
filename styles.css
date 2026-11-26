@@ -10073,6 +10073,106 @@ button.dashboard__longevity-name:focus-visible {
   flex: 0 0 auto;
 }
 
+.misc-deficiencies-amino__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.35rem;
+  height: 1.55rem;
+  padding: 0;
+  border: 0;
+  border-radius: 4px;
+  background: transparent;
+  color: #5c6b7a;
+  cursor: pointer;
+}
+
+.misc-deficiencies-amino__btn:hover,
+.misc-deficiencies-amino__btn:focus-visible,
+.misc-deficiencies-amino__btn[aria-expanded="true"] {
+  background: #f4f4f2;
+  color: #1f3a58;
+}
+
+.misc-deficiencies-amino__btn:focus-visible {
+  outline: 2px solid #3d6b9e;
+  outline-offset: 2px;
+}
+
+.misc-deficiencies-amino__chevron {
+  width: 0.42rem;
+  height: 0.42rem;
+  margin-top: -0.18rem;
+  border-right: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor;
+  transform: rotate(45deg);
+}
+
+.misc-deficiencies-amino-menu {
+  position: fixed;
+  z-index: 146;
+  min-width: 14.5rem;
+  max-width: min(20rem, calc(100vw - 1.5rem));
+  padding: 0.35rem 0 0.4rem;
+  background: #fff;
+  border: 1px solid #d8dce2;
+  border-radius: 8px;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.16);
+}
+
+.misc-deficiencies-amino-menu[hidden] {
+  display: none;
+}
+
+.misc-deficiencies-amino-menu__label {
+  margin: 0;
+  padding: 0.3rem 0.75rem 0.25rem;
+  color: #5c5c58;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.misc-deficiencies-amino-menu__item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.45rem;
+  width: 100%;
+  margin: 0;
+  padding: 0.4rem 0.75rem;
+  border: 0;
+  background: transparent;
+  color: #222;
+  font: inherit;
+  font-size: 0.8rem;
+  line-height: 1.3;
+  text-align: left;
+  cursor: pointer;
+}
+
+.misc-deficiencies-amino-menu__item:hover,
+.misc-deficiencies-amino-menu__item:focus-visible {
+  background: #eef4fa;
+}
+
+.misc-deficiencies-amino-menu__item:focus-visible {
+  outline: 2px solid #3d6b9e;
+  outline-offset: -2px;
+}
+
+.misc-deficiencies-amino-menu__check {
+  flex: 0 0 0.9rem;
+  width: 0.9rem;
+  height: 1.1rem;
+  color: #14632c;
+  font-weight: 700;
+}
+
+.misc-deficiencies-amino-menu__item[aria-checked="true"] .misc-deficiencies-amino-menu__check::before {
+  content: "✓";
+}
+
 .misc-deficiencies-help__btn {
   display: inline-flex;
   align-items: center;

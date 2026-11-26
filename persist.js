@@ -229,6 +229,7 @@ var NutrientsPersist = (function () {
     GUEST_STARTER_GUIDE_SEEN: "nutrients_guest_starter_guide_seen",
     GUEST_DIARY_COVERAGE: "nutrients_guest_diary_coverage",
     GUEST_MISC_DEFICIENCIES: "nutrients_guest_misc_deficiencies",
+    GUEST_MISC_DEFICIENCIES_AMINO: "nutrients_guest_misc_deficiencies_amino",
     GUEST_COVERAGE_CLICK_ACTION: "nutrients_guest_coverage_click_action",
     ORPHAN_LEGACY: "nutrients_orphan_legacy",
     EXERCISE_DEFINITIONS: "nutrients_exercise_definitions",
@@ -284,6 +285,7 @@ var NutrientsPersist = (function () {
       dayHighlights: true,
       diaryCoverageMute: { days: false, week: false },
       miscDeficiencies: true,
+      miscDeficienciesAmino: "essential",
       coverageClickAction: "info",
       coverageClickActionV2: false,
       dayWordWrap: true,
@@ -1107,6 +1109,33 @@ var NutrientsPersist = (function () {
     return safeSet(KEYS.GUEST_MISC_DEFICIENCIES, JSON.stringify(next));
   }
 
+  var DEFAULT_MISC_DEFICIENCIES_AMINO = "essential";
+  var MISC_DEFICIENCIES_AMINO_MODES = { essential: true, all: true };
+
+  function normalizeMiscDeficienciesAmino(value) {
+    var key = value == null ? "" : String(value);
+    return MISC_DEFICIENCIES_AMINO_MODES[key] ? key : DEFAULT_MISC_DEFICIENCIES_AMINO;
+  }
+
+  function getMiscDeficienciesAmino() {
+    if (currentUserId()) {
+      return normalizeMiscDeficienciesAmino(getSetting("miscDeficienciesAmino"));
+    }
+    var raw = safeGet(KEYS.GUEST_MISC_DEFICIENCIES_AMINO);
+    if (raw == null || raw === "") return DEFAULT_MISC_DEFICIENCIES_AMINO;
+    try {
+      return normalizeMiscDeficienciesAmino(JSON.parse(raw));
+    } catch (e) {
+      return normalizeMiscDeficienciesAmino(raw);
+    }
+  }
+
+  function setMiscDeficienciesAmino(value) {
+    var next = normalizeMiscDeficienciesAmino(value);
+    if (currentUserId()) return setSetting("miscDeficienciesAmino", next);
+    return safeSet(KEYS.GUEST_MISC_DEFICIENCIES_AMINO, JSON.stringify(next));
+  }
+
   var DEFAULT_COVERAGE_CLICK_ACTION = "info";
   var COVERAGE_CLICK_ACTIONS = { jump: true, yours: true, other: true, info: true };
 
@@ -1380,6 +1409,8 @@ var NutrientsPersist = (function () {
     setDiaryCoverageMute: setDiaryCoverageMute,
     getMiscDeficiencies: getMiscDeficiencies,
     setMiscDeficiencies: setMiscDeficiencies,
+    getMiscDeficienciesAmino: getMiscDeficienciesAmino,
+    setMiscDeficienciesAmino: setMiscDeficienciesAmino,
     getCoverageClickAction: getCoverageClickAction,
     setCoverageClickAction: setCoverageClickAction,
     hasSeenStarterGuide: hasSeenStarterGuide,

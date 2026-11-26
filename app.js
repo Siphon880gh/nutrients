@@ -337,6 +337,7 @@
   var analysisNonStoredOnly = false;
   // Default on: stacked bars and requirements include the misc deficiency group.
   var miscDeficienciesOn = true;
+  var miscDeficienciesAminoMode = "essential";
   var analysisDailyNonstoredNameQuery = "";
   // Want more: low % = sad → high % = happy. Want less: high % = sad → low % = happy.
   var LONGEVITY_ANALYSIS_AVG_BANDS = [
@@ -21556,11 +21557,28 @@
     insolubleToSolubleFiber: true,
   };
 
-  var MISC_DEFICIENCIES_TOGGLE_TITLE =
-    "When on, shortfall bars and requirements include essential amino acids, flavonoids, antioxidants, polyphenols, and fiber. Turn off to hide those groups. Non-essential amino acids stay in the shortfall lists either way.";
+  function normalizeMiscDeficienciesAminoMode(value) {
+    return value === "all" ? "all" : "essential";
+  }
+
+  function miscDeficienciesAminoModeLabel() {
+    return miscDeficienciesAminoMode === "all"
+      ? "All amino acids"
+      : "Essential amino acids only";
+  }
+
+  function miscDeficienciesToggleTitle() {
+    if (miscDeficienciesAminoMode === "all") {
+      return "When on, shortfall bars and requirements include all amino acids, flavonoids, antioxidants, polyphenols, and fiber. Turn off to hide those groups, including non-essential amino acids.";
+    }
+    return "When on, shortfall bars and requirements include essential amino acids, flavonoids, antioxidants, polyphenols, and fiber. Turn off to hide those groups. Non-essential amino acids stay in the shortfall lists either way.";
+  }
 
   function isMiscDeficiencyKey(key) {
-    if (!key || NONESSENTIAL_AMINO_KEYS[key]) return false;
+    if (!key) return false;
+    if (NONESSENTIAL_AMINO_KEYS[key]) {
+      return miscDeficienciesAminoMode === "all";
+    }
     return !!(
       ESSENTIAL_AMINO_KEYS[key] ||
       MISC_DEFICIENCY_FLAVONOID_KEYS[key] ||
@@ -21579,15 +21597,35 @@
   }
 
   function miscDeficienciesToggleAriaLabel() {
+    if (miscDeficienciesAminoMode === "all") {
+      return miscDeficienciesOn
+        ? "Misc deficiencies is on. Showing all amino acids, flavonoids, antioxidants, polyphenols, and fiber. Turn off to hide those groups, including non-essential amino acids."
+        : "Misc deficiencies is off. All amino acids, flavonoids, antioxidants, polyphenols, and fiber are hidden. Turn on to show them.";
+    }
     return miscDeficienciesOn
       ? "Misc deficiencies is on. Showing essential amino acids, flavonoids, antioxidants, polyphenols, and fiber. Turn off to hide those groups. Non-essential amino acids stay visible either way."
       : "Misc deficiencies is off. Essential amino acids, flavonoids, antioxidants, polyphenols, and fiber are hidden. Turn on to show them. Non-essential amino acids stay visible either way.";
   }
 
+  function miscDeficienciesHelpText() {
+    if (miscDeficienciesAminoMode === "all") {
+      return "This toggle shows or hides misc deficiencies — all amino acids (essential and non-essential), flavonoids, antioxidants, polyphenols, fibers — in the stacked bars and requirements. Turning the toggle off also hides non-essential amino acids.";
+    }
+    return "This toggle shows or hides misc deficiencies — essential amino acids, flavonoids, antioxidants, polyphenols, fibers — in the stacked bars and requirements. Amino acids mode is Essential amino acids only, so non-essential amino acids are always tracked either way.";
+  }
+
+  function miscDeficienciesAminoChevronAriaLabel() {
+    return (
+      "Amino acids included in Misc deficiencies: " +
+      miscDeficienciesAminoModeLabel() +
+      ". Change amino acids mode."
+    );
+  }
+
   var MISC_DEFICIENCIES_HELP_POPOVER_ID = "misc-deficiencies-help-popover";
-  var MISC_DEFICIENCIES_HELP_TEXT =
-    "This toggle shows or hides misc deficiencies — essential amino acids, flavonoids, antioxidants, polyphenols, fibers — in the stacked bars and requirements. Non-essential amino acids are always tracked either way.";
+  var MISC_DEFICIENCIES_AMINO_MENU_ID = "misc-deficiencies-amino-menu";
   var miscDeficienciesHelpAnchor = null;
+  var miscDeficienciesAminoMenuAnchor = null;
 
   function miscDeficienciesToggleHtml() {
     return (
@@ -21596,10 +21634,22 @@
       '" aria-label="' +
       escapeAttr(miscDeficienciesToggleAriaLabel()) +
       '" title="' +
-      escapeAttr(MISC_DEFICIENCIES_TOGGLE_TITLE) +
+      escapeAttr(miscDeficienciesToggleTitle()) +
       '">' +
       '<span class="analysis-nonstored-toggle__switch" aria-hidden="true"></span>' +
       '<span class="analysis-nonstored-toggle__label">Misc deficiencies</span>' +
+      "</button>"
+    );
+  }
+
+  function miscDeficienciesAminoChevronHtml() {
+    return (
+      '<button type="button" class="misc-deficiencies-amino__btn" data-misc-deficiencies-amino-menu aria-expanded="false" aria-haspopup="menu" aria-controls="' +
+      MISC_DEFICIENCIES_AMINO_MENU_ID +
+      '" aria-label="' +
+      escapeAttr(miscDeficienciesAminoChevronAriaLabel()) +
+      '" title="Amino acids mode">' +
+      '<span class="misc-deficiencies-amino__chevron" aria-hidden="true"></span>' +
       "</button>"
     );
   }
@@ -21623,6 +21673,7 @@
       (extraClass ? " " + extraClass : "") +
       '">' +
       miscDeficienciesToggleHtml() +
+      miscDeficienciesAminoChevronHtml() +
       miscDeficienciesInfoBtnHtml() +
       "</span>"
     );
@@ -21680,7 +21731,7 @@
   function showMiscDeficienciesHelp(anchor) {
     var el = miscDeficienciesHelpPopoverEl();
     if (!el || !anchor) return;
-    if (!el.textContent) el.textContent = MISC_DEFICIENCIES_HELP_TEXT;
+    el.textContent = miscDeficienciesHelpText();
     miscDeficienciesHelpAnchor = anchor;
     el.hidden = false;
     syncMiscDeficienciesHelpButtons();
@@ -21695,7 +21746,102 @@
       hideMiscDeficienciesHelp();
       return;
     }
+    hideMiscDeficienciesAminoMenu();
     showMiscDeficienciesHelp(anchor);
+  }
+
+  function miscDeficienciesAminoMenuEl() {
+    return document.getElementById(MISC_DEFICIENCIES_AMINO_MENU_ID);
+  }
+
+  function isMiscDeficienciesAminoMenuOpen() {
+    var el = miscDeficienciesAminoMenuEl();
+    return !!(el && !el.hidden);
+  }
+
+  function syncMiscDeficienciesAminoMenuUi() {
+    var menu = miscDeficienciesAminoMenuEl();
+    if (menu) {
+      var items = menu.querySelectorAll("[data-misc-deficiencies-amino]");
+      Array.prototype.forEach.call(items, function (item) {
+        var selected =
+          item.getAttribute("data-misc-deficiencies-amino") ===
+          miscDeficienciesAminoMode;
+        item.setAttribute("aria-checked", selected ? "true" : "false");
+      });
+    }
+    var open = isMiscDeficienciesAminoMenuOpen();
+    var btns = document.querySelectorAll("[data-misc-deficiencies-amino-menu]");
+    Array.prototype.forEach.call(btns, function (btn) {
+      btn.setAttribute(
+        "aria-expanded",
+        open && btn === miscDeficienciesAminoMenuAnchor ? "true" : "false"
+      );
+      btn.setAttribute("aria-label", miscDeficienciesAminoChevronAriaLabel());
+    });
+  }
+
+  function hideMiscDeficienciesAminoMenu() {
+    var el = miscDeficienciesAminoMenuEl();
+    if (el) el.hidden = true;
+    miscDeficienciesAminoMenuAnchor = null;
+    syncMiscDeficienciesAminoMenuUi();
+  }
+
+  function positionMiscDeficienciesAminoMenu(anchor) {
+    var el = miscDeficienciesAminoMenuEl();
+    if (!el || el.hidden || !anchor) return;
+    var margin = 8;
+    el.style.left = "0px";
+    el.style.top = "0px";
+    var width = el.offsetWidth;
+    var height = el.offsetHeight;
+    var rect = anchor.getBoundingClientRect();
+    var left = rect.left;
+    var top = rect.bottom + 4;
+    if (left + width > window.innerWidth - margin) {
+      left = window.innerWidth - width - margin;
+    }
+    if (top + height > window.innerHeight - margin) {
+      top = rect.top - height - 4;
+    }
+    el.style.left = Math.max(margin, left) + "px";
+    el.style.top = Math.max(margin, top) + "px";
+  }
+
+  function showMiscDeficienciesAminoMenu(anchor) {
+    var el = miscDeficienciesAminoMenuEl();
+    if (!el || !anchor) return;
+    hideMiscDeficienciesHelp();
+    miscDeficienciesAminoMenuAnchor = anchor;
+    syncMiscDeficienciesAminoMenuUi();
+    el.hidden = false;
+    syncMiscDeficienciesAminoMenuUi();
+    positionMiscDeficienciesAminoMenu(anchor);
+    var selected = el.querySelector(
+      '[data-misc-deficiencies-amino="' + miscDeficienciesAminoMode + '"]'
+    );
+    if (selected) selected.focus();
+  }
+
+  function toggleMiscDeficienciesAminoMenu(anchor) {
+    if (
+      isMiscDeficienciesAminoMenuOpen() &&
+      miscDeficienciesAminoMenuAnchor === anchor
+    ) {
+      hideMiscDeficienciesAminoMenu();
+      return;
+    }
+    showMiscDeficienciesAminoMenu(anchor);
+  }
+
+  function rerenderMiscDeficienciesViews() {
+    renderDiaryCoverage();
+    if (experimentalPanelOpen) renderExperimentalPanel();
+    if (microRequirementsOpen) renderMicroRequirements();
+    if (longevityAnalysisModalEl && !longevityAnalysisModalEl.hidden) {
+      renderAnalysisModal();
+    }
   }
 
   function syncMiscDeficienciesToggleUi() {
@@ -21703,14 +21849,28 @@
     Array.prototype.forEach.call(btns, function (btn) {
       btn.setAttribute("aria-pressed", miscDeficienciesOn ? "true" : "false");
       btn.setAttribute("aria-label", miscDeficienciesToggleAriaLabel());
-      btn.setAttribute("title", MISC_DEFICIENCIES_TOGGLE_TITLE);
+      btn.setAttribute("title", miscDeficienciesToggleTitle());
     });
+    syncMiscDeficienciesAminoMenuUi();
+    var help = miscDeficienciesHelpPopoverEl();
+    if (help && !help.hidden) {
+      help.textContent = miscDeficienciesHelpText();
+      if (miscDeficienciesHelpAnchor) {
+        positionMiscDeficienciesHelp(miscDeficienciesHelpAnchor);
+      }
+    }
   }
 
   function loadMiscDeficienciesPreference() {
     miscDeficienciesOn = true;
+    miscDeficienciesAminoMode = "essential";
     if (persist && persist.getMiscDeficiencies) {
       miscDeficienciesOn = persist.getMiscDeficiencies() !== false;
+    }
+    if (persist && persist.getMiscDeficienciesAmino) {
+      miscDeficienciesAminoMode = normalizeMiscDeficienciesAminoMode(
+        persist.getMiscDeficienciesAmino()
+      );
     }
     syncMiscDeficienciesToggleUi();
   }
@@ -21718,6 +21878,12 @@
   function saveMiscDeficienciesPreference() {
     if (persist && persist.setMiscDeficiencies) {
       persist.setMiscDeficiencies(miscDeficienciesOn);
+    }
+  }
+
+  function saveMiscDeficienciesAminoPreference() {
+    if (persist && persist.setMiscDeficienciesAmino) {
+      persist.setMiscDeficienciesAmino(miscDeficienciesAminoMode);
     }
   }
 
@@ -21730,13 +21896,24 @@
     miscDeficienciesOn = next;
     saveMiscDeficienciesPreference();
     hideMiscDeficienciesHelp();
+    hideMiscDeficienciesAminoMenu();
     syncMiscDeficienciesToggleUi();
-    renderDiaryCoverage();
-    if (experimentalPanelOpen) renderExperimentalPanel();
-    if (microRequirementsOpen) renderMicroRequirements();
-    if (longevityAnalysisModalEl && !longevityAnalysisModalEl.hidden) {
-      renderAnalysisModal();
+    rerenderMiscDeficienciesViews();
+  }
+
+  function setMiscDeficienciesAminoMode(next) {
+    next = normalizeMiscDeficienciesAminoMode(next);
+    if (miscDeficienciesAminoMode === next) {
+      hideMiscDeficienciesAminoMenu();
+      syncMiscDeficienciesToggleUi();
+      return;
     }
+    miscDeficienciesAminoMode = next;
+    saveMiscDeficienciesAminoPreference();
+    hideMiscDeficienciesHelp();
+    hideMiscDeficienciesAminoMenu();
+    syncMiscDeficienciesToggleUi();
+    rerenderMiscDeficienciesViews();
   }
 
   function toggleMiscDeficiencies() {
@@ -30075,6 +30252,26 @@
   }
 
   document.addEventListener("click", function (e) {
+    var aminoItem = e.target.closest("[data-misc-deficiencies-amino]");
+    if (
+      aminoItem &&
+      e.target.closest("#" + MISC_DEFICIENCIES_AMINO_MENU_ID)
+    ) {
+      e.preventDefault();
+      setMiscDeficienciesAminoMode(
+        aminoItem.getAttribute("data-misc-deficiencies-amino")
+      );
+      return;
+    }
+    var aminoBtn = e.target.closest("[data-misc-deficiencies-amino-menu]");
+    if (aminoBtn) {
+      e.preventDefault();
+      toggleMiscDeficienciesAminoMenu(aminoBtn);
+      return;
+    }
+    if (!e.target.closest("#" + MISC_DEFICIENCIES_AMINO_MENU_ID)) {
+      hideMiscDeficienciesAminoMenu();
+    }
     var helpBtn = e.target.closest("[data-misc-deficiencies-help]");
     if (helpBtn) {
       e.preventDefault();
@@ -30106,6 +30303,9 @@
   });
 
   window.addEventListener("resize", function () {
+    if (isMiscDeficienciesAminoMenuOpen()) {
+      positionMiscDeficienciesAminoMenu(miscDeficienciesAminoMenuAnchor);
+    }
     if (isMiscDeficienciesHelpOpen()) {
       positionMiscDeficienciesHelp(miscDeficienciesHelpAnchor);
     }
@@ -30117,6 +30317,45 @@
       diaryCoveragePopoverPoint.y
     );
   });
+
+  var miscDeficienciesAminoMenuElRef = document.getElementById(
+    MISC_DEFICIENCIES_AMINO_MENU_ID
+  );
+  if (miscDeficienciesAminoMenuElRef) {
+    miscDeficienciesAminoMenuElRef.addEventListener("keydown", function (e) {
+      var items = Array.prototype.slice.call(
+        miscDeficienciesAminoMenuElRef.querySelectorAll(
+          "[data-misc-deficiencies-amino]"
+        )
+      );
+      var idx = items.indexOf(document.activeElement);
+      if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+        e.preventDefault();
+        e.stopPropagation();
+        if (!items.length) return;
+        var nextIdx =
+          e.key === "ArrowDown"
+            ? (idx + 1) % items.length
+            : (idx - 1 + items.length) % items.length;
+        items[nextIdx].focus();
+        return;
+      }
+      if (e.key === "Home" || e.key === "End") {
+        e.preventDefault();
+        e.stopPropagation();
+        if (!items.length) return;
+        items[e.key === "Home" ? 0 : items.length - 1].focus();
+        return;
+      }
+      if ((e.key === "Enter" || e.key === " ") && idx >= 0) {
+        e.preventDefault();
+        e.stopPropagation();
+        setMiscDeficienciesAminoMode(
+          items[idx].getAttribute("data-misc-deficiencies-amino")
+        );
+      }
+    });
+  }
 
   function renderDashboard() {
     renderDiaryCoverage();
@@ -44684,6 +44923,13 @@
 
   document.addEventListener("keydown", function (e) {
     if (e.key !== "Escape") return;
+    if (isMiscDeficienciesAminoMenuOpen()) {
+      e.preventDefault();
+      var aminoAnchor = miscDeficienciesAminoMenuAnchor;
+      hideMiscDeficienciesAminoMenu();
+      if (aminoAnchor && document.contains(aminoAnchor)) aminoAnchor.focus();
+      return;
+    }
     if (isMiscDeficienciesHelpOpen()) {
       e.preventDefault();
       var helpAnchor = miscDeficienciesHelpAnchor;
