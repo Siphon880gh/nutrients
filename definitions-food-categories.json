@@ -204,6 +204,11 @@
       "id": "pizza",
       "label": "Pizza",
       "patterns": ["^Pizza slice\\b", "^Prince St Square Slice\\b"]
+    },
+    {
+      "id": "recipes",
+      "label": "Recipes",
+      "patterns": ["^Recipe\\s*-"]
     }
   ]
 }
