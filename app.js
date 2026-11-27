@@ -3779,21 +3779,21 @@
     if (parts.length === 2) {
       var num = parseFloat(parts[0].trim());
       var den = parseFloat(parts[1].trim());
-      if (!(num > 0 && den > 0 && isFinite(num) && isFinite(den))) return NaN;
+      if (!(num >= 0 && den > 0 && isFinite(num) && isFinite(den))) return NaN;
       n = num / den;
     } else if (parts.length === 1) {
       n = parseFloat(raw);
     } else {
       return NaN;
     }
-    return n > 0 && isFinite(n) ? n : NaN;
+    return n >= 0 && isFinite(n) ? n : NaN;
   }
 
   function keywordServingMultiplier(text, afterIndex) {
     var m = text.slice(afterIndex).match(KEYWORD_SERVING_MULTIPLIER_RE);
     if (!m) return 1;
     var n = parseServingMultiplierAmount(m[1]);
-    return n > 0 && isFinite(n) ? n : 1;
+    return n >= 0 && isFinite(n) ? n : 1;
   }
 
   function stripKeywordServingMultiplier(text) {
@@ -34453,9 +34453,12 @@
         var matchedName = String(match[1] || match[0]).toLowerCase();
         var kw = keywordByName[matchedName];
         if (!kw) continue;
-        var servings = weekQuizServingValue(
-          keywordServingMultiplier(text, match.index + match[0].length)
+        var servings = keywordServingMultiplier(
+          text,
+          match.index + match[0].length
         );
+        if (!(servings > 0)) continue;
+        servings = weekQuizServingValue(servings);
         var key = weekQuizEntryKey(kw.id, kw.name, servings);
         var entry = byKey[key];
         if (!entry) {
@@ -38463,7 +38466,7 @@
     var foodName = String(name || "").trim();
     if (!foodName) return "";
     var n = parseFloat(servings);
-    if (!isFinite(n) || n <= 0) n = 1;
+    if (!isFinite(n) || n < 0) n = 1;
     n = Math.round(n * 1000) / 1000;
     if (Math.abs(n - 1) < 1e-9) return foodName;
     return foodName + " * " + String(n);
@@ -38474,7 +38477,7 @@
     var m = visible.match(SERVING_MULTIPLIER_SUFFIX_RE);
     if (!m) return 1;
     var n = parseServingMultiplierAmount(m[1]);
-    return n > 0 && isFinite(n) ? n : 1;
+    return n >= 0 && isFinite(n) ? n : 1;
   }
 
   function foodDefinitionNameForLine(line) {
@@ -39827,7 +39830,7 @@
 
   function formatGuidedServingsValue(n) {
     var v = Math.round(Number(n) * 1000) / 1000;
-    if (!isFinite(v) || v <= 0) v = 1;
+    if (!isFinite(v) || v < 0) v = 1;
     return String(v);
   }
 
@@ -39928,7 +39931,7 @@
     var entry = state.entry;
     var kw = state.kw;
     var servings = Number(entry.servings);
-    if (!isFinite(servings) || servings <= 0) servings = 1;
+    if (!isFinite(servings) || servings < 0) servings = 1;
     var protein = parseMacro(kw.protein) * servings;
     var carbs = parseMacro(kw.carbs) * servings;
     var fats = parseMacro(kw.fats) * servings;
@@ -40293,9 +40296,12 @@
   function dayGuidedFoodItemHtml(entry, dayId, entryPos, entryCount) {
     var servings = formatGuidedServingsValue(entry.servings);
     var rearrange = isGuidedRearrangeEnabled(dayId);
+    var zeroClass =
+      Number(entry.servings) === 0 ? " day__food-item--zero-servings" : "";
     return (
       '<li class="' +
       dayGuidedItemClassName("day__food-item--food", dayId, entry.lineIndex) +
+      zeroClass +
       '" data-line-index="' +
       entry.lineIndex +
       '" data-entry-pos="' +
@@ -40312,7 +40318,7 @@
       (rearrange
         ? ""
         : '<div class="day__food-item-servings">' +
-          '<input type="number" class="day__food-item-servings-input" min="0.25" step="0.25" value="' +
+          '<input type="number" class="day__food-item-servings-input" min="0" step="0.25" value="' +
           escapeAttr(servings) +
           '" data-action="guided-serving-input" data-day-id="' +
           escapeAttr(dayId) +
@@ -41561,7 +41567,7 @@
     var entry = parseDayGuidedLine(lines[lineIndex], lineIndex);
     if (entry.kind !== "food") return;
     var n = parseFloat(rawValue);
-    if (!isFinite(n) || n <= 0) n = 1;
+    if (!isFinite(n) || n < 0) n = 1;
     rewriteDayGuidedLine(
       dayId,
       lineIndex,
@@ -41679,7 +41685,7 @@
         escapeHtml(entry.name) +
         "</span>" +
         '<div class="day__food-item-servings">' +
-        '<input type="number" class="day__food-item-servings-input" min="0.25" step="0.25" value="' +
+        '<input type="number" class="day__food-item-servings-input" min="0" step="0.25" value="' +
         escapeAttr(formatGuidedServingsValue(entry.servings)) +
         '" data-action="xpt-servings" data-xpt-day="' +
         escapeAttr(dayId) +
@@ -44562,7 +44568,7 @@
     var entry = parseDayGuidedLine(lines[lineIndex], lineIndex);
     if (entry.kind !== "food") return;
     var n = parseFloat(input.value);
-    if (!isFinite(n) || n <= 0) n = 1;
+    if (!isFinite(n) || n < 0) n = 1;
     setExperimentalLine(dayId, lineIndex, formatDayFoodLine(entry.name, n));
   }
 

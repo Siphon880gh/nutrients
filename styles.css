@@ -11788,6 +11788,15 @@ button.day__food-popover-nutrient:focus-visible {
   word-break: break-word;
 }
 
+.day__food-item--zero-servings .day__food-item-name,
+.day__food-item--zero-servings .day__food-item-servings-input,
+.day__food-item--zero-servings:hover .day__food-item-servings-input,
+.day__food-item--zero-servings:focus-within .day__food-item-servings-input,
+.day__food-item--zero-servings.day__food-item--active .day__food-item-servings-input {
+  color: #9a9a96;
+  text-decoration: line-through;
+}
+
 .day__food-item--comment .day__food-item-name {
   color: #2a2a28;
   font-size: 0.72rem;
