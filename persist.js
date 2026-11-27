@@ -231,6 +231,7 @@ var NutrientsPersist = (function () {
     GUEST_MISC_DEFICIENCIES: "nutrients_guest_misc_deficiencies",
     GUEST_MISC_DEFICIENCIES_AMINO: "nutrients_guest_misc_deficiencies_amino",
     GUEST_AMINO_DEFICIENCIES: "nutrients_guest_amino_deficiencies",
+    GUEST_NUTRIENT_EXCESS: "nutrients_guest_nutrient_excess",
     GUEST_COVERAGE_CLICK_ACTION: "nutrients_guest_coverage_click_action",
     ORPHAN_LEGACY: "nutrients_orphan_legacy",
     EXERCISE_DEFINITIONS: "nutrients_exercise_definitions",
@@ -288,6 +289,7 @@ var NutrientsPersist = (function () {
       miscDeficiencies: true,
       miscDeficienciesAmino: "essential",
       aminoDeficiencies: true,
+      nutrientExcess: false,
       coverageClickAction: "info",
       coverageClickActionV2: false,
       dayWordWrap: true,
@@ -1157,6 +1159,32 @@ var NutrientsPersist = (function () {
     return safeSet(KEYS.GUEST_AMINO_DEFICIENCIES, JSON.stringify(next));
   }
 
+  function normalizeNutrientExcess(value) {
+    if (value === true || value === "true" || value === 1 || value === "1") {
+      return true;
+    }
+    return false;
+  }
+
+  function getNutrientExcess() {
+    if (currentUserId()) {
+      return normalizeNutrientExcess(getSetting("nutrientExcess"));
+    }
+    var raw = safeGet(KEYS.GUEST_NUTRIENT_EXCESS);
+    if (raw == null || raw === "") return false;
+    try {
+      return normalizeNutrientExcess(JSON.parse(raw));
+    } catch (e) {
+      return normalizeNutrientExcess(raw);
+    }
+  }
+
+  function setNutrientExcess(value) {
+    var next = normalizeNutrientExcess(value);
+    if (currentUserId()) return setSetting("nutrientExcess", next);
+    return safeSet(KEYS.GUEST_NUTRIENT_EXCESS, JSON.stringify(next));
+  }
+
   var DEFAULT_COVERAGE_CLICK_ACTION = "info";
   var COVERAGE_CLICK_ACTIONS = { jump: true, yours: true, other: true, info: true };
 
@@ -1434,6 +1462,8 @@ var NutrientsPersist = (function () {
     setMiscDeficienciesAmino: setMiscDeficienciesAmino,
     getAminoDeficiencies: getAminoDeficiencies,
     setAminoDeficiencies: setAminoDeficiencies,
+    getNutrientExcess: getNutrientExcess,
+    setNutrientExcess: setNutrientExcess,
     getCoverageClickAction: getCoverageClickAction,
     setCoverageClickAction: setCoverageClickAction,
     hasSeenStarterGuide: hasSeenStarterGuide,

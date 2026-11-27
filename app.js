@@ -340,6 +340,7 @@
   var miscDeficienciesAminoMode = "essential";
   // Default on: amino acids count in shortfall bars and requirements.
   var aminoDeficienciesOn = true;
+  var nutrientExcessOn = false;
   var analysisDailyNonstoredNameQuery = "";
   // Want more: low % = sad → high % = happy. Want less: high % = sad → low % = happy.
   var LONGEVITY_ANALYSIS_AVG_BANDS = [
@@ -349,6 +350,16 @@
     { id: "75-85", label: "75–85%", min: 75, max: 85, maxInclusive: false, color: "yellow", stack: "lime", emoji: "🙂" },
     { id: "85-100", label: "85–100%", min: 85, max: 100, maxInclusive: true, color: "green", stack: "green", emoji: "😄" },
   ];
+  var ANALYSIS_EXCESS_AIM_BAND = {
+    id: "over-100",
+    label: ">100%",
+    min: 100,
+    max: Infinity,
+    maxInclusive: false,
+    color: "black",
+    stack: "black",
+    emoji: "",
+  };
   var LONGEVITY_ANALYSIS_LIMIT_BANDS = [
     { id: "limit-85-plus", label: "85%+", min: 85, max: Infinity, maxInclusive: true, color: "red", stack: "red", emoji: "😢" },
     { id: "limit-75-85", label: "75–85%", min: 75, max: 85, maxInclusive: false, color: "yellow", stack: "orange", emoji: "😕" },
@@ -21866,6 +21877,10 @@
     return "When on, shortfall bars and requirements include amino acids. Turn off to hide them. The menu chooses essential amino acids only or all amino acids.";
   }
 
+  function nutrientExcessToggleTitle() {
+    return "When on, stacked bars add a black range for nutrients over 100% of the daily target.";
+  }
+
   function isMiscDeficiencyKey(key) {
     if (!key) return false;
     return !!(
@@ -21918,6 +21933,12 @@
     );
   }
 
+  function nutrientExcessToggleAriaLabel() {
+    return nutrientExcessOn
+      ? "Excess is on. Stacked bars include nutrients over 100% of target as a black range. Turn off to hide them."
+      : "Excess is off. Nutrients over 100% of target are hidden from stacked bars. Turn on to show them.";
+  }
+
   function miscDeficienciesHelpHtml() {
     return (
       "<strong>Amino acid deficiencies</strong><br>" +
@@ -21927,7 +21948,11 @@
       escapeHtml(miscDeficienciesAminoModeLabel()) +
       ".<br><br>" +
       "<strong>Misc deficiencies</strong><br>" +
-      "When on, shortfall bars and requirements include flavonoids, antioxidants, polyphenols, fiber, and chloride. Turn off to hide those groups. Chloride deficiency is rare; most intake comes from salt."
+      "When on, shortfall bars and requirements include flavonoids, antioxidants, polyphenols, fiber, and chloride. Turn off to hide those groups. Chloride deficiency is rare; most intake comes from salt." +
+      "<br><br><strong>Excess</strong><br>" +
+      "When on, stacked bars add a black range for nutrients over 100% of the daily target. Excess is " +
+      (nutrientExcessOn ? "on" : "off") +
+      "."
     );
   }
 
@@ -22004,6 +22029,29 @@
     );
   }
 
+  function nutrientExcessToggleHtml() {
+    return (
+      '<button type="button" class="analysis-nonstored-toggle" data-nutrient-excess-toggle aria-pressed="' +
+      (nutrientExcessOn ? "true" : "false") +
+      '" aria-label="' +
+      escapeAttr(nutrientExcessToggleAriaLabel()) +
+      '" title="' +
+      escapeAttr(nutrientExcessToggleTitle()) +
+      '">' +
+      '<span class="analysis-nonstored-toggle__switch" aria-hidden="true"></span>' +
+      '<span class="analysis-nonstored-toggle__label">Excess</span>' +
+      "</button>"
+    );
+  }
+
+  function nutrientExcessControlHtml() {
+    return (
+      '<span class="nutrient-excess-control">' +
+      nutrientExcessToggleHtml() +
+      "</span>"
+    );
+  }
+
   function miscDeficienciesInfoBtnHtml() {
     return (
       '<button type="button" class="misc-deficiencies-help__btn" data-misc-deficiencies-help aria-expanded="false" aria-controls="' +
@@ -22024,6 +22072,7 @@
       '">' +
       aminoDeficienciesControlHtml() +
       miscDeficienciesControlHtml() +
+      nutrientExcessControlHtml() +
       "</span>"
     );
   }
@@ -22209,6 +22258,12 @@
       btn.setAttribute("aria-label", aminoDeficienciesToggleAriaLabel());
       btn.setAttribute("title", aminoDeficienciesToggleTitle());
     });
+    var excessToggles = document.querySelectorAll("[data-nutrient-excess-toggle]");
+    Array.prototype.forEach.call(excessToggles, function (btn) {
+      btn.setAttribute("aria-pressed", nutrientExcessOn ? "true" : "false");
+      btn.setAttribute("aria-label", nutrientExcessToggleAriaLabel());
+      btn.setAttribute("title", nutrientExcessToggleTitle());
+    });
     var help = miscDeficienciesHelpPopoverEl();
     if (help && !help.hidden) {
       help.innerHTML = miscDeficienciesHelpHtml();
@@ -22222,11 +22277,15 @@
     miscDeficienciesOn = true;
     miscDeficienciesAminoMode = "essential";
     aminoDeficienciesOn = true;
+    nutrientExcessOn = false;
     if (persist && persist.getMiscDeficiencies) {
       miscDeficienciesOn = persist.getMiscDeficiencies() !== false;
     }
     if (persist && persist.getAminoDeficiencies) {
       aminoDeficienciesOn = persist.getAminoDeficiencies() !== false;
+    }
+    if (persist && persist.getNutrientExcess) {
+      nutrientExcessOn = persist.getNutrientExcess() === true;
     }
     if (persist && persist.getMiscDeficienciesAmino) {
       miscDeficienciesAminoMode = normalizeMiscDeficienciesAminoMode(
@@ -22251,6 +22310,12 @@
   function saveAminoDeficienciesPreference() {
     if (persist && persist.setAminoDeficiencies) {
       persist.setAminoDeficiencies(aminoDeficienciesOn);
+    }
+  }
+
+  function saveNutrientExcessPreference() {
+    if (persist && persist.setNutrientExcess) {
+      persist.setNutrientExcess(nutrientExcessOn);
     }
   }
 
@@ -22303,6 +22368,24 @@
 
   function toggleAminoDeficiencies() {
     setAminoDeficienciesOn(!aminoDeficienciesOn);
+  }
+
+  function setNutrientExcessOn(next) {
+    next = !!next;
+    if (nutrientExcessOn === next) {
+      syncMiscDeficienciesToggleUi();
+      return;
+    }
+    nutrientExcessOn = next;
+    saveNutrientExcessPreference();
+    hideMiscDeficienciesHelp();
+    hideMiscDeficienciesAminoMenu();
+    syncMiscDeficienciesToggleUi();
+    rerenderMiscDeficienciesViews();
+  }
+
+  function toggleNutrientExcess() {
+    setNutrientExcessOn(!nutrientExcessOn);
   }
 
   var MICRO_ANALYSIS_SECTIONS = [
@@ -29660,15 +29743,25 @@
 
   var diaryCoverageCountsShown = { week: false };
 
+  function analysisAimStackBands() {
+    if (!nutrientExcessOn) return LONGEVITY_ANALYSIS_AVG_BANDS;
+    return LONGEVITY_ANALYSIS_AVG_BANDS.concat([ANALYSIS_EXCESS_AIM_BAND]);
+  }
+
   function analysisAimBandCounts(bySection) {
     var counts = {};
-    LONGEVITY_ANALYSIS_AVG_BANDS.forEach(function (band) {
+    analysisAimStackBands().forEach(function (band) {
       counts[band.id] = 0;
     });
     analysisNutrientPillEntries(bySection, false).forEach(function (entry) {
       var band = microAnalysisNutrientBandForPct(entry.pct, false);
       if (band && counts[band.id] != null) counts[band.id] += 1;
     });
+    if (nutrientExcessOn) {
+      analysisNutrientExcessEntries(bySection).forEach(function () {
+        counts[ANALYSIS_EXCESS_AIM_BAND.id] += 1;
+      });
+    }
     return counts;
   }
 
@@ -29734,7 +29827,7 @@
 
   function diaryCoverageBarHtml(label, bandCounts, shownKey, emptyKind) {
     var total = 0;
-    LONGEVITY_ANALYSIS_AVG_BANDS.forEach(function (band) {
+    analysisAimStackBands().forEach(function (band) {
       total += bandCounts[band.id] || 0;
     });
     if (!total) {
@@ -29750,7 +29843,7 @@
     var muted = diaryCoverageIsMuted(shownKey);
     return longevityAnalysisStackBarHtml(
       label,
-      LONGEVITY_ANALYSIS_AVG_BANDS,
+      analysisAimStackBands(),
       bandCounts,
       {
         pressed: !muted && !!diaryCoverageCountsShown[shownKey],
@@ -29846,6 +29939,7 @@
   var coverageActionNoteTimer = 0;
 
   function diaryCoverageBandById(bandId, limiting) {
+    if (bandId === ANALYSIS_EXCESS_AIM_BAND.id) return ANALYSIS_EXCESS_AIM_BAND;
     var lists = limiting
       ? [LONGEVITY_ANALYSIS_LIMIT_BANDS, LONGEVITY_ANALYSIS_AVG_BANDS]
       : [LONGEVITY_ANALYSIS_AVG_BANDS, LONGEVITY_ANALYSIS_LIMIT_BANDS];
@@ -29921,12 +30015,17 @@
       key === "week"
         ? collectMicroAnalysisEntriesBySection(false)
         : collectMicroAnalysisEntriesBySection(true, key);
-    var entries = analysisNutrientPillEntries(bySection, limiting).filter(
-      function (entry) {
-        var entryBand = microAnalysisNutrientBandForPct(entry.pct, limiting);
-        return entryBand && entryBand.id === bandId;
-      }
-    );
+    var entries;
+    if (bandId === "over-100") {
+      entries = analysisNutrientExcessEntries(bySection);
+    } else {
+      entries = analysisNutrientPillEntries(bySection, limiting).filter(
+        function (entry) {
+          var entryBand = microAnalysisNutrientBandForPct(entry.pct, limiting);
+          return entryBand && entryBand.id === bandId;
+        }
+      );
+    }
     var kind = slot.getAttribute("data-analysis-coverage-kind");
     var kindLabel = "";
     if (kind === "limit") kindLabel = "Want less";
@@ -30834,6 +30933,12 @@
     if (aminoTrackBtn) {
       e.preventDefault();
       toggleAminoDeficiencies();
+      return;
+    }
+    var excessBtn = e.target.closest("[data-nutrient-excess-toggle]");
+    if (excessBtn) {
+      e.preventDefault();
+      toggleNutrientExcess();
       return;
     }
     if (!e.target.closest("#" + MISC_DEFICIENCIES_AMINO_MENU_ID)) {

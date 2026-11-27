@@ -7575,6 +7575,10 @@ button.analysis-daily-nonstored__name:focus-visible {
   background: #1a7a36;
 }
 
+.longevity-analysis-report__stack-seg--black {
+  background: #1a1a1a;
+}
+
 .longevity-analysis-report__stack[aria-pressed="true"] .longevity-analysis-report__stack-seg--yellow,
 .longevity-analysis-report__stack[aria-pressed="true"] .longevity-analysis-report__stack-seg--lime {
   color: #2c3800;
@@ -10236,10 +10240,12 @@ button.dashboard__longevity-name:focus-visible {
   align-items: center;
   gap: 0.85rem;
   flex: 0 0 auto;
+  flex-wrap: wrap;
 }
 
 .amino-deficiencies-control,
-.misc-deficiencies-control {
+.misc-deficiencies-control,
+.nutrient-excess-control {
   display: inline-flex;
   align-items: center;
   gap: 0.12rem;
@@ -11413,6 +11419,10 @@ body.day-entry-guided .day__guided {
 
 .diary-coverage-popover__swatch--green {
   background: #1a7a36;
+}
+
+.diary-coverage-popover__swatch--black {
+  background: #1a1a1a;
 }
 
 .diary-coverage-popover__note {
