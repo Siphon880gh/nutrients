@@ -16,6 +16,10 @@ Instructions for AI agents working in this **nutrients** app.
 
 Authoring guides (human + agent): `GUIDE_ADDING_FOOD.md`, `GUIDE_IMPROVING_FOOD.md`, `GUIDE_ADDING_MULTIVITAMIN.md`.
 
+## Git commits
+
+Do not add a `Co-authored-by` trailer, or any other AI-agent co-author line, to commit messages. Commit as the repository author only.
+
 ## Scope
 
 Change only what the prompt asks for.
