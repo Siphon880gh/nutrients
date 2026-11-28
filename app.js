@@ -7053,6 +7053,10 @@
   }
 
   function analysisSourcesScopeOrWeek() {
+    var stackedScope = coverageDefSwitcher && coverageDefSwitcher.scopeKey;
+    if (stackedScope === "week" || (stackedScope && dayById(stackedScope))) {
+      return stackedScope;
+    }
     if (longevityAnalysisModalEl && !longevityAnalysisModalEl.hidden) {
       return analysisActiveDayId || "week";
     }
@@ -9539,7 +9543,7 @@
     foodSourcesFoodDetail = null;
     clearFoodSourcesReturnDefModal();
     setFoodSourcesStackedOnDef(false);
-    activeFoodSourcesSort = defaultFoodSourcesSortForKey("nutrient");
+    activeFoodSourcesSort = defaultFoodSourcesSortForKey("amount");
     activeFoodSourcesFilter = foodFilter;
     setFoodSourcesFullscreen(false);
     syncFoodSourcesControls();
@@ -9625,6 +9629,11 @@
     );
   }
 
+  function sourcesScopeDayOptionLabel(day) {
+    var dateLabel = dateLabelForDayId(day.id);
+    return dateLabel ? day.label + " · " + dateLabel : day.label;
+  }
+
   function populateSourcesScopeSelect(selectEl, selectedScope) {
     if (!selectEl) return;
     var choices = [
@@ -9633,7 +9642,7 @@
       { value: "weeks-3", label: "3 weeks" },
     ];
     DAYS.forEach(function (day) {
-      choices.push({ value: day.id, label: day.label });
+      choices.push({ value: day.id, label: sourcesScopeDayOptionLabel(day) });
     });
     selectEl.innerHTML = choices
       .map(function (choice) {
@@ -30328,6 +30337,7 @@
     var state = diaryCoveragePopoverState;
     if (!state || !state.entries || !state.entries.length) return null;
     return {
+      scopeKey: state.key === "week" || dayById(state.key) ? state.key : "week",
       rangeLabel: coverageDefRangeLabel(state.key),
       bandLabel: state.bandLabel || "",
       entries: state.entries.map(function (entry) {
@@ -30408,6 +30418,7 @@
     }
     if (!opened) return;
     coverageDefSwitcher = switcher;
+    syncDefModalSourcesBtn();
     renderCoverageDefSwitcher();
     var currentBtn = document.querySelector(
       '#micro-def-coverage-bar [aria-pressed="true"]'
@@ -30431,6 +30442,7 @@
     }
     if (!opened) return false;
     coverageDefSwitcher = switcher;
+    syncDefModalSourcesBtn();
     renderCoverageDefSwitcher();
     return true;
   }
@@ -42898,7 +42910,10 @@
   function xptNutrientDayOptionsHtml(includeWeek, selected) {
     var choices = includeWeek ? [{ value: "week", label: "Entire week" }] : [];
     DAYS.forEach(function (day) {
-      choices.push({ value: day.id, label: day.label });
+      choices.push({
+        value: day.id,
+        label: includeWeek ? sourcesScopeDayOptionLabel(day) : day.label,
+      });
     });
     return choices
       .map(function (c) {
